@@ -13,6 +13,8 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class OtpVerificationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController otpTextController = TextEditingController();
@@ -84,14 +86,22 @@ class OtpVerificationController extends GetxController {
         Utility.showToast(value.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.removeData("token");
+        SharedPreferenceStorage.setData("pageId", 0);
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
+        debugPrint("SharedPreferenceStorage: token: ------ ");
+        var token = await SharedPreferenceStorage.getData("token");
+        debugPrint(token.toString());
+
+
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(
-              Role.role.value, Role.storeOwnerRoleText);
+              Role.role, Role.storeOwnerRoleText);
+          roleApp.value =Role.storeOwnerRoleText;
         } else {
           SharedPreferenceStorage.setData(
-              Role.role.value, Role.customerRoleText);
+              Role.role, Role.customerRoleText);
+          roleApp.value =Role.customerRoleText;
         }
 
         Get.offAll(() => const BottomNavigation());

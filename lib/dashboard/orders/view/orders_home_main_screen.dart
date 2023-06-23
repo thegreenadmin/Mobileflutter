@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_contro
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -149,7 +150,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                        Navigator.of(context).pop();
+                                       Get.back(id:pageIdApp.value);
                                         Get.delete<OrdersHomeMainController>();
                                       },
                                       icon: const Icon(
@@ -376,12 +377,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   .orderStatusName == //"11"
                                   OrderStatus
                                       .returnRequest.statusName
-                                  ? Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MarkReturnOrderScreen(),
-                              )).then((value) {
-                                // ordersController
-                                //     .apiGetStoreOrderListApi();
-                              })
+                                  ?
+                              Get.to(const MarkReturnOrderScreen(),
+                                  id:pageIdApp.value)
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const MarkReturnOrderScreen(),
+                              // )).then((value) {
+                              //   // ordersController
+                              //   //     .apiGetStoreOrderListApi();
+                              // })
                                   /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
@@ -401,9 +405,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   OrderStatus.cancelled
                                       .statusName
                                   ? null:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MarkOrderStatusScreen(),
-                              ));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const MarkOrderStatusScreen(),
+                              // ));
+                               Get.to(const MarkOrderStatusScreen(),
+                                  id:pageIdApp.value);
 
 
                               /// ====================================

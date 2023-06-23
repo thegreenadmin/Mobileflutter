@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -66,21 +67,19 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                         if (index <
                             searchStoreUserController.favouriteStore.length) {
                           return InkWell(
-                            onTap: () {
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
+                            onTap: () async{
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
                               Get.parameters["storeId"] =
                                   searchStoreUserController
                                           .favouriteStore[index].storeId ??
                                       "";
+                              await Get.to(const StoreHomeMainScreen(),
+                                  id:pageIdApp.value);
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (_) => const StoreHomeMainScreen(),
+                              // ));
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const StoreHomeMainScreen(),
-                              ));
-                              // Get.to(const StoreHomeMainScreen(), arguments: {
-                              //   "storeAddress": searchStoreUserController
-                              //       .storeAddresses[index]
-                              // });
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

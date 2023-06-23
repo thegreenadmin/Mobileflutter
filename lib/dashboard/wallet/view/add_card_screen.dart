@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -50,8 +51,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                            Get.back(id:pageIdApp.value);
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -164,7 +165,8 @@ class AddCardScreenState extends State<AddCardScreen> {
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
                                           okayTap: () async {
-                                        Navigator.pop(Get.context!);
+                                            Get.back(id:pageIdApp.value);
+                                        // Navigator.pop(Get.context!);
                                         addCardController.apiDeleteCard(
                                             userStripeCardId: addCardController
                                                     .cardList[index]
@@ -196,12 +198,12 @@ class AddCardScreenState extends State<AddCardScreen> {
               ),
               onTap: () {
                 addCardController.apiGetUserDetailApi(Get.context!);
-                SharedPreferenceStorage.setData("context", context);
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                      builder: (_) => const AddCardDetailScreen(),
-                    ))
-                    // Get.to(AddCardDetailScreen())!
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(
+                //       builder: (_) => const AddCardDetailScreen(),
+                //     ))
+                    Get.to(const AddCardDetailScreen(),id:pageIdApp.value)!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

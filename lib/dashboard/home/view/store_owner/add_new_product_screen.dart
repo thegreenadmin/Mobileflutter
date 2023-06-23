@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:thegreenmall/utils/global_share_data.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,8 +43,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              // Get.back();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

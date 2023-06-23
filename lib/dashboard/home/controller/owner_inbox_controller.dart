@@ -8,6 +8,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/constants.dart';
+
 class OwnerInboxController extends GetxController {
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
@@ -16,27 +18,37 @@ class OwnerInboxController extends GetxController {
   late OwnerInboxModel inboxModel = OwnerInboxModel();
   RxList<MessageHead> inboxList = <MessageHead>[].obs;
   RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
   RxBool showPreviousMessages = false.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
-
+  RxInt pageId = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
     isInboxSelected.value = true;
     showPreviousMessages.value = false;
-    apiGetInboxList();
+    await apiGetInboxList();
   }
-
   //Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
     debugPrint("GET OWNER INBOX URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -56,9 +68,7 @@ class OwnerInboxController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -73,10 +83,11 @@ class OwnerInboxController extends GetxController {
       {String messageHeadId = "", String storeId = ""}) async {
     debugPrint(
         "DELETE STORE MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map body = {"message_head_id": messageHeadId, "store_id": storeId};
@@ -99,9 +110,7 @@ class OwnerInboxController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) =>  const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {

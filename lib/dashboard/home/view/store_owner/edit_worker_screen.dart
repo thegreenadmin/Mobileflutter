@@ -1,4 +1,4 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'package:dotted_border/dotted_border.dart' show BorderType, DottedBorder;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,10 +7,11 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_worker_controller
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class EditWorkerScreen extends StatefulWidget {
   const EditWorkerScreen({super.key});
 
@@ -46,8 +47,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   addNewWorkerController.formKey.currentState
                                       ?.reset();
                                   addNewWorkerController.resetForm();
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

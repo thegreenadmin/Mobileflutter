@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dar
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -135,8 +136,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
-                                    // Get.back();
+                                   Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -342,37 +343,38 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const UserInboxDetailScreen(),
-                                              ));
-                                              // Get.to(
-                                              //     const UserInboxDetailScreen(),
-                                              //     arguments: {
-                                              //       "storeName":
-                                              //           userInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .store!
-                                              //                   .storeName ??
-                                              //               "",
-                                              //       "storeId":
-                                              //           userInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .store!
-                                              //                   .storeId ??
-                                              //               "",
-                                              //       "messageHeadId":
-                                              //           userInboxController
-                                              //                   .inboxList[
-                                              //                       index]
-                                              //                   .messageHeadId ??
-                                              //               ""
-                                              //     });
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (_) =>
+                                              //       const UserInboxDetailScreen(),
+                                              // ));
+                                              Get.to(
+                                                  const UserInboxDetailScreen(),
+                                                  id:pageIdApp.value,
+                                                  arguments: {
+                                                    "storeName":
+                                                        userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .store!
+                                                                .storeName ??
+                                                            "",
+                                                    "storeId":
+                                                        userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .store!
+                                                                .storeId ??
+                                                            "",
+                                                    "messageHeadId":
+                                                        userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .messageHeadId ??
+                                                            ""
+                                                  });
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

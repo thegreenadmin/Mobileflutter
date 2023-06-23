@@ -16,6 +16,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_s
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -135,15 +136,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             InkWell(
                               onTap: () {
                                 if(homeController.isLoading?.value == false) {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
-
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                    const NotificationListScreen(),
-                                  ));
-                                  // Get.to(const NotificationListScreen());
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  //
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) =>
+                                  //       const NotificationListScreen(),
+                                  // ));
+                                  Get.to(() =>const NotificationListScreen(),
+                                      id:pageIdApp.value );
                                 }
+
 
                               },
                               child: const Icon(
@@ -169,20 +172,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-                              homeController.role!.value ==
-                                      Role.customerRoleText
-                                  ? Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                      builder: (_) => const UserInboxScreen(),
-                                    ))
-                                  // Get.to(const UserInboxScreen())
-                                  : Navigator.of(context)
+
+                                // SharedPreferenceStorage.setData(
+                                //     "context", context);
+                              roleApp.value ==
+                                    Role.customerRoleText
+                                    ?
+                                // Navigator.of(context)
+                                //         .push(MaterialPageRoute(
+                                //         builder: (_) => const UserInboxScreen(),
+                                //       ))
+                                Get.to(() =>const UserInboxScreen(),
+                                    id:pageIdApp.value )
+                                    :/* Navigator.of(context)
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
-                                    ));
-                              // Get.to(const OwnerInboxScreen());
+                                    ));*/
+                                Get.to(() =>const OwnerInboxScreen(),id:pageIdApp.value);
+
+
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -221,59 +229,61 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (SharedPreferenceStorage.getData(
-                                            Role.role.value) ==
-                                        Role.customerRoleText) {
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) =>
-                                            const SearchStoreUserScreen(),
-                                      ));
-                                      Get.parameters["firstName"] =
-                                          homeController.firstName?.value
-                                                  .toString() ??
-                                              "";
-                                      Get.parameters["lastName"] =
-                                          homeController.lastName?.value
-                                                  .toString() ??
-                                              "";
-                                      //Get.to(
-                                      //  const SearchStoreUserScreen(),
-                                      //  arguments: {
-                                      //    "firstName":
-                                      //        homeController.firstName!.value,
-                                      //    "lastName":
-                                      //         homeController.lastName!.value,
-                                      //  },
-                                      //);
-                                    } else {
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) =>
-                                            const OwnerStoresListScreen(),
-                                      ));
-                                      Get.parameters["firstName"] =
-                                          homeController.firstName?.value
-                                                  .toString() ??
-                                              "";
-                                      Get.parameters["lastName"] =
-                                          homeController.lastName?.value
-                                                  .toString() ??
-                                              "";
-                                      //Get.to(
-                                      //  () => const OwnerStoresListScreen(),
-                                      //  arguments: {
-                                      //    "firstName":
-                                      //        homeController.firstName!.value,
-                                      //    "lastName":
-                                      //         homeController.lastName!.value,
-                                      //  },
-                                      //);
-                                    }
+                                      if (roleApp.value ==
+                                          Role.customerRoleText ) {
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const SearchStoreUserScreen(),
+                                        // ));
+                                        Get.parameters["firstName"] =
+                                            homeController.firstName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.parameters["lastName"] =
+                                            homeController.lastName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.to(() =>
+                                          const SearchStoreUserScreen(),
+                                          id:pageIdApp.value,
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      } else {
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //   builder: (_) =>
+                                        //       const OwnerStoresListScreen(),
+                                        // ));
+                                        Get.parameters["firstName"] =
+                                            homeController.firstName?.value
+                                                .toString() ??
+                                                "";
+                                        Get.parameters["lastName"] =
+                                            homeController.lastName?.value
+                                                .toString() ??
+                                                "";
+
+                                        Get.to(() => const OwnerStoresListScreen(),
+                                          id:pageIdApp.value,
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      }
+
                                   },
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.fromLTRB(
@@ -311,19 +321,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               : RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    if (SharedPreferenceStorage.getData(
-                                            Role.role.value) ==
-                                        Role.customerRoleText) {
-                                      Get.to(
-                                        const SearchStoreUserScreen(),
-                                        arguments: {
-                                          "firstName":
-                                              homeController.firstName!.value,
-                                          "lastName":
-                                              homeController.lastName!.value,
-                                        },
-                                      );
-                                    }
+
+                                      if (roleApp.value ==
+                                          Role.customerRoleText) {
+                                        Get.to(() =>
+                                          const SearchStoreUserScreen(),
+                                          arguments: {
+                                            "firstName":
+                                            homeController.firstName!.value,
+                                            "lastName":
+                                            homeController.lastName!.value,
+                                          },
+                                        );
+                                      }
+
+
                                   },
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.fromLTRB(
@@ -365,12 +377,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                // Get.to(const TransactionScreen());
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const TransactionScreen(),
-                                ));
+
+                                  Get.to(() =>const TransactionScreen(),
+                                      id:pageIdApp.value );
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) => const TransactionScreen(),
+                                  // ));
+
+
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -387,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                SharedPreferenceStorage.setData(
+                                  /* SharedPreferenceStorage.setData(
                                     "context", context);
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(
@@ -397,11 +413,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   homeController.isLoading?.value =true;
                                   homeController.onInit();
                                   homeController.update();
-                                });
-                                Get.parameters["isFromCart"] = "false";
-                                // Get.arguments["isFromCart"]=false;
-                                // Get.to(const AccountScreen(),
-                                //     arguments: {"isFromCart": false});
+                                });*/
+                                  Get.parameters["isFromCart"] = "false";
+                                  Get.to(() => const AccountScreen(),id:
+                                  homeController.pageId.value,
+                                      arguments: {"isFromCart": false})?.then((value) {
+                                    homeController.isLoading?.value =true;
+                                    homeController.apiGetUserDetail();
+                                    homeController.getCurrentLocation();
+                                    homeController.getPage();
+                                  });
+
+
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -430,7 +453,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Obx(() => homeController.role!.value == Role.customerRoleText
+              Obx(() => roleApp.value == Role.customerRoleText
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -478,23 +501,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   items: homeController.userCarouselImgList
                                       .take(5)
                                       .map((item) => InkWell(
-                                            onTap: () {
+                                            onTap: () async{
                                               if(homeController.isLoading?.value == false){
-                                                Get.parameters["storeId"] =
-                                                    item.storeId ?? "";
+                                            // SharedPreferenceStorage.setData(
+                                            //     "context", context);
+                                            // Navigator.of(context)
+                                            //     .push(MaterialPageRoute(
+                                            //   builder: (_) =>
+                                            //       const StoreHomeMainScreen(),
+                                            // ));
 
-                                                Get.parameters["offerId"] =
-                                                    item.offerId ?? "";
-                                                SharedPreferenceStorage.setData(
-                                                    "context", context);
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                  const StoreHomeMainScreen(),
-                                                ));
+                                            await Get.to(() =>const StoreHomeMainScreen(),
+                                            id:pageIdApp.value);
+                                            Get.parameters["storeId"] =
+                                            item.storeId ?? "";
 
-                                              }
-
+                                            }
                                             },
                                             child: Center(
                                                 child: ClipRRect(
@@ -615,33 +637,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .map((item) => InkWell(
                                           onTap: () {
                                             if(homeController.isLoading?.value == false){
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                const ManageStoreMainScreen(),
-                                              ));
-                                              Get.parameters["isFromHome"] =
-                                              "true";
-                                              Get.parameters["storeId"] =
-                                                  item.store!.storeId ?? "";
-                                              print(Get.parameters["isFromHome"]);
-                                              print(item.store!.storeId ?? "");
-                                              // Get.to(
-                                              //     () =>
-                                              //         const ManageStoreMainScreen(),
-                                              //     arguments: {
-                                              //       "isFromHome": true,
-                                              //       "storeId":
-                                              //           item.store?.storeId ?? "",
-                                              //     });
-                                            }
+                                              // SharedPreferenceStorage.setData(
+                                            //     "context", context);
+                                            // Navigator.of(context)
+                                            //     .push(MaterialPageRoute(
+                                            //   builder: (_) =>
+                                            //       const ManageStoreMainScreen(),
+                                            // ));
+                                            Get.parameters["isFromHome"] =
+                                                "true";
+                                            Get.parameters["storeId"] =
+                                                item.store!.storeId ?? "";
+                                            Get.to(() =>
+                                                    const ManageStoreMainScreen(),
+                                                id:pageIdApp.value ,
+                                                  arguments: {
+                                                  "isFromHome": true,
+                                                  "storeId":
+                                                      item.store?.storeId ?? "",
+                                                });}
                                             // Get.parameters["offerId"] =
                                             //     item.offerId ?? "";
                                             // Get.parameters["storeId"] =
                                             //     item.store!.storeId ?? "";
-
                                           },
                                           child: Center(
                                               child: ClipRRect(
@@ -713,7 +731,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )),
               height5SizedBox,
               Obx(
-                () => homeController.role!.value == Role.customerRoleText
+                () => roleApp.value == Role.customerRoleText
                     ? homeController.featuredUserProductList.isEmpty
                         ? height0SizedBox
                         : Text(
@@ -735,7 +753,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               height12SizedBox,
               Obx(
-                () => homeController.role!.value == Role.customerRoleText
+                () => roleApp.value == Role.customerRoleText
                     ? homeController.featuredUserProductList.isEmpty
                         ? height0SizedBox
                         : SizedBox(
@@ -767,26 +785,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .featuredUserProductList[index]
                                         .storeId ??
                                         "";
-                                    SharedPreferenceStorage.setData("context", context);
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => const AddToOrderScreen(),
-                                    ));
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) => const AddToOrderScreen(),
+                                  // ));
 
-
-                                    // Get.to(() => const AddToOrderScreen(),
-                                    //      arguments: {
-                                    //        "isFromHome": true,
-                                    //        "productId": homeController
-                                    //                .featuredUserProductList[index]
-                                    //                .productId ??
-                                    //            "",
-                                    //        "storeId": homeController
-                                    //                .featuredUserProductList[index]
-                                    //                .storeId ??
-                                    //            "",
-                                    //      });
-                                  }
-
+                                    Get.to(() =>const AddToOrderScreen(),
+                                      id:pageIdApp.value,
+                                       arguments: {
+                                         "isFromHome": true,
+                                         "productId": homeController
+                                                 .featuredUserProductList[index]
+                                                 .productId ??
+                                             "",
+                                         "storeId": homeController
+                                                 .featuredUserProductList[index]
+                                                 .storeId ??
+                                             "",
+                                       });}
                                 },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -878,8 +895,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   InkWell(
                                 onTap: () {
                                   if(homeController.isLoading?.value == false){
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
+                                    // SharedPreferenceStorage.setData(
+                                    //     "context", context);
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["storeId"] = homeController
                                         .ownerFeatureProductList[index].storeId;
@@ -887,18 +904,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .ownerFeatureProductList[index].productId;
                                     Get.parameters["categoryName"] = homeController
                                         .ownerFeatureProductList[index].productCategories?.first.category?.categoryName??"";
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) =>
-                                      const EditProductScreen(),
-                                    ));
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //   builder: (_) =>
+                                    //   const EditProductScreen(),
+                                    // ));
 
-                                    /* Get.to(const EditStoreDetailScreen(),
-                                      arguments: {
+                                     Get.to(() =>const EditProductScreen(),
+                                       id:pageIdApp.value,
+                                       arguments: {
                                         "isFromHome": true,
                                         'storeId': homeController
                                             .ownerFeatureProductList[index]
                                             .storeId
-                                      });*/
+                                      });
                                   }
 
                                 },

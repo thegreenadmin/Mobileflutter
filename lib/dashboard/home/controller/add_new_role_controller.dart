@@ -7,11 +7,13 @@ import 'package:thegreenmall/dashboard/home/model/get_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/constants.dart' as strings;
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+
+import '../../../utils/global_share_data.dart';
 
 class AddNewRoleController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -22,6 +24,7 @@ class AddNewRoleController extends GetxController {
   RxString storeName = "".obs;
   RxString roleId = "".obs;
   RxInt controllerId = 0.obs;
+  RxInt pageId = 0.obs;
   RxBool checkBoxValue = false.obs;
   RxBool isLoading = false.obs;
 
@@ -45,13 +48,27 @@ class AddNewRoleController extends GetxController {
   late DeleteRoleRequestModel deleteRoleRequestModel = DeleteRoleRequestModel();
   late CreateRoleRequestModel createRoleRequestModel = CreateRoleRequestModel();
 
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
+
   @override
   void onInit() {
     super.onInit();
+
+    getPage();
+  }
+
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(strings.Role.role);
+    role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
-    apiGetControllers();
-    apiGetStoreRole();
+    await apiGetControllers();
+    await  apiGetStoreRole();
   }
 
   bool validateAndSave() {
@@ -69,7 +86,7 @@ class AddNewRoleController extends GetxController {
       try {
         if (controllerIdsList.isEmpty) {
           Utility.showAlertMessage(
-              AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+              strings.AlertStringConstants.pleaseSelectAtleastOnePermissionText);
           // Utility.showToast(
           //     AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
@@ -106,9 +123,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -126,9 +144,7 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+       await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -150,10 +166,11 @@ class AddNewRoleController extends GetxController {
           controllerId: int.parse(controllerIdsList[i]['controller_id'])));
     }
     createRoleRequestModel.permissions = permissionsList;
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("CREATE ROLE BODY********** ${createRoleRequestModel.toJson()}");
     debugPrint(
@@ -170,13 +187,11 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-        Navigator.of(cntext).pop();
+         Get.back(id:pageIdApp.value );
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(cntext).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -191,9 +206,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -216,9 +232,7 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+       await Get.offAll(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -232,10 +246,11 @@ class AddNewRoleController extends GetxController {
   Future apiDeleteRole(BuildContext buildContext) async {
     debugPrint(
         "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     deleteRoleRequestModel.storeId = int.parse(storeId.value);
     deleteRoleRequestModel.roleId = int.parse(roleId.value);
@@ -260,9 +275,10 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(buildContext).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        // Navigator.of(buildContext).pushReplacement(MaterialPageRoute(
+        //   builder: (_) => const StartJourneyScreen(),
+        // ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -277,9 +293,10 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -317,9 +334,7 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+       await Get.offAll(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {
@@ -353,10 +368,11 @@ class AddNewRoleController extends GetxController {
       "role_name": roleNameTextController.text.trim(),
       "permissions": selectedRoles
     };
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("EDIT ROLE BODY********** $data");
     debugPrint(
@@ -373,13 +389,12 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-        Navigator.of(ctx).pop();
+         Get.back(id:pageIdApp.value );
+                                  // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if (value.body['message']!=null) {

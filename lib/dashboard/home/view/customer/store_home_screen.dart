@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -243,17 +244,18 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     await storeHomeMainController
                                         .apiGetShopProductDetailApi();
                                     await storeHomeMainController
-                                        .apiGetCartListApi(context);
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
+                                        .apiGetCartListApi();
+                                    // SharedPreferenceStorage.setData(
+                                    //     "context", context);
                                     Get.parameters['isFromFav'] = "false";
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["isFromMenu"] = "false";
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) => const AddToOrderScreen(),
-                                    ));
-                                    // Get.to(const AddToOrderScreen());
+                                    // Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (_) => const AddToOrderScreen(),
+                                    // ));
+                                    await Get.to(const AddToOrderScreen(),
+                                        id:pageIdApp.value);
                                   },
                                   child: Container(
                                     height: 150,

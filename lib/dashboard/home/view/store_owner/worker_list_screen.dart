@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_scre
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_worker_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -55,8 +56,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                // Get.back();
+                               Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -111,11 +112,12 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      SharedPreferenceStorage.setData("context", context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const AddNewWorkerScreen(),
-                      ));
-                      // Get.to(const AddNewWorkerScreen());
+                      // SharedPreferenceStorage.setData("context", context);
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //   builder: (_) => const AddNewWorkerScreen(),
+                      // ));
+                      Get.to(const AddNewWorkerScreen(),
+                          id:pageIdApp.value );
                     },
                     child: Row(
                       children: [
@@ -222,12 +224,13 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const EditWorkerScreen(),
-                                ));
-                                // Get.to(() => const EditWorkerScreen());
+                                // SharedPreferenceStorage.setData(
+                                //     "context", context);
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (_) => const EditWorkerScreen(),
+                                // ));
+                                Get.to(() => const EditWorkerScreen(),
+                                    id:pageIdApp.value );
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

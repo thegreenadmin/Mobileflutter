@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_offer_detail_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class StoreOfferDetailScreen extends StatefulWidget {
   const StoreOfferDetailScreen({super.key});
 
@@ -46,8 +47,8 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              // Get.back();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

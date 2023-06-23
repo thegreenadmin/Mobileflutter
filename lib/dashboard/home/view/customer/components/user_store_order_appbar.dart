@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -71,8 +72,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                Get.delete<StoreHomeMainController>();
+                               Get.back(id:pageIdApp.value);
+                               Get.delete<StoreHomeMainController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -101,7 +102,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
+                                          const Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
@@ -111,20 +112,21 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                           Row(
                                             children: [
                                               InkWell(
-                                                onTap: () {
+                                                onTap: () async{
                                                   storeHomeMainController
                                                       .apiGetUserWalletBalance();
-                                                  SharedPreferenceStorage
-                                                      .setData(
-                                                          "context", context);
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const CartScreen(),
-                                                  )).then((value) =>
+                                                  // SharedPreferenceStorage
+                                                  //     .setData(
+                                                  //         "context", context);
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //   builder: (_) =>
+                                                  //       const CartScreen(),
+                                                  // ))
+                                                  await Get.to(const CartScreen(),
+                                                      id:pageIdApp.value)?.then((value) =>
                                                       storeHomeMainController
-                                                          .apiActiveCartApi(
-                                                          context));
+                                                          .apiActiveCartApi());
                                                 },
                                                 child: Stack(
                                                   children: [

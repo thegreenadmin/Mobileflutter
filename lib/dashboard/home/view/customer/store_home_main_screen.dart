@@ -67,8 +67,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       }
 
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiGetCartListApi(Get.context);
-      storeHomeMainController.apiActiveCartApi(Get.context);
+      storeHomeMainController.apiGetCartListApi();
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -175,8 +175,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PreviousOrdersScreen extends StatefulWidget {
@@ -36,8 +37,9 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              // Get.back();
-                              Navigator.of(context).pop(context);
+                              Get.back(id:pageIdApp.value);
+
+                              // Navigator.of(context).pop(context);
                             },
                             icon: const Icon(
                               Icons.arrow_back,

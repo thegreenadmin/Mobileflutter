@@ -9,11 +9,12 @@ import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
 import "package:google_maps_webservice/geocoding.dart";
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import '../../../../utils/utility.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          Navigator.pop(context);
+          Get.back(id:pageIdApp.value);
           return false;
         },
         child: Scaffold(
@@ -54,7 +55,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
                                       // Get.back();
-                                      Navigator.of(context).pop();
+                                     Get.back(id:pageIdApp.value);
+                                     // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,

@@ -12,6 +12,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -56,6 +57,7 @@ class SearchStoreUserController extends GetxController {
   var kGoogleApiKey = "";
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
+  RxString? role = "".obs;
   RxString openingTime = "".obs;
   RxString closingTime = "".obs;
   RxString placeId = "".obs;
@@ -67,6 +69,8 @@ class SearchStoreUserController extends GetxController {
   RxString userAddressId = "0".obs;
   RxInt page = 1.obs;
   RxInt initialIndex = 0.obs;
+
+  RxInt pageId = 0.obs;
   RxString storeId = "".obs;
 
   RxBool isLoading = false.obs;
@@ -93,11 +97,11 @@ class SearchStoreUserController extends GetxController {
     Categories(id: 3, name: "Curb side", isSelected: false),
   ].obs;
 
-  void setupScrollController(context) {
+  void setupScrollController() {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
         }
       }
     });
@@ -106,28 +110,30 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
     searchController.clear();
     page.value = 1;
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText);
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText);
-    // nearby.Store store = nearby.Store();
-    // store.storeId = storeId.value;
-    // storeAddress.value.store = store;
-    setupScrollController(Get.context);
-    apiActiveCartApi(Get.context);
+    setupScrollController();
+    apiActiveCartApi();
   }
-
   //Get Active Cart Api
-  Future apiActiveCartApi(context) async {
+  Future apiActiveCartApi() async {
     isLoading.value = true;
     debugPrint(
         "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -154,8 +160,7 @@ class SearchStoreUserController extends GetxController {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi(context,
-              storeId: activeCartModel.data!.storeId.toString());
+          await apiGetCartListApi(storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
@@ -170,14 +175,15 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Cart List Api
-  Future apiGetCartListApi(context, {String storeId = ""}) async {
+  Future apiGetCartListApi( {String storeId = ""}) async {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -223,10 +229,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -351,7 +358,8 @@ class SearchStoreUserController extends GetxController {
                     //     AlertStringConstants.pleaseEnterEinText);
                     // } else {
                     // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                     validateAndSubmit(context, storeId: storeId);
                     // apiClaimStore(storeId: storeId);
                     // }
@@ -384,8 +392,7 @@ class SearchStoreUserController extends GetxController {
   }
 
   //Get Nearby Stores Api
-  Future apiGetNearByStores(
-    context, {
+  Future apiGetNearByStores({
     bool isFilter = false,
     bool isSearch = false,
   }) async {
@@ -401,10 +408,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
     debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {
@@ -482,7 +490,8 @@ class SearchStoreUserController extends GetxController {
             element.isSelected= false;
           }
 
-          Navigator.of(context).pop();
+          Get.back(id:pageIdApp.value );
+                                  // Navigator.of(context).pop();
         }
         if (isSearch) {
           zipCodeTextController.clear();
@@ -496,9 +505,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value=false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value=false;
@@ -521,10 +528,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = previousStore.isNotEmpty ? true : false;
     debugPrint("GET GET PREVIOUS STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -560,9 +568,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value= false;
@@ -584,10 +590,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = favouriteStore.isNotEmpty ? true : false;
     debugPrint("GET GET FAVOURITE STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -625,9 +632,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value= false;
@@ -643,10 +648,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value =  true ;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -674,7 +680,7 @@ class SearchStoreUserController extends GetxController {
           debugPrint("Create Favourite Store *******${type.value}");
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
           // for (var element in storeAddresses) {
           //   if (element.store?.storeId == id) {
           //     debugPrint("Create before isFavouriteStore*******${element.store?.isFavouriteStore}");
@@ -700,9 +706,7 @@ class SearchStoreUserController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -717,10 +721,11 @@ class SearchStoreUserController extends GetxController {
     isLoading.value =  true ;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -747,7 +752,7 @@ class SearchStoreUserController extends GetxController {
         } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
-          apiGetNearByStores(Get.context!);
+          apiGetNearByStores();
           // for (var element in storeAddresses) {
           //   if (element.store?.storeId == id) {
           //     element.store?.isFavouriteStore = false;
@@ -768,9 +773,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -805,13 +808,14 @@ class SearchStoreUserController extends GetxController {
 
   apiClaimStore({
     String storeId = "",
-  }) {
+  }) async{
     debugPrint("CLAIM STORE API URL **********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().claimStoreRequest}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId),
@@ -837,9 +841,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){

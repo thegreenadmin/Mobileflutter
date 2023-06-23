@@ -7,8 +7,9 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import '../../../utils/global_share_data.dart';
 import '../view/component/order_status_enum.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class MarkReturnOrderScreen extends StatefulWidget {
   const MarkReturnOrderScreen({super.key});
 
@@ -41,8 +42,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -237,7 +238,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                               alignment: Alignment.topRight,
                                               child: InkWell(
                                                 onTap: () {
-                                                  Navigator.pop(_);
+                                                  Get.back();
+                                                  // Navigator.pop(_);
                                                 },
                                                 child: const Icon(
                                                   Icons.clear,

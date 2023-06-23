@@ -12,6 +12,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
 
@@ -21,6 +23,7 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
+  var roleVal ="";
 
   /*@override
   initState() {
@@ -31,12 +34,12 @@ class _WalletScreenState extends State<WalletScreen> {
     walletController.lastName?.value =
         SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
     walletController.role?.value =
-        SharedPreferenceStorage.getData(Role.role.value);
+        SharedPreferenceStorage.getData(Role.role);
     debugPrint("SharedPreferenceStorage");
     debugPrint(SharedPreferenceStorage.getData(StringConstants.firstNameText));
     debugPrint(SharedPreferenceStorage.getData(StringConstants.lastNameText));
-    debugPrint(SharedPreferenceStorage.getData(Role.role.value));
-    if (SharedPreferenceStorage.getData(Role.role.value) ==
+    debugPrint(SharedPreferenceStorage.getData(Role.role));
+    if (SharedPreferenceStorage.getData(Role.role) ==
         Role.customerRoleText) {
       walletController.isFromCartScreen.value =
           Get.parameters["isFromCartScreen"] == "true" ? true : false;
@@ -77,7 +80,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                           ? InkWell(
                                               onTap: () {
                                                 // Get.back();
-                                                Navigator.of(context).pop();
+                                               Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                               },
                                               child: const Icon(
                                                 Icons.arrow_back,
@@ -126,8 +130,8 @@ class _WalletScreenState extends State<WalletScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Obx(
-              () => walletController.role!.value == Role.customerRoleText
+                Obx(() =>
+                roleApp.value == Role.customerRoleText
                   ? height0SizedBox
                   : walletController.storeList.isEmpty
                       ? walletController.isStoresLoading.value
@@ -274,7 +278,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() => walletController.role!.value ==
+                    Obx(() => roleApp.value ==
                             Role.customerRoleText
                         ? Column(
                             children: [
@@ -303,14 +307,16 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
+                                 /* SharedPreferenceStorage.setData(
                                       "context", context);
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
                                         builder: (_) =>
                                             const AddMoneyToWallet(),
-                                      ))
-                                      // Get.to(const AddMoneyToWallet())!
+                                      ))*/
+                                  debugPrint("AddMoneyToWallet .pageId.value :------ ${walletController.pageId.value }");
+                                      Get.to(() => const AddMoneyToWallet(),
+                                        id:pageIdApp.value ,)!
                                       .then((value) => walletController
                                           .apiGetUserWalletBalance());
                                 },
@@ -362,11 +368,14 @@ class _WalletScreenState extends State<WalletScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      SharedPreferenceStorage.setData("context", context);
+                      /*SharedPreferenceStorage.setData("context", context);
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const ManageWalletScreen(),
-                      ));
-                      // Get.to(const ManageWalletScreen());
+                      ));*/
+                      debugPrint("ManageWalletScreen .pageId.value :------ ${walletController.pageId.value }");
+
+                      Get.to(() => const ManageWalletScreen(),
+                        id:pageIdApp.value,);
                     },
                     child: Column(
                       children: [
@@ -385,7 +394,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     ),
                   ),
                 ),
-                // SharedPreferenceStorage.getData(Role.role.value) ==
+                // SharedPreferenceStorage.getData(Role.role) ==
                 //         Role.customerRoleText
                 //     ? Container(
                 //         color: AppColors.grey,
@@ -393,7 +402,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 //         height: 40,
                 //       )
                 //     : height0SizedBox,
-                // SharedPreferenceStorage.getData(Role.role.value) ==
+                // SharedPreferenceStorage.getData(Role.role) ==
                 //         Role.customerRoleText
                 //     ? Expanded(
                 //         flex: 4,
@@ -417,11 +426,11 @@ class _WalletScreenState extends State<WalletScreen> {
               ],
             ),
             height30SizedBox,
-            Obx(() => walletController.role!.value == Role.customerRoleText
+            Obx(() => roleApp.value == Role.customerRoleText
                 ? height0SizedBox
                 : Column(
                     children: [
-                      Row(
+                      const Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

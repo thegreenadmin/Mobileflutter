@@ -5,6 +5,8 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class OfferProductScreen extends StatefulWidget {
   const OfferProductScreen({super.key});
 
@@ -35,8 +37,8 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                  // Navigator.of(context).pop();
+                                  Get.back(id:pageIdApp.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

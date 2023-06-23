@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -174,8 +175,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -267,13 +268,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? FontWeight.w600
                                         : FontWeight.w400,
                                     color: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
                                   ),
@@ -281,8 +280,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 Icon(
                                   Icons.arrow_drop_down,
                                   color: storeHomeMainController
-                                              .selectedIndex.value ==
-                                          i
+                                              .selectedIndex.value == i
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   size: 24,
@@ -504,23 +502,24 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                           .toString();
                                                    storeHomeMainController
                                                       .apiGetShopProductDetailApi();
-                                                   storeHomeMainController
-                                                      .apiGetCartListApi(
-                                                          context);
-                                                  SharedPreferenceStorage
-                                                      .setData("context", context);
+                                                  await storeHomeMainController
+                                                      .apiGetCartListApi();
+                                                  // SharedPreferenceStorage
+                                                  //     .setData(
+                                                  //         "context", context);
                                                   Get.parameters['isFromFav'] =
                                                       "false";
                                                   Get.parameters["isFromHome"] =
                                                       "false";
                                                   Get.parameters['isFromMenu'] =
                                                       "true";
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const AddToOrderScreen(),
-                                                  ));
-                                                  // Get.to(const AddToOrderScreen());
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //   builder: (_) =>
+                                                  //       const AddToOrderScreen(),
+                                                  // ));
+                                                  await Get.to(const AddToOrderScreen(),
+                                                      id:pageIdApp.value);
                                                 },
                                                 child: Column(
                                                   crossAxisAlignment:
@@ -751,8 +750,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 "0",
                         orderBy: "2",
                         orderType: "2");
-                    Navigator.of(contx).pop();
-                    // Get.back();
+                    // Navigator.of(contx).pop();
+                    Get.back(id:pageIdApp.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,8 +782,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     storeHomeMainController.category.value.categoryId ?? "0",
                 orderBy: "2",
               );
-              Navigator.of(contx).pop();
-              // Get.back();
+              // Navigator.of(contx).pop();
+              Get.back(id:pageIdApp.value);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

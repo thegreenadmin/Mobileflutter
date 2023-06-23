@@ -19,6 +19,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -53,6 +54,7 @@ class OrdersController extends GetxController {
   RxString orderDate = "".obs;
   RxInt page = 1.obs;
   RxInt uerSelectedTab = 0.obs;
+  RxInt pageId = 0.obs;
   RxInt totalCount = 1.obs;
   RxInt pageStore = 1.obs;
   RxInt? addressListIndex = 0.obs;
@@ -90,49 +92,56 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    if ( Get.parameters['isFromNotification'] != "false") {
-      isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
-    }
-    if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if ( Get.parameters['isFromNotification'] != "false") {
+        isFromNotification.value =
+        Get.parameters["isFromNotification"] == "true" ? true : false;
+      }
+      if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
         storeId.value = Get.parameters["storeId"] ?? "";
+        if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+          storeId.value = Get.parameters["storeId"] ?? "";
+          apiGetStoreDetailsApi();
+        }
         apiGetStoreDetailsApi();
       }
-      apiGetStoreDetailsApi();
-    }
 
-    if (Get.parameters["orderStatus"] != null) {
-      orderStatus.value = Get.parameters["orderStatus"] ?? "";
-    }
-    if (Get.parameters["isHome"] != null) {
-      isHome.value = Get.parameters["isHome"] == "true" ? true : false;
-    }
-
-    isActiveOrders.value = true;
-    orderStatusId.value = 2;
-    orderStatusName.value = OrderStatus.receivedOrder.statusName;
-    role!.value = SharedPreferenceStorage.getData(Role.role.value);
-    if (role!.value == Role.customerRoleText) {
-      page.value = 1;
-      apiGetOrderListApi();
-      if (orderStatus.value != "") {
-        apiGetOrderDetailsApi();
+      if (Get.parameters["orderStatus"] != null) {
+        orderStatus.value = Get.parameters["orderStatus"] ?? "";
       }
-    } else {
-      apiGetStoreList();
-      page.value = 1;
-      apiGetStoreOrderListApi();
-    }
+      if (Get.parameters["isHome"] != null) {
+        isHome.value = Get.parameters["isHome"] == "true" ? true : false;
+      }
 
-    apiGetOrderStatusListApi();
-    setupScrollController();
+      isActiveOrders.value = true;
+      orderStatusId.value = 2;
+      orderStatusName.value = OrderStatus.receivedOrder.statusName;
+      role!.value = SharedPreferenceStorage.getData(Role.role).toString();
+      if (role!.value == Role.customerRoleText) {
+        page.value = 1;
+        apiGetOrderListApi();
+        if (orderStatus.value != "") {
+          apiGetOrderDetailsApi();
+        }
+      } else {
+        apiGetStoreList();
+        page.value = 1;
+        apiGetStoreOrderListApi();
+      }
+
+      apiGetOrderStatusListApi();
+      getPage();
+      setupScrollController();
+    });
+
     super.onInit();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
   }
 
   final scrollController = ScrollController();
@@ -202,8 +211,7 @@ class OrdersController extends GetxController {
                               onTap: () {
                                 reviewController.clear();
                                 ratingValue.value = 0.0;
-                                Navigator.of(Get.context!).pop();
-                                // Get.back();
+                                 Get.back(id:pageIdApp.value );
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -316,8 +324,9 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          Navigator.pop(ctxX);
-                          apiCreateReview(ctx);
+                           Get.back(id:pageIdApp.value );
+                          // Navigator.pop(ctxX);
+                          apiCreateReview();
                         },
                         height: 50,
                         text: StringConstants.submitText,
@@ -374,8 +383,8 @@ class OrdersController extends GetxController {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                Navigator.of(ctxx).pop();
-                                // Get.back();
+                                 Get.back(id:pageIdApp.value );
+                                // Navigator.of(ctxx).pop();
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -618,14 +627,15 @@ class OrdersController extends GetxController {
   }
 
   //CREATE ITEM REVIEW
-  Future apiCreateReview(BuildContext ctx) async {
+  Future apiCreateReview() async {
     isLoading.value = true;
     debugPrint("CREATE ITEM REVIEW URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -651,16 +661,15 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
-        // Navigator.of(ctx).pop();
+        //  Get.back(id:pageIdApp.value );
+                                  // Navigator.of(ctx).pop();
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+          await Get.offAll(const StartJourneyScreen(),
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -674,10 +683,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("RETURN ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -708,15 +718,16 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
         apiGetOrderDetailsApi();
-        Navigator.of(ctx).pop();
-        Navigator.of(ctx).pop();
+         Get.back(id:pageIdApp.value );
+                                  // Navigator.of(ctx).pop();
+         Get.back(id:pageIdApp.value );
+                                  // Navigator.of(ctx).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+          await Get.offAll(const StartJourneyScreen(),
+              id:pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -731,10 +742,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .getWithHeadersApi(
@@ -752,9 +764,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -776,10 +786,11 @@ class OrdersController extends GetxController {
     debugPrint("role List URL**********${role!.value}");
     debugPrint("Order List URL****${page.value}******"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     Map<String, dynamic> data = {
       "store_id": null,
@@ -862,9 +873,7 @@ class OrdersController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -884,10 +893,11 @@ class OrdersController extends GetxController {
     isLoading.value = storeOrderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -939,9 +949,7 @@ class OrdersController extends GetxController {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -956,10 +964,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -981,9 +990,7 @@ class OrdersController extends GetxController {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -998,10 +1005,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+      "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1021,9 +1029,7 @@ class OrdersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message']!=null) {
@@ -1038,10 +1044,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}");
-    Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-    };
+    var token = await SharedPreferenceStorage.getData('token');
+      Map<String, String> headers = {
+        'Authorization':
+        "Bearer ${token.toString()}",
+      };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -1103,9 +1110,7 @@ class OrdersController extends GetxController {
       else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -1120,10 +1125,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1149,22 +1155,21 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        // Navigator.of(context).pop();
-        BuildContext rContext = SharedPreferenceStorage.getData(
-          "context",
-        );
-        print(rContext);
-        Navigator.of(rContext).popUntil((route) => route.isFirst);
+        // Get.back(id:pageIdApp.value );
+                                  // Navigator.of(context).pop();
+        // BuildContext rContext = SharedPreferenceStorage.getData(
+        //   "context",
+        // );
+        Get.until((route) => route.isFirst,id:pageIdApp.value);
+        // Navigator.of(rContext).popUntil((route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+          await Get.offAll(const StartJourneyScreen(),
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1178,10 +1183,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Cancel Return Request URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1208,19 +1214,16 @@ class OrdersController extends GetxController {
         page.value = 1;
         orderList.clear();
         apiGetOrderListApi();
-        BuildContext rContext = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(rContext).popUntil((route) => route.isFirst);
-        // Get.back();
-        // Get.offAll(BottomNavigation());
+        // BuildContext rContext = SharedPreferenceStorage.getData(
+        //   "context",
+        // );
+        // Navigator.of(rContext).popUntil((route) => route.isFirst);
+        Get.until((route) => route.isFirst,id:pageIdApp.value );
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+          await Get.offAll(const StartJourneyScreen(),
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1234,10 +1237,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Ready Pickup URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().readyPickup}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1265,10 +1269,8 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+          await Get.offAll(const StartJourneyScreen(),
+              id:pageIdApp.value);
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -1282,10 +1284,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1309,9 +1312,7 @@ class OrdersController extends GetxController {
 
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
@@ -1326,10 +1327,11 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1353,9 +1355,7 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
+        await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){

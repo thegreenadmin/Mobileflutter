@@ -10,11 +10,12 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
-// import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import "package:google_maps_webservice/geocoding.dart";
 
 import '../../../../utils/utility.dart';
@@ -49,7 +50,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                               Get.delete<AddNewStoreController>();
                             },
                             icon: const Icon(

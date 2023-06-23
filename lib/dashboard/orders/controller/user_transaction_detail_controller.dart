@@ -13,12 +13,15 @@ class UserTransactionDetailController extends GetxController {
   RxString? storeId = "".obs;
   RxString? userStripeCardId = "".obs;
   RxInt selectedIndex = 0.obs;
+  RxInt pageId = 0.obs;
   RxString? orderId = "".obs;
   RxString? customerName = "".obs;
   RxString? orderDate = "".obs;
   RxString? orderAmount = "".obs;
   RxString? storeName = "".obs;
   RxString? storeImage = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -26,8 +29,15 @@ class UserTransactionDetailController extends GetxController {
     userStripeCardId!.value = Get.parameters['user_stripe_card_id'] ?? "";
     // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
     apiGetUserOrderTransactionHistory();
+    getPage();
   }
-
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
+  }
   RxList horizontalTabList = [
     StringConstants.janText,
     StringConstants.febText,
@@ -50,10 +60,11 @@ class UserTransactionDetailController extends GetxController {
     debugPrint("USER TRANSACTION DETAIL URL **********");
     debugPrint(
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionDetail}?user_wallet_transaction_id=${userStripeCardId!.value}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -76,9 +87,6 @@ class UserTransactionDetailController extends GetxController {
             secFormat: '',
           ).toString();
 
-          print(orderId!.value);
-          print(orderAmount!.value);
-          print(orderDate!.value);
         } else if (value.body["data"]["transaction"]['order_transaction'] !=
             null) {
           orderId!.value = value.body["data"]["transaction"]

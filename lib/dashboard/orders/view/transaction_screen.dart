@@ -7,6 +7,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
 
@@ -42,7 +44,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     transactionController.isCurrentMonthSelected.value =
                         !transactionController.isCurrentMonthSelected.value;
                   }
-                  transactionController.role!.value == Role.customerRoleText
+                  roleApp.value == Role.customerRoleText
                       ? transactionController
                           .apiGetUserOrderTransactionHistory()
                       : transactionController
@@ -84,7 +86,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         !transactionController.isCurrentMonthSelected.value;
                   }
 
-                  transactionController.role!.value == Role.customerRoleText
+                  roleApp.value == Role.customerRoleText
                       ? transactionController
                           .apiGetUserOrderTransactionHistory()
                       : transactionController
@@ -205,8 +207,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  // Get.back();
+                                 // Navigator.of(context).pop();
+                                  Get.back(id:pageIdApp.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -243,7 +245,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   ? height0SizedBox
                   : horizontalMonthsTab(),
             ),
-            Obx(() => transactionController.role!.value == Role.customerRoleText
+            Obx(() => roleApp.value == Role.customerRoleText
                 ? Expanded(
                     child: transactionController.userTransactionList!.isEmpty
                         ? transactionController.isLoading.value == true

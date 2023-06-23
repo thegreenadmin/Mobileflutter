@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_role_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_role_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -40,8 +41,8 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              // Get.back();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -97,12 +98,13 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                 .isSelected = false;
                           }
                         }
-                        SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                              builder: (_) => const AddNewRoleScreen(),
-                            ))
-                            // Get.to(const AddNewRoleScreen())!
+                        // SharedPreferenceStorage.setData("context", context);
+                        // Navigator.of(context)
+                        //     .push(MaterialPageRoute(
+                        //       builder: (_) => const AddNewRoleScreen(),
+                        //     ))
+                            Get.to(const AddNewRoleScreen(),
+                                id:pageIdApp.value )!
                             .then((value) =>
                                 addNewRoleController.apiGetStoreRole());
                       },
@@ -217,14 +219,15 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                 .toString();
                                         await addNewRoleController
                                             .apiGetStoreRoleDetail();
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        await Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                              builder: (_) =>
-                                                  const EditRoleScreen(),
-                                            ))
-                                            // Get.to(const EditRoleScreen())!
+                                        // SharedPreferenceStorage.setData(
+                                        //     "context", context);
+                                        // await Navigator.of(context)
+                                        //     .push(MaterialPageRoute(
+                                        //       builder: (_) =>
+                                        //           const EditRoleScreen(),
+                                        //     ))
+                                            Get.to(const EditRoleScreen(),
+                                                id:pageIdApp.value )!
                                             .then((value) =>
                                                 addNewRoleController
                                                     .apiGetStoreRole());

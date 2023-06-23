@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
@@ -18,6 +19,8 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:thegreenmall/utils/utility.dart';
+
+import '../../../../utils/global_share_data.dart';
 
 enum _SupportState {
   unknown,
@@ -93,7 +96,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        Get.back(id:pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -116,8 +119,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    // Get.back();
-                                    Navigator.of(context).pop();
+                                    Get.back(id:pageIdApp.value);
+                                    //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -199,53 +203,41 @@ class _AccountScreenState extends State<AccountScreen> {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () async {
-                            if (SharedPreferenceStorage.getData(Role.role.value)
-                                    .toString() ==
-                                Role.customerRoleText) {
-                              SharedPreferenceStorage.setData(
-                                  Role.role.value, Role.storeOwnerRoleText);
-                              setState(() {});
-                              Get.parameters[Role.role.value] =
-                                  Role.storeOwnerRoleText;
+                            if (roleApp.value == Role.customerRoleText) {
+                               SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
+                               accountController.roleId?.value = Role.storeOwnerRoleText;
+                              Get.parameters[Role.role] = Role.storeOwnerRoleText;
+                               roleApp.value = Role.storeOwnerRoleText;
+                              Get.until((route) => route.isFirst,id:pageIdApp.value);
 
-                              Future.delayed(const Duration(milliseconds: 200),
-                                  () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              });
                             } else {
-                              SharedPreferenceStorage.setData(
-                                  Role.role.value, Role.customerRoleText);
+                               SharedPreferenceStorage.setData(
+                                  Role.role, Role.customerRoleText);
+                               roleApp.value = Role.customerRoleText;
+                               accountController.roleId?.value = Role.customerRoleText;
+                              Get.parameters[Role.role] =  Role.customerRoleText;
 
-                              Get.parameters[Role.role.value] =
-                                  Role.customerRoleText;
+                              Get.until((route) => route.isFirst,id:pageIdApp.value);
 
-                              setState(() {});
-                              Future.delayed(const Duration(milliseconds: 200),
-                                  () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              });
                             }
-                          },
+                            },
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(left: 14.0, right: 14.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  SharedPreferenceStorage.getData(
-                                                  Role.role.value)
-                                              .toString() ==
-                                          Role.customerRoleText
+                                Obx(() => Text(
+                                  roleApp.value ==
+                                      Role.customerRoleText
                                       ? StringConstants.switchToStoreText
                                       : StringConstants.switchToCustomerText,
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: AppColors.blacklight,
                                       fontWeight: FontWeight.w500),
-                                ),
+                                ),),
+
                                 Image.asset(
                                   ImageConstants.switchicon,
                                   scale: 2.6,
@@ -280,11 +272,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const PersonalInfoScreen(),
-                          ));
-                          // Get.to(const PersonalInfoScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const PersonalInfoScreen(),
+                          // ));
+                          Get.to(const PersonalInfoScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,65 +308,65 @@ class _AccountScreenState extends State<AccountScreen> {
                         height: 40,
                         thickness: 1,
                       ),
-                      SharedPreferenceStorage.getData(Role.role.value)
-                                  .toString() ==
-                              Role.customerRoleText
+                      Obx(() =>  roleApp.value ==
+                          Role.customerRoleText
                           ? InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const AddCardScreen(),
-                                ));
-                                // Get.to(const AddCardScreen());
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        ImageConstants.cards,
-                                        color: AppColors.primary,
-                                        scale: 3.5,
-                                      ),
-                                      width15SizedBox,
-                                      Text(StringConstants.cardAndPaymentsText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500)),
-                                    ],
-                                  ),
-                                  Image.asset(
-                                    ImageConstants.arrowForward,
-                                    scale: 3.4,
-                                    color: AppColors.blacklight,
-                                  )
-                                ],
-                              ),
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          // SharedPreferenceStorage.setData(
+                          //     "context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const AddCardScreen(),
+                          // ));
+                          Get.to(const AddCardScreen(),id: accountController.pageId.value);
+                        },
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  ImageConstants.cards,
+                                  color: AppColors.primary,
+                                  scale: 3.5,
+                                ),
+                                width15SizedBox,
+                                Text(StringConstants.cardAndPaymentsText,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                            Image.asset(
+                              ImageConstants.arrowForward,
+                              scale: 3.4,
+                              color: AppColors.blacklight,
                             )
-                          : height0SizedBox,
-                      SharedPreferenceStorage.getData(Role.role.value)
-                                  .toString() ==
-                              Role.customerRoleText
+                          ],
+                        ),
+                      )
+                          : height0SizedBox,),
+                      Obx(() =>  accountController.roleId?.value
+                          .toString() ==
+                          Role.customerRoleText
                           ? const Divider(
-                              height: 40,
-                              thickness: 1,
-                            )
-                          : height0SizedBox,
+                        height: 40,
+                        thickness: 1,
+                      )
+                          : height0SizedBox,),
+
                       InkWell(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const TransactionScreen(),
-                          ));
-                          // Get.to(const TransactionScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const TransactionScreen(),
+                          // ));
+                          Get.to(const TransactionScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -410,11 +402,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const AccountIdScreen(),
-                          ));
-                          //Get.to(const AccountIdScreen());
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const AccountIdScreen(),
+                          // ));
+                          Get.to(const AccountIdScreen(),id:pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -443,7 +435,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                       ),
                       Obx(
-                        () => SharedPreferenceStorage.getData(Role.role.value)
+                        () => accountController.roleId?.value
                                     .toString() ==
                                 Role.customerRoleText
                             ? height0SizedBox
@@ -453,7 +445,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                       ),
                       Obx(
-                        () => SharedPreferenceStorage.getData(Role.role.value)
+                        () => accountController.roleId?.value
                                     .toString() ==
                                 Role.customerRoleText
                             ? height0SizedBox
@@ -461,14 +453,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        const ActiveMembershipScreen(),
-                                  ));
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) =>
+                                  //       const ActiveMembershipScreen(),
+                                  // ));
 
-                                  // Get.to(const ActiveMembershipScreen());
+                                  Get.to(const ActiveMembershipScreen(),id:pageIdApp.value);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -586,84 +578,85 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ],
                           ),
-                          SharedPreferenceStorage.getData(Role.role.value)
-                                      .toString() ==
-                                  Role.customerRoleText
-                              ? Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isUserInboxMessagesNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isUserInboxMessagesNotify
-                                          .value = val;
-                                      if (accountController
-                                          .isUserInboxMessagesNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "message");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "message");
-                                      }
-                                    },
-                                  ))
-                              : Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isOwnerInboxMessagesNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isOwnerInboxMessagesNotify
-                                          .value = val;
+                          Obx(() => accountController.roleId?.value
+                              .toString() ==
+                              Role.customerRoleText
+                              ? FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isUserInboxMessagesNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isUserInboxMessagesNotify
+                                  .value = val;
+                              if (accountController
+                                  .isUserInboxMessagesNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: false,
+                                    notificationType: "message");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: false,
+                                    notificationType: "message");
+                              }
+                            },
+                          )
+                              : FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isOwnerInboxMessagesNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isOwnerInboxMessagesNotify
+                                  .value = val;
 
-                                      if (accountController
-                                          .isOwnerInboxMessagesNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "message");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "message");
-                                      }
-                                    },
-                                  )),
+                              if (accountController
+                                  .isOwnerInboxMessagesNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: true,
+                                    notificationType: "message");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: true,
+                                    notificationType: "message");
+                              }
+                            },
+                          ),),
+
                         ],
                       ),
                       height15SizedBox,
@@ -682,82 +675,83 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ],
                           ),
-                          SharedPreferenceStorage.getData(Role.role.value)
-                                      .toString() ==
-                                  Role.customerRoleText
-                              ? Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isUserTippingNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isUserTippingNotify.value = val;
-                                      if (accountController
-                                          .isUserTippingNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "order");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "order");
-                                      }
-                                    },
-                                  ))
-                              : Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isOwnerTippingNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isOwnerTippingNotify.value = val;
+                          Obx(() =>  accountController.roleId?.value
+                              .toString() ==
+                              Role.customerRoleText
+                              ? FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isUserTippingNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isUserTippingNotify.value = val;
+                              if (accountController
+                                  .isUserTippingNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: false,
+                                    notificationType: "order");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: false,
+                                    notificationType: "order");
+                              }
+                            },
+                          )
+                              : FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isOwnerTippingNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isOwnerTippingNotify.value = val;
 
-                                      if (accountController
-                                          .isOwnerTippingNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "order");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "order");
-                                      }
-                                    },
-                                  )),
+                              if (accountController
+                                  .isOwnerTippingNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: true,
+                                    notificationType: "order");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: true,
+                                    notificationType: "order");
+                              }
+                            },
+                          ),)
+
                         ],
                       ),
                       height15SizedBox,
@@ -776,83 +770,84 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ],
                           ),
-                          SharedPreferenceStorage.getData(Role.role.value)
-                                      .toString() ==
-                                  Role.customerRoleText
-                              ? Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isUserOfferNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isUserOfferNotify.value = val;
+                          Obx(() => accountController.roleId?.value
+                              .toString() ==
+                              Role.customerRoleText
+                              ?  FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isUserOfferNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isUserOfferNotify.value = val;
 
-                                      if (accountController
-                                          .isUserOfferNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "offer");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "offer");
-                                      }
-                                    },
-                                  ))
-                              : Obx(() => FlutterSwitch(
-                                    height: 28,
-                                    width: 50,
-                                    value: accountController
-                                        .isOnwerOfferNotify.value,
-                                    activeToggleColor: AppColors.primary,
-                                    inactiveToggleColor: AppColors.grey,
-                                    activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
-                                    ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
-                                    onToggle: (val) {
-                                      accountController
-                                          .isOnwerOfferNotify.value = val;
+                              if (accountController
+                                  .isUserOfferNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: false,
+                                    notificationType: "offer");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: false,
+                                    notificationType: "offer");
+                              }
+                            },
+                          )
+                              : FlutterSwitch(
+                            height: 28,
+                            width: 50,
+                            value: accountController
+                                .isOnwerOfferNotify.value,
+                            activeToggleColor: AppColors.primary,
+                            inactiveToggleColor: AppColors.grey,
+                            activeSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            inactiveSwitchBorder: Border.all(
+                              color: AppColors.greylight,
+                            ),
+                            activeColor: AppColors.greymediumlight,
+                            inactiveColor: AppColors.greymediumlight,
+                            onToggle: (val) {
+                              accountController
+                                  .isOnwerOfferNotify.value = val;
 
-                                      if (accountController
-                                          .isOnwerOfferNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "offer");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                context,
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "offer");
-                                      }
-                                    },
-                                  )),
+                              if (accountController
+                                  .isOnwerOfferNotify.value) {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: true,
+                                    isOwner: true,
+                                    notificationType: "offer");
+                              } else {
+                                accountController
+                                    .apiUpdateNotificationStatus(
+                                    context,
+                                    isEnabled: false,
+                                    isOwner: true,
+                                    notificationType: "offer");
+                              }
+                            },
+                          ),),
+
                         ],
                       ),
                       height25SizedBox,

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -22,7 +23,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
+        Get.back(id:pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -45,8 +46,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    // Get.back();
-                                    Navigator.of(context).pop();
+                                  Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -92,11 +93,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        SharedPreferenceStorage.setData("context", context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const PersonalInfoEditScreen(),
-                        ));
-                        // Get.to(const PersonalInfoEditScreen());
+                        // SharedPreferenceStorage.setData("context", context);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (_) => const PersonalInfoEditScreen(),
+                        // ));
+                        Get.to(const PersonalInfoEditScreen(),id:pageIdApp.value);
                       },
                       child: Text(StringConstants.editText,
                           style: const TextStyle(

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-// import 'package:geocoder2/geocoder2.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -48,8 +49,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              // Get.back();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -67,8 +68,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          // Get.back();
-                          Navigator.of(context).pop();
+                         Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -1037,15 +1038,15 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                               ],
                                             ),
                                             onTap: () {
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const AddCardDetailScreen(),
-                                              ));
-                                              // Get.to(
-                                              //     () => AddCardDetailScreen());
+                                              // SharedPreferenceStorage.setData(
+                                              //     "context", context);
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (_) =>
+                                              //       const AddCardDetailScreen(),
+                                              // ));
+                                              Get.to(
+                                                  () => const AddCardDetailScreen(),id:pageIdApp.value,);
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *

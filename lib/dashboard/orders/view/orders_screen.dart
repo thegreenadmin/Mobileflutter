@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/orders/view/return_confirm_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -368,9 +369,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () {
-                                            Navigator.of(Get.context!).popUntil(
-                                                (route) => route.isFirst);
-                                            // Get.offAll(BottomNavigation());
+                                            // Navigator.of(Get.context!).popUntil(
+                                            //     (route) => route.isFirst);
+                                            Get.until((route) => route.isFirst,id:pageIdApp.value );
                                           },
                                           child: const Icon(
                                             Icons.arrow_back,
@@ -404,7 +405,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   fontWeight: FontWeight.w600),
                             ),
                             // Obx(() => Text(
-                            //   ordersController.role!.value,
+                            //   roleApp.value,
                             //   style: const TextStyle(
                             //       fontSize: 22,
                             //       color: AppColors.black,
@@ -426,7 +427,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           child: Column(
             children: [
               Obx(
-                () => ordersController.role!.value == Role.customerRoleText
+                () => roleApp.value == Role.customerRoleText
                     ? Center(
                         child: userOrdersTab(),
                       )
@@ -435,7 +436,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ),
               ),
               height25SizedBox,
-              Obx(() => ordersController.role!.value == Role.customerRoleText
+              Obx(() => roleApp.value == Role.customerRoleText
                   ? ordersController.orderList.isEmpty
                       ? ordersController.isDataLoading.value == true
                           ? height0SizedBox
@@ -501,14 +502,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderList[i].store?.storeId
                                                   .toString() ??
                                               "";
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) =>
-                                            const OrderConfirmationScreen(),
-                                      ))
-                                          .then((value) {
+                                      // SharedPreferenceStorage.setData(
+                                      //     "context", context);
+                                      // Navigator.of(context)
+                                      //     .push(MaterialPageRoute(
+                                      //   builder: (_) =>
+                                      //       const OrderConfirmationScreen(),
+                                      // ))
+                                      Get.to(const OrderConfirmationScreen(),
+                                          id:pageIdApp.value)?.then((value) {
                                         ordersController.apiGetOrderListApi();
                                       });
                                     },
@@ -862,14 +864,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderStatusName == //"11"
                                               OrderStatus
                                                   .returnRequest.statusName
-                                          ? Navigator.of(context)
+                                          ? /*Navigator.of(context)
                                               .push(MaterialPageRoute(
                                               builder: (_) =>
                                                   const MarkReturnOrderScreen(),
-                                            ))
-                                              /*Get.to(
+                                            ))*/
+                                              Get.to(
                                     () =>
                                 const MarkReturnOrderScreen(),
+                                                  id:pageIdApp.value ,
                                 arguments: {
                                   "storeId": ordersController
                                       .storeOrderList[i]
@@ -882,8 +885,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       .storeOrderList[i]
                                       .orderId
                                       .toString(),
-                                })*/
-                                              .then((value) {
+                                })
+                                              ?.then((value) {
                                               ordersController
                                                   .apiGetStoreOrderListApi();
                                             })
@@ -895,14 +898,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       .orderStatusName == //"12"
                                                   OrderStatus.returnConfirmed
                                                       .statusName
-                                              ? Navigator.of(context)
+                                              ? /*Navigator.of(context)
                                                   .push(MaterialPageRoute(
                                                   builder: (_) =>
                                                       const ReturnConfirmOrderScreen(),
-                                                ))
-                                              /*Get.to(
+                                                ))*/
+                                              Get.to(
                                     () =>
                                 const ReturnConfirmOrderScreen(),
+                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
                                 arguments: {
                                   "storeId": ordersController
                                       .storeOrderList[
@@ -917,35 +921,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   i]
                                       .orderId
                                       .toString(),
-                                })*/
+                                })
                                               : ordersController.orderStatusName
                                                           .value == //7
                                                       OrderStatus
                                                           .cancelled.statusName
                                                   ? null
-                                                  : Navigator.of(context)
+                                                  : /*Navigator.of(context)
                                                       .push(MaterialPageRoute(
                                                       builder: (_) =>
                                                           const OrdersHomeMainScreen(),
-                                                    ));
-                                      /*Get.to(
-                                    () =>
-                                const OrdersHomeMainScreen(),
-                                arguments: {
-                                  "storeId": ordersController
-                                      .storeOrderList[
-                                  i]
-                                      .store
-                                      ?.storeId
-                                      .toString() ??
-                                      "",
-                                  "orderId": ordersController
-                                      .storeOrderList[
-                                  i]
-                                      .orderId ??
-                                      "",
-                                });*/
-                                    },
+                                                    ));*/
+                                      Get.to(() => const OrdersHomeMainScreen(),
+                                          id:pageIdApp.value,
+                                          arguments: {
+                                        "storeId": ordersController
+                                            .storeOrderList[i].store?.storeId.toString() ?? "",
+                                            "orderId": ordersController.storeOrderList[i]
+                                                .orderId ?? "",});},
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),

@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -72,20 +73,24 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                       return InkWell(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
-                        onTap: () {
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const UserProductListScreen(),
-                          ));
-                          Get.parameters["categoryId"] = storeHomeMainController
-                              .categoriesList[index].categoryId;
-                          // Get.to(const UserProductListScreen());
+                        onTap: () async{
                           storeHomeMainController.apiFeatureProductListApi(
                               categoryId: storeHomeMainController
-                                      .categoriesList[index].categoryId ??
+                                  .categoriesList[index].categoryId ??
                                   "0");
+                          Get.parameters["categoryId"] = storeHomeMainController
+                              .categoriesList[index].categoryId;
+
                           storeHomeMainController.category.value =
-                              storeHomeMainController.categoriesList[index];
+                          storeHomeMainController.categoriesList[index];
+                          // SharedPreferenceStorage.setData("context", context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const UserProductListScreen(),
+                          // ));
+                          await Get.to(const UserProductListScreen(),
+                              id:pageIdApp.value);
+
+
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -21,9 +20,9 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
 import '../dashboard/home/model/get_store_list_model.dart';
 import '../utils/constants.dart';
+import '../utils/global_share_data.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
@@ -35,51 +34,59 @@ class BottomNavController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    if (initialRemoteMessage != null) {
-      debugPrint("initMessageReceived");
-      // selectNotification(json.encode(initialRemoteMessage?.data));
-      selectNotification(NotificationResponse(
-        notificationResponseType:
-            NotificationResponseType.selectedNotificationAction,
-        payload: json.encode(initialRemoteMessage!.data),
-      ));
-      initialRemoteMessage = null;
-    }
-    selectedIndex.value = Get.parameters["currentIndex"] != null
-        ? int.parse(Get.parameters["currentIndex"].toString())
-        : 0;
-    roleInApp!.value = SharedPreferenceStorage.getData(Role.role.value);
-    debugPrint(
-        "roleInApp---->>>>>>>> ${SharedPreferenceStorage.getData(Role.role.value)}");
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
-    // Get.arguments != null ? Get.arguments["currentIndex"] ?? 0 : 0;
+      if (initialRemoteMessage != null) {
+        selectNotification(NotificationResponse(
+          notificationResponseType:
+          NotificationResponseType.selectedNotificationAction,
+          payload: json.encode(initialRemoteMessage!.data),
+        ));
+        initialRemoteMessage = null;
+      }
+
+      selectedIndex.value = Get.parameters["currentIndex"] != null
+          ? int.parse(Get.parameters["currentIndex"].toString())
+          : 0;
+      SharedPreferenceStorage.removeData("pageId");
+      Future.delayed(Duration.zero, () {
+        SharedPreferenceStorage.setData("pageId", 0);
+        getRole();
+      });
+      onItemTapped(0);
+    });
+  }
+
+  getRole() async {
+    roleApp.value = await SharedPreferenceStorage.getData(Role.role);
+    pageIdApp.value = await SharedPreferenceStorage.getData("pageId");
+    roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
+    print("Bottom nav cont roleInApp:--------${roleInApp.value}");
+    print(roleInApp.value);
   }
 
   //Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+        "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
+    UserProvider().getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-            headers,
-            showLoading: false)
-        .then((value) async {
+            headers, showLoading: false).then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value!.body}");
+      debugPrint("GET BottomNav STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
-        debugPrint("GET STORE storeList.length *******${storeList.length}");
         if (storeList.length == 1) {
           Get.parameters["storeId"] = storeList.first.storeId;
           Get.parameters["storeCount"] = storeList.length.toString();
@@ -87,10 +94,7 @@ class BottomNavController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-          builder: (_) => const StartJourneyScreen(),
-        ));
-        // await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -98,12 +102,6 @@ class BottomNavController extends GetxController {
       }
     });
   }
-  HomeController homeController = Get.put(HomeController());
-  WalletController walletController = Get.put(WalletController());
-  OrdersController ordersController = Get.put(OrdersController());
-  OffersController offersController = Get.put(OffersController());
-  MoreController moreController = Get.put(MoreController());
-
 
   late int getCurrentNavKey;
 
@@ -116,90 +114,104 @@ class BottomNavController extends GetxController {
   ];
 
   onItemTapped(int index) async {
-    selectedIndex.value = index;
+    getRole();
+      selectedIndex.value = index;
+    // debugPrint("Bottom pageId:---------$pageId---");
+
+        Get.until((route) => route.isFirst,id:pageIdApp.value ?? 0);
+
+      SharedPreferenceStorage.removeData("pageId");
+
     if (selectedIndex.value == 0) {
       try {
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        // Get.delete<HomeController>();
+        Future.delayed(Duration.zero, () {
+          pageIdApp.value = 0;
+          SharedPreferenceStorage.setData("pageId", 0);
+          HomeController homeController = Get.put(HomeController());
+          homeController.onInit();
+        });
+      } catch (e) {
+        //Pass
+      }
+    }
+    else if (selectedIndex.value == 1) {
+      try {
 
-        // HomeController controller = Get.put(HomeController());
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
-        homeController.onInit();
+        // Get.delete<WalletController>();
+        Future.delayed(Duration.zero, () async{
+          pageIdApp.value = 1;
+          SharedPreferenceStorage.setData("pageId", 1);
+          WalletController walletController = Get.put(WalletController());
+
+          var pageId = await SharedPreferenceStorage.getData("pageId");
+          debugPrint("Bottom WalletController pageId:---------$pageId---");
+          walletController.onInit();
+        });
+      } catch (e) {
+        //Pass
+      }
+    }
+    else if (selectedIndex.value == 2) {
+      try {
+        // Get.delete<OrdersController>();
+        Future.delayed(Duration.zero, ()async {
+          if (roleInApp.value == Role.customerRoleText) {
+            storeList.clear();
+          } else {
+            await apiGetStoreList();
+          }
+
+          if(roleInApp.value == Role.storeOwnerRoleText){
+            if( storeList.length > 1 || storeList.isEmpty){
+              pageIdApp.value = 2;
+              SharedPreferenceStorage.setData("pageId", 2);
+            }else{
+              pageIdApp.value = 3;
+              SharedPreferenceStorage.setData("pageId", 3);
+            }
+          }else{
+            pageIdApp.value = 4;
+            SharedPreferenceStorage.setData("pageId", 4);
+          }
+          // roleInApp.value == Role.storeOwnerRoleText ?
+          // storeList.length > 1 || storeList.isEmpty
+          //     ? SharedPreferenceStorage.setData("pageId", 2)
+          //     : SharedPreferenceStorage.setData("pageId", 3)
+          //     : SharedPreferenceStorage.setData("pageId", 4);
+          OrdersController ordersController = Get.put(OrdersController());
+          ordersController.onInit();
+        });
 
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 1) {
+    }
+    else if (selectedIndex.value == 3) {
       try {
-        WalletController controller = Get.put(WalletController());
-        // controller.onInit();
-        Get.delete<HomeController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
-        walletController.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      } catch (e) {
-        //Pass
-      }
-    } else if (selectedIndex.value == 2) {
-      try {
-        if (roleInApp.value == Role.customerRoleText) {
-        } else {
-          await apiGetStoreList();
-        }
-        OrdersController controller = Get.put(OrdersController());
-        // controller.onInit();
+        Future.delayed(Duration.zero, () async{
+          pageIdApp.value = 5;
+          SharedPreferenceStorage.setData("pageId", 5);
+          // Get.delete<OffersController>();
+          OffersController offersController = Get.put(OffersController());
 
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OffersController>();
-        Get.delete<MoreController>();
-        ordersController.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
+          offersController.onInit();
+        });
       } catch (e) {
         //Pass
       }
-    } else if (selectedIndex.value == 3) {
+    }
+    else if (selectedIndex.value == 4) {
       try {
-        OffersController controller = Get.put(OffersController());
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<MoreController>();
-        offersController.onInit();
-        // controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      } catch (e) {
-        //Pass
-      }
-    } else if (selectedIndex.value == 4) {
-      try {
-        MoreController controller = Get.put(MoreController());
-        Get.delete<HomeController>();
-        Get.delete<WalletController>();
-        Get.delete<OrdersController>();
-        Get.delete<OffersController>();
-        moreController.onInit();
-        // controller.onInit();
-        BuildContext context = SharedPreferenceStorage.getData(
-          "context",
-        );
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        Future.delayed(Duration.zero, () async{
+          pageIdApp.value = 6;
+          SharedPreferenceStorage.setData("pageId", 6);
+          // Get.delete<MoreController>();
+          MoreController moreController = Get.put(MoreController());
+
+          moreController.onInit();
+        });
+
       } catch (e) {
         //Pass
       }

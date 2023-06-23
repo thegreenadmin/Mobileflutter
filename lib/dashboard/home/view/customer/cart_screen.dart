@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -54,7 +55,7 @@ class _CartScreenState extends State<CartScreen> {
 
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
-        storeHomeMainController.apiGetCartListApi(Get.context);
+        storeHomeMainController.apiGetCartListApi();
         storeHomeMainController.apiGetShopProductDetailApi();
       } else {
         if (storeHomeMainController.isFromMenu.value) {
@@ -64,8 +65,8 @@ class _CartScreenState extends State<CartScreen> {
         }
       }
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiGetCartListApi(Get.context);
-      storeHomeMainController.apiActiveCartApi(Get.context);
+      storeHomeMainController.apiGetCartListApi();
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -91,7 +92,8 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                   Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                     // Get.back();
                                     // Get.back(result: true );
                                   },
@@ -144,8 +146,7 @@ class _CartScreenState extends State<CartScreen> {
                                   (BuildContext context, int index) {
                                 return height10SizedBox;
                               },
-                              itemCount:
-                                  storeHomeMainController.cartItems.length,
+                              itemCount: storeHomeMainController.cartItems.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int i) {
@@ -216,8 +217,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 storeHomeMainController
                                                         .cartItems[i]
                                                         .product
-                                                        ?.productName ??
-                                                    "",
+                                                        ?.productName ?? "",
                                                 style: const TextStyle(
                                                     fontSize: 16.0,
                                                     color: AppColors.black,
@@ -228,15 +228,13 @@ class _CartScreenState extends State<CartScreen> {
                                               storeHomeMainController
                                                       .cartItems[i]
                                                       .product!
-                                                      .description!
-                                                      .isEmpty
+                                                      .description!.isEmpty
                                                   ? height0SizedBox
                                                   : Text(
                                                       storeHomeMainController
                                                               .cartItems[i]
                                                               .product
-                                                              ?.description ??
-                                                          "",
+                                                              ?.description ?? "",
                                                       style: const TextStyle(
                                                           fontSize: 14.0,
                                                           color:
@@ -483,7 +481,7 @@ class _CartScreenState extends State<CartScreen> {
                                         await storeHomeMainController
                                             .apiGetUserWalletBalance();
                                         await storeHomeMainController
-                                            .apiGetCartListApi(context);
+                                            .apiGetCartListApi();
                                       },
                                       height: 40,
                                       text: storeHomeMainController
@@ -936,16 +934,16 @@ class _CartScreenState extends State<CartScreen> {
                                                                 .value
                                                                 .city ==
                                                             null
-                                                    ? Navigator.of(context)
-                                                        .push(MaterialPageRoute(
-                                                          builder: (_) =>
-                                                              const PersonalInfoEditScreen(),
-                                                        ))
-                                                        // Get.to(const PersonalInfoEditScreen(),
-                                                        //             arguments: ({
-                                                        //               "isFromCart": true
-                                                        //             }))
-                                                        .then((value) =>
+                                                     ?
+                                                      // Navigator.of(context)
+                                                    //     .push(MaterialPageRoute(
+                                                    //       builder: (_) =>
+                                                    //           const PersonalInfoEditScreen(),
+                                                    //     ))
+                                                        Get.to(const PersonalInfoEditScreen(),id:pageIdApp.value,
+                                                                    arguments: ({
+                                                                      "isFromCart": true
+                                                                    }))?.then((value) =>
                                                             storeHomeMainController
                                                                 .apiGetUserDetailsApi())
                                                     : /*storeHomeMainController
@@ -1169,14 +1167,15 @@ class _CartScreenState extends State<CartScreen> {
                                           fontWeight: FontWeight.w500),
                                     )),
                                 InkWell(
-                                  onTap: () {
-                                    SharedPreferenceStorage.setData(
-                                        "context", context);
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) => const AddMoneyToWallet(),
-                                    ))
-                                        .then((value) {
+                                  onTap: () async{
+                                    // SharedPreferenceStorage.setData("context", context);
+                                    // Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (_) => const AddMoneyToWallet(),
+                                    // ))
+                                    await Get.to(const AddMoneyToWallet(),
+                                        id:pageIdApp.value)
+                                        ?.then((value) {
                                       storeHomeMainController
                                           .apiGetUserWalletBalance();
                                     });
@@ -1238,7 +1237,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ? [AppColors.grey, AppColors.grey]
                                       : [AppColors.primary, AppColors.primary],
                                 ),
-                                onTap: () {
+                                onTap: () async{
                                   if (storeHomeMainController
                                           .storeDeliveryServiceId.value !=
                                       "0") {
@@ -1261,15 +1260,17 @@ class _CartScreenState extends State<CartScreen> {
                                       Utility.showConfirmAlertMessage(
                                           StringConstants.inSufficientFundText,
                                           okay: StringConstants.addFundsText,
-                                          okayTap: () {
-                                        SharedPreferenceStorage.setData(
-                                            "context", context);
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) =>
-                                              const AddMoneyToWallet(),
-                                        ))
-                                            .then((value) {
+                                          okayTap: ()async {
+                                        // SharedPreferenceStorage.setData(
+                                          //     "context", context);
+                                          // Navigator.of(context)
+                                          //     .push(MaterialPageRoute(
+                                          //   builder: (_) =>
+                                          //   const AddMoneyToWallet(),
+                                          // ))
+                                          await Get.to(const AddMoneyToWallet(),
+                                              id:pageIdApp.value)
+                                            ?.then((value) {
                                           storeHomeMainController
                                               .apiGetUserWalletBalance();
                                         });

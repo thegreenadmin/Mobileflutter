@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -14,7 +16,25 @@ class ContactUsController extends GetxController {
   TextEditingController messageTextController = TextEditingController();
 
   RxBool autoValidate = false.obs;
+  RxInt pageId = 0.obs;
+  RxString? role = "".obs;
+  RxString? firstName = "".obs;
+  RxString? lastName = "".obs;
 
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getPage();
+  }
+  getPage()async{
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    role?.value = roleVal;
+  }
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -43,10 +63,11 @@ class ContactUsController extends GetxController {
       "subject": subjectTextController.text.trim(),
       "message": messageTextController.text.trim(),
     };
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
+      'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
-      "Content-Type": "application/json"
+      "Bearer ${token.toString()}",
     };
     debugPrint("CREATE USER BODY********** $data");
     debugPrint(
@@ -67,8 +88,8 @@ class ContactUsController extends GetxController {
         emailTextController.clear();
         subjectTextController.clear();
         messageTextController.clear();
-        // Get.back();
-        Navigator.of(ctx).pop();
+        Get.back(id:pageIdApp.value );
+                                  // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {

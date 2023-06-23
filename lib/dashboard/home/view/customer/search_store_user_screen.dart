@@ -17,6 +17,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.d
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -58,7 +59,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         length: 3,
         vsync: this);
     updateCurrentLocation();
-    searchStoreUserController.apiActiveCartApi(Get.context);
+    searchStoreUserController.apiActiveCartApi();
   }
 
   @override
@@ -84,8 +85,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                                // Get.back();
-                                Navigator.of(context).pop();
+                               Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                 Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(
@@ -143,31 +144,22 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       Row(
                                         children: [
                                           InkWell(
-                                            onTap: () {
-                                              SharedPreferenceStorage.setData(
-                                                  "context", context);
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const CartScreen(),
-                                                  ))
-                                                  .then((value) =>
-                                                      searchStoreUserController
-                                                          .apiActiveCartApi(
-                                                              context));
-                                              Get.parameters["storeId"] =
-                                                  searchStoreUserController
-                                                      .storeIdValue.value;
-                                              // searchStoreUserController
-                                              //     .apiGetUserWalletBalance();
+                                            onTap: () async{
                                               // SharedPreferenceStorage.setData(
                                               //     "context", context);
                                               // Navigator.of(context)
                                               //     .push(MaterialPageRoute(
-                                              //   builder: (_) =>
-                                              //       const CartScreen(),
-                                              // ));
-                                              // Get.to(() => const CartScreen());
+                                              //       builder: (_) =>
+                                              //           const CartScreen(),
+                                              //     ))
+                                              await Get.to(const CartScreen(),
+                                                  id:pageIdApp.value)
+                                                  ?.then((value) =>
+                                                      searchStoreUserController
+                                                          .apiActiveCartApi());
+                                              Get.parameters["storeId"] =
+                                                  searchStoreUserController
+                                                      .storeIdValue.value;
                                             },
                                             child: Stack(
                                               children: [
@@ -265,13 +257,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         top: 170,
                         right: 10,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async{
                             searchStoreUserController.searchController.clear();
-                            SharedPreferenceStorage.setData("context", context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const FilterOptionScreen(),
-                            ));
-                            // Get.to(const FilterOptionScreen());
+                            // SharedPreferenceStorage.setData("context", context);
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (_) => const FilterOptionScreen(),
+                            // ));
+                            await Get.to(const FilterOptionScreen(),
+                                id:pageIdApp.value);
                           },
                           child: Image.asset(
                             ImageConstants.filterbutton,
@@ -433,7 +426,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
               if (i == 0 && searchStoreUserController.isClicked.value ==false) {
-                await searchStoreUserController.apiGetNearByStores(context);
+                await searchStoreUserController.apiGetNearByStores();
               } else if (i == 1 && searchStoreUserController.isClicked.value ==false) {
                 await searchStoreUserController.apiGetPreviousStores(context);
               } else if (i == 2 && searchStoreUserController.isClicked.value ==false) {
@@ -491,7 +484,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // WidgetsBinding.instance.addPostFrameCallback((_)async{
-    await searchStoreUserController.apiGetNearByStores(context, isSearch: true);
+    await searchStoreUserController.apiGetNearByStores( isSearch: true);
     updateMarker(lat, lng);
     // });
   }

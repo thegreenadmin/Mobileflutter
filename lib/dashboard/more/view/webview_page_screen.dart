@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class WebviewPageScreen extends StatefulWidget {
   final String url;
@@ -17,7 +20,7 @@ class WebviewPageScreen extends StatefulWidget {
 
 class _WebviewPageScreenState extends State<WebviewPageScreen> {
   late final WebViewController controller;
-
+  var pageId = 0;
   @override
   void initState() {
     super.initState();
@@ -41,8 +44,11 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
       )
       ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
+    getData();
   }
-
+    getData()async{
+      pageId = await SharedPreferenceStorage.getData("pageId");
+    }
   // #docregion webview_widget
   @override
   Widget build(BuildContext context) {
@@ -65,8 +71,8 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  // Get.back();
-                                  Navigator.of(context).pop();
+                                 Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

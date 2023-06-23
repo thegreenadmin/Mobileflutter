@@ -10,6 +10,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
+import '../../../utils/global_share_data.dart';
 import '../view/component/order_status_enum.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
@@ -28,9 +29,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ordersController.firstName?.value =
-          SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+          SharedPreferenceStorage.getData(StringConstants.firstNameText).toString() ?? "";
       ordersController.lastName?.value =
-          SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+          SharedPreferenceStorage.getData(StringConstants.lastNameText).toString() ?? "";
       if ( Get.parameters['isFromNotification'] != "false") {
         ordersController.isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
@@ -56,8 +57,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ordersController.orderStatusId.value = 2;
       // ordersController.orderStatusName.value = OrderStatus.newOrder.statusName;
       // print("SharedPreferenceStorage:--Order Screen---------------");
-      // print(SharedPreferenceStorage.getData(Role.role.value));
-      if (SharedPreferenceStorage.getData(Role.role.value) ==
+      // print(SharedPreferenceStorage.getData(Role.role));
+      if (SharedPreferenceStorage.getData(Role.role) ==
           Role.customerRoleText) {
         ordersController.role!.value = Role.customerRoleText;
         // ordersController.apiGetOrderListApi();
@@ -80,10 +81,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     return WillPopScope(
       onWillPop: () {
         if( ordersController.isHome.value){
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+         Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
+         Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
         }else{
-          Navigator.of(context).pop();
+         Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
         }
 
         return Future.value(true);
@@ -139,7 +143,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                          Navigator.of(context).pop();
+                                         Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                       },
                                       icon: const Icon(
                                         Icons.arrow_back,
@@ -631,19 +636,18 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
                         ),
-                        onTap: () {
+                        onTap: ()async {
 
                           Get.parameters["storeId"] = ordersController.storeId.value;
                           Get.parameters["isFromMenu"] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromFav"] = "false";
-                          SharedPreferenceStorage.setData("context", context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const StoreHomeMainScreen(),
-                          ));
-                          // Navigator.of(rContext)
-                          //     .popUntil((route) => route.isFirst);
-                          // Get.offAll(BottomNavigation());
+                          await Get.to(const StoreHomeMainScreen(),
+                              id:pageIdApp.value);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (_) => const StoreHomeMainScreen(),
+                          // ));
+
                         },
                         height: 50,
                         width: WidgetConstants.screenWidth * 0.5,

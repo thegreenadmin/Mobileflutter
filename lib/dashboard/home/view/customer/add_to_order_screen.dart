@@ -48,7 +48,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
-
       }
       if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
@@ -57,10 +56,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
       }
-      storeHomeMainController.apiGetCartListApi(Get.context);
+      storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiActiveCartApi(Get.context);
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -172,8 +171,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    // Get.back();
-                    Navigator.of(context).pop();
+                    Get.back();
+                                  // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -942,17 +941,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             ),
                       height20SizedBox,
                       storeHomeMainController.productDetailResponse.value.data
-                                      ?.product!.productLinks!.first.link ==
-                                  null ||
-                              storeHomeMainController
-                                  .productDetailResponse
-                                  .value
-                                  .data!
-                                  .product!
-                                  .productLinks!
-                                  .first
-                                  .link!
-                                  .isEmpty
+                                      ?.product?.productLinks==null
+                          || storeHomeMainController.productDetailResponse.value.data
+                                      !.product!.productLinks!.isEmpty || storeHomeMainController.productDetailResponse.value.data
+                                      ?.product!.productLinks!.first.link == null || storeHomeMainController
+                                  .productDetailResponse.value.data!.product!.productLinks!
+                                  .first.link!.isEmpty
                           ? height0SizedBox
                           : Text(
                               StringConstants.additionalLinksToResearchText,
@@ -962,8 +956,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   color: AppColors.blacklight),
                             ),
                       storeHomeMainController.productDetailResponse.value.data
+                          ?.product?.productLinks==null ||
+                          storeHomeMainController.productDetailResponse.value.data
+                      !.product!.productLinks!.isEmpty ||
+                          storeHomeMainController.productDetailResponse.value.data
                                       ?.product!.productLinks!.first.link ==
-                                  null ||
+                                  null &&
                               storeHomeMainController
                                   .productDetailResponse
                                   .value
@@ -976,17 +974,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           ? height0SizedBox
                           : height8SizedBox,
                       storeHomeMainController.productDetailResponse.value.data
-                                      ?.product!.productLinks!.first.link ==
-                                  null ||
-                              storeHomeMainController
-                                  .productDetailResponse
-                                  .value
-                                  .data!
-                                  .product!
-                                  .productLinks!
-                                  .first
-                                  .link!
-                                  .isEmpty
+                          ?.product?.productLinks==null ||
+                          storeHomeMainController.productDetailResponse.value.data
+                      !.product!.productLinks!.isEmpty ||
+                          storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productLinks?.first.link == null ||
+                              storeHomeMainController.productDetailResponse.value
+                                  .data!.product!.productLinks!.first.link!.isEmpty
                           ? height0SizedBox
                           : InkWell(
                               onTap: () async {
@@ -1011,9 +1005,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         .productDetailResponse
                                         .value
                                         .data
-                                        ?.product
-                                        ?.productLinks!
-                                        .first
+                                        ?.product?.productLinks?.first
                                         .link ??
                                     "",
                                 style: const TextStyle(

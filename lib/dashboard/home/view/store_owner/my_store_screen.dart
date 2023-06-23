@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
@@ -68,16 +69,18 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     onTap: () {
                                       Get.parameters["isFrom"] =
                                           StringConstants.addOfferText;
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) => const AddOfferScreen(),
-                                      ))
-                                          // Get.to(const AddOfferScreen(), arguments: {
-                                          //   "isFrom": StringConstants.addOfferText,
-                                          // })?
-                                          .then((v) {
+                                      // SharedPreferenceStorage.setData(
+                                      //     "context", context);
+                                      // Navigator.of(context)
+                                      //     .push(MaterialPageRoute(
+                                      //   builder: (_) => const AddOfferScreen(),
+                                      // ))
+                                          Get.to(const AddOfferScreen(),
+                                              id:pageIdApp.value,
+                                              arguments: {
+                                            "isFrom": StringConstants.addOfferText,
+                                          })?.then((v) {
+                                            ownerStoresController.getApiData();
                                         ownerStoresController.getCurrentLocation();
                                       });
                                     },

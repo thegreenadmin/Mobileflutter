@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'payment_configurations.dart' as payment_configurations;
@@ -124,8 +125,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                              // Get.back();
-                              Navigator.of(context).pop();
+                             Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -233,7 +234,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   ),
                   height25SizedBox,
                   Obx(
-                    () => Row(
+                        () => Row(
                       children: [
                         Flexible(
                           flex: 2,
@@ -241,7 +242,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             onTap: () {
                               addCardController.paymentType!.value = "card";
                               addCardController.selectPaymentType.value =
-                                  "card";
+                              "card";
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -249,10 +250,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                   color: AppColors.white,
                                   border: Border.all(
                                     color:
-                                        addCardController.paymentType!.value ==
-                                                "card"
-                                            ? AppColors.primary
-                                            : AppColors.blacklight,
+                                    addCardController.paymentType!.value ==
+                                        "card"
+                                        ? AppColors.primary
+                                        : AppColors.blacklight,
                                   )),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 12),
@@ -492,21 +493,24 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                           AppColors.primary
                                                         ],
                                                       ),
-                                                      onTap: () {
-                                                        SharedPreferenceStorage
-                                                            .setData("context",
-                                                                context);
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (_) =>
-                                                              const AddCardDetailScreen(),
-                                                        ))
-                                                            .then((value) {
-                                                          addCardController
-                                                              .apiGetCardList(
-                                                                  context);
-                                                        });
+                                                      onTap: () async{
+                                                        // SharedPreferenceStorage
+                                //     .setData("context",
+                                //     context);
+                                // Navigator.of(context)
+                                //     .push(
+                                //     MaterialPageRoute(
+                                //       builder: (_) =>
+                                //       const AddCardDetailScreen(),
+                                //     ))
+                                await Get.to(const AddCardDetailScreen(),
+                                    id:pageIdApp.value)
+                                     ?.then((value) {
+                                  addCardController
+                                      .apiGetCardList(
+                                      context);
+                                });
+
                                                       },
                                                       height: 50,
                                                       width: WidgetConstants

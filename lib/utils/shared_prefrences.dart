@@ -1,11 +1,22 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceStorage {
   static final storage = GetStorage();
 
   static void setData(String key, dynamic value) async {
-    final GetStorage storage = GetStorage();
-    storage.write(key, value);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value is String) {
+      await prefs.setString(key, value);
+    } else if (value is int) {
+      await prefs.setInt(key, value);
+    } else if (value is double) {
+      await prefs.setDouble(key, value);
+    } else if (value is bool) {
+      await prefs.setBool(key, value);
+    }
+    // final GetStorage storage = GetStorage();
+    // storage.write(key, value);
   }
 
   static String? getString(String key) {
@@ -13,9 +24,11 @@ class SharedPreferenceStorage {
     return storage.read(key);
   }
 
-  static int? getInt(String key) {
-    final GetStorage storage = GetStorage();
-    return storage.read(key);
+  static Future<int?> getInt(String key) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(key);
+    // final GetStorage storage = GetStorage();
+    // return storage.read(key);
   }
 
   static bool? getBool(String key) {
@@ -23,18 +36,24 @@ class SharedPreferenceStorage {
     return storage.read(key);
   }
 
-  static dynamic getData(String key) {
-    final GetStorage storage = GetStorage();
-    return storage.read(key);
+  static Future<dynamic> getData(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get(key);
+    // final GetStorage storage = GetStorage();
+    // return storage.read(key);
   }
 
-  static void clearData() {
-    final GetStorage storage = GetStorage();
-    storage.erase();
+  static void clearData() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    // final GetStorage storage = GetStorage();
+    // storage.erase();
   }
 
-  static void removeData(String key) {
-    final GetStorage storage = GetStorage();
-    storage.remove(key);
+  static void removeData(String key) async {
+    // final GetStorage storage = GetStorage();
+    // storage.remove(key);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
   }
 }

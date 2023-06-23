@@ -26,8 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
   // }
   startTime() async {
     BioMetricAuthentication.isBioMetricAuthenticated.value =
-        SharedPreferenceStorage.getData(
-                StringConstants.authenticatedText.toLowerCase()) ??
+        await SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) !=null
+            ?SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) as bool : false ??
             false;
     debugPrint(
         "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
@@ -40,8 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async {
-    if (SharedPreferenceStorage.getData('token') != null) {
-      SharedPreferenceStorage.getData(Role.role.value);
+    var token = await SharedPreferenceStorage.getData('token');
+
+    if ( token!= null) {
       Get.offAll(() => const BottomNavigation());
     } else {
       Get.offNamed('/onboardView');

@@ -11,6 +11,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class PayOutScreen extends StatefulWidget {
   const PayOutScreen({
     Key? key,
@@ -48,8 +50,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            // Get.back();
-                            Navigator.of(context).pop();
+                           Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -395,7 +397,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                             ],
                                           ),
                                           onTap: () {
-                                            SharedPreferenceStorage.setData(
+                                           /* SharedPreferenceStorage.setData(
                                                 "context", context);
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
@@ -406,8 +408,17 @@ class PayOutScreenState extends State<PayOutScreen> {
                                                                 addCardController
                                                                     .accountLink
                                                                     .value)
-                                                            .toString())))
-                                                .then((value) {
+                                                            .toString())))*/
+                                            Get.to(WebviewPageScreen(
+                                                isFrom:
+                                                "connectAccount",
+                                                url: Uri.parse(
+                                                    addCardController
+                                                        .accountLink
+                                                        .value)
+                                                    .toString()),
+                                                id:pageIdApp.value)
+                                                ?.then((value) {
                                               addCardController
                                                   .apiGetAccountDetails();
                                               addCardController
