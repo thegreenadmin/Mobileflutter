@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -23,17 +22,17 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 
-  @override
-  initState() {
-    super.initState();
-    manageStoreController.isFeaturedTypeSelected.value = false;
-    manageStoreController.storeId.value = Get.parameters["storeId"] ?? "";
-    manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
-    manageStoreController.storeLocation.value =
-        Get.parameters["storeLocation"] ?? "";
-    manageStoreController.apiGetCategoriesList();
-    manageStoreController.apiGetQuantityList();
-  }
+  // @override
+  // initState() {
+  //   super.initState();
+  //   manageStoreController.isFeaturedTypeSelected.value = false;
+  //   manageStoreController.storeId.value = Get.parameters["storeId"] ?? "";
+  //   manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
+  //   manageStoreController.storeLocation.value =
+  //       Get.parameters["storeLocation"] ?? "";
+  //   manageStoreController.apiGetCategoriesList();
+  //   manageStoreController.apiGetQuantityList();
+  // }
 
   Container _horizontalTab() {
     return Container(
@@ -155,8 +154,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
-                                   Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -165,17 +164,17 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   ),
                                 ),
                                 width10SizedBox,
-                                SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    manageStoreController.storeName.value,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 22,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
+                                Obx(() => SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        manageStoreController.storeName.value,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    )),
                               ],
                             ),
                             Image.asset(
@@ -218,12 +217,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       //   builder: (_) => const AddNewCategoryScreen(),
                       // ))
 
-                          Get.to(() => const AddNewCategoryScreen(),
-                              id:pageIdApp.value,
+                      Get.to(() => const AddNewCategoryScreen(),
+                              id: pageIdApp.value,
                               arguments: {
                             "storeId": manageStoreController.storeId.value,
-                            "isFeaturedSelectedType":
-                                manageStoreController.isFeaturedTypeSelected.value,
+                            "isFeaturedSelectedType": manageStoreController
+                                .isFeaturedTypeSelected.value,
                           })!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
@@ -283,11 +282,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         return Dismissible(
                           background: Container(
                             color: AppColors.redlight,
-                            child: Align(
+                            child: const Align(
                               alignment: Alignment.centerRight,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: const <Widget>[
+                                children: <Widget>[
                                   Icon(
                                     Icons.delete,
                                     color: AppColors.red,
@@ -314,6 +313,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                       .toString();
                               manageStoreController.apiDeleteCategory();
                             });
+                            return null;
                           },
                           child: InkWell(
                             onTap: () {
@@ -331,7 +331,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const ProductListScreen(),
                               // ));
-                              Get.to(const ProductListScreen(),id:pageIdApp.value);
+                              Get.to(const ProductListScreen(),
+                                  id: pageIdApp.value);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -432,17 +433,17 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //   builder: (_) =>
                                         //       const EditCategoryScreen(),
                                         // ))
-                                            Get.to(const EditCategoryScreen(),
-                                                id:pageIdApp.value ,
-                                                   arguments: {
-                                                 "storeId": manageStoreController
-                                                     .storeId.value,
-                                                 "categoryId":
-                                                     manageStoreController
-                                                             .categoriesList[index]
-                                                             .categoryId ??
-                                                         ""
-                                               })!
+                                        Get.to(const EditCategoryScreen(),
+                                                id: pageIdApp.value,
+                                                arguments: {
+                                              "storeId": manageStoreController
+                                                  .storeId.value,
+                                              "categoryId":
+                                                  manageStoreController
+                                                          .categoriesList[index]
+                                                          .categoryId ??
+                                                      ""
+                                            })!
                                             .then((value) {
                                           manageStoreController
                                               .apiGetCategoriesList();
@@ -480,7 +481,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //       const ProductListScreen(),
                                         // ));
                                         Get.to(const ProductListScreen(),
-                                            id:pageIdApp.value );
+                                            id: pageIdApp.value);
                                       },
                                       icon: Icon(
                                         Icons.arrow_forward_ios_rounded,

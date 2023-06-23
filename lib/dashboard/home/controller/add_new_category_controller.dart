@@ -39,12 +39,16 @@ class AddNewCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
@@ -52,7 +56,7 @@ class AddNewCategoryController extends GetxController {
     storeId.value = Get.parameters["storeId"] ?? "";
     categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
-    Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
     debugPrint(Get.parameters["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       await apiGetCategoryDetail();
@@ -113,7 +117,7 @@ class AddNewCategoryController extends GetxController {
     return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
       // Get.back();
       // Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -129,7 +133,7 @@ class AddNewCategoryController extends GetxController {
     }, onCameraClick: () async {
       // Get.back();
       // Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -150,10 +154,9 @@ class AddNewCategoryController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
+        'Authorization': "Bearer ${token.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -200,8 +203,7 @@ class AddNewCategoryController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("ADD CATEGORY headers********** $headers");
     debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
@@ -223,9 +225,12 @@ class AddNewCategoryController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
-            body, ServerCommunicator().baseUrl +
+            body,
+            ServerCommunicator().baseUrl +
                 ServerCommunicator().createStoreCategory,
-            headers, showLoading: true).then((value) async {
+            headers,
+            showLoading: true)
+        .then((value) async {
       debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -236,7 +241,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageDynamicLinkfromServer.value = "";
         // Get.back();
         // Navigator.of(nContext).pop();
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
         // Navigator.of(Get.context!).pop();
       } else {
         if (value.body['message'] != null) {
@@ -252,8 +257,7 @@ class AddNewCategoryController extends GetxController {
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -293,8 +297,7 @@ class AddNewCategoryController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),
@@ -318,14 +321,16 @@ class AddNewCategoryController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
         // Navigator.of(contextt).pop();
         categoryNameTextController.clear();
         categoryImageOrigionalLinkfromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(),id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+        await Get.offAll(const StartJourneyScreen(),
+            id: int.parse(
+                SharedPreferenceStorage.getData("pageId").toString()));
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

@@ -82,8 +82,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                           Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                            Get.back(id: pageIdApp.value);
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -259,8 +259,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                       scale: 3.4,
                     ),
                     width15SizedBox,
-                    Obx(() => roleApp.value ==
-                            Role.customerRoleText
+                    Obx(() => roleApp.value == Role.customerRoleText
                         ? Column(
                             children: [
                               Obx(() => Text(
@@ -279,8 +278,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               height12SizedBox,
                               InkWell(
                                   onTap: () {
-                                    roleApp.value ==
-                                            Role.customerRoleText
+                                    roleApp.value == Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()
                                         : walletController
@@ -321,8 +319,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               height12SizedBox,
                               InkWell(
                                   onTap: () {
-                                    roleApp.value ==
-                                            Role.customerRoleText
+                                    roleApp.value == Role.customerRoleText
                                         ? walletController
                                             .apiGetUserWalletBalance()
                                         : walletController
@@ -465,16 +462,20 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               .push(MaterialPageRoute(
                                 builder: (_) => const AddCardScreen(),
                               ))*/
-                              Get.to(const AddCardScreen(),
-                               id:pageIdApp.value,)!
+                          Get.to(
+                              const AddCardScreen(),
+                              id: pageIdApp.value,
+                            )!
                               .then((value) =>
                                   walletController.apiGetCardList(context))
                           : /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const CreateOwnerBankAccount(),
                               ))*/
-                              Get.to(const CreateOwnerBankAccount(),
-                               id:pageIdApp.value,)!
+                          Get.to(
+                              const CreateOwnerBankAccount(),
+                              id: pageIdApp.value,
+                            )!
                               .then((value) =>
                                   walletController.apiGetBankAccountList());
                     },
@@ -700,7 +701,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okay:
                                                     StringConstants.deleteText,
                                                 okayTap: () async {
-                                                  Get.back(id:pageIdApp.value);
+                                              Get.back(id: pageIdApp.value);
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:

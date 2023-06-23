@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -26,7 +25,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0),
+        preferredSize: const Size.fromHeight(85.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -43,8 +42,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                Get.back(id: pageIdApp.value);
+                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -61,6 +60,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       child: Text(
                                         manageStoreController
                                             .categoryName.value,
+                                        overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontSize: 20,
                                             color: AppColors.black,
@@ -82,22 +82,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Obx(() => SizedBox(
-                      width: 200,
-                      child: Text(
-                        manageStoreController.categoryName.value,
-                        style: const TextStyle(
-                            fontSize: 18.0,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    )),
                 InkWell(
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
@@ -106,7 +96,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewProductScreen(),
                       // ));
-                      Get.to(const AddNewProductScreen(),id:pageIdApp.value);
+                      Get.to(const AddNewProductScreen(), id: pageIdApp.value);
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -136,7 +126,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         ),
                         width2SizedBox,
                         Text(
-                          StringConstants.addNewText,
+                          StringConstants.addNewProductText,
                           style: const TextStyle(
                               fontSize: 16.0,
                               color: AppColors.primary,
@@ -238,8 +228,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //     .push(MaterialPageRoute(
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
-                                      Get.to(() => const EditProductScreen(),
-                                          id:pageIdApp.value)!
+                                  Get.to(() => const EditProductScreen(),
+                                          id: pageIdApp.value)!
                                       .then((value) {
                                     manageStoreController.apiGetStoreProducts();
                                     manageStoreController.update();

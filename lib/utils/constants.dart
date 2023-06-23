@@ -29,6 +29,7 @@ class StringConstants {
   static String addToOrderText = "Add to Order";
   static String activeOffersText = "Active Offers";
   static String addOfferText = "Add Offer";
+  static String addNewOfferText = "Add New Offer";
   static String activeOrderText = "Active Orders";
   static String activeText = "Active";
   static String addANewStoreText = "Add a new store";
@@ -42,6 +43,7 @@ class StringConstants {
   static String amountToBeAddedText = "Amount to be added";
   static String addDescriptionText = "Add Description";
   static String addNewText = "Add New";
+  static String addNewProductText = "Add New Product";
   static String addWorkerText = "Add Worker";
   static String additionalLinksToResearchText = "Additional Links to Research";
   static String addRoleText = "Add Role";

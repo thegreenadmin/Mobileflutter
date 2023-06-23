@@ -113,17 +113,20 @@ class ManageStoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     isFeaturedTypeSelected.value = false;
-
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
@@ -132,25 +135,23 @@ class ManageStoreController extends GetxController {
     if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
     }
-    if (Get.parameters["categoryName"] != "") {
-      categoryName.value = Get.parameters["categoryName"] ?? "";
-    }
     if (Get.parameters["storeName"] != "") {
       storeName.value = Get.parameters["storeName"] ?? "";
     }
     if (Get.parameters["storeLocation"] != "") {
       storeLocation.value = Get.parameters["storeLocation"] ?? "";
     }
+    if (Get.parameters["categoryName"] != "") {
+      categoryName.value = Get.parameters["categoryName"] ?? "";
+    }
     await apiGetCategoriesList();
-    await  apiGetQuantityList();
-
+    await apiGetQuantityList();
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
       apiGetCategoriesList();
       apiGetProductDetails();
     }
-
     apiGetQuantityList();
   }
 
@@ -226,10 +227,9 @@ class ManageStoreController extends GetxController {
         Uri.parse(ServerCommunicator().baseUrl +
             ServerCommunicator().fileUploadMultiple));
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
     //if (imageFileList!.isNotEmpty) {
 
     for (var i = 0; i < imageFileList!.length; i++) {
@@ -271,10 +271,9 @@ class ManageStoreController extends GetxController {
     debugPrint(
         "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}",
@@ -307,10 +306,9 @@ class ManageStoreController extends GetxController {
     debugPrint(
         "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
@@ -344,10 +342,9 @@ class ManageStoreController extends GetxController {
     debugPrint("GET PRODUCT LIST URL **********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${token.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${token.toString()}",
+    };
     UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",
@@ -430,8 +427,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
     debugPrint(
@@ -447,8 +443,8 @@ class ManageStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-         Get.back(id:pageIdApp.value );
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
+        Get.back(id: pageIdApp.value);
         // Navigator.of(cntx).pop();
         // Navigator.of(cntx).pop();
         await apiGetCategoriesList();
@@ -492,8 +488,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     Map body = {
       "q": "",
@@ -541,8 +536,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -669,8 +663,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
 
     inputData.storeId = int.parse(storeId.value);
@@ -791,7 +784,7 @@ class ManageStoreController extends GetxController {
         if (Get.parameters['isFromHome'] == "true") {
           Get.delete<ManageStoreController>();
         }
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -813,8 +806,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
     debugPrint("DELETE PRODUCT BODY ************* $data");
@@ -855,8 +847,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
     debugPrint("DELETE CATEGORY BODY ************* $data");
