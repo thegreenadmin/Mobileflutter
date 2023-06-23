@@ -412,8 +412,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               ? storeHomeMainController.popUpIndex.value == 0
                                   ? const Expanded(
                                       child: PreviousOrdersScreen())
-                                  : storeHomeMainController.popUpIndex.value ==
-                                          2
+                                  : storeHomeMainController.popUpIndex.value == 2
                                       ? Expanded(
                                           child: PdfViewScreen(
                                               isShowPrivacy: true,
@@ -443,8 +442,11 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                       .storePageContent!
                                                       .dynamicUrl
                                                       .toString()))
-                                          : const Expanded(
-                                              child: PreviousOrdersScreen())
+                                          : storeHomeMainController.lastSelectedIndex.value == 1
+                                            ? const Expanded(child: StoreMenuScreen())
+                                            : storeHomeMainController.lastSelectedIndex.value == 2
+                                            ? const Expanded(child: StoreFavouriteScreen())
+                                            :const Expanded(child: StoreHomeScreen())
                               : const Expanded(child: StoreHomeScreen())
             ],
           ),

@@ -12,6 +12,7 @@ import 'package:thegreenmall/dashboard/wallet/model/get_auto_recharge_model.dart
 import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
+import 'package:thegreenmall/dashboard/wallet/model/owners_stores_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -103,7 +104,7 @@ class WalletController extends GetxController {
   late CountryListModel countryListModel = CountryListModel();
   RxList<Countries> countryList = <Countries>[].obs;
 
-  late GetStoreListModel getStoreListModel = GetStoreListModel();
+  late GetOwnerStoresResponse getStoreListModel = GetOwnerStoresResponse();
   late GetAutoRechargeModel getAutoRechargeModel = GetAutoRechargeModel();
 
   RxList<Stores> storeList = <Stores>[].obs;
@@ -360,7 +361,7 @@ class WalletController extends GetxController {
     storeList.clear();
     isStoresLoading.value = true;
     debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().ownersStoreList}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -370,17 +371,17 @@ class WalletController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            ServerCommunicator().baseUrl + ServerCommunicator().ownersStoreList,
             headers,
             showLoading: true)
         .then((value) async {
       isStoresLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value!.body}");
+      log("GET STORE RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetStoreListModel.fromJson(value.body);
+        getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
         storeList.clear();
-        storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        storeList.addAll(getStoreListModel.data as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {
           ownerSelectedStore.value = storeList[0].storeId.toString();

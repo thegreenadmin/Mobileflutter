@@ -48,13 +48,21 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
+        storeHomeMainController.lastSelectedIndex.value = 1;
+        storeHomeMainController.onIndexChange(1);
       }
       if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
+        storeHomeMainController.lastSelectedIndex.value = 2;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(2);
       }
 
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.lastSelectedIndex.value = 0;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(0);
       }
       storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
@@ -431,7 +439,22 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 .storeDetailsResponse.value
                                 .data!.store!.storePages!.first
                                 .storePageContent!.dynamicUrl.toString()))
-                            : const Expanded(child: PreviousOrdersScreen())
+                            : storeHomeMainController.lastSelectedIndex.value == 1
+                              ? Expanded(
+                                  child:
+                                  storeHomeMainController.isFromMenu.value == true
+                                      ? stackData()
+                                      : const StoreMenuScreen())
+                              : storeHomeMainController.lastSelectedIndex.value == 2
+                              ? Expanded(
+                                child: storeHomeMainController.isFromFav.value ==
+                                    true
+                                    ? stackData()
+                                    : const StoreFavouriteScreen())
+                              : Expanded(
+                                child: storeHomeMainController.isFromHome.value == true
+                                    ? stackData()
+                                    : const StoreHomeScreen())
                             : const Expanded(child: StoreHomeScreen())
             ],
           ),

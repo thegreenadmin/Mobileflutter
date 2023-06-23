@@ -59,7 +59,7 @@ class BottomNavController extends GetxController {
 
   getRole() async {
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
-    pageIdApp.value = await SharedPreferenceStorage.getData("pageId");
+    // pageIdApp.value = await SharedPreferenceStorage.getData("pageId");
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
     print("Bottom nav cont roleInApp:--------${roleInApp.value}");
     print(roleInApp.value);
@@ -117,8 +117,10 @@ class BottomNavController extends GetxController {
     getRole();
       selectedIndex.value = index;
     // debugPrint("Bottom pageId:---------$pageId---");
+    // if(Get.routing. > 1){
+      Get.until((route) => route.isFirst,id:pageIdApp.value);
+    // }
 
-        Get.until((route) => route.isFirst,id:pageIdApp.value ?? 0);
 
       SharedPreferenceStorage.removeData("pageId");
 

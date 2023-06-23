@@ -76,6 +76,7 @@ class ServerCommunicator {
   String orderStatusList = 'order/status/list';
   String orderList = 'order/list';
   String orderDetail = 'order/details';
+  String ownersStoreList = 'store/list/owners';
 
 //P
   String productDetails = 'store/product/details';
@@ -97,6 +98,7 @@ class ServerCommunicator {
 //S
   String states = 'utils/states';
   String storeList = 'store/list';
+
   String storeDetails = 'store/details';
   String storeDetailsEdit = 'store/details/edit';
   String storeProductList = 'store/product/list';

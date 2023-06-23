@@ -66,7 +66,8 @@ class StoreHomeMainController extends GetxController {
   RxList<Products> previousOrderList = <Products>[].obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
-  RxInt popUpIndex = 0.obs;
+  RxInt lastSelectedIndex = 0.obs;
+  RxInt popUpIndex = 1.obs;
   RxInt activeStep = 0.obs;
   RxInt pageId = 0.obs;
   RxInt itemsCount = 1.obs;
@@ -113,30 +114,25 @@ class StoreHomeMainController extends GetxController {
 
       getCurrentLocation();
       apiGetUserDetailsApi();
+      apiGetShopProductDetailApi();
       if (isFromMenu.value) {
         selectedIndex.value = 1;
-        apiGetStoreCategoriesApi();
-        apiGetShopProductDetailApi();
-        if (Get.parameters["categoryId"] != "") {
-          apiFeatureProductListApi(
-              categoryId: Get.parameters["categoryId"] ?? "0");
-        }
+        lastSelectedIndex.value = 1;
+        onIndexChange(1);
       }
       if (isFromFav.value) {
         selectedIndex.value = 2;
+        lastSelectedIndex.value = 2;
         showLoading.value = false;
-        apiFeatureProductListApi(isFeaturedProduct: true);
-        apiGetShopProductDetailApi();
+        onIndexChange(2);
       }
       if (isFromHome.value) {
         selectedIndex.value = 0;
+        lastSelectedIndex.value = 0;
         showLoading.value = false;
-        apiGetStoreOffersApi();
-        apiFeatureProductListApi(isFeaturedProduct: true);
-        apiGetShopProductDetailApi();
-      } else {
         onIndexChange(0);
       }
+
       apiGetUserWalletBalance();
       apiGetCartListApi();
       apiActiveCartApi();
@@ -145,7 +141,10 @@ class StoreHomeMainController extends GetxController {
 
   void onIndexChange(int i) async {
     selectedIndex.value = i;
-    print("onIndexChange : -------- $i");
+    lastSelectedIndex.value = i;
+    print("lastSelectedIndex v:========== ${lastSelectedIndex.value}");
+    // print(lastSelectedIndex);
+    popUpIndex.value = 1;
     if (i == 0) {
       await apiGetStoreOffersApi();
       await apiFeatureProductListApi(isFeaturedProduct: true);
@@ -567,7 +566,6 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
          Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
         Get.parameters["storeName"] = value!.body["data"]["store_name"] ?? "";
         Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =

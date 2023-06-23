@@ -184,7 +184,8 @@ class AddNewWorkerController extends GetxController {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
-        Utility.showToast(value?.body['message'] ?? "");
+        Utility.showAlertMessage(value?.body['message'] ?? "");
+        // Utility.showToast(value?.body['message'] ?? "");
         resetForm();
         await apiGetWorkerList();
         // Get.back();
@@ -267,7 +268,7 @@ class AddNewWorkerController extends GetxController {
                   secFormat: "hh:mm:ss")
               .toString();
           debugPrint("test isSelected dayOfWeek");
-          debugPrint(element.id);
+          debugPrint(element.id.toString());
           // print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
           if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
             employeeTimings.add(employeeTiming);
