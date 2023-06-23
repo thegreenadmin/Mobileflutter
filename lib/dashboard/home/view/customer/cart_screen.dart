@@ -146,8 +146,7 @@ class _CartScreenState extends State<CartScreen> {
                                   (BuildContext context, int index) {
                                 return height10SizedBox;
                               },
-                              itemCount:
-                                  storeHomeMainController.cartItems.length,
+                              itemCount: storeHomeMainController.cartItems.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int i) {
@@ -218,8 +217,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 storeHomeMainController
                                                         .cartItems[i]
                                                         .product
-                                                        ?.productName ??
-                                                    "",
+                                                        ?.productName ?? "",
                                                 style: const TextStyle(
                                                     fontSize: 16.0,
                                                     color: AppColors.black,
@@ -230,15 +228,13 @@ class _CartScreenState extends State<CartScreen> {
                                               storeHomeMainController
                                                       .cartItems[i]
                                                       .product!
-                                                      .description!
-                                                      .isEmpty
+                                                      .description!.isEmpty
                                                   ? height0SizedBox
                                                   : Text(
                                                       storeHomeMainController
                                                               .cartItems[i]
                                                               .product
-                                                              ?.description ??
-                                                          "",
+                                                              ?.description ?? "",
                                                       style: const TextStyle(
                                                           fontSize: 14.0,
                                                           color:

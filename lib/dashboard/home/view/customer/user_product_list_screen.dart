@@ -268,13 +268,11 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? FontWeight.w600
                                         : FontWeight.w400,
                                     color: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
                                   ),
@@ -282,8 +280,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 Icon(
                                   Icons.arrow_drop_down,
                                   color: storeHomeMainController
-                                              .selectedIndex.value ==
-                                          i
+                                              .selectedIndex.value == i
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   size: 24,

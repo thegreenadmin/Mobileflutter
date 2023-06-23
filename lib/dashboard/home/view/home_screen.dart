@@ -649,7 +649,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Get.parameters["storeId"] =
                                                 item.store!.storeId ?? "";
                                             Get.to(() =>
-                                                () =>
                                                     const ManageStoreMainScreen(),
                                                 id:pageIdApp.value ,
                                                   arguments: {
@@ -792,7 +791,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //   builder: (_) => const AddToOrderScreen(),
                                   // ));
 
-                                    Get.to(() =>() => const AddToOrderScreen(),
+                                    Get.to(() =>const AddToOrderScreen(),
                                       id:pageIdApp.value,
                                        arguments: {
                                          "isFromHome": true,
