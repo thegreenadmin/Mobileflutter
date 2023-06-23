@@ -44,7 +44,7 @@ class GetOwnerStoresResponse {
 }
 
 class Datum {
-  bool? storeBalance;
+  dynamic storeBalance;
   dynamic dynamicLink;
   String? storeName;
   String? storeEin;
@@ -83,7 +83,7 @@ class Datum {
   });
 
   Datum copyWith({
-    bool? storeBalance,
+    dynamic storeBalance,
     dynamic dynamicLink,
     String? storeName,
     String? storeEin,
