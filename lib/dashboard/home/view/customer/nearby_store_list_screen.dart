@@ -24,19 +24,16 @@ class NearbyStoreListScreen extends StatefulWidget {
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
-  @override
+
+ /* @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       searchStoreUserController.searchController.clear();
-      searchStoreUserController.firstName?.value =
-          SharedPreferenceStorage.getData(StringConstants.firstNameText).toString();
-      searchStoreUserController.lastName?.value =
-          SharedPreferenceStorage.getData(StringConstants.lastNameText).toString();
-      searchStoreUserController.setupScrollController();
+     searchStoreUserController.setupScrollController();
       searchStoreUserController.apiActiveCartApi();
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
