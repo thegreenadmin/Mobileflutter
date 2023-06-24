@@ -591,6 +591,7 @@ class BottomNavStringConstants {
 class AlertStringConstants {
   //A
   static String areYouSureText = "Are you sure, you want to delete this item?";
+  static String areYouSureCompleteText = "Are you sure, you want to mark this as complete?";
   static String areYouSureDeleteAccountText =
       "Are you sure, you want to delete this Account?";
   static String areYouSurePlanText =

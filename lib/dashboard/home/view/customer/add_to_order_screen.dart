@@ -153,6 +153,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
+                Get.back();
                 storeHomeMainController.apiContactStore(context);
               },
               child: Container(

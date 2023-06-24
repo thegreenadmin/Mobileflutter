@@ -207,10 +207,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       //   builder: (_) => const AddNewCategoryScreen(),
                       // ))
 
-                      Get.to(
-                        () => const AddNewCategoryScreen(),
-                        id: pageIdApp.value,
-                      )!
+                      Get.parameters["categoryId"] = "";
+                      Get.to(() => const AddNewCategoryScreen(),
+                              id: pageIdApp.value,
+                              arguments: {
+                            "storeId": manageStoreController.storeId.value,
+                            "isFeaturedSelectedType": manageStoreController
+                                .isFeaturedTypeSelected.value,
+                          })!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
                       });

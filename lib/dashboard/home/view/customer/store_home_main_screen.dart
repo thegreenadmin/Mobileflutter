@@ -147,6 +147,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
+                Get.back();
                 storeHomeMainController.apiContactStore(context);
               },
               child: Container(
@@ -425,8 +426,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                   .dynamicUrl
                                                   .toString()))
                                       : storeHomeMainController
-                                                  .popUpIndex.value ==
-                                              3
+                                                  .popUpIndex.value == 3
                                           ? Expanded(
                                               child: PdfViewScreen(
                                                   isShowPrivacy: false,
