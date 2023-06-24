@@ -207,8 +207,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 // Navigator.of(context).pop();
-                                  Get.back(id:pageIdApp.value);
+                                  // Navigator.of(context).pop();
+                                  Get.back(id: pageIdApp.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -418,7 +418,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                           index]
                                                                       .orderTransaction !=
                                                                   null
-                                                              ? ': #${transactionController.userTransactionList![index].orderTransaction!.transactionId}'
+                                                              ? ': #${transactionController.userTransactionList![index].orderTransaction!.orderId}'
                                                               : transactionController
                                                                           .userTransactionList![
                                                                               index]
@@ -794,7 +794,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                           index]
                                                                       .orderTransaction !=
                                                                   null
-                                                              ? ': #${transactionController.ownerOrderTransactionList![index].orderTransaction!.transactionId}'
+                                                              ? ': #${transactionController.ownerOrderTransactionList![index].orderTransaction!.orderId}'
                                                               : transactionController
                                                                           .ownerOrderTransactionList![
                                                                               index]
