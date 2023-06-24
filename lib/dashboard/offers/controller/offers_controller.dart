@@ -57,37 +57,34 @@ class OffersController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Get.parameters['isFromNotification'] != "false") {
         isFromNotification.value =
-        Get.parameters["isFromNotification"] == "true" ? true : false;
+            Get.parameters["isFromNotification"] == "true" ? true : false;
       }
-      getCurrentLocation();
-      update();
+      getData();
     });
+  }
 
+  getData() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    role.value = await SharedPreferenceStorage.getData(Role.role);
+    if (role.value == Role.customerRoleText) {
+      getCurrentLocation();
+    } else {
+      apiGetOwnerOffersList();
+    }
   }
 
   getCurrentLocation() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
-    role.value = await SharedPreferenceStorage.getData(Role.role);
-
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-
     debugPrint("CURRENT roleVal************${role.value} ${pageId.value}");
-
-    print(role.value == Role.customerRoleText);
-    print(role.value);
-    print(Role.customerRoleText);
-    if ( role.value == Role.customerRoleText) {
-      apiGetUserOffersList();
-      update();
-    } else {
-      apiGetOwnerOffersList();
-      update();
-    }
-
+    apiGetUserOffersList();
   }
 
   //Get Offers List Api [OWNER]
@@ -98,8 +95,7 @@ class OffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -146,8 +142,7 @@ class OffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -182,8 +177,7 @@ class OffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${token.toString()}",
     };
     deleteOfferRequestModel.storeId = int.parse(storeId!.value);
     deleteOfferRequestModel.offerId = int.parse(offerId!.value);
