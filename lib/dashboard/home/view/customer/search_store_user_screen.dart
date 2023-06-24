@@ -424,6 +424,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               searchStoreUserController.favouriteStore.clear();
               searchStoreUserController.page.value = 1;
               searchStoreUserController.type.value = i;
+              Get.parameters["isFromHome"] = "true";
+              Get.parameters["isFromFav"] = "false";
+              Get.parameters["isFromMenu"] = "false";
               if (i == 0 &&
                   searchStoreUserController.isClicked.value == false) {
                 await searchStoreUserController.apiGetNearByStores();

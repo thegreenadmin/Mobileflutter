@@ -46,11 +46,15 @@ class UserInboxDetailController extends GetxController {
 
     apiGetMessagesList();
     getPage();
-
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
@@ -59,7 +63,7 @@ class UserInboxDetailController extends GetxController {
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -75,7 +79,7 @@ class UserInboxDetailController extends GetxController {
       }
     }, onCameraClick: () async {
       // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -97,10 +101,9 @@ class UserInboxDetailController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -148,8 +151,7 @@ class UserInboxDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -170,10 +172,10 @@ class UserInboxDetailController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -184,8 +186,7 @@ class UserInboxDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -221,10 +222,10 @@ class UserInboxDetailController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }
