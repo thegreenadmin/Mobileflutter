@@ -56,8 +56,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
-                                 Get.delete<AddNewCategoryController>();
+                                  Get.back(id: pageIdApp.value);
+                                  Get.delete<AddNewCategoryController>();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
