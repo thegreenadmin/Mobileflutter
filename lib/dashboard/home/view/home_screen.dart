@@ -504,13 +504,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .map((item) => InkWell(
                                             onTap: () async{
                                               if(homeController.isLoading?.value == false){
-                                            // SharedPreferenceStorage.setData(
-                                            //     "context", context);
-                                            // Navigator.of(context)
-                                            //     .push(MaterialPageRoute(
-                                            //   builder: (_) =>
-                                            //       const StoreHomeMainScreen(),
-                                            // ));
+                                                // SharedPreferenceStorage.setData(
+                                                //     "context", context);
+                                                // Navigator.of(context)
+                                                //     .push(MaterialPageRoute(
+                                                //   builder: (_) =>
+                                                //       const StoreHomeMainScreen(),
+                                                // ));
+                                                Get.parameters["isFromHome"] = "true";
+                                                Get.parameters["isFromFav"] = "false";
+                                                Get.parameters["isFromMenu"] = "false";
                                                 Get.parameters["storeId"] =
                                                     item.storeId ?? "";
                                             await Get.to(() =>const StoreHomeMainScreen(),

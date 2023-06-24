@@ -971,6 +971,7 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back(id: pageIdApp.value);
+        // Get.back(id: pageIdApp.value);
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

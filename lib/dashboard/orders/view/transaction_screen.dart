@@ -384,7 +384,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                   )),
                                         width10SizedBox,
                                         Flexible(
-                                          flex: 8,
+                                          flex: 10,
                                           child: Column(
                                             children: [
                                               Row(
@@ -529,65 +529,75 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                      transactionController
-                                                                  .userTransactionList![
-                                                                      index]
-                                                                  .store ==
-                                                              null
-                                                          ? transactionController
-                                                                      .userTransactionList![
-                                                                          index]
-                                                                      .membership !=
-                                                                  null
-                                                              ? StringConstants
-                                                                  .membershipTransactionText
-                                                              : StringConstants
-                                                                  .walletTransactionText
-                                                          : transactionController
-                                                                  .userTransactionList![
-                                                                      index]
-                                                                  .store!
-                                                                  .storeName ??
-                                                              "",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 16)),
-                                                  Text(
-                                                    transactionController
-                                                                .userTransactionList![
-                                                                    index]
-                                                                .orderTransaction !=
-                                                            null
-                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
-                                                        : transactionController
+                                                  Expanded(
+                                                    flex:3,
+                                                    child: Text(
+                                                        transactionController
                                                                     .userTransactionList![
                                                                         index]
-                                                                    .orderItemRefundTransaction !=
+                                                                    .store ==
                                                                 null
-                                                            ? "\$${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                            : transactionController
+                                                            ? transactionController
                                                                         .userTransactionList![
                                                                             index]
-                                                                        .transaction !=
+                                                                        .membership !=
                                                                     null
-                                                                ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                : transactionController
-                                                                            .userTransactionList![index]
-                                                                            .membership !=
-                                                                        null
-                                                                    ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
-                                                                    : "",
+                                                                ? StringConstants
+                                                                    .membershipTransactionText
+                                                                : StringConstants
+                                                                    .walletTransactionText
+                                                            : transactionController
+                                                                    .userTransactionList![
+                                                                        index]
+                                                                    .store!
+                                                                    .storeName ??
+                                                                "",
+                                                        textAlign:  TextAlign.start,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                AppColors.black,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16)),
+                                                  ),
+                                                  Expanded(
+                                                    flex:1,
+                                                    child:  Text(
+                                                    transactionController
+                                                        .userTransactionList![
+                                                    index]
+                                                        .orderTransaction !=
+                                                        null
+                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
+                                                        : transactionController
+                                                        .userTransactionList![
+                                                    index]
+                                                        .orderItemRefundTransaction !=
+                                                        null
+                                                        ? "\$${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                        : transactionController
+                                                        .userTransactionList![
+                                                    index]
+                                                        .transaction !=
+                                                        null
+                                                        ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                        : transactionController
+                                                        .userTransactionList![index]
+                                                        .membership !=
+                                                        null
+                                                        ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                        : "",
+                                                    textAlign:  TextAlign.end,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(
                                                         color:
-                                                            AppColors.primary,
+                                                        AppColors.primary,
                                                         fontWeight:
-                                                            FontWeight.w600,
+                                                        FontWeight.w600,
                                                         fontSize: 16),
-                                                  ),
+                                                  ),)
+
                                                 ],
                                               ),
                                               Row(
