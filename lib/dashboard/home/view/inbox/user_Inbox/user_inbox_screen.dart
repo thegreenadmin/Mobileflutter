@@ -479,9 +479,9 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               onPressed: () async {
                                                 Utility.showConfirmAlertMessage(
                                                     AlertStringConstants
-                                                        .areYouSureText,
+                                                        .areYouSureCompleteText,
                                                     okay: StringConstants
-                                                        .deleteText, okayTap: () {
+                                                        .completeText, okayTap: () {
                                                   // Navigator.pop(Get.context!);
                                                   userInboxController
                                                       .apiDeleteUserMessages(

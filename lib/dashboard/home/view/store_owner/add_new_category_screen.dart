@@ -31,13 +31,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
     addNewCategoryController.isFeaturedTypeSelected.value = false;
     addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
     addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
-    addNewCategoryController.categoryId.value =
-        Get.parameters["categoryId"] ?? "";
-    addNewCategoryController.isFeaturedTypeSelected.value =
-        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    if (addNewCategoryController.categoryId.value.isNotEmpty) {
-      addNewCategoryController.apiGetCategoryDetail();
-    }
   }
 
   @override
@@ -60,7 +53,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
-                              // Navigator.of(context).pop();
+                              Get.delete<AddNewCategoryController>();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

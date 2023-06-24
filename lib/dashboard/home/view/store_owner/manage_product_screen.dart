@@ -217,6 +217,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       //   builder: (_) => const AddNewCategoryScreen(),
                       // ))
 
+                      Get.parameters["categoryId"] ="";
                       Get.to(() => const AddNewCategoryScreen(),
                               id: pageIdApp.value,
                               arguments: {

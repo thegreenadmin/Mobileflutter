@@ -351,7 +351,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     if (isPlaceOrder.value == true) {
-                      await apiPlaceOrder(ctx);
+                      await apiPlaceOrder();
                     }
                   },
                   child: Container(
@@ -745,12 +745,11 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Place Order Api
-  Future apiPlaceOrder(context) async {
+  Future apiPlaceOrder() async  {
     isPlaceOrder.value = false;
     isLoading.value = true;
     debugPrint("API PLACE ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -797,18 +796,15 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
-        await Get.to(() => const OrderConfirmationScreen(),
-            id: pageIdApp.value);
-        // Navigator.of(context).push(MaterialPageRoute(
-        //   builder: (_) => const OrderConfirmationScreen(),
-        // ));
 
-        /* Get.to(() => const OrderConfirmationScreen(), arguments: {
+        Get.to(() => const OrderConfirmationScreen(),
+             id: pageIdApp.value,
+             arguments: {
           "storeId": storeId.value.toString() ?? "0",
           "orderStatus": orderStatus.value,
           "isFromTransaction": false,
           "isFromNotification": false
-        });*/
+        });
         update();
         isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -817,7 +813,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         isPlaceOrder.value = true;
         if (value?.body["message"] == "Insufficient balance") {

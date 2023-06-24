@@ -149,6 +149,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             height15SizedBox,
             InkWell(
               onTap: () {
+                Get.back();
                 storeHomeMainController.apiContactStore(context);
               },
               child: Container(

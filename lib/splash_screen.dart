@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 
@@ -20,15 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
 
-  // startTime() {
-  //   var duration = const Duration(seconds: 2);
-  //   return Timer(duration, navigationPage);
-  // }
   startTime() async {
     BioMetricAuthentication.isBioMetricAuthenticated.value =
         await SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) !=null
-            ?SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) as bool : false ??
-            false;
+            ? SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase()) as bool : false;
     debugPrint(
         "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
     var duration = const Duration(seconds: 2);
@@ -41,12 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigationPage() async {
     var token = await SharedPreferenceStorage.getData('token');
+    Future.delayed(const Duration(seconds: 3)).then((value)async {
+      if ( token!= null) {
+        authToken.value = token;
+        Get.offAll(() => const BottomNavigation());
+      } else {
+        Get.offNamed('/onboardView');
+      }
+    });
 
-    if ( token!= null) {
-      Get.offAll(() => const BottomNavigation());
-    } else {
-      Get.offNamed('/onboardView');
-    }
+
   }
 
   Future<void> _authenticateWithBiometrics() async {
@@ -54,13 +54,16 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       isAuthenticating = true;
       authorized = 'Authenticating';
-      authenticated = await auth.authenticate(
-        localizedReason: 'Scan your fingerprint to authenticate',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: true,
-        ),
-      );
+      Future.delayed(const Duration(seconds: 2)).then((value)async {
+        authenticated = await auth.authenticate(
+          localizedReason: 'Scan your fingerprint to authenticate',
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true,
+          ),
+        );
+      });
+
       isAuthenticating = false;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
