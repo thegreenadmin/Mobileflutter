@@ -156,7 +156,7 @@ class AddNewCategoryController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization': "Bearer ${token.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -203,7 +203,7 @@ class AddNewCategoryController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("ADD CATEGORY headers********** $headers");
     debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
@@ -257,7 +257,7 @@ class AddNewCategoryController extends GetxController {
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -297,7 +297,7 @@ class AddNewCategoryController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),

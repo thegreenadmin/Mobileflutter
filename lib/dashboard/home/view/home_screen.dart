@@ -511,11 +511,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             //   builder: (_) =>
                                             //       const StoreHomeMainScreen(),
                                             // ));
-
+                                                Get.parameters["storeId"] =
+                                                    item.storeId ?? "";
                                             await Get.to(() =>const StoreHomeMainScreen(),
                                             id:pageIdApp.value);
-                                            Get.parameters["storeId"] =
-                                            item.storeId ?? "";
+
 
                                             }
                                             },

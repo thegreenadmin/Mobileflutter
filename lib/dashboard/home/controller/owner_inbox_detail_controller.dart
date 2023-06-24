@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -96,7 +97,7 @@ class OwnerInboxDetailController extends GetxController {
        var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -145,7 +146,7 @@ class OwnerInboxDetailController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -182,7 +183,7 @@ class OwnerInboxDetailController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {

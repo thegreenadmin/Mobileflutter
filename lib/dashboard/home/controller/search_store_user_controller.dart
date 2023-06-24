@@ -132,7 +132,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -182,7 +182,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -231,7 +231,7 @@ class SearchStoreUserController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
 
     debugPrint("TOKEN ********** $headers");
@@ -411,7 +411,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {
@@ -531,7 +531,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -593,7 +593,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -651,7 +651,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -724,7 +724,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -814,7 +814,7 @@ class SearchStoreUserController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "store_id": int.parse(storeId),

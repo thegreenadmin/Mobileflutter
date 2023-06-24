@@ -126,7 +126,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -170,7 +170,7 @@ class AddNewRoleController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE ROLE BODY********** ${createRoleRequestModel.toJson()}");
     debugPrint(
@@ -209,7 +209,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -250,7 +250,7 @@ class AddNewRoleController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     deleteRoleRequestModel.storeId = int.parse(storeId.value);
     deleteRoleRequestModel.roleId = int.parse(roleId.value);
@@ -296,7 +296,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -372,7 +372,7 @@ class AddNewRoleController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("EDIT ROLE BODY********** $data");
     debugPrint(

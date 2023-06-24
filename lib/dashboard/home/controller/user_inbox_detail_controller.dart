@@ -14,6 +14,7 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart' show MediaType;
 
 import '../../../utils/constants.dart';
+import '../../../utils/global_share_data.dart';
 
 class UserInboxDetailController extends GetxController {
   RxBool isloading = false.obs;
@@ -99,7 +100,7 @@ class UserInboxDetailController extends GetxController {
        var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -148,7 +149,7 @@ class UserInboxDetailController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -184,7 +185,7 @@ class UserInboxDetailController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {

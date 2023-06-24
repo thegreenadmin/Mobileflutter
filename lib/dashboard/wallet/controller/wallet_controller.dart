@@ -296,7 +296,7 @@ class WalletController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -334,7 +334,7 @@ class WalletController extends GetxController {
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -370,7 +370,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -452,7 +452,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE CARD BODY *******$body");
     debugPrint("CREATE CARD HEADERS *******$headers");
@@ -490,7 +490,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -533,7 +533,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("ADD MONEY TO WALLET BODY *******$body");
     debugPrint("ADD MONEY TO WALLET HEADERS *******$headers");
@@ -575,7 +575,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -610,7 +610,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {"user_stripe_card_id": userStripeCardId};
 
@@ -650,7 +650,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -734,7 +734,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map<String, String> body = {
       "token_id": bankToken.value,
@@ -785,7 +785,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -824,7 +824,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {"user_stripe_bank_id": userStripeBankId};
 
@@ -864,7 +864,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map<String, String> body = {
       "auto_charge_type": autoChargeType.value,
@@ -934,7 +934,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1036,7 +1036,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map<String, String> body = {
       "user_wallet_auto_charge_id": userWalletAutoChargeId.value,
@@ -1107,7 +1107,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "user_wallet_auto_charge_id": getAutoRechargeModel
@@ -1150,7 +1150,7 @@ class WalletController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

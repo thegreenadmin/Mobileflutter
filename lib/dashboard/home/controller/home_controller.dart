@@ -73,7 +73,7 @@ class HomeController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    // pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
 
@@ -167,7 +167,7 @@ class HomeController extends GetxController {
 
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -212,7 +212,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -256,7 +256,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "q": "",
@@ -315,7 +315,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "q": "",
@@ -374,7 +374,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -428,7 +428,7 @@ class HomeController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
 

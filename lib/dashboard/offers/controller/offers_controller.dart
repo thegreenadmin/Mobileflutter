@@ -15,6 +15,8 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../../utils/global_share_data.dart';
+
 class OffersController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -99,7 +101,7 @@ class OffersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -147,7 +149,7 @@ class OffersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -183,7 +185,7 @@ class OffersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     deleteOfferRequestModel.storeId = int.parse(storeId!.value);
     deleteOfferRequestModel.offerId = int.parse(offerId!.value);
@@ -229,7 +231,7 @@ class OffersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "q": "",

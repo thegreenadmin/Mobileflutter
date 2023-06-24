@@ -126,7 +126,7 @@ class OrdersHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(
@@ -166,7 +166,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map body = {
@@ -257,7 +257,7 @@ class OrdersHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -335,7 +335,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -383,7 +383,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -438,7 +438,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map body = {
@@ -482,7 +482,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -535,7 +535,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -589,7 +589,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -644,7 +644,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -699,7 +699,7 @@ class OrdersHomeMainController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     List<dynamic> orderItems = [];
 

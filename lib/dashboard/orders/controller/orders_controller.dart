@@ -92,11 +92,10 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
+    debugPrint("Order onInit called **********");
     WidgetsBinding.instance.addPostFrameCallback((_){
-      if ( Get.parameters['isFromNotification'] != "false") {
-        isFromNotification.value =
-        Get.parameters["isFromNotification"] == "true" ? true : false;
-      }
+      isFromNotification.value =
+      Get.parameters["isFromNotification"] == "true" ? true : false;
       if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
         storeId.value = Get.parameters["storeId"] ?? "";
         if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
@@ -106,19 +105,18 @@ class OrdersController extends GetxController {
         apiGetStoreDetailsApi();
       }
 
-      if (Get.parameters["orderStatus"] != null) {
-        orderStatus.value = Get.parameters["orderStatus"] ?? "";
-      }
-      if (Get.parameters["isHome"] != null) {
-        isHome.value = Get.parameters["isHome"] == "true" ? true : false;
-      }
+      orderStatus.value = Get.parameters["orderStatus"] ?? "";
+      isHome.value = Get.parameters["isHome"] == "true" ? true : false;
 
       isActiveOrders.value = true;
       orderStatusId.value = 2;
       orderStatusName.value = OrderStatus.receivedOrder.statusName;
       role!.value = SharedPreferenceStorage.getData(Role.role).toString();
+      role!.value = roleApp.value;
+      uerSelectedTab.value =0;
       if (role!.value == Role.customerRoleText) {
         page.value = 1;
+
         apiGetOrderListApi();
         if (orderStatus.value != "") {
           apiGetOrderDetailsApi();
@@ -631,11 +629,10 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("CREATE ITEM REVIEW URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -683,11 +680,10 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("RETURN ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -745,7 +741,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
@@ -786,11 +782,10 @@ class OrdersController extends GetxController {
     debugPrint("role List URL**********${role!.value}");
     debugPrint("Order List URL****${page.value}******"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map<String, dynamic> data = {
       "store_id": null,
@@ -801,7 +796,7 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses": uerSelectedTab.value ==0 ?
+      "order_statuses": uerSelectedTab.value == 0 ?
       [
           {
           "order_status_name": OrderStatus.receivedOrder.statusName,
@@ -897,7 +892,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -967,7 +962,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1009,7 +1004,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1047,7 +1042,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1129,7 +1124,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1187,7 +1182,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1241,7 +1236,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1288,7 +1283,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1331,7 +1326,7 @@ class OrdersController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};

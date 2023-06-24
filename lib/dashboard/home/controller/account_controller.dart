@@ -383,7 +383,7 @@ class AccountController extends GetxController {
       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -449,7 +449,7 @@ class AccountController extends GetxController {
      var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -525,7 +525,7 @@ class AccountController extends GetxController {
      var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -573,7 +573,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -622,7 +622,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "user": {
@@ -700,7 +700,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "proof_type_id": 1,
@@ -741,7 +741,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -840,7 +840,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "notification_type": notificationType,
@@ -889,7 +889,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {"has_store_access": true};
     debugPrint("CREATE USER ACCESS BODY**********$data");
@@ -927,7 +927,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -963,7 +963,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "membership_plan_id": membershipPlanId,
@@ -1013,7 +1013,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1050,7 +1050,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map data = {"has_store_access": true};
     debugPrint("DELETE USER BODY**********$data");
@@ -1087,7 +1087,7 @@ class AccountController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${SharedPreferenceStorage.getData("token").toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(

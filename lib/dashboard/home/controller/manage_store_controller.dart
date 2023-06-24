@@ -228,7 +228,7 @@ class ManageStoreController extends GetxController {
             ServerCommunicator().fileUploadMultiple));
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     //if (imageFileList!.isNotEmpty) {
 
@@ -272,7 +272,7 @@ class ManageStoreController extends GetxController {
         "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -307,7 +307,7 @@ class ManageStoreController extends GetxController {
         "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -343,7 +343,7 @@ class ManageStoreController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -427,7 +427,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
     debugPrint(
@@ -488,7 +488,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "q": "",
@@ -536,7 +536,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -663,7 +663,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     inputData.storeId = int.parse(storeId.value);
@@ -806,7 +806,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
     debugPrint("DELETE PRODUCT BODY ************* $data");
@@ -847,7 +847,7 @@ class ManageStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${token.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
     debugPrint("DELETE CATEGORY BODY ************* $data");

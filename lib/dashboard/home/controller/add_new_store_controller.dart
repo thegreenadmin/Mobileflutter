@@ -259,7 +259,7 @@ class AddNewStoreController extends GetxController {
        var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -318,7 +318,7 @@ class AddNewStoreController extends GetxController {
        var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -423,7 +423,7 @@ class AddNewStoreController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
@@ -503,7 +503,7 @@ class AddNewStoreController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {
@@ -541,7 +541,7 @@ class AddNewStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -596,7 +596,7 @@ class AddNewStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -635,7 +635,7 @@ class AddNewStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

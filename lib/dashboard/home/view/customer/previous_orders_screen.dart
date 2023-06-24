@@ -94,7 +94,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                               height4SizedBox,
                               Center(
                                 child: Text(
-                                  StringConstants.noProductFoundText,
+                                  StringConstants.noOrdersFoundText,
                                   style: const TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontSize: 16),

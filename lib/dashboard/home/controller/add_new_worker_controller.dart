@@ -131,7 +131,7 @@ class AddNewWorkerController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     add_worker.AddWorkerRequest addWorkerRequest =
         add_worker.AddWorkerRequest();
@@ -211,7 +211,7 @@ class AddNewWorkerController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
     editWorkerRequest.storeId = int.parse(storeId.value);
@@ -340,7 +340,7 @@ class AddNewWorkerController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          "Bearer ${token.toString()}",
+          "Bearer ${authToken.value.toString()}",
     };
     Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value),
@@ -418,7 +418,7 @@ class AddNewWorkerController extends GetxController {
        var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
 
       formData.files.add(MapEntry(
@@ -466,7 +466,7 @@ class AddNewWorkerController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(
@@ -540,7 +540,7 @@ class AddNewWorkerController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(
@@ -575,7 +575,7 @@ class AddNewWorkerController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(
@@ -611,7 +611,7 @@ class AddNewWorkerController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(
@@ -647,7 +647,7 @@ class AddNewWorkerController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
         'Authorization':
-        "Bearer ${token.toString()}",
+        "Bearer ${authToken.value.toString()}",
       };
     UserProvider()
         .getWithHeadersApi(

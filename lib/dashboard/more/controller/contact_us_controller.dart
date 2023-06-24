@@ -67,7 +67,7 @@ class ContactUsController extends GetxController {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
-      "Bearer ${token.toString()}",
+      "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE USER BODY********** $data");
     debugPrint(
