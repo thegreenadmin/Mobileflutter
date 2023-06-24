@@ -8,8 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-
 import '../../../../utils/global_share_data.dart';
 
 class AddNewCategoryScreen extends StatefulWidget {
@@ -23,22 +21,22 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   AddNewCategoryController addNewCategoryController =
       Get.put(AddNewCategoryController());
 
-  @override
-  initState() {
-    super.initState();
-    addNewCategoryController.categoryNameTextController.clear();
-    addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
-    addNewCategoryController.isFeaturedTypeSelected.value = false;
-    addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
-    addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
-    addNewCategoryController.categoryId.value =
-        Get.parameters["categoryId"] ?? "";
-    addNewCategoryController.isFeaturedTypeSelected.value =
-        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-    if (addNewCategoryController.categoryId.value.isNotEmpty) {
-      addNewCategoryController.apiGetCategoryDetail();
-    }
-  }
+  // @override
+  // initState() {
+  //   super.initState();
+  //   addNewCategoryController.categoryNameTextController.clear();
+  //   addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
+  //   addNewCategoryController.isFeaturedTypeSelected.value = false;
+  //   addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
+  //   addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
+  //   addNewCategoryController.categoryId.value =
+  //       Get.parameters["categoryId"] ?? "";
+  //   addNewCategoryController.isFeaturedTypeSelected.value =
+  //       Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+  //   if (addNewCategoryController.categoryId.value.isNotEmpty) {
+  //     addNewCategoryController.apiGetCategoryDetail();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +57,8 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
+                              Get.delete<AddNewCategoryController>();
                               Get.back(id: pageIdApp.value);
-                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,

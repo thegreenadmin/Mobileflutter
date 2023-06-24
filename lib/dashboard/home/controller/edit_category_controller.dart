@@ -15,7 +15,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import '../../../utils/global_share_data.dart';
 
-class AddNewCategoryController extends GetxController {
+class EditNewCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
 
@@ -57,7 +57,7 @@ class AddNewCategoryController extends GetxController {
     categoryId.value = Get.parameters["categoryId"] ?? "";
     isFeaturedTypeSelected.value =
         Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-
+    debugPrint(Get.parameters["isFeaturedSelectedType"]);
     if (categoryId.value.isNotEmpty) {
       await apiGetCategoryDetail();
     }
@@ -280,6 +280,8 @@ class AddNewCategoryController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+
+        // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

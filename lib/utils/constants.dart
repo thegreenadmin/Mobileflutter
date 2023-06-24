@@ -275,6 +275,8 @@ class StringConstants {
   static String marchText = "March";
   static String mayText = "May";
   static String milesText = "Miles";
+  static String membershipIdText = "Membership Id";
+  static String membershipTransactionText = "Membership Transaction";
 
   //N
   static String nearbyText = "Nearby";

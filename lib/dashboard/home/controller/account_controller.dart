@@ -119,8 +119,6 @@ class AccountController extends GetxController {
     debugPrint(isFromCart.value.toString());
     apiGetUserDetailApi();
     getGkey();
-
-
   }
 
   updatePlan(index, String plan) {
@@ -128,21 +126,23 @@ class AccountController extends GetxController {
   }
 
   getGkey() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-   var val = await SharedPreferenceStorage.getData(
-    StringConstants.authenticatedText.toLowerCase());
-    BioMetricAuthentication.isBioMetricAuthenticated.value =
-        val ?? false;
+    var val = await SharedPreferenceStorage.getData(
+        StringConstants.authenticatedText.toLowerCase());
+    BioMetricAuthentication.isBioMetricAuthenticated.value = val ?? false;
     roleId?.value = await SharedPreferenceStorage.getData(Role.role);
-    if ( roleId?.value ==
-        Role.customerRoleText) {
+    if (roleId?.value == Role.customerRoleText) {
       await apiGetNotificationStatus(false);
     } else {
       await apiGetNotificationStatus(true);
@@ -151,12 +151,10 @@ class AccountController extends GetxController {
     isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
         ? isScreenLockNotify.value = true
         : isScreenLockNotify.value = false;
-
   }
+
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-
-
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -382,8 +380,7 @@ class AccountController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
       var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -446,10 +443,9 @@ class AccountController extends GetxController {
   Future apiGetUserDetailApi() async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-     var token = await SharedPreferenceStorage.getData('token');
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -510,7 +506,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(),id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
@@ -522,10 +518,9 @@ class AccountController extends GetxController {
   Future apiGetCountries() async {
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-     var token = await SharedPreferenceStorage.getData('token');
+    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -555,7 +550,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -572,8 +567,7 @@ class AccountController extends GetxController {
 
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -604,7 +598,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -621,8 +615,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "user": {
@@ -670,20 +663,18 @@ class AccountController extends GetxController {
         stateTextController.clear();
         countryTextController.clear();
         if (isFromCart.value) {
-         Get.back(id:pageIdApp.value);
-         // Navigator.of(context).pop();
-
+          Get.back(id: pageIdApp.value);
+          // Navigator.of(context).pop();
         } else {
-
-         Get.back(id:pageIdApp.value );
-         // Navigator.of(context).pop();
+          Get.back(id: pageIdApp.value);
+          // Navigator.of(context).pop();
 
           await apiGetUserDetailApi();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -699,8 +690,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "proof_type_id": 1,
@@ -723,7 +713,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {
@@ -734,14 +724,13 @@ class AccountController extends GetxController {
   }
 
   //Get Notification Status Api
-  Future apiGetNotificationStatus(bool isOwner ) async {
+  Future apiGetNotificationStatus(bool isOwner) async {
     debugPrint(
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
 
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -817,7 +806,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(),id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
         // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -839,8 +828,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "notification_type": notificationType,
@@ -861,18 +849,14 @@ class AccountController extends GetxController {
         Utility.showToast(value.body['message']);
         if (SharedPreferenceStorage.getData(Role.role).toString() ==
             Role.customerRoleText) {
-          await apiGetNotificationStatus(
-            false
-          );
+          await apiGetNotificationStatus(false);
         } else {
-          await apiGetNotificationStatus(
-            true
-          );
+          await apiGetNotificationStatus(true);
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -888,8 +872,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {"has_store_access": true};
     debugPrint("CREATE USER ACCESS BODY**********$data");
@@ -904,11 +887,11 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.until((route) => route.isFirst,id:pageIdApp.value);
+        Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {
@@ -926,8 +909,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -945,7 +927,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -956,14 +938,15 @@ class AccountController extends GetxController {
 
 //Create membership plan
   apiCreateMembershipPlan(
-      {int index = 0, String membershipPlanId = "", String planDays = ""}) async{
+      {int index = 0,
+      String membershipPlanId = "",
+      String planDays = ""}) async {
     debugPrint(
         "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "membership_plan_id": membershipPlanId,
@@ -987,12 +970,12 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        Get.back();
+        Get.back(id: pageIdApp.value);
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
         noOfDaysTextController.clear();
@@ -1012,8 +995,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1033,7 +1015,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-         await Get.offAll(const StartJourneyScreen());
+        await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -1049,8 +1031,7 @@ class AccountController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {"has_store_access": true};
     debugPrint("DELETE USER BODY**********$data");
@@ -1086,8 +1067,7 @@ class AccountController extends GetxController {
         "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(

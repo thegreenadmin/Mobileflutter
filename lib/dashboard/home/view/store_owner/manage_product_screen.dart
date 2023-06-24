@@ -22,18 +22,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 
-  // @override
-  // initState() {
-  //   super.initState();
-  //   manageStoreController.isFeaturedTypeSelected.value = false;
-  //   manageStoreController.storeId.value = Get.parameters["storeId"] ?? "";
-  //   manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
-  //   manageStoreController.storeLocation.value =
-  //       Get.parameters["storeLocation"] ?? "";
-  //   manageStoreController.apiGetCategoriesList();
-  //   manageStoreController.apiGetQuantityList();
-  // }
-
   Container _horizontalTab() {
     return Container(
       height: 47,
@@ -211,19 +199,18 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   true
                               ? "true"
                               : "false";
+                      Get.parameters["IsAddCategory"] = "true";
+
                       // SharedPreferenceStorage.setData("context", context);
                       // Navigator.of(context)
                       //     .push(MaterialPageRoute(
                       //   builder: (_) => const AddNewCategoryScreen(),
                       // ))
 
-                      Get.to(() => const AddNewCategoryScreen(),
-                              id: pageIdApp.value,
-                              arguments: {
-                            "storeId": manageStoreController.storeId.value,
-                            "isFeaturedSelectedType": manageStoreController
-                                .isFeaturedTypeSelected.value,
-                          })!
+                      Get.to(
+                        () => const AddNewCategoryScreen(),
+                        id: pageIdApp.value,
+                      )!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
                       });

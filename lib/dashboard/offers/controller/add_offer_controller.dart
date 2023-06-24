@@ -91,10 +91,9 @@ class AddOffersController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -150,13 +149,19 @@ class AddOffersController extends GetxController {
     }
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
     pageId.value = await SharedPreferenceStorage.getData("pageId");
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -173,7 +178,8 @@ class AddOffersController extends GetxController {
         if (offerImageDynamicLinkfromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseUploadImageText);
         } else if (discountType.value.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectDiscountType);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectDiscountType);
         } else {
           isValidateFromAddOffer
               ? await apiAddOffer(context)
@@ -192,8 +198,7 @@ class AddOffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     List<OfferProducts> offerProductList = <OfferProducts>[];
     Offer offer = Offer();
@@ -227,8 +232,8 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         // Get.back();
-        Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(context).pop();
         offerNameTextController.clear();
         storeIdValue.value = "";
         offerImageOrigionalLinkfromServer.value = "";
@@ -255,8 +260,7 @@ class AddOffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -299,8 +303,7 @@ class AddOffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "q": "",
@@ -384,8 +387,7 @@ class AddOffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -444,8 +446,7 @@ class AddOffersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "store_id": storeIdValue.value,
@@ -473,8 +474,8 @@ class AddOffersController extends GetxController {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
         // Get.back();
-        Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(context).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

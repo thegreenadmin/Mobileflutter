@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/get_auto_recharge_model.dart';
@@ -142,10 +141,6 @@ class WalletController extends GetxController {
     pageId.value = await SharedPreferenceStorage.getData("pageId");
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    debugPrint(
-        "WalletController:----- ${firstName?.value} ---${pageId.value} --$roleVal --------");
-    debugPrint(
-        "WalletController:----- ${firstName?.value} ---${pageId.value} --$roleVal --------");
 
     role?.value = roleVal;
     autoChargeType.value = "threshold";

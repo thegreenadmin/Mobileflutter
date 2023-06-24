@@ -63,6 +63,7 @@ class Transactionss {
   OrderItemRefundTransaction? orderItemRefundTransaction;
   Transaction? transaction;
   Store? store;
+  Membership? membership;
 
   Transactionss(
       {this.userId,
@@ -78,7 +79,8 @@ class Transactionss {
       this.orderTransaction,
       this.orderItemRefundTransaction,
       this.transaction,
-      this.store});
+      this.store,
+      this.membership});
 
   Transactionss.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -102,6 +104,9 @@ class Transactionss {
         ? Transaction.fromJson(json['transaction'])
         : null;
     store = json['store'] != null ? Store.fromJson(json['store']) : null;
+    membership = json['membership'] != null
+        ? new Membership.fromJson(json['membership'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -129,6 +134,9 @@ class Transactionss {
     }
     if (this.store != null) {
       data['store'] = this.store!.toJson();
+    }
+    if (this.membership != null) {
+      data['membership'] = this.membership!.toJson();
     }
     return data;
   }
@@ -678,6 +686,116 @@ class Store {
     if (image != null) {
       data['image'] = image!.toJson();
     }
+    return data;
+  }
+}
+
+class Membership {
+  String? membershipId;
+  String? transactionId;
+  String? membershipPlanId;
+  int? membershipCharge;
+  int? duration;
+  String? expiredAt;
+  MembershipPlan? membershipPlan;
+  Transaction? transaction;
+
+  Membership(
+      {this.membershipId,
+      this.transactionId,
+      this.membershipPlanId,
+      this.membershipCharge,
+      this.duration,
+      this.expiredAt,
+      this.membershipPlan,
+      this.transaction});
+
+  Membership.fromJson(Map<String, dynamic> json) {
+    membershipId = json['membership_id'];
+    transactionId = json['transaction_id'];
+    membershipPlanId = json['membership_plan_id'];
+    membershipCharge = json['membership_charge'];
+    duration = json['duration'];
+    expiredAt = json['expiredAt'];
+    membershipPlan = json['membership_plan'] != null
+        ? new MembershipPlan.fromJson(json['membership_plan'])
+        : null;
+    transaction = json['transaction'] != null
+        ? new Transaction.fromJson(json['transaction'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['membership_id'] = this.membershipId;
+    data['transaction_id'] = this.transactionId;
+    data['membership_plan_id'] = this.membershipPlanId;
+    data['membership_charge'] = this.membershipCharge;
+    data['duration'] = this.duration;
+    data['expiredAt'] = this.expiredAt;
+    if (this.membershipPlan != null) {
+      data['membership_plan'] = this.membershipPlan!.toJson();
+    }
+    if (this.transaction != null) {
+      data['transaction'] = this.transaction!.toJson();
+    }
+    return data;
+  }
+}
+
+class MembershipPlan {
+  String? id;
+  String? planName;
+  String? planType;
+  int? plan30Charge;
+  int? plan90Charge;
+  int? plan180Charge;
+  int? plan365Charge;
+  String? planDescription;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  MembershipPlan(
+      {this.id,
+      this.planName,
+      this.planType,
+      this.plan30Charge,
+      this.plan90Charge,
+      this.plan180Charge,
+      this.plan365Charge,
+      this.planDescription,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  MembershipPlan.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    planName = json['plan_name'];
+    planType = json['plan_type'];
+    plan30Charge = json['plan_30_charge'];
+    plan90Charge = json['plan_90_charge'];
+    plan180Charge = json['plan_180_charge'];
+    plan365Charge = json['plan_365_charge'];
+    planDescription = json['plan_description'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['plan_name'] = this.planName;
+    data['plan_type'] = this.planType;
+    data['plan_30_charge'] = this.plan30Charge;
+    data['plan_90_charge'] = this.plan90Charge;
+    data['plan_180_charge'] = this.plan180Charge;
+    data['plan_365_charge'] = this.plan365Charge;
+    data['plan_description'] = this.planDescription;
+    data['status'] = this.status;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     return data;
   }
 }

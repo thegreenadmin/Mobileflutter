@@ -403,8 +403,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     null
                                                                 ? StringConstants
                                                                     .orderIDText
-                                                                : StringConstants
-                                                                    .transactionIdText,
+                                                                : transactionController
+                                                                            .userTransactionList![
+                                                                                index]
+                                                                            .membership !=
+                                                                        null
+                                                                    ? StringConstants
+                                                                        .membershipIdText
+                                                                    : StringConstants
+                                                                        .transactionIdText,
                                                             style: TextStyle(
                                                                 color: AppColors
                                                                     .blacklight,
@@ -426,11 +433,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       null
                                                                   ? ': #${transactionController.userTransactionList![index].orderItemRefundTransaction!.orderItemRefundTransactionId}'
                                                                   : transactionController
-                                                                              .userTransactionList![index]
+                                                                              .userTransactionList![
+                                                                                  index]
                                                                               .transaction !=
                                                                           null
                                                                       ? ': #${transactionController.userTransactionList![index].transaction!.transactionId}'
-                                                                      : "",
+                                                                      : transactionController.userTransactionList![index].membership !=
+                                                                              null
+                                                                          ? ': #${transactionController.userTransactionList![index].membership!.membershipId}'
+                                                                          : "",
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -488,7 +499,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       secFormat:
                                                                           '',
                                                                     ).toString()
-                                                                  : "",
+                                                                  : transactionController
+                                                                              .userTransactionList![
+                                                                                  index]
+                                                                              .membership !=
+                                                                          null
+                                                                      ? Utility
+                                                                              .parseDateTime(
+                                                                          DateTime.parse(transactionController
+                                                                              .userTransactionList![index]
+                                                                              .createdAt
+                                                                              .toString()),
+                                                                          secFormat:
+                                                                              '',
+                                                                        )
+                                                                          .toString()
+                                                                      : "",
                                                       style: TextStyle(
                                                           color: AppColors
                                                               .blacklight,
@@ -509,8 +535,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       index]
                                                                   .store ==
                                                               null
-                                                          ? StringConstants
-                                                              .walletTransactionText
+                                                          ? transactionController
+                                                                      .userTransactionList![
+                                                                          index]
+                                                                      .membership !=
+                                                                  null
+                                                              ? StringConstants
+                                                                  .membershipTransactionText
+                                                              : StringConstants
+                                                                  .walletTransactionText
                                                           : transactionController
                                                                   .userTransactionList![
                                                                       index]
@@ -542,7 +575,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                         .transaction !=
                                                                     null
                                                                 ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                : "",
+                                                                : transactionController
+                                                                            .userTransactionList![index]
+                                                                            .membership !=
+                                                                        null
+                                                                    ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                                    : "",
                                                     style: const TextStyle(
                                                         color:
                                                             AppColors.primary,
@@ -594,7 +632,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                   null
                                                               ? Text(StringConstants
                                                                   .walletTransactionText)
-                                                              : const Text(""),
+                                                              : transactionController
+                                                                          .userTransactionList![
+                                                                              index]
+                                                                          .membership !=
+                                                                      null
+                                                                  ? Text(StringConstants
+                                                                      .debitedAmountText)
+                                                                  : const Text(
+                                                                      ""),
                                                 ],
                                               ),
                                               height6SizedBox,
