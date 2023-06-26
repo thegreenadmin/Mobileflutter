@@ -4,7 +4,6 @@ import 'package:thegreenmall/dashboard/home/controller/owner_inbox_controller.da
 
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -137,8 +136,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -261,40 +260,74 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                    text:
-                                                    ownerInboxController.inboxList[index].offer?.offerName!= null && ownerInboxController.inboxList[index].offer?.offerName!=""?
-                                                    ownerInboxController.inboxList[index].offer?.offerName ??"":
-                                                    "${ownerInboxController.inboxList[index].user?.firstName?? ""} ${ownerInboxController.inboxList[index].user?.lastName?? ""}",
+                                                    text: ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offer
+                                                                    ?.offerName !=
+                                                                null &&
+                                                            ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offer
+                                                                    ?.offerName !=
+                                                                ""
+                                                        ? ownerInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .offer
+                                                                ?.offerName ??
+                                                            ""
+                                                        : "${ownerInboxController.inboxList[index].user?.firstName ?? ""} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
                                                     /* ownerInboxController.inboxList[index]
                                                     .store!.storeName ??
                                                 "",*/
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
-                                                        fontWeight: FontWeight.w600),),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                                   TextSpan(
-                                                    text:
-                                                    ownerInboxController
-                                                        .inboxList[index].orderId ==
-                                                        null
-                                                        ?/*" ${ownerInboxController.inboxList[index].offer?.offerName ??""}"
-                                                             :*/ " - Order: "
-                                                        "#${ownerInboxController.inboxList[index].orderId}" :
-                                                    "- Contact us Request",
+                                                    text: ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .orderId! ==
+                                                                null &&
+                                                            ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offerId! ==
+                                                                null
+                                                        ? "- Contact us Request"
+                                                        : ownerInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .orderId !=
+                                                                null
+                                                            ? "- Order Id #${ownerInboxController.inboxList[index].orderId}"
+                                                            : ownerInboxController
+                                                                        .inboxList[
+                                                                            index]
+                                                                        .offerId !=
+                                                                    null
+                                                                ? "Offer"
+                                                                : "",
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
-                                                        fontWeight: FontWeight.w600),
+                                                        fontWeight:
+                                                            FontWeight.w600),
                                                   ),
                                                 ],
                                               ),
                                               textAlign: TextAlign.justify,
-                                              overflow: TextOverflow.ellipsis,
+                                              //overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ],
                                       ),
-                                     /* height4SizedBox,
+                                      /* height4SizedBox,
                                       Text(
                                         ownerInboxController
                                                     .inboxList[index].orderId ==
@@ -343,8 +376,9 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                               //         builder: (_) =>
                                               //             const OwnerInboxDetailScreen()));
 
-                                              Get.to(const OwnerInboxDetailScreen(),
-                                                  id:pageIdApp.value,
+                                              Get.to(
+                                                  const OwnerInboxDetailScreen(),
+                                                  id: pageIdApp.value,
                                                   arguments: {
                                                     "storeName":
                                                         ownerInboxController
@@ -389,7 +423,10 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                           ),
                                           width10SizedBox,
                                           Visibility(
-                                            visible: ownerInboxController.showPreviousMessages.value == false,
+                                            visible: ownerInboxController
+                                                    .showPreviousMessages
+                                                    .value ==
+                                                false,
                                             child: RawMaterialButton(
                                               elevation: 0,
                                               onPressed: () async {
@@ -397,7 +434,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                     AlertStringConstants
                                                         .areYouSureCompleteText,
                                                     okay: StringConstants
-                                                        .completeText, okayTap: () {
+                                                        .completeText,
+                                                    okayTap: () {
                                                   // Navigator.pop(Get.context!);
                                                   ownerInboxController
                                                       .apiDeleteStoreMessages(
@@ -415,9 +453,11 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                   "");
                                                 });
                                               },
-                                              constraints: const BoxConstraints(),
-                                              padding: const EdgeInsets.fromLTRB(
-                                                  18.0, 8.0, 18.0, 8.0),
+                                              constraints:
+                                                  const BoxConstraints(),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      18.0, 8.0, 18.0, 8.0),
                                               shape: RoundedRectangleBorder(
                                                 side: const BorderSide(
                                                     width: 1.0,

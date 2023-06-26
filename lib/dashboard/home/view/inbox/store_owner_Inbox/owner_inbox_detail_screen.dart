@@ -7,7 +7,7 @@ import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_contro
 
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';

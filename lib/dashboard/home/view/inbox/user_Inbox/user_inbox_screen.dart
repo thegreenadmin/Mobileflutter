@@ -136,8 +136,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -260,27 +260,41 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                      text:
-                                                      userInboxController
-                                                          .inboxList[index]
-                                                          .offer?.offerName !=null &&
-                                                          userInboxController
-                                                              .inboxList[index]
-                                                              .offer?.offerName !=""?userInboxController
-                                                          .inboxList[index]
-                                                          .offer!
-                                                          .offerName ??
-                                                          "":
-                                                      // "${userInboxController.inboxList[index].user?.firstName?? ""} ${userInboxController.inboxList[index].user?.lastName?? ""}",
-                                                      userInboxController.inboxList[index].store?.storeName?? "",
-
+                                                    text: userInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offer
+                                                                    ?.offerName !=
+                                                                null &&
+                                                            userInboxController
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offer
+                                                                    ?.offerName !=
+                                                                ""
+                                                        ? userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .offer!
+                                                                .offerName ??
+                                                            ""
+                                                        :
+                                                        // "${userInboxController.inboxList[index].user?.firstName?? ""} ${userInboxController.inboxList[index].user?.lastName?? ""}",
+                                                        userInboxController
+                                                                .inboxList[
+                                                                    index]
+                                                                .store
+                                                                ?.storeName ??
+                                                            "",
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
-                                                        fontWeight: FontWeight.w600),),
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                                   TextSpan(
                                                     text:
-                                                    /*userInboxController.inboxList[index]
+                                                        /*userInboxController.inboxList[index]
                                                   .orderId ==
                                                   null &&
                                                   userInboxController
@@ -292,28 +306,26 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                   .offer!
                                                   .offerName ??
                                                   ""
-                                                  :*/ userInboxController
-                                                        .inboxList[index]
-                                                        .orderId !=
-                                                        null /*&&
-                                                  userInboxController
-                                                      .inboxList[index]
-                                                      .offerId ==
-                                                      null*/
-                                                        ? " - Order: "
-                                                        "#${userInboxController.inboxList[index].orderId}"
-                                                        : userInboxController
-                                                        .inboxList[
-                                                    index]
-                                                        .orderId ==
-                                                        null &&
+                                                  :*/
                                                         userInboxController
-                                                            .inboxList[
-                                                        index]
-                                                            .offerId ==
-                                                            null
-                                                        ? " - Contact us Request"
-                                                        : "",
+                                                                    .inboxList[
+                                                                        index]
+                                                                    .offerId !=
+                                                                null
+                                                            ? "Offer"
+                                                            : userInboxController
+                                                                        .inboxList[
+                                                                            index]
+                                                                        .orderId !=
+                                                                    null
+                                                                ? "- Order Id "
+                                                                    "#${userInboxController.inboxList[index].orderId}"
+                                                                : userInboxController.inboxList[index].orderId ==
+                                                                            null &&
+                                                                        userInboxController.inboxList[index].offerId ==
+                                                                            null
+                                                                    ? "- Contact us Request"
+                                                                    : "",
 
                                                     // : userInboxController
                                                     //             .inboxList[index]
@@ -329,12 +341,12 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
-                                                        fontWeight: FontWeight.w600),
+                                                        fontWeight:
+                                                            FontWeight.w600),
                                                   ),
                                                 ],
                                               ),
                                               textAlign: TextAlign.justify,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ],
@@ -428,7 +440,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               // ));
                                               Get.to(
                                                   const UserInboxDetailScreen(),
-                                                  id:pageIdApp.value,
+                                                  id: pageIdApp.value,
                                                   arguments: {
                                                     "storeName":
                                                         userInboxController
@@ -473,7 +485,10 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                           ),
                                           width10SizedBox,
                                           Visibility(
-                                            visible: userInboxController.showPreviousMessages.value == false,
+                                            visible: userInboxController
+                                                    .showPreviousMessages
+                                                    .value ==
+                                                false,
                                             child: RawMaterialButton(
                                               elevation: 0,
                                               onPressed: () async {
@@ -481,7 +496,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                     AlertStringConstants
                                                         .areYouSureCompleteText,
                                                     okay: StringConstants
-                                                        .completeText, okayTap: () {
+                                                        .completeText,
+                                                    okayTap: () {
                                                   // Navigator.pop(Get.context!);
                                                   userInboxController
                                                       .apiDeleteUserMessages(
@@ -493,9 +509,11 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                   "");
                                                 });
                                               },
-                                              constraints: const BoxConstraints(),
-                                              padding: const EdgeInsets.fromLTRB(
-                                                  18.0, 8.0, 18.0, 8.0),
+                                              constraints:
+                                                  const BoxConstraints(),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      18.0, 8.0, 18.0, 8.0),
                                               shape: RoundedRectangleBorder(
                                                 side: const BorderSide(
                                                     width: 1.0,

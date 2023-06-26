@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-OwnerInboxModel ownerInboxModelFromJson(String str) => OwnerInboxModel.fromJson(json.decode(str));
+OwnerInboxModel ownerInboxModelFromJson(String str) =>
+    OwnerInboxModel.fromJson(json.decode(str));
 
-String ownerInboxModelToJson(OwnerInboxModel data) => json.encode(data.toJson());
+String ownerInboxModelToJson(OwnerInboxModel data) =>
+    json.encode(data.toJson());
 
 class OwnerInboxModel {
   dynamic status;
@@ -30,17 +32,18 @@ class OwnerInboxModel {
         data: data ?? this.data,
       );
 
-  factory OwnerInboxModel.fromJson(Map<String, dynamic> json) => OwnerInboxModel(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory OwnerInboxModel.fromJson(Map<String, dynamic> json) =>
+      OwnerInboxModel(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -62,14 +65,19 @@ class Data {
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    totalCount: json["total_count"],
-    messageHeads: json["message_heads"] == null ? [] : List<MessageHead>.from(json["message_heads"]!.map((x) => MessageHead.fromJson(x))),
-  );
+        totalCount: json["total_count"],
+        messageHeads: json["message_heads"] == null
+            ? []
+            : List<MessageHead>.from(
+                json["message_heads"]!.map((x) => MessageHead.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_count": totalCount,
-    "message_heads": messageHeads == null ? [] : List<dynamic>.from(messageHeads!.map((x) => x.toJson())),
-  };
+        "total_count": totalCount,
+        "message_heads": messageHeads == null
+            ? []
+            : List<dynamic>.from(messageHeads!.map((x) => x.toJson())),
+      };
 }
 
 class MessageHead {
@@ -147,42 +155,46 @@ class MessageHead {
       );
 
   factory MessageHead.fromJson(Map<String, dynamic> json) => MessageHead(
-    storeId: json["store_id"],
-    offerId: json["offer_id"],
-    orderId: json["order_id"],
-    userId: json["user_id"],
-    isAvailableForStore: json["is_available_for_store"],
-    isAvailableForUser: json["is_available_for_user"],
-    isStoreCompleted: json["is_store_completed"],
-    isUserCompleted: json["is_user_completed"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    messageHeadId: json["message_head_id"],
-    store: json["store"] == null ? null : Store.fromJson(json["store"]),
-    offer: json["offer"],
-    order: json["order"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-  );
+        storeId: json["store_id"],
+        offerId: json["offer_id"],
+        orderId: json["order_id"],
+        userId: json["user_id"],
+        isAvailableForStore: json["is_available_for_store"],
+        isAvailableForUser: json["is_available_for_user"],
+        isStoreCompleted: json["is_store_completed"],
+        isUserCompleted: json["is_user_completed"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        messageHeadId: json["message_head_id"],
+        store: json["store"] == null ? null : Store.fromJson(json["store"]),
+        offer: json["offer"],
+        order: json["order"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_id": storeId,
-    "offer_id": offerId,
-    "order_id": orderId,
-    "user_id": userId,
-    "is_available_for_store": isAvailableForStore,
-    "is_available_for_user": isAvailableForUser,
-    "is_store_completed": isStoreCompleted,
-    "is_user_completed": isUserCompleted,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "message_head_id": messageHeadId,
-    "store": store?.toJson(),
-    "offer": offer,
-    "order": order,
-    "user": user?.toJson(),
-  };
+        "store_id": storeId,
+        "offer_id": offerId,
+        "order_id": orderId,
+        "user_id": userId,
+        "is_available_for_store": isAvailableForStore,
+        "is_available_for_user": isAvailableForUser,
+        "is_store_completed": isStoreCompleted,
+        "is_user_completed": isUserCompleted,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "message_head_id": messageHeadId,
+        "store": store?.toJson(),
+        "offer": offer,
+        "order": order,
+        "user": user?.toJson(),
+      };
 }
 
 class Store {
@@ -260,42 +272,46 @@ class Store {
       );
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-    storeBalance: json["store_balance"],
-    dynamicLink: json["dynamic_link"],
-    storeName: json["store_name"],
-    storeEin: json["store_ein"],
-    storeNickName: json["store_nick_name"],
-    storeEmail: json["store_email"],
-    storePhone: json["store_phone"],
-    storePhoneCode: json["store_phone_code"],
-    isVerified: json["is_verified"],
-    verifiedBy: json["verified_by"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    storeId: json["store_id"],
-    logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
-  );
+        storeBalance: json["store_balance"],
+        dynamicLink: json["dynamic_link"],
+        storeName: json["store_name"],
+        storeEin: json["store_ein"],
+        storeNickName: json["store_nick_name"],
+        storeEmail: json["store_email"],
+        storePhone: json["store_phone"],
+        storePhoneCode: json["store_phone_code"],
+        isVerified: json["is_verified"],
+        verifiedBy: json["verified_by"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        storeId: json["store_id"],
+        logo: json["logo"] == null ? null : Logo.fromJson(json["logo"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_balance": storeBalance,
-    "dynamic_link": dynamicLink,
-    "store_name": storeName,
-    "store_ein": storeEin,
-    "store_nick_name": storeNickName,
-    "store_email": storeEmail,
-    "store_phone": storePhone,
-    "store_phone_code": storePhoneCode,
-    "is_verified": isVerified,
-    "verified_by": verifiedBy,
-    "is_enabled": isEnabled,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "store_id": storeId,
-    "logo": logo?.toJson(),
-  };
+        "store_balance": storeBalance,
+        "dynamic_link": dynamicLink,
+        "store_name": storeName,
+        "store_ein": storeEin,
+        "store_nick_name": storeNickName,
+        "store_email": storeEmail,
+        "store_phone": storePhone,
+        "store_phone_code": storePhoneCode,
+        "is_verified": isVerified,
+        "verified_by": verifiedBy,
+        "is_enabled": isEnabled,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "store_id": storeId,
+        "logo": logo?.toJson(),
+      };
 }
 
 class Logo {
@@ -317,14 +333,14 @@ class Logo {
       );
 
   factory Logo.fromJson(Map<String, dynamic> json) => Logo(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
+        orignalUrl: json["orignal_url"],
+        dynamicUrl: json["dynamic_url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
-  };
+        "orignal_url": orignalUrl,
+        "dynamic_url": dynamicUrl,
+      };
 }
 
 class User {
@@ -398,38 +414,42 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    userBalance: json["user_balance"],
-    email: json["email"],
-    phone: json["phone"],
-    phoneCode: json["phone_code"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    nickName: json["nick_name"],
-    dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
-    hasStoreAccess: json["has_store_access"],
-    isAccountDeleted: json["is_account_deleted"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    userId: json["user_id"],
-    image: json["image"] == null ? null : Logo.fromJson(json["image"]),
-  );
+        userBalance: json["user_balance"],
+        email: json["email"],
+        phone: json["phone"],
+        phoneCode: json["phone_code"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        nickName: json["nick_name"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        hasStoreAccess: json["has_store_access"],
+        isAccountDeleted: json["is_account_deleted"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        userId: json["user_id"],
+        image: json["image"] == null ? null : Logo.fromJson(json["image"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "user_balance": userBalance,
-    "email": email,
-    "phone": phone,
-    "phone_code": phoneCode,
-    "first_name": firstName,
-    "last_name": lastName,
-    "nick_name": nickName,
-    "dob": dob?.toIso8601String(),
-    "has_store_access": hasStoreAccess,
-    "is_account_deleted": isAccountDeleted,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "user_id": userId,
-    "image": image?.toJson(),
-  };
+        "user_balance": userBalance,
+        "email": email,
+        "phone": phone,
+        "phone_code": phoneCode,
+        "first_name": firstName,
+        "last_name": lastName,
+        "nick_name": nickName,
+        "dob": dob?.toIso8601String(),
+        "has_store_access": hasStoreAccess,
+        "is_account_deleted": isAccountDeleted,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "user_id": userId,
+        "image": image?.toJson(),
+      };
 }

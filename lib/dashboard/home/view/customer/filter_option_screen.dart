@@ -9,8 +9,6 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import '../../../../utils/mutli_select_drop_down.dart';
 
 class FilterOptionScreen extends StatefulWidget {
@@ -45,7 +43,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   // Get.back();
                                 },
