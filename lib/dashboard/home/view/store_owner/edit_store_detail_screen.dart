@@ -86,20 +86,33 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringConstants.editStoreText,
+                      StringConstants.storeDetailsText,
                       style: const TextStyle(
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
                     ),
-                    height15SizedBox,
-                    Text(
-                      StringConstants.uploadLogoText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    height20SizedBox,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeLogoText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height15SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -216,13 +229,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.bannerImageText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeBannerImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height15SizedBox,
                     Obx(
                       () => ownerStoreController
@@ -292,13 +318,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             ),
                     ),
                     height15SizedBox,
-                    Text(
-                      StringConstants.storeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -357,13 +396,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.einBusinessId,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.einBusinessId,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -482,13 +534,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.emailIdText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -547,13 +612,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.phoneNumberText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.phoneNumberText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -629,13 +707,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           fontSize: 20),
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.addressLine1Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.addressLine1Text,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         onTap: () async {
@@ -878,13 +969,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.townOrCityText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.townOrCityText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -943,13 +1047,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.postalCodeText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.postalCodeText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -1008,13 +1125,24 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-
-                    Text(
-                      StringConstants.zoneText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.zoneText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
 
                     // Obx(() => DropdownButtonFormField<StatesList>(
@@ -1125,13 +1253,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.countryText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.countryText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     // Obx(() => DropdownButtonFormField<CountriesList>(
                     //       isExpanded: true,
@@ -1351,12 +1492,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        StringConstants.openingTimeText,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: StringConstants
+                                                    .openingTimeText,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            const TextSpan(
+                                              text: "*",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
@@ -1475,12 +1630,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        StringConstants.closingTimeText,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: StringConstants
+                                                    .closingTimeText,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            const TextSpan(
+                                              text: "*",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
@@ -1596,12 +1765,24 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     ),
                     height20SizedBox,
                     Obx(() => ownerStoreController.is247Time.value != true
-                        ? Text(
-                            StringConstants.workingDaysText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                        ? Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.workingDaysText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           )
                         : height0SizedBox),
                     height4SizedBox,
@@ -1720,13 +1901,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           : height0SizedBox,
                     ),
                     height15SizedBox,
-                    Text(
-                      StringConstants.deliveryMethodsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.deliveryMethodsText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
 
                     MultiCustomDropDown(
@@ -1808,49 +2002,26 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         title: StringConstants.selectDeliveryServicesText,
                         list: ownerStoreController.deliveryServices),
                     height20SizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              StringConstants.enabledText,
-                              style: TextStyle(
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeTermsText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.blacklight,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Obx(() => FlutterSwitch(
-                              height: 28,
-                              width: 50,
-                              value: ownerStoreController.isEnabled.value,
-                              activeToggleColor: AppColors.primary,
-                              inactiveToggleColor: AppColors.grey,
-                              activeSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              inactiveSwitchBorder: Border.all(
-                                color: AppColors.greylight,
-                              ),
-                              activeColor: AppColors.greymediumlight,
-                              inactiveColor: AppColors.greymediumlight,
-                              onToggle: (val) {
-                                ownerStoreController.isEnabled.value = val;
-                              },
-                            )),
-                      ],
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                    height15SizedBox,
-                    Text(
-                      StringConstants.storeTermsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
+
                     height4SizedBox,
                     TextFormField(
                         onTap: () {
@@ -1917,13 +2088,25 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             ),
                           ),
                         )),
-                    height20SizedBox, height15SizedBox,
-                    Text(
-                      StringConstants.storePrivacyText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    height20SizedBox,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storePrivacyText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -1994,6 +2177,42 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             ),
                           ),
                         )),
+                    height20SizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              StringConstants.enableStoreText,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blacklight,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Obx(() => FlutterSwitch(
+                              height: 28,
+                              width: 50,
+                              value: ownerStoreController.isEnabled.value,
+                              activeToggleColor: AppColors.primary,
+                              inactiveToggleColor: AppColors.grey,
+                              activeSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              inactiveSwitchBorder: Border.all(
+                                color: AppColors.greylight,
+                              ),
+                              activeColor: AppColors.greymediumlight,
+                              inactiveColor: AppColors.greymediumlight,
+                              onToggle: (val) {
+                                ownerStoreController.isEnabled.value = val;
+                              },
+                            )),
+                      ],
+                    ),
 
                     height40SizedBox,
                     CustomButton(

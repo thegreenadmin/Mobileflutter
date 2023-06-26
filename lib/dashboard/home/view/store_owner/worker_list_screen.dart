@@ -216,6 +216,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                         .toString();
                                 addNewWorkerController.apiDeleteWorker();
                               });
+                              return null;
                             },
                             child: InkWell(
                               onTap: () async {

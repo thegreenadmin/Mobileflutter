@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -168,6 +167,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                             .storeList[index].storeId
                                             .toString());
                                   });
+                                  return null;
                                 },
                                 child: InkWell(
                                   onTap: () async {
@@ -305,7 +305,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                                 Image.asset(
                                                                     ImageConstants
                                                                         .loc,
-                                                                    scale: 2.7,
+                                                                    scale: 3,
                                                                     color: AppColors
                                                                         .blackmedium),
                                                                 width3SizedBox,

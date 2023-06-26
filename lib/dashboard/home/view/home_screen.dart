@@ -11,16 +11,13 @@ import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_i
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/edit_store_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
 import 'store_owner/manage_store_main_screen.dart';
 
 class HomeScreen extends StatefulWidget {

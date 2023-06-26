@@ -37,9 +37,11 @@ class StringConstants {
   static String addStoreText = "Add Store";
   static String addFundsText = "Add Funds";
   static String addCategoriesText = "Add Categories";
+  static String addNewCategoriesText = "Add New Categories";
   static String addCategoryText = "Add Category";
   static String addMoneyToMyWalletText = "Add money to my wallet";
   static String alertText = "Alert";
+  static String addNewRoleText = "Add New Role";
   static String amountText = "Amount";
   static String amountToBeAddedText = "Amount to be added";
   static String addDescriptionText = "Add Description";
@@ -144,8 +146,10 @@ class StringConstants {
       "Please continue shopping with The Green Mall";
 
   static String creditedAmountText = "Credited Amount";
+  static String creditText = "Credit";
   //D
   static String debitedAmountText = "Debited Amount";
+  static String debitText = "Debit";
   static String deliveryText = "Delivery";
   static String deliveredText = "Delivered";
   static String drivingLicenceText = "Driving Licence";
@@ -167,6 +171,7 @@ class StringConstants {
 
   //E
 
+  static String enableStoreText = "Enable Store";
   static String emailText = "Email";
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
@@ -374,6 +379,7 @@ class StringConstants {
   static String primaryStoreText = "Primary Store";
   static String pickupOptionsText = "Pick-up Options";
   static String permissionText = "Permission";
+  static String permissionsText = "Permissions";
   static String productText = "Product";
   static String payNowText = "Pay Now";
   static String priceText = "Price";
@@ -389,6 +395,8 @@ class StringConstants {
   static String proceedText = "Proceed";
   static String paymentConfirmatinText = "Payment Confirmation";
   static String previousOrdersText = "Previous Orders";
+  static String productsListText = "Products List";
+  static String profilePicText = "Profile Picture";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -483,7 +491,8 @@ class StringConstants {
   static String shippingAddressText = "Shipping Address";
   static String storeTermsText = "Store Terms";
   static String storePrivacyText = "Store Privacy";
-
+  static String storeLogoText = "Store Logo";
+  static String storeBannerImageText = "Store Banner Image";
   static String startDateText = "Start Date";
   static String selectCardText = "Select Card";
   static String storeAccessText = "Store Access";
@@ -494,6 +503,7 @@ class StringConstants {
   static String tapTouploadStoreImageText = "Tap to upload Store Image";
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
+
   static String termsAndConditionsText = "Terms & Conditions";
   static String transactionHistoryText = "Transaction History";
   static String transactionsHistoryText = "Transactions History";
@@ -548,7 +558,7 @@ class StringConstants {
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
       "We have sent the code verification to your mobile number ";
-  static String viewAndUpdateItemsText = "View & Update Items";
+  static String viewAndUpdateItemsText = "View & Update\nCategories";
   static String viewText = "View";
 
   //W

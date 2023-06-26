@@ -65,7 +65,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              manageStoreController.isFeaturedTypeSelected.value
+                                  ? FontWeight.w400
+                                  : FontWeight.w600,
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
                                   ? AppColors.blacklight
@@ -103,7 +106,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              manageStoreController.isFeaturedTypeSelected.value
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
                                   ? AppColors.primary
@@ -180,11 +186,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
             height25SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   StringConstants.viewAndUpdateItemsText,
                   style: const TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       color: AppColors.black,
                       fontWeight: FontWeight.w600),
                 ),
@@ -228,9 +235,9 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         ),
                         width2SizedBox,
                         Text(
-                          StringConstants.addCategoriesText,
+                          StringConstants.addNewCategoriesText,
                           style: const TextStyle(
-                              fontSize: 16.0,
+                              fontSize: 15.0,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w500),
                         ),

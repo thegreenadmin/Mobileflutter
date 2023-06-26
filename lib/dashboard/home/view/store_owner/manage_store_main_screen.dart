@@ -27,9 +27,9 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 20,
+        height: 22,
         width: WidgetConstants.screenWidth,
         child: Center(
           child: ListView.separated(
@@ -189,7 +189,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                         Image.asset(
                                           ImageConstants.loc,
                                           color: AppColors.white,
-                                          scale: 2,
+                                          scale: 2.5,
                                         ),
                                         width4SizedBox,
                                         Obx(

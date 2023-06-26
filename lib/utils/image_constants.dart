@@ -152,4 +152,5 @@ class ImageConstants {
   static const String whitetick = '$assetsIcon/whitetick.png';
   static const String worker = '$assetsIcon/worker.png';
   static const String workerpic = '$assetsIcon/workerpic.png';
+  static const String walletTransaction = '$assetsIcon/wallettransaction.png';
 }

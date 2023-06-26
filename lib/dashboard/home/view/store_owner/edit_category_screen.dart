@@ -94,12 +94,24 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      StringConstants.updateCategoryImageText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.updateCategoryImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height25SizedBox,
                     Obx(
@@ -170,12 +182,24 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                             ),
                     ),
                     height35SizedBox,
-                    Text(
-                      StringConstants.categoryNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.categoryNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -233,7 +257,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                             ),
                           ),
                         )),
-                    height45SizedBox,
+                    height50SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,

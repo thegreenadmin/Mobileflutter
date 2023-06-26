@@ -118,32 +118,42 @@ class _OffersScreenState extends State<OffersScreen> {
                                         fontSize: 20),
                                   ),
                           ),
-                          InkWell(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              Get.parameters["isFrom"] =
-                                  StringConstants.addOfferText;
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(
-                              //   builder: (_) => const AddOfferScreen(),
-                              // ))
-                              Get.to(() => const AddOfferScreen(),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.primary,
+                                size: 18.0,
+                              ),
+                              width2SizedBox,
+                              InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  Get.parameters["isFrom"] =
+                                      StringConstants.addOfferText;
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context)
+                                  //     .push(MaterialPageRoute(
+                                  //   builder: (_) => const AddOfferScreen(),
+                                  // ))
+                                  Get.to(() => const AddOfferScreen(),
                                       id: pageIdApp.value,
                                       arguments: {
-                                    "isFrom": StringConstants.addOfferText,
-                                  })?.then((value) {
-                                offersController.apiGetOwnerOffersList();
-                              });
-                            },
-                            child: Text(StringConstants.addNewOfferText,
-                                style: const TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    color: AppColors.primary)),
+                                        "isFrom": StringConstants.addOfferText,
+                                      })?.then((value) {
+                                    offersController.apiGetOwnerOffersList();
+                                  });
+                                },
+                                child: Text(StringConstants.addNewOfferText,
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        color: AppColors.primary)),
+                              ),
+                            ],
                           ),
                         ],
                       ),

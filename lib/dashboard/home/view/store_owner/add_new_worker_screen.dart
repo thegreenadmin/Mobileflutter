@@ -82,6 +82,19 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.profilePicText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                        ],
+                      ),
+                    ),
+                    height20SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,12 +164,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.employeeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.employeeNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -216,12 +241,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.emailIdText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -281,12 +318,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.primaryStoreText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.primaryStoreText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     Container(
@@ -317,12 +366,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.shortDescriptionText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.shortDescriptionText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -383,12 +444,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.workingDaysText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.workingDaysText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     MultiCustomDropDown(
@@ -415,12 +488,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                StringConstants.startTimeText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: StringConstants.startTimeText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               height4SizedBox,
                               TextFormField(
@@ -525,12 +610,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                StringConstants.endTimeText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: StringConstants.endTimeText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               height4SizedBox,
                               TextFormField(
@@ -640,12 +737,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.mobileNoText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.mobileNoText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     IntlPhoneField(
@@ -715,12 +824,24 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  StringConstants.roleText,
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text: StringConstants.roleText,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      const TextSpan(
+                                        text: "*",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 DropdownButtonFormField<String>(
                                   isExpanded: true,

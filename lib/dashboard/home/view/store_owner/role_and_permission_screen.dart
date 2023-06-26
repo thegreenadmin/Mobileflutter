@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class RoleAndPermissionScreen extends StatefulWidget {
@@ -41,8 +40,8 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                              Get.back(id: pageIdApp.value);
+                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -103,8 +102,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         //     .push(MaterialPageRoute(
                         //       builder: (_) => const AddNewRoleScreen(),
                         //     ))
-                            Get.to(const AddNewRoleScreen(),
-                                id:pageIdApp.value )!
+                        Get.to(const AddNewRoleScreen(), id: pageIdApp.value)!
                             .then((value) =>
                                 addNewRoleController.apiGetStoreRole());
                       },
@@ -117,11 +115,11 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           ),
                           width2SizedBox,
                           Text(
-                            StringConstants.addRoleText,
-                            style: const TextStyle(
-                                fontSize: 18.0,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w500),
+                            StringConstants.addNewRoleText,
+                           style: const TextStyle(
+                              fontSize: 15.0,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w500),
                           ),
                         ],
                       ))
@@ -159,7 +157,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
+                                horizontal: 5, vertical: 20),
                             decoration: const BoxDecoration(
                                 color: AppColors.greylight,
                                 borderRadius: BorderRadius.all(
@@ -226,8 +224,8 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         //       builder: (_) =>
                                         //           const EditRoleScreen(),
                                         //     ))
-                                            Get.to(const EditRoleScreen(),
-                                                id:pageIdApp.value )!
+                                        Get.to(const EditRoleScreen(),
+                                                id: pageIdApp.value)!
                                             .then((value) =>
                                                 addNewRoleController
                                                     .apiGetStoreRole());
