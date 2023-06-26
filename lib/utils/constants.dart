@@ -726,6 +726,9 @@ class AlertStringConstants {
   static String pleaseSelectStateText = "Please select state";
   static String pleaseEnterValueText = "Please enter value";
 
+  //N
+  static String notAuthorisedToStoreText = "Sorry, You are not authorised this. Contact your store owner for more info.";
+
   //R
 
   static String returnOrderAlertText =

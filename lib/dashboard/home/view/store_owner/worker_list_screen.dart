@@ -116,7 +116,17 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewWorkerScreen(),
                       // ));
-                      Get.to(const AddNewWorkerScreen(), id: pageIdApp.value);
+
+
+                      permissionStoreList.any((element) =>
+                      element.isStoreOwner==true )
+                          || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                      ele.controllerKey == PermissionKey.createUser.statusName))
+                          ?  Get.to(const AddNewWorkerScreen(), id: pageIdApp.value)
+                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
+
                     },
                     child: Row(
                       children: [
@@ -185,11 +195,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                           return Dismissible(
                             background: Container(
                               color: AppColors.redlight,
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const <Widget>[
+                                  children: <Widget>[
                                     Icon(
                                       Icons.delete,
                                       color: AppColors.red,
@@ -205,17 +215,23 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              Utility.showConfirmAlertMessage(
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner==true )
+                                  || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                              ele.controllerKey == PermissionKey.editStoreUsers.statusName))
+                                  ?  Utility.showConfirmAlertMessage(
                                   AlertStringConstants.areYouSureText,
                                   okay: StringConstants.deleteText,
                                   okayTap: () {
-                                // Navigator.pop(Get.context!);
-                                addNewWorkerController.workerId.value =
-                                    addNewWorkerController
-                                        .workerList[index].storeUserId
-                                        .toString();
-                                addNewWorkerController.apiDeleteWorker();
-                              });
+                                    addNewWorkerController.workerId.value =
+                                        addNewWorkerController
+                                            .workerList[index].storeUserId
+                                            .toString();
+                                    addNewWorkerController.apiDeleteWorker();
+                                  })
+                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
                             },
                             child: InkWell(
                               onTap: () async {
@@ -228,8 +244,15 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 // Navigator.of(context).push(MaterialPageRoute(
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
-                                Get.to(() => const EditWorkerScreen(),
-                                    id: pageIdApp.value);
+                                permissionStoreList.any((element) =>
+                                element.isStoreOwner==true )
+                                    || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                                ele.controllerKey == PermissionKey.editStoreUsers.statusName))
+                                    ?  Get.to(() => const EditWorkerScreen(),
+                                    id: pageIdApp.value)
+                                    : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

@@ -12,6 +12,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import '../dashboard/orders/view/order_store_list_screen.dart';
+import '../utils/global_share_data.dart';
 import '../utils/shared_prefrences.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -248,7 +249,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   const _TabNav(1, WalletScreen()),
                 bottomNavigationPageController.roleInApp.value ==
                 Role.storeOwnerRoleText ?
-                bottomNavigationPageController.storeList.length > 1 ||
+                    bottomNavigationPageController.storeList.length > 1 ||
                     bottomNavigationPageController.storeList.isEmpty
                     ? const _TabNav(2, OrderStoresListScreen())
                     : const _TabNav(3, OrdersHomeMainScreen())

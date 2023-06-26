@@ -12,6 +12,8 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import '../../../../utils/utility.dart';
+
 class ManageStoreScreen extends StatefulWidget {
   const ManageStoreScreen({super.key});
 
@@ -40,7 +42,20 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const EditStoreDetailScreen(),
                 // ));
-                Get.to(const EditStoreDetailScreen(),id:pageIdApp.value);
+                print("permissionStoreList:-editStore--${permissionStoreList.length}----------");
+                print(permissionStoreList.any((element) =>
+                element.isStoreOwner==true ));
+                print(permissionStoreList.any((element) =>
+                    element.controllers!.any((ele) =>
+                    ele.controllerKey == PermissionKey.editStore.statusName)));
+                permissionStoreList.any((element) =>
+                element.isStoreOwner==true )
+                    || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                ele.controllerKey == PermissionKey.editStore.statusName))
+                    ?  Get.to(const EditStoreDetailScreen(),id:pageIdApp.value)
+                    : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -265,12 +280,21 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const WorkerListScreen(),
                 // ));
-                Get.to(const WorkerListScreen(),
+
+                permissionStoreList.any((element) =>
+                element.isStoreOwner==true )
+                    || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                ele.controllerKey == PermissionKey.viewStoreUsers.statusName))
+                    ?   Get.to(const WorkerListScreen(),
                     id:pageIdApp.value,
                     arguments: {
-                  "storeId": ownerStoresController.storeId.value,
-                  "storeName": ownerStoresController.storeName.value,
-                });
+                      "storeId": ownerStoresController.storeId.value,
+                      "storeName": ownerStoresController.storeName.value,
+                    })
+                    : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
+
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),

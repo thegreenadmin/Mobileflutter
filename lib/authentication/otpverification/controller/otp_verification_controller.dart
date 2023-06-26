@@ -1,5 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,7 +64,7 @@ class OtpVerificationController extends GetxController {
 
   //Otp Verify Api
   Future apiOtpVerify() async {
-    var rng = Random();
+    var rng = math.Random();
     Map data = {
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
@@ -132,7 +133,7 @@ class OtpVerificationController extends GetxController {
         headers,
         showLoading: false)
         .then((value) async {
-      debugPrint("GET STORE PERMISSIONS RESPONSE *******${value!.body}");
+      log("GET STORE PERMISSIONS RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getPermissionsModel = GetPermissionsModel.fromJson(value.body);

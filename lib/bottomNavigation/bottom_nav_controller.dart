@@ -26,8 +26,10 @@ import '../utils/global_share_data.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
+  final lastSelectedIndex = 0.obs;
   RxString roleInApp = "".obs;
   RxBool isLoading = false.obs;
+  RxBool hasPermission = false.obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
 
@@ -45,7 +47,7 @@ class BottomNavController extends GetxController {
         initialRemoteMessage = null;
       }
 
-      selectedIndex.value = Get.parameters["currentIndex"] != null
+      lastSelectedIndex.value  = selectedIndex.value = Get.parameters["currentIndex"] != null
           ? int.parse(Get.parameters["currentIndex"].toString())
           : 0;
       SharedPreferenceStorage.removeData("pageId");
@@ -58,6 +60,11 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
+    hasPermission.value = permissionStoreList.any((element) => element.isStoreOwner==true )
+        || permissionStoreList.any((element) =>
+    element.controllers!.any((ele) =>
+    ele.controllerKey == PermissionKey.manageOrders.statusName));
+
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
     // pageIdApp.value = await SharedPreferenceStorage.getData("pageId");
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
@@ -115,12 +122,10 @@ class BottomNavController extends GetxController {
 
   onItemTapped(int index) async {
     getRole();
-      selectedIndex.value = index;
-    // debugPrint("Bottom pageId:---------$pageId---");
-    // if(Get.routing. > 1){
-      Get.until((route) => route.isFirst,id:pageIdApp.value);
-    // }
 
+    lastSelectedIndex.value = index;
+    selectedIndex.value = index;
+      Get.until((route) => route.isFirst,id:pageIdApp.value);
 
       SharedPreferenceStorage.removeData("pageId");
 
@@ -156,35 +161,39 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 2) {
       try {
-        // Get.delete<OrdersController>();
-        Future.delayed(Duration.zero, ()async {
-          if (roleInApp.value == Role.customerRoleText) {
-            storeList.clear();
-          } else {
-            await apiGetStoreList();
-          }
-
-          if(roleInApp.value == Role.storeOwnerRoleText){
-            if( storeList.length > 1 || storeList.isEmpty){
-              pageIdApp.value = 2;
-              SharedPreferenceStorage.setData("pageId", 2);
-            }else{
-              pageIdApp.value = 3;
-              SharedPreferenceStorage.setData("pageId", 3);
+        if(permissionStoreList.any((element) => element.isStoreOwner==true )
+            || permissionStoreList.any((element) =>
+            element.controllers!.any((ele) =>
+            ele.controllerKey == PermissionKey.manageOrders.statusName))
+            ){
+          // Get.delete<OrdersController>();
+          Future.delayed(Duration.zero, ()async {
+            if (roleInApp.value == Role.customerRoleText) {
+              storeList.clear();
+            } else {
+              await apiGetStoreList();
             }
-          }else{
-            pageIdApp.value = 4;
-            SharedPreferenceStorage.setData("pageId", 4);
-          }
-          // roleInApp.value == Role.storeOwnerRoleText ?
-          // storeList.length > 1 || storeList.isEmpty
-          //     ? SharedPreferenceStorage.setData("pageId", 2)
-          //     : SharedPreferenceStorage.setData("pageId", 3)
-          //     : SharedPreferenceStorage.setData("pageId", 4);
-          OrdersController ordersController = Get.put(OrdersController());
-          ordersController.onInit();
-        });
 
+            if(roleInApp.value == Role.storeOwnerRoleText){
+              if( storeList.length > 1 || storeList.isEmpty){
+                pageIdApp.value = 2;
+                SharedPreferenceStorage.setData("pageId", 2);
+              }else{
+                pageIdApp.value = 3;
+                SharedPreferenceStorage.setData("pageId", 3);
+              }
+            }else{
+              pageIdApp.value = 4;
+              SharedPreferenceStorage.setData("pageId", 4);
+            }
+
+
+          });
+        }else{
+          Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+        }
+        OrdersController ordersController = Get.put(OrdersController());
+        ordersController.onInit();
       } catch (e) {
         //Pass
       }

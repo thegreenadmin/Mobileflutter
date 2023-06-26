@@ -208,16 +208,23 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       // ))
 
                       Get.parameters["categoryId"] = "";
-                      Get.to(() => const AddNewCategoryScreen(),
-                              id: pageIdApp.value,
-                              arguments: {
+
+                      permissionStoreList.any((element) =>
+                      element.isStoreOwner==true )
+                          || permissionStoreList.any((element) =>
+                          element.controllers!.any((ele) =>
+                          ele.controllerKey == PermissionKey.createProductCategories.statusName))
+                          ?   Get.to(() => const AddNewCategoryScreen(),
+                          id: pageIdApp.value,
+                          arguments: {
                             "storeId": manageStoreController.storeId.value,
                             "isFeaturedSelectedType": manageStoreController
                                 .isFeaturedTypeSelected.value,
                           })!
                           .then((value) {
                         manageStoreController.apiGetCategoriesList();
-                      });
+                      })
+                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
                     },
                     child: Row(
                       children: [
@@ -293,7 +300,13 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            Utility.showConfirmAlertMessage(
+
+                            permissionStoreList.any((element) =>
+                            element.isStoreOwner==true )
+                                || permissionStoreList.any((element) =>
+                                element.controllers!.any((ele) =>
+                                ele.controllerKey == PermissionKey.editProductCategories.statusName))
+                                ?   Utility.showConfirmAlertMessage(
                                 AlertStringConstants.areYouSureText,
                                 okay: StringConstants.deleteText, okayTap: () {
                               // Navigator.pop(Get.context!);
@@ -303,7 +316,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                       .categoriesList[index].categoryId
                                       .toString();
                               manageStoreController.apiDeleteCategory();
-                            });
+                            })
+                                : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
                             return null;
                           },
                           child: InkWell(
@@ -424,21 +440,29 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //   builder: (_) =>
                                         //       const EditCategoryScreen(),
                                         // ))
-                                        Get.to(const EditCategoryScreen(),
-                                                id: pageIdApp.value,
-                                                arguments: {
+
+                                        permissionStoreList.any((element) =>
+                                        element.isStoreOwner==true )
+                                            || permissionStoreList.any((element) =>
+                                            element.controllers!.any((ele) =>
+                                            ele.controllerKey == PermissionKey.editProductCategories.statusName))
+                                            ?   Get.to(const EditCategoryScreen(),
+                                            id: pageIdApp.value,
+                                            arguments: {
                                               "storeId": manageStoreController
                                                   .storeId.value,
                                               "categoryId":
-                                                  manageStoreController
-                                                          .categoriesList[index]
-                                                          .categoryId ??
-                                                      ""
+                                              manageStoreController
+                                                  .categoriesList[index]
+                                                  .categoryId ??
+                                                  ""
                                             })!
                                             .then((value) {
                                           manageStoreController
                                               .apiGetCategoriesList();
-                                        });
+                                        })
+                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4),

@@ -158,16 +158,21 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  Utility.showConfirmAlertMessage(
-                                      AlertStringConstants.areYouSureText,
-                                      okay: StringConstants.deleteText,
-                                      okayTap: () {
-                                    // Navigator.pop(Get.context!);
-                                    ownerStoresController.apiDeleteStore(
-                                        storeId: ownerStoresController
-                                            .storeList[index].storeId
-                                            .toString());
-                                  });
+                                      permissionStoreList.any((element) =>
+                                      element.isStoreOwner==true )
+                                          || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                                      ele.controllerKey == PermissionKey.deleteStore.statusName))
+                                          ?  Utility.showConfirmAlertMessage(
+                                          AlertStringConstants.areYouSureText,
+                                          okay: StringConstants.deleteText,
+                                          okayTap: () {
+                                            ownerStoresController.apiDeleteStore(
+                                                storeId: ownerStoresController
+                                                    .storeList[index].storeId
+                                                    .toString());
+                                          })
+                                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
                                 },
                                 child: InkWell(
                                   onTap: () async {
@@ -181,9 +186,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                             "";
                                     await ownerStoresController
                                         .apiGetParticularStore();
-
-                                    await ownerStoresController
-                                        .apiGetFeaturedProducts();
                                     /* SharedPreferenceStorage.setData(
                                         "context", context);
                                     await Navigator.of(context)
@@ -191,6 +193,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                       builder: (_) =>
                                           const ManageStoreMainScreen(),
                                     ));*/
+
                                     await Get.to(
                                         () => const ManageStoreMainScreen(),
                                         id: pageIdApp.value);

@@ -20,6 +20,7 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 import 'store_owner/manage_store_main_screen.dart';
 
@@ -173,12 +174,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               // SharedPreferenceStorage.setData(
                               //     "context", context);
                               print("permissionStoreList:----${permissionStoreList.length}----------");
-                              print(permissionStoreList.firstWhere((element) =>
-                              element.isStoreOwner==true ).isStoreOwner==true);
-                              print(permissionStoreList.firstWhere((element) =>
+                              print(permissionStoreList.any((element) =>
+                              element.isStoreOwner==true ));
+                              print(permissionStoreList.any((element) =>
                                   element.controllers!.any((ele) =>
-                                  ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
-                                      (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName));
+                                  ele.controllerKey == PermissionKey.manageMessages.statusName)));
+                              // print(permissionStoreList.firstWhere((element) =>
+                              //     element.controllers!.any((ele) =>
+                              //     ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
+                              //         (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName));
                               roleApp.value == Role.customerRoleText
                                   ?
                                   // Navigator.of(context)
@@ -191,15 +195,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                              permissionStoreList.firstWhere((element) =>
-                              element.isStoreOwner==true ).isStoreOwner==true
-                                  || permissionStoreList.firstWhere((element) =>
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner==true )
+                                  || permissionStoreList.any((element) =>
                                   element.controllers!.any((ele) =>
-                                  ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
-                                      (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName)
+                                  ele.controllerKey == PermissionKey.manageMessages.statusName))
                                   ? Get.to(() => const OwnerInboxScreen(),
                                   id: pageIdApp.value)
-                                   : null;
+                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -281,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           homeController.lastName?.value
                                                   .toString() ??
                                               "";
-
+                                      Get.parameters['storeId'] = "";
                                       Get.to(
                                         () => const OwnerStoresListScreen(),
                                         id: pageIdApp.value,

@@ -130,13 +130,26 @@ class _OffersScreenState extends State<OffersScreen> {
                               //     .push(MaterialPageRoute(
                               //   builder: (_) => const AddOfferScreen(),
                               // ))
-                              Get.to(() => const AddOfferScreen(),
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner==true ) ||
+                                      permissionStoreList
+                                          .any((element) =>
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey
+                                                      .createOffers.statusName))
+
+                                  ? Get.to(() => const AddOfferScreen(),
                                       id: pageIdApp.value,
                                       arguments: {
-                                    "isFrom": StringConstants.addOfferText,
-                                  })?.then((value) {
-                                offersController.apiGetOwnerOffersList();
-                              });
+                                          "isFrom":
+                                              StringConstants.addOfferText,
+                                        })?.then((value) {
+                                      offersController.apiGetOwnerOffersList();
+                                    })
+                                  : Utility.showAlertMessage(
+                                      AlertStringConstants
+                                          .notAuthorisedToStoreText);
                             },
                             child: Text(StringConstants.addNewOfferText,
                                 style: const TextStyle(
@@ -484,25 +497,36 @@ class _OffersScreenState extends State<OffersScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  Utility.showConfirmAlertMessage(
-                                      AlertStringConstants.areYouSureText,
-                                      okay: StringConstants.deleteText,
-                                      okayTap: () async {
-                                    Get.back();
-                                    offersController.storeId!.value =
-                                        offersController
-                                                .getOwnerOfferlist[index]
-                                                .store!
-                                                .storeId ??
-                                            "";
-                                    offersController.offerId!.value =
-                                        offersController
-                                                .getOwnerOfferlist[index]
-                                                .offerId ??
-                                            "";
+                                      permissionStoreList.any((element) =>
+                                      element.isStoreOwner==true ) ||
+                                          permissionStoreList
+                                              .any((element) =>
+                                                  element.controllers!.any((ele) =>
+                                                      ele.controllerKey ==
+                                                      PermissionKey.editOffers
+                                                          .statusName))
+                                      ? Utility.showConfirmAlertMessage(
+                                          AlertStringConstants.areYouSureText,
+                                          okay: StringConstants.deleteText,
+                                          okayTap: () async {
+                                          Get.back();
+                                          offersController.storeId!.value =
+                                              offersController
+                                                      .getOwnerOfferlist[index]
+                                                      .store!
+                                                      .storeId ??
+                                                  "";
+                                          offersController.offerId!.value =
+                                              offersController
+                                                      .getOwnerOfferlist[index]
+                                                      .offerId ??
+                                                  "";
+                                          await offersController
+                                              .apiDeleteOffer();
+                                        })
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants.notAuthorisedToStoreText);
 
-                                    await offersController.apiDeleteOffer();
-                                  });
                                   return null;
                                 },
                                 child: Container(
@@ -652,35 +676,44 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //       const EditOfferScreen(),
                                                   // ))
 
-                                                  Get.to(
-                                                          () =>
-                                                              const EditOfferScreen(),
-                                                          id: pageIdApp.value,
-                                                          arguments: {
-                                                        "isFrom":
-                                                            StringConstants
-                                                                .editOfferText,
-                                                        "storeId": offersController
-                                                                .getOwnerOfferlist[
-                                                                    index]
-                                                                .store!
-                                                                .storeId ??
-                                                            "",
-                                                        "offerId": offersController
-                                                                .getOwnerOfferlist[
-                                                                    index]
-                                                                .offerId ??
-                                                            ""
-                                                      })!
-                                                      .then((value) {
-                                                    roleApp.value ==
-                                                            Role
-                                                                .customerRoleText
-                                                        ? offersController
-                                                            .apiGetUserOffersList()
-                                                        : offersController
-                                                            .apiGetOwnerOffersList();
-                                                  });
+                                                  permissionStoreList.any((element) =>
+                                                  element.isStoreOwner==true ) ||
+                                                          permissionStoreList
+                                                              .any((element) => element.controllers!.any((ele) =>
+                                                                  ele.controllerKey ==
+                                                                  PermissionKey
+                                                                      .editOffers
+                                                                      .statusName))
+                                                      ? Get.to(() => const EditOfferScreen(),
+                                                              id: pageIdApp
+                                                                  .value,
+                                                              arguments: {
+                                                              "isFrom":
+                                                                  StringConstants
+                                                                      .editOfferText,
+                                                              "storeId": offersController
+                                                                      .getOwnerOfferlist[
+                                                                          index]
+                                                                      .store!
+                                                                      .storeId ??
+                                                                  "",
+                                                              "offerId": offersController
+                                                                      .getOwnerOfferlist[
+                                                                          index]
+                                                                      .offerId ??
+                                                                  ""
+                                                            })!
+                                                          .then((value) {
+                                                          roleApp.value ==
+                                                                  Role
+                                                                      .customerRoleText
+                                                              ? offersController
+                                                                  .apiGetUserOffersList()
+                                                              : offersController
+                                                                  .apiGetOwnerOffersList();
+                                                        })
+                                                      : Utility.showAlertMessage(
+                                                          AlertStringConstants.notAuthorisedToStoreText);
                                                 },
                                                 child: Image.asset(
                                                   ImageConstants.edit,

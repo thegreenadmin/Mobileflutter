@@ -6,6 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 import '../../../utils/global_share_data.dart';
 import '../../../utils/shared_prefrences.dart';
@@ -115,8 +116,15 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
-                              await Get.to(const OrdersHomeMainScreen(),
-                                  id:pageIdApp.value);
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner==true )
+                                  || permissionStoreList.any((element) =>
+                                  element.controllers!.any((ele) =>
+                                  ele.controllerKey == PermissionKey.manageOrders.statusName))
+                                  ?  Get.to(const OrdersHomeMainScreen(),
+                                  id:pageIdApp.value)
+                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
 
                             },
                             child: Container(

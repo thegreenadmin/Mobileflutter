@@ -352,10 +352,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
 
                               ordersHomeMainController.apiGetStoreOrderDetail();
 
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
-
-
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
 
                               /// ====================================
 
@@ -375,11 +373,18 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   .first
                                   .orderStatus!
                                   .orderStatusName == //"11"
-                                  OrderStatus
-                                      .returnRequest.statusName
-                                  ?
-                              Get.to(const MarkReturnOrderScreen(),
+                                  OrderStatus.returnRequest.statusName
+                                  ? permissionStoreList.any((element) => element.isStoreOwner == true)||
+                                  permissionStoreList
+                                      .any((element) =>
+                                      element.controllers!.any((ele) =>
+                                      ele.controllerKey ==
+                                          PermissionKey.manageReturnRequests.statusName))
+                                  ? Get.to(const MarkReturnOrderScreen(),
                                   id:pageIdApp.value)
+                                  : Utility.showAlertMessage(
+                                  AlertStringConstants.notAuthorisedToStoreText)
+
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const MarkReturnOrderScreen(),
                               // )).then((value) {

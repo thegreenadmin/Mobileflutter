@@ -427,6 +427,7 @@ class OwnerStoresController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
+      debugPrint("GET FEATURED PRODUCTS LIST TOKEN *******$headers");
       debugPrint("GET FEATURED PRODUCTS LIST BODY *******$body");
       debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||

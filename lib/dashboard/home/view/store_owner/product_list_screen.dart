@@ -96,7 +96,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewProductScreen(),
                       // ));
-                      Get.to(const AddNewProductScreen(), id: pageIdApp.value);
+
+                      permissionStoreList.any((element) =>
+                      element.isStoreOwner==true )
+                          || permissionStoreList.any((element) =>
+                          element.controllers!.any((ele) =>
+                          ele.controllerKey == PermissionKey.createProduct.statusName))
+                          ? Get.to(const AddNewProductScreen(), id: pageIdApp.value)
+                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.quantityTextController.clear();
@@ -173,11 +181,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           return Dismissible(
                             background: Container(
                               color: AppColors.redlight,
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const <Widget>[
+                                  children: <Widget>[
                                     Icon(
                                       Icons.delete,
                                       color: AppColors.red,
@@ -193,17 +201,24 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              Utility.showConfirmAlertMessage(
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner==true )
+                                  || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                              ele.controllerKey == PermissionKey.editProduct.statusName))
+                                  ? Utility.showConfirmAlertMessage(
                                   AlertStringConstants.areYouSureText,
                                   okay: StringConstants.deleteText,
                                   okayTap: () {
-                                // Navigator.pop(Get.context!);
-                                manageStoreController.productId.value =
-                                    manageStoreController
-                                        .storeProductList[index].productId
-                                        .toString();
-                                manageStoreController.apiDeleteProduct(context);
-                              });
+                                    // Navigator.pop(Get.context!);
+                                    manageStoreController.productId.value =
+                                        manageStoreController
+                                            .storeProductList[index].productId
+                                            .toString();
+                                    manageStoreController.apiDeleteProduct(context);
+                                  })
+                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -228,12 +243,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //     .push(MaterialPageRoute(
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
-                                  Get.to(() => const EditProductScreen(),
-                                          id: pageIdApp.value)!
-                                      .then((value) {
-                                    manageStoreController.apiGetStoreProducts();
-                                    manageStoreController.update();
-                                  });
+                                  permissionStoreList.any((element) =>
+                                  element.isStoreOwner==true )
+                                      || permissionStoreList.any((element) => element.controllers!.any((ele) =>
+                                      ele.controllerKey == PermissionKey.editProduct.statusName))
+                                      ? Get.to(() => const EditProductScreen(),
+                                      id: pageIdApp.value)!.then((value) {
+                                        manageStoreController.apiGetStoreProducts();
+                                        manageStoreController.update();
+                                      })
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+
+
                                 },
                                 child: Column(children: [
                                   Row(

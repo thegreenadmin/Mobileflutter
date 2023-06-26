@@ -366,7 +366,13 @@ class _AccountScreenState extends State<AccountScreen> {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const TransactionScreen(),
                           // ));
-                          Get.to(const TransactionScreen(),id:pageIdApp.value);
+                          permissionStoreList.any((element) =>
+                          element.isStoreOwner==true )
+                              || permissionStoreList.any((element) =>
+                              element.controllers!.any((ele) =>
+                              ele.controllerKey == PermissionKey.manageTransaction.statusName))
+                              ?  Get.to(const TransactionScreen(),id:pageIdApp.value)
+                              : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -460,7 +466,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                   //       const ActiveMembershipScreen(),
                                   // ));
 
-                                  Get.to(const ActiveMembershipScreen(),id:pageIdApp.value);
+                                  permissionStoreList.any((element) =>
+                                  element.isStoreOwner==true)
+                                      ?  Get.to(const ActiveMembershipScreen(),id:pageIdApp.value)
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
