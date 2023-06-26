@@ -1,5 +1,4 @@
 enum OrderStatus {
-
   userReady,
   cancelRequest,
   receivedOrder,

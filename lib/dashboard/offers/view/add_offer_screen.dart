@@ -48,8 +48,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
+                              Get.delete<AddOffersController>();
                               Get.back(id: pageIdApp.value);
-                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -248,7 +248,6 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       onChanged: (value) {
                                         addOffersController.radioValue.value =
                                             value.toString();
-
                                         addOffersController.storeProductList
                                             .clear();
                                       },
@@ -264,11 +263,12 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       groupValue:
                                           addOffersController.radioValue.value,
                                       onChanged: (value) {
-                                        addOffersController.radioValue.value =
-                                            value.toString();
+                                        addOffersController.radioValue.value = value.toString();
+                                        addOffersController.storeProductList.clear();
 
-                                        addOffersController.storeProductList
-                                            .clear();
+                                        if(addOffersController.storeIdValue.value!=""){
+                                          addOffersController.apiGetStoreProducts();
+                                        }
                                       },
                                     )),
                                 Text(StringConstants.productText)
@@ -288,6 +288,9 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                     ),
                     height8SizedBox,
                     Obx(() => DropdownButtonFormField<String>(
+                      value: addOffersController.storeIdValue.value!=""
+                          ? addOffersController.storeIdValue.value
+                          : null,
                           isExpanded: true,
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -344,7 +347,6 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             if (addOffersController.radioValue.value !=
                                 "store") {
                               await addOffersController.apiGetStoreProducts();
-                              setState(() {});
                             }
                             setState(() {});
                           },

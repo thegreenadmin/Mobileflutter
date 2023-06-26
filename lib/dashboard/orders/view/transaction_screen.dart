@@ -562,7 +562,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                             fontSize: 16)),
                                                   ),
                                                   Expanded(
-                                                    flex:1,
+                                                    flex:2,
                                                     child:  Text(
                                                     transactionController
                                                         .userTransactionList![

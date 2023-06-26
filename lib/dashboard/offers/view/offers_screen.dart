@@ -134,9 +134,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                       id: pageIdApp.value,
                                       arguments: {
                                     "isFrom": StringConstants.addOfferText,
-                                  })!
-                                  .then((value) {
-                                offersController.apiGetUserOffersList();
+                                  })?.then((value) {
+                                offersController.apiGetOwnerOffersList();
                               });
                             },
                             child: Text(StringConstants.addNewOfferText,
@@ -489,8 +488,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                       AlertStringConstants.areYouSureText,
                                       okay: StringConstants.deleteText,
                                       okayTap: () async {
-                                    Get.back(id: pageIdApp.value);
-                                    // Navigator.pop(Get.context!);
+                                    Get.back();
                                     offersController.storeId!.value =
                                         offersController
                                                 .getOwnerOfferlist[index]

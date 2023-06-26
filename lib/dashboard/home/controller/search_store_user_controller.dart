@@ -164,7 +164,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -214,7 +214,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -257,7 +257,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -504,8 +504,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value=false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value=false;
         if(value?.body['message']!=null){
@@ -567,8 +566,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+       Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value= false;
        if(value?.body['message']!=null){
@@ -631,8 +629,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value= false;
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+         Get.offAll(const StartJourneyScreen());
       } else {
         isClicked.value= false;
        if(value?.body['message']!=null){
@@ -705,8 +702,7 @@ class SearchStoreUserController extends GetxController {
           Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -772,8 +768,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);
@@ -840,8 +835,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+         Get.offAll(const StartJourneyScreen());
       } else {
        if(value?.body['message']!=null){
           Utility.showAlertMessage(value?.body['message']);

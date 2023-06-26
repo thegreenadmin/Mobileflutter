@@ -936,7 +936,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
-                          FilteringTextInputFormatter.digitsOnly,
                         ],
                         style: const TextStyle(
                             color: AppColors.black,

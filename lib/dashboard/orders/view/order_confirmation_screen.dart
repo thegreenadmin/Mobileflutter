@@ -612,12 +612,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           Get.parameters["isFromMenu"] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromFav"] = "false";
-                          await Get.to(()=>const StoreHomeMainScreen(),
+                          Get.to(()=>const StoreHomeMainScreen(),
                               id:pageIdApp.value);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const StoreHomeMainScreen(),
-                          // ));
-
                         },
                         height: 50,
                         width: WidgetConstants.screenWidth * 0.5,

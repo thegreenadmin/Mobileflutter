@@ -172,6 +172,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               // SharedPreferenceStorage.setData(
                               //     "context", context);
+                              print("permissionStoreList:----${permissionStoreList.length}----------");
+                              print(permissionStoreList.firstWhere((element) =>
+                              element.isStoreOwner==true ).isStoreOwner==true);
+                              print(permissionStoreList.firstWhere((element) =>
+                                  element.controllers!.any((ele) =>
+                                  ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
+                                      (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName));
                               roleApp.value == Role.customerRoleText
                                   ?
                                   // Navigator.of(context)
@@ -184,8 +191,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                                  Get.to(() => const OwnerInboxScreen(),
-                                      id: pageIdApp.value);
+                              permissionStoreList.firstWhere((element) =>
+                              element.isStoreOwner==true ).isStoreOwner==true
+                                  || permissionStoreList.firstWhere((element) =>
+                                  element.controllers!.any((ele) =>
+                                  ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
+                                      (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName)
+                                  ? Get.to(() => const OwnerInboxScreen(),
+                                  id: pageIdApp.value)
+                                   : null;
                             },
                             constraints: const BoxConstraints(),
                             padding:

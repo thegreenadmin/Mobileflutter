@@ -98,6 +98,7 @@ class ServerCommunicator {
 //S
   String states = 'utils/states';
   String storeList = 'store/list';
+  String storePermissionsList = 'store/permissions';
 
   String storeDetails = 'store/details';
   String storeDetailsEdit = 'store/details/edit';

@@ -179,9 +179,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
       }
@@ -300,8 +298,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message']);
       }
@@ -341,8 +338,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+       Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message']);
       }
@@ -386,8 +382,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -540,8 +535,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (!value.body['message']
             .toString()
@@ -631,8 +625,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -671,8 +664,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -708,8 +700,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (!value.body['message']
             .toString()
@@ -762,7 +753,7 @@ class AddCardController extends GetxController {
         } else if (value.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
           SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen());
+          Get.offAll(const StartJourneyScreen());
         } else if (value.body["status"] == ApiConstants.statusCode409) {
           Utility.showAlertMessage(value.body['message']);
           userStripeBankId!.value = "";
@@ -812,8 +803,7 @@ class AddCardController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {
@@ -859,8 +849,7 @@ class AddCardController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {
@@ -902,8 +891,7 @@ class AddCardController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message']);
       }

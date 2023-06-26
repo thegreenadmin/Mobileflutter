@@ -182,8 +182,8 @@ class AddOffersController extends GetxController {
               AlertStringConstants.pleaseSelectDiscountType);
         } else {
           isValidateFromAddOffer
-              ? await apiAddOffer(context)
-              : await apiUpdateOffer(context);
+              ? await apiAddOffer()
+              : await apiUpdateOffer();
         }
       } catch (_) {}
     } else {
@@ -192,7 +192,7 @@ class AddOffersController extends GetxController {
   }
 
   //Add Offer Api
-  Future apiAddOffer(context) async {
+  Future apiAddOffer() async {
     debugPrint(
         "ADD OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferCreate}");
     var token = await SharedPreferenceStorage.getData('token');
@@ -231,19 +231,16 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
-        // Get.back();
-        Get.back(id: pageIdApp.value);
-        // Navigator.of(context).pop();
         offerNameTextController.clear();
         storeIdValue.value = "";
         offerImageOrigionalLinkfromServer.value = "";
         offerImageDynamicLinkfromServer.value = "";
         discountOrOfferTextController.clear();
+        Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -284,8 +281,7 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -369,9 +365,8 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
-      } else {
+       Get.offAll(const StartJourneyScreen());
+       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
@@ -415,15 +410,14 @@ class AddOffersController extends GetxController {
             getOfferDetailModel.data!.store!.storeId.toString();
         discountType.value = getOfferDetailModel.data!.offerType!;
 
-        await apiGetStoreProducts();
+        apiGetStoreProducts();
 
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
-      } else {
+        Get.offAll(const StartJourneyScreen());
+              } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
@@ -432,7 +426,7 @@ class AddOffersController extends GetxController {
   }
 
   //Update Offer Api
-  Future apiUpdateOffer(context) async {
+  Future apiUpdateOffer() async {
     selectedProducts.clear();
     for (int i = 0; i < productMergedList.length; i++) {
       selectedProducts.add({
@@ -479,8 +473,7 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

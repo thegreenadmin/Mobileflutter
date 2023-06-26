@@ -292,12 +292,12 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                     text: ownerInboxController
                                                                     .inboxList[
                                                                         index]
-                                                                    .orderId! ==
+                                                                    .orderId ==
                                                                 null &&
                                                             ownerInboxController
                                                                     .inboxList[
                                                                         index]
-                                                                    .offerId! ==
+                                                                    .offerId ==
                                                                 null
                                                         ? "- Contact us Request"
                                                         : ownerInboxController
