@@ -525,8 +525,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                         .toString()),
                                 id: pageIdApp.value,
                               )!
-                                  .then((value) =>
-                                      walletController.apiGetBankAccountList())
                                   .then((value) {
                                 walletController.apiGetAccountDetails();
                                 walletController.apiGetBankAccountList();
@@ -800,6 +798,31 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           ),
                                         ],
                                       ),
+
+                                      InkWell(
+                                          onTap: () async {
+                                            Get.to(
+                                              () => WebviewPageScreen(
+                                                  isFrom: "connectAccount",
+                                                  url: Uri.parse(
+                                                          walletController
+                                                              .accountLink
+                                                              .value)
+                                                      .toString()),
+                                              id: pageIdApp.value,
+                                            )!
+                                                .then((value) {
+                                              walletController
+                                                  .apiGetAccountDetails();
+                                              walletController
+                                                  .apiGetBankAccountList();
+                                            });
+                                          },
+                                          child: Image.asset(
+                                            ImageConstants.edit,
+                                            scale: 3.0,
+                                          )),
+
                                       // InkWell(
                                       //     onTap: () async {
                                       //       Utility.showConfirmAlertMessage(

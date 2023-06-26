@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 class EditWorkerScreen extends StatefulWidget {
   const EditWorkerScreen({super.key});
 
@@ -34,6 +34,19 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
                   children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.profilePicText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                        ],
+                      ),
+                    ),
+                    height20SizedBox,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +60,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   addNewWorkerController.formKey.currentState
                                       ?.reset();
                                   addNewWorkerController.resetForm();
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
@@ -169,12 +182,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.employeeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.employeeNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -236,12 +261,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.emailIdText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -302,12 +339,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.primaryStoreText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.primaryStoreText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     Container(
@@ -338,12 +387,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.shortDescriptionText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.shortDescriptionText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -403,12 +464,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.workingDaysText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.workingDaysText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     MultiCustomDropDown(
@@ -435,12 +508,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                StringConstants.startTimeText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: StringConstants.startTimeText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               height4SizedBox,
                               TextFormField(
@@ -540,12 +625,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                StringConstants.endTimeText,
-                                style: TextStyle(
-                                    color: AppColors.blacklight,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: StringConstants.endTimeText,
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400)),
+                                    const TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                               height4SizedBox,
                               TextFormField(
@@ -640,12 +737,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.mobileNoText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.mobileNoText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     IntlPhoneField(
@@ -714,12 +823,24 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                     height20SizedBox,
                     addNewWorkerController.storeRoleList.isEmpty
                         ? height0SizedBox
-                        : Text(
-                            StringConstants.roleText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                        : Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.roleText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                     addNewWorkerController.storeRoleList.isEmpty
                         ? height0SizedBox

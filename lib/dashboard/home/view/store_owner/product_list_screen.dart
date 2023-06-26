@@ -86,8 +86,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Text(
+                  StringConstants.productsListText,
+                  style: const TextStyle(
+                      fontSize: 18.0,
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w600),
+                ),
                 InkWell(
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
@@ -139,7 +146,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               fontSize: 16.0,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w500),
-                        ),
+                        )
                       ],
                     ))
               ],
@@ -217,7 +224,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     manageStoreController.apiDeleteProduct(context);
                                   })
                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
+                              return null;
 
                             },
                             child: Container(

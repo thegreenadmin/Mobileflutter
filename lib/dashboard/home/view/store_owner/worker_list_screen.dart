@@ -230,7 +230,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController.apiDeleteWorker();
                                   })
                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
+                              return null;
 
                             },
                             child: InkWell(

@@ -93,12 +93,24 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontSize: 20),
                     ),
                     height15SizedBox,
-                    Text(
-                      StringConstants.uploadLogoText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeLogoText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height15SizedBox,
                     Row(
@@ -216,13 +228,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       ],
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.bannerImageText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeBannerImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height15SizedBox,
                     Obx(
                       () => addNewStoreController
@@ -292,12 +317,24 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             ),
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.storeNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -358,13 +395,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.einBusinessId,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.einBusinessId,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -484,13 +534,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.emailIdText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.emailIdText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -550,13 +613,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.phoneNumberText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.phoneNumberText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -629,14 +705,28 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
                     ),
+
                     height20SizedBox,
-                    Text(
-                      StringConstants.addressLine1Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.addressLine1Text,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         onTap: () async {
@@ -852,13 +942,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.townOrCityText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.townOrCityText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -917,13 +1020,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.postalCodeText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.postalCodeText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -979,14 +1095,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-
-                    Text(
-                      StringConstants.zoneText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.zoneText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     // Obx(() => addNewStoreController.statesList.isEmpty
                     //     ? height0SizedBox
@@ -1097,13 +1225,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Text(
-                      StringConstants.countryText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.countryText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -1322,12 +1463,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        StringConstants.openingTimeText,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: StringConstants
+                                                    .openingTimeText,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            const TextSpan(
+                                              text: "*",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
@@ -1461,12 +1616,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        StringConstants.closingTimeText,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: StringConstants
+                                                    .closingTimeText,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            const TextSpan(
+                                              text: "*",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       height4SizedBox,
                                       TextFormField(
@@ -1600,12 +1769,24 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           : height20SizedBox,
                     ),
                     Obx(() => addNewStoreController.is247Time.value != true
-                        ? Text(
-                            StringConstants.workingDaysText,
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                        ? Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.workingDaysText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           )
                         : height0SizedBox),
                     height4SizedBox,
@@ -1650,13 +1831,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           : height0SizedBox,
                     ),
                     height15SizedBox,
-                    Text(
-                      StringConstants.deliveryMethodsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.deliveryMethodsText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
 
                     MultiCustomDropDown(
@@ -1691,13 +1885,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         title: StringConstants.selectDeliveryServicesText,
                         list: addNewStoreController.deliveryServices),
                     height15SizedBox,
-                    Text(
-                      StringConstants.storeTermsText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storeTermsText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         onTap: () {
@@ -1764,13 +1971,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           ),
                         )),
                     height15SizedBox,
-                    Text(
-                      StringConstants.storePrivacyText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.storePrivacyText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
+
                     height4SizedBox,
                     TextFormField(
                         onTap: () {

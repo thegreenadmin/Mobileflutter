@@ -8,8 +8,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class EditOfferScreen extends StatefulWidget {
   const EditOfferScreen({super.key});
@@ -95,12 +93,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      StringConstants.uploadImageText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.uploadImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height15SizedBox,
                     Obx(
@@ -171,12 +181,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             ),
                     ),
                     height35SizedBox,
-                    Text(
-                      StringConstants.offerNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.offerNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -239,12 +261,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       children: [
                         Expanded(
                           flex: 4,
-                          child: Text(
-                            "${StringConstants.offerFor}:",
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.offerFor,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Row(
@@ -288,12 +322,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       ],
                     ),
                     height12SizedBox,
-                    Text(
-                      StringConstants.selectStoreText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.selectStoreText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height8SizedBox,
                     Obx(() => addOffersController.storeList.isEmpty
@@ -476,12 +522,24 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                 ),
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.discountsOrOffersText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.discountsOrOffersText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height4SizedBox,
                     Row(

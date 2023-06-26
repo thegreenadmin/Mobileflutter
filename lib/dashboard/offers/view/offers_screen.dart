@@ -118,19 +118,27 @@ class _OffersScreenState extends State<OffersScreen> {
                                         fontSize: 20),
                                   ),
                           ),
-                          InkWell(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              Get.parameters["isFrom"] =
-                                  StringConstants.addOfferText;
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(
-                              //   builder: (_) => const AddOfferScreen(),
-                              // ))
-                              permissionStoreList.any((element) =>
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.primary,
+                                size: 18.0,
+                              ),
+                              width2SizedBox,
+                              InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  Get.parameters["isFrom"] =
+                                      StringConstants.addOfferText;
+                                  // SharedPreferenceStorage.setData(
+                                  //     "context", context);
+                                  // Navigator.of(context)
+                                  //     .push(MaterialPageRoute(
+                                  //   builder: (_) => const AddOfferScreen(),
+                                  // ))
+                                  permissionStoreList.any((element) =>
                               element.isStoreOwner==true ) ||
                                       permissionStoreList
                                           .any((element) =>
@@ -150,13 +158,15 @@ class _OffersScreenState extends State<OffersScreen> {
                                   : Utility.showAlertMessage(
                                       AlertStringConstants
                                           .notAuthorisedToStoreText);
-                            },
-                            child: Text(StringConstants.addNewOfferText,
-                                style: const TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    color: AppColors.primary)),
+                                },
+                                child: Text(StringConstants.addNewOfferText,
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        color: AppColors.primary)),
+                              ),
+                            ],
                           ),
                         ],
                       ),

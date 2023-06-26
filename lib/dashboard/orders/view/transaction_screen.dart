@@ -6,7 +6,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-
 import '../../../utils/global_share_data.dart';
 
 class TransactionScreen extends StatefulWidget {
@@ -66,7 +65,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              transactionController.isCurrentMonthSelected.value
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
                           color:
                               transactionController.isCurrentMonthSelected.value
                                   ? AppColors.primary
@@ -113,7 +115,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              transactionController.isCurrentMonthSelected.value
+                                  ? FontWeight.w400
+                                  : FontWeight.w600,
                           color:
                               transactionController.isCurrentMonthSelected.value
                                   ? AppColors.blacklight
@@ -161,7 +166,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                               fontSize: 16,
                               fontWeight:
                                   transactionController.selectedIndex.value == i
-                                      ? FontWeight.w500
+                                      ? FontWeight.w600
                                       : FontWeight.w400,
                               color:
                                   transactionController.selectedIndex.value == i
@@ -218,7 +223,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                               ),
                               width10SizedBox,
                               Text(
-                                StringConstants.historyText,
+                                StringConstants.transactionsHistoryText,
                                 style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
@@ -530,7 +535,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Expanded(
-                                                    flex:3,
+                                                    flex: 3,
                                                     child: Text(
                                                         transactionController
                                                                     .userTransactionList![
@@ -552,52 +557,55 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     .store!
                                                                     .storeName ??
                                                                 "",
-                                                        textAlign:  TextAlign.start,
-                                                        overflow: TextOverflow.ellipsis,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontWeight:
                                                                 FontWeight.w600,
-                                                            fontSize: 16)),
+                                                            fontSize: 14)),
                                                   ),
                                                   Expanded(
-                                                    flex:2,
-                                                    child:  Text(
-                                                    transactionController
-                                                        .userTransactionList![
-                                                    index]
-                                                        .orderTransaction !=
-                                                        null
-                                                        ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
-                                                        : transactionController
-                                                        .userTransactionList![
-                                                    index]
-                                                        .orderItemRefundTransaction !=
-                                                        null
-                                                        ? "\$${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                        : transactionController
-                                                        .userTransactionList![
-                                                    index]
-                                                        .transaction !=
-                                                        null
-                                                        ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                        : transactionController
-                                                        .userTransactionList![index]
-                                                        .membership !=
-                                                        null
-                                                        ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
-                                                        : "",
-                                                    textAlign:  TextAlign.end,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        color:
-                                                        AppColors.primary,
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 16),
-                                                  ),)
-
+                                                    flex: 2,
+                                                    child: Text(
+                                                      transactionController
+                                                                  .userTransactionList![
+                                                                      index]
+                                                                  .orderTransaction !=
+                                                              null
+                                                          ? "\$${transactionController.userTransactionList![index].orderTransaction!.totalAmount!.toStringAsFixed(2)}"
+                                                          : transactionController
+                                                                      .userTransactionList![
+                                                                          index]
+                                                                      .orderItemRefundTransaction !=
+                                                                  null
+                                                              ? "\$${transactionController.userTransactionList![index].orderItemRefundTransaction!.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                              : transactionController
+                                                                          .userTransactionList![
+                                                                              index]
+                                                                          .transaction !=
+                                                                      null
+                                                                  ? "\$${transactionController.userTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                  : transactionController
+                                                                              .userTransactionList![index]
+                                                                              .membership !=
+                                                                          null
+                                                                      ? "\$${transactionController.userTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                                      : "",
+                                                      textAlign: TextAlign.end,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16),
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                               Row(
@@ -625,16 +633,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                   .orderTransactionType ==
                                                               "order"
                                                           ? Text(StringConstants
-                                                              .debitedAmountText)
+                                                              .debitText)
                                                           : Text(StringConstants
-                                                              .creditedAmountText)
+                                                              .creditText)
                                                       : transactionController
                                                                   .userTransactionList![
                                                                       index]
                                                                   .orderItemRefundTransaction !=
                                                               null
                                                           ? Text(StringConstants
-                                                              .creditedAmountText)
+                                                              .creditText)
                                                           : transactionController
                                                                       .userTransactionList![
                                                                           index]
@@ -648,7 +656,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                           .membership !=
                                                                       null
                                                                   ? Text(StringConstants
-                                                                      .debitedAmountText)
+                                                                      .debitText)
                                                                   : const Text(
                                                                       ""),
                                                 ],
@@ -664,64 +672,66 @@ class _TransactionScreenState extends State<TransactionScreen> {
                               );
                             }))
                 : Expanded(
-                    child: transactionController
-                            .ownerOrderTransactionList!.isEmpty
-                        ? transactionController.isLoading.value == true
-                            ? height0SizedBox
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      ImageConstants.nodata,
-                                      scale: 8,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  height4SizedBox,
-                                  Center(
-                                    child: Text(
-                                      AlertStringConstants.noHistoryFoundText,
-                                      style: const TextStyle(
-                                          fontStyle: FontStyle.italic,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              )
-                        : ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return height12SizedBox;
-                            },
-                            itemCount: transactionController
-                                .ownerOrderTransactionList!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                onTap: () {
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  // Get.parameters[
-                                  //         "store_wallet_transaction_id"] =
-                                  //     transactionController
-                                  //         .ownerOrderTransactionList![index]
-                                  //         .storeWalletTransactionId;
-                                  // Get.parameters["store_id"] =
-                                  //     transactionController
-                                  //         .ownerOrderTransactionList![index]
-                                  //         .storeId;
-                                  // transactionController
-                                  //             .ownerOrderTransactionList![index]
-                                  //             .orderTransaction !=
-                                  //         null
-                                  //     ? Navigator.of(context)
-                                  //         .push(MaterialPageRoute(
-                                  //         builder: (_) =>
-                                  //             const OwnerTransactionDetailScreen(),
-                                  //       ))
+                    child:
+                        transactionController.ownerOrderTransactionList!.isEmpty
+                            ? transactionController.isLoading.value == true
+                                ? height0SizedBox
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image.asset(
+                                          ImageConstants.nodata,
+                                          scale: 8,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      height4SizedBox,
+                                      Center(
+                                        child: Text(
+                                          AlertStringConstants
+                                              .noHistoryFoundText,
+                                          style: const TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                            : ListView.separated(
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return height12SizedBox;
+                                },
+                                itemCount: transactionController
+                                    .ownerOrderTransactionList!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      // SharedPreferenceStorage.setData(
+                                      //     "context", context);
+                                      // Get.parameters[
+                                      //         "store_wallet_transaction_id"] =
+                                      //     transactionController
+                                      //         .ownerOrderTransactionList![index]
+                                      //         .storeWalletTransactionId;
+                                      // Get.parameters["store_id"] =
+                                      //     transactionController
+                                      //         .ownerOrderTransactionList![index]
+                                      //         .storeId;
+                                      // transactionController
+                                      //             .ownerOrderTransactionList![index]
+                                      //             .orderTransaction !=
+                                      //         null
+                                      //     ? Navigator.of(context)
+                                      //         .push(MaterialPageRoute(
+                                      //         builder: (_) =>
+                                      //             const OwnerTransactionDetailScreen(),
+                                      //       ))
 
-                                  /* Get.to(
+                                      /* Get.to(
                                               const OwnerTransactionDetailScreen(),
                                               arguments: {
                                                   "store_wallet_transaction_id":
@@ -734,18 +744,18 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                           index]
                                                       .storeId
                                                 })*/
-                                  // : transactionController
-                                  //             .ownerOrderTransactionList![
-                                  //                 index]
-                                  //             .orderItemRefundTransaction !=
-                                  //         null
-                                  //     ? Navigator.of(context)
-                                  //         .push(MaterialPageRoute(
-                                  //         builder: (_) =>
-                                  //             const OwnerTransactionDetailScreen(),
-                                  //       ))
+                                      // : transactionController
+                                      //             .ownerOrderTransactionList![
+                                      //                 index]
+                                      //             .orderItemRefundTransaction !=
+                                      //         null
+                                      //     ? Navigator.of(context)
+                                      //         .push(MaterialPageRoute(
+                                      //         builder: (_) =>
+                                      //             const OwnerTransactionDetailScreen(),
+                                      //       ))
 
-                                  /*Get.to(
+                                      /*Get.to(
                                                       const OwnerTransactionDetailScreen(),
                                                       arguments: {
                                                           "store_wallet_transaction_id":
@@ -758,297 +768,295 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                   index]
                                                               .storeId
                                                         })*/
-                                  // : null;
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  decoration: const BoxDecoration(
-                                      color: AppColors.greylight,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      )),
-                                  child: Column(children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Flexible(
-                                          flex: 2,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
-                                                    width: 1)),
-                                            child: CircleAvatar(
-                                              radius: 25.0,
-                                              backgroundImage: transactionController
+                                      // : null;
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      decoration: const BoxDecoration(
+                                          color: AppColors.greylight,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          )),
+                                      child: Column(children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              flex: 2,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                        color: AppColors.white,
+                                                        width: 1)),
+                                                child: CircleAvatar(
+                                                  radius: 25.0,
+                                                  backgroundImage: transactionController
+                                                                  .ownerOrderTransactionList![
+                                                                      index]
+                                                                  .store!
+                                                                  .logo!
+                                                                  .dynamicUrl ==
+                                                              null ||
+                                                          transactionController
                                                               .ownerOrderTransactionList![
                                                                   index]
                                                               .store!
                                                               .logo!
-                                                              .dynamicUrl ==
-                                                          null ||
-                                                      transactionController
-                                                          .ownerOrderTransactionList![
-                                                              index]
-                                                          .store!
-                                                          .logo!
-                                                          .dynamicUrl!
-                                                          .isEmpty
-                                                  ? const AssetImage(
-                                                          ImageConstants
-                                                              .nopicfound)
-                                                      as ImageProvider
-                                                  : NetworkImage(
-                                                      transactionController
-                                                          .ownerOrderTransactionList![
-                                                              index]
-                                                          .store!
-                                                          .logo!
-                                                          .dynamicUrl
-                                                          .toString()),
-                                              backgroundColor:
-                                                  Colors.transparent,
+                                                              .dynamicUrl!
+                                                              .isEmpty
+                                                      ? const AssetImage(
+                                                              ImageConstants
+                                                                  .nopicfound)
+                                                          as ImageProvider
+                                                      : NetworkImage(
+                                                          transactionController
+                                                              .ownerOrderTransactionList![
+                                                                  index]
+                                                              .store!
+                                                              .logo!
+                                                              .dynamicUrl
+                                                              .toString()),
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        width10SizedBox,
-                                        Flexible(
-                                          flex: 8,
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                            width10SizedBox,
+                                            Flexible(
+                                              flex: 8,
+                                              child: Column(
                                                 children: [
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text.rich(
                                                         TextSpan(
-                                                            text: transactionController
-                                                                        .ownerOrderTransactionList![
-                                                                            index]
-                                                                        .orderTransaction !=
-                                                                    null
-                                                                ? StringConstants
-                                                                    .orderIDText
-                                                                : StringConstants
-                                                                    .transactionIdText,
-                                                            style: TextStyle(
-                                                                color: AppColors
-                                                                    .blacklight,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 14)),
-                                                        TextSpan(
-                                                          text: transactionController
+                                                          children: [
+                                                            TextSpan(
+                                                                text: transactionController
+                                                                            .ownerOrderTransactionList![
+                                                                                index]
+                                                                            .orderTransaction !=
+                                                                        null
+                                                                    ? StringConstants
+                                                                        .orderIDText
+                                                                    : StringConstants
+                                                                        .transactionIdText,
+                                                                style: TextStyle(
+                                                                    color: AppColors
+                                                                        .blacklight,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        14)),
+                                                            TextSpan(
+                                                              text: transactionController
+                                                                          .ownerOrderTransactionList![
+                                                                              index]
+                                                                          .orderTransaction !=
+                                                                      null
+                                                                  ? ': #${transactionController.ownerOrderTransactionList![index].orderTransaction!.orderId}'
+                                                                  : transactionController
+                                                                              .ownerOrderTransactionList![
+                                                                                  index]
+                                                                              .orderItemRefundTransaction !=
+                                                                          null
+                                                                      ? ': #${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction!.orderItemRefundTransactionId}'
+                                                                      : transactionController.ownerOrderTransactionList![index].storePayout !=
+                                                                              null
+                                                                          ? ': #${transactionController.ownerOrderTransactionList![index].storePayout!.transactionId}'
+                                                                          : "",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: 14,
+                                                                  color: AppColors
+                                                                      .blacklight),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      width15SizedBox,
+                                                      Text(
+                                                          transactionController
                                                                       .ownerOrderTransactionList![
                                                                           index]
                                                                       .orderTransaction !=
-                                                                  null
-                                                              ? ': #${transactionController.ownerOrderTransactionList![index].orderTransaction!.orderId}'
-                                                              : transactionController
-                                                                          .ownerOrderTransactionList![
-                                                                              index]
-                                                                          .orderItemRefundTransaction !=
-                                                                      null
-                                                                  ? ': #${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction!.orderItemRefundTransactionId}'
-                                                                  : transactionController
-                                                                              .ownerOrderTransactionList![index]
-                                                                              .storePayout !=
-                                                                          null
-                                                                      ? ': #${transactionController.ownerOrderTransactionList![index].storePayout!.transactionId}'
-                                                                      : "",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 14,
-                                                              color: AppColors
-                                                                  .blacklight),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  width15SizedBox,
-                                                  Text(
-                                                      transactionController
-                                                                  .ownerOrderTransactionList![
-                                                                      index]
-                                                                  .orderTransaction !=
-                                                              null
-                                                          ? Utility
-                                                              .parseDateTime(
-                                                              DateTime.parse(
-                                                                  transactionController
-                                                                      .ownerOrderTransactionList![
-                                                                          index]
-                                                                      .createdAt
-                                                                      .toString()),
-                                                              secFormat: '',
-                                                            ).toString()
-                                                          : transactionController
-                                                                      .ownerOrderTransactionList![
-                                                                          index]
-                                                                      .orderItemRefundTransaction !=
                                                                   null
                                                               ? Utility
                                                                   .parseDateTime(
                                                                   DateTime.parse(transactionController
                                                                       .ownerOrderTransactionList![
                                                                           index]
-                                                                      .orderItemRefundTransaction!
                                                                       .createdAt
                                                                       .toString()),
                                                                   secFormat: '',
                                                                 ).toString()
-                                                              : transactionController
-                                                                          .ownerOrderTransactionList![
-                                                                              index]
-                                                                          .storePayout !=
+                                                              : transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction !=
                                                                       null
                                                                   ? Utility
                                                                       .parseDateTime(
                                                                       DateTime.parse(transactionController
                                                                           .ownerOrderTransactionList![
                                                                               index]
-                                                                          .storePayout!
+                                                                          .orderItemRefundTransaction!
                                                                           .createdAt
                                                                           .toString()),
                                                                       secFormat:
                                                                           '',
                                                                     ).toString()
-                                                                  : "",
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14)),
-                                                ],
-                                              ),
-                                              height8SizedBox,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                      transactionController
-                                                              .ownerOrderTransactionList![
-                                                                  index]
-                                                              .store!
-                                                              .storeName ??
-                                                          "",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 16)),
-                                                  Text(
-                                                    transactionController
-                                                                .ownerOrderTransactionList![
-                                                                    index]
-                                                                .orderTransaction !=
-                                                            null
-                                                        ? "\$${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount!.toStringAsFixed(2)}"
-                                                        : transactionController
+                                                                  : transactionController
+                                                                              .ownerOrderTransactionList![
+                                                                                  index]
+                                                                              .storePayout !=
+                                                                          null
+                                                                      ? Utility
+                                                                              .parseDateTime(
+                                                                          DateTime.parse(transactionController
+                                                                              .ownerOrderTransactionList![index]
+                                                                              .storePayout!
+                                                                              .createdAt
+                                                                              .toString()),
+                                                                          secFormat:
+                                                                              '',
+                                                                        )
+                                                                          .toString()
+                                                                      : "",
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .blacklight,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 14)),
+                                                    ],
+                                                  ),
+                                                  height8SizedBox,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          transactionController
+                                                                  .ownerOrderTransactionList![
+                                                                      index]
+                                                                  .store!
+                                                                  .storeName ??
+                                                              "",
+                                                          style: const TextStyle(
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 16)),
+                                                      Text(
+                                                        transactionController
                                                                     .ownerOrderTransactionList![
                                                                         index]
-                                                                    .storePayout !=
+                                                                    .orderTransaction !=
                                                                 null
-                                                            ? transactionController
-                                                                        .ownerOrderTransactionList![
-                                                                            index]
-                                                                        .storePayout
-                                                                        ?.payoutType ==
-                                                                    "transfered"
-                                                                ? "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalTransactionAmount!.toStringAsFixed(2)}"
-                                                                : "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalReversedAmount!.toStringAsFixed(2)}"
+                                                            ? "\$${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount!.toStringAsFixed(2)}"
                                                             : transactionController
                                                                         .ownerOrderTransactionList![
                                                                             index]
-                                                                        .orderItemRefundTransaction !=
+                                                                        .storePayout !=
                                                                     null
-                                                                ? "\$${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction?.transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                : "",
-                                                    style: const TextStyle(
-                                                        color:
-                                                            AppColors.primary,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 16),
+                                                                ? transactionController
+                                                                            .ownerOrderTransactionList![
+                                                                                index]
+                                                                            .storePayout
+                                                                            ?.payoutType ==
+                                                                        "transfered"
+                                                                    ? "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalTransactionAmount!.toStringAsFixed(2)}"
+                                                                    : "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalReversedAmount!.toStringAsFixed(2)}"
+                                                                : transactionController
+                                                                            .ownerOrderTransactionList![index]
+                                                                            .orderItemRefundTransaction !=
+                                                                        null
+                                                                    ? "\$${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction?.transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                    : "",
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                              height6SizedBox,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                      "${StringConstants.transactionText}: ",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14)),
-                                                  transactionController
-                                                              .ownerOrderTransactionList![
-                                                                  index]
-                                                              .orderTransaction !=
-                                                          null
-                                                      ? transactionController
+                                                  height6SizedBox,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          "${StringConstants.transactionText}: ",
+                                                          style: const TextStyle(
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 14)),
+                                                      transactionController
                                                                   .ownerOrderTransactionList![
                                                                       index]
-                                                                  .orderTransaction!
-                                                                  .orderTransactionType ==
-                                                              "order cancel"
-                                                          ? Text(StringConstants
-                                                              .debitedAmountText)
-                                                          : Text(StringConstants
-                                                              .creditedAmountText)
-                                                      : transactionController
-                                                                  .ownerOrderTransactionList![
-                                                                      index]
-                                                                  .orderItemRefundTransaction !=
+                                                                  .orderTransaction !=
                                                               null
-                                                          ? Text(StringConstants
-                                                              .debitedAmountText)
+                                                          ? transactionController
+                                                                      .ownerOrderTransactionList![
+                                                                          index]
+                                                                      .orderTransaction!
+                                                                      .orderTransactionType ==
+                                                                  "order cancel"
+                                                              ? Text(
+                                                                  StringConstants
+                                                                      .debitText)
+                                                              : Text(
+                                                                  StringConstants
+                                                                      .creditText)
                                                           : transactionController
                                                                       .ownerOrderTransactionList![
                                                                           index]
-                                                                      .storePayout !=
+                                                                      .orderItemRefundTransaction !=
                                                                   null
-                                                              ? transactionController
+                                                              ? Text(
+                                                                  StringConstants
+                                                                      .debitText)
+                                                              : transactionController
                                                                           .ownerOrderTransactionList![
                                                                               index]
-                                                                          .storePayout!
-                                                                          .payoutType ==
-                                                                      "transfered"
-                                                                  ? Text(StringConstants
-                                                                      .debitedAmountText)
-                                                                  : Text(StringConstants
-                                                                      .creditedAmountText)
-                                                              : const Text(""),
+                                                                          .storePayout !=
+                                                                      null
+                                                                  ? transactionController.ownerOrderTransactionList![index].storePayout!.payoutType ==
+                                                                          "transfered"
+                                                                      ? Text(StringConstants
+                                                                          .debitText)
+                                                                      : Text(StringConstants
+                                                                          .creditText)
+                                                                  : const Text(
+                                                                      ""),
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                            )
+                                          ],
+                                        ),
+                                      ]),
                                     ),
-                                  ]),
-                                ),
-                              );
-                            }))),
+                                  );
+                                }))),
           ],
         ),
       ),

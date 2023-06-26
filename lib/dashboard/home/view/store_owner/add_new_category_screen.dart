@@ -87,12 +87,25 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      StringConstants.uploadCategoryImageText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16),
+                    height20SizedBox,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.uploadCategoryImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height25SizedBox,
                     Obx(
@@ -163,12 +176,24 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             ),
                     ),
                     height35SizedBox,
-                    Text(
-                      StringConstants.categoryNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.categoryNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -226,7 +251,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                             ),
                           ),
                         )),
-                    height45SizedBox,
+                    height50SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,

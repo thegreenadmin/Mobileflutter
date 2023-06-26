@@ -9,7 +9,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 import '../../../../utils/utility.dart';

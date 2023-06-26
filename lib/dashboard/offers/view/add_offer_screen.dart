@@ -84,12 +84,24 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      StringConstants.uploadImageText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.uploadImageText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height15SizedBox,
                     Obx(
@@ -160,12 +172,24 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                             ),
                     ),
                     height35SizedBox,
-                    Text(
-                      StringConstants.offerNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.offerNameText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -228,12 +252,24 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                       children: [
                         Expanded(
                           flex: 4,
-                          child: Text(
-                            "${StringConstants.offerFor}:",
-                            style: TextStyle(
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.offerFor,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Row(
@@ -263,11 +299,16 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       groupValue:
                                           addOffersController.radioValue.value,
                                       onChanged: (value) {
-                                        addOffersController.radioValue.value = value.toString();
-                                        addOffersController.storeProductList.clear();
+                                        addOffersController.radioValue.value =
+                                            value.toString();
+                                        addOffersController.storeProductList
+                                            .clear();
 
-                                        if(addOffersController.storeIdValue.value!=""){
-                                          addOffersController.apiGetStoreProducts();
+                                        if (addOffersController
+                                                .storeIdValue.value !=
+                                            "") {
+                                          addOffersController
+                                              .apiGetStoreProducts();
                                         }
                                       },
                                     )),
@@ -279,18 +320,30 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                       ],
                     ),
                     height12SizedBox,
-                    Text(
-                      StringConstants.selectStoreText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.selectStoreText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     height8SizedBox,
                     Obx(() => DropdownButtonFormField<String>(
-                      value: addOffersController.storeIdValue.value!=""
-                          ? addOffersController.storeIdValue.value
-                          : null,
+                          value: addOffersController.storeIdValue.value != ""
+                              ? addOffersController.storeIdValue.value
+                              : null,
                           isExpanded: true,
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -485,13 +538,26 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 ),
                     ),
                     height20SizedBox,
-                    Text(
-                      StringConstants.discountsOrOffersText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
+                    Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: StringConstants.discountsOrOffersText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                 
                     height4SizedBox,
                     Row(
                       children: [
