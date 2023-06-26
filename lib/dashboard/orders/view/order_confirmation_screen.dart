@@ -419,7 +419,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ),
                     ],
                   ),
-                ),
+                ),),
                 height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -607,7 +607,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ],
                     ),
                   ),
-                ),),
+                ),
                 Obx(() =>   Visibility(
                   visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
                       && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
@@ -640,6 +640,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       height20SizedBox,
                     ],
                   ),
+                ),
                 ),
                 buildOrderItems()
               ],
