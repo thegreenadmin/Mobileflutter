@@ -44,6 +44,7 @@ class StringConstants {
   static String amountToBeAddedText = "Amount to be added";
   static String addDescriptionText = "Add Description";
   static String addNewText = "Add New";
+  static String addNewWorkerText = "Add New Worker";
   static String addNewProductText = "Add New Product";
   static String addWorkerText = "Add Worker";
   static String additionalLinksToResearchText = "Additional Links to Research";
@@ -74,6 +75,7 @@ class StringConstants {
   static String activeMembershipText = "Active Membership";
   static String activeMembershipsText = "Active Memberships";
   static String availableBalanceText = "Available Balance";
+  static String amountToPayText = "Amount to pay";
 
   //B
   static String breadthText = "Breadth";
@@ -279,6 +281,7 @@ class StringConstants {
   static String membershipTransactionText = "Membership Transaction";
 
   //N
+  static String noMemberText = "No Member";
   static String nearbyText = "Nearby";
   static String nearYouText = " near you";
   static String notificationPreferencesText = "Notification Preferences";
@@ -568,7 +571,7 @@ class StringConstants {
   //Y
   static String your420MarketPlace = "Your 420 Market Place";
   static String yesText = "Yes";
-  static String yourThoughtText = "Your Thought";
+  static String yourThoughtText = "Your Thoughts";
   static String yourAreQualifiedText =
       "You are qualified to own stores by selecting Okay.";
 
@@ -591,7 +594,8 @@ class BottomNavStringConstants {
 class AlertStringConstants {
   //A
   static String areYouSureText = "Are you sure, you want to delete this item?";
-  static String areYouSureCompleteText = "Are you sure, you want to mark this as complete?";
+  static String areYouSureCompleteText =
+      "Are you sure, you want to mark this as complete?";
   static String areYouSureDeleteAccountText =
       "Are you sure, you want to delete this Account?";
   static String areYouSurePlanText =
@@ -720,6 +724,7 @@ class AlertStringConstants {
   static String pleaseEnterFrequencyText = "Please enter frequency";
   static String pleaseSelectCountryText = "Please select country";
   static String pleaseSelectStateText = "Please select state";
+  static String pleaseEnterValueText = "Please enter value";
 
   //R
 

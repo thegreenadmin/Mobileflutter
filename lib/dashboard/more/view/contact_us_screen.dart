@@ -7,7 +7,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -41,8 +40,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back(id:pageIdApp.value);
-                                 // Navigator.of(context).pop();
+                                  Get.back(id: pageIdApp.value);
+                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -174,7 +173,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
                             controller: contactUsController.emailTextController,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value!.trim().isEmpty) {
                                 return AlertStringConstants
@@ -292,7 +291,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 AutovalidateMode.onUserInteraction,
                             maxLines: 4,
                             textInputAction: TextInputAction.newline,
-                              keyboardType: TextInputType.multiline,
+                            keyboardType: TextInputType.multiline,
                             autofocus: false,
                             inputFormatters: <TextInputFormatter>[
                               LengthLimitingTextInputFormatter(800),
@@ -303,7 +302,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 fontWeight: FontWeight.w400),
                             controller:
                                 contactUsController.messageTextController,
-                          
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return AlertStringConstants

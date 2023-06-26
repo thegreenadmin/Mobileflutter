@@ -278,9 +278,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                 .offer!
                                                                 .offerName ??
                                                             ""
-                                                        :
-                                                        // "${userInboxController.inboxList[index].user?.firstName?? ""} ${userInboxController.inboxList[index].user?.lastName?? ""}",
-                                                        userInboxController
+                                                        : userInboxController
                                                                 .inboxList[
                                                                     index]
                                                                 .store
@@ -312,7 +310,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                         index]
                                                                     .offerId !=
                                                                 null
-                                                            ? "Offer"
+                                                            ? "- Offer Id #${userInboxController.inboxList[index].offerId}"
                                                             : userInboxController
                                                                         .inboxList[
                                                                             index]

@@ -143,11 +143,11 @@ class StoreHomeMainController extends GetxController {
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
     debugPrint("CURRENT LAT AND LNG ***${storeId.value}*********$lat $lng");
-    if(storeId.value!=""){
+    if (storeId.value != "") {
       await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
     }
-
   }
+
   void onIndexChange(int i) async {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
@@ -476,8 +476,6 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
-
-
   //Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
@@ -564,7 +562,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("CONTACT STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value!.body["data"]["store_name"] ?? "";
         Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =
@@ -594,8 +592,7 @@ class StoreHomeMainController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -631,10 +628,9 @@ class StoreHomeMainController extends GetxController {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -745,7 +741,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   //Place Order Api
-  Future apiPlaceOrder() async  {
+  Future apiPlaceOrder() async {
     isPlaceOrder.value = false;
     isLoading.value = true;
     debugPrint("API PLACE ORDER URL**********"
@@ -792,19 +788,19 @@ class StoreHomeMainController extends GetxController {
         isPlaceOrder.value = true;
         debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
         Get.parameters["storeId"] = storeId.value.toString();
-        Get.parameters["orderStatus"] = value?.body["data"]["order_id"]??"";
+        Get.parameters["orderStatus"] = value?.body["data"]["order_id"] ?? "";
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
 
         Get.to(() => const OrderConfirmationScreen(),
-             id: pageIdApp.value,
-             arguments: {
-          "storeId": storeId.value.toString() ?? "0",
-          "orderStatus": orderStatus.value,
-          "isFromTransaction": false,
-          "isFromNotification": false
-        });
+            id: pageIdApp.value,
+            arguments: {
+              "storeId": storeId.value.toString() ?? "0",
+              "orderStatus": orderStatus.value,
+              "isFromTransaction": false,
+              "isFromNotification": false
+            });
         update();
         isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

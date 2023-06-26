@@ -122,12 +122,13 @@ class AddCardController extends GetxController {
     await apiGetUserWalletBalance();
     await apiGetCardList(Get.context!);
     await apiGetBankAccountList();
-    await apiGetStoreList();
+    // await apiGetStoreList();
     await apiGetUserDetailApi(Get.context);
     await apiGetCountries();
     await apiGetAccountDetails();
-    pageId.value =
-        int.parse(SharedPreferenceStorage.getData("pageId").toString());
+
+    // pageId.value =
+    //     int.parse(SharedPreferenceStorage.getData("pageId").toString());
   }
 
   //Get User Detail Info Api
@@ -357,44 +358,43 @@ class AddCardController extends GetxController {
     isCvvFocused.value = creditCardModel.isCvvFocused;
   }
 
-  //Get Store List Api
-  Future apiGetStoreList() async {
-    isLoading.value = true;
-    debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().ownersStoreList}");
-    var token = await SharedPreferenceStorage.getData('token');
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
-    };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().ownersStoreList,
-            headers,
-            showLoading: false)
-        .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
-        storeList.clear();
-
-        storeList.addAll(getStoreListModel.data as Iterable<Stores>);
-        Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
-      } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
-        }
-      }
-    });
-  }
+  // //Get Store List Api
+  // Future apiGetStoreList() async {
+  //   isLoading.value = true;
+  //   debugPrint(
+  //       "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().ownersStoreList}");
+  //   var token = await SharedPreferenceStorage.getData('token');
+  //   Map<String, String> headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': "Bearer ${authToken.value.toString()}",
+  //   };
+  //   debugPrint("TOKEN ********** $headers");
+  //   UserProvider()
+  //       .getWithHeadersApi(
+  //           ServerCommunicator().baseUrl + ServerCommunicator().ownersStoreList,
+  //           headers,
+  //           showLoading: false)
+  //       .then((value) async {
+  //     isLoading.value = false;
+  //     debugPrint("GET STORE RESPONSE *******${value!.body}");
+  //     if (value.body["status"] == ApiConstants.statusCode200 ||
+  //         value.body["status"] == ApiConstants.statusCode201) {
+  //       getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
+  //       storeList.clear();
+  //       storeList.addAll(getStoreListModel.data as Iterable<Stores>);
+  //       Get.parameters["storeCount"] = storeList.length.toString();
+  //     } else if (value.body["status"] == ApiConstants.statusCode401) {
+  //       Utility.showAlertMessage(value.body['message']);
+  //       SharedPreferenceStorage.clearData();
+  //       await Get.offAll(const StartJourneyScreen());
+  //       // await Get.offAll(const StartJourneyScreen());
+  //     } else {
+  //       if (value.body['message'] != null) {
+  //         Utility.showAlertMessage(value.body['message']);
+  //       }
+  //     }
+  //   });
+  // }
 
   Future<void> apiCreateStripeToken(context) async {
     var str = expiryDate.value;

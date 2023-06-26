@@ -57,10 +57,10 @@ class OffersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Get.parameters['isFromNotification'] != "false") {
-        isFromNotification.value =
-            Get.parameters["isFromNotification"] == "true" ? true : false;
-      }
+      // if (Get.parameters['isFromNotification'] != "false") {
+      isFromNotification.value =
+          Get.parameters["isFromNotification"] == "true" ? true : false;
+      // }
       getData();
     });
   }
@@ -224,8 +224,7 @@ class OffersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "q": "",

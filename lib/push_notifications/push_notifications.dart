@@ -100,7 +100,6 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 
 void selectNotification(NotificationResponse notificationResponse) async {
   debugPrint("payload 2---------->${notificationResponse.payload}");
-
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
   SharedPreferenceStorage.setData("context", Get.context!);
@@ -110,7 +109,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["orderId"] = notificationData.orderId.toString();
       Get.parameters["isFromNotification"] = "true";
-
       Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const OrdersScreen(),
       ));

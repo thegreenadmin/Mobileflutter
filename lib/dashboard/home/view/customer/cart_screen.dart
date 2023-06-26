@@ -1208,7 +1208,7 @@ class _CartScreenState extends State<CartScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  StringConstants.payNowText,
+                                  StringConstants.amountToPayText,
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 14,

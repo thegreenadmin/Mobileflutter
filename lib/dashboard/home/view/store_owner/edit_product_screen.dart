@@ -856,7 +856,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               fontWeight: FontWeight.w500),
                           controller: manageStoreController
                               .additionalLinkTextController,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.emailAddress,
                           // validator: (value) {
                           // if (value!.trim().isEmpty) {
                           //   return AlertStringConstants.pleaseEnterLinkText;

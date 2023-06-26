@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -49,8 +49,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                              Get.back(id: pageIdApp.value);
+                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -377,7 +377,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: ownerStoreController.einTextController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEinText;
@@ -502,7 +502,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: ownerStoreController.emailTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEmailText;
@@ -1085,8 +1085,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterStateText;
+                            return AlertStringConstants.pleaseEnterStateText;
                           }
                           return null;
                         },
@@ -1689,8 +1688,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     if (ownerStoreController
                                             .weekDaysList[i].isSelected ==
                                         true) {
-                                      ownerStoreController.storeTimingList
-                                          .add({
+                                      ownerStoreController.storeTimingList.add({
                                         "store_timing_id": null,
                                         "is_24_hours_active": false,
                                         "status": "active",
@@ -1804,7 +1802,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           }
                           return null;
                         },
-                        controller: ownerStoreController.deliveryServicesTextController,
+                        controller:
+                            ownerStoreController.deliveryServicesTextController,
                         hintText: StringConstants.selectDeliveryServicesText,
                         title: StringConstants.selectDeliveryServicesText,
                         list: ownerStoreController.deliveryServices),
