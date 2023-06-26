@@ -462,15 +462,18 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               .push(MaterialPageRoute(
                                 builder: (_) => const AddCardScreen(),
                               ))*/
-                      Get.to(()=>const AddCardScreen(),
-                               id:pageIdApp.value,)!
+                          Get.to(
+                              () => const AddCardScreen(),
+                              id: pageIdApp.value,
+                            )!
                               .then((value) =>
                                   walletController.apiGetCardList(context))
                           : /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const CreateOwnerBankAccount(),
                               ))*/
-                      Get.to(()=>const CreateOwnerBankAccount(),
+                          Get.to(
+                              () => const CreateOwnerBankAccount(),
                               id: pageIdApp.value,
                             )!
                               .then((value) =>
@@ -514,15 +517,17 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
 
                         InkWell(
                             onTap: () {
-
-                              Get.to(()=>WebviewPageScreen(
-                                  isFrom: "connectAccount",
-                                  url: Uri.parse(walletController
-                                      .accountLink.value)
-                                      .toString()),
-                                id:pageIdApp.value,)!
+                              Get.to(
+                                () => WebviewPageScreen(
+                                    isFrom: "connectAccount",
+                                    url: Uri.parse(
+                                            walletController.accountLink.value)
+                                        .toString()),
+                                id: pageIdApp.value,
+                              )!
                                   .then((value) =>
-                                  walletController.apiGetBankAccountList()).then((value) {
+                                      walletController.apiGetBankAccountList())
+                                  .then((value) {
                                 walletController.apiGetAccountDetails();
                                 walletController.apiGetBankAccountList();
                               });
@@ -573,7 +578,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                   ? height0SizedBox
                   : InkWell(
                       onTap: () {
-                        Get.to(()=> const PayOutScreen(),id:pageIdApp.value,)?.then((value) {
+                        Get.to(
+                          () => const PayOutScreen(),
+                          id: pageIdApp.value,
+                        )?.then((value) {
                           walletController.apiGetBankAccountList();
                           walletController.apiGetAccountDetails();
                         });
@@ -714,7 +722,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okay:
                                                     StringConstants.deleteText,
                                                 okayTap: () async {
-                                              Get.back(id: pageIdApp.value);
+                                              Get.back();
                                               walletController.apiDeleteCard(
                                                   context,
                                                   userStripeCardId:

@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utility.dart';
 
 class EditOfferScreen extends StatefulWidget {
   const EditOfferScreen({super.key});
@@ -58,8 +59,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                              Get.back(id: pageIdApp.value);
+                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -575,7 +576,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
-                                      .pleaseEnterDiscountOrOfferText;
+                                      .pleaseEnterValueText;
                                 }
                                 return null;
                               },

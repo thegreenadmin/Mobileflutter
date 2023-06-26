@@ -40,10 +40,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
       }
-      storeHomeMainController.productId.value = Get.parameters["productId"] ?? "";
-      storeHomeMainController.isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
-      storeHomeMainController.isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-      storeHomeMainController.isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
+      storeHomeMainController.productId.value =
+          Get.parameters["productId"] ?? "";
+      storeHomeMainController.isFromHome.value =
+          Get.parameters["isFromHome"] == "true" ? true : false;
+      storeHomeMainController.isFromMenu.value =
+          Get.parameters["isFromMenu"] == "true" ? true : false;
+      storeHomeMainController.isFromFav.value =
+          Get.parameters["isFromFav"] == "true" ? true : false;
 
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
@@ -181,7 +185,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-                                  // Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -252,9 +256,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ),
                             )
                           : PopupMenuButton(
-                              onOpened: () async{
+                              onOpened: () async {
                                 storeHomeMainController.selectedIndex.value = 3;
-                                await storeHomeMainController.apiGetPreviousOrders();
+                                await storeHomeMainController
+                                    .apiGetPreviousOrders();
                               },
                               offset: const Offset(0, 25),
                               shape: const TooltipShape(),
@@ -317,9 +322,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     Text(
                       StringConstants.previousText,
                       style: const TextStyle(
-                          color: AppColors.black,
-                          fontFamily: "",
-                          fontSize: 14),
+                          color: AppColors.black, fontFamily: "", fontSize: 14),
                     ),
                   ],
                 ),
@@ -414,49 +417,56 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           : const StoreHomeScreen())
                   : storeHomeMainController.selectedIndex.value == 1
                       ? Expanded(
-                          child:
-                              storeHomeMainController.isFromMenu.value == true
-                                  ? stackData()
-                                  : const StoreMenuScreen())
+                          child: storeHomeMainController.isFromMenu.value == true
+                              ? stackData()
+                              : const StoreMenuScreen())
                       : storeHomeMainController.selectedIndex.value == 2
                           ? Expanded(
-                              child: storeHomeMainController.isFromFav.value ==
-                                      true
-                                  ? stackData()
-                                  : const StoreFavouriteScreen())
-                          : storeHomeMainController.selectedIndex.value == 3
-                            ? storeHomeMainController.popUpIndex.value == 0
-                            ? const Expanded(child: PreviousOrdersScreen())
-                            : storeHomeMainController.popUpIndex.value == 2
-                            ? Expanded(child: PdfViewScreen(
-                            isShowPrivacy: true,
-                            url: storeHomeMainController.storeDetailsResponse.value
-                                .data!.store!.storePages!
-                                .first.storePageContent!.dynamicUrl.toString()))
-                            : storeHomeMainController.popUpIndex.value == 3
-                            ? Expanded(child: PdfViewScreen(
-                            isShowPrivacy: false,
-                            url: storeHomeMainController
-                                .storeDetailsResponse.value
-                                .data!.store!.storePages!.first
-                                .storePageContent!.dynamicUrl.toString()))
-                            : storeHomeMainController.lastSelectedIndex.value == 1
-                              ? Expanded(
-                                  child:
-                                  storeHomeMainController.isFromMenu.value == true
+                              child:
+                                  storeHomeMainController.isFromFav.value == true
                                       ? stackData()
-                                      : const StoreMenuScreen())
-                              : storeHomeMainController.lastSelectedIndex.value == 2
-                              ? Expanded(
-                                child: storeHomeMainController.isFromFav.value ==
-                                    true
-                                    ? stackData()
-                                    : const StoreFavouriteScreen())
-                              : Expanded(
-                                child: storeHomeMainController.isFromHome.value == true
-                                    ? stackData()
-                                    : const StoreHomeScreen())
-                            : const Expanded(child: StoreHomeScreen())
+                                      : const StoreFavouriteScreen())
+                          : storeHomeMainController.selectedIndex.value == 3
+                              ? storeHomeMainController.popUpIndex.value == 0
+                                  ? const Expanded(
+                                      child: PreviousOrdersScreen())
+                                  : storeHomeMainController.popUpIndex.value ==
+                                          2
+                                      ? Expanded(
+                                          child: PdfViewScreen(
+                                              isShowPrivacy: true,
+                                              url: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data!
+                                                  .store!
+                                                  .storePages!
+                                                  .first
+                                                  .storePageContent!
+                                                  .dynamicUrl
+                                                  .toString()))
+                                      : storeHomeMainController
+                                                  .popUpIndex.value ==
+                                              3
+                                          ? Expanded(
+                                              child: PdfViewScreen(
+                                                  isShowPrivacy: false,
+                                                  url: storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storePages!
+                                                      .first
+                                                      .storePageContent!
+                                                      .dynamicUrl
+                                                      .toString()))
+                                          : storeHomeMainController.lastSelectedIndex.value == 1
+                                              ? Expanded(child: storeHomeMainController.isFromMenu.value == true ? stackData() : const StoreMenuScreen())
+                                              : storeHomeMainController.lastSelectedIndex.value == 2
+                                                  ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
+                                                  : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
+                              : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));
@@ -481,385 +491,405 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         color: AppColors.black),
                   ),
                   height15SizedBox,
-                  Obx(()=>Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        flex: 4,
-                        child: storeHomeMainController.productDetailResponse
-                            .value.data?.product?.productImages ==
-                            null ||
-                            storeHomeMainController.productDetailResponse
-                                .value.data!.product!.productImages!.isEmpty
-                            ? Image.asset(
-                          ImageConstants.nopicfound,
-                          fit: BoxFit.fill,
-                          height: 120,
-                          width: 120,
-                          color: AppColors.grey.withOpacity(0.4),
-                        )
-                            : Column(
-                          children: [
-                            CarouselSlider(
-                              items: storeHomeMainController.productIm!
-                                  .map((item) => InkWell(
-                                onTap: () {},
-                                child: Center(
-                                    child: ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(6.0),
-                                      child: Image.network(
-                                          item.image?.dynamicUrl
-                                              .toString() ??
-                                              "",
-                                          fit: BoxFit.fill,
-                                          height: WidgetConstants
-                                              .screenHeight *
-                                              0.6,
-                                          width: WidgetConstants
-                                              .screenWidth *
-                                              0.4),
-                                    )),
-                              ))
-                                  .toList(),
-                              carouselController: _controller,
-                              options: CarouselOptions(
-                                  enlargeStrategy:
-                                  CenterPageEnlargeStrategy.scale,
-                                  autoPlayCurve: Curves.fastOutSlowIn,
-                                  viewportFraction: 1.0,
-                                  enlargeCenterPage: false,
-                                  autoPlay: true,
-                                  aspectRatio: 1.1,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      _current = index;
-                                    });
-                                  }),
-                            ),
-                            Obx(() => storeHomeMainController
-                                .productDetailResponse
-                                .value
-                                .data!
-                                .product!
-                                .productImages!
-                                .isEmpty
-                                ? height0SizedBox
-                                : SizedBox(
-                              width:
-                              WidgetConstants.screenWidth * 0.4,
-                              child: InkWell(
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                onTap: () {},
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: storeHomeMainController
-                                      .productIm!
-                                      .asMap()
-                                      .entries
-                                      .map((entry) {
-                                    return GestureDetector(
-                                      onTap: () => _controller
-                                          .animateToPage(entry.key),
-                                      child: Container(
-                                        width: _current == entry.key
-                                            ? 25
-                                            : 10,
-                                        height: 5.0,
-                                        margin: const EdgeInsets
-                                            .symmetric(
-                                            vertical: 8.0,
-                                            horizontal: 4.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(8.0),
-                                            shape:
-                                            BoxShape.rectangle,
-                                            color: _current ==
-                                                entry.key
-                                                ? AppColors.primary
-                                                : AppColors.grey),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ))
-                          ],
-                        ),
-
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.circular(10.0),
-                        //   child: storeHomeMainController.productDetailResponse
-                        //                   .value.data?.product?.productImages ==
-                        //               null ||
-                        //           storeHomeMainController
-                        //               .productDetailResponse
-                        //               .value
-                        //               .data!
-                        //               .product!
-                        //               .productImages!
-                        //               .isEmpty
-                        //       ? Image.asset(
-                        //           ImageConstants.nopicfound,
-                        //           fit: BoxFit.fill,
-                        //           height: 120,
-                        //           width: 120,
-                        //         )
-                        //       : Image.network(
-                        //           storeHomeMainController
-                        //                   .productDetailResponse
-                        //                   .value
-                        //                   .data
-                        //                   ?.product
-                        //                   ?.productImages
-                        //                   ?.first
-                        //                   .image
-                        //                   ?.dynamicUrl
-                        //                   .toString() ??
-                        //               "",
-                        //           fit: BoxFit.fill,
-                        //           height: 120,
-                        //         ),
-                        // ),
-                      ),
-                      width10SizedBox,
-                      Flexible(
-                        flex: 7,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                      storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.productName ??
-                                          "",
-                                      style: const TextStyle(
-                                          overflow: TextOverflow.visible,
-                                          fontSize: 18,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600)),
-                                ),
-                                storeHomeMainController
-                                    .isFavouriteProduct.value ==
-                                    true
-                                    ? InkWell(
-                                  onTap: () {
-                                    if(storeHomeMainController.isLoading.value == false){
-                                      storeHomeMainController
-                                          .apiRemoveFavouriteProduct(
-                                          storeHomeMainController
-                                              .productDetailResponse
-                                              .value
-                                              .data
-                                              ?.product
-                                              ?.productId);
-
-                                          }
-                                  },
-                                  child: Image.asset(
-                                    ImageConstants.liked,
-                                    scale: 3.2,
-                                  ),
-                                )
-                                    : InkWell(
-                                  onTap: () {
-                                    if(storeHomeMainController.isLoading.value == false){
-                                      storeHomeMainController
-                                          .apiCreateFavouriteProduct(
-                                          storeHomeMainController
-                                              .productDetailResponse
-                                              .value
-                                              .data
-                                              ?.product
-                                              ?.productId);
-
-                                          }
-                                  },
-                                  child: Image.asset(
-                                    ImageConstants.fav,
-                                    scale: 3.2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            storeHomeMainController.productDetailResponse.value
-                                .data?.product?.description !=
-                                ""
-                                ? height0SizedBox
-                                : height4SizedBox,
-                            storeHomeMainController.productDetailResponse.value
-                                .data?.product?.description !=
-                                ""
-                                ? height0SizedBox
-                                : SizedBox(
-                              width: 200,
-                              child: Text(
+                  Obx(
+                    () => Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          flex: 4,
+                          child: storeHomeMainController.productDetailResponse
+                                          .value.data?.product?.productImages ==
+                                      null ||
                                   storeHomeMainController
                                       .productDetailResponse
                                       .value
-                                      .data
-                                      ?.product
-                                      ?.description ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.blacklight,
-                                      fontWeight: FontWeight.w400)),
-                            ),
-                            storeHomeMainController.productDetailResponse.value
-                                .data?.product?.description !=
-                                ""
-                                ? height0SizedBox
-                                : height10SizedBox,
-                            Text.rich(
-                              TextSpan(
+                                      .data!
+                                      .product!
+                                      .productImages!
+                                      .isEmpty
+                              ? Image.asset(
+                                  ImageConstants.nopicfound,
+                                  fit: BoxFit.fill,
+                                  height: 120,
+                                  width: 120,
+                                  color: AppColors.grey.withOpacity(0.4),
+                                )
+                              : Column(
+                                  children: [
+                                    CarouselSlider(
+                                      items: storeHomeMainController.productIm!
+                                          .map((item) => InkWell(
+                                                onTap: () {},
+                                                child: Center(
+                                                    child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.0),
+                                                  child: Image.network(
+                                                      item.image?.dynamicUrl
+                                                              .toString() ??
+                                                          "",
+                                                      fit: BoxFit.fill,
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.6,
+                                                      width: WidgetConstants
+                                                              .screenWidth *
+                                                          0.4),
+                                                )),
+                                              ))
+                                          .toList(),
+                                      carouselController: _controller,
+                                      options: CarouselOptions(
+                                          enlargeStrategy:
+                                              CenterPageEnlargeStrategy.scale,
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          viewportFraction: 1.0,
+                                          enlargeCenterPage: false,
+                                          autoPlay: true,
+                                          aspectRatio: 1.1,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _current = index;
+                                            });
+                                          }),
+                                    ),
+                                    Obx(() => storeHomeMainController
+                                            .productDetailResponse
+                                            .value
+                                            .data!
+                                            .product!
+                                            .productImages!
+                                            .isEmpty
+                                        ? height0SizedBox
+                                        : SizedBox(
+                                            width: WidgetConstants.screenWidth *
+                                                0.4,
+                                            child: InkWell(
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              splashColor: Colors.transparent,
+                                              onTap: () {},
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children:
+                                                    storeHomeMainController
+                                                        .productIm!
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                  return GestureDetector(
+                                                    onTap: () => _controller
+                                                        .animateToPage(
+                                                            entry.key),
+                                                    child: Container(
+                                                      width:
+                                                          _current == entry.key
+                                                              ? 25
+                                                              : 10,
+                                                      height: 5.0,
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 8.0,
+                                                          horizontal: 4.0),
+                                                      decoration:
+                                                          BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                              color: _current ==
+                                                                      entry.key
+                                                                  ? AppColors
+                                                                      .primary
+                                                                  : AppColors
+                                                                      .grey),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ))
+                                  ],
+                                ),
+
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(10.0),
+                          //   child: storeHomeMainController.productDetailResponse
+                          //                   .value.data?.product?.productImages ==
+                          //               null ||
+                          //           storeHomeMainController
+                          //               .productDetailResponse
+                          //               .value
+                          //               .data!
+                          //               .product!
+                          //               .productImages!
+                          //               .isEmpty
+                          //       ? Image.asset(
+                          //           ImageConstants.nopicfound,
+                          //           fit: BoxFit.fill,
+                          //           height: 120,
+                          //           width: 120,
+                          //         )
+                          //       : Image.network(
+                          //           storeHomeMainController
+                          //                   .productDetailResponse
+                          //                   .value
+                          //                   .data
+                          //                   ?.product
+                          //                   ?.productImages
+                          //                   ?.first
+                          //                   .image
+                          //                   ?.dynamicUrl
+                          //                   .toString() ??
+                          //               "",
+                          //           fit: BoxFit.fill,
+                          //           height: 120,
+                          //         ),
+                          // ),
+                        ),
+                        width10SizedBox,
+                        Flexible(
+                          flex: 7,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  TextSpan(
-                                      text: "${StringConstants.unitPriceText}:",
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16)),
-                                  TextSpan(
-                                    text:
-                                    ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                        color: AppColors.black),
+                                  Expanded(
+                                    child: Text(
+                                        storeHomeMainController
+                                                .productDetailResponse
+                                                .value
+                                                .data
+                                                ?.product
+                                                ?.productName ??
+                                            "",
+                                        style: const TextStyle(
+                                            overflow: TextOverflow.visible,
+                                            fontSize: 18,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600)),
                                   ),
+                                  storeHomeMainController
+                                              .isFavouriteProduct.value ==
+                                          true
+                                      ? InkWell(
+                                          onTap: () {
+                                            if (storeHomeMainController
+                                                    .isLoading.value ==
+                                                false) {
+                                              storeHomeMainController
+                                                  .apiRemoveFavouriteProduct(
+                                                      storeHomeMainController
+                                                          .productDetailResponse
+                                                          .value
+                                                          .data
+                                                          ?.product
+                                                          ?.productId);
+                                            }
+                                          },
+                                          child: Image.asset(
+                                            ImageConstants.liked,
+                                            scale: 3.2,
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            if (storeHomeMainController
+                                                    .isLoading.value ==
+                                                false) {
+                                              storeHomeMainController
+                                                  .apiCreateFavouriteProduct(
+                                                      storeHomeMainController
+                                                          .productDetailResponse
+                                                          .value
+                                                          .data
+                                                          ?.product
+                                                          ?.productId);
+                                            }
+                                          },
+                                          child: Image.asset(
+                                            ImageConstants.fav,
+                                            scale: 3.2,
+                                          ),
+                                        ),
                                 ],
                               ),
-                            ),
-                            height8SizedBox,
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
+                              storeHomeMainController.productDetailResponse
+                                          .value.data?.product?.description !=
+                                      ""
+                                  ? height0SizedBox
+                                  : height4SizedBox,
+                              storeHomeMainController.productDetailResponse
+                                          .value.data?.product?.description !=
+                                      ""
+                                  ? height0SizedBox
+                                  : SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                          storeHomeMainController
+                                                  .productDetailResponse
+                                                  .value
+                                                  .data
+                                                  ?.product
+                                                  ?.description ??
+                                              "",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.blacklight,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                              storeHomeMainController.productDetailResponse
+                                          .value.data?.product?.description !=
+                                      ""
+                                  ? height0SizedBox
+                                  : height10SizedBox,
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            "${StringConstants.unitPriceText}:",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                    TextSpan(
+                                      text:
+                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          color: AppColors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              height8SizedBox,
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: storeHomeMainController
+                                                    .productDetailResponse
+                                                    .value
+                                                    .data
+                                                    ?.product
+                                                    ?.offer
+                                                    ?.offerValue !=
+                                                null
+                                            ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
+                                            : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                    TextSpan(
                                       text: storeHomeMainController
-                                          .productDetailResponse
-                                          .value
-                                          .data
-                                          ?.product
-                                          ?.offer
-                                          ?.offerValue !=
-                                          null
-                                          ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
-                                          : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:",
+                                                  .productDetailResponse
+                                                  .value
+                                                  .data
+                                                  ?.product
+                                                  ?.offer
+                                                  ?.offerValue !=
+                                              null
+                                          ? storeHomeMainController
+                                                  .productDetailResponse
+                                                  .value
+                                                  .data!
+                                                  .product!
+                                                  .offer!
+                                                  .offerType!
+                                                  .contains("percentage")
+                                              ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
+                                              : ''
+                                                  ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
+                                          : storeHomeMainController
+                                                      .productDetailResponse
+                                                      .value
+                                                      .data !=
+                                                  null
+                                              ? storeHomeMainController
+                                                      .productDetailResponse
+                                                      .value
+                                                      .data!
+                                                      .product!
+                                                      .discountType!
+                                                      .contains("percentage")
+                                                  ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
+                                                  : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
+                                              : ' 0%',
                                       style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16)),
-                                  TextSpan(
-                                    text: storeHomeMainController
-                                        .productDetailResponse
-                                        .value
-                                        .data
-                                        ?.product
-                                        ?.offer
-                                        ?.offerValue !=
-                                        null
-                                        ? storeHomeMainController
-                                        .productDetailResponse
-                                        .value
-                                        .data!
-                                        .product!
-                                        .offer!
-                                        .offerType!
-                                        .contains("percentage")
-                                        ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
-                                        : ''
-                                        ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                        : storeHomeMainController
-                                        .productDetailResponse
-                                        .value
-                                        .data !=
-                                        null
-                                        ? storeHomeMainController
-                                        .productDetailResponse
-                                        .value
-                                        .data!
-                                        .product!
-                                        .discountType!
-                                        .contains("percentage")
-                                        ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
-                                        : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
-                                        : ' 0%',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          color: AppColors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              height20SizedBox,
+                              Row(
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        storeHomeMainController.itemsCount
+                                            .value = storeHomeMainController
+                                                    .itemsCount.value !=
+                                                0
+                                            ? storeHomeMainController
+                                                    .itemsCount.value -
+                                                1
+                                            : storeHomeMainController
+                                                .itemsCount.value;
+                                      },
+                                      child: Image.asset(
+                                        ImageConstants.subtract,
+                                        scale: 2.8,
+                                      )),
+                                  width10SizedBox,
+                                  Text(
+                                    storeHomeMainController.itemsCount
+                                                .toString()
+                                                .length <
+                                            2
+                                        ? storeHomeMainController.itemsCount
+                                            .toString()
+                                            .padLeft(2, '0')
+                                        : storeHomeMainController.itemsCount
+                                            .toString(),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         color: AppColors.black),
                                   ),
-                                ],
-                              ),
-                            ),
-                            height20SizedBox,
-                            Row(
-                              children: [
-                                InkWell(
+                                  width10SizedBox,
+                                  InkWell(
                                     onTap: () {
                                       storeHomeMainController.itemsCount.value =
-                                      storeHomeMainController
-                                          .itemsCount.value !=
-                                          0
-                                          ? storeHomeMainController
-                                          .itemsCount.value -
-                                          1
-                                          : storeHomeMainController
-                                          .itemsCount.value;
+                                          storeHomeMainController
+                                                  .itemsCount.value +
+                                              1;
                                     },
                                     child: Image.asset(
-                                      ImageConstants.subtract,
+                                      ImageConstants.add,
                                       scale: 2.8,
-                                    )),
-                                width10SizedBox,
-                                Text(
-                                  storeHomeMainController.itemsCount
-                                      .toString()
-                                      .length <
-                                      2
-                                      ? storeHomeMainController.itemsCount
-                                      .toString()
-                                      .padLeft(2, '0')
-                                      : storeHomeMainController.itemsCount
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: AppColors.black),
-                                ),
-                                width10SizedBox,
-                                InkWell(
-                                  onTap: () {
-                                    storeHomeMainController.itemsCount.value =
-                                        storeHomeMainController
-                                            .itemsCount.value +
-                                            1;
-                                  },
-                                  child: Image.asset(
-                                    ImageConstants.add,
-                                    scale: 2.8,
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -965,27 +995,19 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             ),
                       height20SizedBox,
                       storeHomeMainController.productDetailResponse.value.data
-                                      ?.product?.productLinks==null
-                          || storeHomeMainController.productDetailResponse.value.data
-                                      !.product!.productLinks!.isEmpty || storeHomeMainController.productDetailResponse.value.data
-                                      ?.product!.productLinks!.first.link == null || storeHomeMainController
-                                  .productDetailResponse.value.data!.product!.productLinks!
-                                  .first.link!.isEmpty
-                          ? height0SizedBox
-                          : Text(
-                              StringConstants.additionalLinksToResearchText,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: AppColors.blacklight),
-                            ),
-                      storeHomeMainController.productDetailResponse.value.data
-                          ?.product?.productLinks==null ||
-                          storeHomeMainController.productDetailResponse.value.data
-                      !.product!.productLinks!.isEmpty ||
-                          storeHomeMainController.productDetailResponse.value.data
-                                      ?.product!.productLinks!.first.link ==
-                                  null &&
+                                      ?.product?.productLinks ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productLinks!.isEmpty ||
+                              storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data
+                                      ?.product!
+                                      .productLinks!
+                                      .first
+                                      .link ==
+                                  null ||
                               storeHomeMainController
                                   .productDetailResponse
                                   .value
@@ -996,15 +1018,61 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   .link!
                                   .isEmpty
                           ? height0SizedBox
-                          : height8SizedBox,
+                          : Text(
+                              StringConstants.additionalLinksToResearchText,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: AppColors.blacklight),
+                            ),
                       storeHomeMainController.productDetailResponse.value.data
-                          ?.product?.productLinks==null ||
-                          storeHomeMainController.productDetailResponse.value.data
-                      !.product!.productLinks!.isEmpty ||
-                          storeHomeMainController.productDetailResponse.value.data
-                                      ?.product?.productLinks?.first.link == null ||
-                              storeHomeMainController.productDetailResponse.value
-                                  .data!.product!.productLinks!.first.link!.isEmpty
+                                      ?.product?.productLinks ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productLinks!.isEmpty ||
+                              storeHomeMainController
+                                          .productDetailResponse
+                                          .value
+                                          .data
+                                          ?.product!
+                                          .productLinks!
+                                          .first
+                                          .link ==
+                                      null &&
+                                  storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data!
+                                      .product!
+                                      .productLinks!
+                                      .first
+                                      .link!
+                                      .isEmpty
+                          ? height0SizedBox
+                          : height6SizedBox,
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productLinks ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productLinks!.isEmpty ||
+                              storeHomeMainController
+                                      .productDetailResponse
+                                      .value
+                                      .data
+                                      ?.product
+                                      ?.productLinks
+                                      ?.first
+                                      .link ==
+                                  null ||
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productLinks!
+                                  .first
+                                  .link!
+                                  .isEmpty
                           ? height0SizedBox
                           : InkWell(
                               onTap: () async {
@@ -1029,7 +1097,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         .productDetailResponse
                                         .value
                                         .data
-                                        ?.product?.productLinks?.first
+                                        ?.product
+                                        ?.productLinks
+                                        ?.first
                                         .link ??
                                     "",
                                 style: const TextStyle(
@@ -1041,10 +1111,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             ),
                     ],
                   ),
-                  //height10SizedBox,
-                  storeHomeMainController.productDetailResponse.value.data != null
+                  height10SizedBox,
+                  storeHomeMainController.productDetailResponse.value.data !=
+                          null
                       ? storeHomeMainController.productDetailResponse.value
-                                      .data!.product!.description == null ||
+                                      .data!.product!.description ==
+                                  null ||
                               storeHomeMainController.productDetailResponse
                                   .value.data!.product!.description!.isEmpty
                           ? height0SizedBox
@@ -1058,20 +1130,23 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       : height0SizedBox,
                   height10SizedBox,
                   storeHomeMainController.productDetailResponse.value.data
-                                  ?.product?.description == null ||
+                                  ?.product?.description ==
+                              null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
                       ? height0SizedBox
                       : Text(
                           storeHomeMainController.productDetailResponse.value
-                                  .data?.product?.description ?? "",
+                                  .data?.product?.description ??
+                              "",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: AppColors.blacklight),
                         ),
                   storeHomeMainController.productDetailResponse.value.data
-                                  ?.product?.description == null ||
+                                  ?.product?.description ==
+                              null ||
                           storeHomeMainController.productDetailResponse.value
                               .data!.product!.description!.isEmpty
                       ? height0SizedBox
@@ -1087,13 +1162,26 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   _buildRowOtherDetail(
                       title: StringConstants.categoryNameText,
                       textData: storeHomeMainController.productDetailResponse
-                          .value.data?.product
-                          ?.productCategories!=null && storeHomeMainController
-                          .productDetailResponse.value
-                          .data!.product!.productCategories!.isNotEmpty ? storeHomeMainController
-                              .productDetailResponse.value.data?.product
-                              ?.productCategories?.first.category?.categoryName ??
-                          "":"NA"),
+                                      .value.data?.product?.productCategories !=
+                                  null &&
+                              storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data!
+                                  .product!
+                                  .productCategories!
+                                  .isNotEmpty
+                          ? storeHomeMainController
+                                  .productDetailResponse
+                                  .value
+                                  .data
+                                  ?.product
+                                  ?.productCategories
+                                  ?.first
+                                  .category
+                                  ?.categoryName ??
+                              ""
+                          : "NA"),
                   height20SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.quantityUnitText,
@@ -1140,7 +1228,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       title: StringConstants.returnDaysText,
                       textData: storeHomeMainController.productDetailResponse
                               .value.data?.product?.returnDaysCount
-                              .toString() ?? "0"),
+                              .toString() ??
+                          "0"),
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
@@ -1154,9 +1243,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     children: [
                       Text(
                         double.parse(storeHomeMainController
-                                    .productDetailResponse.value.data
-                                    ?.product?.averageRating
-                                    ?.toString() ?? "0.0")
+                                    .productDetailResponse
+                                    .value
+                                    .data
+                                    ?.product
+                                    ?.averageRating
+                                    ?.toString() ??
+                                "0.0")
                             .toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.w600,
@@ -1170,9 +1263,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         children: [
                           RatingBar.builder(
                             initialRating: storeHomeMainController
-                                    .productDetailResponse.value.data
-                                    ?.product?.averageRating
-                                    ?.toDouble() ?? 0.0,
+                                    .productDetailResponse
+                                    .value
+                                    .data
+                                    ?.product
+                                    ?.averageRating
+                                    ?.toDouble() ??
+                                0.0,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
@@ -1210,7 +1307,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         return height12SizedBox;
                       },
                       itemCount: storeHomeMainController.productDetailResponse
-                              .value.data?.product?.productReviews?.length ?? 0,
+                              .value.data?.product?.productReviews?.length ??
+                          0,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int i) {
@@ -1254,10 +1352,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                             initialRating:
                                                 storeHomeMainController
                                                         .productDetailResponse
-                                                        .value.data?.product
+                                                        .value
+                                                        .data
+                                                        ?.product
                                                         ?.productReviews?[i]
                                                         .rating
-                                                        ?.toDouble() ?? 0.0,
+                                                        ?.toDouble() ??
+                                                    0.0,
                                             minRating: 1,
                                             direction: Axis.horizontal,
                                             allowHalfRating: false,
@@ -1294,9 +1395,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       Text(
                                         storeHomeMainController
                                                 .productDetailResponse
-                                                .value.data?.product
+                                                .value
+                                                .data
+                                                ?.product
                                                 ?.productReviews?[i]
-                                                .review ?? "",
+                                                .review ??
+                                            "",
                                         style: const TextStyle(
                                             fontSize: 14.0,
                                             color: AppColors.black,

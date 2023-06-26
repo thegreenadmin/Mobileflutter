@@ -145,7 +145,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Visibility(
-                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1,
+                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1 && ordersHomeMainController.isFromNotification.value,
                                     child: IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),

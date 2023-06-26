@@ -575,7 +575,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
-                                      .pleaseEnterDiscountOrOfferText;
+                                      .pleaseEnterValueText;
                                 } else if (double.parse(value) == 0) {
                                   return AlertStringConstants.invalidAmountText;
                                 }

@@ -1,11 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder2/geocoder2.dart';
 // import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -18,7 +14,6 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import "package:google_maps_webservice/geocoding.dart";
 
 import '../../../../utils/utility.dart';
@@ -53,8 +48,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
-                             Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                              Get.back(id: pageIdApp.value);
+                              // Navigator.of(context).pop();
                               Get.delete<AddNewStoreController>();
                             },
                             icon: const Icon(
@@ -383,7 +378,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: addNewStoreController.einTextController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEinText;
@@ -510,7 +505,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontWeight: FontWeight.w500),
                         controller:
                             addNewStoreController.storeEmailTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEmailText;
@@ -942,7 +937,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         controller: addNewStoreController.zipCodeTextController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterZipCodeText;

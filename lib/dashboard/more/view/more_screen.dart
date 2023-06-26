@@ -9,7 +9,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -71,41 +70,94 @@ class _MoreScreenState extends State<MoreScreen> {
               )),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-             /* SharedPreferenceStorage.setData("context", context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => WebviewPageScreen(
-                      isFrom: "aboutus",
-                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                              ServerCommunicator().pageAbout)
-                          .toString())));*/
-              Get.to(WebviewPageScreen(
-              isFrom: "aboutus",
-              url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                      ServerCommunicator().pageAbout)
-                  .toString()),
-                  id:pageIdApp.value);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                /* SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => WebviewPageScreen(
+                        isFrom: "aboutus",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pageAbout)
+                            .toString())));*/
+                Get.to(
+                    WebviewPageScreen(
+                        isFrom: "aboutus",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pageAbout)
+                            .toString()),
+                    id: pageIdApp.value);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          ImageConstants.aboutUs,
+                          color: AppColors.primary,
+                          scale: 2.5,
+                        ),
+                        width18SizedBox,
+                        Text(StringConstants.aboutUsText,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
+                    Image.asset(
+                      ImageConstants.arrowForward,
+                      scale: 3.4,
+                      color: AppColors.blacklight,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 40,
+            ),
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (_) => WebviewPageScreen(
+                //         isFrom: "faq",
+                //         url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                //                 ServerCommunicator().pageFaq)
+                //             .toString())));
+                Get.to(
+                    WebviewPageScreen(
+                        isFrom: "faq",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pageFaq)
+                            .toString()),
+                    id: pageIdApp.value);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       Image.asset(
-                        ImageConstants.aboutUs,
+                        ImageConstants.faq,
                         color: AppColors.primary,
                         scale: 2.5,
                       ),
                       width18SizedBox,
-                      Text(StringConstants.aboutUsText,
+                      Text(StringConstants.faqText,
                           style: const TextStyle(
                               fontSize: 16,
                               color: AppColors.black,
@@ -120,191 +172,146 @@ class _MoreScreenState extends State<MoreScreen> {
                 ],
               ),
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              // SharedPreferenceStorage.setData("context", context);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (_) => WebviewPageScreen(
-              //         isFrom: "faq",
-              //         url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-              //                 ServerCommunicator().pageFaq)
-              //             .toString())));
-              Get.to(WebviewPageScreen(
-                  isFrom: "faq",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageFaq)
-                      .toString()),
-                  id:pageIdApp.value );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.faq,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.faqText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
-                )
-              ],
+            const Divider(
+              thickness: 1,
+              height: 40,
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              // SharedPreferenceStorage.setData("context", context);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (_) => const ContactUsScreen(),
-              // ));
-              Get.to(const ContactUsScreen(),id:pageIdApp.value);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.contactUs,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.contactUsText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
-                )
-              ],
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (_) => const ContactUsScreen(),
+                // ));
+                Get.to(const ContactUsScreen(), id: pageIdApp.value);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageConstants.contactUs,
+                        color: AppColors.primary,
+                        scale: 2.5,
+                      ),
+                      width18SizedBox,
+                      Text(StringConstants.contactUsText,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  Image.asset(
+                    ImageConstants.arrowForward,
+                    scale: 3.4,
+                    color: AppColors.blacklight,
+                  )
+                ],
+              ),
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () async {
-             /* SharedPreferenceStorage.setData("context", context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => WebviewPageScreen(
-                      isFrom: "terms",
-                      url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                              ServerCommunicator().pageTerms)
-                          .toString())));*/
-              Get.to(WebviewPageScreen(
-                  isFrom: "terms",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pageTerms)
-                      .toString()),id:pageIdApp.value);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.terms,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.termsOfServiceText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
-                )
-              ],
+            const Divider(
+              thickness: 1,
+              height: 40,
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 40,
-          ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              // SharedPreferenceStorage.setData("context", context);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (_) => WebviewPageScreen(
-              //         isFrom: "privacy",
-              //         url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-              //                 ServerCommunicator().pagePolicy)
-              //             .toString())));
-              Get.to(WebviewPageScreen(
-                  isFrom: "privacy",
-                  url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
-                          ServerCommunicator().pagePolicy)
-                      .toString()),
-                  id:pageIdApp.value);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      ImageConstants.privacy,
-                      color: AppColors.primary,
-                      scale: 2.5,
-                    ),
-                    width18SizedBox,
-                    Text(StringConstants.privacyPolicyText,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                Image.asset(
-                  ImageConstants.arrowForward,
-                  scale: 3.4,
-                  color: AppColors.blacklight,
-                )
-              ],
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () async {
+                /* SharedPreferenceStorage.setData("context", context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => WebviewPageScreen(
+                        isFrom: "terms",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pageTerms)
+                            .toString())));*/
+                Get.to(
+                    WebviewPageScreen(
+                        isFrom: "terms",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pageTerms)
+                            .toString()),
+                    id: pageIdApp.value);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageConstants.terms,
+                        color: AppColors.primary,
+                        scale: 2.5,
+                      ),
+                      width18SizedBox,
+                      Text(StringConstants.termsOfServiceText,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  Image.asset(
+                    ImageConstants.arrowForward,
+                    scale: 3.4,
+                    color: AppColors.blacklight,
+                  )
+                ],
+              ),
             ),
-          ),
-        ]),
+            const Divider(
+              thickness: 1,
+              height: 40,
+            ),
+            InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                // SharedPreferenceStorage.setData("context", context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (_) => WebviewPageScreen(
+                //         isFrom: "privacy",
+                //         url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                //                 ServerCommunicator().pagePolicy)
+                //             .toString())));
+                Get.to(
+                    WebviewPageScreen(
+                        isFrom: "privacy",
+                        url: Uri.parse(ServerCommunicator().baseUrlWithoutApi +
+                                ServerCommunicator().pagePolicy)
+                            .toString()),
+                    id: pageIdApp.value);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        ImageConstants.privacy,
+                        color: AppColors.primary,
+                        scale: 2.5,
+                      ),
+                      width18SizedBox,
+                      Text(StringConstants.privacyPolicyText,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  Image.asset(
+                    ImageConstants.arrowForward,
+                    scale: 3.4,
+                    color: AppColors.blacklight,
+                  )
+                ],
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

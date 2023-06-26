@@ -10,7 +10,6 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 class WorkerListScreen extends StatefulWidget {
   const WorkerListScreen({super.key});
@@ -25,14 +24,13 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     addNewWorkerController.storeId.value = Get.parameters["storeId"] ?? "";
     addNewWorkerController.storeName.value = Get.parameters["storeName"] ?? "";
     addNewWorkerController.apiGetUserStoreList();
     addNewWorkerController.apiGetWorkerList();
-    addNewWorkerController. apiGetRoleList();
-    addNewWorkerController. apiGetParticularStore();
+    addNewWorkerController.apiGetRoleList();
+    addNewWorkerController.apiGetParticularStore();
   }
 
   @override
@@ -56,8 +54,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                Get.back(id: pageIdApp.value);
+                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -99,9 +97,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
               children: [
                 Obx(
                   () => Text(
-                    addNewWorkerController.workerList.length > 1
-                        ? "${addNewWorkerController.workerList.length} ${StringConstants.membersText}"
-                        : "${addNewWorkerController.workerList.length} ${StringConstants.memberText}",
+                    addNewWorkerController.workerList.isEmpty
+                        ? StringConstants.noMemberText
+                        : addNewWorkerController.workerList.length > 1
+                            ? "${addNewWorkerController.workerList.length} ${StringConstants.membersText}"
+                            : "${addNewWorkerController.workerList.length} ${StringConstants.memberText}",
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: AppColors.black,
@@ -116,8 +116,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //   builder: (_) => const AddNewWorkerScreen(),
                       // ));
-                      Get.to(const AddNewWorkerScreen(),
-                          id:pageIdApp.value );
+                      Get.to(const AddNewWorkerScreen(), id: pageIdApp.value);
                     },
                     child: Row(
                       children: [
@@ -128,7 +127,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                         ),
                         width2SizedBox,
                         Text(
-                          StringConstants.addNewText,
+                          StringConstants.addNewWorkerText,
                           style: const TextStyle(
                               fontSize: 16.0,
                               color: AppColors.primary,
@@ -206,9 +205,10 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              Utility.showConfirmAlertMessage( AlertStringConstants
-                                  .areYouSureText,okay:  StringConstants
-                                  .deleteText,okayTap: (){
+                              Utility.showConfirmAlertMessage(
+                                  AlertStringConstants.areYouSureText,
+                                  okay: StringConstants.deleteText,
+                                  okayTap: () {
                                 // Navigator.pop(Get.context!);
                                 addNewWorkerController.workerId.value =
                                     addNewWorkerController
@@ -216,7 +216,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                         .toString();
                                 addNewWorkerController.apiDeleteWorker();
                               });
-
                             },
                             child: InkWell(
                               onTap: () async {
@@ -230,7 +229,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 Get.to(() => const EditWorkerScreen(),
-                                    id:pageIdApp.value );
+                                    id: pageIdApp.value);
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();
                               },

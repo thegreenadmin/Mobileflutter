@@ -10,7 +10,6 @@ import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import '../../../../utils/sizedbox_constants.dart';
 
 class AddNewWorkerScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

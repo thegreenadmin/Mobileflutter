@@ -311,7 +311,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                             index]
                                                                         .offerId !=
                                                                     null
-                                                                ? "Offer"
+                                                                ? "- Offer Id #${ownerInboxController.inboxList[index].offerId}"
                                                                 : "",
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
