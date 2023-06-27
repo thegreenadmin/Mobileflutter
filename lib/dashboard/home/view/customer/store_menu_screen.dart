@@ -6,7 +6,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreMenuScreen extends StatefulWidget {
@@ -26,14 +25,13 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
       body: Container(
         height: WidgetConstants.screenHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           height5SizedBox,
           Text(
             StringConstants.categoriesText,
             style: const TextStyle(
                 color: AppColors.black,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600),
           ),
           height5SizedBox,
@@ -73,24 +71,22 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                       return InkWell(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
-                        onTap: () async{
+                        onTap: () async {
                           storeHomeMainController.apiFeatureProductListApi(
                               categoryId: storeHomeMainController
-                                  .categoriesList[index].categoryId ??
+                                      .categoriesList[index].categoryId ??
                                   "0");
                           Get.parameters["categoryId"] = storeHomeMainController
                               .categoriesList[index].categoryId;
 
                           storeHomeMainController.category.value =
-                          storeHomeMainController.categoriesList[index];
+                              storeHomeMainController.categoriesList[index];
                           // SharedPreferenceStorage.setData("context", context);
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const UserProductListScreen(),
                           // ));
                           await Get.to(const UserProductListScreen(),
-                              id:pageIdApp.value);
-
-
+                              id: pageIdApp.value);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),
@@ -148,7 +144,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        height10SizedBox,
+                                        height4SizedBox,
                                         Text(
                                             storeHomeMainController
                                                         .categoriesList[index]

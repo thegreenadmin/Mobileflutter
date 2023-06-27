@@ -411,7 +411,7 @@ class StringConstants {
   static String roleNameText = "Role Name";
   static String returnAvailableText = "Return available";
   static String returnReasonText = "Return reason";
-  static String ratingReviewText = "Rating & Review";
+  static String ratingReviewText = "Ratings & Reviews";
   static String resendText = "Resend";
   static String reviewsText = "Reviews";
   static String reviewText = "Review";
@@ -558,7 +558,7 @@ class StringConstants {
   static String verificationCodeText = "Verification code";
   static String verificationCodeSentText =
       "We have sent the code verification to your mobile number ";
-  static String viewAndUpdateItemsText = "View & Update\nCategories";
+  static String viewAndUpdateItemsText = "View & Update";
   static String viewText = "View";
 
   //W
@@ -737,7 +737,8 @@ class AlertStringConstants {
   static String pleaseEnterValueText = "Please enter value";
 
   //N
-  static String notAuthorisedToStoreText = "Sorry, You are not authorised this. Contact your store owner for more info.";
+  static String notAuthorisedToStoreText =
+      "Sorry, You are not authorised this. Contact your store owner for more info.";
 
   //R
 

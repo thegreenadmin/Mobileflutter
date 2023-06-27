@@ -6,7 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreFavouriteScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
             StringConstants.favoritesText,
             style: const TextStyle(
                 color: AppColors.black,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600),
           ),
           height15SizedBox,
@@ -79,11 +79,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                               storeHomeMainController
                                   .featureProductList[i].productId
                                   .toString();
-                          storeHomeMainController
-                              .apiGetShopProductDetailApi();
+                          storeHomeMainController.apiGetShopProductDetailApi();
                           // SharedPreferenceStorage.setData("context", context);
-                          storeHomeMainController
-                              .apiGetCartListApi();
+                          storeHomeMainController.apiGetCartListApi();
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
@@ -91,13 +89,12 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           //   builder: (_) => const AddToOrderScreen(),
                           // ));
                           await Get.to(const AddToOrderScreen(),
-                              id:pageIdApp.value)
+                                  id: pageIdApp.value)
                               ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
                                   });
                           // Get.to(const AddToOrderScreen());
-
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

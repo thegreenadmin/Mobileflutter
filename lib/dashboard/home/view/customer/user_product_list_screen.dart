@@ -177,7 +177,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-                                  // Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -208,13 +208,13 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 5),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width38SizedBox;
+                  return width50SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -234,7 +234,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               horizontalTabList[i],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
@@ -248,9 +248,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               ),
                             )
                           : PopupMenuButton(
-                              onOpened: () async{
+                              onOpened: () async {
                                 storeHomeMainController.selectedIndex.value = 3;
-                                await storeHomeMainController.apiGetPreviousOrders();
+                                await storeHomeMainController
+                                    .apiGetPreviousOrders();
                               },
                               offset: const Offset(0, 25),
                               shape: const TooltipShape(),
@@ -267,13 +268,15 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   horizontalTabList[i],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: storeHomeMainController
-                                                .selectedIndex.value == i
+                                                .selectedIndex.value ==
+                                            i
                                         ? FontWeight.w600
                                         : FontWeight.w400,
                                     color: storeHomeMainController
-                                                .selectedIndex.value == i
+                                                .selectedIndex.value ==
+                                            i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
                                   ),
@@ -281,7 +284,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 Icon(
                                   Icons.arrow_drop_down,
                                   color: storeHomeMainController
-                                              .selectedIndex.value == i
+                                              .selectedIndex.value ==
+                                          i
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   size: 24,
@@ -303,16 +307,14 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           child: Column(
             children: [
               SizedBox(
-                width: 130,
+                width: 120,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       StringConstants.previousOrdersText,
                       style: const TextStyle(
-                          color: AppColors.black,
-                          fontFamily: "",
-                          fontSize: 14),
+                          color: AppColors.black, fontFamily: "", fontSize: 14),
                     ),
                   ],
                 ),
@@ -327,7 +329,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
-            width: 130,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -347,7 +349,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 150,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -367,7 +369,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 150,
+            width: 136,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -408,47 +410,68 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           ? const Expanded(child: StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
                               ? storeHomeMainController.popUpIndex.value == 0
-                              ? const Expanded(child: PreviousOrdersScreen())
-                              : storeHomeMainController.popUpIndex.value == 2
-                              ? Expanded(child: PdfViewScreen(
-                              isShowPrivacy: true,
-                              url: storeHomeMainController.storeDetailsResponse.value
-                                  .data!.store!.storePages!
-                                  .first.storePageContent!.dynamicUrl.toString()))
-                              : storeHomeMainController.popUpIndex.value == 3
-                              ? Expanded(child: PdfViewScreen(
-                              isShowPrivacy: false,
-                              url: storeHomeMainController
-                                  .storeDetailsResponse.value
-                                  .data!.store!.storePages!.first
-                                  .storePageContent!.dynamicUrl.toString()))
-                              : storeHomeMainController.lastSelectedIndex.value == 1
-                                  ? userProductWidget()
-                                  : storeHomeMainController.lastSelectedIndex.value == 2
-                                    ? const Expanded(child: StoreFavouriteScreen())
-                                    :const Expanded(child: StoreHomeScreen())
+                                  ? const Expanded(
+                                      child: PreviousOrdersScreen())
+                                  : storeHomeMainController.popUpIndex.value ==
+                                          2
+                                      ? Expanded(
+                                          child: PdfViewScreen(
+                                              isShowPrivacy: true,
+                                              url: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data!
+                                                  .store!
+                                                  .storePages!
+                                                  .first
+                                                  .storePageContent!
+                                                  .dynamicUrl
+                                                  .toString()))
+                                      : storeHomeMainController.popUpIndex.value ==
+                                              3
+                                          ? Expanded(
+                                              child: PdfViewScreen(
+                                                  isShowPrivacy: false,
+                                                  url: storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storePages!
+                                                      .first
+                                                      .storePageContent!
+                                                      .dynamicUrl
+                                                      .toString()))
+                                          : storeHomeMainController
+                                                      .lastSelectedIndex
+                                                      .value ==
+                                                  1
+                                              ? userProductWidget()
+                                              : storeHomeMainController
+                                                          .lastSelectedIndex
+                                                          .value ==
+                                                      2
+                                                  ? const Expanded(
+                                                      child: StoreFavouriteScreen())
+                                                  : const Expanded(child: StoreHomeScreen())
                               : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));
   }
 
-  Widget userProductWidget(){
+  Widget userProductWidget() {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 25, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  storeHomeMainController
-                      .category.value.categoryName ??
-                      "",
+                  storeHomeMainController.category.value.categoryName ?? "",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 20,
@@ -464,276 +487,226 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                     scale: 2.5,
                   ),
                   onSelected: (String value) async {
-                    FocusScope.of(context)
-                        .requestFocus(FocusNode());
+                    FocusScope.of(context).requestFocus(FocusNode());
                   },
                   itemBuilder: (context) =>
-                  productFilterCreateOptionsPopUpList(
-                      context)!,
+                      productFilterCreateOptionsPopUpList(context)!,
                 ),
               ],
             ),
             height20SizedBox,
             Obx(
-                  () => storeHomeMainController
-                  .featureProductList.isEmpty
-                  ? storeHomeMainController
-                  .isLoading.value ==
-                  true
-                  ? height0SizedBox
-                  : Column(
-                mainAxisAlignment:
-                MainAxisAlignment.center,
-                crossAxisAlignment:
-                CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      ImageConstants.nopicfound,
-                      scale: 8,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  height4SizedBox,
-                  Center(
-                    child: Text(
-                      StringConstants
-                          .noProductFoundText,
-                      style: const TextStyle(
-                          fontStyle:
-                          FontStyle.italic,
-                          fontSize: 16),
-                    ),
-                  ),
-                ],
-              )
-                  : Expanded(
-                child: GridView.builder(
-                  itemCount: storeHomeMainController
-                      .featureProductList.length,
-                  shrinkWrap: true,
-                  gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: (WidgetConstants
-                        .screenWidth +
-                        120) /
-                        WidgetConstants.screenHeight,
-                    mainAxisSpacing: 0.0,
-                    crossAxisSpacing: 0.0,
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder:
-                      (BuildContext context, int i) {
-                    return InkWell(
-                      onTap: () async {
-                        storeHomeMainController
-                            .productId.value =
-                            storeHomeMainController
-                                .featureProductList[i]
-                                .productId
-                                .toString();
-                        storeHomeMainController
-                            .apiGetShopProductDetailApi();
-                        await storeHomeMainController
-                            .apiGetCartListApi();
-                        // SharedPreferenceStorage
-                        //     .setData(
-                        //         "context", context);
-                        Get.parameters['isFromFav'] =
-                        "false";
-                        Get.parameters["isFromHome"] =
-                        "false";
-                        Get.parameters['isFromMenu'] =
-                        "true";
-                        // Navigator.of(context)
-                        //     .push(MaterialPageRoute(
-                        //   builder: (_) =>
-                        //       const AddToOrderScreen(),
-                        // ));
-                        await Get.to(const AddToOrderScreen(),
-                            id:pageIdApp.value);
-                      },
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: [
-                          Card(
-                            shape:
-                            BeveledRectangleBorder(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(8.0),
-                            ),
-                            elevation: 0,
-                            child: ClipRRect(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(10.0),
-                              child: Stack(
-                                alignment: Alignment
-                                    .topRight,
-                                children: [
-                                  storeHomeMainController
-                                      .featureProductList[
-                                  i]
-                                      .productImages!
-                                      .isNotEmpty &&
-                                      storeHomeMainController
-                                          .featureProductList[i]
-                                          .productImages
-                                          ?.first
-                                          .image
-                                          ?.dynamicUrl !=
-                                          null
-                                      ? Image.network(
-                                    storeHomeMainController
-                                        .featureProductList[
-                                    i]
-                                        .productImages
-                                        ?.first
-                                        .image
-                                        ?.dynamicUrl,
-                                    fit: BoxFit
-                                        .fill,
-                                    height: 148,
-                                    width: 148,
-                                  )
-                                      : Image.asset(
-                                    ImageConstants
-                                        .nopicfound,
-                                    fit: BoxFit
-                                        .fill,
-                                    height: 148,
-                                    width: 148,
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(8.0),
-                                    child: storeHomeMainController
-                                        .featureProductList[
-                                    i]
-                                        .isFavouriteProduct ==
-                                        true
-                                        ? InkWell(
-                                      onTap:
-                                          () {
-                                        if(storeHomeMainController.isLoading.value == false){
-                                          storeHomeMainController.apiRemoveFavouriteProduct(storeHomeMainController
-                                              .featureProductList[i]
-                                              .productId);
-                                        }
-                                      },
-                                      child: Image
-                                          .asset(
-                                        ImageConstants
-                                            .liked,
-                                        scale:
-                                        3,
-                                      ),
-                                    )
-                                        : InkWell(
-                                      onTap:
-                                          () {
-                                        if(storeHomeMainController.isLoading.value == false){
-                                          storeHomeMainController.apiCreateFavouriteProduct(storeHomeMainController
-                                              .featureProductList[i]
-                                              .productId);
-                                        }
-
-                                      },
-                                      child: Image
-                                          .asset(
-                                        ImageConstants
-                                            .fav,
-                                        scale:
-                                        3,
-                                      ),
-                                    ),
-                                  )
-                                ],
+              () => storeHomeMainController.featureProductList.isEmpty
+                  ? storeHomeMainController.isLoading.value == true
+                      ? height0SizedBox
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                ImageConstants.nopicfound,
+                                scale: 8,
+                                color: AppColors.primary,
                               ),
                             ),
-                          ),
-                          height5SizedBox,
-                          Expanded(
+                            height4SizedBox,
+                            Center(
+                              child: Text(
+                                StringConstants.noProductFoundText,
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic, fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount:
+                            storeHomeMainController.featureProductList.length,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio:
+                              (WidgetConstants.screenWidth + 120) /
+                                  WidgetConstants.screenHeight,
+                          mainAxisSpacing: 0.0,
+                          crossAxisSpacing: 0.0,
+                          crossAxisCount: 2,
+                        ),
+                        itemBuilder: (BuildContext context, int i) {
+                          return InkWell(
+                            onTap: () async {
+                              storeHomeMainController.productId.value =
+                                  storeHomeMainController
+                                      .featureProductList[i].productId
+                                      .toString();
+                              storeHomeMainController
+                                  .apiGetShopProductDetailApi();
+                              await storeHomeMainController.apiGetCartListApi();
+                              // SharedPreferenceStorage
+                              //     .setData(
+                              //         "context", context);
+                              Get.parameters['isFromFav'] = "false";
+                              Get.parameters["isFromHome"] = "false";
+                              Get.parameters['isFromMenu'] = "true";
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(
+                              //   builder: (_) =>
+                              //       const AddToOrderScreen(),
+                              // ));
+                              await Get.to(const AddToOrderScreen(),
+                                  id: pageIdApp.value);
+                            },
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  storeHomeMainController
-                                      .featureProductList[
-                                  i]
-                                      .productName ??
-                                      "",
-                                  style: const TextStyle(
-                                      color: AppColors
-                                          .black,
-                                      fontSize: 16,
-                                      fontWeight:
-                                      FontWeight
-                                          .w600),
+                                Card(
+                                  shape: BeveledRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  elevation: 0,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        storeHomeMainController
+                                                    .featureProductList[i]
+                                                    .productImages!
+                                                    .isNotEmpty &&
+                                                storeHomeMainController
+                                                        .featureProductList[i]
+                                                        .productImages
+                                                        ?.first
+                                                        .image
+                                                        ?.dynamicUrl !=
+                                                    null
+                                            ? Image.network(
+                                                storeHomeMainController
+                                                    .featureProductList[i]
+                                                    .productImages
+                                                    ?.first
+                                                    .image
+                                                    ?.dynamicUrl,
+                                                fit: BoxFit.fill,
+                                                height: 148,
+                                                width: 148,
+                                              )
+                                            : Image.asset(
+                                                ImageConstants.nopicfound,
+                                                fit: BoxFit.fill,
+                                                height: 148,
+                                                width: 148,
+                                              ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct ==
+                                                  true
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    if (storeHomeMainController
+                                                            .isLoading.value ==
+                                                        false) {
+                                                      storeHomeMainController
+                                                          .apiRemoveFavouriteProduct(
+                                                              storeHomeMainController
+                                                                  .featureProductList[
+                                                                      i]
+                                                                  .productId);
+                                                    }
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstants.liked,
+                                                    scale: 3,
+                                                  ),
+                                                )
+                                              : InkWell(
+                                                  onTap: () {
+                                                    if (storeHomeMainController
+                                                            .isLoading.value ==
+                                                        false) {
+                                                      storeHomeMainController
+                                                          .apiCreateFavouriteProduct(
+                                                              storeHomeMainController
+                                                                  .featureProductList[
+                                                                      i]
+                                                                  .productId);
+                                                    }
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstants.fav,
+                                                    scale: 3,
+                                                  ),
+                                                ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                storeHomeMainController
-                                    .featureProductList[
-                                i]
-                                    .description!
-                                    .isEmpty
-                                    ? height0SizedBox
-                                    : height4SizedBox,
-                                storeHomeMainController
-                                    .featureProductList[
-                                i]
-                                    .description!
-                                    .isEmpty
-                                    ? height0SizedBox
-                                    : Text(
-                                  storeHomeMainController
-                                      .featureProductList[
-                                  i]
-                                      .description ??
-                                      "",
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      overflow:
-                                      TextOverflow
-                                          .visible,
-                                      color: AppColors
-                                          .blacklight,
-                                      fontSize:
-                                      14,
-                                      fontWeight:
-                                      FontWeight
-                                          .w400),
-                                ),
-                                storeHomeMainController
-                                    .featureProductList[
-                                i]
-                                    .description!
-                                    .isEmpty
-                                    ? height0SizedBox
-                                    : height4SizedBox,
-                                Text(
-                                  "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
-                                  style: const TextStyle(
-                                      color: AppColors
-                                          .black,
-                                      fontSize: 14,
-                                      fontWeight:
-                                      FontWeight
-                                          .w600),
+                                height5SizedBox,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        storeHomeMainController
+                                                .featureProductList[i]
+                                                .productName ??
+                                            "",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      storeHomeMainController
+                                              .featureProductList[i]
+                                              .description!
+                                              .isEmpty
+                                          ? height0SizedBox
+                                          : height4SizedBox,
+                                      storeHomeMainController
+                                              .featureProductList[i]
+                                              .description!
+                                              .isEmpty
+                                          ? height0SizedBox
+                                          : Text(
+                                              storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .description ??
+                                                  "",
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                  color: AppColors.blacklight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                      storeHomeMainController
+                                              .featureProductList[i]
+                                              .description!
+                                              .isEmpty
+                                          ? height0SizedBox
+                                          : height4SizedBox,
+                                      Text(
+                                        "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
             ),
           ],
         ),
@@ -760,7 +733,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         orderBy: "2",
                         orderType: "2");
                     // Navigator.of(contx).pop();
-                    Get.back(id:pageIdApp.value);
+                    Get.back(id: pageIdApp.value);
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -792,7 +765,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 orderBy: "2",
               );
               // Navigator.of(contx).pop();
-              Get.back(id:pageIdApp.value);
+              Get.back(id: pageIdApp.value);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

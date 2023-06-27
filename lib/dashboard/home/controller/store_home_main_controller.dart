@@ -110,7 +110,6 @@ class StoreHomeMainController extends GetxController {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-
       getCurrentLocation();
       apiGetUserDetailsApi();
       apiGetShopProductDetailApi();
