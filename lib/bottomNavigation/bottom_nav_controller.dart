@@ -158,8 +158,6 @@ class BottomNavController extends GetxController {
       selectedIndex.value = index;
     }
 
-    /// 8288033488 - Iva shoe
-
       Get.until((route) => route.isFirst,id:pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
     if (selectedIndex.value == 0) {
