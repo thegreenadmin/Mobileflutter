@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart
 import 'package:thegreenmall/dashboard/home/model/role_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_picker.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -133,7 +134,6 @@ class AddNewWorkerController extends GetxController {
 
   // Add Worker Api
   Future<dynamic> apiAddWorker(BuildContext contextt) async {
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -189,11 +189,10 @@ class AddNewWorkerController extends GetxController {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
-        Utility.showAlertMessage(value?.body['message'] ?? "");
-        // Utility.showToast(value?.body['message'] ?? "");
+        // Utility.showAlertMessage(value?.body['message'] ?? "",color: AppColors.green);
+        Utility.showToast(value?.body['message'] ?? "");
         resetForm();
         await apiGetWorkerList();
-        // Get.back();
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message'] ?? "");

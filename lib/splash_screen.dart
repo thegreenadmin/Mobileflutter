@@ -45,8 +45,6 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offNamed('/onboardView');
       }
     });
-
-
   }
 
   Future<void> _authenticateWithBiometrics() async {
