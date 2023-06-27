@@ -537,27 +537,26 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                       ]),
                                 ),
                     ),
-                    height20SizedBox,
+                    height15SizedBox,
                     Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: StringConstants.discountsOrOffersText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                const TextSpan(
-                                  text: "*",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text: StringConstants.discountsOrOffersText,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
                           ),
-                 
+                        ],
+                      ),
+                    ),
                     height4SizedBox,
                     Row(
                       children: [
@@ -696,7 +695,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         addOffersController.validateAndSubmit(true, context);
                       },
                       height: 50,
-                      text: StringConstants.saveText,
+                      text: StringConstants.addOfferText,
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

@@ -364,6 +364,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       isDense: true,
                       prefixIcon: Image.asset(
                         ImageConstants.search,
+                        color: AppColors.grey,
                         scale: 4,
                       ),
                       suffixIcon: InkWell(

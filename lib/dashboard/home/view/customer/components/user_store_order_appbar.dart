@@ -5,14 +5,13 @@ import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import '../../../../../utils/image_constants.dart';
 
-
 mixin PreferredSizeWidget on Widget {
-  Size get preferredSize => Size.fromHeight(WidgetConstants.screenHeight * 0.25); // Implement your preferredSize logic here
+  Size get preferredSize => Size.fromHeight(WidgetConstants.screenHeight *
+      0.25); // Implement your preferredSize logic here
 }
 
 class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
@@ -40,14 +39,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  colorFilter: const ColorFilter.mode(
-                      Colors.black45, BlendMode.darken),
-                  image: storeHomeMainController.storeDetailsResponse.value.data == null ||
+                  colorFilter:
+                      const ColorFilter.mode(Colors.black45, BlendMode.darken),
+                  image: storeHomeMainController
+                                  .storeDetailsResponse.value.data ==
+                              null ||
                           storeHomeMainController.storeDetailsResponse.value
-                              .data!.store!.image!.dynamicUrl == null ||
+                                  .data!.store!.image!.dynamicUrl ==
+                              null ||
                           storeHomeMainController.storeDetailsResponse.value
                               .data!.store!.image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.storeicon) as ImageProvider
+                      ? const AssetImage(ImageConstants.storeicon)
+                          as ImageProvider
                       : NetworkImage(storeHomeMainController
                           .storeDetailsResponse
                           .value
@@ -58,8 +61,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                 ),
               ),
               child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 10, bottom: 10),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 10, bottom: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -72,8 +75,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
-                               Get.back(id:pageIdApp.value);
-                               Get.delete<StoreHomeMainController>();
+                                Get.back(id: pageIdApp.value);
+                                Get.delete<StoreHomeMainController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -112,7 +115,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                           Row(
                                             children: [
                                               InkWell(
-                                                onTap: () async{
+                                                onTap: () async {
                                                   storeHomeMainController
                                                       .apiGetUserWalletBalance();
                                                   // SharedPreferenceStorage
@@ -123,10 +126,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                   //   builder: (_) =>
                                                   //       const CartScreen(),
                                                   // ))
-                                                  await Get.to(const CartScreen(),
-                                                      id:pageIdApp.value)?.then((value) =>
-                                                      storeHomeMainController
-                                                          .apiActiveCartApi());
+                                                  await Get.to(
+                                                          const CartScreen(),
+                                                          id: pageIdApp.value)
+                                                      ?.then((value) =>
+                                                          storeHomeMainController
+                                                              .apiActiveCartApi());
                                                 },
                                                 child: Stack(
                                                   children: [
@@ -192,17 +197,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         true
                                     ? InkWell(
                                         onTap: () {
-                                          if(storeHomeMainController.isLoading.value == false){
+                                          if (storeHomeMainController
+                                                  .isLoading.value ==
+                                              false) {
                                             storeHomeMainController
                                                 .apiRemoveFavouriteStore(
-                                                storeHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data
-                                                    ?.store
-                                                    ?.storeId);
+                                                    storeHomeMainController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
                                           }
-
                                         },
                                         child: Image.asset(
                                           ImageConstants.liked,
@@ -211,17 +217,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          if(storeHomeMainController.isLoading.value == false){
+                                          if (storeHomeMainController
+                                                  .isLoading.value ==
+                                              false) {
                                             storeHomeMainController
                                                 .apiCreateFavouriteStore(
-                                                storeHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data
-                                                    ?.store
-                                                    ?.storeId);
+                                                    storeHomeMainController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data
+                                                        ?.store
+                                                        ?.storeId);
                                           }
-
                                         },
                                         child: Image.asset(
                                           ImageConstants.favoutline,
@@ -242,7 +249,9 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                             child: CircleAvatar(
                               radius: 28.0,
                               backgroundImage: storeHomeMainController
-                                              .storeDetailsResponse.value.data ==
+                                              .storeDetailsResponse
+                                              .value
+                                              .data ==
                                           null ||
                                       storeHomeMainController
                                               .storeDetailsResponse
@@ -292,7 +301,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                   Image.asset(
                                     ImageConstants.loc,
                                     color: AppColors.white,
-                                    scale: 2,
+                                    scale: 2.5,
                                   ),
                                   width4SizedBox,
                                   SizedBox(
@@ -344,8 +353,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                     false
                                                 ? "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                     "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                : StringConstants
-                                                    .storeHoursText
+                                                : StringConstants.storeHoursText
                                             : StringConstants.storeHoursText,
                                         style: const TextStyle(
                                             overflow: TextOverflow.visible,
@@ -363,8 +371,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     height: 15,
                                     child: ListView.separated(
                                         separatorBuilder:
-                                            (BuildContext context,
-                                                int index) {
+                                            (BuildContext context, int index) {
                                           return width6SizedBox;
                                         },
                                         shrinkWrap: true,
@@ -380,8 +387,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         itemBuilder: (_, i) {
                                           return CircleAvatar(
                                             radius: 12.0,
-                                            backgroundColor:
-                                                AppColors.primary,
+                                            backgroundColor: AppColors.primary,
                                             child: storeHomeMainController
                                                         .storeDetailsResponse
                                                         .value
@@ -406,8 +412,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                             .deliveryServiceId ==
                                                         "2"
                                                     ? Image.asset(
-                                                        ImageConstants
-                                                            .delivery,
+                                                        ImageConstants.delivery,
                                                         color: Colors.white,
                                                         scale: 4.5,
                                                       )

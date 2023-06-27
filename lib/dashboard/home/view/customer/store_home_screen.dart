@@ -6,7 +6,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class StoreHomeScreen extends StatefulWidget {
@@ -47,14 +46,13 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               style: TextStyle(
                                   color: AppColors.blacklight,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 20)),
+                                  fontSize: 18)),
                           TextSpan(
                             text:
-                                // " ${storeHomeMainController.storeAddress.value.store?.storeName ?? ""}",
                                 " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: AppColors.primary),
                           ),
                         ],
@@ -132,7 +130,9 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                           ),
                                         )
                                       : Image.asset(
-                                          ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),
+                                          ImageConstants.nopicfound,
+                                          color:
+                                              AppColors.grey.withOpacity(0.4),
                                         ),
                                   SizedBox(
                                     height: 55,
@@ -185,7 +185,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     style: const TextStyle(
                         color: AppColors.black,
                         fontWeight: FontWeight.w600,
-                        fontSize: 22),
+                        fontSize: 18),
                   ),
                 ),
               ),
@@ -255,11 +255,9 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     //   builder: (_) => const AddToOrderScreen(),
                                     // ));
                                     await Get.to(const AddToOrderScreen(),
-                                        id:pageIdApp.value);
+                                        id: pageIdApp.value);
                                   },
                                   child: Container(
-                                    height: 150,
-                                    width: 150,
                                     decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))),
@@ -291,13 +289,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                       "",
                                                   fit: BoxFit.fill,
                                                   height: 180,
-                                                  width: 180,
+                                                  width: 160,
                                                 )
                                               : Image.asset(
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
                                                   height: 180,
-                                                  width: 180,   color: AppColors.grey.withOpacity(0.4),
+                                                  width: 160,
+                                                  color: AppColors.grey
+                                                      .withOpacity(0.4),
                                                 ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -308,15 +308,17 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                     true
                                                 ? InkWell(
                                                     onTap: () {
-                                                      if(storeHomeMainController.isLoading.value == false){
+                                                      if (storeHomeMainController
+                                                              .isLoading
+                                                              .value ==
+                                                          false) {
                                                         storeHomeMainController
                                                             .apiRemoveFavouriteProduct(
-                                                            storeHomeMainController
-                                                                .featureProductList[
-                                                            index]
-                                                                .productId);
+                                                                storeHomeMainController
+                                                                    .featureProductList[
+                                                                        index]
+                                                                    .productId);
                                                       }
-
                                                     },
                                                     child: Image.asset(
                                                       ImageConstants.liked,
@@ -325,15 +327,17 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   )
                                                 : InkWell(
                                                     onTap: () {
-                                                      if(storeHomeMainController.isLoading.value == false){
+                                                      if (storeHomeMainController
+                                                              .isLoading
+                                                              .value ==
+                                                          false) {
                                                         storeHomeMainController
                                                             .apiCreateFavouriteProduct(
-                                                            storeHomeMainController
-                                                                .featureProductList[
-                                                            index]
-                                                                .productId);
+                                                                storeHomeMainController
+                                                                    .featureProductList[
+                                                                        index]
+                                                                    .productId);
                                                       }
-
                                                     },
                                                     child: Image.asset(
                                                       ImageConstants.fav,
@@ -363,27 +367,30 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                   storeHomeMainController
-                                                .featureProductList[index]
-                                                .description!.isEmpty? 
-                                                height0SizedBox: 
-                                                 height4SizedBox,
-                                 storeHomeMainController
-                                                .featureProductList[index]
-                                                .description!.isEmpty? 
-                                                height0SizedBox:     Text(
-                                        storeHomeMainController
-                                                .featureProductList[index]
-                                                .description ??
-                                            "",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        softWrap: false,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
+                                      storeHomeMainController
+                                              .featureProductList[index]
+                                              .description!
+                                              .isEmpty
+                                          ? height0SizedBox
+                                          : height4SizedBox,
+                                      storeHomeMainController
+                                              .featureProductList[index]
+                                              .description!
+                                              .isEmpty
+                                          ? height0SizedBox
+                                          : Text(
+                                              storeHomeMainController
+                                                      .featureProductList[index]
+                                                      .description ??
+                                                  "",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                  color: AppColors.blacklight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                       height4SizedBox,
                                       Text(
                                         "Unit price: \$${storeHomeMainController.featureProductList[index].productPrice ?? ""}",

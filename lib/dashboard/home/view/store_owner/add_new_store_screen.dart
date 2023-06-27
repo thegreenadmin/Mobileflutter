@@ -655,8 +655,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         ),
                         alignLabelWithHint: true,
                         hintText: StringConstants.phoneNumberText,
-                        hintStyle: TextStyle(
-                            color: AppColors.blacklight, fontSize: 15),
+                        hintStyle: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
                         border: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
@@ -1056,7 +1056,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterZipCodeText;
+                            return AlertStringConstants
+                                .pleaseEnterPostalCodeText;
                           }
                           return null;
                         },
@@ -2067,7 +2068,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         addNewStoreController.validateAndSubmit(context);
                       },
                       height: 50,
-                      text: StringConstants.saveText,
+                      text:
+                          "${StringConstants.addText} ${StringConstants.storeText}",
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

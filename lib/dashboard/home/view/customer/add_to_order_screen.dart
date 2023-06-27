@@ -13,7 +13,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
 import 'package:thegreenmall/utils/utility.dart';
@@ -216,13 +215,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 5),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width38SizedBox;
+              return width50SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -242,7 +241,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               horizontalTabList[i],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
@@ -276,7 +275,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   horizontalTabList[i],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: storeHomeMainController
                                                 .selectedIndex.value ==
                                             i
@@ -315,7 +314,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           child: Column(
             children: [
               SizedBox(
-                width: 130,
+                width: 120,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -337,7 +336,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
-            width: 130,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -357,7 +356,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 150,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -377,7 +376,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 150,
+            width: 136,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -487,7 +486,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     StringConstants.orderText,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 22,
+                        fontSize: 18,
                         color: AppColors.black),
                   ),
                   height15SizedBox,
@@ -751,6 +750,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       ""
                                   ? height0SizedBox
                                   : height10SizedBox,
+                              height4SizedBox,
                               Text.rich(
                                 TextSpan(
                                   children: [
@@ -760,19 +760,19 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: 16)),
+                                            fontSize: 14)),
                                     TextSpan(
                                       text:
                                           ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           color: AppColors.black),
                                     ),
                                   ],
                                 ),
                               ),
-                              height8SizedBox,
+                              height4SizedBox,
                               Text.rich(
                                 TextSpan(
                                   children: [
@@ -790,7 +790,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w400,
-                                            fontSize: 16)),
+                                            fontSize: 14)),
                                     TextSpan(
                                       text: storeHomeMainController
                                                   .productDetailResponse
@@ -828,7 +828,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               : ' 0%',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           color: AppColors.black),
                                     ),
                                   ],
@@ -1485,14 +1485,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             title,
             style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 16,
+                fontSize: 14,
                 color: AppColors.blacklight),
           ),
           Text(
             textData,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: 14,
                 color: AppColors.black),
           ),
         ],

@@ -171,12 +171,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               // SharedPreferenceStorage.setData(
                               //     "context", context);
-                              print("permissionStoreList:----${permissionStoreList.length}----------");
-                              print(permissionStoreList.any((element) =>
-                              element.isStoreOwner==true ));
+                              print(
+                                  "permissionStoreList:----${permissionStoreList.length}----------");
+                              print(permissionStoreList.any(
+                                  (element) => element.isStoreOwner == true));
                               print(permissionStoreList.any((element) =>
                                   element.controllers!.any((ele) =>
-                                  ele.controllerKey == PermissionKey.manageMessages.statusName)));
+                                      ele.controllerKey ==
+                                      PermissionKey
+                                          .manageMessages.statusName)));
                               // print(permissionStoreList.firstWhere((element) =>
                               //     element.controllers!.any((ele) =>
                               //     ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
@@ -193,14 +196,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                              permissionStoreList.any((element) =>
-                              element.isStoreOwner==true )
-                                  || permissionStoreList.any((element) =>
-                                  element.controllers!.any((ele) =>
-                                  ele.controllerKey == PermissionKey.manageMessages.statusName))
-                                  ? Get.to(() => const OwnerInboxScreen(),
-                                  id: pageIdApp.value)
-                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                  permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) ||
+                                          permissionStoreList.any((element) =>
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey.manageMessages
+                                                      .statusName))
+                                      ? Get.to(() => const OwnerInboxScreen(),
+                                          id: pageIdApp.value)
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants
+                                              .notAuthorisedToStoreText);
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -688,7 +695,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 fit: BoxFit.fill,
                                                 height: WidgetConstants
                                                         .screenHeight *
-                                                    0.3,
+                                                    0.30,
                                                 width: WidgetConstants
                                                         .screenWidth *
                                                     0.85),
@@ -756,7 +763,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 22),
+                                fontSize: 20),
                           )
                     : homeController.ownerFeatureProductList.isEmpty
                         ? height0SizedBox
@@ -765,10 +772,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 22),
+                                fontSize: 20),
                           ),
               ),
-              height12SizedBox,
+              height20SizedBox,
               Obx(
                 () => roleApp.value == Role.customerRoleText
                     ? homeController.featuredUserProductList.isEmpty
@@ -891,7 +898,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -901,7 +908,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : homeController.ownerFeatureProductList.isEmpty
                         ? height0SizedBox
                         : SizedBox(
-                            height: WidgetConstants.screenHeight * 0.28,
+                            height: WidgetConstants.screenHeight * 0.26,
                             width: WidgetConstants.screenWidth,
                             child: ListView.separated(
                               separatorBuilder:
@@ -1009,7 +1016,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),

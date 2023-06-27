@@ -206,13 +206,13 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
 
   Padding horizontalTabs() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 5),
       child: SizedBox(
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-              return width38SizedBox;
+              return width50SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -232,7 +232,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               horizontalTabList[i],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: storeHomeMainController
                                             .selectedIndex.value ==
                                         i
@@ -266,7 +266,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                   horizontalTabList[i],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: storeHomeMainController
                                                 .selectedIndex.value ==
                                             i
@@ -305,7 +305,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           child: Column(
             children: [
               SizedBox(
-                width: 130,
+                width: 120,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -327,7 +327,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
           child: SizedBox(
-            width: 130,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -347,7 +347,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
           child: SizedBox(
-            width: 150,
+            width: 100,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -367,7 +367,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
           child: SizedBox(
-            width: 150,
+            width: 136,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -411,7 +411,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               ? storeHomeMainController.popUpIndex.value == 0
                                   ? const Expanded(
                                       child: PreviousOrdersScreen())
-                                  : storeHomeMainController.popUpIndex.value == 2
+                                  : storeHomeMainController.popUpIndex.value ==
+                                          2
                                       ? Expanded(
                                           child: PdfViewScreen(
                                               isShowPrivacy: true,
@@ -425,8 +426,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                   .storePageContent!
                                                   .dynamicUrl
                                                   .toString()))
-                                      : storeHomeMainController
-                                                  .popUpIndex.value == 3
+                                      : storeHomeMainController.popUpIndex.value ==
+                                              3
                                           ? Expanded(
                                               child: PdfViewScreen(
                                                   isShowPrivacy: false,
@@ -440,11 +441,18 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                       .storePageContent!
                                                       .dynamicUrl
                                                       .toString()))
-                                          : storeHomeMainController.lastSelectedIndex.value == 1
-                                            ? const Expanded(child: StoreMenuScreen())
-                                            : storeHomeMainController.lastSelectedIndex.value == 2
-                                            ? const Expanded(child: StoreFavouriteScreen())
-                                            :const Expanded(child: StoreHomeScreen())
+                                          : storeHomeMainController
+                                                      .lastSelectedIndex
+                                                      .value ==
+                                                  1
+                                              ? const Expanded(
+                                                  child: StoreMenuScreen())
+                                              : storeHomeMainController
+                                                          .lastSelectedIndex
+                                                          .value ==
+                                                      2
+                                                  ? const Expanded(child: StoreFavouriteScreen())
+                                                  : const Expanded(child: StoreHomeScreen())
                               : const Expanded(child: StoreHomeScreen())
             ],
           ),
