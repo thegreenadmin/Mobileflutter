@@ -80,8 +80,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       showSelectedLabels: true,
                       showUnselectedLabels: false,
                       backgroundColor: AppColors.white,
-                      currentIndex:
-                      bottomNavigationPageController.selectedIndex.value,
+                      currentIndex: bottomNavigationPageController.selectedIndex.value,
                       onTap: (i) { bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
@@ -366,7 +365,6 @@ class _TabNav extends GetView<BottomNavController> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      // key: navigatorKey,
       key: Get.nestedKey(navKey),
       onGenerateRoute: (settings) =>
           MaterialPageRoute(builder: (_) => tab),

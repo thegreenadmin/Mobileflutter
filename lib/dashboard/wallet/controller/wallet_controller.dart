@@ -138,7 +138,7 @@ class WalletController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    // pageId.value = await SharedPreferenceStorage.getData("pageId");
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
 

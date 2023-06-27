@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,6 @@ class BottomNavController extends GetxController {
   void onReady() {
     super.onReady();
     WidgetsBinding.instance.addPostFrameCallback((_){
-
       if (initialRemoteMessage != null) {
         selectNotification(NotificationResponse(
           notificationResponseType:
@@ -50,10 +50,11 @@ class BottomNavController extends GetxController {
       lastSelectedIndex.value  = selectedIndex.value = Get.parameters["currentIndex"] != null
           ? int.parse(Get.parameters["currentIndex"].toString())
           : 0;
-      SharedPreferenceStorage.removeData("pageId");
       Future.delayed(Duration.zero, () {
-        SharedPreferenceStorage.setData("pageId", 0);
         getRole();
+        if(permissionStoreList.isEmpty){
+          apiGetPermissions();
+        }
       });
       onItemTapped(0);
     });
@@ -64,12 +65,8 @@ class BottomNavController extends GetxController {
         || permissionStoreList.any((element) =>
     element.controllers!.any((ele) =>
     ele.controllerKey == PermissionKey.manageOrders.statusName));
-
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
-    // pageIdApp.value = await SharedPreferenceStorage.getData("pageId");
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
-    print("Bottom nav cont roleInApp:--------${roleInApp.value}");
-    print(roleInApp.value);
   }
 
   //Get Store List Api
@@ -77,7 +74,6 @@ class BottomNavController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -110,7 +106,36 @@ class BottomNavController extends GetxController {
     });
   }
 
-  late int getCurrentNavKey;
+  //GET STORE PERMISSIONS
+  Future apiGetPermissions() async {
+    debugPrint(
+        "GET STORE PERMISSIONS URL BOTTOM**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
+    Map<String, String> headers = {
+      'Authorization':
+      "Bearer ${authToken.value.toString()}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl +
+            ServerCommunicator().storePermissionsList,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      log("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getPermissionsModel = GetPermissionsModel.fromJson(value.body);
+        permissionStoreList.value = getPermissionsModel.data!.stores!;
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+      } else {
+        if (value.body['message']!=null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
 
   List<Widget> tabs = [
     const HomeScreen(),
@@ -122,19 +147,23 @@ class BottomNavController extends GetxController {
 
   onItemTapped(int index) async {
     getRole();
+    if(index==2 && (!permissionStoreList.any((element) => element.isStoreOwner==true )
+        || !permissionStoreList.any((element) =>
+            element.controllers!.any((ele) =>
+            ele.controllerKey == PermissionKey.manageOrders.statusName))))
+    {
+      Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
 
-    lastSelectedIndex.value = index;
-    selectedIndex.value = index;
+    } else {
+      selectedIndex.value = index;
+    }
+
       Get.until((route) => route.isFirst,id:pageIdApp.value);
-
       SharedPreferenceStorage.removeData("pageId");
-
     if (selectedIndex.value == 0) {
       try {
-        // Get.delete<HomeController>();
         Future.delayed(Duration.zero, () {
           pageIdApp.value = 0;
-          SharedPreferenceStorage.setData("pageId", 0);
           HomeController homeController = Get.put(HomeController());
           homeController.onInit();
         });
@@ -148,11 +177,7 @@ class BottomNavController extends GetxController {
         // Get.delete<WalletController>();
         Future.delayed(Duration.zero, () async{
           pageIdApp.value = 1;
-          SharedPreferenceStorage.setData("pageId", 1);
           WalletController walletController = Get.put(WalletController());
-
-          var pageId = await SharedPreferenceStorage.getData("pageId");
-          debugPrint("Bottom WalletController pageId:---------$pageId---");
           walletController.onInit();
         });
       } catch (e) {
@@ -161,39 +186,28 @@ class BottomNavController extends GetxController {
     }
     else if (selectedIndex.value == 2) {
       try {
-        if(permissionStoreList.any((element) => element.isStoreOwner==true )
-            || permissionStoreList.any((element) =>
-            element.controllers!.any((ele) =>
-            ele.controllerKey == PermissionKey.manageOrders.statusName))
-            ){
-          // Get.delete<OrdersController>();
-          Future.delayed(Duration.zero, ()async {
-            if (roleInApp.value == Role.customerRoleText) {
-              storeList.clear();
-            } else {
-              await apiGetStoreList();
-            }
+        // Get.delete<OrdersController>();
+        Future.delayed(Duration.zero, ()async {
+          if (roleInApp.value == Role.customerRoleText) {
+            storeList.clear();
+          } else {
+            await apiGetStoreList();
+          }
 
-            if(roleInApp.value == Role.storeOwnerRoleText){
-              if( storeList.length > 1 || storeList.isEmpty){
-                pageIdApp.value = 2;
-                SharedPreferenceStorage.setData("pageId", 2);
-              }else{
-                pageIdApp.value = 3;
-                SharedPreferenceStorage.setData("pageId", 3);
-              }
+          if(roleInApp.value == Role.storeOwnerRoleText){
+            if( storeList.length > 1 || storeList.isEmpty){
+              pageIdApp.value = 2;
             }else{
-              pageIdApp.value = 4;
-              SharedPreferenceStorage.setData("pageId", 4);
+              pageIdApp.value = 3;
             }
+          }else{
+            pageIdApp.value = 4;
+          }
 
+          OrdersController ordersController = Get.put(OrdersController());
+          ordersController.onInit();
+        });
 
-          });
-        }else{
-          Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-        }
-        OrdersController ordersController = Get.put(OrdersController());
-        ordersController.onInit();
       } catch (e) {
         //Pass
       }
@@ -202,10 +216,7 @@ class BottomNavController extends GetxController {
       try {
         Future.delayed(Duration.zero, () async{
           pageIdApp.value = 5;
-          SharedPreferenceStorage.setData("pageId", 5);
-          // Get.delete<OffersController>();
           OffersController offersController = Get.put(OffersController());
-
           offersController.onInit();
         });
       } catch (e) {
@@ -216,10 +227,7 @@ class BottomNavController extends GetxController {
       try {
         Future.delayed(Duration.zero, () async{
           pageIdApp.value = 6;
-          SharedPreferenceStorage.setData("pageId", 6);
-          // Get.delete<MoreController>();
           MoreController moreController = Get.put(MoreController());
-
           moreController.onInit();
         });
 
