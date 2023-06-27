@@ -159,7 +159,7 @@ class Utility {
   static void showAlertMessage(description,
       {String? title,
       String? cancelText,
-      String? okay,
+      String? okay,Color? color,
       void Function()? okayTap,
       void Function()? cancelTap}) {
     showDialog(
@@ -174,7 +174,7 @@ class Utility {
             height10SizedBox,
             Image.asset(
               ImageConstants.alert48,
-              color: AppColors.red,
+              color:color ??  AppColors.red,
               // scale: 1.5,
             ),
             height12SizedBox,

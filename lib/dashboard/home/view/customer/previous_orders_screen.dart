@@ -85,6 +85,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              height60SizedBox,
                               Center(
                                 child: Image.asset(
                                   ImageConstants.nodata,
