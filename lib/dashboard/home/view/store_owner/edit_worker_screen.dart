@@ -34,19 +34,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.profilePicText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
-                    height20SizedBox,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -149,11 +149,13 @@ class BottomNavController extends GetxController {
 
   onItemTapped(int index) async {
     getRole();
-    if(roleApp.value == Role.storeOwnerRoleText && index==2 && (!permissionStoreList.any((element) => element.isStoreOwner==true )
-        || !permissionStoreList.any((element) =>
-            element.controllers!.any((ele) =>
-            ele.controllerKey == PermissionKey.manageOrders.statusName))))
-    {
+    if (roleApp.value == Role.storeOwnerRoleText &&
+        index == 2 &&
+        (!permissionStoreList.any((element) => element.isStoreOwner == true) ||
+            !permissionStoreList.any((element) => element.controllers!.any(
+                (ele) =>
+                    ele.controllerKey ==
+                    PermissionKey.manageOrders.statusName)))) {
       Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
     } else {
       selectedIndex.value = index;
