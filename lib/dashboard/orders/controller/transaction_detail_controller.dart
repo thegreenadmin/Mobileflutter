@@ -35,18 +35,22 @@ class TransactionDetailController extends GetxController {
 
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";
     storeId!.value = Get.parameters['store_id'] ?? "";
     isCurrentMonthSelected.value = true;
-    if (roleVal ==
-        Role.customerRoleText) {
+    if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       // apiGetUserOrderTransactionHistory();
     } else {
@@ -54,6 +58,7 @@ class TransactionDetailController extends GetxController {
       apiGetOwnerTransactionDetail();
     }
   }
+
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
     var firstDayNextMonth = DateTime(firstDayThisMonth.year,
@@ -85,8 +90,7 @@ class TransactionDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     String currentMonth =
         "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
@@ -121,10 +125,10 @@ class TransactionDetailController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -138,8 +142,7 @@ class TransactionDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -179,10 +182,10 @@ class TransactionDetailController extends GetxController {
         }
         update();
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

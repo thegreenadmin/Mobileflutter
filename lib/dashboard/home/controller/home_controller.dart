@@ -73,7 +73,7 @@ class HomeController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    // pageId.value = await SharedPreferenceStorage.getData("pageId");
+    //
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
 
@@ -310,7 +310,8 @@ class HomeController extends GetxController {
   //Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
     isLoading!.value = true;
-    String url = "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
+    String url =
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
     debugPrint("USER FEATURED PRODUCT URL**********$url");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {

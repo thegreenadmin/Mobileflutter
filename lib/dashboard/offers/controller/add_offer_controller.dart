@@ -157,7 +157,7 @@ class AddOffersController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
@@ -181,9 +181,7 @@ class AddOffersController extends GetxController {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectDiscountType);
         } else {
-          isValidateFromAddOffer
-              ? await apiAddOffer()
-              : await apiUpdateOffer();
+          isValidateFromAddOffer ? await apiAddOffer() : await apiUpdateOffer();
         }
       } catch (_) {}
     } else {
@@ -365,8 +363,8 @@ class AddOffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
-       } else {
+        Get.offAll(const StartJourneyScreen());
+      } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
@@ -417,7 +415,7 @@ class AddOffersController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
-              } else {
+      } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }

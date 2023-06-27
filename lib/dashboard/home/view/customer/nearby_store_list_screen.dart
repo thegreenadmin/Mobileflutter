@@ -25,7 +25,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
- /* @override
+  /* @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -86,7 +86,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                           return InkWell(
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            onTap: () async{
+                            onTap: () async {
                               SharedPreferenceStorage.setData(
                                   "context", context);
                               Get.parameters["storeId"] =
@@ -96,11 +96,10 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           ?.storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:pageIdApp.value);
+                                  id: pageIdApp.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),
                               // ));
-
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -193,10 +192,15 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               Visibility(
                                                 visible:
                                                     searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .addressLine1!=null && searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .addressLine1!="",
+                                                                .storeAddresses[
+                                                                    index]
+                                                                .addressLine1 !=
+                                                            null &&
+                                                        searchStoreUserController
+                                                                .storeAddresses[
+                                                                    index]
+                                                                .addressLine1 !=
+                                                            "",
                                                 child: Row(
                                                   children: [
                                                     Image.asset(
@@ -267,7 +271,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 true
                                             ? InkWell(
                                                 onTap: () {
-                                                  if(searchStoreUserController.isLoading.value == false){
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
                                                         .apiRemoveFavouriteStore(
                                                       searchStoreUserController
@@ -276,9 +282,8 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                           ?.storeId,
                                                     );
                                                   }
-
                                                 },
-                                          radius: 20,
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
                                                   scale: 3.2,
@@ -286,17 +291,19 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                if(searchStoreUserController.isLoading.value == false){
-                                                  searchStoreUserController
-                                                      .apiCreateFavouriteStore(
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
-                                                        .storeAddresses[index]
-                                                        .store
-                                                        ?.storeId,
-                                                  );
-                                                }
-
-                                                }, radius: 20,
+                                                        .apiCreateFavouriteStore(
+                                                      searchStoreUserController
+                                                          .storeAddresses[index]
+                                                          .store
+                                                          ?.storeId,
+                                                    );
+                                                  }
+                                                },
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
                                                   scale: 3.2,

@@ -123,7 +123,7 @@ class ManageStoreController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     isFeaturedTypeSelected.value = false;
@@ -207,6 +207,23 @@ class ManageStoreController extends GetxController {
   void validateAndSubmitUpdateProduct(BuildContext ctx) async {
     if (validateAndSaveUpdateProduct()) {
       try {
+        for (int i = 0; i < categoriesList.length; i++) {
+          bool isHaving = false;
+          for (int j = 0; j < selectedCategories.length; j++) {
+            if (selectedCategories[j]["category"]["category_id"] ==
+                categoriesList[i].categoryId) {
+              isHaving = true;
+              selectedCategories[j]['status'] =
+                  categoriesList[i].isSelected == true ? "active" : "deleted";
+            }
+          }
+          if (!isHaving && categoriesList[i].isSelected == true) {
+            selectedCategories.add({
+              "category": {"category_id": categoriesList[i].categoryId},
+              'status': "active"
+            });
+          }
+        }
         var data = selectedCategories
             .where((element) => element["status"] == 'active');
         if (data.isEmpty) {
@@ -286,10 +303,18 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
+        for (int i = 0; i < categoriesList.length; i++) {
+          for (int j = 0; j < selectedCategories.length; j++) {
+            if (categoriesList[i].categoryId.toString() ==
+                selectedCategories[j]['category']['category_id'].toString()) {
+              categoriesList[i].isSelected = true;
+            }
+          }
+        }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -466,7 +491,7 @@ class ManageStoreController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-         Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -703,6 +728,8 @@ class ManageStoreController extends GetxController {
       // listProductCategory.add(productCategory);
       ProductCategory productCategory = ProductCategory();
       productCategory.status = selectedCategories[i]['status'];
+      productCategory.categoryId =
+          int.parse(selectedCategories[i]['category']["category_id"]);
       productCategory.productCategoryId =
           selectedCategories[i]['product_category_id'];
       productCategory.category = Categorys(
@@ -783,7 +810,7 @@ class ManageStoreController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
 
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

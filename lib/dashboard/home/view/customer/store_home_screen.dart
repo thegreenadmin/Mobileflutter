@@ -189,6 +189,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                   ),
                 ),
               ),
+              height12SizedBox,
               Obx(
                 () => Visibility(
                   visible:
@@ -232,7 +233,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                 .featureProductList.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 InkWell(

@@ -72,7 +72,7 @@ class OffersController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
     role.value = await SharedPreferenceStorage.getData(Role.role);
     if (role.value == Role.customerRoleText) {
       getCurrentLocation();

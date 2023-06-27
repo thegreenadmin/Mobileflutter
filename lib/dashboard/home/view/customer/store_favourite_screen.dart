@@ -27,12 +27,15 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           height15SizedBox,
-          Text(
-            StringConstants.favoritesText,
-            style: const TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              StringConstants.favoritesText,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           height15SizedBox,
           Expanded(

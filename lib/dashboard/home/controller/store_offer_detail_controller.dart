@@ -28,15 +28,20 @@ class StoreOfferDetailController extends GetxController {
     offerId.value = Get.parameters["offerId"] ?? "";
     apiGetStoreOffersDetail();
     getPage();
-
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
+
   //Get store offer detail
   Future apiGetStoreOffersDetail() async {
     isLoading.value = true;
@@ -45,8 +50,7 @@ class StoreOfferDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map data = {
       "q": "",
@@ -84,13 +88,13 @@ class StoreOfferDetailController extends GetxController {
         storeOfferDetailModel = StoreOfferDetailModel.fromJson(value?.body);
         storeOfferDetailList.value = storeOfferDetailModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }

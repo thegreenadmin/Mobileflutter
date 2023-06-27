@@ -37,12 +37,16 @@ class UserInboxController extends GetxController {
     showPreviousMessages.value = false;
     apiGetInboxList();
     getPage();
-
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
@@ -51,21 +55,21 @@ class UserInboxController extends GetxController {
   Future apiGetInboxList() async {
     isLoading.value = true;
 
-    RxString url ="".obs;
-    if(showPreviousMessages.value){
-      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
-    }else{
-      url.value = "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10";
+    RxString url = "".obs;
+    if (showPreviousMessages.value) {
+      url.value =
+          "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
+    } else {
+      url.value =
+          "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10";
     }
 
     debugPrint("GET OWNER INBOX URL**********${url.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
-
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -87,10 +91,10 @@ class UserInboxController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -101,8 +105,7 @@ class UserInboxController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "message_head_id": messageHeadId,
@@ -129,10 +132,10 @@ class UserInboxController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

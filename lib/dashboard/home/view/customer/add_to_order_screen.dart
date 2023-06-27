@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
@@ -722,12 +723,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 ],
                               ),
                               storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description !=
+                                          .value.data?.product?.description ==
                                       ""
                                   ? height0SizedBox
                                   : height4SizedBox,
                               storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description !=
+                                          .value.data?.product?.description ==
                                       ""
                                   ? height0SizedBox
                                   : SizedBox(
@@ -746,7 +747,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               fontWeight: FontWeight.w400)),
                                     ),
                               storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description !=
+                                          .value.data?.product?.description ==
                                       ""
                                   ? height0SizedBox
                                   : height10SizedBox,
@@ -1379,11 +1380,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           ),
                                           width8SizedBox,
                                           Text(
-                                            Utility.formatDateTime(
-                                                '${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(0, 10)} ${storeHomeMainController.productDetailResponse.value.data!.product!.productReviews![i].createdAt.toString().substring(11, 23)}',
-                                                firstFormat:
-                                                    "yyyy-dd-MM HH:mm:ss",
-                                                secFormat: "dd/MM/yyyy"),
+                                            DateFormat('MM-dd-yyyy').format(
+                                                DateTime.parse(
+                                                    storeHomeMainController
+                                                        .productDetailResponse
+                                                        .value
+                                                        .data!
+                                                        .product!
+                                                        .productReviews![i]
+                                                        .createdAt
+                                                        .toString())),
                                             style: const TextStyle(
                                                 fontSize: 14.0,
                                                 color: AppColors.black,

@@ -164,9 +164,13 @@ class AddNewStoreController extends GetxController {
   }
 
   getGKey() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     secureData =
@@ -187,14 +191,11 @@ class AddNewStoreController extends GetxController {
   void validateAndSubmit(BuildContext ctx) async {
     if (validateAndSave()) {
       try {
-
         if (storeLogoDynamicLinkfromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectLogoText);
         } else if (storeImageDynamicLinkfromServer.isEmpty) {
-
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
-
           apiCreateStore(ctx);
         }
       } catch (_) {}
@@ -207,7 +208,7 @@ class AddNewStoreController extends GetxController {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       // Get.back();
       // Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -229,7 +230,7 @@ class AddNewStoreController extends GetxController {
     }, onCameraClick: () async {
       // Get.back();
       // Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -256,10 +257,9 @@ class AddNewStoreController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -315,10 +315,9 @@ class AddNewStoreController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -422,8 +421,7 @@ class AddNewStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
@@ -465,7 +463,9 @@ class AddNewStoreController extends GetxController {
         for (var element in deliveryServices) {
           element.isSelected = false;
         }
-        deliveryServices.firstWhere((element) =>  element.name!.toLowerCase().contains("in")).isSelected = true;
+        deliveryServices
+            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
+            .isSelected = true;
         for (var element in weekDaysList) {
           element.isSelected = false;
         }
@@ -478,7 +478,7 @@ class AddNewStoreController extends GetxController {
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
         await createDynamicLink();
         await apiDynamicLink();
         // await apiGetDeliveryServices();
@@ -501,8 +501,7 @@ class AddNewStoreController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {
@@ -524,7 +523,7 @@ class AddNewStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
         // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
         //   builder: (_) => const StartJourneyScreen(),
         // ));
@@ -538,10 +537,9 @@ class AddNewStoreController extends GetxController {
     debugPrint(
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -556,12 +554,13 @@ class AddNewStoreController extends GetxController {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
-            deliveryServicesResponse.data?.deliveryServices??[];
-        deliveryServices.firstWhere((element) =>  element.name!.toLowerCase().contains("in")).isSelected = true;
+            deliveryServicesResponse.data?.deliveryServices ?? [];
+        deliveryServices
+            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
+            .isSelected = true;
         var concatenate = StringBuffer();
         for (int i = 0; i < deliveryServices.length; i++) {
           if (deliveryServices[i].isSelected == true) {
-
             concatenate.write(deliveryServices[i].name);
             concatenate.write(', ');
 
@@ -592,10 +591,9 @@ class AddNewStoreController extends GetxController {
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -615,7 +613,7 @@ class AddNewStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -630,10 +628,9 @@ class AddNewStoreController extends GetxController {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(

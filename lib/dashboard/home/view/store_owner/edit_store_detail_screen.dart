@@ -2225,7 +2225,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         ownerStoreController.validateAndSubmit(context);
                       },
                       height: 50,
-                      text: StringConstants.updateText,
+                      text: 
+                          "${StringConstants.updateText} ${StringConstants.storeText}",
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,
                       iconL: false,

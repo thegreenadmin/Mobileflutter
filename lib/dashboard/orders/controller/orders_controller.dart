@@ -93,10 +93,11 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     debugPrint("Order onInit called **********");
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       isFromNotification.value =
-      Get.parameters["isFromNotification"] == "true" ? true : false;
-      if (Get.parameters['storeId'] != "" && Get.parameters['storeId'] != null) {
+          Get.parameters["isFromNotification"] == "true" ? true : false;
+      if (Get.parameters['storeId'] != "" &&
+          Get.parameters['storeId'] != null) {
         storeId.value = Get.parameters["storeId"] ?? "";
         if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
           storeId.value = Get.parameters["storeId"] ?? "";
@@ -113,7 +114,7 @@ class OrdersController extends GetxController {
       orderStatusName.value = OrderStatus.receivedOrder.statusName;
       role!.value = SharedPreferenceStorage.getData(Role.role).toString();
       role!.value = roleApp.value;
-      uerSelectedTab.value =0;
+      uerSelectedTab.value = 0;
       if (role!.value == Role.customerRoleText) {
         page.value = 1;
 
@@ -134,10 +135,15 @@ class OrdersController extends GetxController {
 
     super.onInit();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    // pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+    //
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
@@ -175,7 +181,7 @@ class OrdersController extends GetxController {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
         context: ctx,
-        builder: (BuildContext _ ) {
+        builder: (BuildContext _) {
           return StatefulBuilder(
               builder: (BuildContext ctxX, StateSetter setState) {
             return ListView(
@@ -209,7 +215,7 @@ class OrdersController extends GetxController {
                               onTap: () {
                                 reviewController.clear();
                                 ratingValue.value = 0.0;
-                                 Get.back(id:pageIdApp.value );
+                                Get.back(id: pageIdApp.value);
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -322,7 +328,7 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                           Get.back(id:pageIdApp.value );
+                          Get.back(id: pageIdApp.value);
                           // Navigator.pop(ctxX);
                           apiCreateReview();
                         },
@@ -381,7 +387,7 @@ class OrdersController extends GetxController {
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onTap: () {
-                                 Get.back(id:pageIdApp.value );
+                                Get.back(id: pageIdApp.value);
                                 // Navigator.of(ctxx).pop();
                               },
                               child: Image.asset(
@@ -631,8 +637,7 @@ class OrdersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -659,16 +664,15 @@ class OrdersController extends GetxController {
         reviewController.clear();
         ratingValue.value = 0.0;
         //  Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
+        // Navigator.of(ctx).pop();
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen(),
-              id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -682,8 +686,7 @@ class OrdersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -714,17 +717,16 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reasonController.clear();
         apiGetOrderDetailsApi();
-         Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
-         Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(ctx).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(ctx).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -737,10 +739,9 @@ class OrdersController extends GetxController {
     debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .getWithHeadersApi(
@@ -754,13 +755,12 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         orderStatusListResponse = OrderStatusListResponse.fromJson(value?.body);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
-      Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -781,8 +781,7 @@ class OrdersController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map<String, dynamic> data = {
       "store_id": null,
@@ -793,43 +792,43 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses": uerSelectedTab.value == 0 ?
-      [
-          {
-          "order_status_name": OrderStatus.receivedOrder.statusName,
-          },
-          {
-          "order_status_name": OrderStatus.inProgress.statusName,
-          },
-          {
-          "order_status_name": OrderStatus.readyForPickup.statusName,
-          },
-          {
-          "order_status_name": OrderStatus.inTransit.statusName,
-          },
-          {
-          "order_status_name": OrderStatus.returnRequest.statusName,
-          },
-        ]
-          : uerSelectedTab.value ==1 ?
-      [
-        {
-        "order_status_name": OrderStatus.completed.statusName,
-        },
-        {
-        "order_status_name": OrderStatus.returned.statusName,
-        },
-        {
-        "order_status_name": OrderStatus.returnCancelled.statusName,
-        },
-      ]
-          : uerSelectedTab.value ==2 ?
-      [
-        {
-        "order_status_name": OrderStatus.cancelled.statusName,
-        },
-
-      ]: []
+      "order_statuses": uerSelectedTab.value == 0
+          ? [
+              {
+                "order_status_name": OrderStatus.receivedOrder.statusName,
+              },
+              {
+                "order_status_name": OrderStatus.inProgress.statusName,
+              },
+              {
+                "order_status_name": OrderStatus.readyForPickup.statusName,
+              },
+              {
+                "order_status_name": OrderStatus.inTransit.statusName,
+              },
+              {
+                "order_status_name": OrderStatus.returnRequest.statusName,
+              },
+            ]
+          : uerSelectedTab.value == 1
+              ? [
+                  {
+                    "order_status_name": OrderStatus.completed.statusName,
+                  },
+                  {
+                    "order_status_name": OrderStatus.returned.statusName,
+                  },
+                  {
+                    "order_status_name": OrderStatus.returnCancelled.statusName,
+                  },
+                ]
+              : uerSelectedTab.value == 2
+                  ? [
+                      {
+                        "order_status_name": OrderStatus.cancelled.statusName,
+                      },
+                    ]
+                  : []
     };
 
     log("Order List data ********** ${jsonEncode(data)}");
@@ -861,13 +860,12 @@ class OrdersController extends GetxController {
 
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -887,8 +885,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -900,15 +897,16 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses": orderStatusName.value == OrderStatus.receivedOrder.statusName
-          ? [
-              {"order_status_name": OrderStatus.receivedOrder.statusName},
-              {"order_status_name": OrderStatus.returnRequest.statusName},
-              {"order_status_name": OrderStatus.returnConfirmed.statusName},
-            ]
-          : [
-              {"order_status_name": orderStatusName.value}
-            ]
+      "order_statuses":
+          orderStatusName.value == OrderStatus.receivedOrder.statusName
+              ? [
+                  {"order_status_name": OrderStatus.receivedOrder.statusName},
+                  {"order_status_name": OrderStatus.returnRequest.statusName},
+                  {"order_status_name": OrderStatus.returnConfirmed.statusName},
+                ]
+              : [
+                  {"order_status_name": orderStatusName.value}
+                ]
     };
 
     debugPrint("PARAMETERS ********** ${jsonEncode(data)}");
@@ -937,12 +935,11 @@ class OrdersController extends GetxController {
         storeOrderList.toSet().toList();
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -955,10 +952,9 @@ class OrdersController extends GetxController {
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -977,13 +973,12 @@ class OrdersController extends GetxController {
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -998,15 +993,14 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-        headers,
-        showLoading: true)
+            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            headers,
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value!.body}");
@@ -1014,7 +1008,8 @@ class OrdersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = stores.GetStoreListModel.fromJson(value.body);
         storeList.clear();
-        storeList.addAll(getStoreListModel.data!.stores as Iterable<stores.Stores>);
+        storeList
+            .addAll(getStoreListModel.data!.stores as Iterable<stores.Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -1022,7 +1017,7 @@ class OrdersController extends GetxController {
         await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message']!=null) {
+        if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -1035,10 +1030,9 @@ class OrdersController extends GetxController {
     debugPrint("ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}");
     var token = await SharedPreferenceStorage.getData('token');
-      Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
-      };
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
@@ -1054,29 +1048,32 @@ class OrdersController extends GetxController {
             order_detail.OrderDetailResponse.fromJson(value?.body);
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
-        orderType.value = orderDetailResponse.data?.order?.deliveryService?.deliveryServiceId ?? "1";
-        orderDate.value = orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
+        orderType.value = orderDetailResponse
+                .data?.order?.deliveryService?.deliveryServiceId ??
+            "1";
+        orderDate.value =
+            orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
 
         orderDetailResponse.data?.order?.orderHistories?.forEach((element) {
           if (element.isCurrentStatus == true) {
-            orderStatusTypeName.value = element.orderStatus?.orderStatusName ?? "";
+            orderStatusTypeName.value =
+                element.orderStatus?.orderStatusName ?? "";
 
             activeStep.value = element.orderStatus?.orderStatusName ==
                     OrderStatus.receivedOrder.statusName
                 ? 0
-                :
-                element.orderStatus?.orderStatusName ==
-                    OrderStatus.inProgress.statusName
+                : element.orderStatus?.orderStatusName ==
+                        OrderStatus.inProgress.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                            OrderStatus.inTransit.statusName ||
-                        element.orderStatus?.orderStatusName ==
-                        OrderStatus.readyForPickup.statusName
+                                OrderStatus.inTransit.statusName ||
+                            element.orderStatus?.orderStatusName ==
+                                OrderStatus.readyForPickup.statusName
                         ? 2
                         : element.orderStatus?.orderStatusName ==
-                                OrderStatus.completed.statusName ||
-                             element.orderStatus?.orderStatusName ==
-                                 OrderStatus.cancelled.statusName
+                                    OrderStatus.completed.statusName ||
+                                element.orderStatus?.orderStatusName ==
+                                    OrderStatus.cancelled.statusName
                             ? 3
                             : 0;
           }
@@ -1084,8 +1081,9 @@ class OrdersController extends GetxController {
 
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
           stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
-        }else{
-          stepInd.firstWhere((element) => element.id == 2).name = "Ready for pickup";
+        } else {
+          stepInd.firstWhere((element) => element.id == 2).name =
+              "Ready for pickup";
         }
 
         for (var element in stepInd) {
@@ -1096,14 +1094,13 @@ class OrdersController extends GetxController {
           }
         }
         update();
-      }
-      else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -1118,8 +1115,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1146,22 +1142,20 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         // Get.back(id:pageIdApp.value );
-                                  // Navigator.of(context).pop();
+        // Navigator.of(context).pop();
         // BuildContext rContext = SharedPreferenceStorage.getData(
         //   "context",
         // );
-        Get.until((route) => route.isFirst,id:pageIdApp.value);
+        Get.until((route) => route.isFirst, id: pageIdApp.value);
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen(),
-              id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -1176,8 +1170,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1208,14 +1201,13 @@ class OrdersController extends GetxController {
         //   "context",
         // );
         // Navigator.of(rContext).popUntil((route) => route.isFirst);
-        Get.until((route) => route.isFirst,id:pageIdApp.value );
+        Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen(),
-              id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -1230,8 +1222,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map<String, dynamic> data = {
@@ -1243,8 +1234,7 @@ class OrdersController extends GetxController {
     UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().readyPickup,
+            ServerCommunicator().baseUrl + ServerCommunicator().readyPickup,
             headers,
             showLoading: false)
         .then((value) async {
@@ -1257,12 +1247,11 @@ class OrdersController extends GetxController {
         // Get.back();
         // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-          await Get.offAll(const StartJourneyScreen(),
-              id:pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -1277,8 +1266,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1299,13 +1287,12 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -1320,8 +1307,7 @@ class OrdersController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1343,12 +1329,12 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if(value?.body['message']!=null){
+        if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }

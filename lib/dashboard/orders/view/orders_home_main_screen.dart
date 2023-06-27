@@ -8,7 +8,6 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import '../view/component/order_status_enum.dart';
 import 'mark_return_order_screen.dart';
 
@@ -145,7 +144,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Visibility(
-                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1 && ordersHomeMainController.isFromNotification.value,
+                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1 || ordersHomeMainController.isFromNotification.value,
                                     child: IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
