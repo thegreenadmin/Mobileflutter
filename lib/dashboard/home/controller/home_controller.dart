@@ -165,7 +165,6 @@ class HomeController extends GetxController {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
 
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -209,7 +208,7 @@ class HomeController extends GetxController {
     debugPrint(
       "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -253,7 +252,7 @@ class HomeController extends GetxController {
     isLoading!.value = true;
     debugPrint("USER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -313,7 +312,7 @@ class HomeController extends GetxController {
     String url =
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
     debugPrint("USER FEATURED PRODUCT URL**********$url");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -372,7 +371,7 @@ class HomeController extends GetxController {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -426,7 +425,7 @@ class HomeController extends GetxController {
     isLoading!.value = true;
     debugPrint("OWNER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

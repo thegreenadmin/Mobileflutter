@@ -8,7 +8,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -67,7 +67,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                         if (index <
                             searchStoreUserController.favouriteStore.length) {
                           return InkWell(
-                            onTap: () async{
+                            onTap: () async {
                               // SharedPreferenceStorage.setData(
                               //     "context", context);
                               Get.parameters["storeId"] =
@@ -75,11 +75,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                           .favouriteStore[index].storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:pageIdApp.value);
+                                  id: pageIdApp.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),
                               // ));
-
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -251,16 +250,18 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                 true
                                             ? InkWell(
                                                 onTap: () {
-                                                if(searchStoreUserController.isLoading.value == false){
-                                                  searchStoreUserController
-                                                      .apiRemoveFavouriteStore(
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
-                                                        .favouriteStore[index]
-                                                        .storeId,
-                                                  );
-                                                }
-
-                                                },radius: 20,
+                                                        .apiRemoveFavouriteStore(
+                                                      searchStoreUserController
+                                                          .favouriteStore[index]
+                                                          .storeId,
+                                                    );
+                                                  }
+                                                },
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
                                                   scale: 3.2,
@@ -268,16 +269,18 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                if(searchStoreUserController.isLoading.value == false){
-                                                  searchStoreUserController
-                                                      .apiCreateFavouriteStore(
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
-                                                        .favouriteStore[index]
-                                                        .storeId,
-                                                  );
-                                                }
-
-                                                },radius: 20,
+                                                        .apiCreateFavouriteStore(
+                                                      searchStoreUserController
+                                                          .favouriteStore[index]
+                                                          .storeId,
+                                                    );
+                                                  }
+                                                },
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
                                                   scale: 3.2,

@@ -6,7 +6,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.back(id:pageIdApp.value);
+        Get.back(id: pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -46,8 +46,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                  Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -97,7 +97,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         // Navigator.of(context).push(MaterialPageRoute(
                         //   builder: (_) => const PersonalInfoEditScreen(),
                         // ));
-                        Get.to(const PersonalInfoEditScreen(),id:pageIdApp.value);
+                        Get.to(const PersonalInfoEditScreen(),
+                            id: pageIdApp.value);
                       },
                       child: Text(StringConstants.editText,
                           style: const TextStyle(

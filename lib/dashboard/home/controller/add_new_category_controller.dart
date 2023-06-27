@@ -154,7 +154,7 @@ class AddNewCategoryController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-      var token = await SharedPreferenceStorage.getData('token');
+
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
@@ -200,7 +200,6 @@ class AddNewCategoryController extends GetxController {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -255,7 +254,7 @@ class AddNewCategoryController extends GetxController {
   Future apiGetCategoryDetail() async {
     debugPrint(
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -292,7 +291,7 @@ class AddNewCategoryController extends GetxController {
   Future apiUpdateCategory(BuildContext contextt) async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

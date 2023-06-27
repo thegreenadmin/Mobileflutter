@@ -101,7 +101,7 @@ class UserInboxDetailController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-      var token = await SharedPreferenceStorage.getData('token');
+
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
@@ -148,7 +148,7 @@ class UserInboxDetailController extends GetxController {
     isloading.value = true;
     debugPrint(
         "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -183,7 +183,7 @@ class UserInboxDetailController extends GetxController {
   Future apiSendMessage() async {
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

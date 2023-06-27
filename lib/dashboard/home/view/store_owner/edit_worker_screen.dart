@@ -396,13 +396,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
                         ],
                       ),
                     ),
@@ -421,13 +414,13 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         controller: addNewWorkerController
                             .shortDescriptionTextController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterShortDescriptionText;
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return AlertStringConstants
+                        //         .pleaseEnterShortDescriptionText;
+                        //   }
+                        //   return null;
+                        // },
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: StringConstants.addDescriptionText,

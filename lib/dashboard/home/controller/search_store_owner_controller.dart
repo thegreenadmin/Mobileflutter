@@ -216,7 +216,7 @@ class OwnerStoresController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-      var token = await SharedPreferenceStorage.getData('token');
+
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
@@ -350,7 +350,7 @@ class OwnerStoresController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -364,7 +364,7 @@ class OwnerStoresController extends GetxController {
       "order_type": "DESC",
       "filters": []
     };
-    debugPrint("GET OWNER OFFERS BODY ********** $body");
+    debugPrint("GET OWNER OFFERS BODY OK********** $body");
     UserProvider()
         .postWithHeadersApi(
             body,
@@ -398,7 +398,7 @@ class OwnerStoresController extends GetxController {
     debugPrint(
       "GET FEATURED PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -451,7 +451,7 @@ class OwnerStoresController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-      var token = await SharedPreferenceStorage.getData('token');
+
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
@@ -508,7 +508,7 @@ class OwnerStoresController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -545,7 +545,7 @@ class OwnerStoresController extends GetxController {
     deliveryServices.clear();
     debugPrint(
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -585,7 +585,7 @@ class OwnerStoresController extends GetxController {
   Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=${storeId.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -766,7 +766,7 @@ class OwnerStoresController extends GetxController {
   Future apiUpdateStoreDetail(BuildContext ctx) async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -869,7 +869,7 @@ class OwnerStoresController extends GetxController {
     countriesList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -910,7 +910,7 @@ class OwnerStoresController extends GetxController {
   Future apiGetState() async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -950,7 +950,7 @@ class OwnerStoresController extends GetxController {
   Future apiDeleteStore({String storeId = ""}) async {
     debugPrint(
         "DELETE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

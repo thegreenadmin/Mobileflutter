@@ -91,7 +91,7 @@ class AddOffersController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-      var token = await SharedPreferenceStorage.getData('token');
+
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
@@ -193,7 +193,7 @@ class AddOffersController extends GetxController {
   Future apiAddOffer() async {
     debugPrint(
         "ADD OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferCreate}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -252,7 +252,7 @@ class AddOffersController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -294,7 +294,7 @@ class AddOffersController extends GetxController {
     debugPrint(
       "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -377,7 +377,7 @@ class AddOffersController extends GetxController {
     debugPrint(
       "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -435,7 +435,7 @@ class AddOffersController extends GetxController {
     }
     debugPrint(
         "UPDATE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferEdit}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

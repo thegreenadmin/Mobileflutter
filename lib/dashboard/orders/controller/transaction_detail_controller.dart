@@ -87,7 +87,7 @@ class TransactionDetailController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -139,7 +139,7 @@ class TransactionDetailController extends GetxController {
     debugPrint("OWNER TRANSACTION DETAIL URL **********");
     debugPrint(
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

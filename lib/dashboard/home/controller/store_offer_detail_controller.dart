@@ -47,7 +47,7 @@ class StoreOfferDetailController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

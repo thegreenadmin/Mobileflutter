@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
+
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';

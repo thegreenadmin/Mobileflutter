@@ -4,12 +4,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/user_inbox_model.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -65,7 +65,7 @@ class UserInboxController extends GetxController {
     }
 
     debugPrint("GET OWNER INBOX URL**********${url.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -102,7 +102,7 @@ class UserInboxController extends GetxController {
   Future apiDeleteUserMessages({String messageHeadId = ""}) async {
     debugPrint(
         "DELETE USER MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().messageDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

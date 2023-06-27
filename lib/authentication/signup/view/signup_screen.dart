@@ -1,7 +1,4 @@
-import 'dart:io';
 
-import 'package:country_codes/country_codes.dart';
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,25 +29,10 @@ class _SignupScreenState extends State<SignupScreen> {
   String? formattedDate;
   String? formattedDateToCompare;
   TimeOfDay selectedTime = TimeOfDay.now();
-  Rx<Locale> cL = const Locale("en", "IN").obs;
-  void getCurrentLocale() async {
-    cL.value = (await Devicelocale.currentAsLocale)!;
-    signupController.selectedRegion.value = cL.value.countryCode!;
-    debugPrint("selectedRegion----${signupController.selectedRegion.value}");
-    String languageCode = Platform.localeName.split('_')[0];
-    await CountryCodes
-        .init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
-    final Locale? deviceLocale = CountryCodes.getDeviceLocale();
-    final CountryDetails details = CountryCodes.detailsForLocale();
-    signupController.selectedCountryCode.value = details.dialCode!;
-    debugPrint(
-        "selectedCountryCode----${signupController.selectedCountryCode.value}");
-  }
 
   @override
   void initState() {
     super.initState();
-    getCurrentLocale();
   }
 
   @override

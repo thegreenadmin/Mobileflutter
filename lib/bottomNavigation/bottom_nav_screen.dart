@@ -12,8 +12,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import '../dashboard/orders/view/order_store_list_screen.dart';
-import '../utils/global_share_data.dart';
-import '../utils/shared_prefrences.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class BottomNavigation extends StatefulWidget {

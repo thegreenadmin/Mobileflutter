@@ -68,7 +68,7 @@ class ContactUsController extends GetxController {
       "subject": subjectTextController.text.trim(),
       "message": messageTextController.text.trim(),
     };
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

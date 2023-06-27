@@ -75,7 +75,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                         if (index <
                             searchStoreUserController.previousStore.length) {
                           return InkWell(
-                            onTap: ()async {
+                            onTap: () async {
                               SharedPreferenceStorage.setData(
                                   "context", context);
                               Get.parameters["storeId"] =
@@ -83,12 +83,11 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                           .previousStore[index].storeId ??
                                       "";
                               await Get.to(const StoreHomeMainScreen(),
-                                  id:pageIdApp.value);
+                                  id: pageIdApp.value);
 
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),
                               // ));
-
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -254,11 +253,15 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController.previousStore[index].isFavouriteStore ==
+                                        searchStoreUserController
+                                                    .previousStore[index]
+                                                    .isFavouriteStore ==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
-                                                  if(searchStoreUserController.isLoading.value == false){
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
                                                         .apiRemoveFavouriteStore(
                                                       searchStoreUserController
@@ -266,8 +269,8 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                                           .storeId,
                                                     );
                                                   }
-
-                                                },radius: 20,
+                                                },
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.liked,
                                                   scale: 3.2,
@@ -275,16 +278,18 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                if(searchStoreUserController.isLoading.value == false){
-                                                  searchStoreUserController
-                                                      .apiCreateFavouriteStore(
+                                                  if (searchStoreUserController
+                                                          .isLoading.value ==
+                                                      false) {
                                                     searchStoreUserController
-                                                        .previousStore[index]
-                                                        .storeId,
-                                                  );
-                                                }
-
-                                                },radius: 20,
+                                                        .apiCreateFavouriteStore(
+                                                      searchStoreUserController
+                                                          .previousStore[index]
+                                                          .storeId,
+                                                    );
+                                                  }
+                                                },
+                                                radius: 20,
                                                 child: Image.asset(
                                                   ImageConstants.fav,
                                                   scale: 3.2,

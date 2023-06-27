@@ -371,7 +371,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           onTap: () {
                                             // Navigator.of(Get.context!).popUntil(
                                             //     (route) => route.isFirst);
-                                            Get.until((route) => route.isFirst,id:pageIdApp.value );
+                                            Get.until((route) => route.isFirst,
+                                                id: pageIdApp.value);
                                           },
                                           child: const Icon(
                                             Icons.arrow_back,
@@ -510,7 +511,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       //       const OrderConfirmationScreen(),
                                       // ))
                                       Get.to(const OrderConfirmationScreen(),
-                                          id:pageIdApp.value)?.then((value) {
+                                              id: pageIdApp.value)
+                                          ?.then((value) {
                                         ordersController.apiGetOrderListApi();
                                       });
                                     },
@@ -869,24 +871,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               builder: (_) =>
                                                   const MarkReturnOrderScreen(),
                                             ))*/
-                                              Get.to(
-                                    () =>
-                                const MarkReturnOrderScreen(),
-                                                  id:pageIdApp.value ,
-                                arguments: {
-                                  "storeId": ordersController
-                                      .storeOrderList[i]
-                                      .store
-                                      ?.storeId
-                                      .toString() ??
-                                      "",
-                                  "orderId":
-                                  ordersController
-                                      .storeOrderList[i]
-                                      .orderId
-                                      .toString(),
-                                })
-                                              ?.then((value) {
+                                          Get.to(() => const MarkReturnOrderScreen(),
+                                              id: pageIdApp.value,
+                                              arguments: {
+                                                  "storeId": ordersController
+                                                          .storeOrderList[i]
+                                                          .store
+                                                          ?.storeId
+                                                          .toString() ??
+                                                      "",
+                                                  "orderId": ordersController
+                                                      .storeOrderList[i].orderId
+                                                      .toString(),
+                                                })?.then((value) {
                                               ordersController
                                                   .apiGetStoreOrderListApi();
                                             })
@@ -903,25 +900,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   builder: (_) =>
                                                       const ReturnConfirmOrderScreen(),
                                                 ))*/
-                                              Get.to(
-                                    () =>
-                                const ReturnConfirmOrderScreen(),
-                                                  id:int.parse(SharedPreferenceStorage.getData("pageId").toString()  ),
-                                arguments: {
-                                  "storeId": ordersController
-                                      .storeOrderList[
-                                  i]
-                                      .store
-                                      ?.storeId
-                                      .toString() ??
-                                      "",
-                                  "orderId":
-                                  ordersController
-                                      .storeOrderList[
-                                  i]
-                                      .orderId
-                                      .toString(),
-                                })
+                                              Get.to(() => const ReturnConfirmOrderScreen(),
+                                                  id: int.parse(
+                                                      SharedPreferenceStorage.getData("pageId")
+                                                          .toString()),
+                                                  arguments: {
+                                                      "storeId": ordersController
+                                                              .storeOrderList[i]
+                                                              .store
+                                                              ?.storeId
+                                                              .toString() ??
+                                                          "",
+                                                      "orderId":
+                                                          ordersController
+                                                              .storeOrderList[i]
+                                                              .orderId
+                                                              .toString(),
+                                                    })
                                               : ordersController.orderStatusName
                                                           .value == //7
                                                       OrderStatus
@@ -932,13 +927,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       builder: (_) =>
                                                           const OrdersHomeMainScreen(),
                                                     ));*/
-                                      Get.to(() => const OrdersHomeMainScreen(),
-                                          id:pageIdApp.value,
-                                          arguments: {
-                                        "storeId": ordersController
-                                            .storeOrderList[i].store?.storeId.toString() ?? "",
-                                            "orderId": ordersController.storeOrderList[i]
-                                                .orderId ?? "",});},
+                                                  Get.to(
+                                                      () => const OrdersHomeMainScreen(),
+                                                      id: pageIdApp.value,
+                                                      arguments: {
+                                                          "storeId": ordersController
+                                                                  .storeOrderList[
+                                                                      i]
+                                                                  .store
+                                                                  ?.storeId
+                                                                  .toString() ??
+                                                              "",
+                                                          "orderId": ordersController
+                                                                  .storeOrderList[
+                                                                      i]
+                                                                  .orderId ??
+                                                              "",
+                                                        });
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),

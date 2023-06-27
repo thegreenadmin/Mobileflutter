@@ -53,7 +53,7 @@ class NotificationListController extends GetxController {
     isLoading.value = true;
     debugPrint("GET NOTIFICATION LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=20");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

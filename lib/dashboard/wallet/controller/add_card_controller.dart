@@ -135,7 +135,7 @@ class AddCardController extends GetxController {
   Future apiGetUserDetailApi(context) async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -279,7 +279,7 @@ class AddCardController extends GetxController {
     countryList.clear();
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -311,7 +311,7 @@ class AddCardController extends GetxController {
     statesList.clear();
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -359,7 +359,7 @@ class AddCardController extends GetxController {
   //   isLoading.value = true;
   //   debugPrint(
   //       "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().ownersStoreList}");
-  //   var token = await SharedPreferenceStorage.getData('token');
+  //
   //   Map<String, String> headers = {
   //     'Content-Type': 'application/json',
   //     'Authorization': "Bearer ${authToken.value.toString()}",
@@ -445,7 +445,7 @@ class AddCardController extends GetxController {
     debugPrint(
         "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
     Map body = {"token_id": stripeToken.value};
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -513,7 +513,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -556,7 +556,7 @@ class AddCardController extends GetxController {
       "user_stripe_card_id": userStripeCardId!.value,
       "amount": amountTextController.text.trim()
     };
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -604,7 +604,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint("GET USER WALLET BALANCE URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -639,7 +639,7 @@ class AddCardController extends GetxController {
   Future apiDeleteCard({String userStripeCardId = ""}) async {
     debugPrint(
         "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -679,7 +679,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint("GET BANK ACCOUNT LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -722,7 +722,7 @@ class AddCardController extends GetxController {
       "user_stripe_bank_id": int.parse(userStripeBankId!.value),
       "amount": double.parse(payoutAmountTextController.text.trim())
     };
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -777,7 +777,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE SERVICE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeServiceCharge}?store_id=${storeId!.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -823,7 +823,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET OWNER WALLET BALANCE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${selectedStore.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -868,7 +868,7 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

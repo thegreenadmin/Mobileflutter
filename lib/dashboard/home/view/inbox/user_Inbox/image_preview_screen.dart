@@ -5,7 +5,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-
 import '../../../../../utils/global_share_data.dart';
 
 class ImagePreviewScreen extends StatefulWidget {
@@ -25,9 +24,10 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     getPage();
   }
 
-  getPage()async{
-    pageId.value =await SharedPreferenceStorage.getData("pageId");
+  getPage() async {
+    pageId.value = await SharedPreferenceStorage.getData("pageId");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +51,8 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                   Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                                    Get.back(id: pageIdApp.value);
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

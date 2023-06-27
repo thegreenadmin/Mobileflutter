@@ -5,9 +5,9 @@ import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
+import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 class UserTransactionDetailController extends GetxController {
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
@@ -67,7 +67,7 @@ class UserTransactionDetailController extends GetxController {
     debugPrint("USER TRANSACTION DETAIL URL **********");
     debugPrint(
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionDetail}?user_wallet_transaction_id=${userStripeCardId!.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

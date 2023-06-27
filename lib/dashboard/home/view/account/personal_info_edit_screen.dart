@@ -1,4 +1,3 @@
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +13,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:google_maps_webservice/places.dart';
 import "package:google_maps_webservice/geocoding.dart";
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import '../../../../utils/utility.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
@@ -31,7 +30,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          Get.back(id:pageIdApp.value);
+          Get.back(id: pageIdApp.value);
           return false;
         },
         child: Scaffold(
@@ -55,8 +54,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
                                       // Get.back();
-                                     Get.back(id:pageIdApp.value);
-                                     // Navigator.of(context).pop();
+                                      Get.back(id: pageIdApp.value);
+                                      // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,

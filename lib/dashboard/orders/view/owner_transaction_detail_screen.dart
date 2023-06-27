@@ -27,14 +27,14 @@ class _OwnerTransactionDetailScreenState
 
     transactionDetailController.storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";
-    transactionDetailController.storeId!.value = Get.parameters['store_id'] ?? "";
+    transactionDetailController.storeId!.value =
+        Get.parameters['store_id'] ?? "";
     transactionDetailController.isCurrentMonthSelected.value = true;
-    if (SharedPreferenceStorage.getData(Role.role) ==
-        Role.customerRoleText) {
+    if (SharedPreferenceStorage.getData(Role.role) == Role.customerRoleText) {
       transactionDetailController.role!.value = Role.customerRoleText;
       // apiGetUserOrderTransactionHistory();
     } else {
-      transactionDetailController. role!.value = Role.storeOwnerRoleText;
+      transactionDetailController.role!.value = Role.storeOwnerRoleText;
       transactionDetailController.apiGetOwnerTransactionDetail();
     }
   }
@@ -60,7 +60,7 @@ class _OwnerTransactionDetailScreenState
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(

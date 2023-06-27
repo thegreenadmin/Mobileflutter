@@ -94,7 +94,7 @@ class OffersController extends GetxController {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -140,7 +140,7 @@ class OffersController extends GetxController {
     debugPrint(
       "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -174,7 +174,7 @@ class OffersController extends GetxController {
   Future apiDeleteOffer() async {
     debugPrint(
         "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

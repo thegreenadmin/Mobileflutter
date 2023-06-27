@@ -1,6 +1,4 @@
-import 'dart:io';
-import 'package:country_codes/country_codes.dart';
-import 'package:devicelocale/devicelocale.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -22,30 +20,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final LoginController loginController = Get.put(LoginController());
 
-  Rx<Locale> cL = const Locale("en", "IN").obs;
-
-  void getCurrentLocale() async {
-    cL.value = (await Devicelocale.currentAsLocale)!;
-    loginController.selectedRegion.value = cL.value.countryCode!;
-    debugPrint(
-        "selectedRegion----${loginController.selectedRegion.value}");
-    String languageCode = Platform.localeName.split('_')[0];
-    //String countryCode = Platform.localeName.split('_')[1];
-    await CountryCodes
-        .init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
-    final Locale? deviceLocale = CountryCodes.getDeviceLocale();
-    final CountryDetails details = CountryCodes.detailsForLocale();
-    loginController.selectedCountryCode.value = details.dialCode!;
-    debugPrint("selectedCountryCode----${loginController.selectedCountryCode.value}");
-  }
-
-
-
   @override
   void initState() {
     super.initState();
-    getCurrentLocale();
-
   }
 
   @override
@@ -61,8 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(12.0),
             child: OutlinedButton(
               onPressed: () {
-                 Get.back();
-
+                Get.back();
               },
               style: OutlinedButton.styleFrom(
                 minimumSize: Size.zero,
@@ -168,7 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             loginController.countryCode.value =
                                 phone.countryCode.toString();
                           },
-
                         ),
                         height40SizedBox,
                         CustomButton(
@@ -188,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             iconL: false,
                             fontSize: 16,
                             imageR: Image.asset(
-                             ImageConstants.arrowright,
+                              ImageConstants.arrowright,
                               scale: 3,
                             )),
                       ],

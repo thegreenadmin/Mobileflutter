@@ -738,7 +738,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -882,7 +882,7 @@ class OrdersController extends GetxController {
     isLoading.value = storeOrderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -951,7 +951,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -990,7 +990,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -1029,7 +1029,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -1112,7 +1112,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -1167,7 +1167,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Cancel Return Request URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -1219,7 +1219,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Ready Pickup URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().readyPickup}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -1263,7 +1263,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -1304,7 +1304,7 @@ class OrdersController extends GetxController {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

@@ -8,7 +8,7 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
@@ -46,7 +46,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           onPressed: () {
                             Get.back(id: accountController.pageId.value);
                             //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -254,9 +254,8 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const SelectMembershipPlan(),
                 //     ))
-                    Get.to(const SelectMembershipPlan(),id:pageIdApp.value)!
-                    .then((value) =>
-                        accountController.apiGetActiveMembershipList());
+                Get.to(const SelectMembershipPlan(), id: pageIdApp.value)!.then(
+                    (value) => accountController.apiGetActiveMembershipList());
               },
               height: 50,
               text: StringConstants.selectMembershipPlanText,

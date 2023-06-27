@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:thegreenmall/utils/utility.dart';
 
 import '../../../utils/global_share_data.dart';
@@ -93,16 +93,13 @@ class OtpVerificationController extends GetxController {
         debugPrint("SharedPreferenceStorage: token: ------ ");
         debugPrint(authToken.value.toString());
 
-
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
-          SharedPreferenceStorage.setData(
-              Role.role, Role.storeOwnerRoleText);
-          roleApp.value =Role.storeOwnerRoleText;
+          SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
+          roleApp.value = Role.storeOwnerRoleText;
         } else {
-          SharedPreferenceStorage.setData(
-              Role.role, Role.customerRoleText);
-          roleApp.value =Role.customerRoleText;
+          SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
+          roleApp.value = Role.customerRoleText;
         }
         apiGetPermissions();
         Get.offAll(() => const BottomNavigation());
@@ -122,16 +119,15 @@ class OtpVerificationController extends GetxController {
     debugPrint(
         "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl +
-            ServerCommunicator().storePermissionsList,
-        headers,
-        showLoading: false)
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storePermissionsList,
+            headers,
+            showLoading: false)
         .then((value) async {
       log("GET STORE PERMISSIONS RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
@@ -141,7 +137,7 @@ class OtpVerificationController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-        if (value.body['message']!=null) {
+        if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
       }

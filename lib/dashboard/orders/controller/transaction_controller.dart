@@ -288,7 +288,7 @@ class TransactionController extends GetxController {
           ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
           : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -333,7 +333,7 @@ class TransactionController extends GetxController {
           ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}-$currentMonth-01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
           : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
     );
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

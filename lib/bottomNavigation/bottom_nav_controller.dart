@@ -37,22 +37,23 @@ class BottomNavController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (initialRemoteMessage != null) {
         selectNotification(NotificationResponse(
           notificationResponseType:
-          NotificationResponseType.selectedNotificationAction,
+              NotificationResponseType.selectedNotificationAction,
           payload: json.encode(initialRemoteMessage!.data),
         ));
         initialRemoteMessage = null;
       }
 
-      lastSelectedIndex.value  = selectedIndex.value = Get.parameters["currentIndex"] != null
-          ? int.parse(Get.parameters["currentIndex"].toString())
-          : 0;
+      lastSelectedIndex.value = selectedIndex.value =
+          Get.parameters["currentIndex"] != null
+              ? int.parse(Get.parameters["currentIndex"].toString())
+              : 0;
       Future.delayed(Duration.zero, () {
         getRole();
-        if(permissionStoreList.isEmpty){
+        if (permissionStoreList.isEmpty) {
           apiGetPermissions();
         }
       });
@@ -61,10 +62,10 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
-    hasPermission.value = permissionStoreList.any((element) => element.isStoreOwner==true )
-        || permissionStoreList.any((element) =>
-    element.controllers!.any((ele) =>
-    ele.controllerKey == PermissionKey.manageOrders.statusName));
+    hasPermission.value = permissionStoreList
+            .any((element) => element.isStoreOwner == true) ||
+        permissionStoreList.any((element) => element.controllers!.any((ele) =>
+            ele.controllerKey == PermissionKey.manageOrders.statusName));
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
   }
@@ -76,13 +77,15 @@ class BottomNavController extends GetxController {
         "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
-    UserProvider().getWithHeadersApi(
+    UserProvider()
+        .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-            headers, showLoading: false).then((value) async {
+            headers,
+            showLoading: false)
+        .then((value) async {
       isLoading.value = false;
       debugPrint("GET BottomNav STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
@@ -111,16 +114,15 @@ class BottomNavController extends GetxController {
     debugPrint(
         "GET STORE PERMISSIONS URL BOTTOM**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl +
-            ServerCommunicator().storePermissionsList,
-        headers,
-        showLoading: false)
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storePermissionsList,
+            headers,
+            showLoading: false)
         .then((value) async {
       log("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
@@ -130,7 +132,7 @@ class BottomNavController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
       } else {
-        if (value.body['message']!=null) {
+        if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -147,19 +149,19 @@ class BottomNavController extends GetxController {
 
   onItemTapped(int index) async {
     getRole();
-    if(index==2 && (!permissionStoreList.any((element) => element.isStoreOwner==true )
-        || !permissionStoreList.any((element) =>
-            element.controllers!.any((ele) =>
-            ele.controllerKey == PermissionKey.manageOrders.statusName))))
-    {
+    if (index == 2 &&
+        (!permissionStoreList.any((element) => element.isStoreOwner == true) ||
+            !permissionStoreList.any((element) => element.controllers!.any(
+                (ele) =>
+                    ele.controllerKey ==
+                    PermissionKey.manageOrders.statusName)))) {
       Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
     } else {
       selectedIndex.value = index;
     }
 
-      Get.until((route) => route.isFirst,id:pageIdApp.value);
-      SharedPreferenceStorage.removeData("pageId");
+    Get.until((route) => route.isFirst, id: pageIdApp.value);
+    SharedPreferenceStorage.removeData("pageId");
     if (selectedIndex.value == 0) {
       try {
         Future.delayed(Duration.zero, () {
@@ -170,12 +172,10 @@ class BottomNavController extends GetxController {
       } catch (e) {
         //Pass
       }
-    }
-    else if (selectedIndex.value == 1) {
+    } else if (selectedIndex.value == 1) {
       try {
-
         // Get.delete<WalletController>();
-        Future.delayed(Duration.zero, () async{
+        Future.delayed(Duration.zero, () async {
           pageIdApp.value = 1;
           WalletController walletController = Get.put(WalletController());
           walletController.onInit();
@@ -183,38 +183,35 @@ class BottomNavController extends GetxController {
       } catch (e) {
         //Pass
       }
-    }
-    else if (selectedIndex.value == 2) {
+    } else if (selectedIndex.value == 2) {
       try {
         // Get.delete<OrdersController>();
-        Future.delayed(Duration.zero, ()async {
+        Future.delayed(Duration.zero, () async {
           if (roleInApp.value == Role.customerRoleText) {
             storeList.clear();
           } else {
             await apiGetStoreList();
           }
 
-          if(roleInApp.value == Role.storeOwnerRoleText){
-            if( storeList.length > 1 || storeList.isEmpty){
+          if (roleInApp.value == Role.storeOwnerRoleText) {
+            if (storeList.length > 1 || storeList.isEmpty) {
               pageIdApp.value = 2;
-            }else{
+            } else {
               pageIdApp.value = 3;
             }
-          }else{
+          } else {
             pageIdApp.value = 4;
           }
 
           OrdersController ordersController = Get.put(OrdersController());
           ordersController.onInit();
         });
-
       } catch (e) {
         //Pass
       }
-    }
-    else if (selectedIndex.value == 3) {
+    } else if (selectedIndex.value == 3) {
       try {
-        Future.delayed(Duration.zero, () async{
+        Future.delayed(Duration.zero, () async {
           pageIdApp.value = 5;
           OffersController offersController = Get.put(OffersController());
           offersController.onInit();
@@ -222,15 +219,13 @@ class BottomNavController extends GetxController {
       } catch (e) {
         //Pass
       }
-    }
-    else if (selectedIndex.value == 4) {
+    } else if (selectedIndex.value == 4) {
       try {
-        Future.delayed(Duration.zero, () async{
+        Future.delayed(Duration.zero, () async {
           pageIdApp.value = 6;
           MoreController moreController = Get.put(MoreController());
           moreController.onInit();
         });
-
       } catch (e) {
         //Pass
       }

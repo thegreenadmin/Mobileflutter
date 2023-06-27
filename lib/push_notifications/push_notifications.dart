@@ -11,7 +11,6 @@ import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: "Main Navigator");

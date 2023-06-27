@@ -134,7 +134,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -184,7 +184,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -233,7 +233,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -411,7 +411,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
     debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -528,7 +528,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = previousStore.isNotEmpty ? true : false;
     debugPrint("GET GET PREVIOUS STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().previousStoreList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -588,7 +588,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = favouriteStore.isNotEmpty ? true : false;
     debugPrint("GET GET FAVOURITE STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().favouriteStoreList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -644,7 +644,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -715,7 +715,7 @@ class SearchStoreUserController extends GetxController {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -803,7 +803,7 @@ class SearchStoreUserController extends GetxController {
   }) async {
     debugPrint("CLAIM STORE API URL **********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().claimStoreRequest}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

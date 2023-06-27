@@ -127,7 +127,7 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -168,7 +168,7 @@ class AddNewRoleController extends GetxController {
           controllerId: int.parse(controllerIdsList[i]['controller_id'])));
     }
     createRoleRequestModel.permissions = permissionsList;
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -206,7 +206,7 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -244,7 +244,7 @@ class AddNewRoleController extends GetxController {
   Future apiDeleteRole(BuildContext buildContext) async {
     debugPrint(
         "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -289,7 +289,7 @@ class AddNewRoleController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -362,7 +362,7 @@ class AddNewRoleController extends GetxController {
       "role_name": roleNameTextController.text.trim(),
       "permissions": selectedRoles
     };
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

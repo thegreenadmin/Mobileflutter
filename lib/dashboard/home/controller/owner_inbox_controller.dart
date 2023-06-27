@@ -62,7 +62,6 @@ class OwnerInboxController extends GetxController {
     }
     debugPrint("GET OWNER INBOX URL********** ${url.value}");
 
-    var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -98,7 +97,7 @@ class OwnerInboxController extends GetxController {
       {String messageHeadId = "", String storeId = ""}) async {
     debugPrint(
         "DELETE STORE MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}");
-    var token = await SharedPreferenceStorage.getData('token');
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
