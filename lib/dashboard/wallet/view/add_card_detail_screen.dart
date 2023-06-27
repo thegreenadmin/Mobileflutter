@@ -14,7 +14,7 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 
 class AddCardDetailScreen extends StatefulWidget {
   const AddCardDetailScreen({

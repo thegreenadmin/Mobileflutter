@@ -9,7 +9,6 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 import '../../../utils/global_share_data.dart';
-import '../../../utils/shared_prefrences.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
   const OrderStoresListScreen({super.key});

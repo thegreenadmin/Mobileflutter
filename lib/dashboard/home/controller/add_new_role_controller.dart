@@ -59,16 +59,20 @@ class AddNewRoleController extends GetxController {
     getPage();
   }
 
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(strings.StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+  getPage() async {
+    firstName?.value = await SharedPreferenceStorage.getData(
+            strings.StringConstants.firstNameText) ??
+        "";
+    lastName?.value = await SharedPreferenceStorage.getData(
+            strings.StringConstants.lastNameText) ??
+        "";
+
     var roleVal = await SharedPreferenceStorage.getData(strings.Role.role);
     role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     await apiGetControllers();
-    await  apiGetStoreRole();
+    await apiGetStoreRole();
   }
 
   bool validateAndSave() {
@@ -85,8 +89,8 @@ class AddNewRoleController extends GetxController {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
-          Utility.showAlertMessage(
-              strings.AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+          Utility.showAlertMessage(strings
+              .AlertStringConstants.pleaseSelectAtleastOnePermissionText);
           // Utility.showToast(
           //     AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
@@ -125,8 +129,7 @@ class AddNewRoleController extends GetxController {
         "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -146,10 +149,10 @@ class AddNewRoleController extends GetxController {
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -168,8 +171,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE ROLE BODY********** ${createRoleRequestModel.toJson()}");
     debugPrint(
@@ -186,16 +188,16 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-         Get.back(id:pageIdApp.value );
+        Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -206,8 +208,7 @@ class AddNewRoleController extends GetxController {
         "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -230,12 +231,12 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-      Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -246,8 +247,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     deleteRoleRequestModel.storeId = int.parse(storeId.value);
     deleteRoleRequestModel.roleId = int.parse(roleId.value);
@@ -275,12 +275,12 @@ class AddNewRoleController extends GetxController {
         // Navigator.of(buildContext).pushReplacement(MaterialPageRoute(
         //   builder: (_) => const StartJourneyScreen(),
         // ));
-         Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -291,8 +291,7 @@ class AddNewRoleController extends GetxController {
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -330,12 +329,12 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-     Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -366,8 +365,7 @@ class AddNewRoleController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("EDIT ROLE BODY********** $data");
     debugPrint(
@@ -384,17 +382,17 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
-         Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

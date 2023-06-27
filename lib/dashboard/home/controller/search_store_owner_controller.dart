@@ -165,7 +165,7 @@ class OwnerStoresController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     secureData =
@@ -572,7 +572,7 @@ class OwnerStoresController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

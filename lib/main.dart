@@ -9,8 +9,6 @@ import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 
-import 'bottomNavigation/bottom_nav_screen.dart';
-
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +72,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    handleDeepLink();
+    // handleDeepLink();
   }
 
   Future<void> handleDeepLink() async {

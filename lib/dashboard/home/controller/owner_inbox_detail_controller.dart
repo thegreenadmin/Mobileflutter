@@ -42,10 +42,15 @@ class OwnerInboxDetailController extends GetxController {
 
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";
@@ -53,10 +58,11 @@ class OwnerInboxDetailController extends GetxController {
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     await apiGetMessagesList();
   }
+
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
       //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -72,7 +78,7 @@ class OwnerInboxDetailController extends GetxController {
       }
     }, onCameraClick: () async {
       //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
@@ -94,10 +100,9 @@ class OwnerInboxDetailController extends GetxController {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
-       var token = await SharedPreferenceStorage.getData('token');
+      var token = await SharedPreferenceStorage.getData('token');
       Map<String, String> headers = {
-        'Authorization':
-        "Bearer ${authToken.value.toString()}",
+        'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -145,8 +150,7 @@ class OwnerInboxDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -168,10 +172,10 @@ class OwnerInboxDetailController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 
@@ -182,8 +186,7 @@ class OwnerInboxDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {
@@ -220,10 +223,10 @@ class OwnerInboxDetailController extends GetxController {
         await await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

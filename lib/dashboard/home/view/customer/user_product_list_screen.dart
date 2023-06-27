@@ -6,16 +6,13 @@ import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/tool_tip.dart';
-import 'package:thegreenmall/utils/utility.dart';
 
 class UserProductListScreen extends StatefulWidget {
   const UserProductListScreen({super.key});
@@ -214,7 +211,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
-                  return width50SizedBox;
+              return width50SizedBox;
             },
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -474,7 +471,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   storeHomeMainController.category.value.categoryName ?? "",
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 20,
+                      fontSize: 18,
                       color: AppColors.black),
                 ),
                 PopupMenuButton(
@@ -494,7 +491,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 ),
               ],
             ),
-            height20SizedBox,
+            height10SizedBox,
             Obx(
               () => storeHomeMainController.featureProductList.isEmpty
                   ? storeHomeMainController.isLoading.value == true
@@ -505,7 +502,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           children: [
                             Center(
                               child: Image.asset(
-                                ImageConstants.nopicfound,
+                                ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
                               ),

@@ -28,10 +28,15 @@ class NotificationListController extends GetxController {
 
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     if (roleVal == Role.customerRoleText) {
@@ -42,6 +47,7 @@ class NotificationListController extends GetxController {
       apiGetNotificationList(true);
     }
   }
+
   //Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {
     isLoading.value = true;
@@ -50,8 +56,7 @@ class NotificationListController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -72,12 +77,12 @@ class NotificationListController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-       Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
-       if (value.body['message']!=null) {
-        Utility.showAlertMessage(value.body['message']);
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
-    }
     });
   }
 }

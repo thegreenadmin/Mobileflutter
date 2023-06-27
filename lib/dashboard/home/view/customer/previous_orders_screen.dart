@@ -4,7 +4,6 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class PreviousOrdersScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* appBar: PreferredSize(
+      /* appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
             color: AppColors.primarylight,
@@ -66,13 +65,15 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
       body: Container(
           height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               height5SizedBox,
               Text(
                 StringConstants.previousOrdersText,
                 style: const TextStyle(
                     color: AppColors.black,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
               height20SizedBox,
@@ -86,9 +87,9 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  ImageConstants.nopicfound,
+                                  ImageConstants.nodata,
                                   scale: 8,
-                           color: AppColors.grey.withOpacity(0.4),
+                                  color: AppColors.primary,
                                 ),
                               ),
                               height4SizedBox,
@@ -159,7 +160,9 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                   ImageConstants.nopicfound,
                                                   fit: BoxFit.fill,
                                                   height: 148,
-                                                  width: 148,   color: AppColors.grey.withOpacity(0.4),
+                                                  width: 148,
+                                                  color: AppColors.grey
+                                                      .withOpacity(0.4),
                                                 ),
                                         ],
                                       ),

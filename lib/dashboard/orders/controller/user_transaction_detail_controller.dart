@@ -32,13 +32,19 @@ class UserTransactionDetailController extends GetxController {
     apiGetUserOrderTransactionHistory();
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
+
   RxList horizontalTabList = [
     StringConstants.janText,
     StringConstants.febText,
@@ -64,8 +70,7 @@ class UserTransactionDetailController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -87,7 +92,6 @@ class UserTransactionDetailController extends GetxController {
                 value.body["data"]["transaction"]['createdAt'].toString()),
             secFormat: '',
           ).toString();
-
         } else if (value.body["data"]["transaction"]['order_transaction'] !=
             null) {
           orderId!.value = value.body["data"]["transaction"]

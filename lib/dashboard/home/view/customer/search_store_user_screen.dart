@@ -412,55 +412,60 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               ),
             ],
           ),
-          TabBar(
-            unselectedLabelColor: AppColors.blacklight,
-            labelColor: AppColors.primary,
-            indicatorColor: AppColors.primary,
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
-            labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-            isScrollable: false,
-            onTap: (i) async {
-              searchStoreUserController.storeAddresses.clear();
-              searchStoreUserController.previousStore.clear();
-              searchStoreUserController.favouriteStore.clear();
-              searchStoreUserController.page.value = 1;
-              searchStoreUserController.type.value = i;
-              Get.parameters["isFromHome"] = "true";
-              Get.parameters["isFromFav"] = "false";
-              Get.parameters["isFromMenu"] = "false";
-              if (i == 0 &&
-                  searchStoreUserController.isClicked.value == false) {
-                await searchStoreUserController.apiGetNearByStores();
-              } else if (i == 1 &&
-                  searchStoreUserController.isClicked.value == false) {
-                await searchStoreUserController.apiGetPreviousStores(context);
-              } else if (i == 2 &&
-                  searchStoreUserController.isClicked.value == false) {
-                await searchStoreUserController.apiGetFavoriteStores(context);
-              }
-            },
-            tabs: [
-              Tab(
-                child: Text(
-                  StringConstants.nearbyText,
-                  style: const TextStyle(fontSize: 16),
+          SizedBox(
+            width: WidgetConstants.screenWidth,
+            height: 40,
+            child: TabBar(
+              unselectedLabelColor: AppColors.blacklight,
+              labelColor: AppColors.primary,
+              indicatorColor: AppColors.primary,
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.w400),
+              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+              isScrollable: false,
+              onTap: (i) async {
+                searchStoreUserController.storeAddresses.clear();
+                searchStoreUserController.previousStore.clear();
+                searchStoreUserController.favouriteStore.clear();
+                searchStoreUserController.page.value = 1;
+                searchStoreUserController.type.value = i;
+                Get.parameters["isFromHome"] = "true";
+                Get.parameters["isFromFav"] = "false";
+                Get.parameters["isFromMenu"] = "false";
+                if (i == 0 &&
+                    searchStoreUserController.isClicked.value == false) {
+                  await searchStoreUserController.apiGetNearByStores();
+                } else if (i == 1 &&
+                    searchStoreUserController.isClicked.value == false) {
+                  await searchStoreUserController.apiGetPreviousStores(context);
+                } else if (i == 2 &&
+                    searchStoreUserController.isClicked.value == false) {
+                  await searchStoreUserController.apiGetFavoriteStores(context);
+                }
+              },
+              tabs: [
+                Tab(
+                  child: Text(
+                    StringConstants.nearbyText,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
-              ),
-              Tab(
-                child: Text(
-                  StringConstants.previousText,
-                  style: const TextStyle(fontSize: 16),
+                Tab(
+                  child: Text(
+                    StringConstants.previousText,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
-              ),
-              Tab(
-                child: Text(
-                  StringConstants.favoriteText,
-                  style: const TextStyle(fontSize: 16),
+                Tab(
+                  child: Text(
+                    StringConstants.favoriteText,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
-              ),
-            ],
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
+              ],
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+            ),
           ),
           Expanded(
             child: TabBarView(

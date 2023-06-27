@@ -263,6 +263,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           homeController.lastName?.value
                                                   .toString() ??
                                               "";
+
+                                      Get.parameters["isFromHome"] = "true";
+                                      Get.parameters["isFromFav"] = "false";
+                                      Get.parameters["isFromMenu"] = "false";
                                       Get.to(
                                         () => const SearchStoreUserScreen(),
                                         id: pageIdApp.value,

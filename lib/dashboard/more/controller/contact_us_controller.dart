@@ -21,20 +21,25 @@ class ContactUsController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
 
-
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getPage();
   }
-  getPage()async{
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
+
+  getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -66,8 +71,7 @@ class ContactUsController extends GetxController {
     var token = await SharedPreferenceStorage.getData('token');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-      "Bearer ${authToken.value.toString()}",
+      'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE USER BODY********** $data");
     debugPrint(
@@ -88,8 +92,8 @@ class ContactUsController extends GetxController {
         emailTextController.clear();
         subjectTextController.clear();
         messageTextController.clear();
-        Get.back(id:pageIdApp.value );
-                                  // Navigator.of(ctx).pop();
+        Get.back(id: pageIdApp.value);
+        // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {

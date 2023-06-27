@@ -338,7 +338,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                             )
                                           : Image.asset(
                                               ImageConstants.asofnow,
-                                              scale: 3.5,
+                                              scale: 3.3,
                                             ))),
                             ],
                           ))
