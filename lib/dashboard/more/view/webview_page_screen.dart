@@ -7,6 +7,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 class WebviewPageScreen extends StatefulWidget {
   final String url;
   final String isFrom;
@@ -43,11 +44,6 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
       )
       ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
-    getData();
-  }
-
-  getData() async {
-    pageId = await SharedPreferenceStorage.getData("pageId");
   }
 
   // #docregion webview_widget
