@@ -1,14 +1,17 @@
+import 'offers_model.dart';
+
 class GetUserDetailModel {
   int? status;
   String? message;
-  Data? data;
+  GetUserDetailData? data;
 
   GetUserDetailModel({this.status, this.message, this.data});
 
   GetUserDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? GetUserDetailData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +25,13 @@ class GetUserDetailModel {
   }
 }
 
-class Data {
+class GetUserDetailData {
   User? user;
   UserProof? userProof;
 
-  Data({this.user, this.userProof});
+  GetUserDetailData({this.user, this.userProof});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetUserDetailData.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     userProof = json['user_proof'] != null
         ? UserProof.fromJson(json['user_proof'])
@@ -146,50 +149,6 @@ class UserAddresses {
   }
 }
 
-class State {
-  String? stateId;
-  String? stateName;
-  Country? country;
-
-  State({this.stateId, this.stateName, this.country});
-
-  State.fromJson(Map<String, dynamic> json) {
-    stateId = json['state_id'];
-    stateName = json['state_name'];
-    country =
-        json['country'] != null ? Country.fromJson(json['country']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['state_id'] = stateId;
-    data['state_name'] = stateName;
-    if (country != null) {
-      data['country'] = country!.toJson();
-    }
-    return data;
-  }
-}
-
-class Country {
-  String? countryId;
-  String? countryName;
-
-  Country({this.countryId, this.countryName});
-
-  Country.fromJson(Map<String, dynamic> json) {
-    countryId = json['country_id'];
-    countryName = json['country_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['country_id'] = countryId;
-    data['country_name'] = countryName;
-    return data;
-  }
-}
-
 class UserProof {
   Images? image;
   String? userId;
@@ -249,25 +208,6 @@ class UserProof {
     if (proofType != null) {
       data['proof_type'] = proofType!.toJson();
     }
-    return data;
-  }
-}
-
-class Images {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Images({this.orignalUrl, this.dynamicUrl});
-
-  Images.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

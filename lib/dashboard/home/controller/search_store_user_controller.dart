@@ -3,26 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
-import 'package:thegreenmall/dashboard/home/model/favourite_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/home/model/previous_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart'
-    as nearby;
-
-import '../model/categories_model.dart';
 
 class SearchStoreUserController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -45,8 +29,8 @@ class SearchStoreUserController extends GetxController {
   RxList<PreviousStore> previousStore = <PreviousStore>[].obs;
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
-  late cart.CartListResponse cartListResponse = cart.CartListResponse();
-  RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
+  late CartListResponse cartListResponse = CartListResponse();
+  RxList<CartItem> cartItems = <CartItem>[].obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
@@ -89,7 +73,7 @@ class SearchStoreUserController extends GetxController {
   RxBool isValidAddress = false.obs;
   RxBool isOrderDeliverable = false.obs;
   RxString storeIdValue = "".obs;
-  Rx<nearby.StoreAddress> storeAddress = nearby.StoreAddress().obs;
+  Rx<StoreAddress> storeAddress = StoreAddress().obs;
   RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
   RxList<Categories> deliveryServices = [
     Categories(id: 1, name: "In store", isSelected: false),
@@ -213,7 +197,7 @@ class SearchStoreUserController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        cartListResponse = cart.CartListResponse.fromJson(value?.body);
+        cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

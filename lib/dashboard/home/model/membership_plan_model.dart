@@ -13,7 +13,7 @@ String membershipPlanModelToJson(MembershipPlanModel data) =>
 class MembershipPlanModel {
   int? status;
   String? message;
-  Data? data;
+  MembershipPlanData? data;
 
   MembershipPlanModel({
     this.status,
@@ -24,7 +24,7 @@ class MembershipPlanModel {
   MembershipPlanModel copyWith({
     int? status,
     String? message,
-    Data? data,
+    MembershipPlanData? data,
   }) =>
       MembershipPlanModel(
         status: status ?? this.status,
@@ -36,7 +36,9 @@ class MembershipPlanModel {
       MembershipPlanModel(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : MembershipPlanData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,21 +48,22 @@ class MembershipPlanModel {
       };
 }
 
-class Data {
+class MembershipPlanData {
   List<MembershipPlans>? membershipPlans;
 
-  Data({
+  MembershipPlanData({
     this.membershipPlans,
   });
 
-  Data copyWith({
+  MembershipPlanData copyWith({
     List<MembershipPlans>? membershipPlans,
   }) =>
-      Data(
+      MembershipPlanData(
         membershipPlans: membershipPlans ?? this.membershipPlans,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory MembershipPlanData.fromJson(Map<String, dynamic> json) =>
+      MembershipPlanData(
         membershipPlans: json["membership_plans"] == null
             ? []
             : List<MembershipPlans>.from(json["membership_plans"]!

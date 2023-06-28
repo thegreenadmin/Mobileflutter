@@ -1,12 +1,15 @@
 // To parse this JSON data, do
 //
 //     final storeRoleListResponse = storeRoleListResponseFromJson(jsonString);
-
 import 'dart:convert';
 
-StoreRoleListResponse storeRoleListResponseFromJson(String str) => StoreRoleListResponse.fromJson(json.decode(str));
+import 'model.dart';
 
-String storeRoleListResponseToJson(StoreRoleListResponse data) => json.encode(data.toJson());
+StoreRoleListResponse storeRoleListResponseFromJson(String str) =>
+    StoreRoleListResponse.fromJson(json.decode(str));
+
+String storeRoleListResponseToJson(StoreRoleListResponse data) =>
+    json.encode(data.toJson());
 
 class StoreRoleListResponse {
   StoreRoleListResponse({
@@ -17,12 +20,12 @@ class StoreRoleListResponse {
 
   int? status;
   String? message;
-  Data? data;
+  StoreRoleListData? data;
 
   StoreRoleListResponse copyWith({
     int? status,
     String? message,
-    Data? data,
+    StoreRoleListData? data,
   }) =>
       StoreRoleListResponse(
         status: status ?? this.status,
@@ -30,67 +33,47 @@ class StoreRoleListResponse {
         data: data ?? this.data,
       );
 
-  factory StoreRoleListResponse.fromJson(Map<String, dynamic> json) => StoreRoleListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory StoreRoleListResponse.fromJson(Map<String, dynamic> json) =>
+      StoreRoleListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : StoreRoleListData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
-class Data {
-  Data({
+class StoreRoleListData {
+  StoreRoleListData({
     this.storeRoles,
   });
 
   List<StoreRole>? storeRoles;
 
-  Data copyWith({
+  StoreRoleListData copyWith({
     List<StoreRole>? storeRoles,
   }) =>
-      Data(
+      StoreRoleListData(
         storeRoles: storeRoles ?? this.storeRoles,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    storeRoles: json["store_roles"] == null ? [] : List<StoreRole>.from(json["store_roles"]!.map((x) => StoreRole.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "store_roles": storeRoles == null ? [] : List<dynamic>.from(storeRoles!.map((x) => x.toJson())),
-  };
-}
-
-class StoreRole {
-  StoreRole({
-    this.roleId,
-    this.roleName,
-  });
-
-  String? roleId;
-  String? roleName;
-
-  StoreRole copyWith({
-    String? roleId,
-    String? roleName,
-  }) =>
-      StoreRole(
-        roleId: roleId ?? this.roleId,
-        roleName: roleName ?? this.roleName,
+  factory StoreRoleListData.fromJson(Map<String, dynamic> json) =>
+      StoreRoleListData(
+        storeRoles: json["store_roles"] == null
+            ? []
+            : List<StoreRole>.from(
+                json["store_roles"]!.map((x) => StoreRole.fromJson(x))),
       );
 
-  factory StoreRole.fromJson(Map<String, dynamic> json) => StoreRole(
-    roleId: json["role_id"],
-    roleName: json["role_name"],
-  );
-
   Map<String, dynamic> toJson() => {
-    "role_id": roleId,
-    "role_name": roleName,
-  };
+        "store_roles": storeRoles == null
+            ? []
+            : List<dynamic>.from(storeRoles!.map((x) => x.toJson())),
+      };
 }

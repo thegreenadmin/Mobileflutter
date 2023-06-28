@@ -1,14 +1,16 @@
+import 'model.dart';
+
 class GetUserDetailModel {
   int? status;
   String? message;
-  Data? data;
+  UserDetailData? data;
 
   GetUserDetailModel({status, message, this.data});
 
   GetUserDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? UserDetailData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,19 +24,26 @@ class GetUserDetailModel {
   }
 }
 
-class Data {
+class UserDetailData {
   User? user;
+  UserProof? userProof;
 
-  Data({this.user});
+  UserDetailData({this.user, this.userProof});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserDetailData.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? User.fromJson(json['user']) : null;
+    userProof = json['user_proof'] != null
+        ? UserProof.fromJson(json['user_proof'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (user != null) {
       data['user'] = user!.toJson();
+    }
+    if (userProof != null) {
+      data['user_proof'] = userProof!.toJson();
     }
     return data;
   }
@@ -47,6 +56,7 @@ class User {
   String? nickName;
   String? email;
   String? phone;
+  bool? hasStoreAccess;
   List<UserAddresses>? userAddresses;
 
   User(
@@ -56,6 +66,7 @@ class User {
       this.nickName,
       this.email,
       this.phone,
+      this.hasStoreAccess,
       this.userAddresses});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -65,6 +76,7 @@ class User {
     nickName = json['nick_name'];
     email = json['email'];
     phone = json['phone'];
+    hasStoreAccess = json['has_store_access'];
     if (json['user_addresses'] != null) {
       userAddresses = <UserAddresses>[];
       json['user_addresses'].forEach((v) {
@@ -81,9 +93,166 @@ class User {
     data['nick_name'] = nickName;
     data['email'] = email;
     data['phone'] = phone;
+    data['has_store_access'] = hasStoreAccess;
     if (userAddresses != null) {
       data['user_addresses'] = userAddresses!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class UserProof {
+  Images? image;
+
+  String? userId;
+
+  String? proofTypeId;
+
+  String? proofValue;
+
+  bool? isVerified;
+
+  String? expiredAt;
+
+  String? status;
+
+  String? createdAt;
+
+  String? updatedAt;
+
+  String? userProofId;
+
+  ProofType? proofType;
+
+  UserProof(
+      {this.image,
+      this.userId,
+      this.proofTypeId,
+      this.proofValue,
+      this.isVerified,
+      this.expiredAt,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.userProofId,
+      this.proofType});
+
+  UserProof.fromJson(Map<String, dynamic> json) {
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
+
+    userId = json['user_id'];
+
+    proofTypeId = json['proof_type_id'];
+
+    proofValue = json['proof_value'];
+
+    isVerified = json['is_verified'];
+
+    expiredAt = json['expiredAt'];
+
+    status = json['status'];
+
+    createdAt = json['createdAt'];
+
+    updatedAt = json['updatedAt'];
+
+    userProofId = json['user_proof_id'];
+
+    proofType = json['proof_type'] != null
+        ? ProofType.fromJson(json['proof_type'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+
+    if (image != null) {
+      data['image'] = image!.toJson();
+    }
+
+    data['user_id'] = userId;
+
+    data['proof_type_id'] = proofTypeId;
+
+    data['proof_value'] = proofValue;
+
+    data['is_verified'] = isVerified;
+
+    data['expiredAt'] = expiredAt;
+
+    data['status'] = status;
+
+    data['createdAt'] = createdAt;
+
+    data['updatedAt'] = updatedAt;
+
+    data['user_proof_id'] = userProofId;
+
+    if (proofType != null) {
+      data['proof_type'] = proofType!.toJson();
+    }
+
+    return data;
+  }
+}
+
+class ProofType {
+  String? id;
+
+  String? proofName;
+
+  bool? hasExpiration;
+
+  bool? isEnabled;
+
+  String? status;
+
+  String? createdAt;
+
+  String? updatedAt;
+
+  ProofType(
+      {this.id,
+      this.proofName,
+      this.hasExpiration,
+      this.isEnabled,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  ProofType.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+
+    proofName = json['proof_name'];
+
+    hasExpiration = json['has_expiration'];
+
+    isEnabled = json['is_enabled'];
+
+    status = json['status'];
+
+    createdAt = json['createdAt'];
+
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+
+    data['id'] = id;
+
+    data['proof_name'] = proofName;
+
+    data['has_expiration'] = hasExpiration;
+
+    data['is_enabled'] = isEnabled;
+
+    data['status'] = status;
+
+    data['createdAt'] = createdAt;
+
+    data['updatedAt'] = updatedAt;
+
     return data;
   }
 }
@@ -129,50 +298,6 @@ class UserAddresses {
     if (state != null) {
       data['state'] = state!.toJson();
     }
-    return data;
-  }
-}
-
-class State {
-  String? stateId;
-  String? stateName;
-  Country? country;
-
-  State({stateId, stateName, country});
-
-  State.fromJson(Map<String, dynamic> json) {
-    stateId = json['state_id'];
-    stateName = json['state_name'];
-    country =
-        json['country'] != null ? Country.fromJson(json['country']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['state_id'] = stateId;
-    data['state_name'] = stateName;
-    if (country != null) {
-      data['country'] = country!.toJson();
-    }
-    return data;
-  }
-}
-
-class Country {
-  String? countryId;
-  String? countryName;
-
- Country({countryId, countryName});
-
-  Country.fromJson(Map<String, dynamic> json) {
-    countryId = json['country_id'];
-    countryName = json['country_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['country_id'] = countryId;
-    data['country_name'] = countryName;
     return data;
   }
 }

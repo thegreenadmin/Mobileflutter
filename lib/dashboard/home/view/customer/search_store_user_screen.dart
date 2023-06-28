@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,22 +9,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import "package:google_maps_webservice/geocoding.dart";
 import "package:google_maps_webservice/places.dart";
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/favourite_store_list_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-// import 'package:geocoding/geocoding.dart' as geocoding;
-
-import "package:google_maps_webservice/geocoding.dart";
+import 'package:thegreenmall/utils/utils.dart';
 
 class SearchStoreUserScreen extends StatefulWidget {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
@@ -536,23 +530,23 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   }
 }
 
-        // Prediction? p = await PlacesAutocomplete.show(
-        //                       offset: 0,
-        //                       radius: 1000,
-        //                       types: [],
-        //                       strictbounds: false,
-        //                       context: context,
-        //                       apiKey: accountController.kGoogleApiKey,
-        //                       mode: Mode.overlay,
-        //                       language: "en",
-        //                       components: []);
-        //                   int idx = p!.description!.indexOf(",");
-        //                   List parts = [
-        //                     p.description!.substring(0, idx).trim(),
-        //                     p.description!.substring(idx + 1).trim()
-        //                   ];
-        //                   accountController.addressLine1TextController.text =
-        //                       parts[0].toString();
-        //                   GeoData addresses = await Geocoder2.getDataFromAddress(
-        //                       address: p.description.toString(),
-        //                       googleMapApiKey: accountController.kGoogleApiKey);
+// Prediction? p = await PlacesAutocomplete.show(
+//                       offset: 0,
+//                       radius: 1000,
+//                       types: [],
+//                       strictbounds: false,
+//                       context: context,
+//                       apiKey: accountController.kGoogleApiKey,
+//                       mode: Mode.overlay,
+//                       language: "en",
+//                       components: []);
+//                   int idx = p!.description!.indexOf(",");
+//                   List parts = [
+//                     p.description!.substring(0, idx).trim(),
+//                     p.description!.substring(idx + 1).trim()
+//                   ];
+//                   accountController.addressLine1TextController.text =
+//                       parts[0].toString();
+//                   GeoData addresses = await Geocoder2.getDataFromAddress(
+//                       address: p.description.toString(),
+//                       googleMapApiKey: accountController.kGoogleApiKey);

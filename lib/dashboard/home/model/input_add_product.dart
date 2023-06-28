@@ -1,8 +1,10 @@
+import 'model.dart';
+
 class InputAddProduct {
   List<ProductImagesList>? productImages;
   int? storeId;
-  Product? product;
-  List<ProductCategory>? productCategories;
+  InputProduct? product;
+  List<ProductCategories>? productCategories;
   List<ProductLink>? productLinks;
   List<ProductContent>? productContents;
 
@@ -23,11 +25,11 @@ class InputAddProduct {
     }
     storeId = json['store_id'];
     product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
+        json['product'] != null ? InputProduct.fromJson(json['product']) : null;
     if (json['product_categories'] != null) {
-      productCategories = <ProductCategory>[];
+      productCategories = <ProductCategories>[];
       json['product_categories'].forEach((v) {
-        productCategories!.add(ProductCategory.fromJson(v));
+        productCategories!.add(ProductCategories.fromJson(v));
       });
     }
     if (json['product_links'] != null) {
@@ -100,7 +102,7 @@ class ProductImagesList {
   }
 }
 
-class Product {
+class InputProduct {
   int? quantityTypeId;
   int? productId;
   dynamic quantity;
@@ -119,7 +121,7 @@ class Product {
   dynamic weight;
   bool? isEnabled;
 
-  Product(
+  InputProduct(
       {this.quantityTypeId,
       this.productId,
       this.quantity,
@@ -138,7 +140,7 @@ class Product {
       this.weight,
       this.isEnabled});
 
-  Product.fromJson(Map<String, dynamic> json) {
+  InputProduct.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     quantityTypeId = json['quantity_type_id'];
     quantity = json['quantity'];
@@ -177,113 +179,6 @@ class Product {
     data['height'] = height;
     data['weight'] = weight;
     data['is_enabled'] = isEnabled;
-    return data;
-  }
-}
-
-class Categorys {
-  int? categoryId;
-
-  Categorys({this.categoryId});
-
-  Categorys.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['category_id'] = categoryId;
-    return data;
-  }
-}
-
-class ProductCategory {
-  int? categoryId;
-  String? productCategoryId;
-  String? status;
-  Categorys? category;
-
-  ProductCategory(
-      {this.categoryId, this.productCategoryId, this.status, this.category});
-
-  ProductCategory.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-    productCategoryId = json['product_category_id'];
-    status = json['status'];
-    category =
-        json['category'] != null ? Categorys.fromJson(json['category']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['category_id'] = categoryId;
-    data['product_category_id'] = productCategoryId;
-    data['status'] = status;
-    if (category != null) {
-      data['category'] = category!.toJson();
-    }
-    return data;
-  }
-}
-
-class ProductLink {
-  String? name;
-  String? link;
-  String? productLinkId;
-  String? status;
-  int? order;
-
-  ProductLink(
-      {this.name, this.link, this.order, this.status, this.productLinkId});
-
-  ProductLink.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    link = json['link'];
-    order = json['order'];
-    productLinkId = json['product_link_id'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['link'] = link;
-    data['order'] = order;
-    data['product_link_id'] = productLinkId;
-    data['status'] = status;
-    return data;
-  }
-}
-
-class ProductContent {
-  String? heading;
-  String? paragraph;
-  String? productContentId;
-  String? status;
-  int? order;
-
-  ProductContent(
-      {this.heading,
-      this.paragraph,
-      this.order,
-      this.status,
-      this.productContentId});
-
-  ProductContent.fromJson(Map<String, dynamic> json) {
-    heading = json['heading'];
-    paragraph = json['paragraph'];
-    order = json['order'];
-    productContentId = json['product_content_id'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['heading'] = heading;
-    data['paragraph'] = paragraph;
-    data['order'] = order;
-    data['product_content_id'] = productContentId;
-    data['status'] = status;
     return data;
   }
 }

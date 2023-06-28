@@ -3,13 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
   const OwnerStoresListScreen({super.key});
@@ -157,21 +151,25 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                      permissionStoreList.any((element) =>
-                                      element.isStoreOwner==true )
-                                          || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                                      ele.controllerKey == PermissionKey.deleteStore.statusName))
-                                          ?  Utility.showConfirmAlertMessage(
+                                  permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) ||
+                                          permissionStoreList.any((element) =>
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey
+                                                      .deleteStore.statusName))
+                                      ? Utility.showConfirmAlertMessage(
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
                                           okayTap: () {
-                                            ownerStoresController.apiDeleteStore(
-                                                storeId: ownerStoresController
-                                                    .storeList[index].storeId
-                                                    .toString());
-                                          })
-                                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-                                      return null;
+                                          ownerStoresController.apiDeleteStore(
+                                              storeId: ownerStoresController
+                                                  .storeList[index].storeId
+                                                  .toString());
+                                        })
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants.notAuthorisedToStoreText);
+                                  return null;
                                 },
                                 child: InkWell(
                                   onTap: () async {

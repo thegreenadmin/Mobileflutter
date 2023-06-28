@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-import '../../../utils/global_share_data.dart';
+import 'package:thegreenmall/utils/utils.dart';
+
 import '../view/component/order_status_enum.dart';
 
 class MarkReturnOrderScreen extends StatefulWidget {
@@ -42,7 +37,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
@@ -76,7 +71,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                 horizontal: 25, vertical: 25),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Obx(() => SizedBox(
+              Obx(() => SizedBox(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -113,7 +108,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                   children: [
                                     Text(
                                         ordersHomeMainController
-                                            .customerName.value.toTitleCase(),
+                                            .customerName.value
+                                            .toTitleCase(),
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
@@ -123,39 +119,50 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                       Text(
                                           "${StringConstants.orderedDateText}: ",
                                           style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                               color: AppColors.blacklight,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
-                                      Expanded(child:  Text(
-                                          ordersHomeMainController
-                                              .orderDate.value,
-                                          style: const TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14)),)
-
+                                      Expanded(
+                                        child: Text(
+                                            ordersHomeMainController
+                                                .orderDate.value,
+                                            style: const TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: AppColors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14)),
+                                      )
                                     ]),
                                     height4SizedBox,
                                     Row(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
-                                          Text(
-                                              "${StringConstants.orderType}: ",
+                                          Text("${StringConstants.orderType}: ",
                                               style: TextStyle(
-                                                  overflow: TextOverflow.visible,
+                                                  overflow:
+                                                      TextOverflow.visible,
                                                   color: AppColors.blacklight,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14)),
-                                          Expanded(child:  Text(
-                                              ordersHomeMainController.getStoreOrderDetailModel.value.data?.order
-                                                  ?.deliveryService?.deliveryServiceName??"",
-                                              style: const TextStyle( overflow: TextOverflow.ellipsis,
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14)),)
-
+                                          Expanded(
+                                            child: Text(
+                                                ordersHomeMainController
+                                                        .getStoreOrderDetailModel
+                                                        .value
+                                                        .data
+                                                        ?.order
+                                                        ?.deliveryService
+                                                        ?.deliveryServiceName ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: AppColors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14)),
+                                          )
                                         ]),
                                     height4SizedBox,
                                     Row(
@@ -167,12 +174,12 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
-                                          "\$${ordersHomeMainController.orderAmount.value}",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14),
-                                        )),
+                                              "\$${ordersHomeMainController.orderAmount.value}",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14),
+                                            )),
                                       ],
                                     ),
                                     height6SizedBox,
@@ -195,9 +202,9 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                 )),
                             child: Column(children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
@@ -215,21 +222,23 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                         ),
                                       ),
                                       width8SizedBox,
-                                      Text(
-                                          StringConstants.identityProofText,
+                                      Text(StringConstants.identityProofText,
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16)),
                                     ],
                                   ),
-
                                   InkWell(
-                                    onTap: (){
-                                      if(ordersHomeMainController
-                                          .getStoreOrderDetailModel.value.data
-                                          ?.userProof?.image?.dynamicUrl !=
-                                          null ){
+                                    onTap: () {
+                                      if (ordersHomeMainController
+                                              .getStoreOrderDetailModel
+                                              .value
+                                              .data
+                                              ?.userProof
+                                              ?.image
+                                              ?.dynamicUrl !=
+                                          null) {
                                         showDialog(
                                           context: Get.context!,
                                           barrierDismissible: false,
@@ -248,40 +257,66 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                 ),
                                               ),
                                             ),
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
                                             content: Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
                                                   height10SizedBox,
                                                   Center(
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                          shape: BoxShape.rectangle,
+                                                          shape: BoxShape
+                                                              .rectangle,
                                                           border: Border.all(
-                                                              color: AppColors.white,
+                                                              color: AppColors
+                                                                  .white,
                                                               width: 1)),
                                                       child: ordersHomeMainController
-                                                          .getStoreOrderDetailModel.value.data
-                                                          ?.userProof?.image?.dynamicUrl ==
-                                                          null ||
-                                                          ordersHomeMainController
-                                                              .getStoreOrderDetailModel.value.data
-                                                          !.userProof!.image!.dynamicUrl!.isEmpty
+                                                                      .getStoreOrderDetailModel
+                                                                      .value
+                                                                      .data
+                                                                      ?.userProof
+                                                                      ?.image
+                                                                      ?.dynamicUrl ==
+                                                                  null ||
+                                                              ordersHomeMainController
+                                                                  .getStoreOrderDetailModel
+                                                                  .value
+                                                                  .data!
+                                                                  .userProof!
+                                                                  .image!
+                                                                  .dynamicUrl!
+                                                                  .isEmpty
                                                           ? Image.asset(
-                                                        ImageConstants.nopicfound,
-                                                        fit: BoxFit.fill,   color: AppColors.grey.withOpacity(0.4),
-                                                        height: 200,
-                                                      )
+                                                              ImageConstants
+                                                                  .nopicfound,
+                                                              fit: BoxFit.fill,
+                                                              color: AppColors
+                                                                  .grey
+                                                                  .withOpacity(
+                                                                      0.4),
+                                                              height: 200,
+                                                            )
                                                           : Image.network(
-                                                        ordersHomeMainController
-                                                            .getStoreOrderDetailModel
-                                                            .value.data?.userProof?.image?.dynamicUrl.toString()??"",
-                                                        height: 200,
-                                                        fit: BoxFit.fill,
-                                                      ),
+                                                              ordersHomeMainController
+                                                                      .getStoreOrderDetailModel
+                                                                      .value
+                                                                      .data
+                                                                      ?.userProof
+                                                                      ?.image
+                                                                      ?.dynamicUrl
+                                                                      .toString() ??
+                                                                  "",
+                                                              height: 200,
+                                                              fit: BoxFit.fill,
+                                                            ),
                                                     ),
                                                   ),
                                                 ],
@@ -291,22 +326,19 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                           ),
                                         );
                                       }
-
                                     },
-                                    child:Text( StringConstants.viewText,
+                                    child: Text(StringConstants.viewText,
                                         style: const TextStyle(
-                                            decoration: TextDecoration.underline,
-                                            color: AppColors
-                                                .primary,
-                                            fontWeight:
-                                            FontWeight.w500,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.w500,
                                             fontSize: 14)),
                                   ),
                                 ],
                               ),
                             ]),
                           ),
-
                           Divider(
                             height: 10,
                             color: AppColors.blacklight,
@@ -349,7 +381,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Visibility(
                               visible: ordersHomeMainController
-                                  .getOrderItems[index].orderItemStatus == OrderStatus.returnRequest.statusName,
+                                      .getOrderItems[index].orderItemStatus ==
+                                  OrderStatus.returnRequest.statusName,
                               child: InkWell(
                                 onTap: () {},
                                 child: Container(
@@ -368,21 +401,44 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                         Flexible(
                                           flex: 2,
                                           child: Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  border: Border.all(color: AppColors.white,
-                                                      width: 1)),
-                                              child: ordersHomeMainController
-                                                  .getOrderItems[index].product!
-                                                  .productImages!.first.image!.dynamicUrl == null ||
-                                                  ordersHomeMainController.getOrderItems[index].product!.productImages!.first
-                                                      .image!.dynamicUrl!.isEmpty
-                                                  ? Image.asset(ImageConstants.nopicfound,   color: AppColors.grey.withOpacity(0.4),)
-                                                  :  Image.network(
-                                                  ordersHomeMainController
-                                                      .getOrderItems[index]
-                                                      .product!.productImages!
-                                                      .first.image!.dynamicUrl.toString()),),),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: ordersHomeMainController
+                                                            .getOrderItems[
+                                                                index]
+                                                            .product!
+                                                            .productImages!
+                                                            .first
+                                                            .image!
+                                                            .dynamicUrl ==
+                                                        null ||
+                                                    ordersHomeMainController
+                                                        .getOrderItems[index]
+                                                        .product!
+                                                        .productImages!
+                                                        .first
+                                                        .image!
+                                                        .dynamicUrl!
+                                                        .isEmpty
+                                                ? Image.asset(
+                                                    ImageConstants.nopicfound,
+                                                    color: AppColors.grey
+                                                        .withOpacity(0.4),
+                                                  )
+                                                : Image.network(
+                                                    ordersHomeMainController
+                                                        .getOrderItems[index]
+                                                        .product!
+                                                        .productImages!
+                                                        .first
+                                                        .image!
+                                                        .dynamicUrl
+                                                        .toString()),
+                                          ),
+                                        ),
                                         width10SizedBox,
                                         Flexible(
                                           flex: 8,
@@ -398,7 +454,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                       "",
                                                   style: const TextStyle(
                                                       color: AppColors.black,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 16)),
                                               height5SizedBox,
                                               Text(
@@ -408,8 +465,10 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                           .description ??
                                                       "",
                                                   style: TextStyle(
-                                                      color: AppColors.blacklight,
-                                                      fontWeight: FontWeight.w400,
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 14)),
                                               height12SizedBox,
                                               Row(
@@ -425,7 +484,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                               color: AppColors
                                                                   .blacklight,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
@@ -438,7 +498,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                               color: AppColors
                                                                   .blacklight,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 14)),
                                                     ],
                                                   ),
@@ -450,17 +511,23 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                               color: AppColors
                                                                   .blacklight,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
-                                                              .getOrderItems[
-                                                                  index].offerPrice.toStringAsFixed(2) ?? "0.00",
+                                                                  .getOrderItems[
+                                                                      index]
+                                                                  .offerPrice
+                                                                  .toStringAsFixed(
+                                                                      2) ??
+                                                              "0.00",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 14)),
                                                     ],
                                                   )
@@ -474,23 +541,35 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                         Flexible(
                                           flex: 1,
                                           child: Obx(
-                                                () => SizedBox(
+                                            () => SizedBox(
                                                 height: 20,
                                                 width: 30,
                                                 child: Checkbox(
-                                                  side: MaterialStateBorderSide.resolveWith(
-                                                        (states) => BorderSide(
-                                                        width: 1.0, color:
-                                                    AppColors.primary.withOpacity(0.5)),
+                                                  side: MaterialStateBorderSide
+                                                      .resolveWith(
+                                                    (states) => BorderSide(
+                                                        width: 1.0,
+                                                        color: AppColors.primary
+                                                            .withOpacity(0.5)),
                                                   ),
                                                   shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(6.0)),
-                                                  activeColor: AppColors.primary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6.0)),
+                                                  activeColor:
+                                                      AppColors.primary,
                                                   value:
-                                                  ordersHomeMainController.getOrderItems[index].isSelected??false ,
+                                                      ordersHomeMainController
+                                                              .getOrderItems[
+                                                                  index]
+                                                              .isSelected ??
+                                                          false,
                                                   onChanged: (bool? value) {
                                                     setState(() {
-                                                      ordersHomeMainController.getOrderItems.elementAt(index).isSelected = value;
+                                                      ordersHomeMainController
+                                                          .getOrderItems
+                                                          .elementAt(index)
+                                                          .isSelected = value;
                                                     });
                                                   },
                                                 )),
@@ -524,14 +603,13 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                   onTap: () {
                     Utility.showConfirmAlertMessage(
                         AlertStringConstants.rejectReturnOrderAlertText,
-                        okay: StringConstants.yesText,cancelText:  StringConstants.noText,
-                        okayTap: (){
-                          ordersHomeMainController.apiRejectReturnRequest(context);
-                        });
-
+                        okay: StringConstants.yesText,
+                        cancelText: StringConstants.noText, okayTap: () {
+                      ordersHomeMainController.apiRejectReturnRequest(context);
+                    });
                   },
                   height: 50,
-                  width: WidgetConstants.screenWidth *0.42,
+                  width: WidgetConstants.screenWidth * 0.42,
                   text: StringConstants.rejectText,
                   textColor: AppColors.red,
                   borderRadius: 14,
@@ -552,14 +630,14 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                   onTap: () {
                     Utility.showConfirmAlertMessage(
                         AlertStringConstants.areYouSureToConfirmReturnText,
-                        okay: StringConstants.yesText,cancelText:  StringConstants.noText,
-                        okayTap: (){
-                          ordersHomeMainController.apiCompleteReturnRequest(context);
-                        });
-
+                        okay: StringConstants.yesText,
+                        cancelText: StringConstants.noText, okayTap: () {
+                      ordersHomeMainController
+                          .apiCompleteReturnRequest(context);
+                    });
                   },
                   height: 50,
-                  width: WidgetConstants.screenWidth *0.42,
+                  width: WidgetConstants.screenWidth * 0.42,
                   text: StringConstants.acceptText,
                   textColor: AppColors.white,
                   borderRadius: 14,

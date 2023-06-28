@@ -1,24 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show basename;
-import 'package:thegreenmall/dashboard/home/model/get_categories_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
-import 'package:thegreenmall/dashboard/home/model/input_add_product.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
     as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class ManageStoreController extends GetxController {
@@ -73,11 +66,10 @@ class ManageStoreController extends GetxController {
   RxInt pageId = 0.obs;
   InputAddProduct inputData = InputAddProduct();
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
-  RxList<Categories> categoriesList = <Categories>[].obs;
+  RxList<StoreCategories> categoriesList = <StoreCategories>[].obs;
   late quantity_model.QuantityListResponse quantityListResponse =
       quantity_model.QuantityListResponse();
-  RxList<quantity_model.QuantityType> quantityTypeList =
-      <quantity_model.QuantityType>[].obs;
+  RxList<QuantityType> quantityTypeList = <QuantityType>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
@@ -395,7 +387,7 @@ class ManageStoreController extends GetxController {
   //Create Product Api
   Future apiCreateProduct(BuildContext cntx) async {
     inputData.storeId = int.parse(storeId.value);
-    Product product = Product();
+    InputProduct product = InputProduct();
     product.quantityTypeId = int.parse(quantityValue.value);
     product.quantity = double.parse(quantityTextController.text.trim());
     product.isFeaturedProduct = isFeatured.value;
@@ -427,10 +419,9 @@ class ManageStoreController extends GetxController {
     product.isEnabled = isEnabled.value;
 
     inputData.product = product;
-    List<ProductCategory> listProductCategory = <ProductCategory>[];
+    List<ProductCategories> listProductCategory = <ProductCategories>[];
     //for (int i = 0; i < selectedCategories.length; i++) {
-    listProductCategory
-        .add(ProductCategory(categoryId: int.parse(categoryId.value)));
+    listProductCategory.add(ProductCategories(categoryId: categoryId.value));
     //}
     inputData.productCategories = listProductCategory;
     inputData.productLinks = <ProductLink>[
@@ -686,7 +677,7 @@ class ManageStoreController extends GetxController {
     };
 
     inputData.storeId = int.parse(storeId.value);
-    Product product = Product();
+    InputProduct product = InputProduct();
     product.productId = int.parse(productId.value);
     product.quantityTypeId = int.parse(quantityValue.value);
     product.quantity = double.parse(quantityTextController.text.trim());
@@ -718,7 +709,7 @@ class ManageStoreController extends GetxController {
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
-    List<ProductCategory> listProductCategory = <ProductCategory>[];
+    List<ProductCategories> listProductCategory = <ProductCategories>[];
     for (int i = 0; i < selectedCategories.length; i++) {
       // ProductCategory productCategory = ProductCategory();
       // productCategory.status = "active";
@@ -726,18 +717,17 @@ class ManageStoreController extends GetxController {
       // productCategory.category =
       //     Categorys(categoryId: int.parse(categoryId.value));
       // listProductCategory.add(productCategory);
-      ProductCategory productCategory = ProductCategory();
+      ProductCategories productCategory = ProductCategories();
       productCategory.status = selectedCategories[i]['status'];
       productCategory.categoryId =
-          int.parse(selectedCategories[i]['category']["category_id"]);
+          selectedCategories[i]['category']["category_id"];
       productCategory.productCategoryId =
           selectedCategories[i]['product_category_id'];
-      productCategory.category = Categorys(
-          categoryId:
-              int.parse(selectedCategories[i]['category']["category_id"]));
+      productCategory.category = Category(
+          categoryId: selectedCategories[i]['category']["category_id"]);
       listProductCategory.add(productCategory);
     }
-    inputData.productCategories = listProductCategory;
+    inputData.productCategories = listProductCategory.cast<ProductCategories>();
     inputData.productLinks = <ProductLink>[
       ProductLink(
           name: "Product link 1",

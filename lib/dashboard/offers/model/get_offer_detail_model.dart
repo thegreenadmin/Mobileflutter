@@ -1,3 +1,5 @@
+import 'offers_model.dart';
+
 class GetOfferDetailModel {
   int? status;
   String? message;
@@ -237,25 +239,6 @@ class Product {
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
-    return data;
-  }
-}
-
-class Store {
-  String? storeId;
-  String? storeName;
-
-  Store({this.storeId, this.storeName});
-
-  Store.fromJson(Map<String, dynamic> json) {
-    storeId = json['store_id'];
-    storeName = json['store_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_id'] = storeId;
-    data['store_name'] = storeName;
     return data;
   }
 }

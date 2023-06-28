@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class AutoReloadScreen extends StatefulWidget {
   bool isFromEdit = false;
@@ -68,8 +61,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                         Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
+                          Get.back(id: pageIdApp.value);
+                          // Navigator.of(context).pop();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -1046,7 +1039,10 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                               //       const AddCardDetailScreen(),
                                               // ));
                                               Get.to(
-                                                  () => const AddCardDetailScreen(),id:pageIdApp.value,);
+                                                () =>
+                                                    const AddCardDetailScreen(),
+                                                id: pageIdApp.value,
+                                              );
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *

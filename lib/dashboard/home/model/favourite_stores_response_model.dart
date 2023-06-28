@@ -4,14 +4,18 @@
 
 import 'dart:convert';
 
-FavouriteStoreResponse favouriteStoreResponseFromJson(String str) => FavouriteStoreResponse.fromJson(json.decode(str));
+import '../../common_models/image_model.dart';
 
-String favouriteStoreResponseToJson(FavouriteStoreResponse data) => json.encode(data.toJson());
+FavouriteStoreResponse favouriteStoreResponseFromJson(String str) =>
+    FavouriteStoreResponse.fromJson(json.decode(str));
+
+String favouriteStoreResponseToJson(FavouriteStoreResponse data) =>
+    json.encode(data.toJson());
 
 class FavouriteStoreResponse {
   int? status;
   String? message;
-  Data? data;
+  FavouriteStoreData? data;
 
   FavouriteStoreResponse({
     this.status,
@@ -22,7 +26,7 @@ class FavouriteStoreResponse {
   FavouriteStoreResponse copyWith({
     int? status,
     String? message,
-    Data? data,
+    FavouriteStoreData? data,
   }) =>
       FavouriteStoreResponse(
         status: status ?? this.status,
@@ -30,46 +34,55 @@ class FavouriteStoreResponse {
         data: data ?? this.data,
       );
 
-  factory FavouriteStoreResponse.fromJson(Map<String, dynamic> json) => FavouriteStoreResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory FavouriteStoreResponse.fromJson(Map<String, dynamic> json) =>
+      FavouriteStoreResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : FavouriteStoreData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
-class Data {
+class FavouriteStoreData {
   int? totalCount;
   List<FavouriteStore>? favouriteStores;
 
-  Data({
+  FavouriteStoreData({
     this.totalCount,
     this.favouriteStores,
   });
 
-  Data copyWith({
+  FavouriteStoreData copyWith({
     int? totalCount,
     List<FavouriteStore>? favouriteStores,
   }) =>
-      Data(
+      FavouriteStoreData(
         totalCount: totalCount ?? this.totalCount,
         favouriteStores: favouriteStores ?? this.favouriteStores,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    totalCount: json["total_count"],
-    favouriteStores: json["favourite_stores"] == null ? [] : List<FavouriteStore>.from(json["favourite_stores"]!.map((x) => FavouriteStore.fromJson(x))),
-  );
+  factory FavouriteStoreData.fromJson(Map<String, dynamic> json) =>
+      FavouriteStoreData(
+        totalCount: json["total_count"],
+        favouriteStores: json["favourite_stores"] == null
+            ? []
+            : List<FavouriteStore>.from(json["favourite_stores"]!
+                .map((x) => FavouriteStore.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_count": totalCount,
-    "favourite_stores": favouriteStores == null ? [] : List<dynamic>.from(favouriteStores!.map((x) => x.toJson())),
-  };
+        "total_count": totalCount,
+        "favourite_stores": favouriteStores == null
+            ? []
+            : List<dynamic>.from(favouriteStores!.map((x) => x.toJson())),
+      };
 }
 
 class FavouriteStore {
@@ -90,8 +103,8 @@ class FavouriteStore {
   List<FavouriteStoreTiming>? storeTimings;
   List<FavouriteStoreAddress>? storeAddresses;
   List<FavouriteStoreDeliveryService>? storeDeliveryServices;
-  Image? logo;
-  Image? image;
+  Images? logo;
+  Images? image;
   bool? isFavouriteStore;
   bool? hasStoreOwner;
 
@@ -137,8 +150,8 @@ class FavouriteStore {
     List<FavouriteStoreTiming>? storeTimings,
     List<FavouriteStoreAddress>? storeAddresses,
     List<FavouriteStoreDeliveryService>? storeDeliveryServices,
-    Image? logo,
-    Image? image,
+    Images? logo,
+    Images? image,
     bool? isFavouriteStore,
     bool? hasStoreOwner,
   }) =>
@@ -159,7 +172,8 @@ class FavouriteStore {
         storeId: storeId ?? this.storeId,
         storeTimings: storeTimings ?? this.storeTimings,
         storeAddresses: storeAddresses ?? this.storeAddresses,
-        storeDeliveryServices: storeDeliveryServices ?? this.storeDeliveryServices,
+        storeDeliveryServices:
+            storeDeliveryServices ?? this.storeDeliveryServices,
         logo: logo ?? this.logo,
         image: image ?? this.image,
         isFavouriteStore: isFavouriteStore ?? this.isFavouriteStore,
@@ -167,81 +181,72 @@ class FavouriteStore {
       );
 
   factory FavouriteStore.fromJson(Map<String, dynamic> json) => FavouriteStore(
-    dynamicLink: json["dynamic_link"],
-    storeName: json["store_name"],
-    storeEin: json["store_ein"],
-    storeNickName: json["store_nick_name"],
-    storeEmail: json["store_email"],
-    storePhone: json["store_phone"],
-    storePhoneCode: json["store_phone_code"],
-    isVerified: json["is_verified"],
-    verifiedBy: json["verified_by"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    storeId: json["store_id"],
-    storeTimings: json["store_timings"] == null ? [] : List<FavouriteStoreTiming>.from(json["store_timings"]!.map((x) => FavouriteStoreTiming.fromJson(x))),
-    storeAddresses: json["store_addresses"] == null ? [] : List<FavouriteStoreAddress>.from(json["store_addresses"]!.map((x) => FavouriteStoreAddress.fromJson(x))),
-    storeDeliveryServices: json["store_delivery_services"] == null ? [] : List<FavouriteStoreDeliveryService>.from(json["store_delivery_services"]!.map((x) => FavouriteStoreDeliveryService.fromJson(x))),
-    logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-    isFavouriteStore: json["is_favourite_store"],
-    hasStoreOwner: json["has_store_owner"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "dynamic_link": dynamicLink,
-    "store_name": storeName,
-    "store_ein": storeEin,
-    "store_nick_name": storeNickName,
-    "store_email": storeEmail,
-    "store_phone": storePhone,
-    "store_phone_code": storePhoneCode,
-    "is_verified": isVerified,
-    "verified_by": verifiedBy,
-    "is_enabled": isEnabled,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "store_id": storeId,
-    "store_timings": storeTimings == null ? [] : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
-    "store_addresses": storeAddresses == null ? [] : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
-    "store_delivery_services": storeDeliveryServices == null ? [] : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
-    "logo": logo?.toJson(),
-    "image": image?.toJson(),
-    "is_favourite_store": isFavouriteStore,
-    "has_store_owner": hasStoreOwner,
-  };
-}
-
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  Image copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+        dynamicLink: json["dynamic_link"],
+        storeName: json["store_name"],
+        storeEin: json["store_ein"],
+        storeNickName: json["store_nick_name"],
+        storeEmail: json["store_email"],
+        storePhone: json["store_phone"],
+        storePhoneCode: json["store_phone_code"],
+        isVerified: json["is_verified"],
+        verifiedBy: json["verified_by"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        storeId: json["store_id"],
+        storeTimings: json["store_timings"] == null
+            ? []
+            : List<FavouriteStoreTiming>.from(json["store_timings"]!
+                .map((x) => FavouriteStoreTiming.fromJson(x))),
+        storeAddresses: json["store_addresses"] == null
+            ? []
+            : List<FavouriteStoreAddress>.from(json["store_addresses"]!
+                .map((x) => FavouriteStoreAddress.fromJson(x))),
+        storeDeliveryServices: json["store_delivery_services"] == null
+            ? []
+            : List<FavouriteStoreDeliveryService>.from(
+                json["store_delivery_services"]!
+                    .map((x) => FavouriteStoreDeliveryService.fromJson(x))),
+        logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
+        image: json["image"] == null ? null : Images.fromJson(json["image"]),
+        isFavouriteStore: json["is_favourite_store"],
+        hasStoreOwner: json["has_store_owner"],
       );
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-    orignalUrl: json["orignal_url"],
-    dynamicUrl: json["dynamic_url"],
-  );
-
   Map<String, dynamic> toJson() => {
-    "orignal_url": orignalUrl,
-    "dynamic_url": dynamicUrl,
-  };
+        "dynamic_link": dynamicLink,
+        "store_name": storeName,
+        "store_ein": storeEin,
+        "store_nick_name": storeNickName,
+        "store_email": storeEmail,
+        "store_phone": storePhone,
+        "store_phone_code": storePhoneCode,
+        "is_verified": isVerified,
+        "verified_by": verifiedBy,
+        "is_enabled": isEnabled,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "store_id": storeId,
+        "store_timings": storeTimings == null
+            ? []
+            : List<dynamic>.from(storeTimings!.map((x) => x.toJson())),
+        "store_addresses": storeAddresses == null
+            ? []
+            : List<dynamic>.from(storeAddresses!.map((x) => x.toJson())),
+        "store_delivery_services": storeDeliveryServices == null
+            ? []
+            : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
+        "logo": logo?.toJson(),
+        "image": image?.toJson(),
+        "is_favourite_store": isFavouriteStore,
+        "has_store_owner": hasStoreOwner,
+      };
 }
 
 class FavouriteStoreAddress {
@@ -310,39 +315,44 @@ class FavouriteStoreAddress {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory FavouriteStoreAddress.fromJson(Map<String, dynamic> json) => FavouriteStoreAddress(
-    id: json["id"],
-    storeId: json["store_id"],
-    stateId: json["state_id"],
-    addressName: json["address_name"],
-    longitude: json["longitude"]?.toDouble(),
-    latitude: json["latitude"]?.toDouble(),
-    addressLine1: json["address_line_1"],
-    addressLine2: json["address_line_2"],
-    landmark: json["landmark"],
-    city: json["city"],
-    postalCode: json["postal_code"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-  );
+  factory FavouriteStoreAddress.fromJson(Map<String, dynamic> json) =>
+      FavouriteStoreAddress(
+        id: json["id"],
+        storeId: json["store_id"],
+        stateId: json["state_id"],
+        addressName: json["address_name"],
+        longitude: json["longitude"]?.toDouble(),
+        latitude: json["latitude"]?.toDouble(),
+        addressLine1: json["address_line_1"],
+        addressLine2: json["address_line_2"],
+        landmark: json["landmark"],
+        city: json["city"],
+        postalCode: json["postal_code"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "store_id": storeId,
-    "state_id": stateId,
-    "address_name": addressName,
-    "longitude": longitude,
-    "latitude": latitude,
-    "address_line_1": addressLine1,
-    "address_line_2": addressLine2,
-    "landmark": landmark,
-    "city": city,
-    "postal_code": postalCode,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "store_id": storeId,
+        "state_id": stateId,
+        "address_name": addressName,
+        "longitude": longitude,
+        "latitude": latitude,
+        "address_line_1": addressLine1,
+        "address_line_2": addressLine2,
+        "landmark": landmark,
+        "city": city,
+        "postal_code": postalCode,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+      };
 }
 
 class FavouriteStoreDeliveryService {
@@ -368,28 +378,30 @@ class FavouriteStoreDeliveryService {
     String? deliveryServiceName,
   }) =>
       FavouriteStoreDeliveryService(
-        storeDeliveryServiceId: storeDeliveryServiceId ?? this.storeDeliveryServiceId,
+        storeDeliveryServiceId:
+            storeDeliveryServiceId ?? this.storeDeliveryServiceId,
         deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
         isEnabled: isEnabled ?? this.isEnabled,
         status: status ?? this.status,
         deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
       );
 
-  factory FavouriteStoreDeliveryService.fromJson(Map<String, dynamic> json) => FavouriteStoreDeliveryService(
-    storeDeliveryServiceId: json["store_delivery_service_id"],
-    deliveryServiceId: json["delivery_service_id"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    deliveryServiceName: json["delivery_service_name"],
-  );
+  factory FavouriteStoreDeliveryService.fromJson(Map<String, dynamic> json) =>
+      FavouriteStoreDeliveryService(
+        storeDeliveryServiceId: json["store_delivery_service_id"],
+        deliveryServiceId: json["delivery_service_id"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        deliveryServiceName: json["delivery_service_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_delivery_service_id": storeDeliveryServiceId,
-    "delivery_service_id": deliveryServiceId,
-    "is_enabled": isEnabled,
-    "status": status,
-    "delivery_service_name": deliveryServiceName,
-  };
+        "store_delivery_service_id": storeDeliveryServiceId,
+        "delivery_service_id": deliveryServiceId,
+        "is_enabled": isEnabled,
+        "status": status,
+        "delivery_service_name": deliveryServiceName,
+      };
 }
 
 class FavouriteStoreTiming {
@@ -426,21 +438,22 @@ class FavouriteStoreTiming {
         status: status ?? this.status,
       );
 
-  factory FavouriteStoreTiming.fromJson(Map<String, dynamic> json) => FavouriteStoreTiming(
-    storeTimingId: json["store_timing_id"],
-    is24HoursActive: json["is_24_hours_active"],
-    dayOfWeek: json["day_of_week"],
-    openingTime: json["opening_time"],
-    closingTime: json["closing_time"],
-    status: json["status"],
-  );
+  factory FavouriteStoreTiming.fromJson(Map<String, dynamic> json) =>
+      FavouriteStoreTiming(
+        storeTimingId: json["store_timing_id"],
+        is24HoursActive: json["is_24_hours_active"],
+        dayOfWeek: json["day_of_week"],
+        openingTime: json["opening_time"],
+        closingTime: json["closing_time"],
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_timing_id": storeTimingId,
-    "is_24_hours_active": is24HoursActive,
-    "day_of_week": dayOfWeek,
-    "opening_time": openingTime,
-    "closing_time": closingTime,
-    "status": status,
-  };
+        "store_timing_id": storeTimingId,
+        "is_24_hours_active": is24HoursActive,
+        "day_of_week": dayOfWeek,
+        "opening_time": openingTime,
+        "closing_time": closingTime,
+        "status": status,
+      };
 }

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'model.dart';
+
 ShopProductDetailResponse shopProductDetailResponseFromJson(String str) =>
     ShopProductDetailResponse.fromJson(json.decode(str));
 
@@ -19,12 +21,12 @@ class ShopProductDetailResponse {
 
   dynamic status;
   String? message;
-  Data? data;
+  ShopProductDetail? data;
 
   ShopProductDetailResponse copyWith({
     dynamic status,
     String? message,
-    Data? data,
+    ShopProductDetail? data,
   }) =>
       ShopProductDetailResponse(
         status: status ?? this.status,
@@ -36,7 +38,9 @@ class ShopProductDetailResponse {
       ShopProductDetailResponse(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : ShopProductDetail.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,23 +50,25 @@ class ShopProductDetailResponse {
       };
 }
 
-class Data {
-  Data({
+class ShopProductDetail {
+  ShopProductDetail({
     this.product,
   });
 
-  Product? product;
+  ShopProduct? product;
 
-  Data copyWith({
-    Product? product,
+  ShopProductDetail copyWith({
+    ShopProduct? product,
   }) =>
-      Data(
+      ShopProductDetail(
         product: product ?? this.product,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        product:
-            json["product"] == null ? null : Product.fromJson(json["product"]),
+  factory ShopProductDetail.fromJson(Map<String, dynamic> json) =>
+      ShopProductDetail(
+        product: json["product"] == null
+            ? null
+            : ShopProduct.fromJson(json["product"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,8 +76,8 @@ class Data {
       };
 }
 
-class Product {
-  Product({
+class ShopProduct {
+  ShopProduct({
     this.averageRating,
     this.productId,
     this.isFavouriteProduct,
@@ -129,7 +135,7 @@ class Product {
   DateTime? createdAt;
   DateTime? updatedAt;
   QuantityType? quantityType;
-  List<ProductCategory>? productCategories;
+  List<ProductCategories>? productCategories;
   List<ProductImage>? productImages;
   List<ProductContent>? productContents;
   List<ProductLink>? productLinks;
@@ -138,7 +144,7 @@ class Product {
   dynamic offerPrice;
   Offer? offer;
 
-  Product copyWith({
+  ShopProduct copyWith({
     dynamic averageRating,
     String? productId,
     bool? isFavouriteProduct,
@@ -163,7 +169,7 @@ class Product {
     DateTime? createdAt,
     DateTime? updatedAt,
     QuantityType? quantityType,
-    List<ProductCategory>? productCategories,
+    List<ProductCategories>? productCategories,
     List<ProductImage>? productImages,
     List<ProductContent>? productContents,
     List<ProductLink>? productLinks,
@@ -172,7 +178,7 @@ class Product {
     dynamic offerPrice,
     Offer? offer,
   }) =>
-      Product(
+      ShopProduct(
         averageRating: averageRating ?? this.averageRating,
         productId: productId ?? this.productId,
         isFavouriteProduct: isFavouriteProduct ?? this.isFavouriteProduct,
@@ -207,7 +213,7 @@ class Product {
         offer: offer ?? this.offer,
       );
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ShopProduct.fromJson(Map<String, dynamic> json) => ShopProduct(
         averageRating: json["average_rating"],
         productId: json["product_id"],
         isFavouriteProduct: json["is_favourite_product"],
@@ -240,8 +246,8 @@ class Product {
             : QuantityType.fromJson(json["quantity_type"]),
         productCategories: json["product_categories"] == null
             ? []
-            : List<ProductCategory>.from(json["product_categories"]!
-                .map((x) => ProductCategory.fromJson(x))),
+            : List<ProductCategories>.from(json["product_categories"]!
+                .map((x) => ProductCategories.fromJson(x))),
         productImages: json["product_images"] == null
             ? []
             : List<ProductImage>.from(
@@ -314,99 +320,6 @@ class Product {
       };
 }
 
-class Offer {
-  Offer({
-    this.storeId,
-    this.isOfferForStore,
-    this.offerName,
-    this.offerType,
-    this.offerValue,
-    this.isExpired,
-    this.expiredAt,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-    this.offerId,
-    this.image,
-  });
-
-  String? storeId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? offerType;
-  dynamic offerValue;
-  bool? isExpired;
-  dynamic expiredAt;
-  String? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  String? offerId;
-  Image? image;
-
-  Offer copyWith({
-    String? storeId,
-    bool? isOfferForStore,
-    String? offerName,
-    String? offerType,
-    dynamic offerValue,
-    bool? isExpired,
-    dynamic expiredAt,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? offerId,
-    Image? image,
-  }) =>
-      Offer(
-        storeId: storeId ?? this.storeId,
-        isOfferForStore: isOfferForStore ?? this.isOfferForStore,
-        offerName: offerName ?? this.offerName,
-        offerType: offerType ?? this.offerType,
-        offerValue: offerValue ?? this.offerValue,
-        isExpired: isExpired ?? this.isExpired,
-        expiredAt: expiredAt ?? this.expiredAt,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        offerId: offerId ?? this.offerId,
-        image: image ?? this.image,
-      );
-
-  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-        storeId: json["store_id"],
-        isOfferForStore: json["is_offer_for_store"],
-        offerName: json["offer_name"],
-        offerType: json["offer_type"],
-        offerValue: json["offer_value"],
-        isExpired: json["is_expired"],
-        expiredAt: json["expiredAt"],
-        status: json["status"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        offerId: json["offer_id"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "store_id": storeId,
-        "is_offer_for_store": isOfferForStore,
-        "offer_name": offerName,
-        "offer_type": offerType,
-        "offer_value": offerValue,
-        "is_expired": isExpired,
-        "expiredAt": expiredAt,
-        "status": status,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "offer_id": offerId,
-        "image": image?.toJson(),
-      };
-}
-
 class ProductReview {
   ProductReview({
     this.productId,
@@ -430,7 +343,7 @@ class ProductReview {
   DateTime? createdAt;
   DateTime? updatedAt;
   String? productReviewId;
-  User? user;
+  ShopProductUser? user;
 
   ProductReview copyWith({
     String? productId,
@@ -442,7 +355,7 @@ class ProductReview {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? productReviewId,
-    User? user,
+    ShopProductUser? user,
   }) =>
       ProductReview(
         productId: productId ?? this.productId,
@@ -471,7 +384,9 @@ class ProductReview {
             ? null
             : DateTime.parse(json["updatedAt"]),
         productReviewId: json["product_review_id"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        user: json["user"] == null
+            ? null
+            : ShopProductUser.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -488,8 +403,8 @@ class ProductReview {
       };
 }
 
-class User {
-  User({
+class ShopProductUser {
+  ShopProductUser({
     this.id,
     this.email,
     this.phone,
@@ -517,7 +432,7 @@ class User {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  User copyWith({
+  ShopProductUser copyWith({
     String? id,
     String? email,
     String? phone,
@@ -531,7 +446,7 @@ class User {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
-      User(
+      ShopProductUser(
         id: id ?? this.id,
         email: email ?? this.email,
         phone: phone ?? this.phone,
@@ -546,7 +461,8 @@ class User {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory ShopProductUser.fromJson(Map<String, dynamic> json) =>
+      ShopProductUser(
         id: json["id"],
         email: json["email"],
         phone: json["phone"],
@@ -578,219 +494,6 @@ class User {
         "status": status,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-      };
-}
-
-class CartItem {
-  CartItem({
-    this.cartItemId,
-    this.itemsCount,
-  });
-
-  String? cartItemId;
-  dynamic itemsCount;
-
-  CartItem copyWith({
-    String? cartItemId,
-    dynamic quantity,
-  }) =>
-      CartItem(
-        cartItemId: cartItemId ?? cartItemId,
-        itemsCount: itemsCount ?? itemsCount,
-      );
-
-  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
-        cartItemId: json["cart_item_id"],
-        itemsCount: json["items_count"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "cart_item_id": cartItemId,
-        "items_count": itemsCount,
-      };
-}
-
-class ProductCategory {
-  ProductCategory({
-    this.productCategoryId,
-    this.status,
-    this.category,
-  });
-
-  String? productCategoryId;
-  String? status;
-  Category? category;
-
-  ProductCategory copyWith({
-    String? productCategoryId,
-    String? status,
-    Category? category,
-  }) =>
-      ProductCategory(
-        productCategoryId: productCategoryId ?? this.productCategoryId,
-        status: status ?? this.status,
-        category: category ?? this.category,
-      );
-
-  factory ProductCategory.fromJson(Map<String, dynamic> json) =>
-      ProductCategory(
-        productCategoryId: json["product_category_id"],
-        status: json["status"],
-        category: json["category"] == null
-            ? null
-            : Category.fromJson(json["category"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "product_category_id": productCategoryId,
-        "status": status,
-        "category": category?.toJson(),
-      };
-}
-
-class Category {
-  Category({
-    this.categoryId,
-    this.categoryName,
-  });
-
-  String? categoryId;
-  String? categoryName;
-
-  Category copyWith({
-    String? categoryId,
-    String? categoryName,
-  }) =>
-      Category(
-        categoryId: categoryId ?? this.categoryId,
-        categoryName: categoryName ?? this.categoryName,
-      );
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categoryId: json["category_id"],
-        categoryName: json["category_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "category_id": categoryId,
-        "category_name": categoryName,
-      };
-}
-
-class ProductContent {
-  ProductContent({
-    this.productContentId,
-    this.heading,
-    this.paragraph,
-    this.order,
-    this.status,
-  });
-
-  String? productContentId;
-  String? heading;
-  String? paragraph;
-  dynamic order;
-  String? status;
-
-  ProductContent copyWith({
-    String? productContentId,
-    String? heading,
-    String? paragraph,
-    dynamic order,
-    String? status,
-  }) =>
-      ProductContent(
-        productContentId: productContentId ?? this.productContentId,
-        heading: heading ?? this.heading,
-        paragraph: paragraph ?? this.paragraph,
-        order: order ?? this.order,
-        status: status ?? this.status,
-      );
-
-  factory ProductContent.fromJson(Map<String, dynamic> json) => ProductContent(
-        productContentId: json["product_content_id"],
-        heading: json["heading"],
-        paragraph: json["paragraph"],
-        order: json["order"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "product_content_id": productContentId,
-        "heading": heading,
-        "paragraph": paragraph,
-        "order": order,
-        "status": status,
-      };
-}
-
-class ProductImage {
-  ProductImage({
-    this.productImageId,
-    this.order,
-    this.status,
-    this.image,
-  });
-
-  String? productImageId;
-  dynamic order;
-  String? status;
-  Image? image;
-
-  ProductImage copyWith({
-    String? productImageId,
-    dynamic order,
-    String? status,
-    Image? image,
-  }) =>
-      ProductImage(
-        productImageId: productImageId ?? this.productImageId,
-        order: order ?? this.order,
-        status: status ?? this.status,
-        image: image ?? this.image,
-      );
-
-  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
-        productImageId: json["product_image_id"],
-        order: json["order"],
-        status: json["status"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "product_image_id": productImageId,
-        "order": order,
-        "status": status,
-        "image": image?.toJson(),
-      };
-}
-
-class Image {
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        orignalUrl: json["orignal_url"],
-        dynamicUrl: json["dynamic_url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "orignal_url": orignalUrl,
-        "dynamic_url": dynamicUrl,
       };
 }
 
@@ -837,41 +540,6 @@ class ProductLink {
         "name": name,
         "link": link,
         "order": order,
-        "status": status,
-      };
-}
-
-class QuantityType {
-  QuantityType({
-    this.quantityTypeId,
-    this.quantityTypeName,
-    this.status,
-  });
-
-  String? quantityTypeId;
-  String? quantityTypeName;
-  String? status;
-
-  QuantityType copyWith({
-    String? quantityTypeId,
-    String? quantityTypeName,
-    String? status,
-  }) =>
-      QuantityType(
-        quantityTypeId: quantityTypeId ?? this.quantityTypeId,
-        quantityTypeName: quantityTypeName ?? this.quantityTypeName,
-        status: status ?? this.status,
-      );
-
-  factory QuantityType.fromJson(Map<String, dynamic> json) => QuantityType(
-        quantityTypeId: json["quantity_type_id"],
-        quantityTypeName: json["quantity_type_name"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "quantity_type_id": quantityTypeId,
-        "quantity_type_name": quantityTypeName,
         "status": status,
       };
 }

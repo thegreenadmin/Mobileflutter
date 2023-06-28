@@ -1,14 +1,15 @@
 class GetAutoRechargeModel {
   dynamic status;
   String? message;
-  Data? data;
+  AutoRechargeData? data;
 
   GetAutoRechargeModel({this.status, this.message, this.data});
 
   GetAutoRechargeModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? AutoRechargeData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +23,12 @@ class GetAutoRechargeModel {
   }
 }
 
-class Data {
+class AutoRechargeData {
   UserWalletAutoCharge? userWalletAutoCharge;
 
-  Data({this.userWalletAutoCharge});
+  AutoRechargeData({this.userWalletAutoCharge});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AutoRechargeData.fromJson(Map<String, dynamic> json) {
     userWalletAutoCharge = json['user_wallet_auto_charge'] != null
         ? UserWalletAutoCharge.fromJson(json['user_wallet_auto_charge'])
         : null;

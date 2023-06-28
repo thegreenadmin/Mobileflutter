@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/create_role_request_model.dart';
-import 'package:thegreenmall/dashboard/home/model/delete_role_request_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_role_list_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_controller.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_detail_model.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart' as strings;

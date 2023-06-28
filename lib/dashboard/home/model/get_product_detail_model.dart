@@ -1,14 +1,17 @@
+import 'model.dart';
+
 class GetProductDetailModel {
   int? status;
   String? message;
-  Data? data;
+  ProductDetailData? data;
 
   GetProductDetailModel({this.status, this.message, this.data});
 
   GetProductDetailModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? ProductDetailData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,14 +25,15 @@ class GetProductDetailModel {
   }
 }
 
-class Data {
-  Product? product;
+class ProductDetailData {
+  ProductDetail? product;
 
-  Data({this.product});
+  ProductDetailData({this.product});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
+  ProductDetailData.fromJson(Map<String, dynamic> json) {
+    product = json['product'] != null
+        ? ProductDetail.fromJson(json['product'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,7 +45,7 @@ class Data {
   }
 }
 
-class Product {
+class ProductDetail {
   String? productId;
   String? storeId;
   String? quantityTypeId;
@@ -65,11 +69,11 @@ class Product {
   String? updatedAt;
   QuantityType? quantityType;
   List<ProductCategories>? productCategories;
-  List<ProductImages>? productImages;
+  List<ProductDetailImages>? productImages;
   List<ProductContents>? productContents;
   List<ProductLinks>? productLinks;
 
-  Product(
+  ProductDetail(
       {this.productId,
       this.storeId,
       this.quantityTypeId,
@@ -97,7 +101,7 @@ class Product {
       this.productContents,
       this.productLinks});
 
-  Product.fromJson(Map<String, dynamic> json) {
+  ProductDetail.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     storeId = json['store_id'];
     quantityTypeId = json['quantity_type_id'];
@@ -129,9 +133,9 @@ class Product {
       });
     }
     if (json['product_images'] != null) {
-      productImages = <ProductImages>[];
+      productImages = <ProductDetailImages>[];
       json['product_images'].forEach((v) {
-        productImages!.add(ProductImages.fromJson(v));
+        productImages!.add(ProductDetailImages.fromJson(v));
       });
     }
     if (json['product_contents'] != null) {
@@ -192,81 +196,16 @@ class Product {
   }
 }
 
-class QuantityType {
-  String? quantityTypeId;
-  String? quantityTypeName;
-  String? status;
-
-  QuantityType({this.quantityTypeId, this.quantityTypeName, this.status});
-
-  QuantityType.fromJson(Map<String, dynamic> json) {
-    quantityTypeId = json['quantity_type_id'];
-    quantityTypeName = json['quantity_type_name'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['quantity_type_id'] = quantityTypeId;
-    data['quantity_type_name'] = quantityTypeName;
-    data['status'] = status;
-    return data;
-  }
-}
-
-class ProductCategories {
-  String? productCategoryId;
-  String? status;
-  Category? category;
-
-  ProductCategories({this.productCategoryId, this.status, this.category});
-
-  ProductCategories.fromJson(Map<String, dynamic> json) {
-    productCategoryId = json['product_category_id'];
-    status = json['status'];
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_category_id'] = productCategoryId;
-    data['status'] = status;
-    if (category != null) {
-      data['category'] = category!.toJson();
-    }
-    return data;
-  }
-}
-
-class Category {
-  String? categoryId;
-  String? categoryName;
-
-  Category({this.categoryId, this.categoryName});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-    categoryName = json['category_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['category_id'] = categoryId;
-    data['category_name'] = categoryName;
-    return data;
-  }
-}
-
-class ProductImages {
+class ProductDetailImages {
   String? productImageId;
   String? imageUrl;
   int? order;
   String? status;
 
-  ProductImages({this.productImageId, this.imageUrl, this.order, this.status});
+  ProductDetailImages(
+      {this.productImageId, this.imageUrl, this.order, this.status});
 
-  ProductImages.fromJson(Map<String, dynamic> json) {
+  ProductDetailImages.fromJson(Map<String, dynamic> json) {
     productImageId = json['product_image_id'];
     imageUrl = json['image_url'];
     order = json['order'];
@@ -279,39 +218,6 @@ class ProductImages {
     data['image_url'] = imageUrl;
     data['order'] = order;
     data['status'] = status;
-    return data;
-  }
-}
-
-class ProductContents {
-  String? productContentId;
-  String? heading;
-  String? paragraph;
-  int? order;
-  String? status;
-
-  ProductContents(
-      {this.productContentId,
-      this.heading,
-      this.paragraph,
-      this.order,
-      this.status});
-
-  ProductContents.fromJson(Map<String, dynamic> json) {
-    productContentId = json['product_content_id'];
-    heading = json['heading'];
-    paragraph = json['paragraph'];
-    order = json['order'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_content_id'] = this.productContentId;
-    data['heading'] = this.heading;
-    data['paragraph'] = this.paragraph;
-    data['order'] = this.order;
-    data['status'] = this.status;
     return data;
   }
 }

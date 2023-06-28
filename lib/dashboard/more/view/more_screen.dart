@@ -4,12 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});

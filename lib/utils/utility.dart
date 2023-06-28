@@ -12,6 +12,7 @@ import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import "package:google_maps_webservice/geocoding.dart";
 
 class Utility {
+
   static void showMessage(String title, String message) {
     Get.snackbar(title, message,
         margin: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
@@ -50,7 +51,8 @@ class Utility {
     return ServerCommunicator().baseUrlWithoutV1 + url;
   }
 
-  static void showConfirmAlertMessage(title,
+  static void showConfirmAlertMessage(
+      title,
       {String description = "",
       String? cancelText,
       String? okay,
@@ -100,7 +102,6 @@ class Utility {
                 children: [
                   InkWell(
                     onTap: () {
-                      // cancelTap ?? Navigator.pop(_);
                       cancelTap ??Get.back();
                     },
                     child: Container(
@@ -124,9 +125,7 @@ class Utility {
                   ),
                   InkWell(
                     onTap: () {
-                      // okayTap!() ?? Navigator.pop(_);
                       okayTap!() ?? Get.back();
-
                     },
                     child: Container(
                       height: WidgetConstants.screenHeight * 0.08,
@@ -443,6 +442,7 @@ class Utility {
     }
     return '';
   }
+
 }
 
 extension StringCasingExtension on String {

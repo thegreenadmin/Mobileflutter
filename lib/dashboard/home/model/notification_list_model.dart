@@ -1,14 +1,18 @@
+import 'model.dart';
+
 class NotificationListModel {
   int? status;
   String? message;
-  Data? data;
+  NotificationListData? data;
 
   NotificationListModel({this.status, this.message, this.data});
 
   NotificationListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? new NotificationListData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +26,13 @@ class NotificationListModel {
   }
 }
 
-class Data {
+class NotificationListData {
   int? totalCount;
   List<Notifications>? notifications;
 
-  Data({this.totalCount, this.notifications});
+  NotificationListData({this.totalCount, this.notifications});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  NotificationListData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['notifications'] != null) {
       notifications = <Notifications>[];
@@ -64,7 +68,7 @@ class Notifications {
   String? createdAt;
   String? updatedAt;
   String? notificationId;
-  Store? store;
+  NotificationListStore? store;
 
   Notifications(
       {this.userId,
@@ -98,7 +102,9 @@ class Notifications {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     notificationId = json['notification_id'];
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    store = json['store'] != null
+        ? new NotificationListStore.fromJson(json['store'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -124,7 +130,7 @@ class Notifications {
   }
 }
 
-class Store {
+class NotificationListStore {
   String? storeName;
   String? storeEin;
   String? storeNickName;
@@ -141,7 +147,7 @@ class Store {
   Logo? logo;
   Logo? image;
 
-  Store(
+  NotificationListStore(
       {this.storeName,
       this.storeEin,
       this.storeNickName,
@@ -158,7 +164,7 @@ class Store {
       this.logo,
       this.image});
 
-  Store.fromJson(Map<String, dynamic> json) {
+  NotificationListStore.fromJson(Map<String, dynamic> json) {
     storeName = json['store_name'];
     storeEin = json['store_ein'];
     storeNickName = json['store_nick_name'];
@@ -197,25 +203,6 @@ class Store {
     if (this.image != null) {
       data['image'] = this.image!.toJson();
     }
-    return data;
-  }
-}
-
-class Logo {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Logo({this.orignalUrl, this.dynamicUrl});
-
-  Logo.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
 }

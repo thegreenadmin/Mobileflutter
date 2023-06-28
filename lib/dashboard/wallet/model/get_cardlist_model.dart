@@ -1,14 +1,14 @@
 class CardListModel {
   int? status;
   String? message;
-  Data? data;
+  CardListData? data;
 
   CardListModel({this.status, this.message, this.data});
 
   CardListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? CardListData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +22,12 @@ class CardListModel {
   }
 }
 
-class Data {
+class CardListData {
   List<Cards>? cards;
 
-  Data({this.cards});
+  CardListData({this.cards});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CardListData.fromJson(Map<String, dynamic> json) {
     if (json['cards'] != null) {
       cards = <Cards>[];
       json['cards'].forEach((v) {

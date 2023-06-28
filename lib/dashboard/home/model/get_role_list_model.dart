@@ -1,14 +1,14 @@
 class GetRoleListModel {
   int? status;
   String? message;
-  Data? data;
+  RoleListData? data;
 
   GetRoleListModel({this.status, this.message, this.data});
 
   GetRoleListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? RoleListData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +22,12 @@ class GetRoleListModel {
   }
 }
 
-class Data {
+class RoleListData {
   List<StoreRoles>? storeRoles;
 
-  Data({this.storeRoles});
+  RoleListData({this.storeRoles});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  RoleListData.fromJson(Map<String, dynamic> json) {
     if (json['store_roles'] != null) {
       storeRoles = <StoreRoles>[];
       json['store_roles'].forEach((v) {

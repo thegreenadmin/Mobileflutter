@@ -7,10 +7,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/tool_tip.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
   const StoreHomeMainScreen({super.key});

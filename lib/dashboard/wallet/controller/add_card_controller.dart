@@ -4,21 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
+import 'package:http/http.dart' as http;
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
-import 'package:thegreenmall/dashboard/wallet/model/bank_account_list_model.dart';
-import 'package:thegreenmall/dashboard/wallet/model/country_list_model.dart';
-import 'package:thegreenmall/dashboard/wallet/model/get_cardlist_model.dart';
-import 'package:thegreenmall/dashboard/wallet/model/owners_stores_model.dart';
+import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
-import 'package:http/http.dart' as http;
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AddCardController extends GetxController {

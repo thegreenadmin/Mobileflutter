@@ -29,7 +29,7 @@ class AddWorkerRequest {
   String? phoneCode;
   String? email;
   String? imageUrl;
-  List<EmployeeTiming>? employeeTimings;
+  List<AddWorkerEmployeeTiming>? employeeTimings;
   int? roleId;
 
   AddWorkerRequest copyWith({
@@ -40,7 +40,7 @@ class AddWorkerRequest {
     String? phoneCode,
     String? email,
     String? imageUrl,
-    List<EmployeeTiming>? employeeTimings,
+    List<AddWorkerEmployeeTiming>? employeeTimings,
     int? roleId,
   }) =>
       AddWorkerRequest(
@@ -66,8 +66,8 @@ class AddWorkerRequest {
         imageUrl: json["image_url"],
         employeeTimings: json["employee_timings"] == null
             ? []
-            : List<EmployeeTiming>.from(json["employee_timings"]!
-                .map((x) => EmployeeTiming.fromJson(x))),
+            : List<AddWorkerEmployeeTiming>.from(json["employee_timings"]!
+                .map((x) => AddWorkerEmployeeTiming.fromJson(x))),
         roleId: json["role_id"],
       );
 
@@ -86,8 +86,8 @@ class AddWorkerRequest {
       };
 }
 
-class EmployeeTiming {
-  EmployeeTiming({
+class AddWorkerEmployeeTiming {
+  AddWorkerEmployeeTiming({
     this.dayOfWeek,
     this.is24HrsActive,
     this.startTime,
@@ -99,20 +99,20 @@ class EmployeeTiming {
   String? startTime;
   String? endTime;
 
-  EmployeeTiming copyWith({
+  AddWorkerEmployeeTiming copyWith({
     int? dayOfWeek,
     bool? is24HrsActive,
     String? startTime,
     String? endTime,
   }) =>
-      EmployeeTiming(
+      AddWorkerEmployeeTiming(
         dayOfWeek: dayOfWeek ?? this.dayOfWeek,
         is24HrsActive: is24HrsActive ?? this.is24HrsActive,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
       );
 
-  factory EmployeeTiming.fromJson(Map<String, dynamic> json) => EmployeeTiming(
+  factory AddWorkerEmployeeTiming.fromJson(Map<String, dynamic> json) => AddWorkerEmployeeTiming(
         dayOfWeek: json["day_of_week"],
         is24HrsActive: json["is_24_hrs_active"],
         startTime: json["start_time"],

@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_worker_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_worker_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
+
 import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
 
@@ -117,16 +113,16 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       //   builder: (_) => const AddNewWorkerScreen(),
                       // ));
 
-
-                      permissionStoreList.any((element) =>
-                      element.isStoreOwner==true )
-                          || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                      ele.controllerKey == PermissionKey.createUser.statusName))
-                          ?  Get.to(const AddNewWorkerScreen(), id: pageIdApp.value)
-                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
-
-
+                      permissionStoreList.any(
+                                  (element) => element.isStoreOwner == true) ||
+                              permissionStoreList.any((element) =>
+                                  element.controllers!.any((ele) =>
+                                      ele.controllerKey ==
+                                      PermissionKey.createUser.statusName))
+                          ? Get.to(const AddNewWorkerScreen(),
+                              id: pageIdApp.value)
+                          : Utility.showAlertMessage(
+                              AlertStringConstants.notAuthorisedToStoreText);
                     },
                     child: Row(
                       children: [
@@ -216,22 +212,25 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
                               permissionStoreList.any((element) =>
-                              element.isStoreOwner==true )
-                                  || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                              ele.controllerKey == PermissionKey.editStoreUsers.statusName))
-                                  ?  Utility.showConfirmAlertMessage(
-                                  AlertStringConstants.areYouSureText,
-                                  okay: StringConstants.deleteText,
-                                  okayTap: () {
-                                    addNewWorkerController.workerId.value =
-                                        addNewWorkerController
-                                            .workerList[index].storeUserId
-                                            .toString();
-                                    addNewWorkerController.apiDeleteWorker();
-                                  })
-                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                          element.isStoreOwner == true) ||
+                                      permissionStoreList.any((element) =>
+                                          element.controllers!.any((ele) =>
+                                              ele.controllerKey ==
+                                              PermissionKey
+                                                  .editStoreUsers.statusName))
+                                  ? Utility.showConfirmAlertMessage(
+                                      AlertStringConstants.areYouSureText,
+                                      okay: StringConstants.deleteText,
+                                      okayTap: () {
+                                      addNewWorkerController.workerId.value =
+                                          addNewWorkerController
+                                              .workerList[index].storeUserId
+                                              .toString();
+                                      addNewWorkerController.apiDeleteWorker();
+                                    })
+                                  : Utility.showAlertMessage(AlertStringConstants
+                                      .notAuthorisedToStoreText);
                               return null;
-
                             },
                             child: InkWell(
                               onTap: () async {
@@ -245,13 +244,17 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 permissionStoreList.any((element) =>
-                                element.isStoreOwner==true )
-                                    || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                                ele.controllerKey == PermissionKey.editStoreUsers.statusName))
-                                    ?  Get.to(() => const EditWorkerScreen(),
-                                    id: pageIdApp.value)
-                                    : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
+                                            element.isStoreOwner == true) ||
+                                        permissionStoreList.any((element) =>
+                                            element.controllers!.any((ele) =>
+                                                ele.controllerKey ==
+                                                PermissionKey
+                                                    .editStoreUsers.statusName))
+                                    ? Get.to(() => const EditWorkerScreen(),
+                                        id: pageIdApp.value)
+                                    : Utility.showAlertMessage(
+                                        AlertStringConstants
+                                            .notAuthorisedToStoreText);
 
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();

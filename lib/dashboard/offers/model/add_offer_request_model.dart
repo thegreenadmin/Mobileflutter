@@ -1,3 +1,5 @@
+import 'offers_model.dart';
+
 class AddOfferRequestModel {
   String? storeId;
   Offer? offer;
@@ -25,39 +27,6 @@ class AddOfferRequestModel {
     if (offerProducts != null) {
       data['offer_products'] = offerProducts!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Offer {
-  bool? isOfferForStore;
-  String? offerName;
-  String? imageUrl;
-  String? offerType;
-  dynamic offerValue;
-
-  Offer(
-      {this.isOfferForStore,
-      this.offerName,
-      this.imageUrl,
-      this.offerType,
-      this.offerValue});
-
-  Offer.fromJson(Map<String, dynamic> json) {
-    isOfferForStore = json['is_offer_for_store'];
-    offerName = json['offer_name'];
-    imageUrl = json['image_url'];
-    offerType = json['offer_type'];
-    offerValue = json['offer_value'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['is_offer_for_store'] = isOfferForStore;
-    data['offer_name'] = offerName;
-    data['image_url'] = imageUrl;
-    data['offer_type'] = offerType;
-    data['offer_value'] = offerValue;
     return data;
   }
 }

@@ -3,25 +3,15 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
-import 'package:thegreenmall/dashboard/home/model/role_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_picker.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:dio/dio.dart' as mdio;
+
 import 'package:http_parser/http_parser.dart' show MediaType;
-import '../../../utils/constants.dart';
 import '../model/add_worker_request_model.dart' as add_worker;
-import '../model/categories_model.dart';
-import '../model/edit_worker_request_model.dart';
-import '../model/get_worker_detail_model.dart' as worker_detail;
-import '../model/get_worker_list_model.dart';
+
 
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -72,8 +62,8 @@ class AddNewWorkerController extends GetxController {
   late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
   late WorkerListResponse workerListResponse = WorkerListResponse();
-  worker_detail.WorkerDetailResponse? workerDetailResponse =
-      worker_detail.WorkerDetailResponse();
+  WorkerDetailResponse? workerDetailResponse =
+      WorkerDetailResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
   RxList<StoreRole> storeRoleList = <StoreRole>[].obs;
@@ -155,11 +145,11 @@ class AddNewWorkerController extends GetxController {
       addWorkerRequest.roleId = int.parse(roleId.value.toString());
     }
 
-    List<add_worker.EmployeeTiming>? employeeTimings = [];
+    List<add_worker.AddWorkerEmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       if (element.isSelected == true) {
         debugPrint("${element.id} ${element.isSelected} ${element.name} ");
-        add_worker.EmployeeTiming employeeTiming = add_worker.EmployeeTiming();
+        add_worker.AddWorkerEmployeeTiming employeeTiming = add_worker.AddWorkerEmployeeTiming();
         employeeTiming.dayOfWeek = element.id;
         employeeTiming.is24HrsActive = is247Time.value;
         employeeTiming.startTime = Utility.formatDateTime(
@@ -228,7 +218,7 @@ class AddNewWorkerController extends GetxController {
     List<EmployeeTiming>? employeeTimings = [];
     if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
         workerDetailResponse!.data!.storeUser!.storeUserTimings!.isNotEmpty) {
-      for (worker_detail.StoreUserTiming data
+      for (StoreUserTiming data
           in workerDetailResponse?.data?.storeUser?.storeUserTimings ?? []) {
         for (var element in selectedWeekDaysList) {
           if (element.id == data.dayOfWeek) {
@@ -652,7 +642,7 @@ class AddNewWorkerController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         workerDetailResponse =
-            worker_detail.WorkerDetailResponse.fromJson(value?.body);
+            WorkerDetailResponse.fromJson(value?.body);
         employeeNameTextController.text =
             workerDetailResponse?.data?.storeUser?.user?.firstName ?? '';
         shortDescriptionTextController.text =
@@ -675,13 +665,13 @@ class AddNewWorkerController extends GetxController {
         roleId.value =
             workerDetailResponse?.data?.storeUser?.role?.roleId ?? "";
 
-        List<worker_detail.StoreUserTiming>? storeUserTimings =
+        List<StoreUserTiming>? storeUserTimings =
             workerDetailResponse?.data?.storeUser?.storeUserTimings ?? [];
         var concatenate = StringBuffer();
         if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
             workerDetailResponse!
                 .data!.storeUser!.storeUserTimings!.isNotEmpty) {
-          for (worker_detail.StoreUserTiming data in storeUserTimings) {
+          for (StoreUserTiming data in storeUserTimings!) {
             for (Categories day in weekDaysList) {
               if (day.id == data.dayOfWeek) {
                 day.isSelected = true;

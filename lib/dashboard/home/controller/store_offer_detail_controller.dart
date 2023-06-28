@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/store_offer_detail_model.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
-import '../../../utils/constants.dart';
 
 class StoreOfferDetailController extends GetxController {
   StoreOfferDetailModel storeOfferDetailModel = StoreOfferDetailModel();
-  RxList<Products> storeOfferDetailList = <Products>[].obs;
+  RxList<StoreOfferProducts> storeOfferDetailList = <StoreOfferProducts>[].obs;
   RxString storeId = "".obs;
   RxString offerId = "".obs;
   RxString? role = "".obs;

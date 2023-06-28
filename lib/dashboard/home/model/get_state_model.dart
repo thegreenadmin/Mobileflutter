@@ -1,14 +1,14 @@
 class GetStatesModel {
   int? status;
   String? message;
-  Data? data;
+  StatesData? data;
 
   GetStatesModel({this.status, this.message, this.data});
 
   GetStatesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? StatesData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +22,12 @@ class GetStatesModel {
   }
 }
 
-class Data {
+class StatesData {
   List<StatesList>? states;
 
-  Data({this.states});
+  StatesData({this.states});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  StatesData.fromJson(Map<String, dynamic> json) {
     if (json['states'] != null) {
       states = <StatesList>[];
       json['states'].forEach((v) {

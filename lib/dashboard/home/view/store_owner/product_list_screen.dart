@@ -3,12 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -104,13 +99,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       //   builder: (_) => const AddNewProductScreen(),
                       // ));
 
-                      permissionStoreList.any((element) =>
-                      element.isStoreOwner==true )
-                          || permissionStoreList.any((element) =>
-                          element.controllers!.any((ele) =>
-                          ele.controllerKey == PermissionKey.createProduct.statusName))
-                          ? Get.to(const AddNewProductScreen(), id: pageIdApp.value)
-                          : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                      permissionStoreList.any(
+                                  (element) => element.isStoreOwner == true) ||
+                              permissionStoreList.any((element) =>
+                                  element.controllers!.any((ele) =>
+                                      ele.controllerKey ==
+                                      PermissionKey.createProduct.statusName))
+                          ? Get.to(const AddNewProductScreen(),
+                              id: pageIdApp.value)
+                          : Utility.showAlertMessage(
+                              AlertStringConstants.notAuthorisedToStoreText);
 
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
@@ -209,23 +207,28 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
                               permissionStoreList.any((element) =>
-                              element.isStoreOwner==true )
-                                  || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                              ele.controllerKey == PermissionKey.editProduct.statusName))
+                                          element.isStoreOwner == true) ||
+                                      permissionStoreList.any((element) =>
+                                          element.controllers!.any((ele) =>
+                                              ele.controllerKey ==
+                                              PermissionKey
+                                                  .editProduct.statusName))
                                   ? Utility.showConfirmAlertMessage(
-                                  AlertStringConstants.areYouSureText,
-                                  okay: StringConstants.deleteText,
-                                  okayTap: () {
-                                    // Navigator.pop(Get.context!);
-                                    manageStoreController.productId.value =
-                                        manageStoreController
-                                            .storeProductList[index].productId
-                                            .toString();
-                                    manageStoreController.apiDeleteProduct(context);
-                                  })
-                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                      AlertStringConstants.areYouSureText,
+                                      okay: StringConstants.deleteText,
+                                      okayTap: () {
+                                      // Navigator.pop(Get.context!);
+                                      manageStoreController.productId.value =
+                                          manageStoreController
+                                              .storeProductList[index].productId
+                                              .toString();
+                                      manageStoreController
+                                          .apiDeleteProduct(context);
+                                    })
+                                  : Utility.showAlertMessage(
+                                      AlertStringConstants
+                                          .notAuthorisedToStoreText);
                               return null;
-
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -251,17 +254,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
                                   permissionStoreList.any((element) =>
-                                  element.isStoreOwner==true )
-                                      || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                                      ele.controllerKey == PermissionKey.editProduct.statusName))
+                                              element.isStoreOwner == true) ||
+                                          permissionStoreList.any((element) =>
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey
+                                                      .editProduct.statusName))
                                       ? Get.to(() => const EditProductScreen(),
-                                      id: pageIdApp.value)!.then((value) {
-                                        manageStoreController.apiGetStoreProducts();
-                                        manageStoreController.update();
-                                      })
-                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
-
+                                              id: pageIdApp.value)!
+                                          .then((value) {
+                                          manageStoreController
+                                              .apiGetStoreProducts();
+                                          manageStoreController.update();
+                                        })
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants
+                                              .notAuthorisedToStoreText);
                                 },
                                 child: Column(children: [
                                   Row(

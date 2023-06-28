@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 class WebviewPageScreen extends StatefulWidget {
   final String url;
   final String isFrom;

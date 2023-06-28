@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'model.dart';
+
 NearbyStoreListResponse nearbyStoreListResponseFromJson(String str) =>
     NearbyStoreListResponse.fromJson(json.decode(str));
 
@@ -19,12 +21,12 @@ class NearbyStoreListResponse {
 
   dynamic status;
   String? message;
-  Data? data;
+  NearbyStoreData? data;
 
   NearbyStoreListResponse copyWith({
     dynamic status,
     String? message,
-    Data? data,
+    NearbyStoreData? data,
   }) =>
       NearbyStoreListResponse(
         status: status ?? this.status,
@@ -36,7 +38,9 @@ class NearbyStoreListResponse {
       NearbyStoreListResponse(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : NearbyStoreData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,8 +50,8 @@ class NearbyStoreListResponse {
       };
 }
 
-class Data {
-  Data({
+class NearbyStoreData {
+  NearbyStoreData({
     this.totalCount,
     this.storeAddresses,
   });
@@ -55,16 +59,17 @@ class Data {
   dynamic totalCount;
   List<StoreAddress>? storeAddresses;
 
-  Data copyWith({
+  NearbyStoreData copyWith({
     dynamic totalCount,
     List<StoreAddress>? storeAddresses,
   }) =>
-      Data(
+      NearbyStoreData(
         totalCount: totalCount ?? this.totalCount,
         storeAddresses: storeAddresses ?? this.storeAddresses,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory NearbyStoreData.fromJson(Map<String, dynamic> json) =>
+      NearbyStoreData(
         totalCount: json["total_count"],
         storeAddresses: json["store_addresses"] == null
             ? []
@@ -93,6 +98,7 @@ class StoreAddress {
     this.postalCode,
     this.distance,
     this.store,
+    this.state,
   });
 
   String? storeAddressId;
@@ -105,7 +111,8 @@ class StoreAddress {
   String? city;
   String? postalCode;
   double? distance;
-  Store? store;
+  NearbyStore? store;
+  State? state;
 
   StoreAddress copyWith({
     String? storeAddressId,
@@ -118,7 +125,8 @@ class StoreAddress {
     String? city,
     String? postalCode,
     double? distance,
-    Store? store,
+    NearbyStore? store,
+    State? state,
   }) =>
       StoreAddress(
         storeAddressId: storeAddressId ?? this.storeAddressId,
@@ -132,6 +140,7 @@ class StoreAddress {
         postalCode: postalCode ?? this.postalCode,
         distance: distance ?? this.distance,
         store: store ?? this.store,
+        state: state ?? this.state,
       );
 
   factory StoreAddress.fromJson(Map<String, dynamic> json) => StoreAddress(
@@ -145,7 +154,9 @@ class StoreAddress {
         city: json["city"],
         postalCode: json["postal_code"],
         distance: json["distance"]?.toDouble(),
-        store: json["store"] == null ? null : Store.fromJson(json["store"]),
+        store:
+            json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
+        state: json["state"] == null ? null : State.fromJson(json["state"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -160,11 +171,12 @@ class StoreAddress {
         "postal_code": postalCode,
         "distance": distance,
         "store": store?.toJson(),
+        "state": state?.toJson(),
       };
 }
 
-class Store {
-  Store({
+class NearbyStore {
+  NearbyStore({
     this.logo,
     this.image,
     this.hasStoreOwner,
@@ -188,7 +200,7 @@ class Store {
   List<StoreTiming>? storeTimings;
   List<StoreDeliveryService>? storeDeliveryServices;
 
-  Store copyWith({
+  NearbyStore copyWith({
     Images? logo,
     Images? image,
     bool? hasStoreOwner,
@@ -200,7 +212,7 @@ class Store {
     List<StoreTiming>? storeTimings,
     List<StoreDeliveryService>? storeDeliveryServices,
   }) =>
-      Store(
+      NearbyStore(
         logo: logo ?? this.logo,
         image: image ?? this.image,
         hasStoreOwner: hasStoreOwner ?? this.hasStoreOwner,
@@ -214,7 +226,7 @@ class Store {
             storeDeliveryServices ?? this.storeDeliveryServices,
       );
 
-  factory Store.fromJson(Map<String, dynamic> json) => Store(
+  factory NearbyStore.fromJson(Map<String, dynamic> json) => NearbyStore(
         logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
         image: json["image"] == null ? null : Images.fromJson(json["image"]),
         hasStoreOwner: json["has_store_owner"],
@@ -248,35 +260,6 @@ class Store {
         "store_delivery_services": storeDeliveryServices == null
             ? []
             : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
-      };
-}
-
-class Images {
-  Images({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Images copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Images(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Images.fromJson(Map<String, dynamic> json) => Images(
-        orignalUrl: json["orignal_url"],
-        dynamicUrl: json["dynamic_url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "orignal_url": orignalUrl,
-        "dynamic_url": dynamicUrl,
       };
 }
 
@@ -381,5 +364,3 @@ class StoreTiming {
         "status": status,
       };
 }
-
-

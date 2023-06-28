@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewRoleScreen extends StatefulWidget {
   const AddNewRoleScreen({super.key});
@@ -68,7 +63,6 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
         child: Stack(
           children: [
             Container(
-           
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Form(
                 key: addNewRoleController.formKey,
@@ -200,7 +194,6 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                             : ListView.builder(
                                 padding:
                                     const EdgeInsets.only(bottom: 60, top: 20),
-                              
                                 itemCount:
                                     addNewRoleController.moduleList.length,
                                 shrinkWrap: true,

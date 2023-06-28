@@ -1,14 +1,18 @@
+import 'offers_model.dart';
+
 class GetOfferProductList {
   int? status;
   String? message;
-  Data? data;
+  GetOfferProductData? data;
 
   GetOfferProductList({this.status, this.message, this.data});
 
   GetOfferProductList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? new GetOfferProductData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +26,13 @@ class GetOfferProductList {
   }
 }
 
-class Data {
+class GetOfferProductData {
   int? totalCount;
   List<Products>? products;
 
-  Data({this.totalCount, this.products});
+  GetOfferProductData({this.totalCount, this.products});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetOfferProductData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['products'] != null) {
       products = <Products>[];
@@ -199,195 +203,6 @@ class Products {
     if (this.offer != null) {
       data['offer'] = this.offer!.toJson();
     }
-    return data;
-  }
-}
-
-class QuantityType {
-  String? quantityTypeId;
-  String? quantityTypeName;
-  String? status;
-
-  QuantityType({this.quantityTypeId, this.quantityTypeName, this.status});
-
-  QuantityType.fromJson(Map<String, dynamic> json) {
-    quantityTypeId = json['quantity_type_id'];
-    quantityTypeName = json['quantity_type_name'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['quantity_type_id'] = this.quantityTypeId;
-    data['quantity_type_name'] = this.quantityTypeName;
-    data['status'] = this.status;
-    return data;
-  }
-}
-
-class ProductCategories {
-  String? productCategoryId;
-  String? categoryId;
-  String? status;
-  Category? category;
-
-  ProductCategories(
-      {this.productCategoryId, this.categoryId, this.status, this.category});
-
-  ProductCategories.fromJson(Map<String, dynamic> json) {
-    productCategoryId = json['product_category_id'];
-    categoryId = json['category_id'];
-    status = json['status'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_category_id'] = this.productCategoryId;
-    data['category_id'] = this.categoryId;
-    data['status'] = this.status;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
-    }
-    return data;
-  }
-}
-
-class Category {
-  String? categoryId;
-  String? categoryName;
-
-  Category({this.categoryId, this.categoryName});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-    categoryName = json['category_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    return data;
-  }
-}
-
-class ProductImages {
-  String? productImageId;
-  int? order;
-  String? status;
-  Image? image;
-
-  ProductImages({this.productImageId, this.order, this.status, this.image});
-
-  ProductImages.fromJson(Map<String, dynamic> json) {
-    productImageId = json['product_image_id'];
-    order = json['order'];
-    status = json['status'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_image_id'] = this.productImageId;
-    data['order'] = this.order;
-    data['status'] = this.status;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
-    }
-    return data;
-  }
-}
-
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({this.orignalUrl, this.dynamicUrl});
-
-  Image.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
-    return data;
-  }
-}
-
-class ProductContents {
-  String? productContentId;
-  String? heading;
-  String? paragraph;
-  int? order;
-  String? status;
-
-  ProductContents(
-      {this.productContentId,
-      this.heading,
-      this.paragraph,
-      this.order,
-      this.status});
-
-  ProductContents.fromJson(Map<String, dynamic> json) {
-    productContentId = json['product_content_id'];
-    heading = json['heading'];
-    paragraph = json['paragraph'];
-    order = json['order'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_content_id'] = this.productContentId;
-    data['heading'] = this.heading;
-    data['paragraph'] = this.paragraph;
-    data['order'] = this.order;
-    data['status'] = this.status;
-    return data;
-  }
-}
-
-class Offer {
-  Image? image;
-  String? offerId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? offerType;
-  int? offerValue;
-
-  Offer(
-      {this.image,
-      this.offerId,
-      this.isOfferForStore,
-      this.offerName,
-      this.offerType,
-      this.offerValue});
-
-  Offer.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
-    offerId = json['offer_id'];
-    isOfferForStore = json['is_offer_for_store'];
-    offerName = json['offer_name'];
-    offerType = json['offer_type'];
-    offerValue = json['offer_value'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
-    }
-    data['offer_id'] = this.offerId;
-    data['is_offer_for_store'] = this.isOfferForStore;
-    data['offer_name'] = this.offerName;
-    data['offer_type'] = this.offerType;
-    data['offer_value'] = this.offerValue;
     return data;
   }
 }

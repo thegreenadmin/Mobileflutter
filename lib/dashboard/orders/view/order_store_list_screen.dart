@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-
-import '../../../utils/global_share_data.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class OrderStoresListScreen extends StatefulWidget {
   const OrderStoresListScreen({super.key});
@@ -107,24 +101,28 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                           return InkWell(
                             onTap: () async {
                               ordersController.storeId.value =
-                                  ordersController.storeList[index].storeId ?? "";
-                              Get.parameters["storeId"]=ordersController
-                                  .storeList[index].storeId ?? "";
+                                  ordersController.storeList[index].storeId ??
+                                      "";
+                              Get.parameters["storeId"] =
+                                  ordersController.storeList[index].storeId ??
+                                      "";
 
                               // SharedPreferenceStorage.setData("context", context);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
                               permissionStoreList.any((element) =>
-                              element.isStoreOwner==true )
-                                  || permissionStoreList.any((element) =>
-                                  element.controllers!.any((ele) =>
-                                  ele.controllerKey == PermissionKey.manageOrders.statusName))
-                                  ?  Get.to(const OrdersHomeMainScreen(),
-                                  id:pageIdApp.value)
-                                  : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
-
+                                          element.isStoreOwner == true) ||
+                                      permissionStoreList.any((element) =>
+                                          element.controllers!.any((ele) =>
+                                              ele.controllerKey ==
+                                              PermissionKey
+                                                  .manageOrders.statusName))
+                                  ? Get.to(const OrdersHomeMainScreen(),
+                                      id: pageIdApp.value)
+                                  : Utility.showAlertMessage(
+                                      AlertStringConstants
+                                          .notAuthorisedToStoreText);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -149,11 +147,15 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                         child: CircleAvatar(
                                           radius: 24.0,
                                           backgroundImage: ordersController
-                                                      .storeList[index].logo!
-                                                      .dynamicUrl != null
+                                                      .storeList[index]
+                                                      .logo!
+                                                      .dynamicUrl !=
+                                                  null
                                               ? NetworkImage(ordersController
                                                   .storeList[index]
-                                                  .logo!.dynamicUrl.toString())
+                                                  .logo!
+                                                  .dynamicUrl
+                                                  .toString())
                                               : const AssetImage(
                                                   ImageConstants.nopicfound,
                                                 ) as ImageProvider,
@@ -172,7 +174,8 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                             width: 190,
                                             child: Text(
                                               ordersController.storeList[index]
-                                                      .storeName ?? "",
+                                                      .storeName ??
+                                                  "",
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
@@ -185,14 +188,17 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
                                               separatorBuilder:
-                                                  (BuildContext context, int i) {
+                                                  (BuildContext context,
+                                                      int i) {
                                                 return height0SizedBox;
                                               },
                                               itemCount: ordersController
                                                   .storeList[index]
-                                                  .storeAddresses!.length,
+                                                  .storeAddresses!
+                                                  .length,
                                               itemBuilder:
-                                                  (BuildContext context, int i) {
+                                                  (BuildContext context,
+                                                      int i) {
                                                 ordersController
                                                     .addressListIndex!
                                                     .value = i;

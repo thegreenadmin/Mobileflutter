@@ -9,6 +9,8 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
+import 'edit_product_screen.dart';
+
 class MyStoreScreen extends StatefulWidget {
   const MyStoreScreen({super.key});
 
@@ -105,78 +107,84 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                 ownerStoresController.getOwnerOfferList.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              return Stack(
-                                alignment: Alignment.bottomCenter,
-                                children: [
-                                  ownerStoresController.getOwnerOfferList[index]
-                                                  .image?.dynamicUrl !=
-                                              null &&
-                                          ownerStoresController
-                                                  .getOwnerOfferList[index]
-                                                  .image
-                                                  ?.dynamicUrl !=
-                                              ""
-                                      ? SizedBox(
-                                          height: 200,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              60,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.network(
+                              return InkWell(
+                                onTap: () {},
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    ownerStoresController
+                                                    .getOwnerOfferList[index]
+                                                    .image
+                                                    ?.dynamicUrl !=
+                                                null &&
+                                            ownerStoresController
+                                                    .getOwnerOfferList[index]
+                                                    .image
+                                                    ?.dynamicUrl !=
+                                                ""
+                                        ? SizedBox(
+                                            height: 200,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                60,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                  ownerStoresController
+                                                          .getOwnerOfferList[
+                                                              index]
+                                                          .image
+                                                          ?.dynamicUrl ??
+                                                      "",
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            ImageConstants.nopicfound,
+                                            color:
+                                                AppColors.grey.withOpacity(0.4),
+                                          ),
+                                    SizedBox(
+                                      height: 55,
+                                      child: Card(
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                          Radius.circular(10),
+                                        )),
+                                        color: Colors.white,
+                                        elevation: 2.0,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 12.0,
+                                              right: 12,
+                                              bottom: 10,
+                                              top: 10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
                                                 ownerStoresController
                                                         .getOwnerOfferList[
                                                             index]
-                                                        .image
-                                                        ?.dynamicUrl ??
+                                                        .offerName ??
                                                     "",
-                                                fit: BoxFit.cover),
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14),
+                                              ),
+                                            ],
                                           ),
-                                        )
-                                      : Image.asset(
-                                          ImageConstants.nopicfound,
-                                          color:
-                                              AppColors.grey.withOpacity(0.4),
-                                        ),
-                                  SizedBox(
-                                    height: 55,
-                                    child: Card(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      )),
-                                      color: Colors.white,
-                                      elevation: 2.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12,
-                                            bottom: 10,
-                                            top: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              ownerStoresController
-                                                      .getOwnerOfferList[index]
-                                                      .offerName ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               );
                             }),
                   )),
@@ -209,33 +217,59 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                           itemBuilder: (BuildContext context, int i) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                height: 150,
-                                width: 140,
-                                decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: ownerStoresController
-                                          .storeProductList[i]
-                                          .productImages!
-                                          .isEmpty
-                                      ? Image.asset(
-                                          ImageConstants.nopicfound,
-                                          color:
-                                              AppColors.grey.withOpacity(0.4),
-                                          fit: BoxFit.fill,
-                                        )
-                                      : Image.network(
-                                          ownerStoresController
+                              InkWell(
+                                onTap: () {
+                                  Get.parameters["isFromHome"] = "true";
+                                  Get.parameters["storeId"] =
+                                      ownerStoresController
+                                          .storeProductList[i].storeId;
+                                  Get.parameters["productId"] =
+                                      ownerStoresController
+                                          .storeProductList[i].productId;
+                                  Get.parameters["categoryName"] =
+                                      ownerStoresController
                                               .storeProductList[i]
-                                              .productImages![0]
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(),
-                                          fit: BoxFit.fill,
-                                        ),
+                                              .productCategories
+                                              ?.first
+                                              .category
+                                              ?.categoryName ??
+                                          "";
+                                  Get.to(() => const EditProductScreen(),
+                                      id: pageIdApp.value,
+                                      arguments: {
+                                        "isFromHome": true,
+                                        'storeId': ownerStoresController
+                                            .storeProductList[i].storeId
+                                      });
+                                },
+                                child: Container(
+                                  height: 150,
+                                  width: 140,
+                                  decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: ownerStoresController
+                                            .storeProductList[i]
+                                            .productImages!
+                                            .isEmpty
+                                        ? Image.asset(
+                                            ImageConstants.nopicfound,
+                                            color:
+                                                AppColors.grey.withOpacity(0.4),
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.network(
+                                            ownerStoresController
+                                                .storeProductList[i]
+                                                .productImages![0]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                            fit: BoxFit.fill,
+                                          ),
+                                  ),
                                 ),
                               ),
                               height8SizedBox,

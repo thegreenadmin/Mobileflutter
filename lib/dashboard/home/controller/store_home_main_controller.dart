@@ -1,68 +1,45 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/active_cart_items_model.dart';
-import 'package:thegreenmall/dashboard/home/model/feature_product_response_model.dart'
-    as feature_product;
-import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
-
-import 'package:thegreenmall/dashboard/home/model/previous_orders_model.dart';
-import 'package:thegreenmall/dashboard/home/model/store_categories_list_model.dart'
-    as categories;
-import 'package:thegreenmall/dashboard/home/model/store_offers_list_model.dart'
-    as offers;
-import 'package:thegreenmall/dashboard/home/model/user_product_detail_model.dart'
-    as product;
-import 'package:thegreenmall/dashboard/home/model/cart_list_model.dart' as cart;
-import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
-    as store;
+import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class StoreHomeMainController extends GetxController {
-  Rx<store.StoreDetailsResponse> storeDetailsResponse =
-      store.StoreDetailsResponse().obs;
-  late offers.StoreOffersListResponse offersListResponse =
-      offers.StoreOffersListResponse();
+  Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
+  late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
 
-  RxList<offers.Offer> offersList = <offers.Offer>[].obs;
+  RxList<Offer> offersList = <Offer>[].obs;
 
-  late categories.StoreCategoriesListResponse categoriesListResponse =
-      categories.StoreCategoriesListResponse();
-  RxList<categories.Category> categoriesList = <categories.Category>[].obs;
-  Rx<categories.Category> category = categories.Category().obs;
+  late StoreCategoriesListResponse categoriesListResponse =
+      StoreCategoriesListResponse();
+  RxList<Category> categoriesList = <Category>[].obs;
+  Rx<Category> category = Category().obs;
 
-  Rx<product.ShopProductDetailResponse> productDetailResponse =
-      product.ShopProductDetailResponse().obs;
+  Rx<ShopProductDetailResponse> productDetailResponse =
+      ShopProductDetailResponse().obs;
 
-  late cart.CartListResponse cartListResponse = cart.CartListResponse();
-  RxList<cart.CartItem> cartItems = <cart.CartItem>[].obs;
-  Rx<cart.Data> cartData = cart.Data().obs;
-  late feature_product.FeatureProductListResponse featureProductListResponse =
-      feature_product.FeatureProductListResponse();
+  late CartListResponse cartListResponse = CartListResponse();
+  RxList<CartItem> cartItems = <CartItem>[].obs;
+  Rx<CartListData> cartData = CartListData().obs;
+  late FeatureProductListResponse featureProductListResponse =
+      FeatureProductListResponse();
 
-  RxList<feature_product.Product> featureProductList =
-      <feature_product.Product>[].obs;
+  RxList<FeatureProduct> featureProductList = <FeatureProduct>[].obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
 
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
-  RxList<Products> previousOrderList = <Products>[].obs;
+  RxList<PreviousOrdersProducts> previousOrderList =
+      <PreviousOrdersProducts>[].obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
   RxInt lastSelectedIndex = 0.obs;
@@ -100,7 +77,7 @@ class StoreHomeMainController extends GetxController {
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
-  RxList<product.ProductImage>? productIm = <product.ProductImage>[].obs;
+  RxList<ProductImage>? productIm = <ProductImage>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -607,7 +584,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoriesListResponse =
-            categories.StoreCategoriesListResponse.fromJson(value?.body);
+            StoreCategoriesListResponse.fromJson(value?.body);
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -697,7 +674,7 @@ class StoreHomeMainController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        cartListResponse = cart.CartListResponse.fromJson(value?.body);
+        cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
         if (cartListResponse.data?.cartTotalPrice is int ||
@@ -712,7 +689,7 @@ class StoreHomeMainController extends GetxController {
         debugPrint(
             "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
         debugPrint("CART isFromHome.value ${isFromHome.value}");
-        cartData.value = cartListResponse.data ?? cart.Data();
+        cartData.value = cartListResponse.data ?? CartListData();
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
@@ -1087,8 +1064,7 @@ class StoreHomeMainController extends GetxController {
       debugPrint("Store Offers *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        offersListResponse =
-            offers.StoreOffersListResponse.fromJson(value?.body);
+        offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1167,8 +1143,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
-        storeDetailsResponse.value =
-            store.StoreDetailsResponse.fromJson(value?.body);
+        storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
 
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
 
@@ -1217,7 +1192,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
-            product.ShopProductDetailResponse.fromJson(value?.body);
+            ShopProductDetailResponse.fromJson(value?.body);
         productIm!.clear();
         if (productDetailResponse
             .value.data!.product!.productImages!.isNotEmpty) {
@@ -1230,8 +1205,8 @@ class StoreHomeMainController extends GetxController {
               break;
             }
 
-            productIm!.add(product.ProductImage(
-                image: product.Image(
+            productIm!.add(ProductImage(
+                image: Images(
                     dynamicUrl: productDetailResponse.value.data!.product!
                         .productImages![i].image!.dynamicUrl!)));
           }
@@ -1313,7 +1288,7 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         featureProductListResponse =
-            feature_product.FeatureProductListResponse.fromJson(value?.body);
+            FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =
             featureProductListResponse.data?.products ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utils.dart';
+
 class MoreController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;

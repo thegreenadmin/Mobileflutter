@@ -4,9 +4,13 @@
 
 import 'dart:convert';
 
-FeatureProductListResponse featureProductListResponseFromJson(String str) => FeatureProductListResponse.fromJson(json.decode(str));
+import 'model.dart';
 
-String featureProductListResponseToJson(FeatureProductListResponse data) => json.encode(data.toJson());
+FeatureProductListResponse featureProductListResponseFromJson(String str) =>
+    FeatureProductListResponse.fromJson(json.decode(str));
+
+String featureProductListResponseToJson(FeatureProductListResponse data) =>
+    json.encode(data.toJson());
 
 class FeatureProductListResponse {
   FeatureProductListResponse({
@@ -17,12 +21,12 @@ class FeatureProductListResponse {
 
   int? status;
   String? message;
-  Data? data;
+  FeatureProductData? data;
 
   FeatureProductListResponse copyWith({
     int? status,
     String? message,
-    Data? data,
+    FeatureProductData? data,
   }) =>
       FeatureProductListResponse(
         status: status ?? this.status,
@@ -30,50 +34,59 @@ class FeatureProductListResponse {
         data: data ?? this.data,
       );
 
-  factory FeatureProductListResponse.fromJson(Map<String, dynamic> json) => FeatureProductListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory FeatureProductListResponse.fromJson(Map<String, dynamic> json) =>
+      FeatureProductListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : FeatureProductData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
-class Data {
-  Data({
+class FeatureProductData {
+  FeatureProductData({
     this.totalCount,
     this.products,
   });
 
   int? totalCount;
-  List<Product>? products;
+  List<FeatureProduct>? products;
 
-  Data copyWith({
+  FeatureProductData copyWith({
     int? totalCount,
-    List<Product>? products,
+    List<FeatureProduct>? products,
   }) =>
-      Data(
+      FeatureProductData(
         totalCount: totalCount ?? this.totalCount,
         products: products ?? this.products,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    totalCount: json["total_count"],
-    products: json["products"] == null ? [] : List<Product>.from(json["products"]!.map((x) => Product.fromJson(x))),
-  );
+  factory FeatureProductData.fromJson(Map<String, dynamic> json) =>
+      FeatureProductData(
+        totalCount: json["total_count"],
+        products: json["products"] == null
+            ? []
+            : List<FeatureProduct>.from(
+                json["products"]!.map((x) => FeatureProduct.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_count": totalCount,
-    "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x.toJson())),
-  };
+        "total_count": totalCount,
+        "products": products == null
+            ? []
+            : List<dynamic>.from(products!.map((x) => x.toJson())),
+      };
 }
 
-class Product {
-  Product({
+class FeatureProduct {
+  FeatureProduct({
     this.productId,
     this.isFavouriteProduct,
     this.storeId,
@@ -131,7 +144,7 @@ class Product {
   double? offerPrice;
   dynamic offer;
 
-  Product copyWith({
+  FeatureProduct copyWith({
     String? productId,
     bool? isFavouriteProduct,
     String? storeId,
@@ -160,7 +173,7 @@ class Product {
     double? offerPrice,
     dynamic offer,
   }) =>
-      Product(
+      FeatureProduct(
         productId: productId ?? this.productId,
         isFavouriteProduct: isFavouriteProduct ?? this.isFavouriteProduct,
         storeId: storeId ?? this.storeId,
@@ -190,65 +203,85 @@ class Product {
         offer: offer ?? this.offer,
       );
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    productId: json["product_id"],
-    isFavouriteProduct: json["is_favourite_product"],
-    storeId: json["store_id"],
-    quantity: json["quantity"],
-    isFeaturedProduct: json["is_featured_product"],
-    productName: json["product_name"],
-    description: json["description"],
-    productPrice: json["product_price"]?.toDouble(),
-    sellingPrice: json["selling_price"]?.toDouble(),
-    discountType: json["discount_type"],
-    discountValue: json["discount_value"],
-    isProductReturnable: json["is_product_returnable"],
-    returnDaysCount: json["return_days_count"],
-    length: json["length"],
-    width: json["width"],
-    height: json["height"],
-    weight: json["weight"],
-    isEnabled: json["is_enabled"],
-    status: json["status"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    quantityType: json["quantity_type"] == null ? null : QuantityType.fromJson(json["quantity_type"]),
-    productCategories: json["product_categories"] == null ? [] : List<dynamic>.from(json["product_categories"]!.map((x) => x)),
-    productImages: json["product_images"] == null ? [] : List<ProductImage>.from(json["product_images"]!.map((x) => ProductImage.fromJson(x))),
-    productContents: json["product_contents"] == null ? [] : List<ProductContent>.from(json["product_contents"]!.map((x) => ProductContent.fromJson(x))),
-    offerPrice: json["offer_price"]?.toDouble(),
-    offer: json["offer"],
-  );
+  factory FeatureProduct.fromJson(Map<String, dynamic> json) => FeatureProduct(
+        productId: json["product_id"],
+        isFavouriteProduct: json["is_favourite_product"],
+        storeId: json["store_id"],
+        quantity: json["quantity"],
+        isFeaturedProduct: json["is_featured_product"],
+        productName: json["product_name"],
+        description: json["description"],
+        productPrice: json["product_price"]?.toDouble(),
+        sellingPrice: json["selling_price"]?.toDouble(),
+        discountType: json["discount_type"],
+        discountValue: json["discount_value"],
+        isProductReturnable: json["is_product_returnable"],
+        returnDaysCount: json["return_days_count"],
+        length: json["length"],
+        width: json["width"],
+        height: json["height"],
+        weight: json["weight"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        quantityType: json["quantity_type"] == null
+            ? null
+            : QuantityType.fromJson(json["quantity_type"]),
+        productCategories: json["product_categories"] == null
+            ? []
+            : List<dynamic>.from(json["product_categories"]!.map((x) => x)),
+        productImages: json["product_images"] == null
+            ? []
+            : List<ProductImage>.from(
+                json["product_images"]!.map((x) => ProductImage.fromJson(x))),
+        productContents: json["product_contents"] == null
+            ? []
+            : List<ProductContent>.from(json["product_contents"]!
+                .map((x) => ProductContent.fromJson(x))),
+        offerPrice: json["offer_price"]?.toDouble(),
+        offer: json["offer"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "product_id": productId,
-    "is_favourite_product": isFavouriteProduct,
-    "store_id": storeId,
-    "quantity": quantity,
-    "is_featured_product": isFeaturedProduct,
-    "product_name": productName,
-    "description": description,
-    "product_price": productPrice,
-    "selling_price": sellingPrice,
-    "discount_type": discountType,
-    "discount_value": discountValue,
-    "is_product_returnable": isProductReturnable,
-    "return_days_count": returnDaysCount,
-    "length": length,
-    "width": width,
-    "height": height,
-    "weight": weight,
-    "is_enabled": isEnabled,
-    "status": status,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "quantity_type": quantityType?.toJson(),
-    "product_categories": productCategories == null ? [] : List<dynamic>.from(productCategories!.map((x) => x)),
-    "product_images": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
-    "product_contents": productContents == null ? [] : List<dynamic>.from(productContents!.map((x) => x.toJson())),
-    "offer_price": offerPrice,
-    "offer": offer,
-  };
+        "product_id": productId,
+        "is_favourite_product": isFavouriteProduct,
+        "store_id": storeId,
+        "quantity": quantity,
+        "is_featured_product": isFeaturedProduct,
+        "product_name": productName,
+        "description": description,
+        "product_price": productPrice,
+        "selling_price": sellingPrice,
+        "discount_type": discountType,
+        "discount_value": discountValue,
+        "is_product_returnable": isProductReturnable,
+        "return_days_count": returnDaysCount,
+        "length": length,
+        "width": width,
+        "height": height,
+        "weight": weight,
+        "is_enabled": isEnabled,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "quantity_type": quantityType?.toJson(),
+        "product_categories": productCategories == null
+            ? []
+            : List<dynamic>.from(productCategories!.map((x) => x)),
+        "product_images": productImages == null
+            ? []
+            : List<dynamic>.from(productImages!.map((x) => x.toJson())),
+        "product_contents": productContents == null
+            ? []
+            : List<dynamic>.from(productContents!.map((x) => x.toJson())),
+        "offer_price": offerPrice,
+        "offer": offer,
+      };
 }
 
 class ProductContent {
@@ -282,20 +315,20 @@ class ProductContent {
       );
 
   factory ProductContent.fromJson(Map<String, dynamic> json) => ProductContent(
-    productContentId: json["product_content_id"],
-    heading: json["heading"],
-    paragraph: json["paragraph"],
-    order: json["order"],
-    status: json["status"],
-  );
+        productContentId: json["product_content_id"],
+        heading: json["heading"],
+        paragraph: json["paragraph"],
+        order: json["order"],
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "product_content_id": productContentId,
-    "heading": heading,
-    "paragraph": paragraph,
-    "order": order,
-    "status": status,
-  };
+        "product_content_id": productContentId,
+        "heading": heading,
+        "paragraph": paragraph,
+        "order": order,
+        "status": status,
+      };
 }
 
 class ProductImage {
@@ -309,13 +342,13 @@ class ProductImage {
   String? productImageId;
   int? order;
   String? status;
-  Image? image;
+  Images? image;
 
   ProductImage copyWith({
     String? productImageId,
     int? order,
     String? status,
-    Image? image,
+    Images? image,
   }) =>
       ProductImage(
         productImageId: productImageId ?? this.productImageId,
@@ -325,21 +358,21 @@ class ProductImage {
       );
 
   factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
-    productImageId: json["product_image_id"],
-    order: json["order"],
-    status: json["status"],
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
-  );
+        productImageId: json["product_image_id"],
+        order: json["order"],
+        status: json["status"],
+        image: json["image"] == null ? null : Images.fromJson(json["image"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "product_image_id": productImageId,
-    "order": order,
-    "status": status,
-    "image": image?.toJson(),
-  };
+        "product_image_id": productImageId,
+        "order": order,
+        "status": status,
+        "image": image?.toJson(),
+      };
 }
 
-class Image {
+/*class Image {
   Image({
     this.orignalUrl,
     this.dynamicUrl,
@@ -366,39 +399,4 @@ class Image {
     "orignal_url": orignalUrl,
     "dynamic_url": dynamicUrl,
   };
-}
-
-class QuantityType {
-  QuantityType({
-    this.quantityTypeId,
-    this.quantityTypeName,
-    this.status,
-  });
-
-  String? quantityTypeId;
-  String? quantityTypeName;
-  String? status;
-
-  QuantityType copyWith({
-    String? quantityTypeId,
-    String? quantityTypeName,
-    String? status,
-  }) =>
-      QuantityType(
-        quantityTypeId: quantityTypeId ?? this.quantityTypeId,
-        quantityTypeName: quantityTypeName ?? this.quantityTypeName,
-        status: status ?? this.status,
-      );
-
-  factory QuantityType.fromJson(Map<String, dynamic> json) => QuantityType(
-    quantityTypeId: json["quantity_type_id"],
-    quantityTypeName: json["quantity_type_name"],
-    status: json["status"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "quantity_type_id": quantityTypeId,
-    "quantity_type_name": quantityTypeName,
-    "status": status,
-  };
-}
+}*/

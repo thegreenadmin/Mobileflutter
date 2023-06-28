@@ -5,11 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
 import 'package:thegreenmall/dashboard/wallet/view/manage_wallet_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import '../../../utils/global_share_data.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});

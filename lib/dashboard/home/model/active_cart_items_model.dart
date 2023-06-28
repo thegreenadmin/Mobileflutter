@@ -1,14 +1,16 @@
+import 'model.dart';
+
 class ActiveCartModel {
   dynamic status;
   String? message;
-  Data? data;
+  ActiveCartData? data;
 
   ActiveCartModel({this.status, this.message, this.data});
 
   ActiveCartModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? ActiveCartData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +24,7 @@ class ActiveCartModel {
   }
 }
 
-class Data {
+class ActiveCartData {
   String? storeId;
   dynamic cartTotalPrice;
   dynamic cartSubTotal;
@@ -34,7 +36,7 @@ class Data {
   bool? isOrderDeliverable;
   List<CartItems>? cartItems;
 
-  Data(
+  ActiveCartData(
       {this.storeId,
       this.cartTotalPrice,
       this.cartSubTotal,
@@ -46,7 +48,7 @@ class Data {
       this.isOrderDeliverable,
       this.cartItems});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ActiveCartData.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
     cartTotalPrice = json['cart_total_price'];
     cartSubTotal = json['cart_sub_total'];
@@ -239,25 +241,6 @@ class Product {
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
-    return data;
-  }
-}
-
-class Images {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Images({this.orignalUrl, this.dynamicUrl});
-
-  Images.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

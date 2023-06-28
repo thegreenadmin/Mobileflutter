@@ -1,14 +1,17 @@
+import 'offers_model.dart';
+
 class GetUserOfferListModel {
   int? status;
   String? message;
-  Data? data;
+  GetUserOfferData? data;
 
   GetUserOfferListModel({this.status, this.message, this.data});
 
   GetUserOfferListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? GetUserOfferData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,18 +25,18 @@ class GetUserOfferListModel {
   }
 }
 
-class Data {
+class GetUserOfferData {
   int? totalCount;
-  List<Stores>? stores;
+  List<UserOfferStores>? stores;
 
-  Data({this.totalCount, this.stores});
+  GetUserOfferData({this.totalCount, this.stores});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetUserOfferData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['stores'] != null) {
-      stores = <Stores>[];
+      stores = <UserOfferStores>[];
       json['stores'].forEach((v) {
-        stores!.add(Stores.fromJson(v));
+        stores!.add(UserOfferStores.fromJson(v));
       });
     }
   }
@@ -48,7 +51,7 @@ class Data {
   }
 }
 
-class Stores {
+class UserOfferStores {
   Logo? logo;
   String? storeId;
   String? storeName;
@@ -57,7 +60,7 @@ class Stores {
   List<StoreAddresses>? storeAddresses;
   List<Offers>? offers;
 
-  Stores(
+  UserOfferStores(
       {this.logo,
       this.storeId,
       this.storeName,
@@ -66,7 +69,7 @@ class Stores {
       this.storeAddresses,
       this.offers});
 
-  Stores.fromJson(Map<String, dynamic> json) {
+  UserOfferStores.fromJson(Map<String, dynamic> json) {
     logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
     storeId = json['store_id'];
     storeName = json['store_name'];
@@ -101,78 +104,6 @@ class Stores {
     if (offers != null) {
       data['offers'] = offers!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Logo {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Logo({this.orignalUrl, this.dynamicUrl});
-
-  Logo.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
-    return data;
-  }
-}
-
-class StoreAddresses {
-  String? storeAddressId;
-  String? addressName;
-  double? longitude;
-  double? latitude;
-  String? addressLine1;
-  String? addressLine2;
-  String? landmark;
-  String? city;
-  String? postalCode;
-  dynamic distance;
-
-  StoreAddresses(
-      {this.storeAddressId,
-      this.addressName,
-      this.longitude,
-      this.latitude,
-      this.addressLine1,
-      this.addressLine2,
-      this.landmark,
-      this.city,
-      this.postalCode,
-      this.distance});
-
-  StoreAddresses.fromJson(Map<String, dynamic> json) {
-    storeAddressId = json['store_address_id'];
-    addressName = json['address_name'];
-    longitude = json['longitude'];
-    latitude = json['latitude'];
-    addressLine1 = json['address_line_1'];
-    addressLine2 = json['address_line_2'];
-    landmark = json['landmark'];
-    city = json['city'];
-    postalCode = json['postal_code'];
-    distance = json['distance'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['store_address_id'] = storeAddressId;
-    data['address_name'] = addressName;
-    data['longitude'] = longitude;
-    data['latitude'] = latitude;
-    data['address_line_1'] = addressLine1;
-    data['address_line_2'] = addressLine2;
-    data['landmark'] = landmark;
-    data['city'] = city;
-    data['postal_code'] = postalCode;
-    data['distance'] = distance;
     return data;
   }
 }

@@ -1,26 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:thegreenmall/utils/utility.dart';
-
-import '../../../../utils/global_share_data.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 enum _SupportState {
   unknown,

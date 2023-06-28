@@ -1,14 +1,18 @@
+import 'offers_model.dart';
+
 class GetStoreNonOfferProductList {
   int? status;
   String? message;
-  Data? data;
+  GetStoreNonOfferData? data;
 
   GetStoreNonOfferProductList({this.status, this.message, this.data});
 
   GetStoreNonOfferProductList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? GetStoreNonOfferData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,18 +26,18 @@ class GetStoreNonOfferProductList {
   }
 }
 
-class Data {
+class GetStoreNonOfferData {
   int? totalCount;
-  List<ProductsList>? products;
+  List<NonOfferProductsList>? products;
 
-  Data({this.totalCount, this.products});
+  GetStoreNonOfferData({this.totalCount, this.products});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetStoreNonOfferData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['products'] != null) {
-      products = <ProductsList>[];
+      products = <NonOfferProductsList>[];
       json['products'].forEach((v) {
-        products!.add(ProductsList.fromJson(v));
+        products!.add(NonOfferProductsList.fromJson(v));
       });
     }
   }
@@ -48,7 +52,7 @@ class Data {
   }
 }
 
-class ProductsList {
+class NonOfferProductsList {
   bool? isSelected = false;
   String? productId;
   String? storeId;
@@ -75,7 +79,7 @@ class ProductsList {
   List<ProductImages>? productImages;
   List<ProductContents>? productContents;
 
-  ProductsList(
+  NonOfferProductsList(
       {this.isSelected,
       this.productId,
       this.storeId,
@@ -102,7 +106,7 @@ class ProductsList {
       this.productImages,
       this.productContents});
 
-  ProductsList.fromJson(Map<String, dynamic> json) {
+  NonOfferProductsList.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     storeId = json['store_id'];
     quantity = json['quantity'];
@@ -182,155 +186,6 @@ class ProductsList {
       data['product_contents'] =
           productContents!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class QuantityType {
-  String? quantityTypeId;
-  String? quantityTypeName;
-  String? status;
-
-  QuantityType({quantityTypeId, this.quantityTypeName, this.status});
-
-  QuantityType.fromJson(Map<String, dynamic> json) {
-    quantityTypeId = json['quantity_type_id'];
-    quantityTypeName = json['quantity_type_name'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['quantity_type_id'] = quantityTypeId;
-    data['quantity_type_name'] = quantityTypeName;
-    data['status'] = status;
-    return data;
-  }
-}
-
-class ProductCategories {
-  String? productCategoryId;
-  String? categoryId;
-  String? status;
-  Category? category;
-
-  ProductCategories(
-      {this.productCategoryId, this.categoryId, this.status, this.category});
-
-  ProductCategories.fromJson(Map<String, dynamic> json) {
-    productCategoryId = json['product_category_id'];
-    categoryId = json['category_id'];
-    status = json['status'];
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_category_id'] = productCategoryId;
-    data['category_id'] = categoryId;
-    data['status'] = status;
-    if (category != null) {
-      data['category'] = category!.toJson();
-    }
-    return data;
-  }
-}
-
-class Category {
-  String? categoryId;
-  String? categoryName;
-
-  Category({this.categoryId, this.categoryName});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-    categoryName = json['category_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['category_id'] = categoryId;
-    data['category_name'] = categoryName;
-    return data;
-  }
-}
-
-class ProductImages {
-  String? productImageId;
-  int? order;
-  String? status;
-  Image? image;
-
-  ProductImages({productImageId, order, status, image});
-
-  ProductImages.fromJson(Map<String, dynamic> json) {
-    productImageId = json['product_image_id'];
-    order = json['order'];
-    status = json['status'];
-    image = json['image'] != null ? Image.fromJson(json['image']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_image_id'] = productImageId;
-    data['order'] = order;
-    data['status'] = status;
-    if (image != null) {
-      data['image'] = image!.toJson();
-    }
-    return data;
-  }
-}
-
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({this.orignalUrl, this.dynamicUrl});
-
-  Image.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
-    return data;
-  }
-}
-
-class ProductContents {
-  String? productContentId;
-  String? heading;
-  String? paragraph;
-  int? order;
-  String? status;
-
-  ProductContents(
-      {this.productContentId,
-      this.heading,
-      this.paragraph,
-      this.order,
-      this.status});
-
-  ProductContents.fromJson(Map<String, dynamic> json) {
-    productContentId = json['product_content_id'];
-    heading = json['heading'];
-    paragraph = json['paragraph'];
-    order = json['order'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_content_id'] = productContentId;
-    data['heading'] = heading;
-    data['paragraph'] = paragraph;
-    data['order'] = order;
-    data['status'] = status;
     return data;
   }
 }

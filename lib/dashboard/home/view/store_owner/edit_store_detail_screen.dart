@@ -3,21 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-
 import 'package:get/get.dart';
+import "package:google_maps_webservice/geocoding.dart";
+import 'package:google_maps_webservice/places.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/mutli_select_drop_down.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-import 'package:google_maps_webservice/places.dart';
-import "package:google_maps_webservice/geocoding.dart";
-// import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:thegreenmall/utils/utils.dart';
 
 class EditStoreDetailScreen extends StatefulWidget {
   const EditStoreDetailScreen({super.key});
@@ -2225,7 +2216,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         ownerStoreController.validateAndSubmit(context);
                       },
                       height: 50,
-                      text: 
+                      text:
                           "${StringConstants.updateText} ${StringConstants.storeText}",
                       borderRadius: 12,
                       fontWeight: FontWeight.w500,

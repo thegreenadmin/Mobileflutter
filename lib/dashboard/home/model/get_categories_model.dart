@@ -1,14 +1,16 @@
+import '../../common_models/image_model.dart';
+
 class GetCategoriesModel {
   int? status;
   String? message;
-  Data? data;
+  CategoriesData? data;
 
   GetCategoriesModel({this.status, this.message, this.data});
 
   GetCategoriesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? CategoriesData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,16 +24,16 @@ class GetCategoriesModel {
   }
 }
 
-class Data {
-  List<Categories>? categories;
+class CategoriesData {
+  List<StoreCategories>? categories;
 
-  Data({this.categories});
+  CategoriesData({this.categories});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CategoriesData.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <Categories>[];
+      categories = <StoreCategories>[];
       json['categories'].forEach((v) {
-        categories!.add(Categories.fromJson(v));
+        categories!.add(StoreCategories.fromJson(v));
       });
     }
   }
@@ -45,7 +47,7 @@ class Data {
   }
 }
 
-class Categories {
+class StoreCategories {
   String? categoryId;
   String? parentCategoryId;
   String? categoryName;
@@ -53,7 +55,7 @@ class Categories {
   int? totalProducts;
   bool? isSelected = false;
 
-  Categories(
+  StoreCategories(
       {this.categoryId,
       this.parentCategoryId,
       this.categoryName,
@@ -61,7 +63,7 @@ class Categories {
       this.totalProducts,
       this.isSelected});
 
-  Categories.fromJson(Map<String, dynamic> json) {
+  StoreCategories.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];
     parentCategoryId = json['parent_category_id'];
     categoryName = json['category_name'];
@@ -82,7 +84,7 @@ class Categories {
   }
 }
 
-class Images {
+/*class Images {
   String? orignalUrl;
   String? dynamicUrl;
 
@@ -99,4 +101,4 @@ class Images {
     data['dynamic_url'] = dynamicUrl;
     return data;
   }
-}
+}*/

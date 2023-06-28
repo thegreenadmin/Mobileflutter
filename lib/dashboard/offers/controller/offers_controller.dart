@@ -3,19 +3,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/delete_offer_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_user_offer_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
-import '../../../utils/global_share_data.dart';
 
 class OffersController extends GetxController {
   RxString? firstName = "".obs;
@@ -37,7 +28,7 @@ class OffersController extends GetxController {
   RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
 
   late GetUserOfferListModel getUserOffersListModel = GetUserOfferListModel();
-  RxList<Stores> getUserOfferlist = <Stores>[].obs;
+  RxList<UserOfferStores> getUserOfferlist = <UserOfferStores>[].obs;
   late DeleteOfferRequestModel deleteOfferRequestModel =
       DeleteOfferRequestModel();
 

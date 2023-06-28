@@ -3,24 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/nearby_stores_response_model.dart';
-import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
-import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
-import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-import '../../../utils/global_share_data.dart';
-
+import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/utils/utils.dart';
 class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -35,7 +24,7 @@ class HomeController extends GetxController {
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   late GetUserOfferModel userOffersModel = GetUserOfferModel();
-  RxList<Offers> userOfferList = <Offers>[].obs;
+  RxList<UserOffers> userOfferList = <UserOffers>[].obs;
 
   late OwnerFeaturedProductModel ownerFeaturedProductModel =
       OwnerFeaturedProductModel();
@@ -43,7 +32,7 @@ class HomeController extends GetxController {
 
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
-  RxList<Offers> userCarouselImgList = <Offers>[].obs;
+  RxList<UserOffers> userCarouselImgList = <UserOffers>[].obs;
   RxList<String> ownerCarouselImgList = <String>[].obs;
 
   RxString? role = "".obs;

@@ -7,24 +7,11 @@ import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
-import 'package:thegreenmall/dashboard/home/model/active_membership_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_countries_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
-import 'package:thegreenmall/dashboard/home/model/membership_plan_model.dart';
-import 'package:thegreenmall/dashboard/home/model/notification_status_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
+import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/image_picker.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-import '../../../../utils/global_share_data.dart';
 
 class AccountController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

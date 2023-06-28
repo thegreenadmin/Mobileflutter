@@ -2,19 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
-
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class OwnerInboxDetailScreen extends StatefulWidget {
   const OwnerInboxDetailScreen({
@@ -407,7 +398,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                             null
                                     ? height0SizedBox
                                     : InkWell(
-                                        onTap: () async{
+                                        onTap: () async {
                                           // SharedPreferenceStorage.setData(
                                           //     "context", context);
                                           // Navigator.of(context)
@@ -419,14 +410,14 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           //         .toString(),
                                           //   ),
                                           // ));
-                                          await Get.to(ImagePreviewScreen(
-                                            image: messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
-                                          ),
-                                              id:pageIdApp.value);
-
+                                          await Get.to(
+                                              ImagePreviewScreen(
+                                                image: messageList[index]
+                                                    .image!
+                                                    .dynamicUrl
+                                                    .toString(),
+                                              ),
+                                              id: pageIdApp.value);
                                         },
                                         child: Container(
                                           decoration: const BoxDecoration(
@@ -550,7 +541,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           null
                                   ? height0SizedBox
                                   : InkWell(
-                                      onTap: () async{
+                                      onTap: () async {
                                         // SharedPreferenceStorage.setData(
                                         //     "context", context);
                                         // Navigator.of(context)
@@ -562,13 +553,14 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                         //         .toString(),
                                         //   ),
                                         // ));
-                                        await Get.to(ImagePreviewScreen(
-                                          image: messageList[index]
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(),
-                                        ),
-                                            id:pageIdApp.value);
+                                        await Get.to(
+                                            ImagePreviewScreen(
+                                              image: messageList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                            ),
+                                            id: pageIdApp.value);
                                       },
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -740,7 +732,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                 Get.back(id:pageIdApp.value);
+                                  Get.back(id: pageIdApp.value);
                                   // Navigator.of(context).pop();
                                   // Get.back();
                                 },

@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
+
 import '../view/component/order_status_enum.dart';
 import 'mark_return_order_screen.dart';
 
@@ -144,12 +140,16 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Visibility(
-                                    visible: int.parse(ordersHomeMainController.storeCount.value)>1 || ordersHomeMainController.isFromNotification.value,
+                                    visible: int.parse(ordersHomeMainController
+                                                .storeCount.value) >
+                                            1 ||
+                                        ordersHomeMainController
+                                            .isFromNotification.value,
                                     child: IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
-                                       Get.back(id:pageIdApp.value);
+                                        Get.back(id: pageIdApp.value);
                                         Get.delete<OrdersHomeMainController>();
                                       },
                                       icon: const Icon(
@@ -356,40 +356,44 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
 
                               /// ====================================
 
+                              Get.parameters["storeId"] =
+                                  ordersHomeMainController
+                                          .ownerOrderHistoryList![index]
+                                          .storeId ??
+                                      "";
 
-                              Get.parameters["storeId"] =  ordersHomeMainController
-                                  .ownerOrderHistoryList![index]
-                                  .storeId ??
-                                  "";
-
-                              Get.parameters["orderId"] =  ordersHomeMainController
-                                  .ownerOrderHistoryList![index]
-                                  .orderId ??
-                                  "";
+                              Get.parameters["orderId"] =
+                                  ordersHomeMainController
+                                          .ownerOrderHistoryList![index]
+                                          .orderId ??
+                                      "";
                               ordersHomeMainController
-                                  .ownerOrderHistoryList![index]
-                                  .orderHistories!
-                                  .first
-                                  .orderStatus!
-                                  .orderStatusName == //"11"
-                                  OrderStatus.returnRequest.statusName
-                                  ? permissionStoreList.any((element) => element.isStoreOwner == true)||
-                                  permissionStoreList
-                                      .any((element) =>
-                                      element.controllers!.any((ele) =>
-                                      ele.controllerKey ==
-                                          PermissionKey.manageReturnRequests.statusName))
-                                  ? Get.to(const MarkReturnOrderScreen(),
-                                  id:pageIdApp.value)
-                                  : Utility.showAlertMessage(
-                                  AlertStringConstants.notAuthorisedToStoreText)
+                                          .ownerOrderHistoryList![index]
+                                          .orderHistories!
+                                          .first
+                                          .orderStatus!
+                                          .orderStatusName == //"11"
+                                      OrderStatus.returnRequest.statusName
+                                  ? permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) ||
+                                          permissionStoreList.any((element) =>
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey
+                                                      .manageReturnRequests
+                                                      .statusName))
+                                      ? Get.to(const MarkReturnOrderScreen(),
+                                          id: pageIdApp.value)
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants
+                                              .notAuthorisedToStoreText)
 
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const MarkReturnOrderScreen(),
-                              // )).then((value) {
-                              //   // ordersController
-                              //   //     .apiGetStoreOrderListApi();
-                              // })
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (_) => const MarkReturnOrderScreen(),
+                                  // )).then((value) {
+                                  //   // ordersController
+                                  //   //     .apiGetStoreOrderListApi();
+                                  // })
                                   /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
@@ -401,20 +405,20 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       .statusName
                                   ? Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const ReturnConfirmOrderScreen(),
-                              ))*/ : ordersHomeMainController
-                                  .ownerOrderHistoryList![index].orderHistories!
-                                  .first
-                                  .orderStatus!
-                                  .orderStatusName == //7
-                                  OrderStatus.cancelled
-                                      .statusName
-                                  ? null:
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const MarkOrderStatusScreen(),
-                              // ));
-                               Get.to(const MarkOrderStatusScreen(),
-                                  id:pageIdApp.value);
-
+                              ))*/
+                                  : ordersHomeMainController
+                                              .ownerOrderHistoryList![index]
+                                              .orderHistories!
+                                              .first
+                                              .orderStatus!
+                                              .orderStatusName == //7
+                                          OrderStatus.cancelled.statusName
+                                      ? null
+                                      :
+                                      // Navigator.of(context).push(MaterialPageRoute(
+                                      //   builder: (_) => const MarkOrderStatusScreen(),
+                                      // ));
+                                      Get.to(const MarkOrderStatusScreen(), id: pageIdApp.value);
 
                               /// ====================================
                             },
@@ -538,7 +542,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                           FontWeight.w600,
                                                       fontSize: 14))
                                             ],
-                                          ), height5SizedBox,
+                                          ),
+                                          height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -552,7 +557,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                           FontWeight.w600,
                                                       fontSize: 14)),
                                               Text(
-                                                  ordersHomeMainController.ownerOrderHistoryList?[index].orderHistories?.first.orderStatus?.orderStatusName?.toTitleCase()??"",
+                                                  ordersHomeMainController
+                                                          .ownerOrderHistoryList?[
+                                                              index]
+                                                          .orderHistories
+                                                          ?.first
+                                                          .orderStatus
+                                                          ?.orderStatusName
+                                                          ?.toTitleCase() ??
+                                                      "",
                                                   style: const TextStyle(
                                                       color: AppColors.green,
                                                       fontWeight:
@@ -560,7 +573,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                       fontSize: 14))
                                             ],
                                           ),
-                                         /* height5SizedBox,
+                                          /* height5SizedBox,
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

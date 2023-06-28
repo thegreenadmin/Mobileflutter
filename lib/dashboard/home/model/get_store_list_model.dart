@@ -1,14 +1,16 @@
+import 'model.dart';
+
 class GetStoreListModel {
   int? status;
   String? message;
-  Data? data;
+  StoreListData? data;
 
   GetStoreListModel({this.status, this.message, this.data});
 
   GetStoreListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? StoreListData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +24,12 @@ class GetStoreListModel {
   }
 }
 
-class Data {
+class StoreListData {
   List<Stores>? stores;
 
-  Data({this.stores});
+  StoreListData({this.stores});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  StoreListData.fromJson(Map<String, dynamic> json) {
     if (json['stores'] != null) {
       stores = <Stores>[];
       json['stores'].forEach((v) {
@@ -47,8 +49,8 @@ class Data {
 
 class Stores {
   String? storeId;
-  Image? image;
-  Image? logo;
+  Images? image;
+  Images? logo;
   String? storeName;
   String? storeEin;
   List<StoreAddresses>? storeAddresses;
@@ -63,8 +65,8 @@ class Stores {
 
   Stores.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
-    image = json['image'] != null ? new Image.fromJson(json['image']) : null;
-    logo = json['logo'] != null ? new Image.fromJson(json['logo']) : null;
+    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
+    logo = json['logo'] != null ? new Images.fromJson(json['logo']) : null;
     storeName = json['store_name'];
     storeEin = json['store_ein'];
     if (json['store_addresses'] != null) {
@@ -94,7 +96,7 @@ class Stores {
   }
 }
 
-class Image {
+/*class Image {
   String? orignalUrl;
   String? dynamicUrl;
 
@@ -111,74 +113,4 @@ class Image {
     data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
-}
-
-class StoreAddresses {
-  String? storeAddressId;
-  String? addressName;
-  dynamic longitude;
-  dynamic latitude;
-  String? addressLine1;
-  String? addressLine2;
-  String? landmark;
-  String? city;
-  State? state;
-
-  StoreAddresses(
-      {this.storeAddressId,
-      this.addressName,
-      this.longitude,
-      this.latitude,
-      this.addressLine1,
-      this.addressLine2,
-      this.landmark,
-      this.city,
-      this.state});
-
-  StoreAddresses.fromJson(Map<String, dynamic> json) {
-    storeAddressId = json['store_address_id'];
-    addressName = json['address_name'];
-    longitude = json['longitude'];
-    latitude = json['latitude'];
-    addressLine1 = json['address_line_1'];
-    addressLine2 = json['address_line_2'];
-    landmark = json['landmark'];
-    city = json['city'];
-    state = json['state'] != null ? new State.fromJson(json['state']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_address_id'] = this.storeAddressId;
-    data['address_name'] = this.addressName;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
-    }
-    return data;
-  }
-}
-
-class State {
-  String? stateId;
-  String? stateName;
-
-  State({this.stateId, this.stateName});
-
-  State.fromJson(Map<String, dynamic> json) {
-    stateId = json['state_id'];
-    stateName = json['state_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state_id'] = this.stateId;
-    data['state_name'] = this.stateName;
-    return data;
-  }
-}
+}*/

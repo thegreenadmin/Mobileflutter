@@ -1,14 +1,17 @@
+import 'model.dart';
+
 class GetUserOfferModel {
   dynamic status;
   String? message;
-  Data? data;
+  GetUserOfferData? data;
 
   GetUserOfferModel({this.status, this.message, this.data});
 
   GetUserOfferModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? GetUserOfferData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,18 +25,18 @@ class GetUserOfferModel {
   }
 }
 
-class Data {
+class GetUserOfferData {
   dynamic totalCount;
-  List<Offers>? offers;
+  List<UserOffers>? offers;
 
-  Data({this.totalCount, this.offers});
+  GetUserOfferData({this.totalCount, this.offers});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetUserOfferData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['offers'] != null) {
-      offers = <Offers>[];
+      offers = <UserOffers>[];
       json['offers'].forEach((v) {
-        offers!.add(Offers.fromJson(v));
+        offers!.add(UserOffers.fromJson(v));
       });
     }
   }
@@ -48,8 +51,8 @@ class Data {
   }
 }
 
-class Offers {
-  Image? image;
+class UserOffers {
+  Images? image;
   String? offerId;
   String? storeId;
   bool? isOfferForStore;
@@ -62,7 +65,7 @@ class Offers {
   String? createdAt;
   String? updatedAt;
 
-  Offers(
+  UserOffers(
       {this.image,
       this.offerId,
       this.storeId,
@@ -76,8 +79,8 @@ class Offers {
       this.createdAt,
       this.updatedAt});
 
-  Offers.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? Image.fromJson(json['image']) : null;
+  UserOffers.fromJson(Map<String, dynamic> json) {
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     storeId = json['store_id'];
     isOfferForStore = json['is_offer_for_store'];
@@ -107,25 +110,6 @@ class Offers {
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
-    return data;
-  }
-}
-
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({this.orignalUrl, this.dynamicUrl});
-
-  Image.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

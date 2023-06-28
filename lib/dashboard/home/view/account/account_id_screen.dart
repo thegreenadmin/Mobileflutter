@@ -1,12 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class AccountIdScreen extends StatefulWidget {
   const AccountIdScreen({super.key});
@@ -21,7 +16,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.back(id:pageIdApp.value);
+        Get.back(id: pageIdApp.value);
         return false;
       },
       child: Scaffold(
@@ -30,7 +25,8 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
             child: Container(
               color: AppColors.primarylight,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
@@ -43,9 +39,9 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    Get.back(id:pageIdApp.value);
+                                    Get.back(id: pageIdApp.value);
                                     //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                  // Navigator.of(context).pop();
+                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

@@ -4,14 +4,7 @@ import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart'
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
-
-import '../../../utils/global_share_data.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});

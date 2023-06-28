@@ -1,14 +1,14 @@
 class GetStoreControllerModel {
   int? status;
   String? message;
-  Data? data;
+  StoreControllerData? data;
 
   GetStoreControllerModel({this.status, this.message, this.data});
 
   GetStoreControllerModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? StoreControllerData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +22,12 @@ class GetStoreControllerModel {
   }
 }
 
-class Data {
+class StoreControllerData {
   List<Modules>? modules;
 
-  Data({this.modules});
+  StoreControllerData({this.modules});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  StoreControllerData.fromJson(Map<String, dynamic> json) {
     if (json['modules'] != null) {
       modules = <Modules>[];
       json['modules'].forEach((v) {

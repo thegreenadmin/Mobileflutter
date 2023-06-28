@@ -10,13 +10,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/tool_tip.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddToOrderScreen extends StatefulWidget {
@@ -1179,8 +1173,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ?.product
                                   ?.productCategories
                                   ?.first
-                                  .category
-                                  ?.categoryName ??
+                                  .category?.categoryName ??
                               ""
                           : "NA"),
                   height20SizedBox,

@@ -1,11 +1,11 @@
 class UpdateUserDeatilRequestModel {
-  User? user;
+  UpdateUser? user;
   Address? address;
 
   UpdateUserDeatilRequestModel({this.user, this.address});
 
   UpdateUserDeatilRequestModel.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    user = json['user'] != null ? UpdateUser.fromJson(json['user']) : null;
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
   }
@@ -22,14 +22,14 @@ class UpdateUserDeatilRequestModel {
   }
 }
 
-class User {
+class UpdateUser {
   String? firstName;
   String? lastName;
   String? nickName;
 
-  User({this.firstName, this.lastName, this.nickName});
+  UpdateUser({this.firstName, this.lastName, this.nickName});
 
-  User.fromJson(Map<String, dynamic> json) {
+  UpdateUser.fromJson(Map<String, dynamic> json) {
     firstName = json['first_name'];
     lastName = json['last_name'];
     nickName = json['nick_name'];

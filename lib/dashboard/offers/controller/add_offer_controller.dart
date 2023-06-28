@@ -1,23 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:http_parser/http_parser.dart' show MediaType;
+
+import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/add_offer_request_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_offer_detail_model.dart';
-import 'package:thegreenmall/dashboard/offers/model/get_store_non_offer_product_model.dart';
+import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_picker.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-import 'package:dio/dio.dart' as mdio;
 
 class AddOffersController extends GetxController {
   TextEditingController offerNameTextController = TextEditingController();
@@ -45,7 +38,7 @@ class AddOffersController extends GetxController {
   RxList<dynamic> selectedProducts = <dynamic>[].obs;
   late GetStoreNonOfferProductList getStoreProductList =
       GetStoreNonOfferProductList();
-  RxList<ProductsList> storeProductList = <ProductsList>[].obs;
+  RxList<NonOfferProductsList> storeProductList = <NonOfferProductsList>[].obs;
 
   late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
@@ -55,8 +48,6 @@ class AddOffersController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      // Get.back();
-//Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -66,12 +57,8 @@ class AddOffersController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-//Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,

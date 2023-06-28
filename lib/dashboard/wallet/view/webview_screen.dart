@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewExample extends StatefulWidget {

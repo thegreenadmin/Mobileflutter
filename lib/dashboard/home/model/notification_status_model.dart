@@ -1,14 +1,14 @@
 class NotificationStatusModel {
   int? status;
   String? message;
-  Data? data;
+  NotificationStatusData? data;
 
   NotificationStatusModel({this.status, this.message, this.data});
 
   NotificationStatusModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new NotificationStatusData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,12 +22,12 @@ class NotificationStatusModel {
   }
 }
 
-class Data {
+class NotificationStatusData {
   List<NotificationSettings>? notificationSettings;
 
-  Data({this.notificationSettings});
+  NotificationStatusData({this.notificationSettings});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  NotificationStatusData.fromJson(Map<String, dynamic> json) {
     if (json['notification_settings'] != null) {
       notificationSettings = <NotificationSettings>[];
       json['notification_settings'].forEach((v) {

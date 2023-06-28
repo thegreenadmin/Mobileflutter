@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'model.dart';
+
 CartListResponse cartListResponseFromJson(String str) =>
     CartListResponse.fromJson(json.decode(str));
 
@@ -19,12 +21,12 @@ class CartListResponse {
 
   dynamic status;
   String? message;
-  Data? data;
+  CartListData? data;
 
   CartListResponse copyWith({
     dynamic status,
     String? message,
-    Data? data,
+    CartListData? data,
   }) =>
       CartListResponse(
         status: status ?? this.status,
@@ -36,7 +38,7 @@ class CartListResponse {
       CartListResponse(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : CartListData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,8 +48,8 @@ class CartListResponse {
       };
 }
 
-class Data {
-  Data({
+class CartListData {
+  CartListData({
     this.cartTotalPrice,
     this.cartSubTotal,
     this.cartTotalDiscount,
@@ -71,7 +73,7 @@ class Data {
   bool? isOrderDeliverable;
   List<CartItem>? cartItems;
 
-  Data copyWith({
+  CartListData copyWith({
     double? cartTotalPrice,
     dynamic cartSubTotal,
     double? cartTotalDiscount,
@@ -83,7 +85,7 @@ class Data {
     bool? isOrderDeliverable,
     List<CartItem>? cartItems,
   }) =>
-      Data(
+      CartListData(
         storeId: storeId ?? this.storeId,
         cartTotalPrice: cartTotalPrice ?? this.cartTotalPrice,
         cartSubTotal: cartSubTotal ?? this.cartSubTotal,
@@ -98,7 +100,7 @@ class Data {
         cartItems: cartItems ?? this.cartItems,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory CartListData.fromJson(Map<String, dynamic> json) => CartListData(
         storeId: json["store_id"],
         cartTotalPrice: json["cart_total_price"]?.toDouble(),
         cartSubTotal: json["cart_sub_total"],
@@ -147,7 +149,7 @@ class CartItem {
   double? totalPrice;
   double? totalDiscount;
   dynamic offer;
-  Product? product;
+  CartListProduct? product;
 
   CartItem copyWith({
     String? cartItemId,
@@ -156,7 +158,7 @@ class CartItem {
     double? totalPrice,
     double? totalDiscount,
     dynamic offer,
-    Product? product,
+    CartListProduct? product,
   }) =>
       CartItem(
         cartItemId: cartItemId ?? this.cartItemId,
@@ -175,8 +177,9 @@ class CartItem {
         totalPrice: json["total_price"]?.toDouble(),
         totalDiscount: json["total_discount"]?.toDouble(),
         offer: json["offer"],
-        product:
-            json["product"] == null ? null : Product.fromJson(json["product"]),
+        product: json["product"] == null
+            ? null
+            : CartListProduct.fromJson(json["product"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -190,8 +193,8 @@ class CartItem {
       };
 }
 
-class Product {
-  Product({
+class CartListProduct {
+  CartListProduct({
     this.productId,
     this.image,
     this.storeId,
@@ -217,7 +220,7 @@ class Product {
   });
 
   String? productId;
-  Image? image;
+  Images? image;
   String? storeId;
   String? quantityTypeId;
   dynamic quantity;
@@ -239,9 +242,9 @@ class Product {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Product copyWith({
+  CartListProduct copyWith({
     String? productId,
-    Image? image,
+    Images? image,
     String? storeId,
     String? quantityTypeId,
     dynamic quantity,
@@ -263,7 +266,7 @@ class Product {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
-      Product(
+      CartListProduct(
         productId: productId ?? this.productId,
         image: image ?? this.image,
         storeId: storeId ?? this.storeId,
@@ -288,9 +291,10 @@ class Product {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory CartListProduct.fromJson(Map<String, dynamic> json) =>
+      CartListProduct(
         productId: json["product_id"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        image: json["image"] == null ? null : Images.fromJson(json["image"]),
         storeId: json["store_id"],
         quantityTypeId: json["quantity_type_id"],
         quantity: json["quantity"],
@@ -340,34 +344,5 @@ class Product {
         "status": status,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-      };
-}
-
-class Image {
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  dynamic orignalUrl;
-  dynamic dynamicUrl;
-
-  Image copyWith({
-    dynamic orignalUrl,
-    dynamic dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        orignalUrl: json["orignal_url"],
-        dynamicUrl: json["dynamic_url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "orignal_url": orignalUrl,
-        "dynamic_url": dynamicUrl,
       };
 }

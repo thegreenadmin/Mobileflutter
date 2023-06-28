@@ -4,14 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -187,9 +180,9 @@ class _CartScreenState extends State<CartScreen> {
                                                         null &&
                                                     storeHomeMainController
                                                         .cartItems[i]
-                                                        .product
-                                                        ?.image!
-                                                        .dynamicUrl
+                                                        .product!
+                                                        .image!
+                                                        .dynamicUrl!
                                                         .isNotEmpty
                                                 ? Image.network(
                                                     storeHomeMainController

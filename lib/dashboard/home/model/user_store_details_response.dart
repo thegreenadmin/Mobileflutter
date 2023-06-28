@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'model.dart';
+
 StoreDetailsResponse storeDetailsResponseFromJson(String str) =>
     StoreDetailsResponse.fromJson(json.decode(str));
 
@@ -13,7 +15,7 @@ String storeDetailsResponseToJson(StoreDetailsResponse data) =>
 class StoreDetailsResponse {
   dynamic status;
   String? message;
-  Data? data;
+  StoreDetails? data;
 
   StoreDetailsResponse({
     this.status,
@@ -24,7 +26,7 @@ class StoreDetailsResponse {
   StoreDetailsResponse copyWith({
     dynamic status,
     String? message,
-    Data? data,
+    StoreDetails? data,
   }) =>
       StoreDetailsResponse(
         status: status ?? this.status,
@@ -36,7 +38,7 @@ class StoreDetailsResponse {
       StoreDetailsResponse(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : StoreDetails.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,21 +48,21 @@ class StoreDetailsResponse {
       };
 }
 
-class Data {
+class StoreDetails {
   Store? store;
 
-  Data({
+  StoreDetails({
     this.store,
   });
 
-  Data copyWith({
+  StoreDetails copyWith({
     Store? store,
   }) =>
-      Data(
+      StoreDetails(
         store: store ?? this.store,
       );
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory StoreDetails.fromJson(Map<String, dynamic> json) => StoreDetails(
         store: json["store"] == null ? null : Store.fromJson(json["store"]),
       );
 
@@ -70,8 +72,8 @@ class Data {
 }
 
 class Store {
-  Image? image;
-  Image? logo;
+  Images? image;
+  Images? logo;
   bool? isFavouriteStore;
   String? storeId;
   String? storeName;
@@ -111,8 +113,8 @@ class Store {
   });
 
   Store copyWith({
-    Image? image,
-    Image? logo,
+    Images? image,
+    Images? logo,
     bool? isFavouriteStore,
     String? storeId,
     String? storeName,
@@ -153,8 +155,8 @@ class Store {
       );
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
-        logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
+        image: json["image"] == null ? null : Images.fromJson(json["image"]),
+        logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
         isFavouriteStore: json["is_favourite_store"],
         storeId: json["store_id"],
         storeName: json["store_name"],
@@ -215,224 +217,10 @@ class Store {
       };
 }
 
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  Image copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        orignalUrl: json["orignal_url"],
-        dynamicUrl: json["dynamic_url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "orignal_url": orignalUrl,
-        "dynamic_url": dynamicUrl,
-      };
-}
-
-class StoreAddress {
-  String? storeAddressId;
-  String? addressName;
-  dynamic longitude;
-  dynamic latitude;
-  String? addressLine1;
-  String? addressLine2;
-  String? landmark;
-  String? city;
-  String? postalCode;
-  State? state;
-
-  StoreAddress({
-    this.storeAddressId,
-    this.addressName,
-    this.longitude,
-    this.latitude,
-    this.addressLine1,
-    this.addressLine2,
-    this.landmark,
-    this.city,
-    this.postalCode,
-    this.state,
-  });
-
-  StoreAddress copyWith({
-    String? storeAddressId,
-    String? addressName,
-    dynamic longitude,
-    dynamic latitude,
-    String? addressLine1,
-    String? addressLine2,
-    String? landmark,
-    String? city,
-    String? postalCode,
-    State? state,
-  }) =>
-      StoreAddress(
-        storeAddressId: storeAddressId ?? this.storeAddressId,
-        addressName: addressName ?? this.addressName,
-        longitude: longitude ?? this.longitude,
-        latitude: latitude ?? this.latitude,
-        addressLine1: addressLine1 ?? this.addressLine1,
-        addressLine2: addressLine2 ?? this.addressLine2,
-        landmark: landmark ?? this.landmark,
-        city: city ?? this.city,
-        postalCode: postalCode ?? this.postalCode,
-        state: state ?? this.state,
-      );
-
-  factory StoreAddress.fromJson(Map<String, dynamic> json) => StoreAddress(
-        storeAddressId: json["store_address_id"],
-        addressName: json["address_name"],
-        longitude: json["longitude"]?.toDouble(),
-        latitude: json["latitude"]?.toDouble(),
-        addressLine1: json["address_line_1"],
-        addressLine2: json["address_line_2"],
-        landmark: json["landmark"],
-        city: json["city"],
-        postalCode: json["postal_code"],
-        state: json["state"] == null ? null : State.fromJson(json["state"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "store_address_id": storeAddressId,
-        "address_name": addressName,
-        "longitude": longitude,
-        "latitude": latitude,
-        "address_line_1": addressLine1,
-        "address_line_2": addressLine2,
-        "landmark": landmark,
-        "city": city,
-        "postal_code": postalCode,
-        "state": state?.toJson(),
-      };
-}
-
-class State {
-  String? stateId;
-  String? stateName;
-  Country? country;
-
-  State({
-    this.stateId,
-    this.stateName,
-    this.country,
-  });
-
-  State copyWith({
-    String? stateId,
-    String? stateName,
-    Country? country,
-  }) =>
-      State(
-        stateId: stateId ?? this.stateId,
-        stateName: stateName ?? this.stateName,
-        country: country ?? this.country,
-      );
-
-  factory State.fromJson(Map<String, dynamic> json) => State(
-        stateId: json["state_id"],
-        stateName: json["state_name"],
-        country:
-            json["country"] == null ? null : Country.fromJson(json["country"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "state_id": stateId,
-        "state_name": stateName,
-        "country": country?.toJson(),
-      };
-}
-
-class Country {
-  String? countryId;
-  String? countryName;
-
-  Country({
-    this.countryId,
-    this.countryName,
-  });
-
-  Country copyWith({
-    String? countryId,
-    String? countryName,
-  }) =>
-      Country(
-        countryId: countryId ?? this.countryId,
-        countryName: countryName ?? this.countryName,
-      );
-
-  factory Country.fromJson(Map<String, dynamic> json) => Country(
-        countryId: json["country_id"],
-        countryName: json["country_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "country_id": countryId,
-        "country_name": countryName,
-      };
-}
-
-class StoreDeliveryService {
-  String? storeDeliveryServiceId;
-  String? deliveryServiceId;
-  bool? isEnabled;
-  String? status;
-
-  StoreDeliveryService({
-    this.storeDeliveryServiceId,
-    this.deliveryServiceId,
-    this.isEnabled,
-    this.status,
-  });
-
-  StoreDeliveryService copyWith({
-    String? storeDeliveryServiceId,
-    String? deliveryServiceId,
-    bool? isEnabled,
-    String? status,
-  }) =>
-      StoreDeliveryService(
-        storeDeliveryServiceId:
-            storeDeliveryServiceId ?? this.storeDeliveryServiceId,
-        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
-        isEnabled: isEnabled ?? this.isEnabled,
-        status: status ?? this.status,
-      );
-
-  factory StoreDeliveryService.fromJson(Map<String, dynamic> json) =>
-      StoreDeliveryService(
-        storeDeliveryServiceId: json["store_delivery_service_id"],
-        deliveryServiceId: json["delivery_service_id"],
-        isEnabled: json["is_enabled"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "store_delivery_service_id": storeDeliveryServiceId,
-        "delivery_service_id": deliveryServiceId,
-        "is_enabled": isEnabled,
-        "status": status,
-      };
-}
-
 class StorePage {
   String? storeId;
   String? storePageType;
-  Image? storePageContent;
+  Images? storePageContent;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -451,7 +239,7 @@ class StorePage {
   StorePage copyWith({
     String? storeId,
     String? storePageType,
-    Image? storePageContent,
+    Images? storePageContent,
     String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -472,7 +260,7 @@ class StorePage {
         storePageType: json["store_page_type"],
         storePageContent: json["store_page_content"] == null
             ? null
-            : Image.fromJson(json["store_page_content"]),
+            : Images.fromJson(json["store_page_content"]),
         status: json["status"],
         createdAt: json["createdAt"] == null
             ? null
@@ -491,58 +279,5 @@ class StorePage {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "store_page_id": storePageId,
-      };
-}
-
-class StoreTiming {
-  String? storeTimingId;
-  bool? is24HoursActive;
-  dynamic dayOfWeek;
-  String? openingTime;
-  String? closingTime;
-  String? status;
-
-  StoreTiming({
-    this.storeTimingId,
-    this.is24HoursActive,
-    this.dayOfWeek,
-    this.openingTime,
-    this.closingTime,
-    this.status,
-  });
-
-  StoreTiming copyWith({
-    String? storeTimingId,
-    bool? is24HoursActive,
-    dynamic dayOfWeek,
-    String? openingTime,
-    String? closingTime,
-    String? status,
-  }) =>
-      StoreTiming(
-        storeTimingId: storeTimingId ?? this.storeTimingId,
-        is24HoursActive: is24HoursActive ?? this.is24HoursActive,
-        dayOfWeek: dayOfWeek ?? this.dayOfWeek,
-        openingTime: openingTime ?? this.openingTime,
-        closingTime: closingTime ?? this.closingTime,
-        status: status ?? this.status,
-      );
-
-  factory StoreTiming.fromJson(Map<String, dynamic> json) => StoreTiming(
-        storeTimingId: json["store_timing_id"],
-        is24HoursActive: json["is_24_hours_active"],
-        dayOfWeek: json["day_of_week"],
-        openingTime: json["opening_time"],
-        closingTime: json["closing_time"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "store_timing_id": storeTimingId,
-        "is_24_hours_active": is24HoursActive,
-        "day_of_week": dayOfWeek,
-        "opening_time": openingTime,
-        "closing_time": closingTime,
-        "status": status,
       };
 }

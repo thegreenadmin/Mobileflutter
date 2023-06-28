@@ -1,14 +1,17 @@
+import 'offers_model.dart';
+
 class GetOwnerOffersListModel {
   int? status;
   String? message;
-  Data? data;
+  GetOwnerOffersData? data;
 
   GetOwnerOffersListModel({this.status, this.message, this.data});
 
   GetOwnerOffersListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? GetOwnerOffersData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +25,13 @@ class GetOwnerOffersListModel {
   }
 }
 
-class Data {
+class GetOwnerOffersData {
   int? totalCount;
   List<OffersList>? offers;
 
-  Data({this.totalCount, this.offers});
+  GetOwnerOffersData({this.totalCount, this.offers});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  GetOwnerOffersData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['offers'] != null) {
       offers = <OffersList>[];
@@ -97,25 +100,6 @@ class OffersList {
     if (store != null) {
       data['store'] = store!.toJson();
     }
-    return data;
-  }
-}
-
-class Image {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image({this.orignalUrl, this.dynamicUrl});
-
-  Image.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
@@ -201,50 +185,6 @@ class StoreAddresse {
     if (state != null) {
       data['state'] = state!.toJson();
     }
-    return data;
-  }
-}
-
-class State {
-  String? stateId;
-  String? stateName;
-  Country? country;
-
-  State({this.stateId, this.stateName, this.country});
-
-  State.fromJson(Map<String, dynamic> json) {
-    stateId = json['state_id'];
-    stateName = json['state_name'];
-    country =
-        json['country'] != null ? Country.fromJson(json['country']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['state_id'] = stateId;
-    data['state_name'] = stateName;
-    if (country != null) {
-      data['country'] = country!.toJson();
-    }
-    return data;
-  }
-}
-
-class Country {
-  String? countryId;
-  String? countryName;
-
-  Country({countryId, countryName});
-
-  Country.fromJson(Map<String, dynamic> json) {
-    countryId = json['country_id'];
-    countryName = json['country_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['country_id'] = countryId;
-    data['country_name'] = countryName;
     return data;
   }
 }

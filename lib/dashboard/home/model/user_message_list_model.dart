@@ -1,14 +1,18 @@
+import 'model.dart';
+
 class UserMessageListModel {
   int? status;
   String? message;
-  Data? data;
+  UserMessageListData? data;
 
   UserMessageListModel({this.status, this.message, this.data});
 
   UserMessageListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? UserMessageListData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +26,13 @@ class UserMessageListModel {
   }
 }
 
-class Data {
+class UserMessageListData {
   int? totalCount;
   List<Messages>? messages;
 
-  Data({this.totalCount, this.messages});
+  UserMessageListData({this.totalCount, this.messages});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserMessageListData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['messages'] != null) {
       messages = <Messages>[];
@@ -103,25 +107,6 @@ class Messages {
     if (image != null) {
       data['image'] = image!.toJson();
     }
-    return data;
-  }
-}
-
-class Images {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Images({orignalUrl, dynamicUrl});
-
-  Images.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }
