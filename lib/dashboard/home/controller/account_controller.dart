@@ -8,9 +8,8 @@ import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
-import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class AccountController extends GetxController {
@@ -493,7 +492,7 @@ class AccountController extends GetxController {
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
+        await Get.offAll(const StartJourneyScreen());
         // await Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
