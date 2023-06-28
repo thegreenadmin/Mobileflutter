@@ -39,11 +39,6 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
       )
       ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
-    getData();
-  }
-
-  getData() async {
-    pageId = await SharedPreferenceStorage.getData("pageId");
   }
 
   // #docregion webview_widget
