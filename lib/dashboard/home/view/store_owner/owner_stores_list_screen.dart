@@ -152,8 +152,12 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 confirmDismiss:
                                     (DismissDirection direction) async {
                                   permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
-                                          permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) &&
+                                      permissionStoreList.any((element) =>
+                                      element.storeId ==
+                                          ownerStoresController
+                                              .storeList[index].storeId
+                                              .toString() &&
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey

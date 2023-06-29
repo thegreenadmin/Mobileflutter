@@ -114,8 +114,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       // ));
 
                       permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) ||
+                                  (element) => element.isStoreOwner == true) &&
                               permissionStoreList.any((element) =>
+                                  element.storeId ==
+                                      addNewWorkerController.storeId.value
+                                          .toString() &&
                                   element.controllers!.any((ele) =>
                                       ele.controllerKey ==
                                       PermissionKey.createUser.statusName))
@@ -211,9 +214,12 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true) ||
+                              permissionStoreList.any((element) => element.isStoreOwner == true) &&
                                       permissionStoreList.any((element) =>
+                                          element.storeId ==
+                                              addNewWorkerController
+                                                  .storeId.value
+                                                  .toString() &&
                                           element.controllers!.any((ele) =>
                                               ele.controllerKey ==
                                               PermissionKey
@@ -228,8 +234,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                               .toString();
                                       addNewWorkerController.apiDeleteWorker();
                                     })
-                                  : Utility.showAlertMessage(AlertStringConstants
-                                      .notAuthorisedToStoreText);
+                                  : Utility.showAlertMessage(
+                                      AlertStringConstants.notAuthorisedToStoreText);
                               return null;
                             },
                             child: InkWell(
@@ -244,17 +250,20 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 permissionStoreList.any((element) =>
-                                            element.isStoreOwner == true) ||
+                                            element.isStoreOwner == true) &&
                                         permissionStoreList.any((element) =>
+                                            element.storeId ==
+                                                addNewWorkerController
+                                                    .storeId.value
+                                                    .toString() &&
                                             element.controllers!.any((ele) =>
                                                 ele.controllerKey ==
                                                 PermissionKey
                                                     .editStoreUsers.statusName))
                                     ? Get.to(() => const EditWorkerScreen(),
                                         id: pageIdApp.value)
-                                    : Utility.showAlertMessage(
-                                        AlertStringConstants
-                                            .notAuthorisedToStoreText);
+                                    : Utility.showAlertMessage(AlertStringConstants
+                                        .notAuthorisedToStoreText);
 
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();

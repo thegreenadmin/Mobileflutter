@@ -100,8 +100,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       // ));
 
                       permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) ||
-                              permissionStoreList.any((element) =>
+                                  (element) => element.isStoreOwner == true) &&
+                          permissionStoreList.any((element) =>
+                          element.storeId ==
+                              manageStoreController.storeId.value
+                                  .toString() &&
                                   element.controllers!.any((ele) =>
                                       ele.controllerKey ==
                                       PermissionKey.createProduct.statusName))
@@ -207,8 +210,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
                               permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true) ||
-                                      permissionStoreList.any((element) =>
+                                          element.isStoreOwner == true)  &&
+                                  permissionStoreList.any((element) =>
+                                  element.storeId ==
+                                      manageStoreController.storeId.value
+                                          .toString() &&
                                           element.controllers!.any((ele) =>
                                               ele.controllerKey ==
                                               PermissionKey
@@ -254,8 +260,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   //   builder: (_) => const EditProductScreen(),
                                   // ))
                                   permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
-                                          permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true)  &&
+                                      permissionStoreList.any((element) =>
+                                      element.storeId ==
+                                          manageStoreController.storeId.value
+                                              .toString() &&
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey

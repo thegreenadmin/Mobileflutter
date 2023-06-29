@@ -98,14 +98,21 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         //       builder: (_) => const AddNewRoleScreen(),
                         //     ))
                         permissionStoreList.any((element) =>
-                        element.isStoreOwner==true )
-                            || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                        ele.controllerKey == PermissionKey.assignDesignationUser.statusName))
-                            ?  Get.to(const AddNewRoleScreen(),
-                            id:pageIdApp.value )!
-                            .then((value) =>
-                            addNewRoleController.apiGetStoreRole())
-                            : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                    element.isStoreOwner == true) &&
+                                permissionStoreList.any((element) =>
+                                    element.storeId ==
+                                        addNewRoleController.storeId.value
+                                            .toString() &&
+                                    element.controllers!.any((ele) =>
+                                        ele.controllerKey ==
+                                        PermissionKey
+                                            .assignDesignationUser.statusName))
+                            ? Get.to(const AddNewRoleScreen(),
+                                    id: pageIdApp.value)!
+                                .then((value) =>
+                                    addNewRoleController.apiGetStoreRole())
+                            : Utility.showAlertMessage(
+                                AlertStringConstants.notAuthorisedToStoreText);
                       },
                       child: Row(
                         children: [
@@ -117,10 +124,10 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                           width2SizedBox,
                           Text(
                             StringConstants.addNewRoleText,
-                           style: const TextStyle(
-                              fontSize: 15.0,
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                fontSize: 15.0,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ))
@@ -181,25 +188,33 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        permissionStoreList.any((element) =>
-                                        element.isStoreOwner==true )
-                                            || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                                        ele.controllerKey == PermissionKey.editDesignation.statusName))
-                                            ?  Utility.showConfirmAlertMessage(
-                                            AlertStringConstants.areYouSureText,
-                                            okay: StringConstants.deleteText,
-                                            okayTap: () {
-                                              // Navigator.pop(Get.context!);
-                                              addNewRoleController.roleId.value =
-                                                  addNewRoleController
-                                                      .storeRoleList[index].roleId
-                                                      .toString();
-                                              addNewRoleController
-                                                  .apiDeleteRole(context);
-                                            })
+                                        permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                                                permissionStoreList.any((element) =>
+                                                    element.storeId ==
+                                                        addNewRoleController
+                                                            .storeId.value
+                                                            .toString() &&
+                                                    element.controllers!.any((ele) =>
+                                                        ele.controllerKey ==
+                                                        PermissionKey
+                                                            .editDesignation
+                                                            .statusName))
+                                            ? Utility.showConfirmAlertMessage(
+                                                AlertStringConstants
+                                                    .areYouSureText,
+                                                okay: StringConstants.deleteText,
+                                                okayTap: () {
+                                                // Navigator.pop(Get.context!);
+                                                addNewRoleController
+                                                        .roleId.value =
+                                                    addNewRoleController
+                                                        .storeRoleList[index]
+                                                        .roleId
+                                                        .toString();
+                                                addNewRoleController
+                                                    .apiDeleteRole(context);
+                                              })
                                             : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
-
 
                                         // addNewRoleController.roleId.value =
                                         //     addNewRoleController
@@ -233,18 +248,22 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         //           const EditRoleScreen(),
                                         //     ))
 
-                                        permissionStoreList.any((element) =>
-                                        element.isStoreOwner==true )
-                                            || permissionStoreList.any((element) => element.controllers!.any((ele) =>
-                                        ele.controllerKey == PermissionKey.editDesignation.statusName))
+                                        permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                                                permissionStoreList.any((element) =>
+                                                    element.storeId ==
+                                                        addNewRoleController
+                                                            .storeId.value
+                                                            .toString() &&
+                                                    element.controllers!.any((ele) =>
+                                                        ele.controllerKey ==
+                                                        PermissionKey
+                                                            .editDesignation
+                                                            .statusName))
                                             ? Get.to(const EditRoleScreen(),
-                                            id:pageIdApp.value )!
-                                            .then((value) =>
-                                            addNewRoleController
-                                                .apiGetStoreRole())
+                                                    id: pageIdApp.value)!
+                                                .then((value) => addNewRoleController
+                                                    .apiGetStoreRole())
                                             : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
-
-
                                       },
                                       child: Padding(
                                         padding:

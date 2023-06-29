@@ -500,8 +500,14 @@ class _OffersScreenState extends State<OffersScreen> {
                                 confirmDismiss:
                                     (DismissDirection direction) async {
                                   permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
-                                          permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) &&
+                                      permissionStoreList.any((element) =>
+                                      element.storeId ==
+                                          offersController
+                                              .getOwnerOfferlist[
+                                          index]
+                                              .store!
+                                              .storeId  &&
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey
@@ -679,8 +685,14 @@ class _OffersScreenState extends State<OffersScreen> {
 
                                                   permissionStoreList.any((element) =>
                                                               element.isStoreOwner ==
-                                                              true) ||
-                                                          permissionStoreList.any((element) => element
+                                                              true) &&
+                                                      permissionStoreList.any((element) =>
+                                                      element.storeId ==
+                                                          offersController
+                                                              .getOwnerOfferlist[
+                                                          index]
+                                                              .store!
+                                                              .storeId  && element
                                                               .controllers!
                                                               .any((ele) =>
                                                                   ele.controllerKey ==

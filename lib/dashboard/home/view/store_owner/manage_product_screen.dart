@@ -212,8 +212,10 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       Get.parameters["categoryId"] = "";
 
                       permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) ||
+                                  (element) => element.isStoreOwner == true) &&
                               permissionStoreList.any((element) =>
+                                  element.storeId ==
+                                      manageStoreController.storeId.value &&
                                   element.controllers!.any((ele) =>
                                       ele.controllerKey ==
                                       PermissionKey
@@ -307,9 +309,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            permissionStoreList.any((element) =>
-                                        element.isStoreOwner == true) ||
+                            permissionStoreList.any((element) => element.isStoreOwner == true) &&
                                     permissionStoreList.any((element) =>
+                                        element.storeId ==
+                                            manageStoreController
+                                                .storeId.value &&
                                         element.controllers!.any((ele) =>
                                             ele.controllerKey ==
                                             PermissionKey.editProductCategories
@@ -326,8 +330,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                             .toString();
                                     manageStoreController.apiDeleteCategory();
                                   })
-                                : Utility.showAlertMessage(
-                                    AlertStringConstants.notAuthorisedToStoreText);
+                                : Utility.showAlertMessage(AlertStringConstants
+                                    .notAuthorisedToStoreText);
 
                             return null;
                           },
@@ -452,15 +456,16 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
 
                                         permissionStoreList.any((element) =>
                                                     element.isStoreOwner ==
-                                                    true) ||
-                                                permissionStoreList.any(
-                                                    (element) => element
-                                                        .controllers!
-                                                        .any((ele) =>
-                                                            ele.controllerKey ==
-                                                            PermissionKey
-                                                                .editProductCategories
-                                                                .statusName))
+                                                    true) &&
+                                                permissionStoreList.any((element) =>
+                                                    element.storeId ==
+                                                        manageStoreController.storeId.value
+                                                            .toString() &&
+                                                    element.controllers!.any((ele) =>
+                                                        ele.controllerKey ==
+                                                        PermissionKey
+                                                            .editProductCategories
+                                                            .statusName))
                                             ? Get.to(const EditCategoryScreen(),
                                                     id: pageIdApp.value,
                                                     arguments: {
@@ -479,8 +484,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .apiGetCategoriesList();
                                               })
                                             : Utility.showAlertMessage(
-                                                AlertStringConstants
-                                                    .notAuthorisedToStoreText);
+                                                AlertStringConstants.notAuthorisedToStoreText);
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4),
