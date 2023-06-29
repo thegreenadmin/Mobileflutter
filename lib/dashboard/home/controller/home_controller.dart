@@ -10,6 +10,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/utils/utils.dart';
+
 class HomeController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
