@@ -44,8 +44,11 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                         ele.controllerKey ==
                         PermissionKey.editStore.statusName)));
                 permissionStoreList
-                            .any((element) => element.isStoreOwner == true) ||
+                            .any((element) => element.isStoreOwner == true) &&
                         permissionStoreList.any((element) =>
+                            element.storeId ==
+                                ownerStoresController.storeId.value
+                                    .toString() &&
                             element.controllers!.any((ele) =>
                                 ele.controllerKey ==
                                 PermissionKey.editStore.statusName))
@@ -279,8 +282,11 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // ));
 
                 permissionStoreList
-                            .any((element) => element.isStoreOwner == true) ||
+                            .any((element) => element.isStoreOwner == true) &&
                         permissionStoreList.any((element) =>
+                            element.storeId ==
+                                ownerStoresController.storeId.value
+                                    .toString() &&
                             element.controllers!.any((ele) =>
                                 ele.controllerKey ==
                                 PermissionKey.viewStoreUsers.statusName))

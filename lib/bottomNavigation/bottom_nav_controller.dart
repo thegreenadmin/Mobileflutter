@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+
 import '../dashboard/home/model/get_store_list_model.dart';
 import '../utils/constants.dart';
 import '../utils/global_share_data.dart';
@@ -62,10 +64,6 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
-    hasPermission.value = permissionStoreList
-            .any((element) => element.isStoreOwner == true) ||
-        permissionStoreList.any((element) => element.controllers!.any((ele) =>
-            ele.controllerKey == PermissionKey.manageOrders.statusName));
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
   }
