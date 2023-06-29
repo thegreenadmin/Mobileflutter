@@ -112,7 +112,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
                               permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true) &&
+                                          element.isStoreOwner == true) ||
                                       permissionStoreList.any((element) =>
                                           element.storeId ==
                                               ordersController

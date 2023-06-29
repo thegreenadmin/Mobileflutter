@@ -212,7 +212,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       Get.parameters["categoryId"] = "";
 
                       permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) &&
+                                  (element) => element.isStoreOwner == true) ||
                               permissionStoreList.any((element) =>
                                   element.storeId ==
                                       manageStoreController.storeId.value &&
@@ -309,7 +309,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                            permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                     permissionStoreList.any((element) =>
                                         element.storeId ==
                                             manageStoreController

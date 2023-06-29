@@ -114,7 +114,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                       // ));
 
                       permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) &&
+                                  (element) => element.isStoreOwner == true) ||
                               permissionStoreList.any((element) =>
                                   element.storeId ==
                                       addNewWorkerController.storeId.value
@@ -214,7 +214,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                             resizeDuration: const Duration(milliseconds: 200),
                             key: UniqueKey(),
                             confirmDismiss: (DismissDirection direction) async {
-                              permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                              permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                       permissionStoreList.any((element) =>
                                           element.storeId ==
                                               addNewWorkerController
@@ -250,7 +250,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                 //   builder: (_) => const EditWorkerScreen(),
                                 // ));
                                 permissionStoreList.any((element) =>
-                                            element.isStoreOwner == true) &&
+                                            element.isStoreOwner == true) ||
                                         permissionStoreList.any((element) =>
                                             element.storeId ==
                                                 addNewWorkerController

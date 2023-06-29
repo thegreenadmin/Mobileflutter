@@ -98,7 +98,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                         //       builder: (_) => const AddNewRoleScreen(),
                         //     ))
                         permissionStoreList.any((element) =>
-                                    element.isStoreOwner == true) &&
+                                    element.isStoreOwner == true) ||
                                 permissionStoreList.any((element) =>
                                     element.storeId ==
                                         addNewRoleController.storeId.value
@@ -188,7 +188,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                                        permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                                 permissionStoreList.any((element) =>
                                                     element.storeId ==
                                                         addNewRoleController
@@ -248,7 +248,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         //           const EditRoleScreen(),
                                         //     ))
 
-                                        permissionStoreList.any((element) => element.isStoreOwner == true) &&
+                                        permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                                 permissionStoreList.any((element) =>
                                                     element.storeId ==
                                                         addNewRoleController

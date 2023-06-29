@@ -375,7 +375,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .orderStatusName == //"11"
                                       OrderStatus.returnRequest.statusName
                                   ? permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) &&
+                                              element.isStoreOwner == true) ||
                                           permissionStoreList.any((element) =>
                                               element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
                                               element.controllers!.any((ele) =>

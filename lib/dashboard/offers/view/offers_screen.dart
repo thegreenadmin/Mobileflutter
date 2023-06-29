@@ -499,15 +499,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) &&
-                                      permissionStoreList.any((element) =>
-                                      element.storeId ==
-                                          offersController
-                                              .getOwnerOfferlist[
-                                          index]
-                                              .store!
-                                              .storeId  &&
+                                  permissionStoreList.any((element) => element.isStoreOwner == true) ||
+                                          permissionStoreList.any((element) =>
+                                              element.storeId ==
+                                                  offersController
+                                                      .getOwnerOfferlist[index]
+                                                      .store!
+                                                      .storeId &&
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey
@@ -531,8 +529,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                           await offersController
                                               .apiDeleteOffer();
                                         })
-                                      : Utility.showAlertMessage(
-                                          AlertStringConstants.notAuthorisedToStoreText);
+                                      : Utility.showAlertMessage(AlertStringConstants
+                                          .notAuthorisedToStoreText);
 
                                   return null;
                                 },
@@ -686,22 +684,20 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   permissionStoreList.any((element) =>
                                                               element.isStoreOwner ==
                                                               true) &&
-                                                      permissionStoreList.any((element) =>
-                                                      element.storeId ==
-                                                          offersController
-                                                              .getOwnerOfferlist[
-                                                          index]
-                                                              .store!
-                                                              .storeId  && element
-                                                              .controllers!
-                                                              .any((ele) =>
+                                                          permissionStoreList.any((element) =>
+                                                              element.storeId ==
+                                                                  offersController
+                                                                      .getOwnerOfferlist[
+                                                                          index]
+                                                                      .store!
+                                                                      .storeId &&
+                                                              element.controllers!.any((ele) =>
                                                                   ele.controllerKey ==
                                                                   PermissionKey
                                                                       .editOffers
                                                                       .statusName))
                                                       ? Get.to(() => const EditOfferScreen(),
-                                                              id: pageIdApp
-                                                                  .value,
+                                                              id: pageIdApp.value,
                                                               arguments: {
                                                               "isFrom":
                                                                   StringConstants
@@ -727,8 +723,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               : offersController
                                                                   .apiGetOwnerOffersList();
                                                         })
-                                                      : Utility.showAlertMessage(
-                                                          AlertStringConstants.notAuthorisedToStoreText);
+                                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
                                                 },
                                                 child: Image.asset(
                                                   ImageConstants.edit,

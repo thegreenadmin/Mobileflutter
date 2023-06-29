@@ -944,28 +944,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                     //   const EditProductScreen(),
                                     // ));
                                     permissionStoreList.any((element) =>
-                                    element.isStoreOwner == true)  &&
-                                        permissionStoreList.any((element) =>
-                                        element.storeId ==
-                                            homeController
-                                                .ownerFeatureProductList[index]
-                                                .storeId &&
-                                            element.controllers!.any((ele) =>
-                                            ele.controllerKey ==
-                                                PermissionKey
-                                                    .editProduct.statusName))
-                                        ?Get.to(() => const EditProductScreen(),
-                                        id: pageIdApp.value,
-                                        arguments: {
-                                          "isFromHome": true,
-                                          'storeId': homeController
-                                              .ownerFeatureProductList[index]
-                                              .storeId
-                                        })
+                                                element.isStoreOwner == true) ||
+                                            permissionStoreList.any((element) =>
+                                                element.storeId ==
+                                                    homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .storeId &&
+                                                element.controllers!.any(
+                                                    (ele) =>
+                                                        ele.controllerKey ==
+                                                        PermissionKey
+                                                            .editProduct
+                                                            .statusName))
+                                        ? Get.to(
+                                            () => const EditProductScreen(),
+                                            id: pageIdApp.value,
+                                            arguments: {
+                                                "isFromHome": true,
+                                                'storeId': homeController
+                                                    .ownerFeatureProductList[
+                                                        index]
+                                                    .storeId
+                                              })
                                         : Utility.showAlertMessage(
-                                        AlertStringConstants
-                                            .notAuthorisedToStoreText);
-
+                                            AlertStringConstants.notAuthorisedToStoreText);
                                   }
                                 },
                                 child: Column(
