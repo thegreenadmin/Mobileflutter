@@ -1157,7 +1157,7 @@ class OrdersController extends GetxController {
   //Cancel Order Api
   Future apiCancelReturnRequestOrder(context) async {
     isLoading.value = true;
-    debugPrint("Cancel Return Request URL**********"
+    debugPrint("CANCEL REQUEST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
 
     Map<String, String> headers = {
@@ -1169,8 +1169,8 @@ class OrdersController extends GetxController {
       "store_id": int.parse(storeId.value),
       "order_id": int.parse(orderStatus.value),
     };
-
-    debugPrint("TOKEN ********** $headers");
+    debugPrint("CANCEL REQUEST BODY ********** $data");
+    debugPrint("CANCEL REQUEST TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
             data,

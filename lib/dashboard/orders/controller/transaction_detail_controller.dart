@@ -90,8 +90,8 @@ class TransactionDetailController extends GetxController {
 
     Map body = {
       "store_id": null,
-      "page": null,
-      "page_size": null,
+      "page": 1,
+      "page_size": 1000,
       "order_by": "order_id",
       "order_type": "DESC",
       "from_date": startDateOfMonth == "" || startDateOfMonth.isEmpty

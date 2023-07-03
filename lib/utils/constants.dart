@@ -173,6 +173,7 @@ class StringConstants {
 
   static String enableStoreText = "Enable Store";
   static String emailText = "Email";
+  static String estimatedDeliveyDateText = "Estimated delivery date";
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
   static String emailUsText = "Email us";

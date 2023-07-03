@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show basename;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
-import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart' as quantity_model;
+import 'package:thegreenmall/dashboard/home/model/quantity_list_response_model.dart'
+    as quantity_model;
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -20,10 +21,12 @@ class ManageStoreController extends GetxController {
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController quantityTextController = TextEditingController();
   TextEditingController pricePerUnitTextController = TextEditingController();
-  TextEditingController shortDescriptionTextController = TextEditingController();
+  TextEditingController shortDescriptionTextController =
+      TextEditingController();
   TextEditingController discountOrOfferTextController = TextEditingController();
   TextEditingController additionalLinkTextController = TextEditingController();
-  TextEditingController contentsAndStrainsTextController = TextEditingController();
+  TextEditingController contentsAndStrainsTextController =
+      TextEditingController();
   TextEditingController lengthTextController = TextEditingController();
   TextEditingController breadthTextController = TextEditingController();
   TextEditingController heightTextController = TextEditingController();
@@ -64,7 +67,8 @@ class ManageStoreController extends GetxController {
   InputAddProduct inputData = InputAddProduct();
   late GetCategoriesModel getCategoriesModel = GetCategoriesModel();
   RxList<StoreCategories> categoriesList = <StoreCategories>[].obs;
-  late quantity_model.QuantityListResponse quantityListResponse = quantity_model.QuantityListResponse();
+  late quantity_model.QuantityListResponse quantityListResponse =
+      quantity_model.QuantityListResponse();
   RxList<QuantityType> quantityTypeList = <QuantityType>[].obs;
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
@@ -94,7 +98,8 @@ class ManageStoreController extends GetxController {
         }
       }
       if (selectedCount >= 5) {
-        return Utility.showAlertMessage(AlertStringConstants.only5MaximumImagesCanSelectText);
+        return Utility.showAlertMessage(
+            AlertStringConstants.only5MaximumImagesCanSelectText);
       }
       //else {
       imageFileList!.addAll(selectedImages);
@@ -110,8 +115,12 @@ class ManageStoreController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+            "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+            "";
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
@@ -172,7 +181,8 @@ class ManageStoreController extends GetxController {
         //       AlertStringConstants.pleaseUploadAtLeastOneImageText);
         // } else
         if (selectedCategories.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectCategoriesText);
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectCategoriesText);
         } else {
           apiCreateProduct(bCntx);
         }
@@ -198,9 +208,11 @@ class ManageStoreController extends GetxController {
         for (int i = 0; i < categoriesList.length; i++) {
           bool isHaving = false;
           for (int j = 0; j < selectedCategories.length; j++) {
-            if (selectedCategories[j]["category"]["category_id"] == categoriesList[i].categoryId) {
+            if (selectedCategories[j]["category"]["category_id"] ==
+                categoriesList[i].categoryId) {
               isHaving = true;
-              selectedCategories[j]['status'] = categoriesList[i].isSelected == true ? "active" : "deleted";
+              selectedCategories[j]['status'] =
+                  categoriesList[i].isSelected == true ? "active" : "deleted";
             }
           }
           if (!isHaving && categoriesList[i].isSelected == true) {
@@ -210,7 +222,8 @@ class ManageStoreController extends GetxController {
             });
           }
         }
-        var data = selectedCategories.where((element) => element["status"] == 'active');
+        var data = selectedCategories
+            .where((element) => element["status"] == 'active');
         if (data.isEmpty) {
           Utility.showAlertMessage("Please select categories");
         } else {
@@ -225,7 +238,9 @@ class ManageStoreController extends GetxController {
   //Api upload image to server
   Future<Future<bool?>?> apiUploadMultipleImage(length) async {
     var request = http.MultipartRequest(
-        'POST', Uri.parse(ServerCommunicator().baseUrl + ServerCommunicator().fileUploadMultiple));
+        'POST',
+        Uri.parse(ServerCommunicator().baseUrl +
+            ServerCommunicator().fileUploadMultiple));
 
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -234,7 +249,9 @@ class ManageStoreController extends GetxController {
 
     for (var i = 0; i < imageFileList!.length; i++) {
       request.files.add(http.MultipartFile(
-          'files', File(imageFileList![i].path).readAsBytes().asStream(), File(imageFileList![i].path).lengthSync(),
+          'files',
+          File(imageFileList![i].path).readAsBytes().asStream(),
+          File(imageFileList![i].path).lengthSync(),
           filename: basename(imageFileList![i].path.split("/").last)));
       request.headers.addAll(headers);
     }
@@ -279,7 +296,8 @@ class ManageStoreController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET CATEGORIES LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 || value.body["status"] == ApiConstants.statusCode201) {
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
         for (int i = 0; i < categoriesList.length; i++) {
@@ -313,13 +331,17 @@ class ManageStoreController extends GetxController {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
     UserProvider()
-        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}", headers,
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
+            headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
-        quantityListResponse = quantity_model.QuantityListResponse.fromJson(value?.body);
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        quantityListResponse =
+            quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -345,12 +367,14 @@ class ManageStoreController extends GetxController {
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}", headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",
+            headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET PRODUCT LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getCategoriesModel = GetCategoriesModel.fromJson(value.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -376,14 +400,26 @@ class ManageStoreController extends GetxController {
     product.description = shortDescriptionTextController.text.trim();
     product.productPrice = double.parse(pricePerUnitTextController.text.trim());
     product.sellingPrice = double.parse(pricePerUnitTextController.text.trim());
-    product.discountType = discountType.value.isEmpty ? "amount" : discountType.value.toLowerCase();
+    product.discountType = discountType.value.isEmpty
+        ? "amount"
+        : discountType.value.toLowerCase();
     product.discountValue = double.parse(
-        discountOrOfferTextController.text.trim().isEmpty ? "0" : discountOrOfferTextController.text.trim());
+        discountOrOfferTextController.text.trim().isEmpty
+            ? "0"
+            : discountOrOfferTextController.text.trim());
     product.isProductReturnable = isProductReturnable.value;
-    product.returnDaysCount = daysTextController.text.trim().isEmpty ? 0 : int.parse(daysTextController.text.trim());
-    product.length = double.parse(lengthTextController.text.trim().isEmpty ? "0.0" : lengthTextController.text.trim());
-    product.width = double.parse(breadthTextController.text.trim().isEmpty ? "0.0" : breadthTextController.text.trim());
-    product.height = double.parse(heightTextController.text.trim().isEmpty ? "0.0" : heightTextController.text.trim());
+    product.returnDaysCount = daysTextController.text.trim().isEmpty
+        ? 0
+        : int.parse(daysTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim().isEmpty
+        ? "0.0"
+        : lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim().isEmpty
+        ? "0.0"
+        : breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim().isEmpty
+        ? "0.0"
+        : heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
 
@@ -394,10 +430,16 @@ class ManageStoreController extends GetxController {
     //}
     inputData.productCategories = listProductCategory;
     inputData.productLinks = <ProductLink>[
-      ProductLink(name: "Product link 1", link: additionalLinkTextController.text.trim(), order: 1)
+      ProductLink(
+          name: "Product link 1",
+          link: additionalLinkTextController.text.trim(),
+          order: 1)
     ];
     inputData.productContents = <ProductContent>[
-      ProductContent(heading: "Demo heading 1", paragraph: contentsAndStrainsTextController.text.trim(), order: 1)
+      ProductContent(
+          heading: "Demo heading 1",
+          paragraph: contentsAndStrainsTextController.text.trim(),
+          order: 1)
     ];
     inputData.productImages ??= [];
 
@@ -406,13 +448,18 @@ class ManageStoreController extends GetxController {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
     debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
-    debugPrint("CREATE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
+    debugPrint(
+        "CREATE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
     UserProvider()
-        .postWithHeadersApi(inputData, ServerCommunicator().baseUrl + ServerCommunicator().createProduct, headers,
+        .postWithHeadersApi(
+            inputData,
+            ServerCommunicator().baseUrl + ServerCommunicator().createProduct,
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
         Get.back(id: pageIdApp.value);
@@ -464,20 +511,24 @@ class ManageStoreController extends GetxController {
       "q": "",
       "store_id": storeId.value,
       "page": 1,
-      "page_size": 10,
+      "page_size": 1000,
       "order_by": "product_id",
       "order_type": "ASC",
       "category_id": categoryId.value,
       "filters": []
     };
     UserProvider()
-        .postWithHeadersApi(body, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}", headers,
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
       log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -511,16 +562,21 @@ class ManageStoreController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
-        productNameTextController.text = value.body["data"]['product']["product_name"] ?? "";
-        discountType.value = value.body["data"]['product']["discount_type"] ?? "";
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        productNameTextController.text =
+            value.body["data"]['product']["product_name"] ?? "";
+        discountType.value =
+            value.body["data"]['product']["discount_type"] ?? "";
         if (discountType.value == "amount") {
           discountValueType.value = "Amount";
         } else {
           discountValueType.value = "Percentage";
         }
         imageUrlList.clear();
-        for (int i = 0; i < value.body["data"]['product']['product_images'].length; i++) {
+        for (int i = 0;
+            i < value.body["data"]['product']['product_images'].length;
+            i++) {
           var image = value.body["data"]['product']['product_images'][i];
           imageUrlList.add(ProductImagesList(
               productImageId: image['product_image_id'],
@@ -530,50 +586,68 @@ class ManageStoreController extends GetxController {
               status: image["status"]));
         }
         inputData.productImages = imageUrlList;
-        discountOrOfferTextController.text = value.body["data"]['product']["discount_value"].toString();
-        quantityValue.value = value.body["data"]['product']["quantity_type_id"].toString();
-        quantityTextController.text = value.body["data"]['product']["quantity"].toString();
+        discountOrOfferTextController.text =
+            value.body["data"]['product']["discount_value"].toString();
+        quantityValue.value =
+            value.body["data"]['product']["quantity_type_id"].toString();
+        quantityTextController.text =
+            value.body["data"]['product']["quantity"].toString();
 
-        pricePerUnitTextController.text = value.body["data"]['product']["product_price"].toString();
-        shortDescriptionTextController.text = value.body["data"]['product']["description"] ?? "";
+        pricePerUnitTextController.text =
+            value.body["data"]['product']["product_price"].toString();
+        shortDescriptionTextController.text =
+            value.body["data"]['product']["description"] ?? "";
         isFeatured.value = value.body["data"]['product']["is_featured_product"];
         if (isFeatured.value) {
           selectedFeaturedType.value = "Yes";
         } else {
           selectedFeaturedType.value = "No";
         }
-        daysTextController.text = value.body["data"]['product']["return_days_count"].toString();
-        isProductReturnable.value = value.body["data"]['product']["is_product_returnable"];
+        daysTextController.text =
+            value.body["data"]['product']["return_days_count"].toString();
+        isProductReturnable.value =
+            value.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {
           selectedProductReturnableType.value = "No";
         }
-        lengthTextController.text = value.body["data"]['product']["length"].toString();
-        breadthTextController.text = value.body["data"]['product']["width"].toString();
-        heightTextController.text = value.body["data"]['product']["height"].toString();
-        weightTextController.text = value.body["data"]['product']["weight"].toString();
-        selectedCategories.value = value.body["data"]['product']['product_categories'] ?? [];
-        debugPrint("selectedCategories Length******${selectedCategories.length}");
+        lengthTextController.text =
+            value.body["data"]['product']["length"].toString();
+        breadthTextController.text =
+            value.body["data"]['product']["width"].toString();
+        heightTextController.text =
+            value.body["data"]['product']["height"].toString();
+        weightTextController.text =
+            value.body["data"]['product']["weight"].toString();
+        selectedCategories.value =
+            value.body["data"]['product']['product_categories'] ?? [];
+        debugPrint(
+            "selectedCategories Length******${selectedCategories.length}");
         isSelectedCategory.value = false;
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
             if (categoriesList[i].categoryId.toString() ==
                 selectedCategories[j]['category']['category_id'].toString()) {
-              debugPrint("category name *******${categoriesList[i].categoryName}");
+              debugPrint(
+                  "category name *******${categoriesList[i].categoryName}");
               debugPrint("categoriesList Index*******" + i.toString());
               print(categoriesList[i].isSelected ?? false);
               categoriesList[i].isSelected = true;
-              debugPrint("categoriesList ID*******${categoriesList[i].isSelected}");
+              debugPrint(
+                  "categoriesList ID*******${categoriesList[i].isSelected}");
             }
           }
         }
         isSelectedCategory.value = true;
-        productContent.value = value.body["data"]['product']["product_contents"] ?? [];
-        productLinks.value = value.body["data"]['product']["product_links"] ?? [];
+        productContent.value =
+            value.body["data"]['product']["product_contents"] ?? [];
+        productLinks.value =
+            value.body["data"]['product']["product_links"] ?? [];
         if (productContent.isNotEmpty) {
           for (int i = 0; i < productContent.length; i++) {
-            contentsAndStrainsTextController.text = productContent[i]['paragraph'];
+            contentsAndStrainsTextController.text =
+                productContent[i]['paragraph'];
             lastProductContent.value = productContent[i]['paragraph'];
           }
         }
@@ -617,14 +691,26 @@ class ManageStoreController extends GetxController {
     product.description = shortDescriptionTextController.text.trim();
     product.productPrice = double.parse(pricePerUnitTextController.text.trim());
     product.sellingPrice = double.parse(pricePerUnitTextController.text.trim());
-    product.discountType = discountType.value.isEmpty ? "amount" : discountType.value.toLowerCase();
+    product.discountType = discountType.value.isEmpty
+        ? "amount"
+        : discountType.value.toLowerCase();
     product.discountValue = double.parse(
-        discountOrOfferTextController.text.trim().isEmpty ? "0" : discountOrOfferTextController.text.trim());
+        discountOrOfferTextController.text.trim().isEmpty
+            ? "0"
+            : discountOrOfferTextController.text.trim());
     product.isProductReturnable = isProductReturnable.value;
-    product.returnDaysCount = daysTextController.text.trim().isEmpty ? 0 : int.parse(daysTextController.text.trim());
-    product.length = double.parse(lengthTextController.text.trim().isEmpty ? "0.0" : lengthTextController.text.trim());
-    product.width = double.parse(breadthTextController.text.trim().isEmpty ? "0.0" : breadthTextController.text.trim());
-    product.height = double.parse(heightTextController.text.trim().isEmpty ? "0.0" : heightTextController.text.trim());
+    product.returnDaysCount = daysTextController.text.trim().isEmpty
+        ? 0
+        : int.parse(daysTextController.text.trim());
+    product.length = double.parse(lengthTextController.text.trim().isEmpty
+        ? "0.0"
+        : lengthTextController.text.trim());
+    product.width = double.parse(breadthTextController.text.trim().isEmpty
+        ? "0.0"
+        : breadthTextController.text.trim());
+    product.height = double.parse(heightTextController.text.trim().isEmpty
+        ? "0.0"
+        : heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
     inputData.product = product;
@@ -638,9 +724,12 @@ class ManageStoreController extends GetxController {
       // listProductCategory.add(productCategory);
       ProductCategories productCategory = ProductCategories();
       productCategory.status = selectedCategories[i]['status'];
-      productCategory.categoryId = selectedCategories[i]['category']["category_id"];
-      productCategory.productCategoryId = selectedCategories[i]['product_category_id'];
-      productCategory.category = Category(categoryId: selectedCategories[i]['category']["category_id"]);
+      productCategory.categoryId =
+          selectedCategories[i]['category']["category_id"];
+      productCategory.productCategoryId =
+          selectedCategories[i]['product_category_id'];
+      productCategory.category = Category(
+          categoryId: selectedCategories[i]['category']["category_id"]);
       listProductCategory.add(productCategory);
     }
     inputData.productCategories = listProductCategory.cast<ProductCategories>();
@@ -651,29 +740,44 @@ class ManageStoreController extends GetxController {
               ? additionalLinkTextController.text
               : lastProductLink.value,
           order: 1,
-          status: lastProductLink.value != additionalLinkTextController.text ? "active" : "deleted",
-          productLinkId: lastProductLink.value != additionalLinkTextController.text ? null : "1")
+          status: lastProductLink.value != additionalLinkTextController.text
+              ? "active"
+              : "deleted",
+          productLinkId:
+              lastProductLink.value != additionalLinkTextController.text
+                  ? null
+                  : "1")
     ];
     inputData.productContents = <ProductContent>[
       ProductContent(
         heading: "Demo heading 1",
-        paragraph: lastProductContent.value != contentsAndStrainsTextController.text
-            ? contentsAndStrainsTextController.text
-            : lastProductContent.value,
+        paragraph:
+            lastProductContent.value != contentsAndStrainsTextController.text
+                ? contentsAndStrainsTextController.text
+                : lastProductContent.value,
         order: 1,
-        productContentId: lastProductContent.value != contentsAndStrainsTextController.text ? null : "1",
-        status: lastProductContent.value != additionalLinkTextController.text ? "active" : "deleted",
+        productContentId:
+            lastProductContent.value != contentsAndStrainsTextController.text
+                ? null
+                : "1",
+        status: lastProductContent.value != additionalLinkTextController.text
+            ? "active"
+            : "deleted",
       )
     ];
 
-    debugPrint("UPDATE STORE PRODUCT BODY********************${inputData.toJson()}");
+    debugPrint(
+        "UPDATE STORE PRODUCT BODY********************${inputData.toJson()}");
     UserProvider()
         .putWithHeadersApi(
-            inputData, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}", headers,
+            inputData,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}",
+            headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         // Get.back();
 
@@ -712,7 +816,8 @@ class ManageStoreController extends GetxController {
 
 //Api Delete Product
   Future apiDeleteProduct(BuildContext buildCtxt) async {
-    debugPrint("DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
+    debugPrint(
+        "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -722,11 +827,14 @@ class ManageStoreController extends GetxController {
     debugPrint("DELETE PRODUCT BODY ************* $data");
     UserProvider()
         .deleteWithHeadersApi(
-            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}", headers,
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE PRODUCT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         await apiGetProductList(buildCtxt);
         update();
@@ -759,11 +867,14 @@ class ManageStoreController extends GetxController {
     debugPrint("DELETE CATEGORY BODY ************* $data");
     UserProvider()
         .deleteWithHeadersApi(
-            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}", headers,
+            data,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}",
+            headers,
             showLoading: false)
         .then((value) async {
       debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 || value.body["status"] == ApiConstants.statusCode200) {
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         await apiGetCategoriesList();
       } else if (value.body["status"] == ApiConstants.statusCode409) {

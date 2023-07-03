@@ -1353,7 +1353,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                                   .orderItems[i]
                                                                   .returnOrderItems!
                                                                   .isNotEmpty
-                                                          ? "\$${ordersController.orderItems[i].returnOrderItems?.first.totalTaxReversed?.toStringAsFixed(2) ?? ""}"
+                                                          ? "\$${ordersController.orderItems[i].returnOrderItems?.first.totalAmountReversed?.toStringAsFixed(2) ?? ""}"
                                                           : "",
                                                       style: TextStyle(
                                                           fontWeight:

@@ -494,6 +494,36 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                         ordersHomeMainController
                                                             .ownerOrderHistoryList![
                                                                 index]
+                                                            .orderDate
+                                                            .toString()),
+                                                    secFormat: '',
+                                                  ).toString(),
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14))
+                                            ],
+                                          ),
+                                          height5SizedBox,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  "${StringConstants.estimatedDeliveyDateText}: ",
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14)),
+                                              Text(
+                                                  Utility.parseDateTime(
+                                                    DateTime.parse(
+                                                        ordersHomeMainController
+                                                            .ownerOrderHistoryList![
+                                                                index]
                                                             .estimateDeliveryDate
                                                             .toString()),
                                                     secFormat: '',

@@ -348,7 +348,7 @@ class OwnerStoresController extends GetxController {
     Map body = {
       "store_id": storeId.value,
       "page": 1,
-      "page_size": 10,
+      "page_size": 1000,
       "order_by": "offer_name",
       "order_type": "DESC",
       "filters": []
@@ -396,7 +396,7 @@ class OwnerStoresController extends GetxController {
       "q": "",
       "store_id": storeId.value,
       "page": 1,
-      "page_size": 10,
+      "page_size": 1000,
       "order_by": "product_id",
       "order_type": "ASC",
       "category_id": null,

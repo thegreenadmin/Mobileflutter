@@ -175,8 +175,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map body = {
       "store_id": storeId.value,
-      "page": null,
-      "page_size": null,
+      "page": 1,
+      "page_size": 1000,
       "order_by": "order_id",
       "order_type": "DESC",
       "from_date": null,

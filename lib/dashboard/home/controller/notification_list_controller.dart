@@ -47,7 +47,7 @@ class NotificationListController extends GetxController {
   Future apiGetNotificationList(bool isForStore) async {
     isLoading.value = true;
     debugPrint("GET NOTIFICATION LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=20");
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ class NotificationListController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=20",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000",
             headers,
             showLoading: true)
         .then((value) async {
