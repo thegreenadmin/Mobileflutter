@@ -184,7 +184,7 @@ class OffersController extends GetxController {
       debugPrint("DELETE OFFER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        if (role!.value == Role.customerRoleText) {
+        if (role.value == Role.customerRoleText) {
           apiGetUserOffersList();
         } else {
           apiGetOwnerOffersList();

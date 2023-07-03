@@ -10,15 +10,14 @@ class GetUserStoreListModel {
   GetUserStoreListModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null
-        ? new UserStoreListData.fromJson(json['data'])
-        : null;
+    data =
+        json['data'] != null ? UserStoreListData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -35,15 +34,15 @@ class UserStoreListData {
     if (json['stores'] != null) {
       stores = <UserStoresList>[];
       json['stores'].forEach((v) {
-        stores!.add(new UserStoresList.fromJson(v));
+        stores!.add(UserStoresList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.stores != null) {
-      data['stores'] = this.stores!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (stores != null) {
+      data['stores'] = stores!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -67,25 +66,25 @@ class UserStoresList {
     storeId = json['store_id'];
     storeName = json['store_name'];
     storeEin = json['store_ein'];
-    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
     if (json['addresses'] != null) {
       addresses = <Addresses>[];
       json['addresses'].forEach((v) {
-        addresses!.add(new Addresses.fromJson(v));
+        addresses!.add(Addresses.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    data['store_name'] = this.storeName;
-    data['store_ein'] = this.storeEin;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    data['store_name'] = storeName;
+    data['store_ein'] = storeEin;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    if (this.addresses != null) {
-      data['addresses'] = this.addresses!.map((v) => v.toJson()).toList();
+    if (addresses != null) {
+      data['addresses'] = addresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -122,21 +121,21 @@ class Addresses {
     addressLine2 = json['address_line_2'];
     landmark = json['landmark'];
     city = json['city'];
-    state = json['state'] != null ? new States.fromJson(json['state']) : null;
+    state = json['state'] != null ? States.fromJson(json['state']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_address_id'] = this.storeAddressId;
-    data['address_name'] = this.addressName;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_address_id'] = storeAddressId;
+    data['address_name'] = addressName;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['landmark'] = landmark;
+    data['city'] = city;
+    if (state != null) {
+      data['state'] = state!.toJson();
     }
     return data;
   }
@@ -154,9 +153,9 @@ class States {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state_id'] = this.stateId;
-    data['state_name'] = this.stateName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['state_id'] = stateId;
+    data['state_name'] = stateName;
     return data;
   }
 }

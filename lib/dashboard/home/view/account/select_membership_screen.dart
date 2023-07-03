@@ -109,7 +109,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                               onTap: () {
                                 setState(() {
                                   accountController.selectedIndex = index;
-                                  print(accountController.selectedIndex);
                                 });
                                 accountController
                                         .selectedMembershipPlanId.value =
@@ -156,8 +155,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                               accountController
                                                   .membershipList[index]
                                                   .selectedPlan = "plan30";
-                                              print(index);
-                                              print(accountController
+                                              debugPrint(index.toString());
+                                              debugPrint(accountController
                                                   .membershipList[index]
                                                   .selectedPlan);
                                               setState(() {});
@@ -208,8 +207,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                               accountController
                                                   .membershipList[index]
                                                   .selectedPlan = "plan90";
-                                              print(index);
-                                              print(accountController
+                                              debugPrint(index.toString());
+                                              debugPrint(accountController
                                                   .membershipList[index]
                                                   .selectedPlan);
                                               setState(() {});
@@ -267,8 +266,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                               accountController
                                                   .membershipList[index]
                                                   .selectedPlan = "plan180";
-                                              print(index);
-                                              print(accountController
+                                              debugPrint(index.toString());
+                                              debugPrint(accountController
                                                   .membershipList[index]
                                                   .selectedPlan);
                                               setState(() {});
@@ -319,8 +318,8 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                               accountController
                                                   .membershipList[index]
                                                   .selectedPlan = "plan365";
-                                              print(index);
-                                              print(accountController
+                                              debugPrint(index.toString());
+                                              debugPrint(accountController
                                                   .membershipList[index]
                                                   .selectedPlan);
                                               setState(() {});

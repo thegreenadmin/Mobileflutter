@@ -8,13 +8,15 @@ class NotificationStatusModel {
   NotificationStatusModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new NotificationStatusData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? NotificationStatusData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -31,16 +33,16 @@ class NotificationStatusData {
     if (json['notification_settings'] != null) {
       notificationSettings = <NotificationSettings>[];
       json['notification_settings'].forEach((v) {
-        notificationSettings!.add(new NotificationSettings.fromJson(v));
+        notificationSettings!.add(NotificationSettings.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.notificationSettings != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (notificationSettings != null) {
       data['notification_settings'] =
-          this.notificationSettings!.map((v) => v.toJson()).toList();
+          notificationSettings!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -78,15 +80,15 @@ class NotificationSettings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['notification_type'] = this.notificationType;
-    data['is_for_store'] = this.isForStore;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['notificaiton_setting_id'] = this.notificaitonSettingId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['notification_type'] = notificationType;
+    data['is_for_store'] = isForStore;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['notificaiton_setting_id'] = notificaitonSettingId;
     return data;
   }
 }

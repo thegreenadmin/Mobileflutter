@@ -31,8 +31,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       }
       ordersController.isActiveOrders.value = true;
       ordersController.orderStatusId.value = 2;
-      print(
-          "SharedPreferenceStorage:--Order Screen-----${ordersController.orderStatus.value}----------");
+   
       ordersController.role!.value = Role.customerRoleText;
       if (ordersController.orderStatus.value != "") {
         ordersController.apiGetOrderDetailsApi();

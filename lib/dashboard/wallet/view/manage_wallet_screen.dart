@@ -374,7 +374,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           )
                                         : InkWell(
                                             onTap: () async {
-                                              await walletController
+                                               walletController
                                                   .apiGetAutoRechargeDetail();
                                               bottomSheetToAddMoney(context,
                                                   isFromEdit: true);
@@ -416,8 +416,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                       .isautoRechargeEnable.value) {
                                     walletController
                                         .isautoRechargeEnable.value = true;
-                                    await walletController
-                                        .apiGetAutoRechargeDetail();
+                                    walletController.apiGetAutoRechargeDetail();
                                     bottomSheetToAddMoney(context);
                                   } else {
                                     walletController

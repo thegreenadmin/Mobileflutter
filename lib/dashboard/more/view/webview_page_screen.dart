@@ -19,7 +19,7 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.url);
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(AppColors.white)

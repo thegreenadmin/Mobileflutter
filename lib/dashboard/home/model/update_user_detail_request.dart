@@ -36,16 +36,16 @@ class UpdateUser {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['nick_name'] = this.nickName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['nick_name'] = nickName;
     return data;
   }
 }
 
 class Address {
-  Null? userAddressId;
+  dynamic userAddressId;
   int? stateId;
   String? addressName;
   String? addressLine1;
@@ -73,14 +73,14 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_address_id'] = this.userAddressId;
-    data['state_id'] = this.stateId;
-    data['address_name'] = this.addressName;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['user_address_id'] = userAddressId;
+    data['state_id'] = stateId;
+    data['address_name'] = addressName;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
     return data;
   }
 }

@@ -671,7 +671,7 @@ class AddNewWorkerController extends GetxController {
         if (workerDetailResponse?.data?.storeUser?.storeUserTimings != null &&
             workerDetailResponse!
                 .data!.storeUser!.storeUserTimings!.isNotEmpty) {
-          for (StoreUserTiming data in storeUserTimings!) {
+          for (StoreUserTiming data in storeUserTimings) {
             for (Categories day in weekDaysList) {
               if (day.id == data.dayOfWeek) {
                 day.isSelected = true;

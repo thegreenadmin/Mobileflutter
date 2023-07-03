@@ -391,7 +391,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                           onChanged: (value) async {
                             addOffersController.storeIdValue.value =
                                 value.toString();
-                            print(addOffersController.storeIdValue.value);
+                            debugPrint(addOffersController.storeIdValue.value);
                             if (addOffersController.radioValue.value !=
                                 "store") {
                               await addOffersController.apiGetStoreProducts();
@@ -437,11 +437,15 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = true;
-                                                    print(addOffersController
-                                                        .storeProductList[i]
-                                                        .isSelected);
-                                                    print(addOffersController
-                                                        .selectedProducts);
+                                                    debugPrint(
+                                                        addOffersController
+                                                            .storeProductList[i]
+                                                            .isSelected
+                                                            .toString());
+                                                    debugPrint(
+                                                        addOffersController
+                                                            .selectedProducts
+                                                            .toString());
                                                   } else {
                                                     addOffersController
                                                         .selectedProducts
@@ -455,11 +459,15 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                                     addOffersController
                                                         .storeProductList[i]
                                                         .isSelected = false;
-                                                    print(addOffersController
-                                                        .storeProductList[i]
-                                                        .isSelected);
-                                                    print(addOffersController
-                                                        .selectedProducts);
+                                                    debugPrint(
+                                                        addOffersController
+                                                            .storeProductList[i]
+                                                            .isSelected
+                                                            .toString());
+                                                    debugPrint(
+                                                        addOffersController
+                                                            .selectedProducts
+                                                            .toString());
                                                   }
                                                 },
                                                 child: Container(

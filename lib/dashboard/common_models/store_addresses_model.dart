@@ -41,17 +41,17 @@ class StoreAddresses {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['store_address_id'] = this.storeAddressId;
-    data['address_name'] = this.addressName;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_address_id'] = storeAddressId;
+    data['address_name'] = addressName;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['landmark'] = landmark;
+    data['city'] = city;
+    if (state != null) {
+      data['state'] = state!.toJson();
     }
     data['postal_code'] = postalCode;
     data['distance'] = distance;

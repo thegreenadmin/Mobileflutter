@@ -385,8 +385,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     .categoriesList[i]
                                                     .categoryId) {
                                               item['status'] = "deleted";
-                                              print(manageStoreController
-                                                  .selectedCategories);
+                                              debugPrint(manageStoreController
+                                                  .selectedCategories.toString());
                                             }
                                           }
                                         } else {
@@ -401,8 +401,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     .categoriesList[i]
                                                     .categoryId) {
                                               item['status'] = "active";
-                                              print(manageStoreController
-                                                  .selectedCategories);
+                                              debugPrint(manageStoreController
+                                                  .selectedCategories.toString());
                                             }
                                           }
                                         }

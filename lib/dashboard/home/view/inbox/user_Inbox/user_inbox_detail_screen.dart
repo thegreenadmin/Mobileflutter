@@ -13,10 +13,10 @@ class UserInboxDetailScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UserInboxDetailScreenState createState() => _UserInboxDetailScreenState();
+  UserInboxDetailScreenState createState() => UserInboxDetailScreenState();
 }
 
-class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
+class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
   final UserInboxDetailController userInboxDetailController =
       Get.put(UserInboxDetailController());
 
@@ -30,8 +30,8 @@ class _UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
     userInboxDetailController.apiGetMessagesList();
   }*/
 
-  Container buildPhotoLibraryGridView() {
-    return Container(
+  SizedBox buildPhotoLibraryGridView() {
+    return SizedBox(
         height: 120,
         child:
             // ListView.builder(

@@ -11,14 +11,14 @@ class NotificationListModel {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null
-        ? new NotificationListData.fromJson(json['data'])
+        ? NotificationListData.fromJson(json['data'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -37,17 +37,16 @@ class NotificationListData {
     if (json['notifications'] != null) {
       notifications = <Notifications>[];
       json['notifications'].forEach((v) {
-        notifications!.add(new Notifications.fromJson(v));
+        notifications!.add(Notifications.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.notifications != null) {
-      data['notifications'] =
-          this.notifications!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (notifications != null) {
+      data['notifications'] = notifications!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -103,28 +102,28 @@ class Notifications {
     updatedAt = json['updatedAt'];
     notificationId = json['notification_id'];
     store = json['store'] != null
-        ? new NotificationListStore.fromJson(json['store'])
+        ? NotificationListStore.fromJson(json['store'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['store_id'] = this.storeId;
-    data['message_head_id'] = this.messageHeadId;
-    data['order_id'] = this.orderId;
-    data['offer_id'] = this.offerId;
-    data['is_notification_for_store'] = this.isNotificationForStore;
-    data['is_sent'] = this.isSent;
-    data['is_read'] = this.isRead;
-    data['title'] = this.title;
-    data['message'] = this.message;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['notification_id'] = this.notificationId;
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['store_id'] = storeId;
+    data['message_head_id'] = messageHeadId;
+    data['order_id'] = orderId;
+    data['offer_id'] = offerId;
+    data['is_notification_for_store'] = isNotificationForStore;
+    data['is_sent'] = isSent;
+    data['is_read'] = isRead;
+    data['title'] = title;
+    data['message'] = message;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['notification_id'] = notificationId;
+    if (store != null) {
+      data['store'] = store!.toJson();
     }
     return data;
   }
@@ -178,30 +177,30 @@ class NotificationListStore {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     storeId = json['store_id'];
-    logo = json['logo'] != null ? new Logo.fromJson(json['logo']) : null;
-    image = json['image'] != null ? new Logo.fromJson(json['image']) : null;
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
+    image = json['image'] != null ? Logo.fromJson(json['image']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_name'] = this.storeName;
-    data['store_ein'] = this.storeEin;
-    data['store_nick_name'] = this.storeNickName;
-    data['store_email'] = this.storeEmail;
-    data['store_phone'] = this.storePhone;
-    data['store_phone_code'] = this.storePhoneCode;
-    data['is_verified'] = this.isVerified;
-    data['verified_by'] = this.verifiedBy;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['store_id'] = this.storeId;
-    if (this.logo != null) {
-      data['logo'] = this.logo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_name'] = storeName;
+    data['store_ein'] = storeEin;
+    data['store_nick_name'] = storeNickName;
+    data['store_email'] = storeEmail;
+    data['store_phone'] = storePhone;
+    data['store_phone_code'] = storePhoneCode;
+    data['is_verified'] = isVerified;
+    data['verified_by'] = verifiedBy;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['store_id'] = storeId;
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
     }
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
     return data;
   }

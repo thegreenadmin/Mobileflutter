@@ -105,38 +105,37 @@ class Transactionss {
         : null;
     store = json['store'] != null ? Store.fromJson(json['store']) : null;
     membership = json['membership'] != null
-        ? new Membership.fromJson(json['membership'])
+        ? Membership.fromJson(json['membership'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['order_transcation_id'] = this.orderTranscationId;
-    data['order_item_refund_transaction_id'] =
-        this.orderItemRefundTransactionId;
-    data['transaction_id'] = this.transactionId;
-    data['user_stripe_card_id'] = this.userStripeCardId;
-    data['net_balance'] = this.netBalance;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['user_wallet_transaction_id'] = this.userWalletTransactionId;
-    if (this.orderTransaction != null) {
-      data['order_transaction'] = this.orderTransaction!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['order_transcation_id'] = orderTranscationId;
+    data['order_item_refund_transaction_id'] = orderItemRefundTransactionId;
+    data['transaction_id'] = transactionId;
+    data['user_stripe_card_id'] = userStripeCardId;
+    data['net_balance'] = netBalance;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['user_wallet_transaction_id'] = userWalletTransactionId;
+    if (orderTransaction != null) {
+      data['order_transaction'] = orderTransaction!.toJson();
     }
-    if (this.orderItemRefundTransaction != null) {
+    if (orderItemRefundTransaction != null) {
       data['order_item_refund_transaction'] =
-          this.orderItemRefundTransaction!.toJson();
+          orderItemRefundTransaction!.toJson();
     }
-    if (this.transaction != null) {
-      data['transaction'] = this.transaction!.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction!.toJson();
     }
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
+    if (store != null) {
+      data['store'] = store!.toJson();
     }
-    if (this.membership != null) {
-      data['membership'] = this.membership!.toJson();
+    if (membership != null) {
+      data['membership'] = membership!.toJson();
     }
     return data;
   }
@@ -276,23 +275,23 @@ class Transaction {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['payment_service_id'] = this.paymentServiceId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['payment_service_id'] = paymentServiceId;
     data['stripe_payment_intent_transaction_id'] =
-        this.stripePaymentIntentTransactionId;
-    data['stripe_payout_transaction_id'] = this.stripePayoutTransactionId;
-    data['transaction_type'] = this.transactionType;
-    data['transaction_amount'] = this.transactionAmount;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['transaction_id'] = this.transactionId;
-    if (this.paymentService != null) {
-      data['payment_service'] = this.paymentService!.toJson();
+        stripePaymentIntentTransactionId;
+    data['stripe_payout_transaction_id'] = stripePayoutTransactionId;
+    data['transaction_type'] = transactionType;
+    data['transaction_amount'] = transactionAmount;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['transaction_id'] = transactionId;
+    if (paymentService != null) {
+      data['payment_service'] = paymentService!.toJson();
     }
-    if (this.transactionHistories != null) {
+    if (transactionHistories != null) {
       data['transaction_histories'] =
-          this.transactionHistories!.map((v) => v.toJson()).toList();
+          transactionHistories!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -310,9 +309,9 @@ class PaymentService {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['payment_service_id'] = this.paymentServiceId;
-    data['payment_service_name'] = this.paymentServiceName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['payment_service_id'] = paymentServiceId;
+    data['payment_service_name'] = paymentServiceName;
     return data;
   }
 }
@@ -343,13 +342,13 @@ class TransactionHistories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['transaction_id'] = this.transactionId;
-    data['transaction_status'] = this.transactionStatus;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['transaction_history_id'] = this.transactionHistoryId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['transaction_id'] = transactionId;
+    data['transaction_status'] = transactionStatus;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['transaction_history_id'] = transactionHistoryId;
     return data;
   }
 }
@@ -378,15 +377,14 @@ class OrderItemRefundTransaction {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['order_item_refund_transaction_id'] =
-        this.orderItemRefundTransactionId;
-    data['transaction_id'] = this.transactionId;
-    if (this.returnOrderItem != null) {
-      data['return_order_item'] = this.returnOrderItem!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_item_refund_transaction_id'] = orderItemRefundTransactionId;
+    data['transaction_id'] = transactionId;
+    if (returnOrderItem != null) {
+      data['return_order_item'] = returnOrderItem!.toJson();
     }
-    if (this.transaction != null) {
-      data['transaction'] = this.transaction!.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction!.toJson();
     }
     return data;
   }
@@ -718,26 +716,26 @@ class Membership {
     duration = json['duration'];
     expiredAt = json['expiredAt'];
     membershipPlan = json['membership_plan'] != null
-        ? new MembershipPlan.fromJson(json['membership_plan'])
+        ? MembershipPlan.fromJson(json['membership_plan'])
         : null;
     transaction = json['transaction'] != null
-        ? new Transaction.fromJson(json['transaction'])
+        ? Transaction.fromJson(json['transaction'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['membership_id'] = this.membershipId;
-    data['transaction_id'] = this.transactionId;
-    data['membership_plan_id'] = this.membershipPlanId;
-    data['membership_charge'] = this.membershipCharge;
-    data['duration'] = this.duration;
-    data['expiredAt'] = this.expiredAt;
-    if (this.membershipPlan != null) {
-      data['membership_plan'] = this.membershipPlan!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['membership_id'] = membershipId;
+    data['transaction_id'] = transactionId;
+    data['membership_plan_id'] = membershipPlanId;
+    data['membership_charge'] = membershipCharge;
+    data['duration'] = duration;
+    data['expiredAt'] = expiredAt;
+    if (membershipPlan != null) {
+      data['membership_plan'] = membershipPlan!.toJson();
     }
-    if (this.transaction != null) {
-      data['transaction'] = this.transaction!.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction!.toJson();
     }
     return data;
   }
@@ -784,18 +782,18 @@ class MembershipPlan {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['plan_name'] = this.planName;
-    data['plan_type'] = this.planType;
-    data['plan_30_charge'] = this.plan30Charge;
-    data['plan_90_charge'] = this.plan90Charge;
-    data['plan_180_charge'] = this.plan180Charge;
-    data['plan_365_charge'] = this.plan365Charge;
-    data['plan_description'] = this.planDescription;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['plan_name'] = planName;
+    data['plan_type'] = planType;
+    data['plan_30_charge'] = plan30Charge;
+    data['plan_90_charge'] = plan90Charge;
+    data['plan_180_charge'] = plan180Charge;
+    data['plan_365_charge'] = plan365Charge;
+    data['plan_description'] = planDescription;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

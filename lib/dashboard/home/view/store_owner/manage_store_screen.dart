@@ -35,14 +35,14 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const EditStoreDetailScreen(),
                 // ));
-                print(
+                debugPrint(
                     "permissionStoreList:-editStore--${permissionStoreList.length}----------");
-                print(permissionStoreList
-                    .any((element) => element.isStoreOwner == true));
-                print(permissionStoreList.any((element) => element.controllers!
-                    .any((ele) =>
+                debugPrint(permissionStoreList
+                    .any((element) => element.isStoreOwner == true).toString());
+                debugPrint(permissionStoreList.any((element) =>
+                    element.controllers!.any((ele) =>
                         ele.controllerKey ==
-                        PermissionKey.editStore.statusName)));
+                        PermissionKey.editStore.statusName)).toString());
                 permissionStoreList
                             .any((element) => element.isStoreOwner == true) ||
                         permissionStoreList.any((element) =>

@@ -109,7 +109,7 @@ class AddCardController extends GetxController {
             "";
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role.value = roleVal;
     getGKey();
     await apiGetUserWalletBalance();
     await apiGetCardList(Get.context!);

@@ -11,14 +11,14 @@ class GetOfferProductList {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null
-        ? new GetOfferProductData.fromJson(json['data'])
+        ? GetOfferProductData.fromJson(json['data'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -37,16 +37,16 @@ class GetOfferProductData {
     if (json['products'] != null) {
       products = <Products>[];
       json['products'].forEach((v) {
-        products!.add(new Products.fromJson(v));
+        products!.add(Products.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (products != null) {
+      data['products'] = products!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -136,72 +136,71 @@ class Products {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     quantityType = json['quantity_type'] != null
-        ? new QuantityType.fromJson(json['quantity_type'])
+        ? QuantityType.fromJson(json['quantity_type'])
         : null;
     if (json['product_categories'] != null) {
       productCategories = <ProductCategories>[];
       json['product_categories'].forEach((v) {
-        productCategories!.add(new ProductCategories.fromJson(v));
+        productCategories!.add(ProductCategories.fromJson(v));
       });
     }
     if (json['product_images'] != null) {
       productImages = <ProductImages>[];
       json['product_images'].forEach((v) {
-        productImages!.add(new ProductImages.fromJson(v));
+        productImages!.add(ProductImages.fromJson(v));
       });
     }
     if (json['product_contents'] != null) {
       productContents = <ProductContents>[];
       json['product_contents'].forEach((v) {
-        productContents!.add(new ProductContents.fromJson(v));
+        productContents!.add(ProductContents.fromJson(v));
       });
     }
     offerPrice = json['offer_price'];
-    offer = json['offer'] != null ? new Offer.fromJson(json['offer']) : null;
+    offer = json['offer'] != null ? Offer.fromJson(json['offer']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['is_favourite_product'] = this.isFavouriteProduct;
-    data['is_previous_product'] = this.isPreviousProduct;
-    data['store_id'] = this.storeId;
-    data['quantity'] = this.quantity;
-    data['is_featured_product'] = this.isFeaturedProduct;
-    data['product_name'] = this.productName;
-    data['description'] = this.description;
-    data['product_price'] = this.productPrice;
-    data['selling_price'] = this.sellingPrice;
-    data['discount_type'] = this.discountType;
-    data['discount_value'] = this.discountValue;
-    data['is_product_returnable'] = this.isProductReturnable;
-    data['return_days_count'] = this.returnDaysCount;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['is_enabled'] = this.isEnabled;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.quantityType != null) {
-      data['quantity_type'] = this.quantityType!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['is_favourite_product'] = isFavouriteProduct;
+    data['is_previous_product'] = isPreviousProduct;
+    data['store_id'] = storeId;
+    data['quantity'] = quantity;
+    data['is_featured_product'] = isFeaturedProduct;
+    data['product_name'] = productName;
+    data['description'] = description;
+    data['product_price'] = productPrice;
+    data['selling_price'] = sellingPrice;
+    data['discount_type'] = discountType;
+    data['discount_value'] = discountValue;
+    data['is_product_returnable'] = isProductReturnable;
+    data['return_days_count'] = returnDaysCount;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['is_enabled'] = isEnabled;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (quantityType != null) {
+      data['quantity_type'] = quantityType!.toJson();
     }
-    if (this.productCategories != null) {
+    if (productCategories != null) {
       data['product_categories'] =
-          this.productCategories!.map((v) => v.toJson()).toList();
+          productCategories!.map((v) => v.toJson()).toList();
     }
-    if (this.productImages != null) {
-      data['product_images'] =
-          this.productImages!.map((v) => v.toJson()).toList();
+    if (productImages != null) {
+      data['product_images'] = productImages!.map((v) => v.toJson()).toList();
     }
-    if (this.productContents != null) {
+    if (productContents != null) {
       data['product_contents'] =
-          this.productContents!.map((v) => v.toJson()).toList();
+          productContents!.map((v) => v.toJson()).toList();
     }
-    data['offer_price'] = this.offerPrice;
-    if (this.offer != null) {
-      data['offer'] = this.offer!.toJson();
+    data['offer_price'] = offerPrice;
+    if (offer != null) {
+      data['offer'] = offer!.toJson();
     }
     return data;
   }

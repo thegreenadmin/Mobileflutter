@@ -166,15 +166,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               // SharedPreferenceStorage.setData(
                               //     "context", context);
-                              print(
+                              debugPrint(
                                   "permissionStoreList:----${permissionStoreList.length}----------");
-                              print(permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true));
-                              print(permissionStoreList.any((element) =>
-                                  element.controllers!.any((ele) =>
-                                      ele.controllerKey ==
-                                      PermissionKey
-                                          .manageMessages.statusName)));
+                              debugPrint(permissionStoreList
+                                  .any(
+                                      (element) => element.isStoreOwner == true)
+                                  .toString());
+                              debugPrint(permissionStoreList
+                                  .any((element) => element.controllers!.any(
+                                      (ele) =>
+                                          ele.controllerKey ==
+                                          PermissionKey
+                                              .manageMessages.statusName))
+                                  .toString());
                               // print(permissionStoreList.firstWhere((element) =>
                               //     element.controllers!.any((ele) =>
                               //     ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(

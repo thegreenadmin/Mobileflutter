@@ -65,32 +65,31 @@ class Stores {
 
   Stores.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
-    image = json['image'] != null ? new Images.fromJson(json['image']) : null;
-    logo = json['logo'] != null ? new Images.fromJson(json['logo']) : null;
+    image = json['image'] != null ? Images.fromJson(json['image']) : null;
+    logo = json['logo'] != null ? Images.fromJson(json['logo']) : null;
     storeName = json['store_name'];
     storeEin = json['store_ein'];
     if (json['store_addresses'] != null) {
       storeAddresses = <StoreAddresses>[];
       json['store_addresses'].forEach((v) {
-        storeAddresses!.add(new StoreAddresses.fromJson(v));
+        storeAddresses!.add(StoreAddresses.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_id'] = this.storeId;
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_id'] = storeId;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    if (this.logo != null) {
-      data['logo'] = this.logo!.toJson();
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
     }
-    data['store_name'] = this.storeName;
-    data['store_ein'] = this.storeEin;
-    if (this.storeAddresses != null) {
-      data['store_addresses'] =
-          this.storeAddresses!.map((v) => v.toJson()).toList();
+    data['store_name'] = storeName;
+    data['store_ein'] = storeEin;
+    if (storeAddresses != null) {
+      data['store_addresses'] = storeAddresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }

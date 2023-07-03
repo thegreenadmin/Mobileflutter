@@ -378,6 +378,7 @@ class WalletController extends GetxController {
           if (storeList.isNotEmpty) {
             storeNameValue!.value = storeList[0].storeName.toString();
             ownerSelectedStore.value = storeList[0].storeId.toString();
+            apiGetOwnerWalletBalance();
           }
         }
         update();

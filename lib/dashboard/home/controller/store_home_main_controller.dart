@@ -127,7 +127,7 @@ class StoreHomeMainController extends GetxController {
   void onIndexChange(int i) async {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
-    print("lastSelectedIndex v:========== ${lastSelectedIndex.value}");
+ 
     // print(lastSelectedIndex);
     popUpIndex.value = 1;
     if (i == 0) {
