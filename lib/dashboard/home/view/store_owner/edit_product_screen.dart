@@ -133,7 +133,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                       manageStoreController
                                                           .imageUrlList[index]
                                                           .status = "deleted";
-
                                                       setState(() {});
                                                     },
                                                     child: const Padding(
@@ -163,7 +162,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     child: InkWell(
                                       onTap: () {
                                         manageStoreController
-                                            .selectImages(false);
+                                            .selectImages(true);
                                       },
                                       child: Row(
                                         children: [
@@ -226,7 +225,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               )
                             : InkWell(
                                 onTap: () {
-                                  manageStoreController.selectImages(false);
+                                  manageStoreController.selectImages(true);
                                 },
                                 child: Image.asset(
                                   ImageConstants.uploadbutton,
@@ -386,7 +385,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     .categoryId) {
                                               item['status'] = "deleted";
                                               debugPrint(manageStoreController
-                                                  .selectedCategories.toString());
+                                                  .selectedCategories
+                                                  .toString());
                                             }
                                           }
                                         } else {
@@ -402,7 +402,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     .categoryId) {
                                               item['status'] = "active";
                                               debugPrint(manageStoreController
-                                                  .selectedCategories.toString());
+                                                  .selectedCategories
+                                                  .toString());
                                             }
                                           }
                                         }
