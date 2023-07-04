@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
+import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -235,7 +236,7 @@ class OffersController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("GET OFFERS PRODUCT RESPONSE *******${value?.body}");

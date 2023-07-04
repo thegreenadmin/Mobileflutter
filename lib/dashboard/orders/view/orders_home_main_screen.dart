@@ -374,8 +374,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .orderStatus!
                                           .orderStatusName == //"11"
                                       OrderStatus.returnRequest.statusName
-                                  ? permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
+                                  ? permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                           permissionStoreList.any((element) =>
                                               element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
                                               element.controllers!.any((ele) =>
@@ -383,11 +382,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                   PermissionKey
                                                       .manageReturnRequests
                                                       .statusName))
-                                      ? Get.to(const MarkReturnOrderScreen(),
-                                          id: pageIdApp.value)
-                                      : Utility.showAlertMessage(
-                                          AlertStringConstants
-                                              .notAuthorisedToStoreText)
+                                      ? Get.to(const MarkReturnOrderScreen(), id: pageIdApp.value)!
+                                          .then((value) => ordersHomeMainController
+                                              .apiGetOwnerOrderHistory())
+                                      : Utility.showAlertMessage(AlertStringConstants
+                                          .notAuthorisedToStoreText)
 
                                   // Navigator.of(context).push(MaterialPageRoute(
                                   //   builder: (_) => const MarkReturnOrderScreen(),

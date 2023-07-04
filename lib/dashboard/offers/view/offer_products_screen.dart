@@ -12,6 +12,7 @@ class OfferProductScreen extends StatefulWidget {
 
 class _OfferProductScreenState extends State<OfferProductScreen> {
   final OffersController offersController = Get.put(OffersController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,25 +85,9 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                     border: Border.all(
                                         color: AppColors.primary, width: 0)),
                                 child: offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .first
-                                                .image !=
-                                            null &&
-                                        offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .first
-                                                .image!
-                                                .dynamicUrl !=
-                                            null &&
-                                        offersController
-                                            .featuredUserProductList[index]
-                                            .productImages!
-                                            .first
-                                            .image!
-                                            .dynamicUrl!
-                                            .isNotEmpty
+                                        .featuredUserProductList[index]
+                                        .productImages!
+                                        .isNotEmpty
                                     ? Image.network(
                                         offersController
                                                 .featuredUserProductList[index]

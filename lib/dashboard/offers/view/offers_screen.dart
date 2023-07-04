@@ -312,8 +312,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                         itemBuilder: (BuildContext context,
                                                 int i) =>
                                             InkWell(
-                                              onTap: () {
-                                                offersController
+                                              onTap: () async {
+                                                await offersController
                                                     .apiGetOffersProducts(
                                                         offerId: offersController
                                                             .getUserOfferlist[
@@ -328,12 +328,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             .toString());
                                                 // SharedPreferenceStorage.setData(
                                                 //     "context", context);
-
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const OfferProductScreen(),
-                                                ));
+                                                Get.to(
+                                                    const OfferProductScreen());
+                                                // Navigator.of(context)
+                                                //     .push(MaterialPageRoute(
+                                                //   builder: (_) =>
+                                                //       const OfferProductScreen(),
+                                                // ));
                                               },
                                               child: Row(
                                                 mainAxisAlignment:
