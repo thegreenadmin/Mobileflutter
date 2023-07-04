@@ -888,13 +888,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      storeHomeMainController
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productContents ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productContents!.isEmpty ||
+                              storeHomeMainController
                                       .productDetailResponse
                                       .value
                                       .data
                                       ?.product
-                                      ?.productContents!
-                                      .first
+                                      ?.productContents
+                                      ?.first
                                       .paragraph ==
                                   null ||
                               storeHomeMainController
@@ -908,13 +913,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   .isEmpty
                           ? height0SizedBox
                           : height20SizedBox,
-                      storeHomeMainController
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productContents ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productContents!.isEmpty ||
+                              storeHomeMainController
                                       .productDetailResponse
                                       .value
                                       .data
                                       ?.product
-                                      ?.productContents!
-                                      .first
+                                      ?.productContents
+                                      ?.first
                                       .paragraph ==
                                   null ||
                               storeHomeMainController
@@ -934,13 +944,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   fontSize: 16,
                                   color: AppColors.blacklight),
                             ),
-                      storeHomeMainController
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productContents ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productContents!.isEmpty ||
+                              storeHomeMainController
                                       .productDetailResponse
                                       .value
                                       .data
                                       ?.product
-                                      ?.productContents!
-                                      .first
+                                      ?.productContents
+                                      ?.first
                                       .paragraph ==
                                   null ||
                               storeHomeMainController
@@ -954,13 +969,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   .isEmpty
                           ? height0SizedBox
                           : height8SizedBox,
-                      storeHomeMainController
+                      storeHomeMainController.productDetailResponse.value.data
+                                      ?.product?.productContents ==
+                                  null ||
+                              storeHomeMainController.productDetailResponse
+                                  .value.data!.product!.productContents!.isEmpty ||
+                              storeHomeMainController
                                       .productDetailResponse
                                       .value
                                       .data
                                       ?.product
-                                      ?.productContents!
-                                      .first
+                                      ?.productContents
+                                      ?.first
                                       .paragraph ==
                                   null ||
                               storeHomeMainController
@@ -979,8 +999,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       .value
                                       .data
                                       ?.product
-                                      ?.productContents!
-                                      .first
+                                      ?.productContents
+                                      ?.first
                                       .paragraph ??
                                   "",
                               style: TextStyle(
@@ -1173,7 +1193,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ?.product
                                   ?.productCategories
                                   ?.first
-                                  .category?.categoryName ??
+                                  .category
+                                  ?.categoryName ??
                               ""
                           : "NA"),
                   height20SizedBox,
