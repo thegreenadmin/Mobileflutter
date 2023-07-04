@@ -510,14 +510,18 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                  "${StringConstants.estimatedDeliveyDateText}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
+                                              Expanded(
+                                                child: Text(
+                                                    "${StringConstants.estimatedDeliveyDateText}: ",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                              ),
                                               Text(
                                                   Utility.parseDateTime(
                                                     DateTime.parse(
