@@ -329,7 +329,10 @@ class _OffersScreenState extends State<OffersScreen> {
                                                 // SharedPreferenceStorage.setData(
                                                 //     "context", context);
                                                 Get.to(
-                                                    const OfferProductScreen());
+                                                  () =>
+                                                      const OfferProductScreen(),
+                                                  id: pageIdApp.value,
+                                                );
                                                 // Navigator.of(context)
                                                 //     .push(MaterialPageRoute(
                                                 //   builder: (_) =>

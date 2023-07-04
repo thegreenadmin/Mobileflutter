@@ -27,7 +27,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   final _paymentItems = [
     const PaymentItem(
       label: 'Total',
-      amount: '99.99',
+      amount: '12.34',
       status: PaymentItemStatus.final_price,
     )
   ];
@@ -80,6 +80,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   }
 
   Future<void> onGooglePayResult(paymentResult) async {
+    debugPrint("GOOGLE PAYMENT RESULT *************000000");
     debugPrint("GOOGLE PAYMENT RESULT *************$paymentResult");
     if (await paymentResult
         .userCanPay(PayProvider.google_pay /*Or apple_pay*/)) {
@@ -91,9 +92,11 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
         final token =
             paymentResult['paymentMethodData']['tokenizationData']['token'];
         final tokenJson = Map.castFrom(json.decode(token));
+        debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
         var tokenId = tokenJson['id'];
         //Send token to a server or to Google or Apple for confirmation
       } catch (e) {
+        debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
         //An error has occured
       }
     }
@@ -410,7 +413,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     () => addCardController.selectPaymentType.value == "G-Pay"
                         ? GooglePayButton(
                             onError: (Object? error) {
-                              debugPrint('error');
+                              debugPrint(
+                                  "GooglePayButton error:*****************");
+                              debugPrint(error.toString());
                             },
                             paymentConfiguration:
                                 PaymentConfiguration.fromJsonString(
