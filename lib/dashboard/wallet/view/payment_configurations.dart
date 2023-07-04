@@ -70,8 +70,9 @@ const String defaultGooglePay = '''{
         "tokenizationSpecification": {
           "type": "PAYMENT_GATEWAY",
           "parameters": {
-            "gateway": "example",
-            "gatewayMerchantId": "exampleGatewayMerchantId"
+              "gateway": "stripe",
+              "stripe:version": "2018-10-31",
+              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
           }
         },
         "parameters": {
@@ -132,8 +133,10 @@ const String basicGooglePayLoadPaymentData = '''{
       "tokenizationSpecification": {
         "type": "PAYMENT_GATEWAY",
         "parameters": {
-          "gateway": "example",
-          "gatewayMerchantId": "exampleGatewayMerchantId"
+          "gateway": "stripe",
+              "stripe:version": "2018-10-31",
+              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+         
         }
       }
     }
@@ -172,8 +175,10 @@ const String invalidGooglePayLoadPaymentData = '''{
       "tokenizationSpecification": {
         "type": "PAYMENT_GATEWAY",
         "parameters": {
-          "gateway": "example",
-          "gatewayMerchantId": "exampleGatewayMerchantId"
+         "gateway": "stripe",
+              "stripe:version": "2018-10-31",
+              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+         
         }
       }
     }
