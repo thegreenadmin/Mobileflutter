@@ -328,12 +328,16 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             .toString());
                                                 // SharedPreferenceStorage.setData(
                                                 //     "context", context);
-
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (_) =>
+                                                Get.to(
+                                                  () =>
                                                       const OfferProductScreen(),
-                                                ));
+                                                  id: pageIdApp.value,
+                                                );
+                                                // Navigator.of(context)
+                                                //     .push(MaterialPageRoute(
+                                                //   builder: (_) =>
+                                                //       const OfferProductScreen(),
+                                                // ));
                                               },
                                               child: Row(
                                                 mainAxisAlignment:

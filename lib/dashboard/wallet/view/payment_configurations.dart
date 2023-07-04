@@ -70,8 +70,8 @@ const String defaultGooglePay = '''{
         "tokenizationSpecification": {
           "type": "PAYMENT_GATEWAY",
           "parameters": {
-            "gateway": "HI Business",
-            "gatewayMerchantId": "BCR2DN4TZLO6RPDD"
+            "gateway": "example",
+            "gatewayMerchantId": "exampleGatewayMerchantId"
           }
         },
         "parameters": {
