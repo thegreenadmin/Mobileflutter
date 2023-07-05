@@ -52,7 +52,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
 
   Future<void> _checkIfApplePayInstalled() async {
     _hasApplePay = await _payClient.userCanPay(PayProvider.apple_pay);
-
     if (_hasApplePay) {
       setState(() {
         // Write here your code..
@@ -431,12 +430,27 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         : addCardController.selectPaymentType.value ==
                                 "applePay"
                             ? ApplePayButton(
+                                onPressed: () {
+                                  print(addCardController
+                                      .amountTextController.text);
+                                },
                                 width: WidgetConstants.screenWidth,
                                 height: 45,
                                 paymentConfiguration:
                                     PaymentConfiguration.fromJsonString(
                                         payment_configurations.defaultApplePay),
-                                paymentItems: _paymentItems,
+                                paymentItems: [
+                                  PaymentItem(
+                                    label: 'Total',
+                                    amount: addCardController
+                                            .amountTextController.text.isEmpty
+                                        ? "0.0"
+                                        : double.parse(addCardController
+                                                .amountTextController.text)
+                                            .toString(),
+                                    status: PaymentItemStatus.final_price,
+                                  )
+                                ],
                                 style: ApplePayButtonStyle.black,
                                 type: ApplePayButtonType.buy,
                                 margin: const EdgeInsets.only(top: 0.0),
