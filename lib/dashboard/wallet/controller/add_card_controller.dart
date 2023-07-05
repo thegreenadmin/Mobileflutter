@@ -5,6 +5,7 @@ import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http/http.dart' as http;
+import 'package:pay/pay.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
@@ -84,6 +85,13 @@ class AddCardController extends GetxController {
 
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
+  RxList<PaymentItem> paymentItems = [
+    const PaymentItem(
+      label: 'Total',
+      amount: '0.0',
+      status: PaymentItemStatus.unknown,
+    )
+  ].obs;
   RxString countryId = "".obs;
   RxString capability = "".obs;
   RxBool payouts = false.obs;
@@ -119,7 +127,6 @@ class AddCardController extends GetxController {
     await apiGetUserDetailApi(Get.context);
     await apiGetCountries();
     await apiGetAccountDetails();
-
     // pageId.value =
     //     int.parse(SharedPreferenceStorage.getData("pageId").toString());
   }

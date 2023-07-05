@@ -24,13 +24,6 @@ class AddMoneyToWallet extends StatefulWidget {
 class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   final AddCardController addCardController = Get.put(AddCardController());
 
-  final _paymentItems = [
-    const PaymentItem(
-      label: 'Total',
-      amount: '12.34',
-      status: PaymentItemStatus.final_price,
-    )
-  ];
   late Pay _payClient;
   bool _hasApplePay = false;
   bool _hasGooglePay = false;
@@ -81,23 +74,16 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   Future<void> onGooglePayResult(paymentResult) async {
     debugPrint("GOOGLE PAYMENT RESULT *************000000");
     debugPrint("GOOGLE PAYMENT RESULT *************$paymentResult");
-    if (await paymentResult
-        .userCanPay(PayProvider.google_pay /*Or apple_pay*/)) {
-      // final paymentResult = await payClient.showPaymentSelector(
-      //   provider: PayProvider.google_pay, //Or apple_pay
-      //   paymentItems: _paymentItems,
-      // );
-      try {
-        final token =
-            paymentResult['paymentMethodData']['tokenizationData']['token'];
-        final tokenJson = Map.castFrom(json.decode(token));
-        debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
-        var tokenId = tokenJson['id'];
-        //Send token to a server or to Google or Apple for confirmation
-      } catch (e) {
-        debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
-        //An error has occured
-      }
+    try {
+      final token =
+          paymentResult['paymentMethodData']['tokenizationData']['token'];
+      final tokenJson = Map.castFrom(json.decode(token));
+      debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
+      var tokenId = tokenJson['id'];
+      //Send token to a server or to Google or Apple for confirmation
+    } catch (e) {
+      debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
+      //An error has occured
     }
   }
 
@@ -169,7 +155,14 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.phone,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        addCardController.paymentItems.clear();
+                        addCardController.paymentItems.add(PaymentItem(
+                          label: 'Total',
+                          amount: value,
+                          status: PaymentItemStatus.unknown,
+                        ));
+                      },
                       textInputAction: TextInputAction.next,
                       autofocus: false,
                       inputFormatters: <TextInputFormatter>[
@@ -419,7 +412,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             paymentConfiguration:
                                 PaymentConfiguration.fromJsonString(
                                     payment_configurations.defaultGooglePay),
-                            paymentItems: _paymentItems,
+                            paymentItems: addCardController.paymentItems,
                             type: GooglePayButtonType.pay,
                             margin: const EdgeInsets.only(top: 15.0),
                             onPaymentResult: onGooglePayResult,
@@ -430,27 +423,12 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         : addCardController.selectPaymentType.value ==
                                 "applePay"
                             ? ApplePayButton(
-                                onPressed: () {
-                                  print(addCardController
-                                      .amountTextController.text);
-                                },
                                 width: WidgetConstants.screenWidth,
                                 height: 45,
                                 paymentConfiguration:
                                     PaymentConfiguration.fromJsonString(
                                         payment_configurations.defaultApplePay),
-                                paymentItems: [
-                                  PaymentItem(
-                                    label: 'Total',
-                                    amount: addCardController
-                                            .amountTextController.text.isEmpty
-                                        ? "0.0"
-                                        : double.parse(addCardController
-                                                .amountTextController.text)
-                                            .toString(),
-                                    status: PaymentItemStatus.final_price,
-                                  )
-                                ],
+                                paymentItems: addCardController.paymentItems,
                                 style: ApplePayButtonStyle.black,
                                 type: ApplePayButtonType.buy,
                                 margin: const EdgeInsets.only(top: 0.0),
