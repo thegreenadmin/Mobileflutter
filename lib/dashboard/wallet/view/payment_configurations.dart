@@ -70,9 +70,9 @@ const String defaultGooglePay = '''{
         "tokenizationSpecification": {
           "type": "PAYMENT_GATEWAY",
           "parameters": {
-              "gateway": "stripe",
-              "stripe:version": "2018-10-31",
-              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+            "gateway": "stripe",
+            "stripe:version": "2018-10-31",
+            "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
           }
         },
         "parameters": {
@@ -86,13 +86,11 @@ const String defaultGooglePay = '''{
         }
       }
     ],
-    "merchantInfo": { 
-      "merchantId": "BCR2DN4TZLO6RPDD",
+    "merchantInfo": {
+     "merchantId": "BCR2DN4TZLO6RPDD",
       "merchantName": "HI Business"
     },
-    "transactionInfo": { 
-       "totalPriceStatus": "FINAL",
-      "totalPrice": "12.34",
+    "transactionInfo": {
       "countryCode": "US",
       "currencyCode": "USD"
     }
