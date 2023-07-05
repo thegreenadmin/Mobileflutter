@@ -10,7 +10,9 @@ class GetStoreProductList {
   GetStoreProductList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? StoreProductListData.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? StoreProductListData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -186,10 +188,3 @@ class Products {
     return data;
   }
 }
-
-
-
-
-
-
-

@@ -312,8 +312,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                         itemBuilder: (BuildContext context,
                                                 int i) =>
                                             InkWell(
-                                              onTap: () {
-                                                offersController
+                                              onTap: () async {
+                                                await offersController
                                                     .apiGetOffersProducts(
                                                         offerId: offersController
                                                             .getUserOfferlist[

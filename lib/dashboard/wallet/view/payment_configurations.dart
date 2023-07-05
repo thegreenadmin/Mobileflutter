@@ -35,7 +35,7 @@ const String defaultApplePay = '''{
     "requiredShippingContactFields": [],
     "shippingMethods": [
       {
-        "amount": "0.00",
+        "amount": "100.00",
         "detail": "Available within an hour",
         "identifier": "in_store_pickup",
         "label": "In-Store Pickup"
@@ -53,7 +53,7 @@ const String defaultApplePay = '''{
         "label": "FedEx Priority Mail"
       }
     ]
-  }
+  } 
 }''';
 
 /// Sample configuration for Google Pay. Contains the same content as the file
