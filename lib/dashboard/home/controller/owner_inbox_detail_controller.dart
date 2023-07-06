@@ -164,8 +164,7 @@ class OwnerInboxDetailController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
 
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -215,8 +214,7 @@ class OwnerInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

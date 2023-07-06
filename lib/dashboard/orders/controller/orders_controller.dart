@@ -966,8 +966,7 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1006,7 +1005,6 @@ class OrdersController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -1088,8 +1086,7 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1132,19 +1129,11 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        // Get.back(id:pageIdApp.value );
-        // Navigator.of(context).pop();
-        // BuildContext rContext = SharedPreferenceStorage.getData(
-        //   "context",
-        // );
         Get.until((route) => route.isFirst, id: pageIdApp.value);
-        // Navigator.of(rContext).popUntil((route) => route.isFirst);
-        // Get.back();
-        // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1188,10 +1177,6 @@ class OrdersController extends GetxController {
         page.value = 1;
         orderList.clear();
         apiGetOrderListApi();
-        // BuildContext rContext = SharedPreferenceStorage.getData(
-        //   "context",
-        // );
-        // Navigator.of(rContext).popUntil((route) => route.isFirst);
         Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1235,8 +1220,6 @@ class OrdersController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         apiGetOrderDetailsApi();
-        // Get.back();
-        // Get.offAll(BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -1280,8 +1263,7 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1322,8 +1304,7 @@ class OrdersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
-        await await Get.offAll(const StartJourneyScreen());
-        // await Get.offAll(const StartJourneyScreen());
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
