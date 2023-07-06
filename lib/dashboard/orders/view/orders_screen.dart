@@ -173,7 +173,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 onTap: () {
                   ordersController.orderStatusName.value =
                       OrderStatus.receivedOrder.statusName;
-                  // ordersController.orderStatusId.value = 2;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -212,7 +211,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               InkWell(
                 onTap: () {
-                  // ordersController.orderStatusId.value = 3;
                   ordersController.orderStatusName.value =
                       OrderStatus.receivedOrder.statusName;
                   ordersController.page.value = 1;
@@ -252,7 +250,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               InkWell(
                 onTap: () {
-                  // ordersController.orderStatusId.value = 5;
                   ordersController.orderStatusName.value =
                       OrderStatus.completed.statusName;
                   ordersController.page.value = 1;
@@ -292,7 +289,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               InkWell(
                 onTap: () {
-                  // ordersController.orderStatusId.value = 7;
                   ordersController.orderStatusName.value =
                       OrderStatus.cancelled.statusName;
                   ordersController.page.value = 1;
@@ -363,8 +359,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () {
-                                            // Navigator.of(Get.context!).popUntil(
-                                            //     (route) => route.isFirst);
                                             Get.until((route) => route.isFirst,
                                                 id: pageIdApp.value);
                                           },
@@ -399,13 +393,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
                             ),
-                            // Obx(() => Text(
-                            //   roleApp.value,
-                            //   style: const TextStyle(
-                            //       fontSize: 22,
-                            //       color: AppColors.black,
-                            //       fontWeight: FontWeight.w600),
-                            // ))
                           ],
                         ),
                         Image.asset(
@@ -481,12 +468,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderList[i].orderId ??
                                               "";
                                       ordersController.apiGetStoreDetailsApi();
-                                      ordersController.apiGetOrderDetailsApi();
                                       Get.parameters["orderStatus"] =
                                           ordersController
                                                   .orderList[i].orderId ??
                                               "";
-
+                                      ordersController.apiGetOrderDetailsApi();
                                       Get.parameters["isFromTransaction"] =
                                           "false";
                                       Get.parameters["isHome"] = "false";
@@ -497,13 +483,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderList[i].store?.storeId
                                                   .toString() ??
                                               "";
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) =>
-                                      //       const OrderConfirmationScreen(),
-                                      // ))
+
                                       Get.to(const OrderConfirmationScreen(),
                                               id: pageIdApp.value)
                                           ?.then((value) {
@@ -860,12 +840,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .orderStatusName == //"11"
                                               OrderStatus
                                                   .returnRequest.statusName
-                                          ? /*Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                              builder: (_) =>
-                                                  const MarkReturnOrderScreen(),
-                                            ))*/
-                                          Get.to(() => const MarkReturnOrderScreen(),
+                                          ? Get.to(() => const MarkReturnOrderScreen(),
                                               id: pageIdApp.value,
                                               arguments: {
                                                   "storeId": ordersController
@@ -889,12 +864,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       .orderStatusName == //"12"
                                                   OrderStatus.returnConfirmed
                                                       .statusName
-                                              ? /*Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const ReturnConfirmOrderScreen(),
-                                                ))*/
-                                              Get.to(() => const ReturnConfirmOrderScreen(),
+                                              ? Get.to(() => const ReturnConfirmOrderScreen(),
                                                   id: int.parse(
                                                       SharedPreferenceStorage.getData("pageId")
                                                           .toString()),
@@ -911,17 +881,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               .orderId
                                                               .toString(),
                                                     })
-                                              : ordersController.orderStatusName
-                                                          .value == //7
+                                              : ordersController.orderStatusName.value ==
                                                       OrderStatus
                                                           .cancelled.statusName
                                                   ? null
-                                                  : /*Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          const OrdersHomeMainScreen(),
-                                                    ));*/
-                                                  Get.to(
+                                                  : Get.to(
                                                       () => const OrdersHomeMainScreen(),
                                                       id: pageIdApp.value,
                                                       arguments: {

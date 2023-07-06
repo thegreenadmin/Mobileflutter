@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:pay/pay.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
-import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -156,24 +156,28 @@ class AddCardController extends GetxController {
           userAddress = getUserDetailModel.data!.user!.userAddresses!;
           for (int i = 0; i < userAddress.length; i++) {
             countryId.value = userAddress[i].state!.country!.countryId ?? "";
-            print("countryId.value ----->" + countryId.value);
-            // countryDropdownValue.value =
-            //     userAddress[i].state!.country!.countryName ?? "";
-            selectedCountry.value =
+            countryTextController.text =
                 userAddress[i].state!.country!.countryName ?? "";
-            print("selectedCountry.value ----->" + selectedCountry.value);
-            // countryTextController.text = countryDropdownValue.value;
+            if (userAddress[i].state?.country?.countryName != null) {
+              final geocoding = GoogleMapsGeocoding(apiKey: kGoogleApiKey);
+
+              GeocodingResponse response = await geocoding.searchByAddress(
+                  userAddress[i].state?.country?.countryName ?? "");
+
+              final result =
+                  response.results.isNotEmpty ? response.results.first : null;
+              if (result != null) {
+                selectedCountry.value = Utility.extractLocality(
+                    result, "country",
+                    isShortName: true);
+              }
+            }
             stateTextController.text = userAddress[i].state!.stateName ?? "";
             selectedState.value = userAddress[i].state!.stateName ?? "";
             addressLine1TextController.text = userAddress[i].addressLine1 ?? "";
-            //   addressLine1.value = addressLine1TextController.text;
             addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
-            //addressLine2.value = addressLine2TextController.text;
             cityTextController.text = userAddress[i].city ?? "";
-            print("city.value ----->" + cityTextController.text);
-            // city.value = townOrCityTextController.text;
             zipCodeTextController.text = userAddress[i].postalCode ?? "";
-            // postalCode.value = postalCodeTextController.text;
             await apiGetCountries();
           }
         }

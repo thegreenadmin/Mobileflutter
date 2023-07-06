@@ -198,14 +198,15 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                       mode: Mode.overlay,
                                       language: "en",
                                       components: []);
-
-                                  int idx = p?.description?.indexOf(",") ?? 0;
-                                  List parts = [
-                                    p?.description?.substring(0, idx).trim(),
-                                    p?.description?.substring(idx + 1).trim()
-                                  ];
-                                  addCardController.addressLine1TextController
-                                      .text = parts[0].toString();
+                                  if (p?.description != null) {
+                                    int idx = p?.description?.indexOf(",") ?? 0;
+                                    List parts = [
+                                      p?.description?.substring(0, idx).trim(),
+                                      p?.description?.substring(idx + 1).trim()
+                                    ];
+                                    addCardController.addressLine1TextController
+                                        .text = parts[0].toString();
+                                  }
 
                                   ///ADDRESSES BY GoogleMapsGeocoding
 
@@ -224,6 +225,11 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     addCardController.cityTextController.text =
                                         Utility.extractLocality(
                                             result, "locality");
+
+                                    addCardController.selectedCountry.value =
+                                        Utility.extractLocality(
+                                            result, "country",
+                                            isShortName: true);
                                     addCardController
                                             .countryTextController.text =
                                         Utility.extractLocality(
@@ -246,7 +252,6 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     AutovalidateMode.onUserInteraction,
                                 minLines: 1,
                                 maxLines: 5,
-                                // enabled: false,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -269,6 +274,9 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                 readOnly: true,
                                 textCapitalization: TextCapitalization.words,
                                 decoration: InputDecoration(
+                                  labelText: StringConstants.addressLine1Text,
+                                  labelStyle: const TextStyle(
+                                      color: AppColors.black, fontSize: 16),
                                   hintText: StringConstants.addressLine1Text,
                                   hintStyle: const TextStyle(
                                       color: AppColors.grey, fontSize: 14),
@@ -526,7 +534,64 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                 )),
 
                             height20SizedBox,
-                            Obx(
+                            TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textInputAction: TextInputAction.next,
+                                autofocus: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(500),
+                                ],
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                controller:
+                                    addCardController.countryTextController,
+                                keyboardType: TextInputType.text,
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseEnterCountryText;
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  labelText: StringConstants.countryText,
+                                  labelStyle: const TextStyle(
+                                      color: AppColors.black, fontSize: 16),
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                )),
+
+                            /*Obx(
                               () => DropdownButtonFormField<String>(
                                 value: addCardController
                                                 .selectedCountry.value !=
@@ -607,7 +672,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                   // addCardController.apiGetStates();
                                 },
                               ),
-                            ),
+                            ),*/
                             height20SizedBox,
                             // Obx(
                             //   () => DropdownButtonFormField<String>(

@@ -734,14 +734,15 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                           debugPrint(
                               "ADDRESSES---description->${p?.description}");
-
-                          int idx = p?.description?.indexOf(",") ?? 0;
-                          List parts = [
-                            p?.description?.substring(0, idx).trim(),
-                            p?.description?.substring(idx + 1).trim()
-                          ];
-                          addNewStoreController.addressLine1TextController
-                              .text = parts[0].toString();
+                          if (p?.description != null) {
+                            int idx = p?.description?.indexOf(",") ?? 0;
+                            List parts = [
+                              p?.description?.substring(0, idx).trim(),
+                              p?.description?.substring(idx + 1).trim()
+                            ];
+                            addNewStoreController.addressLine1TextController
+                                .text = parts[0].toString();
+                          }
 
                           ///ADDRESSES BY GoogleMapsGeocoding
 
@@ -750,8 +751,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                           GeocodingResponse response = await geocoding
                               .searchByAddress(p?.description.toString() ?? "");
-                          // log("GeocodingResponse web services:------------");
-                          // log(jsonEncode(response.results));
 
                           final result = response.results.isNotEmpty
                               ? response.results.first

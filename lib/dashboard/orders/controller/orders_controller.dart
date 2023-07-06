@@ -84,7 +84,6 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    debugPrint("Order onInit called **********");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;

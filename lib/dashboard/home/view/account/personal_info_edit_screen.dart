@@ -320,13 +320,16 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                 mode: Mode.overlay,
                                 language: "en",
                                 components: []);
-                            int idx = p?.description?.indexOf(",") ?? 0;
-                            List parts = [
-                              p?.description?.substring(0, idx).trim() ?? '',
-                              p?.description?.substring(idx + 1).trim()
-                            ];
-                            accountController.addressLine1TextController.text =
-                                parts[0].toString();
+
+                            if (p?.description != null) {
+                              int idx = p?.description?.indexOf(",") ?? 0;
+                              List parts = [
+                                p?.description?.substring(0, idx).trim() ?? '',
+                                p?.description?.substring(idx + 1).trim()
+                              ];
+                              accountController.addressLine1TextController
+                                  .text = parts[0].toString();
+                            }
 
                             ///ADDRESSES BY google_maps_webservice: ^0.0.19 COZ GEOCODING ios issues
 
@@ -336,9 +339,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             GeocodingResponse response =
                                 await geocoding.searchByAddress(
                                     p?.description.toString() ?? "");
-                            // log("GeocodingResponse web services:------------");
-                            // log(jsonEncode(response.results));
-
                             final result = response.results.isNotEmpty
                                 ? response.results.first
                                 : null;
@@ -354,20 +354,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                   Utility.extractLocality(
                                       result, "administrative_area_level_1");
                             }
-
-                            // accountController.townOrCityTextController.text =
-                            //     response.results[0].addressComponents.firstWhere((element) => element.types.);
-
-                            // accountController.countryTextController.text =
-                            //     placeMark.first.country ?? "";
-                            //
-                            // accountController.postalCodeTextController.text =
-                            //     placeMark.first.postalCode ?? "";
-
-                            // accountController.stateTextController.text =
-                            //     placeMark.first.administrativeArea ?? "";
-
-                            // PlacesDetailsResponse response = await places.getDetailsByPlaceId("PLACE_ID");
 
                             /// ADDRESSES BY GEOCODING COZ Geocodr2 RETURNS
                             /// subAdministrativeArea INSTEAD OF CITY
