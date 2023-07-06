@@ -432,11 +432,15 @@ class Utility {
         });
   }
 
-  static String extractLocality(GeocodingResult result, String typeData) {
+  static String extractLocality(GeocodingResult result, String typeData,{bool isShortName =false}) {
     for (final component in result.addressComponents) {
       for (final type in component.types) {
         if (type == typeData) {
-          return component.longName;
+          if(isShortName){
+            return component.shortName;
+          }else {
+            return component.longName;
+          }
         }
       }
     }

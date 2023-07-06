@@ -46,9 +46,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   Future<void> _checkIfApplePayInstalled() async {
     _hasApplePay = await _payClient.userCanPay(PayProvider.apple_pay);
     if (_hasApplePay) {
-      setState(() {
-        // Write here your code..
-      });
       debugPrint('Apple Pay is available on this device!');
     } else {
       debugPrint('Apple Pay is not available on this device!');
@@ -58,9 +55,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   Future<void> _checkIfGooglePayInstalled() async {
     _hasGooglePay = await _payClient.userCanPay(PayProvider.google_pay);
     if (_hasGooglePay) {
-      setState(() {
-        // Write here your code..
-      });
       debugPrint('Google Pay is available on this device!');
     } else {
       debugPrint('Google Pay is not available on this device!');
@@ -83,7 +77,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
       debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
-      //An error has occured
+      //An error has occurred
     }
   }
 
@@ -400,7 +394,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       ],
                     ),
                   ),
-                  height30SizedBox,
                   Obx(
                     () => addCardController.selectPaymentType.value == "G-Pay"
                         ? GooglePayButton(
