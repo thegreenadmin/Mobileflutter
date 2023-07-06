@@ -63,6 +63,27 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
 
   void onApplePayResult(paymentResult) {
     debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
+    try {
+      final token = paymentResult['token'];
+      final tokenJson = Map.castFrom(json.decode(token));
+      debugPrint("transactionIdentifierJson *************$tokenJson");
+
+      //final transactionId = paymentResult['token']['transactionId'];
+      //  final transactionIdentifierJson =
+      // Map.castFrom(json.decode(transactionIdentifier));
+
+      // final tokenJson = Map.castFrom(json.decode(token));
+      //final transactionIdJson = Map.castFrom(json.decode(transactionId));
+      //debugPrint("tokenJson *************$tokenJson");
+      // debugPrint(
+      //  "transactionIdentifierJson *************$transactionIdentifierJson");
+      // debugPrint(
+      //     "transactionIdJson *************$transactionIdJson");
+      //Send token to a server or to Google or Apple for confirmation
+    } catch (e) {
+      debugPrint("APPLE PAYMENT error *************${e.toString()}");
+      //An error has occured
+    }
   }
 
   Future<void> onGooglePayResult(paymentResult) async {
