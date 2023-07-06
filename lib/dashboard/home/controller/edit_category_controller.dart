@@ -273,8 +273,6 @@ class EditNewCategoryController extends GetxController {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
-
-        // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -324,7 +322,6 @@ class EditNewCategoryController extends GetxController {
         await Get.offAll(const StartJourneyScreen(),
             id: int.parse(
                 SharedPreferenceStorage.getData("pageId").toString()));
-        // await Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
