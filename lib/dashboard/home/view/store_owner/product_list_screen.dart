@@ -84,7 +84,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  StringConstants.productsListText,
+                  "${StringConstants.viewText} ${StringConstants.productText}s",
                   style: const TextStyle(
                       fontSize: 18.0,
                       color: AppColors.black,
