@@ -826,7 +826,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     height: 28,
                                     width: 50,
                                     value: accountController
-                                        .isOnwerOfferNotify.value,
+                                        .isOwnerOfferNotify.value,
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
@@ -839,10 +839,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                     inactiveColor: AppColors.greymediumlight,
                                     onToggle: (val) {
                                       accountController
-                                          .isOnwerOfferNotify.value = val;
+                                          .isOwnerOfferNotify.value = val;
 
                                       if (accountController
-                                          .isOnwerOfferNotify.value) {
+                                          .isOwnerOfferNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
                                                 context,

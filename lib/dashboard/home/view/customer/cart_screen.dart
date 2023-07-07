@@ -85,10 +85,9 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
+                                    storeHomeMainController.itemsCount.value =
+                                        1;
                                     Get.back(id: pageIdApp.value);
-                                    // Navigator.of(context).pop();
-                                    // Get.back();
-                                    // Get.back(result: true );
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

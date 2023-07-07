@@ -105,7 +105,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(ownerInboxDetailController
-                      .userSelectedImageDynamicLinkfromServer.value),
+                      .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),
             ),
@@ -128,7 +128,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
               onTap: () {
                 setState(() {
                   ownerInboxDetailController
-                      .userSelectedImageDynamicLinkfromServer.value = "";
+                      .userSelectedImageDynamicLinkFromServer.value = "";
                 });
               },
               child: const CircleAvatar(
@@ -774,7 +774,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ownerInboxDetailController.isloading.value
+                                  ownerInboxDetailController.isLoading.value
                                       ? height0SizedBox
                                       : Column(
                                           children: [
@@ -818,7 +818,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                 _buildMessageComposer(),
                 GetBuilder<OwnerInboxDetailController>(
                     builder: (inboxdetailController) => inboxdetailController
-                            .userSelectedImageDynamicLinkfromServer.isNotEmpty
+                            .userSelectedImageDynamicLinkFromServer.isNotEmpty
                         ? buildPhotoLibraryGridView()
                         : Container()),
               ],

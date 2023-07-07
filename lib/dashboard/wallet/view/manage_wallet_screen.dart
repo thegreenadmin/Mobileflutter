@@ -356,7 +356,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               width15SizedBox,
                               Obx(
                                 () =>
-                                    !walletController.isautoRechargeEnable.value
+                                    !walletController.isAutoRechargeEnable.value
                                         ? InkWell(
                                             onTap: () {
                                               // walletController.cardList.clear();
@@ -398,7 +398,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 height: 28,
                                 width: 50,
                                 value:
-                                    walletController.isautoRechargeEnable.value,
+                                    walletController.isAutoRechargeEnable.value,
                                 activeToggleColor: AppColors.primary,
                                 inactiveToggleColor: AppColors.grey,
                                 activeSwitchBorder: Border.all(
@@ -410,17 +410,17 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 activeColor: AppColors.greymediumlight,
                                 inactiveColor: AppColors.greymediumlight,
                                 onToggle: (val) async {
-                                  walletController.isautoRechargeEnable.value =
+                                  walletController.isAutoRechargeEnable.value =
                                       val;
                                   if (walletController
-                                      .isautoRechargeEnable.value) {
+                                      .isAutoRechargeEnable.value) {
                                     walletController
-                                        .isautoRechargeEnable.value = true;
+                                        .isAutoRechargeEnable.value = true;
                                     walletController.apiGetAutoRechargeDetail();
                                     bottomSheetToAddMoney(context);
                                   } else {
                                     walletController
-                                        .isautoRechargeEnable.value = false;
+                                        .isAutoRechargeEnable.value = false;
                                     if (walletController.getAutoRechargeModel
                                             .data!.userWalletAutoCharge !=
                                         null) {

@@ -111,7 +111,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     height15SizedBox,
                     Obx(
                       () => addOffersController
-                              .offerImageDynamicLinkfromServer.value.isEmpty
+                              .offerImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addOffersController
@@ -168,7 +168,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addOffersController
-                                                .offerImageDynamicLinkfromServer
+                                                .offerImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

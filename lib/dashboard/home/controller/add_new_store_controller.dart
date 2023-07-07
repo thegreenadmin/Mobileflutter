@@ -70,14 +70,14 @@ class AddNewStoreController extends GetxController {
   Rx<XFile> termsFile = XFile("").obs;
   Rx<XFile> privacyFile = XFile("").obs;
 
-  RxString storeImageOrigionalLinkfromServer = "".obs;
-  RxString storeImageDynamicLinkfromServer = "".obs;
+  RxString storeImageOriginalLinkFromServer = "".obs;
+  RxString storeImageDynamicLinkFromServer = "".obs;
 
-  RxString storeLogoOrigionalLinkfromServer = "".obs;
-  RxString storeLogoDynamicLinkfromServer = "".obs;
+  RxString storeLogoOriginalLinkFromServer = "".obs;
+  RxString storeLogoDynamicLinkFromServer = "".obs;
 
-  RxString privacyOrigionalLinkfromServer = "".obs;
-  RxString termsOrigionalLinkfromServer = "".obs;
+  RxString privacyOriginalLinkFromServer = "".obs;
+  RxString termsOriginalLinkFromServer = "".obs;
   RxString? role = "".obs;
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
@@ -181,9 +181,9 @@ class AddNewStoreController extends GetxController {
   void validateAndSubmit(BuildContext ctx) async {
     if (validateAndSave()) {
       try {
-        if (storeLogoDynamicLinkfromServer.isEmpty) {
+        if (storeLogoDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectLogoText);
-        } else if (storeImageDynamicLinkfromServer.isEmpty) {
+        } else if (storeImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
           apiCreateStore(ctx);
@@ -270,15 +270,15 @@ class AddNewStoreController extends GetxController {
       if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
-          storeLogoOrigionalLinkfromServer.value =
+          storeLogoOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
-          storeLogoDynamicLinkfromServer.value =
+          storeLogoDynamicLinkFromServer.value =
               responseData['data']['urls']['dynamic_url'];
           isStoreLogoSelected.value = false;
         } else {
-          storeImageOrigionalLinkfromServer.value =
+          storeImageOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
-          storeImageDynamicLinkfromServer.value =
+          storeImageDynamicLinkFromServer.value =
               responseData['data']['urls']['dynamic_url'];
         }
 
@@ -331,7 +331,7 @@ class AddNewStoreController extends GetxController {
       if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isTermsSelected.value) {
-          termsOrigionalLinkfromServer.value =
+          termsOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
           termsTextController.text = responseData['data']['urls']['dynamic_url']
                   .split("pdf")[0]
@@ -340,7 +340,7 @@ class AddNewStoreController extends GetxController {
               "pdf";
           isTermsSelected.value = false;
         } else {
-          privacyOrigionalLinkfromServer.value =
+          privacyOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
           privacyTextController.text = responseData['data']['urls']
                       ['dynamic_url']
@@ -374,8 +374,8 @@ class AddNewStoreController extends GetxController {
       "store": {
         "store_name": storeNameTextController.text.trim(),
         "store_ein": einTextController.text.trim(),
-        "image_url": storeImageOrigionalLinkfromServer.value,
-        "logo_url": storeLogoOrigionalLinkfromServer.value,
+        "image_url": storeImageOriginalLinkFromServer.value,
+        "logo_url": storeLogoOriginalLinkFromServer.value,
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
         "store_phone": phoneNumber.value,
@@ -400,11 +400,11 @@ class AddNewStoreController extends GetxController {
       "store_pages": [
         {
           "store_page_type": "terms",
-          "store_page_content": termsOrigionalLinkfromServer.value
+          "store_page_content": termsOriginalLinkFromServer.value
         },
         {
           "store_page_type": "privacy",
-          "store_page_content": privacyOrigionalLinkfromServer.value
+          "store_page_content": privacyOriginalLinkFromServer.value
         }
       ]
     };
@@ -445,10 +445,10 @@ class AddNewStoreController extends GetxController {
         countryTextController.clear();
         stateTextController.clear();
         countryTextController.clear();
-        storeImageOrigionalLinkfromServer.value = "";
-        storeLogoOrigionalLinkfromServer.value = "";
-        storeImageDynamicLinkfromServer.value = "";
-        storeLogoDynamicLinkfromServer.value = "";
+        storeImageOriginalLinkFromServer.value = "";
+        storeLogoOriginalLinkFromServer.value = "";
+        storeImageDynamicLinkFromServer.value = "";
+        storeLogoDynamicLinkFromServer.value = "";
         deliveryServicesList.clear();
         for (var element in deliveryServices) {
           element.isSelected = false;
@@ -462,8 +462,8 @@ class AddNewStoreController extends GetxController {
         privacyTextController.clear();
         storeTimmingList.clear();
         termsTextController.clear();
-        termsOrigionalLinkfromServer.value = "";
-        privacyOrigionalLinkfromServer.value = "";
+        termsOriginalLinkFromServer.value = "";
+        privacyOriginalLinkFromServer.value = "";
         //storeIdValue.value = value.body["status"]
         storeIdValue.value = value.body["data"]['store_id'].toString();
         dynamicLink =

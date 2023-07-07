@@ -20,9 +20,9 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   initState() {
     super.initState();
     addNewCategoryController.categoryNameTextController.clear();
-    addNewCategoryController.categoryImageOrigionalLinkfromServer.value = "";
+    addNewCategoryController.categoryImageOriginalLinkFromServer.value = "";
     addNewCategoryController.isFeaturedTypeSelected.value = false;
-    addNewCategoryController.categoryImageDynamicLinkfromServer.value = "";
+    addNewCategoryController.categoryImageDynamicLinkFromServer.value = "";
     addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
   }
 
@@ -105,7 +105,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                     height25SizedBox,
                     Obx(
                       () => addNewCategoryController
-                              .categoryImageDynamicLinkfromServer.value.isEmpty
+                              .categoryImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addNewCategoryController
@@ -162,7 +162,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addNewCategoryController
-                                                .categoryImageDynamicLinkfromServer
+                                                .categoryImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

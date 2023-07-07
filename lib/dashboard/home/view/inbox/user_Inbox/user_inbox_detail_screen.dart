@@ -72,7 +72,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(userInboxDetailController
-                      .userSelectedImageDynamicLinkfromServer.value),
+                      .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),
             ),
@@ -95,7 +95,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
               onTap: () {
                 setState(() {
                   userInboxDetailController
-                      .userSelectedImageDynamicLinkfromServer.value = "";
+                      .userSelectedImageDynamicLinkFromServer.value = "";
                 });
               },
               child: const CircleAvatar(
@@ -709,7 +709,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                 GetBuilder<UserInboxDetailController>(
                     builder: (userInboxDetailController) =>
                         userInboxDetailController
-                                .userSelectedImageDynamicLinkfromServer
+                                .userSelectedImageDynamicLinkFromServer
                                 .isNotEmpty
                             ? buildPhotoLibraryGridView()
                             : Container()),

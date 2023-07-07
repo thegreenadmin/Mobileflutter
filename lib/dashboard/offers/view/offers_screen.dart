@@ -101,7 +101,7 @@ class _OffersScreenState extends State<OffersScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Obx(
-                            () => offersController.getOwnerOfferlist.isEmpty
+                            () => offersController.getOwnerOfferList.isEmpty
                                 ? height0SizedBox
                                 : Text(
                                     StringConstants.activeOffersText,
@@ -125,12 +125,6 @@ class _OffersScreenState extends State<OffersScreen> {
                                 onTap: () {
                                   Get.parameters["isFrom"] =
                                       StringConstants.addOfferText;
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  // Navigator.of(context)
-                                  //     .push(MaterialPageRoute(
-                                  //   builder: (_) => const AddOfferScreen(),
-                                  // ))
                                   permissionStoreList.any((element) =>
                                               element.isStoreOwner == true) ||
                                           permissionStoreList.any((element) =>
@@ -166,7 +160,7 @@ class _OffersScreenState extends State<OffersScreen> {
               height20SizedBox,
               Expanded(
                 child: Obx(() => roleApp.value == Role.customerRoleText
-                    ? offersController.getUserOfferlist.isEmpty
+                    ? offersController.getUserOfferList.isEmpty
                         ? offersController.isLoading!.value == true
                             ? height0SizedBox
                             : Column(
@@ -197,7 +191,7 @@ class _OffersScreenState extends State<OffersScreen> {
                               return height8SizedBox;
                             },
                             shrinkWrap: true,
-                            itemCount: offersController.getUserOfferlist.length,
+                            itemCount: offersController.getUserOfferList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 padding: const EdgeInsets.symmetric(
@@ -221,13 +215,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                         child: CircleAvatar(
                                           radius: 24.0,
                                           backgroundImage: offersController
-                                                          .getUserOfferlist[
+                                                          .getUserOfferList[
                                                               index]
                                                           .logo!
                                                           .dynamicUrl ==
                                                       null ||
                                                   offersController
-                                                      .getUserOfferlist[index]
+                                                      .getUserOfferList[index]
                                                       .logo!
                                                       .dynamicUrl!
                                                       .isEmpty
@@ -235,7 +229,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   ImageConstants.nopicfound,
                                                 ) as ImageProvider
                                               : NetworkImage(offersController
-                                                  .getUserOfferlist[index]
+                                                  .getUserOfferList[index]
                                                   .logo!
                                                   .dynamicUrl
                                                   .toString()),
@@ -251,7 +245,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                             width: 270,
                                             child: Text(
                                               offersController
-                                                      .getUserOfferlist[index]
+                                                      .getUserOfferList[index]
                                                       .storeName ??
                                                   "",
                                               overflow: TextOverflow.ellipsis,
@@ -273,7 +267,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                 width6SizedBox,
                                                 Text(
                                                   offersController
-                                                          .getUserOfferlist[
+                                                          .getUserOfferList[
                                                               index]
                                                           .storeAddresses![0]
                                                           .city ??
@@ -306,7 +300,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                         physics: const BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
                                         itemCount: offersController
-                                            .getUserOfferlist[index]
+                                            .getUserOfferList[index]
                                             .offers!
                                             .length,
                                         itemBuilder: (BuildContext context,
@@ -316,28 +310,21 @@ class _OffersScreenState extends State<OffersScreen> {
                                                 await offersController
                                                     .apiGetOffersProducts(
                                                         offerId: offersController
-                                                            .getUserOfferlist[
+                                                            .getUserOfferList[
                                                                 index]
                                                             .offers![i]
                                                             .offerId
                                                             .toString(),
                                                         storeId: offersController
-                                                            .getUserOfferlist[
+                                                            .getUserOfferList[
                                                                 index]
                                                             .storeId
                                                             .toString());
-                                                // SharedPreferenceStorage.setData(
-                                                //     "context", context);
                                                 Get.to(
                                                   () =>
                                                       const OfferProductScreen(),
                                                   id: pageIdApp.value,
                                                 );
-                                                // Navigator.of(context)
-                                                //     .push(MaterialPageRoute(
-                                                //   builder: (_) =>
-                                                //       const OfferProductScreen(),
-                                                // ));
                                               },
                                               child: Row(
                                                 mainAxisAlignment:
@@ -350,7 +337,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         Alignment.bottomCenter,
                                                     children: [
                                                       offersController
-                                                                      .getUserOfferlist[
+                                                                      .getUserOfferList[
                                                                           index]
                                                                       .offers![
                                                                           i]
@@ -358,7 +345,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                       .dynamicUrl ==
                                                                   null ||
                                                               offersController
-                                                                  .getUserOfferlist[
+                                                                  .getUserOfferList[
                                                                       index]
                                                                   .offers![i]
                                                                   .image!
@@ -373,7 +360,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             )
                                                           : Image.network(
                                                               offersController
-                                                                  .getUserOfferlist[
+                                                                  .getUserOfferList[
                                                                       index]
                                                                   .offers![i]
                                                                   .image!
@@ -414,7 +401,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               children: [
                                                                 Text(
                                                                   offersController
-                                                                          .getUserOfferlist[
+                                                                          .getUserOfferList[
                                                                               index]
                                                                           .offers![
                                                                               i]
@@ -444,7 +431,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                 ]),
                               );
                             })
-                    : offersController.getOwnerOfferlist.isEmpty
+                    : offersController.getOwnerOfferList.isEmpty
                         ? offersController.isLoading!.value == true
                             ? height0SizedBox
                             : Column(
@@ -476,7 +463,7 @@ class _OffersScreenState extends State<OffersScreen> {
                             },
                             shrinkWrap: true,
                             itemCount:
-                                offersController.getOwnerOfferlist.length,
+                                offersController.getOwnerOfferList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Dismissible(
                                 background: Container(
@@ -507,7 +494,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                           permissionStoreList.any((element) =>
                                               element.storeId ==
                                                   offersController
-                                                      .getOwnerOfferlist[index]
+                                                      .getOwnerOfferList[index]
                                                       .store!
                                                       .storeId &&
                                               element.controllers!.any((ele) =>
@@ -521,13 +508,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                           Get.back();
                                           offersController.storeId!.value =
                                               offersController
-                                                      .getOwnerOfferlist[index]
+                                                      .getOwnerOfferList[index]
                                                       .store!
                                                       .storeId ??
                                                   "";
                                           offersController.offerId!.value =
                                               offersController
-                                                      .getOwnerOfferlist[index]
+                                                      .getOwnerOfferList[index]
                                                       .offerId ??
                                                   "";
                                           await offersController
@@ -566,14 +553,14 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   child: CircleAvatar(
                                                     radius: 24.0,
                                                     backgroundImage: offersController
-                                                                    .getOwnerOfferlist[
+                                                                    .getOwnerOfferList[
                                                                         index]
                                                                     .store!
                                                                     .logo!
                                                                     .dynamicUrl ==
                                                                 null ||
                                                             offersController
-                                                                .getOwnerOfferlist[
+                                                                .getOwnerOfferList[
                                                                     index]
                                                                 .store!
                                                                 .logo!
@@ -585,7 +572,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           ) as ImageProvider
                                                         : NetworkImage(
                                                             offersController
-                                                                .getOwnerOfferlist[
+                                                                .getOwnerOfferList[
                                                                     index]
                                                                 .store!
                                                                 .logo!
@@ -603,7 +590,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       width: 200,
                                                       child: Text(
                                                         offersController
-                                                                .getOwnerOfferlist[
+                                                                .getOwnerOfferList[
                                                                     index]
                                                                 .store!
                                                                 .storeName ??
@@ -632,7 +619,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           width6SizedBox,
                                                           Text(
                                                             offersController
-                                                                    .getOwnerOfferlist[
+                                                                    .getOwnerOfferList[
                                                                         index]
                                                                     .store!
                                                                     .storeAddresses![
@@ -665,14 +652,14 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           .editOfferText;
                                                   Get.parameters["storeId"] =
                                                       offersController
-                                                              .getOwnerOfferlist[
+                                                              .getOwnerOfferList[
                                                                   index]
                                                               .store!
                                                               .storeId ??
                                                           "";
                                                   Get.parameters["offerId"] =
                                                       offersController
-                                                              .getOwnerOfferlist[
+                                                              .getOwnerOfferList[
                                                                   index]
                                                               .offerId ??
                                                           "";
@@ -691,7 +678,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           permissionStoreList.any((element) =>
                                                               element.storeId ==
                                                                   offersController
-                                                                      .getOwnerOfferlist[
+                                                                      .getOwnerOfferList[
                                                                           index]
                                                                       .store!
                                                                       .storeId &&
@@ -707,13 +694,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                   StringConstants
                                                                       .editOfferText,
                                                               "storeId": offersController
-                                                                      .getOwnerOfferlist[
+                                                                      .getOwnerOfferList[
                                                                           index]
                                                                       .store!
                                                                       .storeId ??
                                                                   "",
                                                               "offerId": offersController
-                                                                      .getOwnerOfferlist[
+                                                                      .getOwnerOfferList[
                                                                           index]
                                                                       .offerId ??
                                                                   ""
@@ -753,13 +740,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       Alignment.bottomCenter,
                                                   children: [
                                                     offersController
-                                                                    .getOwnerOfferlist[
+                                                                    .getOwnerOfferList[
                                                                         index]
                                                                     .image!
                                                                     .dynamicUrl ==
                                                                 null ||
                                                             offersController
-                                                                .getOwnerOfferlist[
+                                                                .getOwnerOfferList[
                                                                     index]
                                                                 .image!
                                                                 .dynamicUrl!
@@ -773,7 +760,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           )
                                                         : Image.network(
                                                             offersController
-                                                                .getOwnerOfferlist[
+                                                                .getOwnerOfferList[
                                                                     index]
                                                                 .image!
                                                                 .dynamicUrl
@@ -813,7 +800,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             children: [
                                                               Text(
                                                                 offersController
-                                                                    .getOwnerOfferlist[
+                                                                    .getOwnerOfferList[
                                                                         index]
                                                                     .offerName!,
                                                                 style: const TextStyle(

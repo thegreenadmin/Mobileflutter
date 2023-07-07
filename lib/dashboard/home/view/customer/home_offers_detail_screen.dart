@@ -80,7 +80,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                     height15SizedBox,
                     Obx(
                       () => addOffersController
-                              .offerImageDynamicLinkfromServer.value.isEmpty
+                              .offerImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addOffersController
@@ -137,7 +137,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addOffersController
-                                                .offerImageDynamicLinkfromServer
+                                                .offerImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

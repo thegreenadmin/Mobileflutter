@@ -107,7 +107,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                   Center(
                                     child: Text(
                                       ownerStoresController
-                                                  .isDataComming.value ==
+                                                  .isDataComing.value ==
                                               true
                                           ? ""
                                           : StringConstants.noStoresFoundText,

@@ -82,7 +82,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Form(
-            key: addNewCategoryController.updateformKey,
+            key: addNewCategoryController.updateFormKey,
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -111,7 +111,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                     height25SizedBox,
                     Obx(
                       () => addNewCategoryController
-                              .categoryImageDynamicLinkfromServer.value.isEmpty
+                              .categoryImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addNewCategoryController
@@ -168,7 +168,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addNewCategoryController
-                                                .categoryImageDynamicLinkfromServer
+                                                .categoryImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

@@ -11,12 +11,12 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class EditNewCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
 
   TextEditingController categoryNameTextController = TextEditingController();
   Rx<XFile> categoryImage = XFile("").obs;
-  RxString categoryImageOrigionalLinkfromServer = "".obs;
-  RxString categoryImageDynamicLinkfromServer = "".obs;
+  RxString categoryImageOriginalLinkFromServer = "".obs;
+  RxString categoryImageDynamicLinkFromServer = "".obs;
   RxString storeId = "".obs;
   RxString categoryId = "".obs;
   RxBool autoValidate = false.obs;
@@ -70,7 +70,7 @@ class EditNewCategoryController extends GetxController {
   void validateAndSubmit(BuildContext nCon) async {
     if (validateAndSave()) {
       try {
-        if (categoryImageDynamicLinkfromServer.isEmpty) {
+        if (categoryImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
@@ -83,7 +83,7 @@ class EditNewCategoryController extends GetxController {
   }
 
   bool validateAndSaveUpdate() {
-    final forms = updateformKey.currentState;
+    final forms = updateFormKey.currentState;
     if (forms!.validate()) {
       forms.save();
       return true;
@@ -95,7 +95,7 @@ class EditNewCategoryController extends GetxController {
   void validateAndSubmitUpdate(BuildContext cntext) async {
     if (validateAndSaveUpdate()) {
       try {
-        if (categoryImageDynamicLinkfromServer.isEmpty) {
+        if (categoryImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
@@ -166,9 +166,9 @@ class EditNewCategoryController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        categoryImageOrigionalLinkfromServer.value =
+        categoryImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        categoryImageDynamicLinkfromServer.value =
+        categoryImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
@@ -205,14 +205,14 @@ class EditNewCategoryController extends GetxController {
     debugPrint(
         "ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
     debugPrint(
-        "ADD CATEGORY image_url********** ${categoryImageOrigionalLinkfromServer.value}");
+        "ADD CATEGORY image_url********** ${categoryImageOriginalLinkFromServer.value}");
 
     Map body = {
       "store_id": int.parse(storeId.value),
       "parent_category_id": null,
       "is_featured_category": isFeaturedTypeSelected.value,
       "category_name": categoryNameTextController.text.trim(),
-      "image_url": categoryImageOrigionalLinkfromServer.value
+      "image_url": categoryImageOriginalLinkFromServer.value
     };
     debugPrint("ADD CATEGORY BODY********** $body");
     debugPrint("TOKEN ********** $headers");
@@ -229,9 +229,9 @@ class EditNewCategoryController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         categoryNameTextController.clear();
-        categoryImageOrigionalLinkfromServer.value = "";
+        categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
-        categoryImageDynamicLinkfromServer.value = "";
+        categoryImageDynamicLinkFromServer.value = "";
         // Get.back();
         // Navigator.of(nContext).pop();
         Get.back(id: pageIdApp.value);
@@ -263,9 +263,9 @@ class EditNewCategoryController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
             value.body["data"]['category']['category_name'] ?? "";
-        categoryImageDynamicLinkfromServer.value =
+        categoryImageDynamicLinkFromServer.value =
             value.body["data"]['category']['image']['dynamic_url'] ?? "";
-        categoryImageOrigionalLinkfromServer.value =
+        categoryImageOriginalLinkFromServer.value =
             value.body["data"]['category']['image']['orignal_url'] ?? "";
         isFeaturedCategory.value =
             value.body["data"]['category']['is_featured_category'] ?? false;
@@ -296,7 +296,7 @@ class EditNewCategoryController extends GetxController {
       "is_featured_category": isFeaturedCategory.value,
       "parent_category_id": null,
       "category_name": categoryNameTextController.text.trim(),
-      "image_url": categoryImageOrigionalLinkfromServer.value
+      "image_url": categoryImageOriginalLinkFromServer.value
     };
     debugPrint("UPDATE CATEGORY BODY**********$data");
     UserProvider()
@@ -315,7 +315,7 @@ class EditNewCategoryController extends GetxController {
         Get.back(id: pageIdApp.value);
         // Navigator.of(contextt).pop();
         categoryNameTextController.clear();
-        categoryImageOrigionalLinkfromServer.value = "";
+        categoryImageOriginalLinkFromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

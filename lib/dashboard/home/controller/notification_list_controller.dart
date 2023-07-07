@@ -31,10 +31,8 @@ class NotificationListController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
-    if (roleVal == Role.customerRoleText) {
+    role?.value = roleApp.value;
+    if (role?.value == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       apiGetNotificationList(false);
     } else {

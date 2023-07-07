@@ -12,7 +12,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class OwnerInboxDetailController extends GetxController {
-  RxBool isloading = false.obs;
+  RxBool isLoading = false.obs;
 
   TextEditingController messageTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -28,8 +28,8 @@ class OwnerInboxDetailController extends GetxController {
   RxList<Message> messageList = <Message>[].obs;
 
   Rx<XFile> userSelectedImage = XFile("").obs;
-  RxString userSelectedImageOrigionalLinkfromServer = "".obs;
-  RxString userSelectedImageDynamicLinkfromServer = "".obs;
+  RxString userSelectedImageOriginalLinkFromServer = "".obs;
+  RxString userSelectedImageDynamicLinkFromServer = "".obs;
 
   @override
   void onInit() {
@@ -114,9 +114,9 @@ class OwnerInboxDetailController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        userSelectedImageOrigionalLinkfromServer.value =
+        userSelectedImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        userSelectedImageDynamicLinkfromServer.value =
+        userSelectedImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
@@ -139,7 +139,7 @@ class OwnerInboxDetailController extends GetxController {
 
   //Get Messages List Api
   Future apiGetMessagesList() async {
-    isloading.value = true;
+    isLoading.value = true;
     debugPrint(
         "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}");
 
@@ -154,7 +154,7 @@ class OwnerInboxDetailController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isloading.value = false;
+      isLoading.value = false;
       debugPrint("MESSAGE LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
@@ -186,9 +186,9 @@ class OwnerInboxDetailController extends GetxController {
     Map body = {
       "message_head_id": messageHeadId.value,
       "message": messageTextController.text.trim(),
-      "image_url": userSelectedImageOrigionalLinkfromServer.value.isEmpty
+      "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
           ? null
-          : userSelectedImageOrigionalLinkfromServer.value,
+          : userSelectedImageOriginalLinkFromServer.value,
       "store_id": storeId.value
     };
     debugPrint("MESSAGE SEND BODY ********** $body");
@@ -199,13 +199,13 @@ class OwnerInboxDetailController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isloading.value = false;
+      isLoading.value = false;
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageTextController.clear();
-        userSelectedImageOrigionalLinkfromServer.value = "";
-        userSelectedImageDynamicLinkfromServer.value = "";
+        userSelectedImageOriginalLinkFromServer.value = "";
+        userSelectedImageDynamicLinkFromServer.value = "";
         userSelectedImage.value = XFile("");
         messageListModel = OwnerMessageListModel.fromJson(value.body);
         messageList.value = messageListModel.data?.messages ?? [];

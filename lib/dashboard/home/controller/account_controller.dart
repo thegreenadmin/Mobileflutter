@@ -30,7 +30,7 @@ class AccountController extends GetxController {
   RxBool isOwnerInboxMessagesNotify = false.obs;
   RxBool isUserTippingNotify = false.obs;
   RxBool isOwnerTippingNotify = false.obs;
-  RxBool isOnwerOfferNotify = false.obs;
+  RxBool isOwnerOfferNotify = false.obs;
   RxBool isUserOfferNotify = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
@@ -91,8 +91,8 @@ class AccountController extends GetxController {
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   Rx<XFile> idProofImage = XFile("").obs;
-  RxString idProofImageOrigionalLinkfromServer = "".obs;
-  RxString idProofImageDynamicLinkfromServer = "".obs;
+  RxString idProofImageOriginalLinkFromServer = "".obs;
+  RxString idProofImageDynamicLinkFromServer = "".obs;
 
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
@@ -382,9 +382,9 @@ class AccountController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        idProofImageOrigionalLinkfromServer.value =
+        idProofImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        idProofImageDynamicLinkfromServer.value =
+        idProofImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
         await apiAddUserIdProof(context);
         return responseData;
@@ -480,7 +480,7 @@ class AccountController extends GetxController {
             postalCode.value = postalCodeTextController.text;
           }
           if (getUserDetailModel.data!.userProof != null) {
-            idProofImageDynamicLinkfromServer.value =
+            idProofImageDynamicLinkFromServer.value =
                 getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
@@ -677,7 +677,7 @@ class AccountController extends GetxController {
     Map data = {
       "proof_type_id": 1,
       "proof_value": "123456",
-      "image_url": idProofImageOrigionalLinkfromServer.value,
+      "image_url": idProofImageOriginalLinkFromServer.value,
       "expiredAt": ""
     };
     debugPrint("ID PROOF DETAIL BODY**********$data");
@@ -750,14 +750,14 @@ class AccountController extends GetxController {
           if (notificationStatusList[i].notificationType == "offer") {
             if (notificationStatusList[i].isForStore == true) {
               if (notificationStatusList[i].isEnabled == true) {
-                isOnwerOfferNotify.value =
+                isOwnerOfferNotify.value =
                     notificationStatusList[i].isEnabled == true;
                 isUserOfferNotify.value =
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
               if (notificationStatusList[i].isEnabled == true) {
-                isOnwerOfferNotify.value =
+                isOwnerOfferNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserOfferNotify.value =
                     notificationStatusList[i].isEnabled == true;

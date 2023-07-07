@@ -77,7 +77,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: SingleChildScrollView(
                 child: Form(
-              key: manageStoreController.updateformKey,
+              key: manageStoreController.updateFormKey,
               child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 25),

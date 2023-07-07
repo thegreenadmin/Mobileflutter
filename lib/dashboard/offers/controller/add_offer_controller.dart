@@ -27,8 +27,8 @@ class AddOffersController extends GetxController {
   RxString radioValue = "store".obs;
   RxBool autoValidate = true.obs;
   Rx<XFile> categoryImage = XFile("").obs;
-  RxString offerImageOrigionalLinkfromServer = "".obs;
-  RxString offerImageDynamicLinkfromServer = "".obs;
+  RxString offerImageOriginalLinkFromServer = "".obs;
+  RxString offerImageDynamicLinkFromServer = "".obs;
   RxInt pageId = 0.obs;
   RxString storeId = "".obs;
   RxString offerId = "".obs;
@@ -96,9 +96,9 @@ class AddOffersController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        offerImageOrigionalLinkfromServer.value =
+        offerImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        offerImageDynamicLinkfromServer.value =
+        offerImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
@@ -162,7 +162,7 @@ class AddOffersController extends GetxController {
   void validateAndSubmit(isValidateFromAddOffer, context) async {
     if (validateAndSave()) {
       try {
-        if (offerImageDynamicLinkfromServer.isEmpty) {
+        if (offerImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseUploadImageText);
         } else if (discountType.value.isEmpty) {
           Utility.showAlertMessage(
@@ -197,7 +197,7 @@ class AddOffersController extends GetxController {
         radioValue.value == "store" ? [] : offerProductList;
     offer.isOfferForStore = radioValue.value == "store" ? true : false;
     offer.offerName = offerNameTextController.text.trim();
-    offer.imageUrl = offerImageOrigionalLinkfromServer.value;
+    offer.imageUrl = offerImageOriginalLinkFromServer.value;
     offer.offerType = discountType.value.toLowerCase();
     offer.offerValue = double.parse(discountOrOfferTextController.text.trim());
     addOfferRequestModel.offer = offer;
@@ -218,8 +218,8 @@ class AddOffersController extends GetxController {
         radioValue.value = "";
         offerNameTextController.clear();
         storeIdValue.value = "";
-        offerImageOrigionalLinkfromServer.value = "";
-        offerImageDynamicLinkfromServer.value = "";
+        offerImageOriginalLinkFromServer.value = "";
+        offerImageDynamicLinkFromServer.value = "";
         discountOrOfferTextController.clear();
         Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -382,9 +382,9 @@ class AddOffersController extends GetxController {
         offerNameTextController.text = getOfferDetailModel.data!.offerName!;
         discountOrOfferTextController.text =
             getOfferDetailModel.data!.offerValue!.toString();
-        offerImageDynamicLinkfromServer.value =
+        offerImageDynamicLinkFromServer.value =
             getOfferDetailModel.data!.image!.dynamicUrl ?? "";
-        offerImageOrigionalLinkfromServer.value =
+        offerImageOriginalLinkFromServer.value =
             getOfferDetailModel.data!.image!.orignalUrl ?? "";
         if (getOfferDetailModel.data!.isOfferForStore == true) {
           radioValue.value = "store";
@@ -432,7 +432,7 @@ class AddOffersController extends GetxController {
       "offer": {
         "offer_id": offerId.value,
         "offer_name": offerNameTextController.text.trim(),
-        "image_url": offerImageOrigionalLinkfromServer.value.trim(),
+        "image_url": offerImageOriginalLinkFromServer.value.trim(),
         "offer_value": double.parse(discountOrOfferTextController.text.trim()),
         //"is_expired": false
       },

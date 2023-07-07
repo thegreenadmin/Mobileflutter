@@ -127,7 +127,7 @@ class StoreHomeMainController extends GetxController {
   void onIndexChange(int i) async {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
- 
+
     // print(lastSelectedIndex);
     popUpIndex.value = 1;
     if (i == 0) {
@@ -1010,7 +1010,7 @@ class StoreHomeMainController extends GetxController {
                     Get.back();
                     apiGetCartListApi();
                     apiGetUserWalletBalance();
-                    await Get.to(() => const CartScreen(), id: pageIdApp.value);
+                    Get.to(() => const CartScreen(), id: pageIdApp.value);
                     // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
                     //   builder: (_) => const CartScreen(),
                     // ));

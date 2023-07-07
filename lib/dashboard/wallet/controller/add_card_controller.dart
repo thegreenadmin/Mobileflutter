@@ -127,8 +127,6 @@ class AddCardController extends GetxController {
     await apiGetUserDetailApi(Get.context);
     await apiGetCountries();
     await apiGetAccountDetails();
-    // pageId.value =
-    //     int.parse(SharedPreferenceStorage.getData("pageId").toString());
   }
 
   //Get User Detail Info Api

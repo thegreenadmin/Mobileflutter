@@ -132,9 +132,9 @@ class OwnerStoresController extends GetxController {
   dynamic lng = 0.0;
 
   RxBool isTermsSelected = false.obs;
-  RxBool isDataComming = false.obs;
-  RxString privacyOrigionalLinkfromServer = "".obs;
-  RxString termsOrigionalLinkfromServer = "".obs;
+  RxBool isDataComing = false.obs;
+  RxString privacyOriginalLinkFromServer = "".obs;
+  RxString termsOriginalLinkFromServer = "".obs;
 
   @override
   void onInit() {
@@ -171,7 +171,7 @@ class OwnerStoresController extends GetxController {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    isDataComming.value = false;
+    isDataComing.value = false;
   }
 
   getApiData() async {
@@ -235,7 +235,7 @@ class OwnerStoresController extends GetxController {
               .split("?")[0]
               .split("/")
               .last;
-          termsOrigionalLinkfromServer.value =
+          termsOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
 
           isTermsSelected.value = false;
@@ -245,7 +245,7 @@ class OwnerStoresController extends GetxController {
               .split("?")[0]
               .split("/")
               .last;
-          privacyOrigionalLinkfromServer.value =
+          privacyOriginalLinkFromServer.value =
               responseData['data']['urls']['orignal_url'];
           isTermsSelected.value = false;
         }
@@ -553,8 +553,7 @@ class OwnerStoresController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value != null &&
-            storeId.value.isNotEmpty &&
+        if (storeId.value.isNotEmpty &&
             storeId.value != "") {
           await apiGetParticularStore();
         }
@@ -721,7 +720,7 @@ class OwnerStoresController extends GetxController {
                     "pdf";
               }
               if (storePages[i]['store_page_content']['orignal_url'] != null) {
-                termsOrigionalLinkfromServer.value =
+                termsOriginalLinkFromServer.value =
                     storePages[i]['store_page_content']['orignal_url'];
               }
               update();
@@ -736,7 +735,7 @@ class OwnerStoresController extends GetxController {
                     "pdf";
               }
               if (storePages[i]['store_page_content']['orignal_url'] != null) {
-                privacyOrigionalLinkfromServer.value =
+                privacyOriginalLinkFromServer.value =
                     storePages[i]['store_page_content']['orignal_url'];
               }
             }
@@ -797,11 +796,11 @@ class OwnerStoresController extends GetxController {
       "store_pages": [
         {
           "store_page_type": "terms",
-          "store_page_content": termsOrigionalLinkfromServer.value
+          "store_page_content": termsOriginalLinkFromServer.value
         },
         {
           "store_page_type": "privacy",
-          "store_page_content": privacyOrigionalLinkfromServer.value
+          "store_page_content": privacyOriginalLinkFromServer.value
         }
       ]
     };

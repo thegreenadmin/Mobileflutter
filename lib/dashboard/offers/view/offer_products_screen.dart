@@ -34,7 +34,6 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  // Navigator.of(context).pop();
                                   Get.back(id: pageIdApp.value);
                                 },
                                 icon: const Icon(

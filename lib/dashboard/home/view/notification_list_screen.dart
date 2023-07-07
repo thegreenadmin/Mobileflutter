@@ -42,7 +42,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
-                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -106,7 +105,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
-                            //  SharedPreferenceStorage.setData("context", context);
                             Get.parameters["storeId"] =
                                 notificationListController
                                         .notificationList[index].storeId ??
@@ -133,11 +131,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                             notificationListController
                                         .notificationList[index].orderId !=
                                     null
-                                ? /*Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => const OrdersScreen(),
-                                  ))*/
-
-                                notificationListController
+                                ? notificationListController
                                         .notificationList[index]
                                         .isNotificationForStore!
                                     ? Get.to(const OrdersHomeMainScreen(),
@@ -163,11 +157,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 : notificationListController
                                             .notificationList[index].offerId !=
                                         null
-                                    ? /*Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                        builder: (_) => const OrdersScreen(),
-                                      ))*/
-                                    Get.to(const OffersScreen(),
+                                    ? Get.to(const OffersScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
                                             "isFromNotification": true,
@@ -177,12 +167,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                 .messageHeadId !=
                                             null
                                         ? roleApp.value == Role.customerRoleText
-                                            ? /*Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const OwnerInboxDetailScreen(),
-                                              ))*/
-                                            Get.to(
+                                            ? Get.to(
                                                 const OwnerInboxDetailScreen(),
                                                 id: pageIdApp.value,
                                                 arguments: {
@@ -203,12 +188,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                                 index]
                                                             .messageHeadId,
                                                   })
-                                            : /*Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const UserInboxDetailScreen(),
-                                              ))*/
-                                            Get.to(
+                                            : Get.to(
                                                 const UserInboxDetailScreen(),
                                                 id: pageIdApp.value,
                                                 arguments: {

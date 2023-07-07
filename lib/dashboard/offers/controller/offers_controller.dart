@@ -26,10 +26,10 @@ class OffersController extends GetxController {
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
-  RxList<OffersList> getOwnerOfferlist = <OffersList>[].obs;
+  RxList<OffersList> getOwnerOfferList = <OffersList>[].obs;
 
   late GetUserOfferListModel getUserOffersListModel = GetUserOfferListModel();
-  RxList<UserOfferStores> getUserOfferlist = <UserOfferStores>[].obs;
+  RxList<UserOfferStores> getUserOfferList = <UserOfferStores>[].obs;
   late DeleteOfferRequestModel deleteOfferRequestModel =
       DeleteOfferRequestModel();
 
@@ -113,7 +113,7 @@ class OffersController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
-        getOwnerOfferlist.value = getOwnerOffersListModel.data!.offers!;
+        getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -149,7 +149,7 @@ class OffersController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
-        getUserOfferlist.value = getUserOffersListModel.data!.stores!;
+        getUserOfferList.value = getUserOffersListModel.data!.stores!;
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

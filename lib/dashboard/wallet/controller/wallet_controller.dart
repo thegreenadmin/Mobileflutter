@@ -36,8 +36,8 @@ class WalletController extends GetxController {
   RxString? ownerWalletBalance = "0.00".obs;
   RxString? storeNameValue = "".obs;
   RxString autoChargeType = "threshold".obs;
-  RxString? startformattedDate = "".obs;
-  RxString? endformattedDate = "".obs;
+  RxString? startFormattedDate = "".obs;
+  RxString? endFormattedDate = "".obs;
   RxString stripeToken = "".obs;
   RxString selectedCountry = "".obs;
   RxString accountHolderTypeText = "".obs;
@@ -54,7 +54,7 @@ class WalletController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isStoresLoading = false.obs;
-  RxBool isautoRechargeEnable = false.obs;
+  RxBool isAutoRechargeEnable = false.obs;
   RxInt? selectedIndex = 0.obs;
   RxInt? type = 0.obs;
 
@@ -72,7 +72,7 @@ class WalletController extends GetxController {
   TextEditingController accountHolderNameTextController =
       TextEditingController();
 
-  TextEditingController rountingTextController = TextEditingController();
+  TextEditingController routingTextController = TextEditingController();
   TextEditingController accountNumberTextController = TextEditingController();
   TextEditingController currencyTextController = TextEditingController();
 
@@ -128,12 +128,7 @@ class WalletController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
-    //
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-
-    role?.value = roleVal;
+    role?.value = roleApp.value;
     autoChargeType.value = "threshold";
     if (role?.value == Role.customerRoleText) {
       if (Get.parameters['isFromCartScreen'] != "false") {
@@ -187,8 +182,8 @@ class WalletController extends GetxController {
   void validateAndSubmit(BuildContext mcontext,
       {bool isFromCreateOwnerBankBalance = false,
       bool updateAutoData = false,
-      isFromautorecharge = false}) async {
-    if (isFromautorecharge == true) {
+      isFromAutoRecharge = false}) async {
+    if (isFromAutoRecharge == true) {
       if (validateAndSaveAutoCharge()) {
         try {
           if (autoChargeType.value.isEmpty) {
@@ -681,7 +676,7 @@ class WalletController extends GetxController {
         'bank_account[account_holder_name]':
             accountHolderNameTextController.text.trim(),
         'bank_account[account_holder_type]': accountHolderTypeText.value,
-        'bank_account[routing_number]': rountingTextController.text.trim(),
+        'bank_account[routing_number]': routingTextController.text.trim(),
         'bank_account[account_number]': accountNumberTextController.text.trim()
       };
       debugPrint("BANK ACCOUNT TOKEN BODY **********${request.bodyFields}");
@@ -742,7 +737,7 @@ class WalletController extends GetxController {
         currencyTextController.clear();
         accountHolderNameTextController.clear();
         accountHolderTypeText.value = "";
-        rountingTextController.clear();
+        routingTextController.clear();
         accountNumberTextController.clear();
         Get.back(id: pageIdApp.value);
         // Navigator.of(ctxx).pop();
@@ -880,14 +875,14 @@ class WalletController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
         selectedFrequency.value = "";
-        rountingTextController.clear();
+        routingTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
         thresholdAmountTextController.clear();
         chargeAmountTextController.clear();
         periodChargeAmountTextController.clear();
         accountHolderNameTextController.clear();
-        rountingTextController.clear();
+        routingTextController.clear();
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
         Get.back(id: pageIdApp.value);
@@ -932,7 +927,7 @@ class WalletController extends GetxController {
         if (getAutoRechargeModel.data?.userWalletAutoCharge != null) {
           if (getAutoRechargeModel.data?.userWalletAutoCharge?.status ==
               "active") {
-            isautoRechargeEnable.value = true;
+            isAutoRechargeEnable.value = true;
             autoChargeType.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.autoChargeType!;
 
@@ -992,7 +987,7 @@ class WalletController extends GetxController {
             accountNumberTextController.clear();
           }
         } else {
-          isautoRechargeEnable.value = false;
+          isAutoRechargeEnable.value = false;
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -1057,7 +1052,7 @@ class WalletController extends GetxController {
         periodChargeAmountTextController.clear();
         accountHolderNameTextController.clear();
         autoChargeType.value = "";
-        rountingTextController.clear();
+        routingTextController.clear();
         accountNumberTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();

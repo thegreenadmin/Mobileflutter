@@ -111,7 +111,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         Flexible(
                             flex: 4,
                             child: Obx(() => addNewStoreController
-                                    .storeLogoDynamicLinkfromServer
+                                    .storeLogoDynamicLinkFromServer
                                     .value
                                     .isEmpty
                                 ? InkWell(
@@ -176,7 +176,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                 children: [
                                                   Image.network(
                                                       addNewStoreController
-                                                          .storeLogoDynamicLinkfromServer
+                                                          .storeLogoDynamicLinkFromServer
                                                           .value,
                                                       fit: BoxFit.cover)
                                                 ]),
@@ -242,7 +242,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height15SizedBox,
                     Obx(
                       () => addNewStoreController
-                              .storeImageDynamicLinkfromServer.value.isEmpty
+                              .storeImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addNewStoreController
@@ -299,7 +299,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addNewStoreController
-                                                .storeImageDynamicLinkfromServer
+                                                .storeImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

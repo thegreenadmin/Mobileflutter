@@ -16,7 +16,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 class ManageStoreController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> updateformKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
 
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController quantityTextController = TextEditingController();
@@ -125,11 +125,6 @@ class ManageStoreController extends GetxController {
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     isFeaturedTypeSelected.value = false;
-    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      productId.value = Get.parameters["productId"] ?? "";
-      await apiGetProductDetails();
-    }
     if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
     }
@@ -193,7 +188,7 @@ class ManageStoreController extends GetxController {
   }
 
   bool validateAndSaveUpdateProduct() {
-    final forms = updateformKey.currentState;
+    final forms = updateFormKey.currentState;
     if (forms!.validate()) {
       forms.save();
       return true;
@@ -235,7 +230,7 @@ class ManageStoreController extends GetxController {
     }
   }
 
-  //Api upload image to server
+  /// Api upload image to server
   Future<Future<bool?>?> apiUploadMultipleImage(length) async {
     var request = http.MultipartRequest(
         'POST',
@@ -268,7 +263,6 @@ class ManageStoreController extends GetxController {
             dynamicImageUrl: imageData['dynamic_url']));
       }
       imageUrlList.addAll(imagesList);
-      print("IMAGE URL--$imageUrlList");
       inputData.productImages = imagesList.isEmpty ? [] : imagesList;
       imageUrlList.refresh();
     });
@@ -278,7 +272,7 @@ class ManageStoreController extends GetxController {
     return null;
   }
 
-  //Get Categories Api
+  /// Get Categories Api
   Future apiGetCategoriesList() async {
     categoriesList.clear();
     isLoading.value = true;
@@ -320,7 +314,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-  //Get Quantity List Api
+  /// Get Quantity List Api
   Future apiGetQuantityList() async {
     quantityTypeList.clear();
     isLoading.value = true;
@@ -355,7 +349,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-  //Get Products List Api
+  /// Get Products List Api
   Future apiGetProductList(BuildContext bctxx) async {
     categoriesList.clear();
     isLoading.value = true;
@@ -389,7 +383,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-  //Create Product Api
+  /// Create Product Api
   Future apiCreateProduct(BuildContext cntx) async {
     inputData.storeId = int.parse(storeId.value);
     InputProduct product = InputProduct();
@@ -425,9 +419,7 @@ class ManageStoreController extends GetxController {
 
     inputData.product = product;
     List<ProductCategories> listProductCategory = <ProductCategories>[];
-    //for (int i = 0; i < selectedCategories.length; i++) {
     listProductCategory.add(ProductCategories(categoryId: categoryId.value));
-    //}
     inputData.productCategories = listProductCategory;
     inputData.productLinks = <ProductLink>[
       ProductLink(
@@ -463,10 +455,7 @@ class ManageStoreController extends GetxController {
         Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
         Get.back(id: pageIdApp.value);
-        // Navigator.of(cntx).pop();
-        // Navigator.of(cntx).pop();
         await apiGetCategoriesList();
-        update();
         productNameTextController.clear();
         quantityTextController.clear();
         pricePerUnitTextController.clear();
@@ -483,6 +472,7 @@ class ManageStoreController extends GetxController {
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
@@ -496,7 +486,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-//Get store products List Api
+  /// Get store products List Api
   Future apiGetStoreProducts() async {
     isLoading.value = true;
     debugPrint(
@@ -543,7 +533,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-//Api to get details of one product
+  /// Api to get details of one product
   Future apiGetProductDetails() async {
     isLoading.value = true;
     debugPrint(
@@ -671,7 +661,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-//Update  Store Product Api
+  /// Update  Store Product Api
   Future apiUpdateStoreProductDetail(BuildContext ctxx) async {
     debugPrint(
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
@@ -814,7 +804,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-//Api Delete Product
+  /// Api Delete Product
   Future apiDeleteProduct(BuildContext buildCtxt) async {
     debugPrint(
         "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
@@ -854,7 +844,7 @@ class ManageStoreController extends GetxController {
     });
   }
 
-//Api Delete Category
+  /// Api Delete Category
   Future apiDeleteCategory() async {
     debugPrint(
         "DELETE CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}");

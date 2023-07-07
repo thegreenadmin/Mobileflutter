@@ -28,8 +28,8 @@ class UserInboxDetailController extends GetxController {
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   Rx<XFile> userSelectedImage = XFile("").obs;
-  RxString userSelectedImageOrigionalLinkfromServer = "".obs;
-  RxString userSelectedImageDynamicLinkfromServer = "".obs;
+  RxString userSelectedImageOriginalLinkFromServer = "".obs;
+  RxString userSelectedImageDynamicLinkFromServer = "".obs;
 
   @override
   void onInit() {
@@ -114,9 +114,9 @@ class UserInboxDetailController extends GetxController {
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        userSelectedImageOrigionalLinkfromServer.value =
+        userSelectedImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
-        userSelectedImageDynamicLinkfromServer.value =
+        userSelectedImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
@@ -185,9 +185,9 @@ class UserInboxDetailController extends GetxController {
     Map body = {
       "message_head_id": messageHeadId.value,
       "message": messageTextController.text.trim(),
-      "image_url": userSelectedImageOrigionalLinkfromServer.value.isEmpty
+      "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
           ? null
-          : userSelectedImageOrigionalLinkfromServer.value
+          : userSelectedImageOriginalLinkFromServer.value
     };
     debugPrint("MESSAGE SEND BODY ********** $body");
     UserProvider()
@@ -202,8 +202,8 @@ class UserInboxDetailController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageTextController.clear();
-        userSelectedImageOrigionalLinkfromServer.value = "";
-        userSelectedImageDynamicLinkfromServer.value = "";
+        userSelectedImageOriginalLinkFromServer.value = "";
+        userSelectedImageDynamicLinkFromServer.value = "";
         userSelectedImage.value = XFile("");
         messageListModel = UserMessageListModel.fromJson(value.body);
         messageList.value = messageListModel.data?.messages ?? [];

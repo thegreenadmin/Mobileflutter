@@ -1343,7 +1343,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   backgroundColor: Colors.transparent,
                                   radius: 20,
                                   backgroundImage: AssetImage(
-                                    ImageConstants.nopicfound,
+                                    ImageConstants.userAccount,
                                   ),
                                 ),
                                 width10SizedBox,
@@ -1434,7 +1434,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           ]),
                         );
                       }),
-                  height20SizedBox,
+                  height30SizedBox,
                   storeHomeMainController
                                   .productDetailResponse.value.data?.product !=
                               null &&

@@ -900,7 +900,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         height20SizedBox,
                         Obx(
                           () => accountController
-                                  .idProofImageDynamicLinkfromServer
+                                  .idProofImageDynamicLinkFromServer
                                   .value
                                   .isNotEmpty
                               ? Column(
@@ -920,7 +920,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                               dashPattern: const [4, 4],
                                               child: Image.network(
                                                 accountController
-                                                    .idProofImageDynamicLinkfromServer
+                                                    .idProofImageDynamicLinkFromServer
                                                     .value,
                                                 fit: BoxFit.cover,
                                                 width:

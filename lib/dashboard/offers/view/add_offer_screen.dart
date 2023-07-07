@@ -21,7 +21,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
     super.initState();
     addOffersController.offerNameTextController.clear();
     addOffersController.discountOrOfferTextController.clear();
-    addOffersController.offerImageDynamicLinkfromServer.value = "";
+    addOffersController.offerImageDynamicLinkFromServer.value = "";
   }
 
   @override
@@ -101,7 +101,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                     height15SizedBox,
                     Obx(
                       () => addOffersController
-                              .offerImageDynamicLinkfromServer.value.isEmpty
+                              .offerImageDynamicLinkFromServer.value.isEmpty
                           ? InkWell(
                               onTap: () {
                                 addOffersController
@@ -158,7 +158,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                         color: AppColors.primarylight,
                                         child: Image.network(
                                             addOffersController
-                                                .offerImageDynamicLinkfromServer
+                                                .offerImageDynamicLinkFromServer
                                                 .value,
                                             fit: BoxFit.cover)),
                                   ),

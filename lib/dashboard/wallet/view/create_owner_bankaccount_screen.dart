@@ -296,7 +296,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
-                        controller: walletController.rountingTextController,
+                        controller: walletController.routingTextController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
