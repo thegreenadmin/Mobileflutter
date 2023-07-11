@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-OrderStatusListResponse orderListResponseFromJson(String str) => OrderStatusListResponse.fromJson(json.decode(str));
+OrderStatusListResponse orderStatusListResponseFromJson(String str) =>
+    OrderStatusListResponse.fromJson(json.decode(str));
 
-String orderListResponseToJson(OrderStatusListResponse data) => json.encode(data.toJson());
+String orderStatusListResponseToJson(OrderStatusListResponse data) =>
+    json.encode(data.toJson());
 
 class OrderStatusListResponse {
   OrderStatusListResponse({
@@ -30,17 +32,23 @@ class OrderStatusListResponse {
         data: data ?? this.data,
       );
 
-  factory OrderStatusListResponse.fromJson(Map<String, dynamic> json) => OrderStatusListResponse(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? [] : List<OrderStatusList>.from(json["data"]!.map((x) => OrderStatusList.fromJson(x))),
-  );
+  factory OrderStatusListResponse.fromJson(Map<String, dynamic> json) =>
+      OrderStatusListResponse(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? []
+            : List<OrderStatusList>.from(
+                json["data"]!.map((x) => OrderStatusList.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "status": status,
+        "message": message,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class OrderStatusList {
@@ -77,21 +85,22 @@ class OrderStatusList {
         orderStatusId: orderStatusId ?? this.orderStatusId,
       );
 
-  factory OrderStatusList.fromJson(Map<String, dynamic> json) => OrderStatusList(
-    orderStateNumber: json["order_state_number"],
-    orderStatusName: json["order_status_name"],
-    onlyUserAccess: json["only_user_access"],
-    onlyStoreAccess: json["only_store_access"],
-    status: json["status"],
-    orderStatusId: json["order_status_id"],
-  );
+  factory OrderStatusList.fromJson(Map<String, dynamic> json) =>
+      OrderStatusList(
+        orderStateNumber: json["order_state_number"],
+        orderStatusName: json["order_status_name"],
+        onlyUserAccess: json["only_user_access"],
+        onlyStoreAccess: json["only_store_access"],
+        status: json["status"],
+        orderStatusId: json["order_status_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "order_state_number": orderStateNumber,
-    "order_status_name": orderStatusName,
-    "only_user_access": onlyUserAccess,
-    "only_store_access": onlyStoreAccess,
-    "status": status,
-    "order_status_id": orderStatusId,
-  };
+        "order_state_number": orderStateNumber,
+        "order_status_name": orderStatusName,
+        "only_user_access": onlyUserAccess,
+        "only_store_access": onlyStoreAccess,
+        "status": status,
+        "order_status_id": orderStatusId,
+      };
 }

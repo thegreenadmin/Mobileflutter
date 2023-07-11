@@ -1928,13 +1928,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   .storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==
                                     ownerStoreController
-                                        .deliveryServices[i].id) {
+                                        .deliveryServices[i].deliveryServiceId) {
                                   ownerStoreController.deliveryServicesList
                                       .add({
                                     "store_delivery_service_id":
                                         element["store_delivery_service_id"],
                                     "delivery_service_id": ownerStoreController
-                                        .deliveryServices[i].id,
+                                        .deliveryServices[i].deliveryServiceId,
                                     "is_enabled": ownerStoreController
                                         .deliveryServices[i].isSelected,
                                     "status": "active"
@@ -1949,10 +1949,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       .any((element) =>
                                           element["delivery_service_id"] ==
                                           ownerStoreController
-                                              .deliveryServices[i].id)) {
+                                              .deliveryServices[i].deliveryServiceId)) {
                                 ownerStoreController.deliveryServicesList.add({
                                   "delivery_service_id": ownerStoreController
-                                      .deliveryServices[i].id,
+                                      .deliveryServices[i].deliveryServiceId,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"
@@ -1971,7 +1971,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 ownerStoreController.deliveryServicesList.add({
                                   "store_delivery_service_id": null,
                                   "delivery_service_id": ownerStoreController
-                                      .deliveryServices[i].id,
+                                      .deliveryServices[i].deliveryServiceId,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"

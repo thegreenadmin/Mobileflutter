@@ -454,7 +454,8 @@ class AddNewStoreController extends GetxController {
           element.isSelected = false;
         }
         deliveryServices
-            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
+            .firstWhere((element) =>
+                element.deliveryServiceName!.toLowerCase().contains("in"))
             .isSelected = true;
         for (var element in weekDaysList) {
           element.isSelected = false;
@@ -546,16 +547,17 @@ class AddNewStoreController extends GetxController {
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
         deliveryServices
-            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
+            .firstWhere((element) =>
+                element.deliveryServiceName!.toLowerCase().contains("in"))
             .isSelected = true;
         var concatenate = StringBuffer();
         for (int i = 0; i < deliveryServices.length; i++) {
           if (deliveryServices[i].isSelected == true) {
-            concatenate.write(deliveryServices[i].name);
+            concatenate.write(deliveryServices[i].deliveryServiceName);
             concatenate.write(', ');
 
             deliveryServicesList.add({
-              "delivery_service_id": deliveryServices[i].id,
+              "delivery_service_id": deliveryServices[i].deliveryServiceId,
               "is_enabled": true,
               "status": "active"
             });

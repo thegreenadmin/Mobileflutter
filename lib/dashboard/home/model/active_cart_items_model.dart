@@ -142,7 +142,7 @@ class CartItems {
   }
 }
 
-class Product {
+/*class Product {
   String? productId;
   Images? image;
   String? storeId;
@@ -243,4 +243,4 @@ class Product {
     data['updatedAt'] = updatedAt;
     return data;
   }
-}
+}*/

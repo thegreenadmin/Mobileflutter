@@ -1,14 +1,18 @@
+import 'orders_model.dart';
+
 class GetUserTransactionModel {
   int? status;
   String? message;
-  Data? data;
+  UserTransactionData? data;
 
   GetUserTransactionModel({this.status, this.message, this.data});
 
   GetUserTransactionModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null
+        ? UserTransactionData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,13 +26,13 @@ class GetUserTransactionModel {
   }
 }
 
-class Data {
+class UserTransactionData {
   int? totalCount;
   List<Transactionss>? transactions;
 
-  Data({this.totalCount, this.transactions});
+  UserTransactionData({this.totalCount, this.transactions});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserTransactionData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['transactions'] != null) {
       transactions = <Transactionss>[];
@@ -136,91 +140,6 @@ class Transactionss {
     }
     if (membership != null) {
       data['membership'] = membership!.toJson();
-    }
-    return data;
-  }
-}
-
-class OrderTransaction {
-  String? id;
-  String? transactionId;
-  String? orderId;
-  String? orderTransactionType;
-  String? storeServiceChargeType;
-  double? storeServiceChargeValue;
-  double? storeTotalServiceCharged;
-  String? orderServiceChargeType;
-  double? orderServiceChargeValue;
-  double? orderTotalServiceCharged;
-  double? storeReceivedAmount;
-  double? totalAmount;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  String? orderTransactionId;
-  Transaction? transaction;
-
-  OrderTransaction(
-      {this.id,
-      this.transactionId,
-      this.orderId,
-      this.orderTransactionType,
-      this.storeServiceChargeType,
-      this.storeServiceChargeValue,
-      this.storeTotalServiceCharged,
-      this.orderServiceChargeType,
-      this.orderServiceChargeValue,
-      this.orderTotalServiceCharged,
-      this.storeReceivedAmount,
-      this.totalAmount,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.orderTransactionId,
-      this.transaction});
-
-  OrderTransaction.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    transactionId = json['transaction_id'];
-    orderId = json['order_id'];
-    orderTransactionType = json['order_transaction_type'];
-    storeServiceChargeType = json['store_service_charge_type'];
-    storeServiceChargeValue = json['store_service_charge_value'];
-    storeTotalServiceCharged = json['store_total_service_charged'];
-    orderServiceChargeType = json['order_service_charge_type'];
-    orderServiceChargeValue = json['order_service_charge_value'];
-    orderTotalServiceCharged = json['order_total_service_charged'];
-    storeReceivedAmount = json['store_received_amount'];
-    totalAmount = json['total_amount'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    orderTransactionId = json['order_transaction_id'];
-    transaction = json['transaction'] != null
-        ? Transaction.fromJson(json['transaction'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['transaction_id'] = transactionId;
-    data['order_id'] = orderId;
-    data['order_transaction_type'] = orderTransactionType;
-    data['store_service_charge_type'] = storeServiceChargeType;
-    data['store_service_charge_value'] = storeServiceChargeValue;
-    data['store_total_service_charged'] = storeTotalServiceCharged;
-    data['order_service_charge_type'] = orderServiceChargeType;
-    data['order_service_charge_value'] = orderServiceChargeValue;
-    data['order_total_service_charged'] = orderTotalServiceCharged;
-    data['store_received_amount'] = storeReceivedAmount;
-    data['total_amount'] = totalAmount;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['order_transaction_id'] = orderTransactionId;
-    if (transaction != null) {
-      data['transaction'] = transaction!.toJson();
     }
     return data;
   }
@@ -353,43 +272,6 @@ class TransactionHistories {
   }
 }
 
-class OrderItemRefundTransaction {
-  String? orderItemRefundTransactionId;
-  String? transactionId;
-  ReturnOrderItem? returnOrderItem;
-  Transaction? transaction;
-
-  OrderItemRefundTransaction(
-      {this.orderItemRefundTransactionId,
-      this.transactionId,
-      this.returnOrderItem,
-      this.transaction});
-
-  OrderItemRefundTransaction.fromJson(Map<String, dynamic> json) {
-    orderItemRefundTransactionId = json['order_item_refund_transaction_id'];
-    transactionId = json['transaction_id'];
-    returnOrderItem = json['return_order_item'] != null
-        ? ReturnOrderItem.fromJson(json['return_order_item'])
-        : null;
-    transaction = json['transaction'] != null
-        ? Transaction.fromJson(json['transaction'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_item_refund_transaction_id'] = orderItemRefundTransactionId;
-    data['transaction_id'] = transactionId;
-    if (returnOrderItem != null) {
-      data['return_order_item'] = returnOrderItem!.toJson();
-    }
-    if (transaction != null) {
-      data['transaction'] = transaction!.toJson();
-    }
-    return data;
-  }
-}
-
 class ReturnOrderItem {
   String? orderItemId;
   int? returnItemsCount;
@@ -443,99 +325,6 @@ class ReturnOrderItem {
     if (orderItem != null) {
       data['order_item'] = orderItem!.toJson();
     }
-    return data;
-  }
-}
-
-class OrderItem {
-  String? orderId;
-  String? productId;
-  int? orderItemCount;
-  int? orderItemPrice;
-  String? serviceChargeType;
-  double? serviceChargeValue;
-  double? totalServiceCharged;
-  String? discountName;
-  String? discountType;
-  int? discountValue;
-  double? totalDiscount;
-  String? orderItemStatus;
-  String? cancelledAt;
-  String? shippedAt;
-  String? deliveredAt;
-  String? returedAt;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  String? orderItemId;
-
-  OrderItem(
-      {this.orderId,
-      this.productId,
-      this.orderItemCount,
-      this.orderItemPrice,
-      this.serviceChargeType,
-      this.serviceChargeValue,
-      this.totalServiceCharged,
-      this.discountName,
-      this.discountType,
-      this.discountValue,
-      this.totalDiscount,
-      this.orderItemStatus,
-      this.cancelledAt,
-      this.shippedAt,
-      this.deliveredAt,
-      this.returedAt,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.orderItemId});
-
-  OrderItem.fromJson(Map<String, dynamic> json) {
-    orderId = json['order_id'];
-    productId = json['product_id'];
-    orderItemCount = json['order_item_count'];
-    orderItemPrice = json['order_item_price'];
-    serviceChargeType = json['service_charge_type'];
-    serviceChargeValue = json['service_charge_value'];
-    totalServiceCharged = json['total_service_charged'];
-    discountName = json['discount_name'];
-    discountType = json['discount_type'];
-    discountValue = json['discount_value'];
-    totalDiscount = json['total_discount'];
-    orderItemStatus = json['order_item_status'];
-    cancelledAt = json['cancelledAt'];
-    shippedAt = json['shippedAt'];
-    deliveredAt = json['deliveredAt'];
-    returedAt = json['returedAt'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    orderItemId = json['order_item_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_id'] = orderId;
-    data['product_id'] = productId;
-    data['order_item_count'] = orderItemCount;
-    data['order_item_price'] = orderItemPrice;
-    data['service_charge_type'] = serviceChargeType;
-    data['service_charge_value'] = serviceChargeValue;
-    data['total_service_charged'] = totalServiceCharged;
-    data['discount_name'] = discountName;
-    data['discount_type'] = discountType;
-    data['discount_value'] = discountValue;
-    data['total_discount'] = totalDiscount;
-    data['order_item_status'] = orderItemStatus;
-    data['cancelledAt'] = cancelledAt;
-    data['shippedAt'] = shippedAt;
-    data['deliveredAt'] = deliveredAt;
-    data['returedAt'] = returedAt;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['order_item_id'] = orderItemId;
     return data;
   }
 }
@@ -611,83 +400,6 @@ class TransactionList {
   }
 }
 
-class Store {
-  String? storeName;
-  String? storeEin;
-  String? storeNickName;
-  String? storeEmail;
-  String? storePhone;
-  String? storePhoneCode;
-  bool? isVerified;
-  String? verifiedBy;
-  bool? isEnabled;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  String? storeId;
-  Logo? logo;
-  Logo? image;
-
-  Store(
-      {storeName,
-      this.storeEin,
-      this.storeNickName,
-      this.storeEmail,
-      this.storePhone,
-      this.storePhoneCode,
-      this.isVerified,
-      this.verifiedBy,
-      this.isEnabled,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.storeId,
-      this.logo,
-      this.image});
-
-  Store.fromJson(Map<String, dynamic> json) {
-    storeName = json['store_name'];
-    storeEin = json['store_ein'];
-    storeNickName = json['store_nick_name'];
-    storeEmail = json['store_email'];
-    storePhone = json['store_phone'];
-    storePhoneCode = json['store_phone_code'];
-    isVerified = json['is_verified'];
-    verifiedBy = json['verified_by'];
-    isEnabled = json['is_enabled'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    storeId = json['store_id'];
-    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
-    image = json['image'] != null ? Logo.fromJson(json['image']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_name'] = storeName;
-    data['store_ein'] = storeEin;
-    data['store_nick_name'] = storeNickName;
-    data['store_email'] = storeEmail;
-    data['store_phone'] = storePhone;
-    data['store_phone_code'] = storePhoneCode;
-    data['is_verified'] = isVerified;
-    data['verified_by'] = verifiedBy;
-    data['is_enabled'] = isEnabled;
-    data['status'] = status;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['store_id'] = storeId;
-    if (logo != null) {
-      data['logo'] = logo!.toJson();
-    }
-    if (image != null) {
-      data['image'] = image!.toJson();
-    }
-    return data;
-  }
-}
-
 class Membership {
   String? membershipId;
   String? transactionId;
@@ -741,7 +453,7 @@ class Membership {
   }
 }
 
-class MembershipPlan {
+/*class MembershipPlan {
   String? id;
   String? planName;
   String? planType;
@@ -796,23 +508,4 @@ class MembershipPlan {
     data['updatedAt'] = updatedAt;
     return data;
   }
-}
-
-class Logo {
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Logo({this.orignalUrl, this.dynamicUrl});
-
-  Logo.fromJson(Map<String, dynamic> json) {
-    orignalUrl = json['orignal_url'];
-    dynamicUrl = json['dynamic_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orignal_url'] = orignalUrl;
-    data['dynamic_url'] = dynamicUrl;
-    return data;
-  }
-}
+}*/

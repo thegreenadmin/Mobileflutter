@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
-import 'package:thegreenmall/dashboard/orders/model/get_owner_order_history_model.dart'
-    as owner_order_history;
-import 'package:thegreenmall/dashboard/orders/model/get_store_order_detail_model.dart'
-    as orderdetail;
+import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -32,16 +29,14 @@ class OrdersHomeMainController extends GetxController {
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
-  owner_order_history.GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-      owner_order_history.GetOwnerOrderHistoryModel();
-  RxList<owner_order_history.Orders>? ownerOrderHistoryList =
-      <owner_order_history.Orders>[].obs;
+  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
+      GetOwnerOrderHistoryModel();
+  RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
 
-  Rx<orderdetail.GetStoreOrderDetailModel> getStoreOrderDetailModel =
-      orderdetail.GetStoreOrderDetailModel().obs;
-  RxList<orderdetail.OrderItems> getOrderItems = <orderdetail.OrderItems>[].obs;
-  RxList<orderdetail.OrderHistories> orderHistories =
-      <orderdetail.OrderHistories>[].obs;
+  Rx<GetStoreOrderDetailModel> getStoreOrderDetailModel =
+      GetStoreOrderDetailModel().obs;
+  RxList<OrderItem> getOrderItems = <OrderItem>[].obs;
+  RxList<OrderHistories> orderHistories = <OrderHistories>[].obs;
 
   @override
   void onInit() {
@@ -184,46 +179,49 @@ class OrdersHomeMainController extends GetxController {
       "order_statuses": selectedIndex.value == 1
           ? [
               {
-                "order_status_name": OrderStatus.inProgress.statusName
+                "order_status_name": OrderStatusEnum.inProgress.statusName
               }, //"confirmed"
             ]
           : selectedIndex.value == 2
               ? [
                   {
-                    "order_status_name": OrderStatus.inTransit.statusName
+                    "order_status_name": OrderStatusEnum.inTransit.statusName
                   }, //"shipped"
                   {
-                    "order_status_name": OrderStatus.readyForPickup.statusName
+                    "order_status_name":
+                        OrderStatusEnum.readyForPickup.statusName
                   }, //ready pickup
                 ]
               : selectedIndex.value == 3
                   ? [
                       {
-                        "order_status_name": OrderStatus.completed.statusName
+                        "order_status_name":
+                            OrderStatusEnum.completed.statusName
                       }, //"shipped"
                       {
-                        "order_status_name": OrderStatus.cancelled.statusName
+                        "order_status_name":
+                            OrderStatusEnum.cancelled.statusName
                       }, // cancelled
                       {
                         "order_status_name":
-                            OrderStatus.returnCancelled.statusName
+                            OrderStatusEnum.returnCancelled.statusName
                       }, // return Cancelled
                       {
-                        "order_status_name": OrderStatus.returned.statusName
+                        "order_status_name": OrderStatusEnum.returned.statusName
                       }, // return Completed
                       {
                         "order_status_name":
-                            OrderStatus.cancelRequest.statusName
+                            OrderStatusEnum.cancelRequest.statusName
                       }, // cancel Request
                     ]
                   : [
                       {
                         "order_status_name":
-                            OrderStatus.receivedOrder.statusName
+                            OrderStatusEnum.receivedOrder.statusName
                       }, // received
                       {
                         "order_status_name":
-                            OrderStatus.returnRequest.statusName
+                            OrderStatusEnum.returnRequest.statusName
                       }, // return Request
                     ]
     };
@@ -241,7 +239,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
-            owner_order_history.GetOwnerOrderHistoryModel.fromJson(value.body);
+            GetOwnerOrderHistoryModel.fromJson(value.body);
         ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
         update();
       } else {
@@ -273,7 +271,7 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreOrderDetailModel.value =
-            orderdetail.GetStoreOrderDetailModel.fromJson(value.body);
+            GetStoreOrderDetailModel.fromJson(value.body);
         customerName.value =
             getStoreOrderDetailModel.value.data!.order!.customerName.toString();
         orderDate.value = Utility.parseDateTime(
@@ -297,21 +295,21 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = selectedIndex.value == 0 &&
                   element.orderItemStatus ==
-                      OrderStatus.receivedOrder.statusName
+                      OrderStatusEnum.receivedOrder.statusName
               ? false
               : selectedIndex.value == 1 &&
-                      element.orderItemStatus !=
-                          OrderStatus.inProgress.statusName
+                      element.orderItemStatus ==
+                          OrderStatusEnum.inProgress.statusName
                   ? false
                   : selectedIndex.value == 2 &&
                               element.orderItemStatus !=
-                                  OrderStatus.inTransit.statusName ||
+                                  OrderStatusEnum.inTransit.statusName ||
                           selectedIndex.value == 2 &&
                               element.orderItemStatus !=
-                                  OrderStatus.readyForPickup.statusName
+                                  OrderStatusEnum.readyForPickup.statusName
                       ? false
                       : element.orderItemStatus ==
-                              OrderStatus.cancelled.statusName
+                              OrderStatusEnum.cancelled.statusName
                           ? false
                           : true;
         }
@@ -387,7 +385,7 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-          element.orderItemStatus == OrderStatus.returnRequest.statusName) {
+          element.orderItemStatus == OrderStatusEnum.returnRequest.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -536,7 +534,7 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-          element.orderItemStatus == OrderStatus.receivedOrder.statusName) {
+          element.orderItemStatus == OrderStatusEnum.receivedOrder.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -589,9 +587,11 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.receivedOrder.statusName ||
+              element.orderItemStatus ==
+                  OrderStatusEnum.receivedOrder.statusName ||
           element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.inProgress.statusName) {
+              element.orderItemStatus ==
+                  OrderStatusEnum.inProgress.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -643,9 +643,11 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.receivedOrder.statusName ||
+              element.orderItemStatus ==
+                  OrderStatusEnum.receivedOrder.statusName ||
           element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.inProgress.statusName) {
+              element.orderItemStatus ==
+                  OrderStatusEnum.inProgress.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }
@@ -698,10 +700,10 @@ class OrdersHomeMainController extends GetxController {
 
     for (var element in getOrderItems) {
       if (element.isSelected == true &&
-              element.orderItemStatus == OrderStatus.inTransit.statusName ||
+              element.orderItemStatus == OrderStatusEnum.inTransit.statusName ||
           element.isSelected == true &&
               element.orderItemStatus ==
-                  OrderStatus.readyForPickup.statusName) {
+                  OrderStatusEnum.readyForPickup.statusName) {
         orderItems
             .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
       }

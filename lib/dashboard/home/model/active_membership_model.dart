@@ -36,7 +36,9 @@ class ActiveMembershipPlanModel {
       ActiveMembershipPlanModel(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : ActiveMembershipData.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : ActiveMembershipData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,7 +66,8 @@ class ActiveMembershipData {
         memberships: memberships ?? this.memberships,
       );
 
-  factory ActiveMembershipData.fromJson(Map<String, dynamic> json) => ActiveMembershipData(
+  factory ActiveMembershipData.fromJson(Map<String, dynamic> json) =>
+      ActiveMembershipData(
         totalCount: json["total_count"],
         memberships: json["memberships"] == null
             ? []
@@ -134,7 +137,8 @@ class ActiveMemberships {
         membershipPlan: membershipPlan ?? this.membershipPlan,
       );
 
-  factory ActiveMemberships.fromJson(Map<String, dynamic> json) => ActiveMemberships(
+  factory ActiveMemberships.fromJson(Map<String, dynamic> json) =>
+      ActiveMemberships(
         userId: json["user_id"],
         membershipPlanId: json["membership_plan_id"],
         transactionId: json["transaction_id"],
@@ -183,8 +187,10 @@ class MembershipPlan {
   DateTime? createdAt;
   DateTime? updatedAt;
   String? membershipPlanId;
+  String? id;
 
   MembershipPlan({
+    this.id,
     this.planName,
     this.planType,
     this.plan30Charge,
@@ -199,6 +205,7 @@ class MembershipPlan {
   });
 
   MembershipPlan copyWith({
+    String? id,
     String? planName,
     String? planType,
     int? plan30Charge,
@@ -212,6 +219,7 @@ class MembershipPlan {
     String? membershipPlanId,
   }) =>
       MembershipPlan(
+        id: id ?? this.id,
         planName: planName ?? this.planName,
         planType: planType ?? this.planType,
         plan30Charge: plan30Charge ?? this.plan30Charge,
@@ -226,6 +234,7 @@ class MembershipPlan {
       );
 
   factory MembershipPlan.fromJson(Map<String, dynamic> json) => MembershipPlan(
+        id: json["id"],
         planName: json["plan_name"],
         planType: json["plan_type"],
         plan30Charge: json["plan_30_charge"],
@@ -244,6 +253,7 @@ class MembershipPlan {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "plan_name": planName,
         "plan_type": planType,
         "plan_30_charge": plan30Charge,

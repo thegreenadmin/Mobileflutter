@@ -382,7 +382,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                             return Visibility(
                               visible: ordersHomeMainController
                                       .getOrderItems[index].orderItemStatus ==
-                                  OrderStatus.returnRequest.statusName,
+                                  OrderStatusEnum.returnRequest.statusName,
                               child: InkWell(
                                 onTap: () {},
                                 child: Container(

@@ -1,6 +1,21 @@
 import '../home/model/model.dart';
 
 class StoreAddresses {
+  StoreAddresses({
+    this.storeAddressId,
+    this.addressName,
+    this.longitude,
+    this.latitude,
+    this.addressLine1,
+    this.addressLine2,
+    this.landmark,
+    this.city,
+    this.postalCode,
+    this.distance,
+    this.store,
+    this.state,
+  });
+
   String? storeAddressId;
   String? addressName;
   dynamic longitude;
@@ -9,55 +24,72 @@ class StoreAddresses {
   String? addressLine2;
   String? landmark;
   String? city;
-  State? state;
   String? postalCode;
   dynamic distance;
+  NearbyStore? store;
+  State? state;
 
-  StoreAddresses(
-      {this.storeAddressId,
-      this.addressName,
-      this.longitude,
-      this.latitude,
-      this.addressLine1,
-      this.addressLine2,
-      this.landmark,
-      this.postalCode,
-      this.distance,
-      this.city,
-      this.state});
+  StoreAddresses copyWith({
+    String? storeAddressId,
+    String? addressName,
+    dynamic longitude,
+    dynamic latitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? landmark,
+    String? city,
+    String? postalCode,
+    dynamic distance,
+    NearbyStore? store,
+    State? state,
+  }) =>
+      StoreAddresses(
+        storeAddressId: storeAddressId ?? this.storeAddressId,
+        addressName: addressName ?? this.addressName,
+        longitude: longitude ?? this.longitude,
+        latitude: latitude ?? this.latitude,
+        addressLine1: addressLine1 ?? this.addressLine1,
+        addressLine2: addressLine2 ?? this.addressLine2,
+        landmark: landmark ?? this.landmark,
+        city: city ?? this.city,
+        postalCode: postalCode ?? this.postalCode,
+        distance: distance ?? this.distance,
+        store: store ?? this.store,
+        state: state ?? this.state,
+      );
 
-  StoreAddresses.fromJson(Map<String, dynamic> json) {
-    storeAddressId = json['store_address_id'];
-    addressName = json['address_name'];
-    longitude = json['longitude'];
-    latitude = json['latitude'];
-    addressLine1 = json['address_line_1'];
-    addressLine2 = json['address_line_2'];
-    landmark = json['landmark'];
-    city = json['city'];
-    state = json['state'] != null ? State.fromJson(json['state']) : null;
-    postalCode = json['postal_code'];
-    distance = json['distance'];
-  }
+  factory StoreAddresses.fromJson(Map<String, dynamic> json) => StoreAddresses(
+    storeAddressId: json["store_address_id"],
+    addressName: json["address_name"],
+    longitude: json["longitude"]?.toDouble(),
+    latitude: json["latitude"]?.toDouble(),
+    addressLine1: json["address_line_1"],
+    addressLine2: json["address_line_2"],
+    landmark: json["landmark"],
+    city: json["city"],
+    postalCode: json["postal_code"],
+    distance: json["distance"]?.toDouble(),
+    store:
+    json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
+    state: json["state"] == null ? null : State.fromJson(json["state"]),
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['store_address_id'] = storeAddressId;
-    data['address_name'] = addressName;
-    data['longitude'] = longitude;
-    data['latitude'] = latitude;
-    data['address_line_1'] = addressLine1;
-    data['address_line_2'] = addressLine2;
-    data['landmark'] = landmark;
-    data['city'] = city;
-    if (state != null) {
-      data['state'] = state!.toJson();
-    }
-    data['postal_code'] = postalCode;
-    data['distance'] = distance;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "store_address_id": storeAddressId,
+    "address_name": addressName,
+    "longitude": longitude,
+    "latitude": latitude,
+    "address_line_1": addressLine1,
+    "address_line_2": addressLine2,
+    "landmark": landmark,
+    "city": city,
+    "postal_code": postalCode,
+    "distance": distance,
+    "store": store?.toJson(),
+    "state": state?.toJson(),
+  };
 }
+
 
 class State {
   String? stateId;
@@ -201,3 +233,34 @@ class Offer {
         "image": image?.toJson(),
       };
 }
+
+class OrderStatus {
+  OrderStatus({
+    this.orderStatusId,
+    this.orderStatusName,
+  });
+
+  String? orderStatusId;
+  String? orderStatusName;
+
+  OrderStatus copyWith({
+    String? orderStatusId,
+    String? orderStatusName,
+  }) =>
+      OrderStatus(
+        orderStatusId: orderStatusId ?? this.orderStatusId,
+        orderStatusName: orderStatusName ?? this.orderStatusName,
+      );
+
+  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
+    orderStatusId: json["order_status_id"],
+    orderStatusName: json["order_status_name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "order_status_id": orderStatusId,
+    "order_status_name": orderStatusName,
+  };
+}
+
+

@@ -693,8 +693,8 @@ class OwnerStoresController extends GetxController {
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {
             for (var element in deliveryServices) {
-              if (element.id == sData["delivery_service_id"]) {
-                concatenate.write(element.name);
+              if (element.deliveryServiceId == sData["delivery_service_id"]) {
+                concatenate.write(element.deliveryServiceName);
                 concatenate.write(', ');
                 element.isSelected = sData["is_enabled"];
               }

@@ -74,7 +74,6 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
                                      Get.back(id:pageIdApp.value);
-                                  // Navigator.of(context).pop();
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -774,7 +773,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   onChanged: (bool? value) {
                                                     if (ordersHomeMainController.selectedIndex.value == 0 &&
                                                         ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                            OrderStatus
+                                                            OrderStatusEnum
                                                                 .receivedOrder
                                                                 .statusName) {
                                                       setState(() {
@@ -785,12 +784,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       });
                                                     } else if (ordersHomeMainController.selectedIndex.value == 1 &&
                                                         ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                            OrderStatus
+                                                            OrderStatusEnum
                                                                 .inProgress
                                                                 .statusName ||
                                                         ordersHomeMainController.selectedIndex.value == 1 &&
                                                             ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                OrderStatus
+                                                                OrderStatusEnum
                                                                     .receivedOrder
                                                                     .statusName) {
                                                       setState(() {
@@ -801,15 +800,15 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       });
                                                     } else if (ordersHomeMainController.selectedIndex.value == 2 &&
                                                         (ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                            OrderStatus
+                                                            OrderStatusEnum
                                                                 .inTransit
                                                                 .statusName ||
                                                             ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                OrderStatus.readyForPickup.statusName ||
+                                                                OrderStatusEnum.readyForPickup.statusName ||
                                                             ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                OrderStatus.receivedOrder.statusName ||
+                                                                OrderStatusEnum.receivedOrder.statusName ||
                                                             ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                OrderStatus.inProgress.statusName )) {
+                                                                OrderStatusEnum.inProgress.statusName )) {
                                                       setState(() {
                                                         ordersHomeMainController
                                                             .getOrderItems
@@ -827,7 +826,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                 ),
                               );
                             }else if(ordersHomeMainController.orderHistories.isNotEmpty && ordersHomeMainController.orderHistories.last.orderStatus?.orderStatusName
-                                == OrderStatus.readyForPickup.statusName && ordersHomeMainController.orderHistories.last.isCreatedByStore==false){
+                                == OrderStatusEnum.readyForPickup.statusName && ordersHomeMainController.orderHistories.last.isCreatedByStore==false){
                               return  Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5.0),

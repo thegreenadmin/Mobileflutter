@@ -331,7 +331,7 @@ class ProductContent {
       };
 }
 
-class ProductImage {
+/*class ProductImage {
   ProductImage({
     this.productImageId,
     this.order,
@@ -370,7 +370,7 @@ class ProductImage {
         "status": status,
         "image": image?.toJson(),
       };
-}
+}*/
 
 /*class Image {
   Image({

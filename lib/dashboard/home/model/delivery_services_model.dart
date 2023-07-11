@@ -79,30 +79,34 @@ class DeliveryServicesData {
 
 class DeliveryService {
   DeliveryService({
-    this.id,
-    this.name,
+    this.deliveryServiceName,
+    this.deliveryServiceId,
     this.isSelected = false,
   });
 
-  String? id;
-  String? name;
+  String? deliveryServiceName;
+  String? deliveryServiceId;
   bool isSelected;
 
-  DeliveryService copyWith({String? id, String? name, bool? isSelected}) =>
+  DeliveryService copyWith({
+    String? deliveryServiceName,
+    String? deliveryServiceId,
+    bool? isSelected,
+  }) =>
       DeliveryService(
-        id: id ?? this.id,
-        name: name ?? this.name,
+        deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
+        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
         isSelected: isSelected ?? this.isSelected,
       );
 
   factory DeliveryService.fromJson(Map<String, dynamic> json) =>
       DeliveryService(
-        id: json["delivery_service_id"],
-        name: json["delivery_service_name"],
+        deliveryServiceName: json["delivery_service_name"],
+        deliveryServiceId: json["delivery_service_id"],
       );
 
   Map<String, dynamic> toJson() => {
-        "delivery_service_id": id,
-        "delivery_service_name": name,
+        "delivery_service_name": deliveryServiceName,
+        "delivery_service_id": deliveryServiceId,
       };
 }

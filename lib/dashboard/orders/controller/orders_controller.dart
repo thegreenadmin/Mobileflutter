@@ -5,21 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
-import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
-    as store;
-import 'package:thegreenmall/dashboard/orders/model/get_order_list_model.dart'
-    as order_list;
-import 'package:thegreenmall/dashboard/orders/model/get_order_status_list_model.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_store_order_list_model.dart'
-    as store_order;
-import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart'
-    as order_detail;
+import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-import '../../home/model/get_store_list_model.dart' as stores;
 import '../view/component/order_status_enum.dart';
 
 class OrdersController extends GetxController {
@@ -52,28 +43,23 @@ class OrdersController extends GetxController {
   RxInt? addressListIndex = 0.obs;
   RxInt activeStep = 0.obs;
   RxInt orderStatusId = 2.obs;
-  RxString orderStatusName = OrderStatus.receivedOrder.statusName.obs;
-  RxString orderStatusTypeName = OrderStatus.receivedOrder.statusName.obs;
+  RxString orderStatusName = OrderStatusEnum.receivedOrder.statusName.obs;
+  RxString orderStatusTypeName = OrderStatusEnum.receivedOrder.statusName.obs;
   RxDouble ratingValue = 0.0.obs;
-  Rx<store.StoreDetailsResponse> storeDetailsResponse =
-      store.StoreDetailsResponse().obs;
-  late store_order.StoreOrderListResponse storeOrderListResponse =
-      store_order.StoreOrderListResponse();
-  late order_list.OrderListResponse orderListResponse =
-      order_list.OrderListResponse();
+  Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
+  late StoreOrderListResponse storeOrderListResponse = StoreOrderListResponse();
+  late OrderListResponse orderListResponse = OrderListResponse();
   late OrderStatusListResponse orderStatusListResponse =
       OrderStatusListResponse();
-  late order_detail.OrderDetailResponse orderDetailResponse =
-      order_detail.OrderDetailResponse();
+  late OrderDetailResponse orderDetailResponse = OrderDetailResponse();
 
-  late stores.GetStoreListModel getStoreListModel = stores.GetStoreListModel();
-  RxList<stores.Stores> storeList = <stores.Stores>[].obs;
-  Rx<order_detail.OrderItem> orderItemObj = order_detail.OrderItem().obs;
-  RxList<order_detail.OrderItem> orderItems = <order_detail.OrderItem>[].obs;
+  late GetStoreListModel getStoreListModel = GetStoreListModel();
+  RxList<Stores> storeList = <Stores>[].obs;
+  Rx<OrderItem> orderItemObj = OrderItem().obs;
+  RxList<OrderItem> orderItems = <OrderItem>[].obs;
   RxList<OrderStatusList> orderStatusList = <OrderStatusList>[].obs;
-  RxList<order_list.Order> orderList = <order_list.Order>[].obs;
-  RxList<store_order.StoreOrder> storeOrderList =
-      <store_order.StoreOrder>[].obs;
+  RxList<Order> orderList = <Order>[].obs;
+  RxList<Order> storeOrderList = <Order>[].obs;
   RxBool isFavouriteStore = false.obs;
   RxList<Categories> stepInd = [
     Categories(id: 0, name: "Received", isSelected: false),
@@ -99,20 +85,15 @@ class OrdersController extends GetxController {
 
       orderStatus.value = Get.parameters["orderStatus"] ?? "";
       isHome.value = Get.parameters["isHome"] == "true" ? true : false;
-
       isActiveOrders.value = true;
       orderStatusId.value = 2;
-      orderStatusName.value = OrderStatus.receivedOrder.statusName;
+      orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
       role!.value = SharedPreferenceStorage.getData(Role.role).toString();
       role!.value = roleApp.value;
       uerSelectedTab.value = 0;
       if (role!.value == Role.customerRoleText) {
         page.value = 1;
-
         apiGetOrderListApi();
-        if (orderStatus.value != "") {
-          apiGetOrderDetailsApi();
-        }
       } else {
         apiGetStoreList();
         page.value = 1;
@@ -134,9 +115,7 @@ class OrdersController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    //
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
   }
 
   final scrollController = ScrollController();
@@ -147,14 +126,14 @@ class OrdersController extends GetxController {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent - 10) {
         if (role!.value == Role.customerRoleText) {
-          orderListResponse = order_list.OrderListResponse();
+          orderListResponse = OrderListResponse();
           if (orderList.length < totalCount.value) {
             page.value++;
             apiGetOrderListApi().then((_) => preventCall.value = false);
             preventCall.value = true;
           }
         } else {
-          storeOrderListResponse = store_order.StoreOrderListResponse();
+          storeOrderListResponse = StoreOrderListResponse();
           if (storeOrderList.length < totalCount.value) {
             page.value++;
             apiGetStoreOrderListApi().then((_) => preventCall.value = false);
@@ -763,7 +742,7 @@ class OrdersController extends GetxController {
     if (page.value == 1) {
       orderList.clear();
     }
-    orderListResponse = order_list.OrderListResponse();
+    orderListResponse = OrderListResponse();
     isDataLoading.value = orderList.isNotEmpty ? true : false;
     // orderListResponse = order_list.OrderListResponse();
     isLoading.value = orderList.isNotEmpty ? true : false;
@@ -786,37 +765,39 @@ class OrdersController extends GetxController {
       "order_statuses": uerSelectedTab.value == 0
           ? [
               {
-                "order_status_name": OrderStatus.receivedOrder.statusName,
+                "order_status_name": OrderStatusEnum.receivedOrder.statusName,
               },
               {
-                "order_status_name": OrderStatus.inProgress.statusName,
+                "order_status_name": OrderStatusEnum.inProgress.statusName,
               },
               {
-                "order_status_name": OrderStatus.readyForPickup.statusName,
+                "order_status_name": OrderStatusEnum.readyForPickup.statusName,
               },
               {
-                "order_status_name": OrderStatus.inTransit.statusName,
+                "order_status_name": OrderStatusEnum.inTransit.statusName,
               },
               {
-                "order_status_name": OrderStatus.returnRequest.statusName,
+                "order_status_name": OrderStatusEnum.returnRequest.statusName,
               },
             ]
           : uerSelectedTab.value == 1
               ? [
                   {
-                    "order_status_name": OrderStatus.completed.statusName,
+                    "order_status_name": OrderStatusEnum.completed.statusName,
                   },
                   {
-                    "order_status_name": OrderStatus.returned.statusName,
+                    "order_status_name": OrderStatusEnum.returned.statusName,
                   },
                   {
-                    "order_status_name": OrderStatus.returnCancelled.statusName,
+                    "order_status_name":
+                        OrderStatusEnum.returnCancelled.statusName,
                   },
                 ]
               : uerSelectedTab.value == 2
                   ? [
                       {
-                        "order_status_name": OrderStatus.cancelled.statusName,
+                        "order_status_name":
+                            OrderStatusEnum.cancelled.statusName,
                       },
                     ]
                   : []
@@ -837,9 +818,9 @@ class OrdersController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        orderListResponse = order_list.OrderListResponse.fromJson(value?.body);
+        orderListResponse = OrderListResponse.fromJson(value?.body);
         totalCount.value = orderListResponse.data!.totalCount;
-        List<order_list.Order>? orders = [];
+        List<Order>? orders = [];
         orders = orderListResponse.data!.orders ?? [];
         if (orders.isNotEmpty) {
           if (page.value == 1) {
@@ -868,7 +849,7 @@ class OrdersController extends GetxController {
     if (pageStore.value == 1) {
       storeOrderList.value = [];
     }
-    storeOrderListResponse = store_order.StoreOrderListResponse();
+    storeOrderListResponse = StoreOrderListResponse();
     isDataLoading.value = storeOrderList.isNotEmpty ? true : false;
     isLoading.value = storeOrderList.isNotEmpty ? true : false;
     debugPrint("Order List URL**********"
@@ -888,16 +869,16 @@ class OrdersController extends GetxController {
       "from_date": null,
       "to_date": null,
       "only_active_orders": null,
-      "order_statuses":
-          orderStatusName.value == OrderStatus.receivedOrder.statusName
-              ? [
-                  {"order_status_name": OrderStatus.receivedOrder.statusName},
-                  {"order_status_name": OrderStatus.returnRequest.statusName},
-                  {"order_status_name": OrderStatus.returnConfirmed.statusName},
-                ]
-              : [
-                  {"order_status_name": orderStatusName.value}
-                ]
+      "order_statuses": orderStatusName.value ==
+              OrderStatusEnum.receivedOrder.statusName
+          ? [
+              {"order_status_name": OrderStatusEnum.receivedOrder.statusName},
+              {"order_status_name": OrderStatusEnum.returnRequest.statusName},
+              {"order_status_name": OrderStatusEnum.returnConfirmed.statusName},
+            ]
+          : [
+              {"order_status_name": orderStatusName.value}
+            ]
     };
 
     debugPrint("PARAMETERS ********** ${jsonEncode(data)}");
@@ -913,9 +894,8 @@ class OrdersController extends GetxController {
       debugPrint("Store Order  List *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        storeOrderListResponse =
-            store_order.StoreOrderListResponse.fromJson(value?.body);
-        List<store_order.StoreOrder>? orders = [];
+        storeOrderListResponse = StoreOrderListResponse.fromJson(value?.body);
+        List<Order>? orders = [];
         orders = storeOrderListResponse.data!.orders ?? [];
         if (orders.isNotEmpty) {
           if (pageStore.value == 1) {
@@ -954,13 +934,10 @@ class OrdersController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Store Details*******${value?.body}");
+      log("Store Details*******${jsonEncode(value?.body)}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        debugPrint(
-            "isFavouriteStore  *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        storeDetailsResponse.value =
-            store.StoreDetailsResponse.fromJson(value?.body);
+        storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -996,10 +973,9 @@ class OrdersController extends GetxController {
       debugPrint("GET STORE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = stores.GetStoreListModel.fromJson(value.body);
+        getStoreListModel = GetStoreListModel.fromJson(value.body);
         storeList.clear();
-        storeList
-            .addAll(getStoreListModel.data!.stores as Iterable<stores.Stores>);
+        storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -1033,8 +1009,7 @@ class OrdersController extends GetxController {
       log("ORDER Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        orderDetailResponse =
-            order_detail.OrderDetailResponse.fromJson(value?.body);
+        orderDetailResponse = OrderDetailResponse.fromJson(value?.body);
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
         orderType.value = orderDetailResponse
@@ -1049,20 +1024,20 @@ class OrdersController extends GetxController {
                 element.orderStatus?.orderStatusName ?? "";
 
             activeStep.value = element.orderStatus?.orderStatusName ==
-                    OrderStatus.receivedOrder.statusName
+                    OrderStatusEnum.receivedOrder.statusName
                 ? 0
                 : element.orderStatus?.orderStatusName ==
-                        OrderStatus.inProgress.statusName
+                        OrderStatusEnum.inProgress.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                                OrderStatus.inTransit.statusName ||
+                                OrderStatusEnum.inTransit.statusName ||
                             element.orderStatus?.orderStatusName ==
-                                OrderStatus.readyForPickup.statusName
+                                OrderStatusEnum.readyForPickup.statusName
                         ? 2
                         : element.orderStatus?.orderStatusName ==
-                                    OrderStatus.completed.statusName ||
+                                    OrderStatusEnum.completed.statusName ||
                                 element.orderStatus?.orderStatusName ==
-                                    OrderStatus.cancelled.statusName
+                                    OrderStatusEnum.cancelled.statusName
                             ? 3
                             : 0;
           }
@@ -1172,7 +1147,7 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        orderStatusName.value = OrderStatus.receivedOrder.statusName;
+        orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
         isActiveOrders.value = true;
         page.value = 1;
         orderList.clear();

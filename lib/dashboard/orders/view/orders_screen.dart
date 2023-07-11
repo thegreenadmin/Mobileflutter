@@ -172,7 +172,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.orderStatusName.value =
-                      OrderStatus.receivedOrder.statusName;
+                      OrderStatusEnum.receivedOrder.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -183,7 +183,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.16,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.receivedOrder.statusName
+                          OrderStatusEnum.receivedOrder.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -199,7 +199,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w400,
                             color: ordersController.orderStatusName.value ==
-                                    OrderStatus.receivedOrder.statusName
+                                    OrderStatusEnum.receivedOrder.statusName
                                 ? AppColors.primary
                                 : AppColors.blacklight,
                           ),
@@ -212,7 +212,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.orderStatusName.value =
-                      OrderStatus.receivedOrder.statusName;
+                      OrderStatusEnum.receivedOrder.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -223,7 +223,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.18,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.receivedOrder.statusName
+                          OrderStatusEnum.receivedOrder.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -239,7 +239,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value ==
-                                  OrderStatus.receivedOrder.statusName
+                                  OrderStatusEnum.receivedOrder.statusName
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -251,7 +251,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.orderStatusName.value =
-                      OrderStatus.completed.statusName;
+                      OrderStatusEnum.completed.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -262,7 +262,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.20,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.completed.statusName
+                          OrderStatusEnum.completed.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -278,7 +278,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value ==
-                                  OrderStatus.completed.statusName
+                                  OrderStatusEnum.completed.statusName
                               ? AppColors.primary
                               : AppColors.blacklight,
                         ),
@@ -290,7 +290,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               InkWell(
                 onTap: () {
                   ordersController.orderStatusName.value =
-                      OrderStatus.cancelled.statusName;
+                      OrderStatusEnum.cancelled.statusName;
                   ordersController.page.value = 1;
                   ordersController.storeOrderList.clear();
                   ordersController.apiGetStoreOrderListApi();
@@ -301,7 +301,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.22,
                   color: ordersController.orderStatusName.value ==
-                          OrderStatus.cancelled.statusName
+                          OrderStatusEnum.cancelled.statusName
                       ? AppColors.primarylight
                       : AppColors.white,
                   child: Row(
@@ -317,7 +317,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: ordersController.orderStatusName.value ==
-                                    OrderStatus.cancelled.statusName
+                                    OrderStatusEnum.cancelled.statusName
                                 ? AppColors.primary
                                 : AppColors.blacklight,
                           ),
@@ -838,7 +838,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .first
                                                   .orderStatus!
                                                   .orderStatusName == //"11"
-                                              OrderStatus
+                                              OrderStatusEnum
                                                   .returnRequest.statusName
                                           ? Get.to(() => const MarkReturnOrderScreen(),
                                               id: pageIdApp.value,
@@ -862,7 +862,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       .first
                                                       .orderStatus!
                                                       .orderStatusName == //"12"
-                                                  OrderStatus.returnConfirmed
+                                                  OrderStatusEnum.returnConfirmed
                                                       .statusName
                                               ? Get.to(() => const ReturnConfirmOrderScreen(),
                                                   id: int.parse(
@@ -882,7 +882,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                               .toString(),
                                                     })
                                               : ordersController.orderStatusName.value ==
-                                                      OrderStatus
+                                                      OrderStatusEnum
                                                           .cancelled.statusName
                                                   ? null
                                                   : Get.to(

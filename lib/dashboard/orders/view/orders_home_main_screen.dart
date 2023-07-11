@@ -373,7 +373,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .first
                                           .orderStatus!
                                           .orderStatusName == //"11"
-                                      OrderStatus.returnRequest.statusName
+                                      OrderStatusEnum.returnRequest.statusName
                                   ? permissionStoreList.any((element) => element.isStoreOwner == true) ||
                                           permissionStoreList.any((element) =>
                                               element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
@@ -412,7 +412,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                               .first
                                               .orderStatus!
                                               .orderStatusName == //7
-                                          OrderStatus.cancelled.statusName
+                                          OrderStatusEnum.cancelled.statusName
                                       ? null
                                       :
                                       // Navigator.of(context).push(MaterialPageRoute(

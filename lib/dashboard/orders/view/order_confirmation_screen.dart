@@ -31,8 +31,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       }
       ordersController.isActiveOrders.value = true;
       ordersController.orderStatusId.value = 2;
-   
-      ordersController.role!.value = Role.customerRoleText;
+
       if (ordersController.orderStatus.value != "") {
         ordersController.apiGetOrderDetailsApi();
       }
@@ -61,7 +60,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             children: [
               Obx(() => ordersController.storeDetailsResponse.value.data !=
                           null &&
-                      ordersController.storeDetailsResponse.value.data!.store !=
+                      ordersController.storeDetailsResponse.value.data?.store !=
                           null
                   ? Container(
                       decoration: BoxDecoration(
@@ -105,7 +104,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             constraints: const BoxConstraints(),
                                             onPressed: () {
                                               Get.back(id: pageIdApp.value);
-                                              // Navigator.of(context).pop();
                                             },
                                             icon: const Icon(
                                               Icons.arrow_back,
@@ -381,9 +379,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               children: [
                 height30SizedBox,
                 Obx(() =>  Visibility(
-                  visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
-                      && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
-                      && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
+                  visible: ordersController.orderStatusTypeName.value != OrderStatusEnum.returnRequest.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnConfirmed.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName,
 
                   child: Column(
                     children: [
@@ -514,11 +512,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value !=
-                            OrderStatus.returnRequest.statusName &&
+                            OrderStatusEnum.returnRequest.statusName &&
                         ordersController.orderStatusTypeName.value !=
-                            OrderStatus.returnConfirmed.statusName &&
+                            OrderStatusEnum.returnConfirmed.statusName &&
                         ordersController.orderStatusTypeName.value !=
-                            OrderStatus.returnCancelled.statusName,
+                            OrderStatusEnum.returnCancelled.statusName,
                     child: Column(
                       children: [
                         EasyStepper(
@@ -574,7 +572,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value ==
-                            OrderStatus.inProgress.statusName &&
+                            OrderStatusEnum.inProgress.statusName &&
                         ordersController.orderType.value != "2",
                     child: Column(
                       children: [
@@ -601,9 +599,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   ),
                 ),
                 Obx(() =>   Visibility(
-                  visible: ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName
-                      && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName
-                      && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName,
+                  visible: ordersController.orderStatusTypeName.value != OrderStatusEnum.returnRequest.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnConfirmed.statusName
+                      && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName,
                   child: Column(
                     children: [
                       CustomButton(
@@ -660,7 +658,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
             Obx(
               () => Visibility(
                 visible: ordersController.orderStatusTypeName.value ==
-                    OrderStatus.returnRequest.statusName,
+                    OrderStatusEnum.returnRequest.statusName,
                 child: CustomButton(
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,
@@ -731,7 +729,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         return Visibility(
                           visible:
                               ordersController.orderItems[i].orderItemStatus !=
-                                  OrderStatus.cancelled.statusName,
+                                  OrderStatusEnum.cancelled.statusName,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
@@ -757,6 +755,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         child: CircleAvatar(
                                           radius: 22.0,
                                           backgroundImage: ordersController
+                                              .orderItems[i]
+                                              .product
+                                              ?.productImages==null || ordersController
+                                              .orderItems[i]
+                                              .product!.productImages!.isEmpty || ordersController
                                                           .orderItems[i]
                                                           .product
                                                           ?.productImages
@@ -860,7 +863,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .returnOrderItems!
                                                           .isEmpty &&
                                                       ordersController.orderStatusTypeName.value !=
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnRequest
                                                               .statusName) &&
                                                   (ordersController
@@ -868,14 +871,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .returnOrderItems!
                                                           .isEmpty &&
                                                       ordersController.orderStatusTypeName.value !=
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnConfirmed
                                                               .statusName) &&
                                                   (ordersController
                                                           .orderItems[i]
                                                           .returnOrderItems!
                                                           .isEmpty &&
-                                                      ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
+                                                      ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName),
                                               child: RatingBar.builder(
                                                 initialRating: ordersController
                                                             .orderItems[i]
@@ -933,7 +936,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       ordersController
                                                               .orderStatusTypeName
                                                               .value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnRequest
                                                               .statusName ||
                                                   ordersController
@@ -943,7 +946,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       ordersController
                                                               .orderStatusTypeName
                                                               .value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnConfirmed
                                                               .statusName ||
                                                   ordersController
@@ -953,7 +956,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       ordersController
                                                               .orderStatusTypeName
                                                               .value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnCancelled
                                                               .statusName,
                                               child: Row(
@@ -977,7 +980,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           text: ordersController
                                                                       .orderStatusTypeName
                                                                       .value ==
-                                                                  OrderStatus
+                                                                  OrderStatusEnum
                                                                       .returnRequest
                                                                       .statusName
                                                               ? StringConstants
@@ -985,7 +988,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                               : ordersController
                                                                           .orderStatusTypeName
                                                                           .value ==
-                                                                      OrderStatus
+                                                                      OrderStatusEnum
                                                                           .returnConfirmed
                                                                           .statusName
                                                                   ? StringConstants
@@ -1016,7 +1019,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .returnOrderItems!
                                                           .isEmpty &&
                                                       ordersController.orderStatusTypeName.value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnRequest
                                                               .statusName) ||
                                                   (ordersController
@@ -1024,7 +1027,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .returnOrderItems!
                                                           .isEmpty &&
                                                       ordersController.orderStatusTypeName.value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnConfirmed
                                                               .statusName) ||
                                                   (ordersController
@@ -1032,7 +1035,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .returnOrderItems!
                                                           .isEmpty &&
                                                       ordersController.orderStatusTypeName.value ==
-                                                          OrderStatus
+                                                          OrderStatusEnum
                                                               .returnCancelled
                                                               .statusName),
                                               child: CustomButton(
@@ -1143,10 +1146,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     Visibility(
                                       visible: ordersController.activeStep.value == 3 && ordersController.orderItems[i].enableReturnButton==true
                                           &&  (ordersController.orderItems[i].returnOrderItems!.isEmpty
-                                              && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
-                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatus.cancelled.statusName)
-                                         &&  ( ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
-                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
+                                              && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnRequest.statusName)
+                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatusEnum.cancelled.statusName)
+                                         &&  ( ordersController.orderStatusTypeName.value != OrderStatusEnum.returnConfirmed.statusName)
+                                          &&  ( ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName),
                                       child: InkWell(
                                         onTap: () {
                                           Utility.showConfirmAlertMessage(
@@ -1155,8 +1158,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               okayTap: (){
                                                 ordersController
                                                     .orderItemObj.value =
-                                                ordersController
-                                                    .orderItems[i];
+                                                ordersController.orderItems[i];
                                                 ordersController
                                                     .bottomSheetReturnOrder(
                                                     context);
@@ -1182,11 +1184,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 && ordersController.orderItems[i].product?.productReviews!=null
                                 && ordersController.orderItems[i].product!.productReviews!.isNotEmpty
                                 && (ordersController.orderItems[i].returnOrderItems!.isEmpty
-                                && ordersController.orderStatusTypeName.value != OrderStatus.returnRequest.statusName)
+                                && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnRequest.statusName)
                                 && ( ordersController.orderItems[i].returnOrderItems!.isEmpty
-                                    && ordersController.orderStatusTypeName.value != OrderStatus.returnConfirmed.statusName)
+                                    && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnConfirmed.statusName)
                                && (ordersController.orderItems[i].returnOrderItems!.isEmpty
-                                    && ordersController.orderStatusTypeName.value != OrderStatus.returnCancelled.statusName),
+                                    && ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -1235,9 +1237,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
                           height4SizedBox,
                           Visibility(
-                            visible: ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatus.returnRequest.statusName
-                                || ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatus.returnConfirmed.statusName
-                                || ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatus.returnCancelled.statusName,
+                            visible: ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatusEnum.returnRequest.statusName
+                                || ordersController.orderItems[i].returnOrderItems!.isNotEmpty && ordersController.orderStatusTypeName.value == OrderStatusEnum.returnConfirmed.statusName
+                                || ordersController.orderItems[i].returnOrderItems!.isNotEmpty &&  ordersController.orderStatusTypeName.value == OrderStatusEnum.returnCancelled.statusName,
 
                             child: Column(
                               crossAxisAlignment:

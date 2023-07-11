@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'orders_model.dart';
+
 OrderListResponse orderListResponseFromJson(String str) =>
     OrderListResponse.fromJson(json.decode(str));
 
@@ -106,6 +108,7 @@ class Order {
     this.serviceChargeType,
     this.serviceChargeValue,
     this.totalServiceCharged,
+    this.deliveryService,
   });
 
   String? userId;
@@ -127,12 +130,13 @@ class Order {
   DateTime? updatedAt;
   String? orderId;
   Store? store;
-  List<OrderHistory>? orderHistories;
+  List<OrderHistories>? orderHistories;
   List<OrderItem>? orderItems;
   List<OrderDeliveryAddress>? orderDeliveryAddresses;
   String? serviceChargeType;
   dynamic serviceChargeValue;
   dynamic totalServiceCharged;
+  DeliveryService? deliveryService;
 
   Order copyWith({
     String? userId,
@@ -154,12 +158,13 @@ class Order {
     DateTime? updatedAt,
     String? orderId,
     Store? store,
-    List<OrderHistory>? orderHistories,
+    List<OrderHistories>? orderHistories,
     List<OrderItem>? orderItems,
     List<OrderDeliveryAddress>? orderDeliveryAddresses,
     String? serviceChargeType,
     dynamic serviceChargeValue,
     dynamic totalServiceCharged,
+    DeliveryService? deliveryService,
   }) =>
       Order(
         userId: userId ?? this.userId,
@@ -188,6 +193,7 @@ class Order {
         serviceChargeType: serviceChargeType ?? this.serviceChargeType,
         serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
         totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
+        deliveryService: deliveryService ?? this.deliveryService,
       );
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -220,8 +226,8 @@ class Order {
         store: json["store"] == null ? null : Store.fromJson(json["store"]),
         orderHistories: json["order_histories"] == null
             ? []
-            : List<OrderHistory>.from(
-                json["order_histories"]!.map((x) => OrderHistory.fromJson(x))),
+            : List<OrderHistories>.from(json["order_histories"]!
+                .map((x) => OrderHistories.fromJson(x))),
         orderItems: json["order_items"] == null
             ? []
             : List<OrderItem>.from(
@@ -233,8 +239,10 @@ class Order {
         serviceChargeType: json["service_charge_type"],
         serviceChargeValue: json["service_charge_value"]?.toDouble(),
         totalServiceCharged: json["total_service_charged"]?.toDouble(),
-
-  );
+        deliveryService: json['delivery_service'] != null
+            ? DeliveryService.fromJson(json['delivery_service'])
+            : null,
+      );
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
@@ -256,6 +264,7 @@ class Order {
         "updatedAt": updatedAt?.toIso8601String(),
         "order_id": orderId,
         "store": store?.toJson(),
+        "delivery_service": deliveryService?.toJson(),
         "order_histories": orderHistories == null
             ? []
             : List<dynamic>.from(orderHistories!.map((x) => x.toJson())),
@@ -269,379 +278,5 @@ class Order {
         "service_charge_type": serviceChargeType,
         "service_charge_value": serviceChargeValue,
         "total_service_charged": totalServiceCharged,
-
-  };
-}
-
-class OrderDeliveryAddress {
-  OrderDeliveryAddress({
-    this.orderId,
-    this.stateId,
-    this.addressLine1,
-    this.addressLine2,
-    this.landmark,
-    this.city,
-    this.postalCode,
-    this.orderDeliveryAddressId,
-  });
-
-  String? orderId;
-  String? stateId;
-  String? addressLine1;
-  String? addressLine2;
-  String? landmark;
-  String? city;
-  String? postalCode;
-  String? orderDeliveryAddressId;
-
-  OrderDeliveryAddress copyWith({
-    String? orderId,
-    String? stateId,
-    String? addressLine1,
-    String? addressLine2,
-    String? landmark,
-    String? city,
-    String? postalCode,
-    String? orderDeliveryAddressId,
-  }) =>
-      OrderDeliveryAddress(
-        orderId: orderId ?? this.orderId,
-        stateId: stateId ?? this.stateId,
-        addressLine1: addressLine1 ?? this.addressLine1,
-        addressLine2: addressLine2 ?? this.addressLine2,
-        landmark: landmark ?? this.landmark,
-        city: city ?? this.city,
-        postalCode: postalCode ?? this.postalCode,
-        orderDeliveryAddressId:
-            orderDeliveryAddressId ?? this.orderDeliveryAddressId,
-      );
-
-  factory OrderDeliveryAddress.fromJson(Map<String, dynamic> json) =>
-      OrderDeliveryAddress(
-        orderId: json["order_id"],
-        stateId: json["state_id"],
-        addressLine1: json["address_line_1"],
-        addressLine2: json["address_line_2"],
-        landmark: json["landmark"],
-        city: json["city"],
-        postalCode: json["postal_code"],
-        orderDeliveryAddressId: json["order_delivery_address_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "order_id": orderId,
-        "state_id": stateId,
-        "address_line_1": addressLine1,
-        "address_line_2": addressLine2,
-        "landmark": landmark,
-        "city": city,
-        "postal_code": postalCode,
-        "order_delivery_address_id": orderDeliveryAddressId,
-      };
-}
-
-class OrderHistory {
-  OrderHistory({
-    this.orderHistoryId,
-    this.orderStatusId,
-    this.createdAt,
-    this.updatedAt,
-    this.orderStatus,
-  });
-
-  String? orderHistoryId;
-  String? orderStatusId;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  OrderStatus? orderStatus;
-
-  OrderHistory copyWith({
-    String? orderHistoryId,
-    String? orderStatusId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    OrderStatus? orderStatus,
-  }) =>
-      OrderHistory(
-        orderHistoryId: orderHistoryId ?? this.orderHistoryId,
-        orderStatusId: orderStatusId ?? this.orderStatusId,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        orderStatus: orderStatus ?? this.orderStatus,
-      );
-
-  factory OrderHistory.fromJson(Map<String, dynamic> json) => OrderHistory(
-        orderHistoryId: json["order_history_id"],
-        orderStatusId: json["order_status_id"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        orderStatus: json["order_status"] == null
-            ? null
-            : OrderStatus.fromJson(json["order_status"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "order_history_id": orderHistoryId,
-        "order_status_id": orderStatusId,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "order_status": orderStatus?.toJson(),
-      };
-}
-
-class OrderStatus {
-  OrderStatus({
-    this.orderStatusId,
-    this.orderStatusName,
-  });
-
-  String? orderStatusId;
-  String? orderStatusName;
-
-  OrderStatus copyWith({
-    String? orderStatusId,
-    String? orderStatusName,
-  }) =>
-      OrderStatus(
-        orderStatusId: orderStatusId ?? this.orderStatusId,
-        orderStatusName: orderStatusName ?? this.orderStatusName,
-      );
-
-  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
-        orderStatusId: json["order_status_id"],
-        orderStatusName: json["order_status_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "order_status_id": orderStatusId,
-        "order_status_name": orderStatusName,
-      };
-}
-
-class OrderItem {
-  OrderItem({
-    this.orderId,
-    this.productId,
-    this.orderItemCount,
-    this.orderItemPrice,
-    this.serviceChargeType,
-    this.serviceChargeValue,
-    this.totalServiceCharged,
-    this.discountName,
-    this.discountType,
-    this.discountValue,
-    this.totalDiscount,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-    this.orderItemId,
-    this.orderItemStatus,
-    this.cancelledAt,
-    this.shippedAt,
-    this.deliveredAt,
-    this.returedAt,
-  });
-
-  String? orderId;
-  String? productId;
-  dynamic orderItemCount;
-  dynamic orderItemPrice;
-  String? serviceChargeType;
-  dynamic serviceChargeValue;
-  dynamic totalServiceCharged;
-  String? discountName;
-  String? discountType;
-  dynamic discountValue;
-  dynamic totalDiscount;
-  String? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  String? orderItemId;
-  String? orderItemStatus;
-  dynamic cancelledAt;
-  dynamic shippedAt;
-  dynamic deliveredAt;
-  dynamic returedAt;
-
-  OrderItem copyWith({
-    String? orderId,
-    String? productId,
-    dynamic orderItemCount,
-    dynamic orderItemPrice,
-    String? serviceChargeType,
-    dynamic serviceChargeValue,
-    dynamic totalServiceCharged,
-    String? discountName,
-    String? discountType,
-    dynamic discountValue,
-    dynamic totalDiscount,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? orderItemId,
-    String? orderItemStatus,
-    dynamic cancelledAt,
-    dynamic shippedAt,
-    dynamic deliveredAt,
-    dynamic returedAt,
-
-  }) =>
-      OrderItem(
-        orderId: orderId ?? this.orderId,
-        productId: productId ?? this.productId,
-        orderItemCount: orderItemCount ?? this.orderItemCount,
-        orderItemPrice: orderItemPrice ?? this.orderItemPrice,
-        serviceChargeType: serviceChargeType ?? this.serviceChargeType,
-        serviceChargeValue: serviceChargeValue ?? this.serviceChargeValue,
-        totalServiceCharged: totalServiceCharged ?? this.totalServiceCharged,
-        discountName: discountName ?? this.discountName,
-        discountType: discountType ?? this.discountType,
-        discountValue: discountValue ?? this.discountValue,
-        totalDiscount: totalDiscount ?? this.totalDiscount,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        orderItemId: orderItemId ?? this.orderItemId,
-        orderItemStatus: orderItemStatus ?? this.orderItemStatus,
-        cancelledAt: cancelledAt ?? this.cancelledAt,
-        shippedAt: shippedAt ?? this.shippedAt,
-        deliveredAt: deliveredAt ?? this.deliveredAt,
-        returedAt: returedAt ?? this.returedAt,
-      );
-
-  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-        orderId: json["order_id"],
-        productId: json["product_id"],
-        orderItemCount: json["order_item_count"],
-        orderItemPrice: json["order_item_price"],
-        serviceChargeType: json["service_charge_type"],
-        serviceChargeValue: json["service_charge_value"]?.toDouble(),
-        totalServiceCharged: json["total_service_charged"]?.toDouble(),
-        discountName: json["discount_name"],
-        discountType: json["discount_type"],
-        discountValue: json["discount_value"],
-        totalDiscount: json["total_discount"]?.toDouble(),
-        status: json["status"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        orderItemId: json["order_item_id"],
-        orderItemStatus: json["order_item_status"],
-        cancelledAt: json["cancelledAt"],
-        shippedAt: json["shippedAt"],
-        deliveredAt: json["deliveredAt"],
-        returedAt: json["returedAt"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "order_id": orderId,
-        "product_id": productId,
-        "order_item_count": orderItemCount,
-        "order_item_price": orderItemPrice,
-        "service_charge_type": serviceChargeType,
-        "service_charge_value": serviceChargeValue,
-        "total_service_charged": totalServiceCharged,
-        "discount_name": discountName,
-        "discount_type": discountType,
-        "discount_value": discountValue,
-        "total_discount": totalDiscount,
-        "status": status,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "order_item_id": orderItemId,
-        "order_item_status": orderItemStatus,
-        "cancelledAt": cancelledAt,
-        "shippedAt": shippedAt,
-        "deliveredAt": deliveredAt,
-        "returedAt": returedAt,
-  };
-}
-
-class Store {
-  Store({
-    this.storeId,
-    this.storeName,
-    this.isVerified,
-    this.isEnabled,
-    this.image,
-    this.logo,
-  });
-
-  String? storeId;
-  String? storeName;
-  bool? isVerified;
-  bool? isEnabled;
-  Image? image;
-  Image? logo;
-
-  Store copyWith({
-    String? storeId,
-    String? storeName,
-    bool? isVerified,
-    bool? isEnabled,
-    Image? image,
-    Image? logo,
-  }) =>
-      Store(
-        storeId: storeId ?? this.storeId,
-        storeName: storeName ?? this.storeName,
-        isVerified: isVerified ?? this.isVerified,
-        isEnabled: isEnabled ?? this.isEnabled,
-        image: image ?? this.image,
-        logo: logo ?? this.logo,
-      );
-
-  factory Store.fromJson(Map<String, dynamic> json) => Store(
-        storeId: json["store_id"],
-        storeName: json["store_name"],
-        isVerified: json["is_verified"],
-        isEnabled: json["is_enabled"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
-        logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "store_id": storeId,
-        "store_name": storeName,
-        "is_verified": isVerified,
-        "is_enabled": isEnabled,
-        "image": image?.toJson(),
-        "logo": logo?.toJson(),
-      };
-}
-
-class Image {
-  Image({
-    this.orignalUrl,
-    this.dynamicUrl,
-  });
-
-  String? orignalUrl;
-  String? dynamicUrl;
-
-  Image copyWith({
-    String? orignalUrl,
-    String? dynamicUrl,
-  }) =>
-      Image(
-        orignalUrl: orignalUrl ?? this.orignalUrl,
-        dynamicUrl: dynamicUrl ?? this.dynamicUrl,
-      );
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        orignalUrl: json["orignal_url"],
-        dynamicUrl: json["dynamic_url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "orignal_url": orignalUrl,
-        "dynamic_url": dynamicUrl,
       };
 }

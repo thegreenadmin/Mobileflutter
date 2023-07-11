@@ -299,7 +299,7 @@ class InboxOffer {
       };
 }
 
-class Order {
+/*class Order {
   String? userId;
   String? storeId;
   String? deliveryServiceId;
@@ -448,7 +448,7 @@ class Order {
         "updatedAt": updatedAt?.toIso8601String(),
         "order_id": orderId,
       };
-}
+}*/
 
 class InboxStore {
   dynamic storeBalance;

@@ -1,5 +1,6 @@
 //GENERATED BARREL FILE
 export '../../common_models/common_models.dart';
+export '../../orders/model/orders_model.dart';
 export 'active_cart_items_model.dart';
 export 'active_membership_model.dart';
 export 'add_worker_request_model.dart';

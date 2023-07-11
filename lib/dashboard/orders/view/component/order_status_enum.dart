@@ -1,4 +1,4 @@
-enum OrderStatus {
+enum OrderStatusEnum {
   userReady,
   cancelRequest,
   receivedOrder,
@@ -15,36 +15,36 @@ enum OrderStatus {
   returnCancelled,
 }
 
-extension StatusExtension on OrderStatus {
+extension StatusExtension on OrderStatusEnum {
   String get statusName {
     switch (this) {
-      case OrderStatus.userReady:
+      case OrderStatusEnum.userReady:
         return 'user ready';
-      case OrderStatus.cancelRequest:
+      case OrderStatusEnum.cancelRequest:
         return 'cancel request';
-      case OrderStatus.receivedOrder:
+      case OrderStatusEnum.receivedOrder:
         return 'received';
-      case OrderStatus.inProgress:
+      case OrderStatusEnum.inProgress:
         return 'in progress';
-      case OrderStatus.completed:
+      case OrderStatusEnum.completed:
         return 'completed';
-      case OrderStatus.inTransit:
+      case OrderStatusEnum.inTransit:
         return 'in transit';
-      case OrderStatus.returnRequest:
+      case OrderStatusEnum.returnRequest:
         return 'return request';
-      case OrderStatus.returnConfirmed:
+      case OrderStatusEnum.returnConfirmed:
         return 'return confirmed';
-      case OrderStatus.returnCancelled:
+      case OrderStatusEnum.returnCancelled:
         return 'return cancelled';
-     case OrderStatus.returned:
+     case OrderStatusEnum.returned:
         return 'returned';
-      case OrderStatus.cancelled:
+      case OrderStatusEnum.cancelled:
         return 'cancelled';
-      case OrderStatus.failed:
+      case OrderStatusEnum.failed:
         return 'failed';
-      case OrderStatus.cancellationRequest:
+      case OrderStatusEnum.cancellationRequest:
         return 'cancellation request';
-      case OrderStatus.readyForPickup:
+      case OrderStatusEnum.readyForPickup:
         return 'ready for pickup';
       default:
         return 'new';
