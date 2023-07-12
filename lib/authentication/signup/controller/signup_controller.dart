@@ -146,7 +146,7 @@ class SignupController extends GetxController {
     );
   }
 
-// Method to check user above 18 or not!
+  /// Method to check user above 18 or not!
   bool isAdultCheck(String dob) {
     final dateOfBirth = DateFormat("yyyy-MM-dd").parse(dob);
     final now = DateTime.now();
@@ -168,7 +168,7 @@ class SignupController extends GetxController {
     }
   }
 
-// Fields Validation Method
+  /// Fields Validation Method
   void validateAndSubmit({bool isFromOwner = false}) async {
     if (validateAndSave()) {
       SharedPreferenceStorage.setData(
@@ -192,7 +192,7 @@ class SignupController extends GetxController {
     }
   }
 
-  //Create Account User Api
+  ///Create Account User Api
   Future apiCreateUser({bool isFromOwner = false}) async {
     Map data = {
       "first_name": firstNameTextController.text.trim(),
@@ -229,7 +229,7 @@ class SignupController extends GetxController {
     });
   }
 
-  //Login Api
+  ///Login Api
   Future apiGenerateOtp() async {
     Map data = {"phone": phoneNumber.value, "phone_code": countryCode.value};
     debugPrint("LOGIN BODY********** $data");

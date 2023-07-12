@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart' as mdio;
+import 'package:dio/dio.dart' as m_dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
@@ -90,25 +90,25 @@ class OwnerInboxDetailController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
-      final dio = mdio.Dio();
-      mdio.FormData formData = mdio.FormData.fromMap({});
+      final dio = m_dio.Dio();
+      m_dio.FormData formData = m_dio.FormData.fromMap({});
 
       Map<String, String> headers = {
         'Authorization': "Bearer ${authToken.value.toString()}",
       };
       formData.files.add(MapEntry(
           "file",
-          mdio.MultipartFile.fromBytes(
+          m_dio.MultipartFile.fromBytes(
               await userSelectedImage.value.readAsBytes(),
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
           ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
           data: formData,
-          options: mdio.Options(headers: headers));
+          options: m_dio.Options(headers: headers));
       final responseData = res.data;
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
@@ -125,8 +125,8 @@ class OwnerInboxDetailController extends GetxController {
       } else {}
     } catch (e) {
       debugPrint(e.toString());
-      if (e is mdio.DioError) {
-        if (e.type == mdio.DioErrorType.badResponse) {
+      if (e is m_dio.DioError) {
+        if (e.type == m_dio.DioErrorType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
           final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
@@ -137,7 +137,7 @@ class OwnerInboxDetailController extends GetxController {
     }
   }
 
-  //Get Messages List Api
+  ///Get Messages List Api
   Future apiGetMessagesList() async {
     isLoading.value = true;
     debugPrint(
@@ -173,7 +173,7 @@ class OwnerInboxDetailController extends GetxController {
     });
   }
 
-  //Send message by owner api
+  ///Send message by owner api
   Future apiSendMessage() async {
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}");

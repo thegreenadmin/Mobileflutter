@@ -2,8 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
-    as store;
+import 'package:thegreenmall/dashboard/home/model/model.dart' as store;
 import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -86,7 +85,7 @@ class OrdersHomeMainController extends GetxController {
           apiGetOwnerOrderHistory();
         }
         break;
-      case 1: //Inprogress Orders
+      case 1: //In-progress Orders
         {
           debugPrint(selectedIndex.value.toString());
           apiGetOwnerOrderHistory();
@@ -119,7 +118,7 @@ class OrdersHomeMainController extends GetxController {
     StringConstants.completedText,
   ].obs;
 
-  //Get Store Details Api
+  ///Get Store Details Api
   Future apiGetStoreDetails() async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
@@ -135,7 +134,6 @@ class OrdersHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE DETAIL BODY*******${value?.body}");
       debugPrint("STORE DETAIL BODY*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -153,7 +151,7 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Api get current and past history of [OWNER]
+  ///Api get current and past history of [OWNER]
   Future apiGetOwnerOrderHistory(
       {String startDateOfMonth = "",
       String endDateOfMonth = "",
@@ -250,7 +248,7 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Get Store Order Details Api
+  ///Get Store Order Details Api
   Future apiGetStoreOrderDetail() async {
     isLoading.value = true;
     debugPrint("STORE ORDER DETAIL URL**********"
@@ -325,8 +323,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-//Confirm Return Request
-  apiConfirmReturnRequest(BuildContext ctx) async {
+  ///Confirm Return Request
+  Future apiConfirmReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
@@ -372,8 +370,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-//Complete Return Request
-  apiCompleteReturnRequest(BuildContext ctx) async {
+  ///Complete Return Request
+  Future apiCompleteReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
@@ -426,8 +424,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-//Reject Return Request
-  apiRejectReturnRequest(BuildContext ctx) async {
+  ///Reject Return Request
+  Future apiRejectReturnRequest(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
@@ -469,8 +467,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-//Cancel order ready
-  apiCancelOrder(BuildContext ctx) async {
+  ///Cancel order ready
+  Future apiCancelOrder(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");
@@ -521,8 +519,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-//Mark store order ready
-  apiMarkOrderReady() async {
+  ///Mark store order ready
+  Future apiMarkOrderReady() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
@@ -574,8 +572,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order ready for Shipped
-  apiMarkReadyForShipping() async {
+  ///Mark store order ready for Shipped
+  Future apiMarkReadyForShipping() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
@@ -630,8 +628,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order ready for Pick
-  apiMarkReadyForPickUp() async {
+  ///Mark store order ready for Pick
+  Future apiMarkReadyForPickUp() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
@@ -686,8 +684,8 @@ class OrdersHomeMainController extends GetxController {
     });
   }
 
-  //Mark store order delivered
-  apiMarkDelivered() async {
+  ///Mark store order delivered
+  Future apiMarkDelivered() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");

@@ -289,7 +289,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                   ),
                                   height12SizedBox,
                                   SizedBox(
-                                    height: 160,
+                                    height: WidgetConstants.screenHeight * 0.2,
                                     width: WidgetConstants.screenWidth,
                                     child: ListView.separated(
                                         separatorBuilder:
@@ -336,41 +336,55 @@ class _OffersScreenState extends State<OffersScreen> {
                                                     alignment:
                                                         Alignment.bottomCenter,
                                                     children: [
-                                                      offersController
-                                                                      .getUserOfferList[
-                                                                          index]
-                                                                      .offers![
-                                                                          i]
-                                                                      .image!
-                                                                      .dynamicUrl ==
-                                                                  null ||
-                                                              offersController
-                                                                  .getUserOfferList[
-                                                                      index]
-                                                                  .offers![i]
-                                                                  .image!
-                                                                  .dynamicUrl!
-                                                                  .isEmpty
-                                                          ? Image.asset(
+                                                      ClipRRect(
+                                                        borderRadius: BorderRadius.circular(8.0),
+                                                        child:  offersController
+                                                            .getUserOfferList[
+                                                        index]
+                                                            .offers![
+                                                        i]
+                                                            .image!
+                                                            .dynamicUrl ==
+                                                            null ||
+                                                            offersController
+                                                                .getUserOfferList[
+                                                            index]
+                                                                .offers![i]
+                                                                .image!
+                                                                .dynamicUrl!
+                                                                .isEmpty
+                                                            ? Image.asset(
+                                                          ImageConstants
+                                                              .medicine,
+                                                          width: WidgetConstants
+                                                              .screenWidth *
+                                                              0.8,
+                                                        )
+                                                            : Image.network(
+                                                          offersController
+                                                              .getUserOfferList[
+                                                          index]
+                                                              .offers![i]
+                                                              .image!
+                                                              .dynamicUrl!
+                                                              .toString(),
+                                                          fit: BoxFit.fill,
+                                                          width: WidgetConstants
+                                                              .screenWidth *
+                                                              0.8,
+
+                                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                            return Image.asset(
                                                               ImageConstants
                                                                   .medicine,
                                                               width: WidgetConstants
-                                                                      .screenWidth *
+                                                                  .screenWidth *
                                                                   0.8,
-                                                            )
-                                                          : Image.network(
-                                                              offersController
-                                                                  .getUserOfferList[
-                                                                      index]
-                                                                  .offers![i]
-                                                                  .image!
-                                                                  .dynamicUrl!
-                                                                  .toString(),
-                                                              fit: BoxFit.fill,
-                                                              width: WidgetConstants
-                                                                      .screenWidth *
-                                                                  0.8,
-                                                            ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+
                                                       SizedBox(
                                                         height: 55,
                                                         child: Card(
@@ -727,7 +741,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                         height8SizedBox,
                                         height12SizedBox,
                                         SizedBox(
-                                            height: 160,
+                                            height: WidgetConstants.screenHeight * 0.2,
                                             width: WidgetConstants.screenWidth,
                                             child: Row(
                                               mainAxisAlignment:
@@ -739,37 +753,49 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   alignment:
                                                       Alignment.bottomCenter,
                                                   children: [
-                                                    offersController
-                                                                    .getOwnerOfferList[
-                                                                        index]
-                                                                    .image!
-                                                                    .dynamicUrl ==
-                                                                null ||
-                                                            offersController
-                                                                .getOwnerOfferList[
-                                                                    index]
-                                                                .image!
-                                                                .dynamicUrl!
-                                                                .isEmpty
-                                                        ? Image.asset(
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                      child: offersController
+                                                          .getOwnerOfferList[
+                                                      index]
+                                                          .image!
+                                                          .dynamicUrl ==
+                                                          null ||
+                                                          offersController
+                                                              .getOwnerOfferList[
+                                                          index]
+                                                              .image!
+                                                              .dynamicUrl!
+                                                              .isEmpty
+                                                          ? Image.asset(
+                                                        ImageConstants
+                                                            .medicine,
+                                                        width: WidgetConstants
+                                                            .screenWidth *
+                                                            0.8,
+                                                      )
+                                                          : Image.network(
+                                                        offersController
+                                                            .getOwnerOfferList[
+                                                        index]
+                                                            .image!
+                                                            .dynamicUrl
+                                                            .toString(),
+                                                        fit: BoxFit.fill,
+                                                        width: WidgetConstants
+                                                            .screenWidth *
+                                                            0.8,
+                                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                          return Image.asset(
                                                             ImageConstants
                                                                 .medicine,
                                                             width: WidgetConstants
-                                                                    .screenWidth *
+                                                                .screenWidth *
                                                                 0.8,
-                                                          )
-                                                        : Image.network(
-                                                            offersController
-                                                                .getOwnerOfferList[
-                                                                    index]
-                                                                .image!
-                                                                .dynamicUrl
-                                                                .toString(),
-                                                            fit: BoxFit.fill,
-                                                            width: WidgetConstants
-                                                                    .screenWidth *
-                                                                0.8,
-                                                          ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
                                                     SizedBox(
                                                       height: 55,
                                                       child: Card(

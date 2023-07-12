@@ -181,7 +181,7 @@ class StoreHomeMainController extends GetxController {
     }
   }
 
-  void termsAndPrivacyDailogue(BuildContext context,
+  void termsAndPrivacyDialog(BuildContext context,
       {String content = "", String contentType = ""}) {
     showDialog(
       context: context,
@@ -259,7 +259,7 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
-  void moneydeductFromCartDailogue(BuildContext ctx, {String amount = ""}) {
+  void moneyDeductFromCartDialog(BuildContext ctx, {String amount = ""}) {
     showDialog(
       context: ctx,
       barrierDismissible: false,
@@ -452,7 +452,7 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
-  //Get Active Cart Api
+  ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
     debugPrint(
@@ -516,7 +516,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Api Contact store
+  ///Api Contact store
   Future apiContactStore(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint("CONTACT STORE URL**********"
@@ -560,7 +560,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get Categories Api
+  ///Get Categories Api
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
     debugPrint("GET STORE CATEGORIES URL**********"
@@ -598,7 +598,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get User detail Api
+  ///Get User detail Api
   Future apiGetUserDetailsApi() async {
     isLoading.value = true;
     debugPrint(
@@ -637,7 +637,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get Cart List Api
+  ///Get Cart List Api
   Future apiGetCartListApi() async {
     isLoading.value = true;
 
@@ -715,7 +715,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Place Order Api
+  ///Place Order Api
   Future apiPlaceOrder() async {
     isPlaceOrder.value = false;
     isLoading.value = true;
@@ -771,7 +771,7 @@ class StoreHomeMainController extends GetxController {
         Get.to(() => const OrderConfirmationScreen(),
             id: pageIdApp.value,
             arguments: {
-              "storeId": storeId.value.toString() ?? "0",
+              "storeId": storeId.value.toString(),
               "orderStatus": orderStatus.value,
               "isFromTransaction": false,
               "isFromNotification": false
@@ -801,7 +801,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  // Add To CartApi
+  /// Add To CartApi
   Future apiAddToCart(
     BuildContext context,
   ) async {
@@ -848,7 +848,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Update Cart Api
+  ///Update Cart Api
   Future apiUpdateCart({int cartItemId = 0, quantity = 0}) async {
     isLoading.value = true;
     debugPrint("UPDATE CART URL**********"
@@ -891,7 +891,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Delete Cart Api
+  ///Delete Cart Api
   Future apiDeleteCart(BuildContext ctxx, {int cartItemId = 0}) async {
     isLoading.value = true;
     debugPrint("DELETE CART URL**********"
@@ -1043,7 +1043,7 @@ class StoreHomeMainController extends GetxController {
     );
   }
 
-  //Get Store Offers Api
+  ///Get Store Offers Api
   Future apiGetStoreOffersApi() async {
     isLoading.value = true;
     debugPrint("Store Offers URL**********"
@@ -1078,7 +1078,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get User Wallet Balance Api
+  ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
@@ -1121,7 +1121,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get Store Details Api
+  ///Get Store Details Api
   Future apiGetStoreDetailsApi(
       {dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
     isLoading.value = true;
@@ -1170,7 +1170,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Get Shop  Product Detail Api
+  ///Get Shop  Product Detail Api
   Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
     debugPrint("Product Shop Detail  URL**********"
@@ -1235,7 +1235,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Feature ProductList Store Api
+  ///Feature ProductList Store Api
   Future apiFeatureProductListApi(
       {bool isFavouriteProducts = false,
       isFeaturedProduct = false,
@@ -1434,7 +1434,7 @@ class StoreHomeMainController extends GetxController {
         }).then((value) => {});
   }
 
-  //Create Favourite Store Api
+  ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
@@ -1477,7 +1477,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-//Remove Favourite Store Api
+  ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"
@@ -1521,7 +1521,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Create Favourite Product Api
+  ///Create Favourite Product Api
   Future apiCreateFavouriteProduct(String? id) async {
     isLoading.value = true;
     debugPrint("Create Favourite Product URL**********"
@@ -1565,7 +1565,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Remove Favourite Product Api
+  ///Remove Favourite Product Api
   Future apiRemoveFavouriteProduct(String? id) async {
     isLoading.value = true;
     debugPrint("Remove Favourite Product URL**********"
@@ -1610,7 +1610,7 @@ class StoreHomeMainController extends GetxController {
     });
   }
 
-  //Previous orders ProductList Api
+  ///Previous orders ProductList Api
   Future apiGetPreviousOrders() async {
     isLoading.value = true;
     debugPrint("PREVIOUS ORDERS URL**********"

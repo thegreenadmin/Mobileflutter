@@ -68,7 +68,7 @@ class BottomNavController extends GetxController {
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
@@ -107,7 +107,7 @@ class BottomNavController extends GetxController {
     });
   }
 
-  //GET STORE PERMISSIONS
+  ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     debugPrint(
         "GET STORE PERMISSIONS URL BOTTOM**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");

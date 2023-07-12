@@ -41,7 +41,7 @@ class NotificationListController extends GetxController {
     }
   }
 
-  //Get Notification List Api
+  ///Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {
     isLoading.value = true;
     debugPrint("GET NOTIFICATION LIST URL**********"

@@ -254,7 +254,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-//Alert
+  ///Alert
   void enterEinNumberAlert(context, String storeId) {
     showDialog(
       context: context,
@@ -338,18 +338,8 @@ class SearchStoreUserController extends GetxController {
               children: [
                 InkWell(
                   onTap: () {
-                    // if (einNumberTextController.text.isEmpty) {
-                    // Utility.showAlertMessage(context,
-                    //     title:   AlertStringConstants.pleaseEnterEinText ,);
-                    // Utility.showToast(
-                    //     AlertStringConstants.pleaseEnterEinText);
-                    // } else {
-                    // Get.back();
                     Get.back();
-                    // Navigator.of(context).pop();
-                    validateAndSubmit(context, storeId: storeId);
-                    // apiClaimStore(storeId: storeId);
-                    // }
+                    validateAndSubmit(storeId: storeId);
                   },
                   child: Container(
                     height: 50.0,
@@ -378,7 +368,7 @@ class SearchStoreUserController extends GetxController {
     );
   }
 
-  //Get Nearby Stores Api
+  ///Get Nearby Stores Api
   Future apiGetNearByStores({
     bool isFilter = false,
     bool isSearch = false,
@@ -501,7 +491,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Get Previous Stores Api
+  ///Get Previous Stores Api
   Future apiGetPreviousStores(
     context, {
     bool isFilter = false,
@@ -561,7 +551,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Get Favorite Stores Api
+  ///Get Favorite Stores Api
   Future apiGetFavoriteStores(
     context, {
     bool isFilter = false,
@@ -623,7 +613,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Create Favourite Store Api
+  ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
@@ -694,7 +684,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Remove Favourite Store Api
+  ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"
@@ -769,8 +759,7 @@ class SearchStoreUserController extends GetxController {
     }
   }
 
-  void validateAndSubmit(
-    BuildContext mcontext, {
+  void validateAndSubmit({
     String storeId = "",
   }) async {
     if (validateAndSave()) {

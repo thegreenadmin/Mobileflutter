@@ -746,7 +746,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                               apiKey: ownerStoreController.kGoogleApiKey);
 
                           GeocodingResponse response = await geocoding
-                              .searchByAddress(p?.description.toString() ?? "");
+                              .searchByAddress(p.description.toString() ?? "");
                           // log("GeocodingResponse web services:------------");
                           // log(jsonEncode(response.results));
 
@@ -1928,13 +1928,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   .storeDeliveryServices) {
                                 if (element["delivery_service_id"] ==
                                     ownerStoreController
-                                        .deliveryServices[i].deliveryServiceId) {
+                                        .deliveryServices[i].id) {
                                   ownerStoreController.deliveryServicesList
                                       .add({
                                     "store_delivery_service_id":
                                         element["store_delivery_service_id"],
                                     "delivery_service_id": ownerStoreController
-                                        .deliveryServices[i].deliveryServiceId,
+                                        .deliveryServices[i].id,
                                     "is_enabled": ownerStoreController
                                         .deliveryServices[i].isSelected,
                                     "status": "active"
@@ -1949,10 +1949,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                       .any((element) =>
                                           element["delivery_service_id"] ==
                                           ownerStoreController
-                                              .deliveryServices[i].deliveryServiceId)) {
+                                              .deliveryServices[i].id)) {
                                 ownerStoreController.deliveryServicesList.add({
                                   "delivery_service_id": ownerStoreController
-                                      .deliveryServices[i].deliveryServiceId,
+                                      .deliveryServices[i].id,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"
@@ -1971,7 +1971,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                 ownerStoreController.deliveryServicesList.add({
                                   "store_delivery_service_id": null,
                                   "delivery_service_id": ownerStoreController
-                                      .deliveryServices[i].deliveryServiceId,
+                                      .deliveryServices[i].id,
                                   "is_enabled": ownerStoreController
                                       .deliveryServices[i].isSelected,
                                   "status": "active"

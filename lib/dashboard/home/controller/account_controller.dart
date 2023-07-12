@@ -100,7 +100,6 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // isFromCart.value = Get.arguments["isFromCart"] ?? false;
     isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
     debugPrint(isFromCart.value.toString());
     apiGetUserDetailApi();
@@ -148,7 +147,7 @@ class AccountController extends GetxController {
           maxHeight: 900);
       if (pickedFile != null) {
         idProofImage.value = pickedFile;
-        await apiUploadImage(context);
+        await apiUploadImage();
         update();
       } else {
         // api();
@@ -162,7 +161,7 @@ class AccountController extends GetxController {
           maxHeight: 900);
       if (pickedFile != null) {
         idProofImage.value = pickedFile;
-        await apiUploadImage(context);
+        await apiUploadImage();
         update();
       } else {
         // api();
@@ -170,7 +169,7 @@ class AccountController extends GetxController {
     });
   }
 
-  storeAccessDailogue(BuildContext context) {
+  storeAccessDialog(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -246,7 +245,7 @@ class AccountController extends GetxController {
     );
   }
 
-  noOfDaysForMembershipDailogue(BuildContext context, {String days = ""}) {
+  noOfDaysForMembershipDialog(BuildContext context, {String days = ""}) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -359,8 +358,8 @@ class AccountController extends GetxController {
     );
   }
 
-  //Api upload image to server
-  Future apiUploadImage(context) async {
+  ///Api upload image to server
+  Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
@@ -386,7 +385,7 @@ class AccountController extends GetxController {
             responseData['data']['urls']['orignal_url'];
         idProofImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
-        await apiAddUserIdProof(context);
+        await apiAddUserIdProof();
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
@@ -415,17 +414,17 @@ class AccountController extends GetxController {
     }
   }
 
-  void validateAndSubmit(context) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        apiUpdateUserDetail(context);
+        apiUpdateUserDetail();
       } catch (_) {}
     } else {
       autoValidate.value = true;
     }
   }
 
-  //Get User Detail Info Api
+  ///Get User Detail Info Api
   Future apiGetUserDetailApi() async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
@@ -499,7 +498,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Get Countries Api
+  ///Get Countries Api
   Future apiGetCountries() async {
     debugPrint(
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
@@ -544,7 +543,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Get States Api
+  ///Get States Api
   Future apiGetStates() async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
@@ -590,8 +589,8 @@ class AccountController extends GetxController {
     });
   }
 
-  //Update User Detail Api
-  Future apiUpdateUserDetail(context) async {
+  ///Update User Detail Api
+  Future apiUpdateUserDetail() async {
     debugPrint(
         "UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
 
@@ -665,8 +664,8 @@ class AccountController extends GetxController {
     });
   }
 
-  //Add user id proof Api
-  Future apiAddUserIdProof(context) async {
+  ///Add user id proof Api
+  Future apiAddUserIdProof() async {
     debugPrint(
         "ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
 
@@ -705,7 +704,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Get Notification Status Api
+  ///Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
     debugPrint(
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
@@ -796,9 +795,8 @@ class AccountController extends GetxController {
     });
   }
 
-  //Update Notification Status
-  Future apiUpdateNotificationStatus(
-    context, {
+  ///Update Notification Status
+  Future apiUpdateNotificationStatus({
     String notificationType = "",
     bool isOwner = false,
     bool isEnabled = false,
@@ -845,7 +843,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Create store access
+  ///Create store access
   Future apiCreateStoreAccess() async {
     debugPrint(
         "CREATE USER ACCESS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}");
@@ -881,7 +879,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Get membership list
+  ///Get membership list
   Future apiGetMembershipList() async {
     debugPrint(
       "GET MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}",
@@ -916,8 +914,8 @@ class AccountController extends GetxController {
     });
   }
 
-//Create membership plan
-  apiCreateMembershipPlan(
+  ///Create membership plan
+  Future apiCreateMembershipPlan(
       {int index = 0,
       String membershipPlanId = "",
       String planDays = ""}) async {
@@ -968,7 +966,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Get active membership list
+  ///Get active membership list
   Future apiGetActiveMembershipList() async {
     debugPrint(
       "GET ACTIVE MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=100&order_by=membership_id&order_type=DESC",
@@ -1005,7 +1003,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //Delete User Account
+  ///Delete User Account
   Future apiDeleteUserAccount() async {
     debugPrint(
         "DELETE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}");
@@ -1042,7 +1040,7 @@ class AccountController extends GetxController {
     });
   }
 
-  //logout user account
+  ///logout user account
   Future apiLogOutUser() async {
     debugPrint(
         "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");

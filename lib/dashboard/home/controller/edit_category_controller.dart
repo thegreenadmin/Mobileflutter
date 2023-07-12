@@ -143,7 +143,7 @@ class EditNewCategoryController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -189,7 +189,7 @@ class EditNewCategoryController extends GetxController {
     }
   }
 
-  //Add Category Api
+  ///Add Category Api
   Future apiAddCategory(BuildContext nContext) async {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
@@ -244,7 +244,7 @@ class EditNewCategoryController extends GetxController {
     });
   }
 
-  //Get Category Detail Api
+  ///Get Category Detail Api
   Future apiGetCategoryDetail() async {
     debugPrint(
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
@@ -281,7 +281,7 @@ class EditNewCategoryController extends GetxController {
     });
   }
 
-  //Update Category Api
+  ///Update Category Api
   Future apiUpdateCategory(BuildContext contextt) async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");

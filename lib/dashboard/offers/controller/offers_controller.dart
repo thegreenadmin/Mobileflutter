@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
-import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -81,7 +80,7 @@ class OffersController extends GetxController {
     apiGetUserOffersList();
   }
 
-  //Get Offers List Api [OWNER]
+  ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     isLoading!.value = true;
     debugPrint(
@@ -126,7 +125,7 @@ class OffersController extends GetxController {
     });
   }
 
-  //Get Offers List Api [USER]
+  ///Get Offers List Api [USER]
   Future apiGetUserOffersList() async {
     isLoading!.value = true;
     debugPrint(
@@ -162,7 +161,7 @@ class OffersController extends GetxController {
     });
   }
 
-//Delete Offer
+  ///Delete Offer
   Future apiDeleteOffer() async {
     debugPrint(
         "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
@@ -205,7 +204,7 @@ class OffersController extends GetxController {
     });
   }
 
-  //Api Get offers products
+  ///Api Get offers products
   Future apiGetOffersProducts(
       {String storeId = "", String offerId = ""}) async {
     isLoading!.value = true;

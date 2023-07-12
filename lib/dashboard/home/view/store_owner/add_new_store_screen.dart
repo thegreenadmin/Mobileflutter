@@ -1856,7 +1856,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                 true) {
                               addNewStoreController.deliveryServicesList.add({
                                 "delivery_service_id": addNewStoreController
-                                    .deliveryServices[i].deliveryServiceId,
+                                    .deliveryServices[i].id,
                                 "is_enabled": true,
                                 "status": "active"
                               });

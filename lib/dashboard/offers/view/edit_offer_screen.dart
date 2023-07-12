@@ -20,7 +20,6 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
   initState() {
     super.initState();
     addOffersController.apiGetStoreList();
-    // isFrom.value = Get.arguments["isFrom"] ?? "";
     addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
     if (addOffersController.isFrom.value == StringConstants.addOfferText) {
     } else {
@@ -547,10 +546,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
                                   value: addOffersController
-                                                  .discountType.value !=
-                                              null &&
-                                          addOffersController
-                                              .discountType.value.isNotEmpty
+                                          .discountType.value.isNotEmpty
                                       ? addOffersController.discountType.value
                                       : "",
                                   decoration: InputDecoration(

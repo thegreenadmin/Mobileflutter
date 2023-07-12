@@ -51,7 +51,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
-                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -108,11 +107,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      // SharedPreferenceStorage.setData("context", context);
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //   builder: (_) => const AddNewWorkerScreen(),
-                      // ));
-
                       permissionStoreList.any(
                                   (element) => element.isStoreOwner == true) ||
                               permissionStoreList.any((element) =>
@@ -244,11 +238,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     addNewWorkerController
                                         .workerList[index].storeUserId
                                         .toString();
-                                // SharedPreferenceStorage.setData(
-                                //     "context", context);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (_) => const EditWorkerScreen(),
-                                // ));
                                 permissionStoreList.any((element) =>
                                             element.isStoreOwner == true) ||
                                         permissionStoreList.any((element) =>
@@ -328,15 +317,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                           Colors.transparent,
                                                     ),
                                             ),
-                                            // const Divider(),
-                                            // const Text(
-                                            //   "",
-                                            //   textAlign: TextAlign.center,
-                                            //   style: TextStyle(
-                                            //       fontSize: 12.0,
-                                            //       color: AppColors.black,
-                                            //       fontWeight: FontWeight.w500),
-                                            // ),
                                           ],
                                         ),
                                       ),

@@ -196,9 +196,6 @@ class AddNewStoreController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -214,13 +211,8 @@ class AddNewStoreController extends GetxController {
           await apiUploadImage();
           update();
         }
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -242,7 +234,7 @@ class AddNewStoreController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -300,7 +292,7 @@ class AddNewStoreController extends GetxController {
     }
   }
 
-  //Api upload PDF to server
+  ///Api upload PDF to server
   Future uploadPdfToServer() async {
     try {
       final dio = mdio.Dio();
@@ -368,7 +360,7 @@ class AddNewStoreController extends GetxController {
     }
   }
 
-  //Create Store Api
+  ///Create Store Api
   Future apiCreateStore(BuildContext contextt) async {
     Map data = {
       "store": {
@@ -423,10 +415,10 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("CREATE STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         // Get.back();
         openingTimeTextController.clear();
         closingTimeTextController.clear();
@@ -454,8 +446,7 @@ class AddNewStoreController extends GetxController {
           element.isSelected = false;
         }
         deliveryServices
-            .firstWhere((element) =>
-                element.deliveryServiceName!.toLowerCase().contains("in"))
+            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
             .isSelected = true;
         for (var element in weekDaysList) {
           element.isSelected = false;
@@ -465,27 +456,25 @@ class AddNewStoreController extends GetxController {
         termsTextController.clear();
         termsOriginalLinkFromServer.value = "";
         privacyOriginalLinkFromServer.value = "";
-        //storeIdValue.value = value.body["status"]
-        storeIdValue.value = value.body["data"]['store_id'].toString();
+        storeIdValue.value = value?.body["data"]['store_id'].toString() ?? "";
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
         Get.back(id: pageIdApp.value);
         await createDynamicLink();
         await apiDynamicLink();
-        // await apiGetDeliveryServices();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
   }
 
-  //Dynamic link
+  ///Dynamic link
   Future apiDynamicLink() async {
     debugPrint(
         "DYNAMIC URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}");
@@ -515,14 +504,15 @@ class AddNewStoreController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(Get.context!).pushReplacement(MaterialPageRoute(
-        //   builder: (_) => const StartJourneyScreen(),
-        // ));
-      } else {}
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
     });
   }
 
-  //Get DeliveryServices Api
+  ///Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     debugPrint(
@@ -539,25 +529,24 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET DELIVERY LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
+      debugPrint("GET DELIVERY LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         deliveryServicesResponse =
-            DeliveryServicesResponse.fromJson(value.body);
+            DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
         deliveryServices
-            .firstWhere((element) =>
-                element.deliveryServiceName!.toLowerCase().contains("in"))
+            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
             .isSelected = true;
         var concatenate = StringBuffer();
         for (int i = 0; i < deliveryServices.length; i++) {
           if (deliveryServices[i].isSelected == true) {
-            concatenate.write(deliveryServices[i].deliveryServiceName);
+            concatenate.write(deliveryServices[i].name);
             concatenate.write(', ');
 
             deliveryServicesList.add({
-              "delivery_service_id": deliveryServices[i].deliveryServiceId,
+              "delivery_service_id": deliveryServices[i].id,
               "is_enabled": true,
               "status": "active"
             });
@@ -565,19 +554,19 @@ class AddNewStoreController extends GetxController {
         }
         deliveryServicesTextController.text = concatenate.toString();
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
   }
 
-  //Get Countries Api
+  ///Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
     debugPrint(
@@ -593,28 +582,28 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getCountriesModel = GetCountriesModel.fromJson(value.body);
+      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.value = getCountriesModel.data!.countries!;
         if (countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
         }
         apiGetStates();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
   }
 
-  //Get States Api
+  ///Get States Api
   Future apiGetStates() async {
     statesList.clear();
     debugPrint(
@@ -630,10 +619,10 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStateModel = GetStatesModel.fromJson(value.body);
+      debugPrint("GET STATES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.value = getStateModel.data!.states!;
         if (stateId.value.isNotEmpty) {
           for (int i = 0; i < statesList.length; i++) {
@@ -644,13 +633,13 @@ class AddNewStoreController extends GetxController {
         } else {
           stateId.value = statesList[0].stateId.toString();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

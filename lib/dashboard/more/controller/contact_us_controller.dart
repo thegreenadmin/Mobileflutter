@@ -18,7 +18,6 @@ class ContactUsController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getPage();
   }
@@ -55,7 +54,7 @@ class ContactUsController extends GetxController {
     }
   }
 
-  //Contact us Api
+  ///Contact us Api
   Future apiContactUs(BuildContext ctx) async {
     Map data = {
       "name": nameTextController.text.trim(),

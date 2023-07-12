@@ -45,7 +45,7 @@ class UserInboxController extends GetxController {
     role?.value = roleVal;
   }
 
-  //Get Inbox message heads List Api
+  ///Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
 
@@ -91,7 +91,7 @@ class UserInboxController extends GetxController {
     });
   }
 
-  //Delete USER messages
+  ///Delete USER messages
   Future apiDeleteUserMessages({String messageHeadId = ""}) async {
     debugPrint(
         "DELETE USER MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().messageDelete}");

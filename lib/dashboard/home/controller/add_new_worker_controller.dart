@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:get/get.dart';
+
+import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
-import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-import 'package:dio/dio.dart' as mdio;
 
-import 'package:http_parser/http_parser.dart' show MediaType;
 import '../model/add_worker_request_model.dart' as add_worker;
-
 
 class AddNewWorkerController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -62,8 +62,7 @@ class AddNewWorkerController extends GetxController {
   late StoreRoleListResponse storeRoleListResponse = StoreRoleListResponse();
   late GetUserStoreListModel getUserStoreListModel = GetUserStoreListModel();
   late WorkerListResponse workerListResponse = WorkerListResponse();
-  WorkerDetailResponse? workerDetailResponse =
-      WorkerDetailResponse();
+  WorkerDetailResponse? workerDetailResponse = WorkerDetailResponse();
   RxList<UserStoresList> getUserStoreList = <UserStoresList>[].obs;
   RxList<StoreUser> workerList = <StoreUser>[].obs;
   RxList<StoreRole> storeRoleList = <StoreRole>[].obs;
@@ -122,7 +121,7 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
-  // Add Worker Api
+  /// Add Worker Api
   Future<dynamic> apiAddWorker(BuildContext contextt) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -149,7 +148,8 @@ class AddNewWorkerController extends GetxController {
     for (var element in selectedWeekDaysList) {
       if (element.isSelected == true) {
         debugPrint("${element.id} ${element.isSelected} ${element.name} ");
-        add_worker.AddWorkerEmployeeTiming employeeTiming = add_worker.AddWorkerEmployeeTiming();
+        add_worker.AddWorkerEmployeeTiming employeeTiming =
+            add_worker.AddWorkerEmployeeTiming();
         employeeTiming.dayOfWeek = element.id;
         employeeTiming.is24HrsActive = is247Time.value;
         employeeTiming.startTime = Utility.formatDateTime(
@@ -196,7 +196,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  // Edit Worker Api
+  /// Edit Worker Api
   Future<dynamic> apiEditWorker(BuildContext contx) async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
@@ -324,7 +324,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  // Delete Worker Api
+  /// Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
@@ -368,9 +368,6 @@ class AddNewWorkerController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -401,7 +398,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -449,7 +446,7 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
-  //Get particular store api
+  ///Get particular store api
   Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
@@ -522,7 +519,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Get User Store List Api
+  ///Get User Store List Api
   Future apiGetUserStoreList() async {
     debugPrint(
         "GET USER STORE LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
@@ -553,7 +550,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Get Worker List Api
+  ///Get Worker List Api
   Future apiGetWorkerList() async {
     workerList.clear();
     isLoading.value = true;
@@ -587,7 +584,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Get Role List Api
+  ///Get Role List Api
   Future apiGetRoleList() async {
     workerList.clear();
     isLoading.value = true;
@@ -621,7 +618,7 @@ class AddNewWorkerController extends GetxController {
     });
   }
 
-  //Get Worker Detail Api
+  ///Get Worker Detail Api
   Future apiGetWorkerDetail() async {
     isLoading.value = true;
     selectedWeekDaysList.clear();
@@ -641,8 +638,7 @@ class AddNewWorkerController extends GetxController {
       debugPrint("GET  STORE USER DETAIL RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        workerDetailResponse =
-            WorkerDetailResponse.fromJson(value?.body);
+        workerDetailResponse = WorkerDetailResponse.fromJson(value?.body);
         employeeNameTextController.text =
             workerDetailResponse?.data?.storeUser?.user?.firstName ?? '';
         shortDescriptionTextController.text =

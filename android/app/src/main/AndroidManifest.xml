@@ -14,7 +14,7 @@
     
    
    <application
-        android:label="Thegreenmall"
+        android:label="The Green Mall"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"

@@ -109,9 +109,6 @@ class AddNewCategoryController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext ncontext) {
     return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -143,7 +140,7 @@ class AddNewCategoryController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -189,7 +186,7 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  //Add Category Api
+  ///Add Category Api
   Future apiAddCategory(BuildContext nContext) async {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
@@ -244,7 +241,7 @@ class AddNewCategoryController extends GetxController {
     });
   }
 
-  //Get Category Detail Api
+  ///Get Category Detail Api
   Future apiGetCategoryDetail() async {
     debugPrint(
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
@@ -281,7 +278,7 @@ class AddNewCategoryController extends GetxController {
     });
   }
 
-  //Update Category Api
+  ///Update Category Api
   Future apiUpdateCategory(BuildContext contextt) async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");

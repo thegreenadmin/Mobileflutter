@@ -56,9 +56,6 @@ class UserInboxDetailController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-      // Navigator.of(context).pop();
-      // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -90,7 +87,7 @@ class UserInboxDetailController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -137,7 +134,7 @@ class UserInboxDetailController extends GetxController {
     }
   }
 
-  //Get Messages List Api
+  ///Get Messages List Api
   Future apiGetMessagesList() async {
     isloading.value = true;
     debugPrint(
@@ -172,7 +169,7 @@ class UserInboxDetailController extends GetxController {
     });
   }
 
-  //Send message by user api
+  ///Send message by user api
   Future apiSendMessage() async {
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");

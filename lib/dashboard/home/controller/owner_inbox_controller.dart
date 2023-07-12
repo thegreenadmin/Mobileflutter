@@ -43,7 +43,7 @@ class OwnerInboxController extends GetxController {
     await apiGetInboxList();
   }
 
-  //Get Inbox message heads List Api
+  ///Get Inbox message heads List Api
   Future apiGetInboxList() async {
     isLoading.value = true;
     RxString url = "".obs;
@@ -85,7 +85,7 @@ class OwnerInboxController extends GetxController {
     });
   }
 
-  //Delete Store messages
+  ///Delete Store messages
   Future apiDeleteStoreMessages(
       {String messageHeadId = "", String storeId = ""}) async {
     debugPrint(

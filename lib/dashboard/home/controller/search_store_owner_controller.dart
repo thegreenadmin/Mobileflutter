@@ -200,7 +200,7 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  //Api upload PDF to server
+  ///Api upload PDF to server
   Future uploadPdfToServer() async {
     try {
       final dio = mdio.Dio();
@@ -334,7 +334,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Get Offers List Api [OWNER]
+  ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     isLoading.value = true;
     debugPrint(
@@ -381,7 +381,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-//Get featured products List Api
+  ///Get featured products List Api
   Future apiGetFeaturedProducts() async {
     isLoading.value = true;
     debugPrint(
@@ -435,7 +435,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Api upload image to server
+  ///Api upload image to server
   Future apiUploadImage() async {
     try {
       final dio = mdio.Dio();
@@ -492,7 +492,7 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
@@ -529,7 +529,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Get DeliveryServices Api
+  ///Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     debugPrint(
@@ -553,8 +553,7 @@ class OwnerStoresController extends GetxController {
             DeliveryServicesResponse.fromJson(value.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value.isNotEmpty &&
-            storeId.value != "") {
+        if (storeId.value.isNotEmpty && storeId.value != "") {
           await apiGetParticularStore();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
@@ -569,7 +568,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Get particular store api
+  ///Get particular store api
   Future apiGetParticularStore() async {
     debugPrint(
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=${storeId.value}");
@@ -679,33 +678,21 @@ class OwnerStoresController extends GetxController {
             }
           }
         }
-
-        debugPrint("deliveryServices : ===== ${deliveryServices.isNotEmpty}");
-        debugPrint(
-            "storeDeliveryServices  value : ===== ${value?.body["data"]['store']['store_delivery_services']}");
-        debugPrint(
-            "storeDeliveryServices : ===== ${storeDeliveryServices.isNotEmpty}");
-        debugPrint(
-            "storeDeliveryServices length : ===== ${storeDeliveryServices.length}");
-        debugPrint(
-            "deliveryServices isNotEmpty: ===== ${jsonEncode(deliveryServices.toString())}");
         var concatenate = StringBuffer();
         if (storeDeliveryServices.isNotEmpty) {
           for (var sData in storeDeliveryServices) {
             for (var element in deliveryServices) {
-              if (element.deliveryServiceId == sData["delivery_service_id"]) {
-                concatenate.write(element.deliveryServiceName);
-                concatenate.write(', ');
-                element.isSelected = sData["is_enabled"];
+              if (element.id == sData["delivery_service_id"]) {
+                if (element.name != null) {
+                  concatenate.write(element.name ?? "");
+                  concatenate.write(', ');
+                  element.isSelected = sData["is_enabled"];
+                }
               }
             }
           }
         }
         deliveryServicesTextController.text = concatenate.toString();
-        debugPrint(
-            "deliveryServicesTextController : ===== ${deliveryServicesTextController.text}");
-
-        // deliveryServices.value = deliveryServicesData;
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 
         if (storePages.isNotEmpty) {
@@ -750,7 +737,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Update Store Details Api
+  ///Update Store Details Api
   Future apiUpdateStoreDetail(BuildContext ctx) async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
@@ -817,15 +804,11 @@ class OwnerStoresController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        // Get.back();
         if (Get.parameters['isFromHome'] == "true") {
           Get.back(id: pageIdApp.value);
-          // Navigator.of(ctx).pop();
         } else {
           Get.back(id: pageIdApp.value);
-          // Navigator.of(ctx).pop();
           Get.back(id: pageIdApp.value);
-          // Navigator.of(ctx).pop();
           await apiGetStoreList();
           storeNameTextController.clear();
           einTextController.clear();
@@ -852,7 +835,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Get Countries Api
+  ///Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
     debugPrint(
@@ -894,7 +877,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-  //Get States Api
+  ///Get States Api
   Future apiGetState() async {
     debugPrint(
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
@@ -934,7 +917,7 @@ class OwnerStoresController extends GetxController {
     });
   }
 
-//Delete Store api
+  ///Delete Store api
   Future apiDeleteStore({String storeId = ""}) async {
     debugPrint(
         "DELETE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDelete}");

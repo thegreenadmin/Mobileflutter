@@ -316,7 +316,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                         .data
                                                         ?.order
                                                         ?.deliveryService
-                                                        ?.deliveryServiceName ??
+                                                        ?.name ??
                                                     "",
                                                 style: const TextStyle(
                                                     overflow:
@@ -560,12 +560,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       children: [
                                         Flexible(
                                           flex: 2,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColors.white,
-                                                    width: 1)),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
                                             child: ordersHomeMainController
                                                 .getOrderItems[index]
                                                 .product!
@@ -603,6 +599,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   .toString(),
                                               height: 70,
                                               fit: BoxFit.fill,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return Image.asset(
+                                                  ImageConstants
+                                                      .nopicfound,
+                                                  height: 70,
+                                                  fit: BoxFit.fill,
+                                                );
+                                              },
                                             ),
                                           ),
                                         ),
@@ -623,17 +627,30 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w600,
                                                       fontSize: 16)),
-                                              height5SizedBox,
-                                              Text(
-                                                  ordersHomeMainController
-                                                      .getOrderItems[index]
-                                                      .product!
-                                                      .description ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      color: AppColors.blacklight,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontSize: 14)),
+
+                                              Visibility(
+                                                visible: ordersHomeMainController
+                                                    .getOrderItems[index]
+                                                    .product?.description!=null && ordersHomeMainController
+                                                    .getOrderItems[index]
+                                                    .product!
+                                                    .description!.isNotEmpty,
+                                                child: Column(
+                                                  children: [
+                                                    height5SizedBox,
+                                                    Text(
+                                                        ordersHomeMainController
+                                                            .getOrderItems[index]
+                                                            .product!
+                                                            .description ??
+                                                            "",
+                                                        style: TextStyle(
+                                                            color: AppColors.blacklight,
+                                                            fontWeight: FontWeight.w400,
+                                                            fontSize: 14)),
+                                                  ],
+                                                ),
+                                              ),
                                               height5SizedBox,
                                               Text.rich(
                                                 TextSpan(
@@ -649,17 +666,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                             fontSize: 14)),
                                                     TextSpan(
                                                       text: ordersHomeMainController
-                                                          .getOrderItems[
-                                                      index]
+                                                          .getOrderItems[index]
                                                           .orderItemStatus
-                                                          ?.toTitleCase() ??
-                                                          "",
+                                                          ?.toTitleCase() ?? "",
                                                       style: TextStyle(
                                                           fontWeight:
                                                           FontWeight.w600,
                                                           fontSize: 14,
-                                                          color: AppColors
-                                                              .blacklight),
+                                                          color: AppColors.blacklight),
                                                     ),
                                                   ],
                                                 ),
@@ -668,31 +682,26 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                               height6SizedBox,
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Row(
                                                     children: [
                                                       Text(
                                                           "${StringConstants.qtyText.toUpperCase()}: ",
                                                           style: TextStyle(
-                                                              color: AppColors
-                                                                  .blacklight,
+                                                              color: AppColors.blacklight,
                                                               fontWeight:
                                                               FontWeight.w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
-                                                              .getOrderItems[
-                                                          index]
+                                                              .getOrderItems[index]
                                                               .product!
                                                               .quantity
                                                               .toString(),
                                                           style: const TextStyle(
-                                                              color:
-                                                              AppColors.black,
-                                                              fontWeight:
-                                                              FontWeight.w600,
+                                                              color: AppColors.black,
+                                                              fontWeight: FontWeight.w600,
                                                               fontSize: 14)),
                                                     ],
                                                   ),
@@ -701,18 +710,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       Text(
                                                           "${StringConstants.unitPriceText}: ",
                                                           style: TextStyle(
-                                                              color: AppColors
-                                                                  .blacklight,
-                                                              fontWeight:
-                                                              FontWeight.w500,
+                                                              color: AppColors.blacklight,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           "\$${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
                                                           style: const TextStyle(
-                                                              color:
-                                                              AppColors.black,
-                                                              fontWeight:
-                                                              FontWeight.w600,
+                                                              color: AppColors.black,
+                                                              fontWeight: FontWeight.w600,
                                                               fontSize: 14)),
                                                     ],
                                                   )
@@ -736,10 +741,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       .resolveWith(
                                                         (states) => BorderSide(
                                                         width: 1.0,
-                                                        color: AppColors
-                                                            .primary
-                                                            .withOpacity(
-                                                            0.5)),
+                                                        color: AppColors.primary
+                                                            .withOpacity(0.5)),
                                                   ),
                                                   shape:
                                                   RoundedRectangleBorder(
@@ -749,26 +752,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                           6.0)),
                                                   activeColor:
                                                   AppColors.primary,
-                                                  value: /*ordersHomeMainController.selectedIndex.value == 0 &&
-                                                        ordersHomeMainController.getOrderItems[index].orderItemStatus !=
-                                                            OrderStatus.pending.statusName ||
-                                                            ordersHomeMainController.selectedIndex.value == 1 &&
-                                                                ordersHomeMainController.getOrderItems[index].orderItemStatus !=
-                                                                    OrderStatus.confirmed.statusName ||
-                                                            ordersHomeMainController.selectedIndex.value == 2 &&
-                                                                (ordersHomeMainController.getOrderItems[index].orderItemStatus !=
-                                                                    OrderStatus.shipped.statusName &&
-                                                                    ordersHomeMainController.getOrderItems[index].orderItemStatus !=
-                                                                        OrderStatus.readyPickup.statusName) ||
-                                                            ordersHomeMainController.selectedIndex.value == 3 &&
-                                                                ordersHomeMainController.getOrderItems[index].orderItemStatus !=
-                                                                    OrderStatus.delivered.statusName
-                                                        ? true
-                                                        :*/
-                                                  ordersHomeMainController
-                                                      .getOrderItems[
-                                                  index]
-                                                      .isSelected ??
+                                                  value: ordersHomeMainController
+                                                      .getOrderItems[index].isSelected ??
                                                       false,
                                                   onChanged: (bool? value) {
                                                     if (ordersHomeMainController.selectedIndex.value == 0 &&
@@ -913,7 +898,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             .data
                             ?.order
                             ?.deliveryService
-                            ?.deliveryServiceId !=
+                            ?.id !=
                             "2"
                             ? ordersHomeMainController
                             .apiMarkReadyForPickUp()
@@ -944,7 +929,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             .getStoreOrderDetailModel.value
                             .data?.order
                             ?.deliveryService
-                            ?.deliveryServiceId !=
+                            ?.id !=
                             "2"
                         ? StringConstants.readyForPickUpText
                         : ordersHomeMainController.selectedIndex.value == 1 &&
@@ -952,7 +937,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             .getStoreOrderDetailModel
                             .value.data
                             ?.order?.deliveryService
-                            ?.deliveryServiceId == "2"
+                            ?.id == "2"
                         ? StringConstants.orderShippedText
                         : ordersHomeMainController.selectedIndex.value == 2 &&
                         ordersHomeMainController
@@ -961,7 +946,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             .data
                             ?.order
                             ?.deliveryService
-                            ?.deliveryServiceId !=
+                            ?.id !=
                             "2"
                         ? StringConstants.pickedUpText
                         : ordersHomeMainController
@@ -973,7 +958,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             .data
                             ?.order
                             ?.deliveryService
-                            ?.deliveryServiceId ==
+                            ?.id ==
                             "2"
                         ? StringConstants.deliveredText
                         : ordersHomeMainController

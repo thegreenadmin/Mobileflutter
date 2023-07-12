@@ -15,6 +15,7 @@ class StoreOfferDetailController extends GetxController {
   RxString? lastName = "".obs;
   RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -36,7 +37,7 @@ class StoreOfferDetailController extends GetxController {
     role?.value = roleVal;
   }
 
-  //Get store offer detail
+  ///Get store offer detail
   Future apiGetStoreOffersDetail() async {
     isLoading.value = true;
     debugPrint("STORE FEATURED PRODUCT URL**********"

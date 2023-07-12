@@ -45,7 +45,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   Get.delete<ManageStoreController>();
                                 }
                                 Get.back(id: pageIdApp.value);
-                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -331,28 +330,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                       ),
                       height10SizedBox,
-                      // Container(
-                      //     padding: const EdgeInsets.only(
-                      //         left: 15, right: 15, top: 10, bottom: 10),
-                      //     margin: const EdgeInsets.all(3),
-                      //     decoration: BoxDecoration(
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //           color: Colors.grey.withOpacity(0.1),
-                      //           spreadRadius: 5,
-                      //           blurRadius: 7,
-                      //           offset: const Offset(0, 2),
-                      //         ),
-                      //       ],
-                      //       color: AppColors.primary,
-                      //       borderRadius: const BorderRadius.all(
-                      //         Radius.circular(100),
-                      //       ),
-                      //     ),
-                      //     child: Text(
-                      //       manageStoreController.categoryName.value,
-                      //       style: const TextStyle(color: AppColors.white),
-                      //     )),
                       Obx(() => manageStoreController
                                       .isSelectedCategory.value ==
                                   false &&

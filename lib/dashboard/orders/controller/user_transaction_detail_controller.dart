@@ -23,7 +23,6 @@ class UserTransactionDetailController extends GetxController {
   void onInit() {
     super.onInit();
     userStripeCardId!.value = Get.parameters['user_stripe_card_id'] ?? "";
-    // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
     apiGetUserOrderTransactionHistory();
     getPage();
   }
@@ -35,9 +34,7 @@ class UserTransactionDetailController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
   }
 
   RxList horizontalTabList = [
@@ -55,7 +52,7 @@ class UserTransactionDetailController extends GetxController {
     StringConstants.decText,
   ].obs;
 
-  //Api get current and past transaction history of [USER]
+  ///Api get current and past transaction history of [USER]
   Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;

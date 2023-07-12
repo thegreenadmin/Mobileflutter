@@ -222,7 +222,7 @@ class AddCardController extends GetxController {
     }
   }
 
-// Fields Validation Method
+  // Fields Validation Method
   Future validateAndSubmitFunction(BuildContext context,
       {bool isFromPayout = false}) async {
     if (validateAndSave1()) {
@@ -276,7 +276,7 @@ class AddCardController extends GetxController {
     }
   }
 
-  //Get Countries Api
+  ///Get Countries Api
   Future apiGetCountries() async {
     countryList.clear();
     debugPrint(
@@ -308,7 +308,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get States Api
+  ///Get States Api
   Future apiGetStates() async {
     statesList.clear();
     debugPrint(
@@ -348,6 +348,7 @@ class AddCardController extends GetxController {
     });
   }
 
+  ///Credit Card Model Change
   void onCreditCardModelChange(CreditCardModel? creditCardModel) {
     cardNumber.value = creditCardModel!.cardNumber;
     expiryDate.value = creditCardModel.expiryDate;
@@ -356,7 +357,7 @@ class AddCardController extends GetxController {
     isCvvFocused.value = creditCardModel.isCvvFocused;
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     isStoreLoading.value = true;
     debugPrint(
@@ -393,6 +394,7 @@ class AddCardController extends GetxController {
     });
   }
 
+  ///Create Stripe Token
   Future<void> apiCreateStripeToken(context) async {
     var str = expiryDate.value;
     var parts = str.split('/');
@@ -441,7 +443,7 @@ class AddCardController extends GetxController {
     }
   }
 
-//Api Create Card
+  ///Api Create Card
   Future apiCreateCard(context) async {
     debugPrint(
         "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
@@ -507,7 +509,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get Card List Api
+  ///Get Card List Api
   Future apiGetCardList(context) async {
     userStripeCardId?.value = "";
     cardList.clear();
@@ -549,8 +551,8 @@ class AddCardController extends GetxController {
     });
   }
 
-// Add Money to stripe wallet
-  apiAddMoneyToWallet(BuildContext ctx) async {
+  /// Add Money to stripe wallet
+  Future apiAddMoneyToWallet(BuildContext ctx) async {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -600,7 +602,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get Card List Api
+  ///Get Card List Api
   Future apiGetUserWalletBalance() async {
     isLoading.value = true;
     debugPrint("GET USER WALLET BALANCE URL**********"
@@ -636,7 +638,7 @@ class AddCardController extends GetxController {
     });
   }
 
-//Delete Card api
+  ///Delete Card api
   Future apiDeleteCard({String userStripeCardId = ""}) async {
     debugPrint(
         "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
@@ -675,7 +677,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get BANK ACCOUNT List Api
+  ///Get BANK ACCOUNT List Api
   Future apiGetBankAccountList() async {
     isLoading.value = true;
     debugPrint("GET BANK ACCOUNT LIST URL**********"
@@ -714,8 +716,8 @@ class AddCardController extends GetxController {
     });
   }
 
-//Api create payout
-  apiCreatePayout(BuildContext ctxxx) async {
+  ///Api create payout
+  Future apiCreatePayout(BuildContext ctxxx) async {
     debugPrint(
         "CREATE PAYOUT API *******${ServerCommunicator().baseUrl + ServerCommunicator().storeStripePayoutCreate}");
     Map body = {
@@ -773,7 +775,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get Store service charge
+  ///Get Store service charge
   Future apiGetStoreServiceCharge() async {
     isLoading.value = true;
     debugPrint(
@@ -819,7 +821,7 @@ class AddCardController extends GetxController {
     });
   }
 
-  //Get Owner Balance Api
+  ///Get Owner Balance Api
   Future apiGetOwnerWalletBalance() async {
     isLoading.value = true;
     debugPrint(
@@ -865,7 +867,8 @@ class AddCardController extends GetxController {
     });
   }
 
-  apiGetAccountDetails() async {
+  ///Get Account Details
+  Future apiGetAccountDetails() async {
     isLoading.value = true;
     debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");

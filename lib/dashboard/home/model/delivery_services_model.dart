@@ -79,13 +79,13 @@ class DeliveryServicesData {
 
 class DeliveryService {
   DeliveryService({
-    this.deliveryServiceName,
-    this.deliveryServiceId,
+    this.name,
+    this.id,
     this.isSelected = false,
   });
 
-  String? deliveryServiceName;
-  String? deliveryServiceId;
+  String? name;
+  String? id;
   bool isSelected;
 
   DeliveryService copyWith({
@@ -94,19 +94,19 @@ class DeliveryService {
     bool? isSelected,
   }) =>
       DeliveryService(
-        deliveryServiceName: deliveryServiceName ?? this.deliveryServiceName,
-        deliveryServiceId: deliveryServiceId ?? this.deliveryServiceId,
+        name: name ?? name,
+        id: deliveryServiceId ?? id,
         isSelected: isSelected ?? this.isSelected,
       );
 
   factory DeliveryService.fromJson(Map<String, dynamic> json) =>
       DeliveryService(
-        deliveryServiceName: json["delivery_service_name"],
-        deliveryServiceId: json["delivery_service_id"],
+        name: json["delivery_service_name"],
+        id: json["delivery_service_id"],
       );
 
   Map<String, dynamic> toJson() => {
-        "delivery_service_name": deliveryServiceName,
-        "delivery_service_id": deliveryServiceId,
+        "delivery_service_name": name,
+        "delivery_service_id": id,
       };
 }

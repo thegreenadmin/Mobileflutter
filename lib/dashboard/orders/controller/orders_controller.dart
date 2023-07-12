@@ -600,7 +600,7 @@ class OrdersController extends GetxController {
     );
   }
 
-  //CREATE ITEM REVIEW
+  ///CREATE ITEM REVIEW
   Future apiCreateReview() async {
     isLoading.value = true;
     debugPrint("CREATE ITEM REVIEW URL**********"
@@ -649,7 +649,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //RETURN ORDER
+  ///RETURN ORDER
   Future apiReturnOrder(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint("RETURN ORDER URL**********"
@@ -703,7 +703,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Order Status List Api
+  ///Get Order Status List Api
   Future apiGetOrderStatusListApi() async {
     isLoading.value = true;
     debugPrint("Order Status List URL**********"
@@ -737,7 +737,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Order List Api
+  ///Get Order List Api
   Future apiGetOrderListApi() async {
     if (page.value == 1) {
       orderList.clear();
@@ -844,7 +844,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Store Order List Api
+  ///Get Store Order List Api
   Future apiGetStoreOrderListApi() async {
     if (pageStore.value == 1) {
       storeOrderList.value = [];
@@ -917,7 +917,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Store Details Api
+  ///Get Store Details Api
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
@@ -952,7 +952,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
@@ -989,7 +989,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Get Order Details Api
+  ///Get Order Details Api
   Future apiGetOrderDetailsApi() async {
     isLoading.value = true;
     debugPrint("ORDER DETAIL URL**********"
@@ -1012,9 +1012,8 @@ class OrdersController extends GetxController {
         orderDetailResponse = OrderDetailResponse.fromJson(value?.body);
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
-        orderType.value = orderDetailResponse
-                .data?.order?.deliveryService?.deliveryServiceId ??
-            "1";
+        orderType.value =
+            orderDetailResponse.data?.order?.deliveryService?.id ?? "1";
         orderDate.value =
             orderDetailResponse.data?.order?.createdAt.toString() ?? "0.0";
 
@@ -1070,7 +1069,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Cancel Order Api
+  ///Cancel Order Api
   Future apiCancelOrder(context) async {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
@@ -1117,7 +1116,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Cancel Order Api
+  ///Cancel Order Api
   Future apiCancelReturnRequestOrder(context) async {
     isLoading.value = true;
     debugPrint("CANCEL REQUEST URL**********"
@@ -1165,7 +1164,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Cancel Order Api
+  ///Cancel Order Api
   Future apiReadyPickupOrder(BuildContext ctx) async {
     isLoading.value = true;
     debugPrint("Ready Pickup URL**********"
@@ -1207,7 +1206,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Create Favourite Store Api
+  ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Create Favourite Store URL**********"
@@ -1247,7 +1246,7 @@ class OrdersController extends GetxController {
     });
   }
 
-  //Remove Favourite Store Api
+  ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
     isLoading.value = true;
     debugPrint("Remove Favourite Store URL**********"

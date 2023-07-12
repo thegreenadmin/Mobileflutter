@@ -176,7 +176,7 @@ class AddOffersController extends GetxController {
     }
   }
 
-  //Add Offer Api
+  ///Add Offer Api
   Future apiAddOffer() async {
     debugPrint(
         "ADD OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferCreate}");
@@ -234,7 +234,7 @@ class AddOffersController extends GetxController {
     });
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
@@ -275,7 +275,7 @@ class AddOffersController extends GetxController {
     });
   }
 
-//Get store products have no offer
+  ///Get store products have no offer
   Future apiGetStoreProducts() async {
     isLoading.value = true;
     debugPrint(
@@ -359,7 +359,7 @@ class AddOffersController extends GetxController {
     });
   }
 
-//Get Offers Detail List Api
+  ///Get Offers Detail List Api
   Future apiGetOffersDetail() async {
     debugPrint(
       "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
@@ -410,7 +410,7 @@ class AddOffersController extends GetxController {
     });
   }
 
-  //Update Offer Api
+  ///Update Offer Api
   Future apiUpdateOffer() async {
     selectedProducts.clear();
     for (int i = 0; i < productMergedList.length; i++) {

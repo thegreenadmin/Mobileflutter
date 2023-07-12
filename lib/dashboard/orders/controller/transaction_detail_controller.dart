@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/dashboard/orders/model/get_owner_transaction_model.dart';
+import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -74,7 +74,7 @@ class TransactionDetailController extends GetxController {
     StringConstants.decText,
   ].obs;
 
-  //Api get current and past transaction history of [USER]
+  ///Api get current and past transaction history of [USER]
   Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
@@ -125,7 +125,7 @@ class TransactionDetailController extends GetxController {
     });
   }
 
-  //Api get transaction detail of owner [OWNER]
+  ///Api get transaction detail of owner [OWNER]
   Future apiGetOwnerTransactionDetail(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;

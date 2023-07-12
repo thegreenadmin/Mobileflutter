@@ -51,7 +51,6 @@ class AddNewRoleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     getPage();
   }
 
@@ -118,7 +117,7 @@ class AddNewRoleController extends GetxController {
     }
   }
 
-  //Get Store Role List Api
+  ///Get Store Role List Api
   Future apiGetStoreRole() async {
     isLoading.value = true;
     debugPrint(
@@ -152,7 +151,7 @@ class AddNewRoleController extends GetxController {
     });
   }
 
-  //Create Role Api
+  ///Create Role Api
   Future apiCreateRole(BuildContext cntext) async {
     createRoleRequestModel.storeId = int.parse(storeId.value);
     createRoleRequestModel.roleName = roleNameTextController.text.trim();
@@ -197,7 +196,7 @@ class AddNewRoleController extends GetxController {
     });
   }
 
-  //Get Controllers Api
+  ///Get Controllers Api
   Future apiGetControllers() async {
     isLoading.value = true;
     debugPrint(
@@ -236,7 +235,7 @@ class AddNewRoleController extends GetxController {
     });
   }
 
-//Delete Store Role
+  ///Delete Store Role
   Future apiDeleteRole(BuildContext buildContext) async {
     debugPrint(
         "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
@@ -280,7 +279,7 @@ class AddNewRoleController extends GetxController {
     });
   }
 
-//Get Store Role Detail
+  ///Get Store Role Detail
   Future apiGetStoreRoleDetail() async {
     isLoading.value = true;
     debugPrint(
@@ -334,7 +333,7 @@ class AddNewRoleController extends GetxController {
     });
   }
 
-  //Edit Role Api
+  ///Edit Role Api
   Future apiEditRole(BuildContext ctx) async {
     selectedRoles.clear();
     bool isEmptyList = true;

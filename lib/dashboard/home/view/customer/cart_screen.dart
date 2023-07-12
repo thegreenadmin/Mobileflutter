@@ -1253,7 +1253,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .isLoading.value ==
                                             false) {
                                       storeHomeMainController
-                                          .moneydeductFromCartDailogue(context,
+                                          .moneyDeductFromCartDialog(context,
                                               amount: storeHomeMainController
                                                       .cartData
                                                       .value

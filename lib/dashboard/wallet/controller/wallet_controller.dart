@@ -178,7 +178,7 @@ class WalletController extends GetxController {
     }
   }
 
-// Fields Validation Method
+  // Fields Validation Method
   void validateAndSubmit(BuildContext mcontext,
       {bool isFromCreateOwnerBankBalance = false,
       bool updateAutoData = false,
@@ -270,7 +270,7 @@ class WalletController extends GetxController {
     isCvvFocused.value = creditCardModel.isCvvFocused;
   }
 
-  //Get Store Details Api
+  ///Get Store Details Api
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
@@ -307,7 +307,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Countries Api
+  ///Get Countries Api
   Future apiGetCountries() async {
     countryList.clear();
     debugPrint(
@@ -340,7 +340,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Store List Api
+  ///Get Store List Api
   Future apiGetStoreList() async {
     storeList.clear();
     isStoresLoading.value = true;
@@ -389,6 +389,7 @@ class WalletController extends GetxController {
     });
   }
 
+  /// Crate Stripe Token
   Future<void> apiCreateStripeToken(context) async {
     var str = expiryDate.value;
     var parts = str.split('/');
@@ -423,7 +424,7 @@ class WalletController extends GetxController {
     }
   }
 
-//Api Create Card
+  ///Api Create Card
   Future apiCreateCard(context) async {
     debugPrint(
         "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
@@ -461,7 +462,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Card List Api
+  ///Get Card List Api
   Future apiGetCardList(BuildContext context) async {
     isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
@@ -500,8 +501,8 @@ class WalletController extends GetxController {
     });
   }
 
-// Add Money to stripe wallet
-  apiAddMoneyToWallet(BuildContext ctx) async {
+  /// Add Money to stripe wallet
+  Future apiAddMoneyToWallet(BuildContext ctx) async {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -544,7 +545,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Card List Api
+  ///Get Card List Api
   Future apiGetUserWalletBalance() async {
     userWalletBalance!.value = "";
     isLoading.value = true;
@@ -581,7 +582,7 @@ class WalletController extends GetxController {
     });
   }
 
-//Delete Card api
+  ///Delete Card api
   Future apiDeleteCard(context, {String userStripeCardId = ""}) async {
     debugPrint(
         "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
@@ -620,7 +621,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Owner Balance Api
+  ///Get Owner Balance Api
   Future apiGetOwnerWalletBalance() async {
     isLoading.value = true;
     debugPrint(
@@ -661,6 +662,7 @@ class WalletController extends GetxController {
     });
   }
 
+  /// Create Bank Token
   Future<void> apiCreateBankToken(BuildContext ctxx) async {
     try {
       var headers = {
@@ -705,7 +707,7 @@ class WalletController extends GetxController {
     }
   }
 
-  apiCreateStoreStripeAccount(BuildContext ctxx) async {
+  Future apiCreateStoreStripeAccount(BuildContext ctxx) async {
     isLoading.value = true;
     debugPrint(
         "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
@@ -755,7 +757,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get BANK ACCOUNT List Api
+  ///Get BANK ACCOUNT List Api
   Future apiGetBankAccountList() async {
     isLoading.value = true;
     debugPrint("GET BANK ACCOUNT LIST URL**********"
@@ -794,7 +796,7 @@ class WalletController extends GetxController {
     });
   }
 
-//Delete Card api
+  ///Delete Card api
   Future apiDeleteBankAccounts({String userStripeBankId = ""}) async {
     debugPrint(
         "DELETE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankDelete}");
@@ -833,7 +835,8 @@ class WalletController extends GetxController {
     });
   }
 
-  apiCreateAutoRecharge(BuildContext ctxx) async {
+  ///Create Auto Recharge
+  Future apiCreateAutoRecharge(BuildContext ctxx) async {
     isLoading.value = true;
     debugPrint(
         "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
@@ -901,7 +904,7 @@ class WalletController extends GetxController {
     });
   }
 
-  //Get Auto recharge
+  ///Get Auto recharge
   Future apiGetAutoRechargeDetail() async {
     isLoading.value = true;
     debugPrint("GET AUTO RECHARGE DETAIL URL**********"
@@ -1002,8 +1005,8 @@ class WalletController extends GetxController {
     });
   }
 
-  apiUpdateAutoRecharge(BuildContext ctxx) async {
-    var date = DateTime.now();
+  ///Update Auto Recharge
+  Future apiUpdateAutoRecharge(BuildContext ctxx) async {
     isLoading.value = true;
     debugPrint(
         "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
@@ -1073,7 +1076,7 @@ class WalletController extends GetxController {
     });
   }
 
-//Delete autocahrge api
+  ///Delete autoCharge api
   Future apiDisableAutoRecharge() async {
     debugPrint(
         "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}");
@@ -1115,7 +1118,8 @@ class WalletController extends GetxController {
     });
   }
 
-  apiGetAccountDetails() async {
+  ///Get Account Details
+  Future apiGetAccountDetails() async {
     isLoading.value = true;
     debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");

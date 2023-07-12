@@ -149,7 +149,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Get User Detail Info Api
+  ///Get User Detail Info Api
   Future apiGetUserDetail() async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
@@ -190,7 +190,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Get Nearby Stores Api [USER]
+  ///Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
     userCarouselImgList.clear();
     debugPrint(
@@ -234,7 +234,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Feature ProductList Store Api [USER OLD]
+  ///Feature ProductList Store Api [USER OLD]
   Future apiGetUserFeaturedProductsOLD() async {
     isLoading!.value = true;
     debugPrint("USER FEATURED PRODUCT URL**********"
@@ -292,7 +292,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Feature ProductList Store Api [USER NEW]
+  ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
     isLoading!.value = true;
     String url =
@@ -350,7 +350,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Get Offers List Api [OWNER]
+  ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     ownerCarouselImgList.clear();
     isLoading!.value = true;
@@ -404,7 +404,7 @@ class HomeController extends GetxController {
     });
   }
 
-  //Feature ProductList Store Api [Owner]
+  ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
     isLoading!.value = true;
     debugPrint("OWNER FEATURED PRODUCT URL**********"

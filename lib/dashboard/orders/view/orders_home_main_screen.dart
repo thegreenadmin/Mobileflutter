@@ -351,11 +351,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
 
                               ordersHomeMainController.apiGetStoreOrderDetail();
 
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-
-                              /// ====================================
-
                               Get.parameters["storeId"] =
                                   ordersHomeMainController
                                           .ownerOrderHistoryList![index]
@@ -374,26 +369,23 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .orderStatus!
                                           .orderStatusName == //"11"
                                       OrderStatusEnum.returnRequest.statusName
-                                  ? permissionStoreList.any((element) => element.isStoreOwner == true) ||
+                                  ? permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true) ||
                                           permissionStoreList.any((element) =>
-                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
+                                              element.storeId ==
+                                                  ordersHomeMainController
+                                                      .ownerOrderHistoryList![
+                                                          index]
+                                                      .storeId &&
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey
                                                       .manageReturnRequests
                                                       .statusName))
-                                      ? Get.to(const MarkReturnOrderScreen(), id: pageIdApp.value)!
-                                          .then((value) => ordersHomeMainController
-                                              .apiGetOwnerOrderHistory())
-                                      : Utility.showAlertMessage(AlertStringConstants
-                                          .notAuthorisedToStoreText)
-
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (_) => const MarkReturnOrderScreen(),
-                                  // )).then((value) {
-                                  //   // ordersController
-                                  //   //     .apiGetStoreOrderListApi();
-                                  // })
+                                      ? Get.to(const MarkReturnOrderScreen(),
+                                              id: pageIdApp.value)!
+                                          .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText)
                                   /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
@@ -406,21 +398,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   ? Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const ReturnConfirmOrderScreen(),
                               ))*/
-                                  : ordersHomeMainController
+                                  /*: ordersHomeMainController
                                               .ownerOrderHistoryList![index]
                                               .orderHistories!
                                               .first
                                               .orderStatus!
                                               .orderStatusName == //7
                                           OrderStatusEnum.cancelled.statusName
-                                      ? null
-                                      :
-                                      // Navigator.of(context).push(MaterialPageRoute(
-                                      //   builder: (_) => const MarkOrderStatusScreen(),
-                                      // ));
-                                      Get.to(const MarkOrderStatusScreen(), id: pageIdApp.value);
-
-                              /// ====================================
+                                      ? null*/
+                                  : Get.to(const MarkOrderStatusScreen(), id: pageIdApp.value);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

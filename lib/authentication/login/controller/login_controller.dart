@@ -43,7 +43,7 @@ class LoginController extends GetxController {
     }
   }
 
-// Fields Validation Method
+  /// Fields Validation Method
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
@@ -54,7 +54,7 @@ class LoginController extends GetxController {
     }
   }
 
-  //Login Api
+  ///Login Api
   Future apiGenerateOtp() async {
     Map data = {
       "phone": phoneNumber.value.trim(),

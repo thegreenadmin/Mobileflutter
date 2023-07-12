@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
-import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 import '../../../utils/global_share_data.dart';
@@ -51,7 +51,7 @@ class OtpVerificationController extends GetxController {
     }
   }
 
-// Fields Validation Method
+  /// Fields Validation Method
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
@@ -62,7 +62,7 @@ class OtpVerificationController extends GetxController {
     }
   }
 
-  //Otp Verify Api
+  ///Otp Verify Api
   Future apiOtpVerify() async {
     var rng = math.Random();
     Map data = {
@@ -114,7 +114,7 @@ class OtpVerificationController extends GetxController {
     });
   }
 
-  //GET STORE PERMISSIONS
+  ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     debugPrint(
         "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");

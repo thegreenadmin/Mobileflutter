@@ -616,14 +616,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isUserInboxMessagesNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "message");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "message");
@@ -654,14 +652,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isOwnerInboxMessagesNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "message");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "message");
@@ -712,14 +708,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isUserTippingNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "order");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "order");
@@ -749,14 +743,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isOwnerTippingNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "order");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "order");
@@ -808,14 +800,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isUserOfferNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: false,
                                                 notificationType: "offer");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: false,
                                                 notificationType: "offer");
@@ -845,14 +835,12 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isOwnerOfferNotify.value) {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: true,
                                                 isOwner: true,
                                                 notificationType: "offer");
                                       } else {
                                         accountController
                                             .apiUpdateNotificationStatus(
-                                                context,
                                                 isEnabled: false,
                                                 isOwner: true,
                                                 notificationType: "offer");
