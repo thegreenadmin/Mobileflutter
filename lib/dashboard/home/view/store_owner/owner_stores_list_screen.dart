@@ -171,7 +171,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                   .toString());
                                         })
                                       : Utility.showAlertMessage(
-                                          AlertStringConstants.notAuthorisedToStoreText);
+                                          AlertStringConstants.notAuthorizedToStoreText);
                                   return null;
                                 },
                                 child: InkWell(

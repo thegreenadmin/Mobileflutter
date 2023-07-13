@@ -374,7 +374,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                           )
                                         : InkWell(
                                             onTap: () async {
-                                               walletController
+                                              walletController
                                                   .apiGetAutoRechargeDetail();
                                               bottomSheetToAddMoney(context,
                                                   isFromEdit: true);
@@ -574,16 +574,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                         )?.then((value) {
                           walletController.apiGetBankAccountList();
                           walletController.apiGetAccountDetails();
+                          walletController.apiGetOwnerWalletBalance();
                         });
-                        // SharedPreferenceStorage.setData("context", context);
-                        // Navigator.of(context)
-                        //     .push(MaterialPageRoute(
-                        //   builder: (_) => const PayOutScreen(),
-                        // ))
-                        //     .then((value) {
-                        //   walletController.apiGetBankAccountList();
-                        //   walletController.apiGetAccountDetails();
-                        // });
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

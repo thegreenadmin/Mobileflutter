@@ -143,7 +143,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                         })
                                       : Utility.showAlertMessage(
                                           AlertStringConstants
-                                              .notAuthorisedToStoreText);
+                                              .notAuthorizedToStoreText);
                                 },
                                 child: Text(StringConstants.addNewOfferText,
                                     style: const TextStyle(
@@ -535,7 +535,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                               .apiDeleteOffer();
                                         })
                                       : Utility.showAlertMessage(AlertStringConstants
-                                          .notAuthorisedToStoreText);
+                                          .notAuthorizedToStoreText);
 
                                   return null;
                                 },
@@ -728,7 +728,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               : offersController
                                                                   .apiGetOwnerOffersList();
                                                         })
-                                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                                 },
                                                 child: Image.asset(
                                                   ImageConstants.edit,

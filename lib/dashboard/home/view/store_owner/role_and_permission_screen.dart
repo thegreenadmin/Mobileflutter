@@ -112,7 +112,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                 .then((value) =>
                                     addNewRoleController.apiGetStoreRole())
                             : Utility.showAlertMessage(
-                                AlertStringConstants.notAuthorisedToStoreText);
+                                AlertStringConstants.notAuthorizedToStoreText);
                       },
                       child: Row(
                         children: [
@@ -214,7 +214,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                 addNewRoleController
                                                     .apiDeleteRole(context);
                                               })
-                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
 
                                         // addNewRoleController.roleId.value =
                                         //     addNewRoleController
@@ -263,7 +263,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                     id: pageIdApp.value)!
                                                 .then((value) => addNewRoleController
                                                     .apiGetStoreRole())
-                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                       },
                                       child: Padding(
                                         padding:

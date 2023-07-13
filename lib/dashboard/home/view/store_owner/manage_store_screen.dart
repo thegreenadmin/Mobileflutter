@@ -56,7 +56,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 PermissionKey.editStore.statusName))
                     ? Get.to(const EditStoreDetailScreen(), id: pageIdApp.value)
                     : Utility.showAlertMessage(
-                        AlertStringConstants.notAuthorisedToStoreText);
+                        AlertStringConstants.notAuthorizedToStoreText);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
@@ -295,7 +295,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                             "storeName": ownerStoresController.storeName.value,
                           })
                     : Utility.showAlertMessage(
-                        AlertStringConstants.notAuthorisedToStoreText);
+                        AlertStringConstants.notAuthorizedToStoreText);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),

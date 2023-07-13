@@ -125,7 +125,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
                                       AlertStringConstants
-                                          .notAuthorisedToStoreText);
+                                          .notAuthorizedToStoreText);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

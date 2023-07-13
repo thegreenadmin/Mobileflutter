@@ -119,7 +119,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                           ? Get.to(const AddNewWorkerScreen(),
                               id: pageIdApp.value)
                           : Utility.showAlertMessage(
-                              AlertStringConstants.notAuthorisedToStoreText);
+                              AlertStringConstants.notAuthorizedToStoreText);
                     },
                     child: Row(
                       children: [
@@ -229,7 +229,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                       addNewWorkerController.apiDeleteWorker();
                                     })
                                   : Utility.showAlertMessage(
-                                      AlertStringConstants.notAuthorisedToStoreText);
+                                      AlertStringConstants.notAuthorizedToStoreText);
                               return null;
                             },
                             child: InkWell(
@@ -252,7 +252,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                     ? Get.to(() => const EditWorkerScreen(),
                                         id: pageIdApp.value)
                                     : Utility.showAlertMessage(AlertStringConstants
-                                        .notAuthorisedToStoreText);
+                                        .notAuthorizedToStoreText);
 
                                 await addNewWorkerController
                                     .apiGetWorkerDetail();

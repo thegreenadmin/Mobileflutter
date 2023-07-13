@@ -154,7 +154,7 @@ class BottomNavController extends GetxController {
                 (ele) =>
                     ele.controllerKey ==
                     PermissionKey.manageOrders.statusName)))) {
-      Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText);
+      Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
     } else {
       selectedIndex.value = index;
     }

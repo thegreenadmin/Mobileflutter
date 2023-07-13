@@ -14,6 +14,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+
 import 'store_owner/manage_store_main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -205,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(
                                           AlertStringConstants
-                                              .notAuthorisedToStoreText);
+                                              .notAuthorizedToStoreText);
                             },
                             constraints: const BoxConstraints(),
                             padding:
@@ -971,7 +972,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .storeId
                                               })
                                         : Utility.showAlertMessage(
-                                            AlertStringConstants.notAuthorisedToStoreText);
+                                            AlertStringConstants.notAuthorizedToStoreText);
                                   }
                                 },
                                 child: Column(

@@ -374,7 +374,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ? Get.to(const TransactionScreen(),
                                   id: pageIdApp.value)
                               : Utility.showAlertMessage(AlertStringConstants
-                                  .notAuthorisedToStoreText);
+                                  .notAuthorizedToStoreText);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -472,7 +472,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(
                                           AlertStringConstants
-                                              .notAuthorisedToStoreText);
+                                              .notAuthorizedToStoreText);
                                 },
                                 child: Row(
                                   mainAxisAlignment:

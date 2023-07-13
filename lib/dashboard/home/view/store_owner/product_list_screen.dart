@@ -106,7 +106,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           ? Get.to(() => const AddNewProductScreen(),
                               id: pageIdApp.value)
                           : Utility.showAlertMessage(
-                              AlertStringConstants.notAuthorisedToStoreText);
+                              AlertStringConstants.notAuthorizedToStoreText);
 
                       manageStoreController.productNameTextController.clear();
                       manageStoreController.productNameTextController.clear();
@@ -226,7 +226,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           .apiDeleteProduct(context);
                                     })
                                   : Utility.showAlertMessage(AlertStringConstants
-                                      .notAuthorisedToStoreText);
+                                      .notAuthorizedToStoreText);
                               return null;
                             },
                             child: Container(
@@ -270,7 +270,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           manageStoreController.update();
                                         })
                                       : Utility.showAlertMessage(
-                                          AlertStringConstants.notAuthorisedToStoreText);
+                                          AlertStringConstants.notAuthorizedToStoreText);
                                 },
                                 child: Column(children: [
                                   Row(

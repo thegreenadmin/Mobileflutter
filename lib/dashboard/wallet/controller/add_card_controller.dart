@@ -385,11 +385,13 @@ class AddCardController extends GetxController {
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {
           selectedStore.value = storeList[0].storeId.toString();
+          storeId?.value = storeList[0].storeId.toString();
           apiGetOwnerWalletBalance();
         } else {
           if (storeList.isNotEmpty) {
             storeNameValue.value = storeList[0].storeName.toString();
             selectedStore.value = storeList[0].storeId.toString();
+            storeId?.value = storeList[0].storeId.toString();
             apiGetOwnerWalletBalance();
           } else if (value.body["status"] == ApiConstants.statusCode401) {
             Utility.showAlertMessage(value.body['message']);
@@ -763,7 +765,6 @@ class AddCardController extends GetxController {
           ownerWalletBalance!.value = "";
           storeId!.value = "";
           Get.back(id: pageIdApp.value);
-          // Navigator.of(ctxxx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);

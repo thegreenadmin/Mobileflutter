@@ -233,7 +233,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               manageStoreController.apiGetCategoriesList();
                             })
                           : Utility.showAlertMessage(
-                              AlertStringConstants.notAuthorisedToStoreText);
+                              AlertStringConstants.notAuthorizedToStoreText);
                     },
                     child: Row(
                       children: [
@@ -331,7 +331,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                     manageStoreController.apiDeleteCategory();
                                   })
                                 : Utility.showAlertMessage(AlertStringConstants
-                                    .notAuthorisedToStoreText);
+                                    .notAuthorizedToStoreText);
 
                             return null;
                           },
@@ -479,7 +479,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .apiGetCategoriesList();
                                               })
                                             : Utility.showAlertMessage(
-                                                AlertStringConstants.notAuthorisedToStoreText);
+                                                AlertStringConstants.notAuthorizedToStoreText);
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4),

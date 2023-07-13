@@ -740,8 +740,8 @@ class AlertStringConstants {
   static String pleaseEnterValueText = "Please enter value";
 
   //N
-  static String notAuthorisedToStoreText =
-      "Sorry, You are not authorised this. Contact your store owner for more info.";
+  static String notAuthorizedToStoreText =
+      "Sorry, You are not authorized this. Contact your store owner for more info.";
 
   //R
 

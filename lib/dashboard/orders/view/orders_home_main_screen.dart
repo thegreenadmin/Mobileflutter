@@ -385,7 +385,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       ? Get.to(const MarkReturnOrderScreen(),
                                               id: pageIdApp.value)!
                                           .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
-                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorisedToStoreText)
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
                                   /*: ordersHomeMainController
                                   .ownerOrderHistoryList![index]
                                   .orderHistories!
