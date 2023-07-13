@@ -538,13 +538,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Flexible(
                             flex: 5,
                             child: TextFormField(
-                                keyboardType: TextInputType.phone,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 inputFormatters: <TextInputFormatter>[
                                   LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ],
                                 style: const TextStyle(
                                     color: AppColors.black,
@@ -621,8 +625,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           textInputAction: TextInputAction.next,
                           autofocus: false,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(100),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^(\d+)?\.?\d{0,2}'))
                           ],
                           style: const TextStyle(
                               color: AppColors.black,
@@ -630,7 +638,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               fontWeight: FontWeight.w500),
                           controller:
                               manageStoreController.pricePerUnitTextController,
-                          keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value!.trim().isEmpty) {
                               return AlertStringConstants.pleaseEnterPriceText;
@@ -966,8 +973,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
                                 autofocus: false,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 inputFormatters: <TextInputFormatter>[
                                   LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ],
                                 style: const TextStyle(
                                     color: AppColors.black,
@@ -975,7 +987,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     fontWeight: FontWeight.w500),
                                 controller: manageStoreController
                                     .discountOrOfferTextController,
-                                keyboardType: TextInputType.phone,
                                 // validator: (value) {
                                 // if (value!.trim().isEmpty) {
                                 //   return AlertStringConstants
@@ -1139,13 +1150,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   ),
                                 ),
                                 TextFormField(
-                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
                                     inputFormatters: <TextInputFormatter>[
                                       LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
                                     ],
                                     style: const TextStyle(
                                         color: AppColors.black,
@@ -1221,13 +1236,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   ),
                                 ),
                                 TextFormField(
-                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
                                     inputFormatters: <TextInputFormatter>[
                                       LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
                                     ],
                                     style: const TextStyle(
                                         color: AppColors.black,
@@ -1307,13 +1326,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   ),
                                 ),
                                 TextFormField(
-                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
                                     inputFormatters: <TextInputFormatter>[
                                       LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
                                     ],
                                     style: const TextStyle(
                                         color: AppColors.black,
@@ -1396,13 +1419,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   ),
                                 ),
                                 TextFormField(
-                                    keyboardType: TextInputType.phone,
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
                                     inputFormatters: <TextInputFormatter>[
                                       LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
                                     ],
                                     style: const TextStyle(
                                         color: AppColors.black,

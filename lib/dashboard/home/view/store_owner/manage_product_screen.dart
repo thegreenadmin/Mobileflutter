@@ -346,12 +346,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           .categoriesList[index].categoryId ??
                                       "";
                               manageStoreController.apiGetStoreProducts();
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const ProductListScreen(),
-                              // ));
-                              Get.to(const ProductListScreen(),
+                              Get.to(() => const ProductListScreen(),
                                   id: pageIdApp.value);
                             },
                             child: Container(

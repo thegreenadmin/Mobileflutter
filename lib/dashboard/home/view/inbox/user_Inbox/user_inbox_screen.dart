@@ -486,11 +486,10 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               onPressed: () async {
                                                 Utility.showConfirmAlertMessage(
                                                     AlertStringConstants
-                                                        .areYouSureCompleteText,
+                                                        .areYouSureRemoveText,
                                                     okay: StringConstants
-                                                        .completeText,
+                                                        .removeText,
                                                     okayTap: () {
-                                                  // Navigator.pop(Get.context!);
                                                   userInboxController
                                                       .apiDeleteUserMessages(
                                                           messageHeadId:
@@ -515,7 +514,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               ),
                                               fillColor: AppColors.white,
                                               child: Text(
-                                                StringConstants.completeText,
+                                                StringConstants.removeText,
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14.0,

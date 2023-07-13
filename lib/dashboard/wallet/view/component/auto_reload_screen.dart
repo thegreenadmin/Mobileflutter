@@ -199,11 +199,15 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                           ? TextFormField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-                              keyboardType: TextInputType.phone,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: <TextInputFormatter>[
                                 LengthLimitingTextInputFormatter(100),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -259,11 +263,15 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                           : TextFormField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-                              keyboardType: TextInputType.phone,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: <TextInputFormatter>[
                                 LengthLimitingTextInputFormatter(100),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -335,11 +343,15 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 TextFormField(
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    keyboardType: TextInputType.phone,
                                     textInputAction: TextInputAction.next,
                                     autofocus: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                            decimal: true),
                                     inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(40),
+                                      LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
                                     ],
                                     style: const TextStyle(
                                         color: AppColors.black,

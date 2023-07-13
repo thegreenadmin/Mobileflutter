@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
@@ -8,6 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+
+import '../view/store_owner/add_new_product_screen.dart';
+import 'manage_store_controller.dart';
 
 class AddNewCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -221,18 +225,19 @@ class AddNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
+      log("GET CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        Get.parameters["categoryName"] = categoryNameTextController.text;
+        Get.parameters["categoryId"] = value.body['data']['category_id'];
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
-        // Get.back();
-        // Navigator.of(nContext).pop();
-        Get.back(id: pageIdApp.value);
-        // Navigator.of(Get.context!).pop();
+        Get.delete<ManageStoreController>();
+        Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
+        // Get.back(id: pageIdApp.value);
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);

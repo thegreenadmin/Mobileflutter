@@ -1465,7 +1465,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   storeHomeMainController.apiAddToCart(context);
                 } else {
                   Utility.showAlertMessage(
-                      AlertStringConstants.pleaseAddAtleastOneItemText);
+                      AlertStringConstants.pleaseAddAtLeastOneItemText);
                 }
               } else {
                 if ((int.parse(
@@ -1477,7 +1477,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     storeHomeMainController.apiAddToCart(context);
                   } else {
                     Utility.showAlertMessage(
-                        AlertStringConstants.pleaseAddAtleastOneItemText);
+                        AlertStringConstants.pleaseAddAtLeastOneItemText);
                   }
                 }
               }

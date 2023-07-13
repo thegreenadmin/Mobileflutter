@@ -235,10 +235,14 @@ class PayOutScreenState extends State<PayOutScreen> {
                         child: TextFormField(
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            keyboardType: TextInputType.phone,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: <TextInputFormatter>[
+                              LengthLimitingTextInputFormatter(100),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
+                            ],
                             onChanged: (value) {
-                              setState(() {});
-
                               // addCardController.totalWithdrawAmount.value =
                               //     double.parse((double.parse(addCardController
                               //                 .payoutAmountTextController
@@ -254,9 +258,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                             },
                             textInputAction: TextInputAction.next,
                             autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(40),
-                            ],
                             style: const TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,

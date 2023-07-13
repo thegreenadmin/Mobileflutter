@@ -121,9 +121,7 @@ class ManageStoreController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
     isFeaturedTypeSelected.value = false;
     if (Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
@@ -137,15 +135,16 @@ class ManageStoreController extends GetxController {
     if (Get.parameters["categoryName"] != "") {
       categoryName.value = Get.parameters["categoryName"] ?? "";
     }
+    if (Get.parameters["categoryId"] != "") {
+      categoryId.value = Get.parameters["categoryId"] ?? "";
+    }
     await apiGetCategoriesList();
-    await apiGetQuantityList();
+    apiGetQuantityList();
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
-      apiGetCategoriesList();
       apiGetProductDetails();
     }
-    apiGetQuantityList();
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[

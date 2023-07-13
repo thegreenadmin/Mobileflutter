@@ -607,6 +607,7 @@ class AlertStringConstants {
   static String areYouSureText = "Are you sure, you want to delete this item?";
   static String areYouSureCompleteText =
       "Are you sure, you want to mark this as complete?";
+  static String areYouSureRemoveText = "Are you sure, you want to remove this?";
   static String areYouSureDeleteAccountText =
       "Are you sure, you want to delete this Account?";
   static String areYouSurePlanText =
@@ -717,7 +718,7 @@ class AlertStringConstants {
   static String pleaseEnterAmountText = "Please enter amount";
   static String pleaseSelectProductToProceedText =
       "Please select product to proceed";
-  static String pleaseAddAtleastOneItemText =
+  static String pleaseAddAtLeastOneItemText =
       "Please add at least one item in cart";
   static String pleaseSelectPaymentTypeText = "Please select payment type";
   static String pleaseSelectCardText = "Please select card";

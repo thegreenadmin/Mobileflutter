@@ -94,11 +94,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      // SharedPreferenceStorage.setData("context", context);
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //   builder: (_) => const AddNewProductScreen(),
-                      // ));
-
                       permissionStoreList.any(
                                   (element) => element.isStoreOwner == true) ||
                               permissionStoreList.any((element) =>
@@ -108,7 +103,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   element.controllers!.any((ele) =>
                                       ele.controllerKey ==
                                       PermissionKey.createProduct.statusName))
-                          ? Get.to(const AddNewProductScreen(),
+                          ? Get.to(() => const AddNewProductScreen(),
                               id: pageIdApp.value)
                           : Utility.showAlertMessage(
                               AlertStringConstants.notAuthorisedToStoreText);

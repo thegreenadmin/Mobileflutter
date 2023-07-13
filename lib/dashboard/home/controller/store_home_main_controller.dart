@@ -422,7 +422,7 @@ class StoreHomeMainController extends GetxController {
                       apiAddToCart(context);
                     } else {
                       Utility.showToast(
-                          AlertStringConstants.pleaseAddAtleastOneItemText);
+                          AlertStringConstants.pleaseAddAtLeastOneItemText);
                     }
                   },
                   child: Container(

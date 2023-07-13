@@ -38,11 +38,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 debugPrint(
                     "permissionStoreList:-editStore--${permissionStoreList.length}----------");
                 debugPrint(permissionStoreList
-                    .any((element) => element.isStoreOwner == true).toString());
-                debugPrint(permissionStoreList.any((element) =>
-                    element.controllers!.any((ele) =>
+                    .any((element) => element.isStoreOwner == true)
+                    .toString());
+                debugPrint(permissionStoreList
+                    .any((element) => element.controllers!.any((ele) =>
                         ele.controllerKey ==
-                        PermissionKey.editStore.statusName)).toString());
+                        PermissionKey.editStore.statusName))
+                    .toString());
                 permissionStoreList
                             .any((element) => element.isStoreOwner == true) ||
                         permissionStoreList.any((element) =>
@@ -123,10 +125,6 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                     ownerStoresController.storeName.value;
                 Get.parameters["storeLocation"] =
                     ownerStoresController.storeLocation.value;
-                // SharedPreferenceStorage.setData("context", context);
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (_) => const MangeProductScreen(),
-                // ));
                 Get.to(const MangeProductScreen(),
                     id: pageIdApp.value,
                     arguments: {

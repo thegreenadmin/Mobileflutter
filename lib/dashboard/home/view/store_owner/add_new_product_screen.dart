@@ -47,16 +47,18 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                           ),
                           width10SizedBox,
-                          SizedBox(
-                            width: 250,
-                            child: Text(
-                              manageStoreController.categoryName.value,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
+                          Obx(
+                            () => SizedBox(
+                              width: 250,
+                              child: Text(
+                                manageStoreController.categoryName.value,
+                                style: const TextStyle(
+                                    fontSize: 22,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                       Image.asset(
@@ -511,8 +513,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(100),
+                                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                              ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
+
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               style: const TextStyle(
@@ -599,6 +606,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
+                          FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                         ],
                         style: const TextStyle(
                             color: AppColors.black,
@@ -962,8 +970,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r"[0-9.]")),
+                                LengthLimitingTextInputFormatter(100),
+                                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -1134,8 +1142,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r"[0-9.]")),
+                                  LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ],
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -1224,6 +1232,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,
@@ -1311,6 +1320,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,
@@ -1401,6 +1411,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,
