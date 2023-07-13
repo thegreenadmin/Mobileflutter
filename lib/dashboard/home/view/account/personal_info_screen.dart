@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
@@ -394,6 +395,44 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   thickness: 1,
                   height: 40,
                 ),
+                Obx(() => accountController
+                        .idProofImageDynamicLinkFromServer.value.isNotEmpty
+                    ? Text(
+                        StringConstants.identityInfoText,
+                        style: TextStyle(
+                            color: AppColors.blacklight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      )
+                    : height0SizedBox),
+                height20SizedBox,
+                Obx(() => accountController
+                        .idProofImageDynamicLinkFromServer.value.isNotEmpty
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            width: WidgetConstants.screenWidth,
+                            height: WidgetConstants.screenHeight * 0.3,
+                            child: Obx(() => InkWell(
+                                  onTap: () {},
+                                  child: DottedBorder(
+                                    color: AppColors.blacklight,
+                                    strokeWidth: 1,
+                                    dashPattern: const [4, 4],
+                                    child: Image.network(
+                                      accountController
+                                          .idProofImageDynamicLinkFromServer
+                                          .value,
+                                      fit: BoxFit.cover,
+                                      width: WidgetConstants.screenWidth,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                          height10SizedBox,
+                        ],
+                      )
+                    : height0SizedBox),
               ],
             ),
           ),

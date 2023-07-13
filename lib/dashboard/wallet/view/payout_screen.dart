@@ -80,110 +80,239 @@ class PayOutScreenState extends State<PayOutScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(() => addCardController.storeList.isEmpty
-                      ? Column(
-                          children: [
-                            addCardController.isStoreLoading.value
-                                ? height0SizedBox
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Icon(
-                                        Icons.warning_amber,
-                                        color: AppColors.grey,
-                                        size: 24.0,
-                                      ),
-                                      width4SizedBox,
-                                      Flexible(
-                                          child: Text(
-                                              StringConstants
-                                                  .toKnowBalanceYouDontHaveText,
-                                              style: TextStyle(
-                                                  color: AppColors.blacklight,
-                                                  fontSize: 18))),
-                                    ],
-                                  )
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                StringConstants.selectStoreText,
-                                style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 6,
-                              child: DropdownButtonFormField<String>(
-                                isExpanded: true,
-                                decoration: InputDecoration(
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.grey,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  border: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                hint: Text(
-                                  StringConstants.selectStoreText,
-                                  style: const TextStyle(
+                  Obx(
+                    () => addCardController.storeList.isEmpty
+                        ? addCardController.isStoreLoading.value
+                            ? height0SizedBox
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.warning_amber,
                                     color: AppColors.grey,
+                                    size: 24.0,
                                   ),
+                                  width4SizedBox,
+                                  Flexible(
+                                      child: Text(
+                                          StringConstants
+                                              .toKnowBalanceYouDontHaveText,
+                                          style: TextStyle(
+                                              color: AppColors.blacklight,
+                                              fontSize: 18))),
+                                ],
+                              )
+                        : Row(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  addCardController.storeList.length == 1
+                                      ? StringConstants.storeNameText
+                                      : StringConstants.selectStoreText,
+                                  style: const TextStyle(
+                                      color: AppColors.black, fontSize: 16),
                                 ),
-                                items: addCardController.storeList
-                                    .map((dynamic value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.storeId,
-                                    child: Text(
-                                      value.storeName,
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  addCardController.storeId!.value =
-                                      value.toString();
-                                  addCardController.selectedStore.value =
-                                      value.toString();
-                                  addCardController.apiGetOwnerWalletBalance();
-                                  addCardController.apiGetStoreServiceCharge();
-                                },
                               ),
-                            ),
-                          ],
-                        )),
+                              Expanded(
+                                flex: 6,
+                                child: addCardController.storeList.length == 1
+                                    ? Text(
+                                        addCardController.storeList[0].storeName
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500))
+                                    : DropdownButtonFormField<String>(
+                                        value: addCardController
+                                                        .storeNameValue.value !=
+                                                    null &&
+                                                addCardController
+                                                        .storeNameValue.value !=
+                                                    ""
+                                            ? addCardController.storeList
+                                                .firstWhere((element) =>
+                                                    element.storeId
+                                                        .toString() ==
+                                                    addCardController
+                                                        .selectedStore.value)
+                                                .storeId
+                                            : null,
+                                        isExpanded: true,
+                                        decoration: InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.grey,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          border: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          errorBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                        ),
+                                        hint: Text(
+                                          StringConstants.selectStoreText,
+                                          style: const TextStyle(
+                                            color: AppColors.grey,
+                                          ),
+                                        ),
+                                        items: addCardController.storeList
+                                            .map((dynamic value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value.storeId,
+                                            child: Text(
+                                              value.storeName,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          addCardController.storeId!.value =
+                                              value.toString();
+                                          addCardController.selectedStore
+                                              .value = value.toString();
+                                          addCardController
+                                              .apiGetOwnerWalletBalance();
+                                          addCardController
+                                              .apiGetStoreServiceCharge();
+                                        },
+                                      ),
+                              ),
+                            ],
+                          ),
+                  ),
+                  // Obx(() => addCardController.storeList.isEmpty
+                  //     ? Column(
+                  //         children: [
+                  //           addCardController.isStoreLoading.value
+                  //               ? height0SizedBox
+                  //               : Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                   crossAxisAlignment:
+                  //                       CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     const Icon(
+                  //                       Icons.warning_amber,
+                  //                       color: AppColors.grey,
+                  //                       size: 24.0,
+                  //                     ),
+                  //                     width4SizedBox,
+                  //                     Flexible(
+                  //                         child: Text(
+                  //                             StringConstants
+                  //                                 .toKnowBalanceYouDontHaveText,
+                  //                             style: TextStyle(
+                  //                                 color: AppColors.blacklight,
+                  //                                 fontSize: 18))),
+                  //                   ],
+                  //                 )
+                  //         ],
+                  //       )
+                  //     : Row(
+                  //         children: [
+                  //           Expanded(
+                  //             flex: 4,
+                  //             child: Text(
+                  //               StringConstants.selectStoreText,
+                  //               style: const TextStyle(
+                  //                 color: AppColors.black,
+                  //                 fontSize: 16,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Expanded(
+                  //             flex: 6,
+                  //             child: DropdownButtonFormField<String>(
+                  //               isExpanded: true,
+                  //               decoration: InputDecoration(
+                  //                 enabledBorder: UnderlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(5.0),
+                  //                   borderSide: const BorderSide(
+                  //                     color: AppColors.grey,
+                  //                     width: 1.0,
+                  //                   ),
+                  //                 ),
+                  //                 border: UnderlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(5.0),
+                  //                   borderSide: const BorderSide(
+                  //                     color: AppColors.primary,
+                  //                     width: 1.0,
+                  //                   ),
+                  //                 ),
+                  //                 focusedBorder: UnderlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(5.0),
+                  //                   borderSide: const BorderSide(
+                  //                     color: AppColors.primary,
+                  //                     width: 1.0,
+                  //                   ),
+                  //                 ),
+                  //                 errorBorder: UnderlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(5.0),
+                  //                   borderSide: const BorderSide(
+                  //                     color: AppColors.primary,
+                  //                     width: 1.0,
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //               hint: Text(
+                  //                 StringConstants.selectStoreText,
+                  //                 style: const TextStyle(
+                  //                   color: AppColors.grey,
+                  //                 ),
+                  //               ),
+                  //               items: addCardController.storeList
+                  //                   .map((dynamic value) {
+                  //                 return DropdownMenuItem<String>(
+                  //                   value: value.storeId,
+                  //                   child: Text(
+                  //                     value.storeName,
+                  //                     style: const TextStyle(
+                  //                         color: AppColors.black,
+                  //                         fontSize: 16,
+                  //                         fontWeight: FontWeight.w500),
+                  //                   ),
+                  //                 );
+                  //               }).toList(),
+                  //               onChanged: (value) {
+                  //                 addCardController.storeId!.value =
+                  //                     value.toString();
+                  //                 addCardController.selectedStore.value =
+                  //                     value.toString();
+                  //                 addCardController.apiGetOwnerWalletBalance();
+                  //                 addCardController.apiGetStoreServiceCharge();
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       )),
                   height25SizedBox,
                   Row(
                     children: [

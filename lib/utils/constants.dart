@@ -107,6 +107,7 @@ class StringConstants {
   static String closingTimeText = "Closing Time";
   static String cityText = "City";
   static String closeText = "Close";
+  static String identityInfoText = "Identity Info";
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";

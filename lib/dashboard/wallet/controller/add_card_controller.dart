@@ -51,6 +51,7 @@ class AddCardController extends GetxController {
   RxString selectedCountry = "".obs;
   RxString selectedState = "".obs;
   RxString selectedStore = "".obs;
+  RxString storeNameValue = "".obs;
   RxString? ownerWalletBalance = "0.00".obs;
   RxString stateId = "".obs;
   RxString role = "".obs;
@@ -382,13 +383,23 @@ class AddCardController extends GetxController {
         storeList.clear();
         storeList.addAll(getStoreListModel.data as Iterable<Datum>);
         Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
-      } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (storeList.length == 1) {
+          selectedStore.value = storeList[0].storeId.toString();
+          apiGetOwnerWalletBalance();
+        } else {
+          if (storeList.isNotEmpty) {
+            storeNameValue.value = storeList[0].storeName.toString();
+            selectedStore.value = storeList[0].storeId.toString();
+            apiGetOwnerWalletBalance();
+          } else if (value.body["status"] == ApiConstants.statusCode401) {
+            Utility.showAlertMessage(value.body['message']);
+            SharedPreferenceStorage.clearData();
+            await Get.offAll(const StartJourneyScreen());
+          } else {
+            if (value.body['message'] != null) {
+              Utility.showAlertMessage(value.body['message']);
+            }
+          }
         }
       }
     });
@@ -826,7 +837,6 @@ class AddCardController extends GetxController {
     isLoading.value = true;
     debugPrint(
         "GET OWNER WALLET BALANCE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${selectedStore.value}");
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -848,7 +858,6 @@ class AddCardController extends GetxController {
         } else {
           ownerWalletBalance!.value = "0.00";
         }
-
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
