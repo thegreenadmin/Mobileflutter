@@ -645,10 +645,8 @@ class AccountController extends GetxController {
         countryTextController.clear();
         if (isFromCart.value) {
           Get.back(id: pageIdApp.value);
-          // Navigator.of(context).pop();
         } else {
           Get.back(id: pageIdApp.value);
-          // Navigator.of(context).pop();
 
           await apiGetUserDetailApi();
         }
