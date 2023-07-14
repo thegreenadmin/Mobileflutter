@@ -72,7 +72,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -135,7 +135,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,

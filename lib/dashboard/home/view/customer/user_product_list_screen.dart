@@ -586,7 +586,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 width: 148,
                                               )
                                             : Image.asset(
-                                                ImageConstants.nopicfound,
+                                                ImageConstants.defaultProduct,
                                                 fit: BoxFit.fill,
                                                 height: 148,
                                                 width: 148,

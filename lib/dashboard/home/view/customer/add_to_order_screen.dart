@@ -502,7 +502,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       .productImages!
                                       .isEmpty
                               ? Image.asset(
-                                  ImageConstants.nopicfound,
+                                  ImageConstants.defaultProduct,
                                   fit: BoxFit.fill,
                                   height: 120,
                                   width: 120,

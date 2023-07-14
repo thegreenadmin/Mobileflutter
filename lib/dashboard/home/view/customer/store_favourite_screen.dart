@@ -131,12 +131,12 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                             width: 148,
                                           )
                                         : Image.asset(
-                                            ImageConstants.nopicfound,
+                                            ImageConstants.defaultProduct,
                                             fit: BoxFit.fill,
                                             height: 148,
                                             width: 148,
-                                            color:
-                                                AppColors.grey.withOpacity(0.4),
+                                            // color:
+                                            //     AppColors.grey.withOpacity(0.4),
                                           ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),

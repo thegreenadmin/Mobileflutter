@@ -193,10 +193,10 @@ class _CartScreenState extends State<CartScreen> {
                                                     fit: BoxFit.cover,
                                                   )
                                                 : Image.asset(
-                                                    ImageConstants.nopicfound,
+                                                    ImageConstants.defaultProduct,
                                                     fit: BoxFit.cover,
-                                                    color: AppColors.grey
-                                                        .withOpacity(0.4),
+                                                    // color: AppColors.grey
+                                                    //     .withOpacity(0.4),
                                                   ),
                                           ),
                                         ),
@@ -1261,17 +1261,11 @@ class _CartScreenState extends State<CartScreen> {
                                                       ?.toStringAsFixed(2) ??
                                                   "0");
                                     } else {
-                                      Utility.showConfirmAlertMessage(
+                                      /* Utility.showConfirmAlertMessage(
                                           StringConstants.inSufficientFundText,
                                           okay: StringConstants.addFundsText,
                                           okayTap: () async {
-                                        // SharedPreferenceStorage.setData(
-                                        //     "context", context);
-                                        // Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //   builder: (_) =>
-                                        //   const AddMoneyToWallet(),
-                                        // ))
+                                        Get.back();
                                         await Get.to(const AddMoneyToWallet(),
                                                 id: pageIdApp.value)
                                             ?.then((value) {
@@ -1281,7 +1275,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                         Get.parameters["isFromCartScreen"] =
                                             "true";
-                                      });
+                                      });*/
                                     }
                                   } else {
                                     Utility.showAlertMessage(

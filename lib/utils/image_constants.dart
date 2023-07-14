@@ -44,6 +44,8 @@ class ImageConstants {
   static const String dollar = '$assetsIcon/dollar.png';
   static const String door = '$assetsIcon/door.png';
   static const String dumy = '$assetsIcon/dumy.png';
+  static const String defaultProduct = '$assetsIcon/default_product.png';
+  static const String defaultCategory = '$assetsIcon/default_category.png';
   static const String debitcard = '$assetsIcon/debitcard.png';
   //E
   static const String edit = '$assetsIcon/edit.png';

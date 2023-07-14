@@ -370,17 +370,21 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                   width: 1)),
                                           child: Obx(() => CircleAvatar(
                                                 radius: 24.0,
-                                                backgroundImage: NetworkImage(
+                                                backgroundImage: manageStoreController
+                                                    .categoriesList[index]
+                                                    .image?.dynamicUrl!=null ? NetworkImage(
                                                     manageStoreController
                                                         .categoriesList[index]
                                                         .image!
                                                         .dynamicUrl
-                                                        .toString()),
+                                                        .toString()) :const AssetImage(ImageConstants
+                                              .defaultCategory)
+                                          as ImageProvider,
                                                 backgroundColor:
                                                     Colors.transparent,
                                               )),
                                         ),
-                                        width10SizedBox,
+                                        width10SizedBox, 
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

@@ -195,13 +195,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
-                              hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                  permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true ||
-                                          element.controllers!.any((ele) =>
-                                              ele.controllerKey ==
-                                              PermissionKey
-                                                  .manageMessages.statusName))
+                                  hasStoreAccess.value &&
+                                              permissionStoreList.isEmpty ||
+                                          permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true ||
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey.manageMessages
+                                                      .statusName))
                                       ? Get.to(() => const OwnerInboxScreen(),
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(
@@ -870,13 +871,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .productImages!
                                                       .isEmpty
                                               ? Image.asset(
-                                                  ImageConstants.nopicfound,
+                                                  ImageConstants.defaultProduct,
                                                   fit: BoxFit.fill,
                                                   width: WidgetConstants
                                                           .screenWidth *
                                                       0.4,
-                                                  color: AppColors.grey
-                                                      .withOpacity(0.4),
+                                                  // color: AppColors.grey
+                                                  //     .withOpacity(0.4),
                                                 )
                                               : Image.network(
                                                   homeController
@@ -947,20 +948,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     //   builder: (_) =>
                                     //   const EditProductScreen(),
                                     // ));
-                                    hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                    permissionStoreList.any((element) =>
-                                            element.storeId == homeController.ownerFeatureProductList[index].storeId &&
-                                                element.isStoreOwner == true ||
-                                            element.storeId ==
-                                                    homeController
-                                                        .ownerFeatureProductList[
-                                                            index]
-                                                        .storeId &&
-                                                element.controllers!.any((ele) =>
-                                                    ele.controllerKey ==
-                                                    PermissionKey.editProduct
-                                                        .statusName))
-                                        ? Get.to(() => const EditProductScreen(),
+                                    hasStoreAccess.value &&
+                                                permissionStoreList.isEmpty ||
+                                            permissionStoreList.any((element) =>
+                                                element.storeId == homeController.ownerFeatureProductList[index].storeId &&
+                                                    element.isStoreOwner ==
+                                                        true ||
+                                                element.storeId == homeController.ownerFeatureProductList[index].storeId &&
+                                                    element.controllers!.any(
+                                                        (ele) =>
+                                                            ele.controllerKey ==
+                                                            PermissionKey
+                                                                .editProduct
+                                                                .statusName))
+                                        ? Get.to(
+                                            () => const EditProductScreen(),
                                             id: pageIdApp.value,
                                             arguments: {
                                                 "isFromHome": true,
@@ -970,8 +972,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .storeId
                                               })
                                         : Utility.showAlertMessage(
-                                            AlertStringConstants
-                                                .notAuthorizedToStoreText);
+                                            AlertStringConstants.notAuthorizedToStoreText);
                                   }
                                 },
                                 child: Column(
@@ -1003,7 +1004,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .dynamicUrl ==
                                                       null
                                               ? Image.asset(
-                                                  ImageConstants.nopicfound,
+                                                  ImageConstants.defaultProduct,
                                                   fit: BoxFit.fill,
                                                   width: WidgetConstants
                                                           .screenWidth *

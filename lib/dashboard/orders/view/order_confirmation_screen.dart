@@ -776,7 +776,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       .dynamicUrl!
                                                       .isEmpty
                                               ? const AssetImage(
-                                                      ImageConstants.storeicon)
+                                                      ImageConstants.defaultProduct)
                                                   as ImageProvider
                                               : NetworkImage(ordersController
                                                       .orderItems[i]

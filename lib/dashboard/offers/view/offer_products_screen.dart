@@ -98,9 +98,9 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.asset(
-                                        ImageConstants.nopicfound,
+                                        ImageConstants.defaultProduct,
                                         fit: BoxFit.cover,
-                                        color: AppColors.grey.withOpacity(0.4),
+                                        // color: AppColors.grey.withOpacity(0.4),
                                       ),
                               ),
                             ),

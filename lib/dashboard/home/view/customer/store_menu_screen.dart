@@ -112,8 +112,8 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                                     .image
                                                     ?.dynamicUrl ==
                                                 null
-                                            ? const AssetImage(
-                                                    "assets/storeicon.png")
+                                            ? const AssetImage(ImageConstants
+                                                    .defaultCategory)
                                                 as ImageProvider
                                             : NetworkImage(
                                                 storeHomeMainController

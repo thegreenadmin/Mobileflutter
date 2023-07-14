@@ -390,9 +390,9 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                       .dynamicUrl!
                                                       .isEmpty
                                               ? Image.asset(
-                                                  ImageConstants.nopicfound,
-                                                  color: AppColors.grey
-                                                      .withOpacity(0.4),
+                                                  ImageConstants.defaultProduct,
+                                                  // color: AppColors.grey
+                                                  //     .withOpacity(0.4),
                                                 )
                                               : Image.network(
                                                   ordersHomeMainController

@@ -584,8 +584,9 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     .dynamicUrl!
                                                     .isEmpty
                                                 ? Image.asset(
-                                              ImageConstants.nopicfound,
-                                              fit: BoxFit.fill,   color: AppColors.grey.withOpacity(0.4),
+                                              ImageConstants.defaultProduct,
+                                              fit: BoxFit.fill,
+                                              // color: AppColors.grey.withOpacity(0.4),
                                               height: 70,
                                             )
                                                 : Image.network(
