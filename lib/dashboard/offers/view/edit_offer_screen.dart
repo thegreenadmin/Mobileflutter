@@ -608,10 +608,13 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         Flexible(
                           flex: 5,
                           child: TextFormField(
-                              keyboardType: TextInputType.phone,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
                                 FilteringTextInputFormatter.allow(
-                                    RegExp(r"[0-9.]")),
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
