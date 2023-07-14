@@ -337,6 +337,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: () {
+                              debugPrint("get key: --- ${pageIdApp.value}");
                               ordersHomeMainController.storeId.value =
                                   ordersHomeMainController
                                           .ownerOrderHistoryList![index]

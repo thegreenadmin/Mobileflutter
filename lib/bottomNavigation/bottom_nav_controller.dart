@@ -66,6 +66,11 @@ class BottomNavController extends GetxController {
   getRole() async {
     roleApp.value = await SharedPreferenceStorage.getData(Role.role);
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
+    if (roleInApp.value == Role.customerRoleText) {
+      storeList.clear();
+    } else {
+      apiGetStoreList();
+    }
   }
 
   ///Get Store List Api
@@ -145,7 +150,7 @@ class BottomNavController extends GetxController {
     const MoreScreen(),
   ];
 
-  onItemTapped(int index) async {
+  onItemTapped(int index) {
     getRole();
     if (roleApp.value == Role.storeOwnerRoleText &&
         index == 2 &&
@@ -174,7 +179,7 @@ class BottomNavController extends GetxController {
     } else if (selectedIndex.value == 1) {
       try {
         // Get.delete<WalletController>();
-        Future.delayed(Duration.zero, () async {
+        Future.delayed(Duration.zero, () {
           pageIdApp.value = 1;
           WalletController walletController = Get.put(WalletController());
           walletController.onInit();
@@ -184,14 +189,13 @@ class BottomNavController extends GetxController {
       }
     } else if (selectedIndex.value == 2) {
       try {
-        // Get.delete<OrdersController>();
-        Future.delayed(Duration.zero, () async {
-          if (roleInApp.value == Role.customerRoleText) {
-            storeList.clear();
-          } else {
-            await apiGetStoreList();
-          }
+        if (roleInApp.value == Role.customerRoleText) {
+          storeList.clear();
+        } else {
+          apiGetStoreList();
+        }
 
+        Future.delayed(const Duration(milliseconds: 200), () {
           if (roleInApp.value == Role.storeOwnerRoleText) {
             if (storeList.length > 1 || storeList.isEmpty) {
               pageIdApp.value = 2;
