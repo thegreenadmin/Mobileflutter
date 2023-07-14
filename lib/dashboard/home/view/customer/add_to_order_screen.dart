@@ -1257,15 +1257,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   Row(
                     children: [
                       Text(
-                        double.parse(storeHomeMainController
-                                    .productDetailResponse
-                                    .value
-                                    .data
-                                    ?.product
-                                    ?.averageRating
-                                    ?.toString() ??
-                                "0.0")
-                            .toString(),
+                        storeHomeMainController.productDetailResponse.value.data
+                                ?.product?.averageRating
+                                ?.toStringAsFixed(1) ??
+                            "0.0".toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
