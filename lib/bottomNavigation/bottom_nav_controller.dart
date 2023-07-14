@@ -154,7 +154,8 @@ class BottomNavController extends GetxController {
     getRole();
     if (roleApp.value == Role.storeOwnerRoleText &&
         index == 2 &&
-        (hasStoreAccess.value && permissionStoreList.isEmpty ||
+        (!hasStoreAccess.value &&
+            permissionStoreList.isNotEmpty &&
             !permissionStoreList.any((element) =>
                 element.isStoreOwner == true ||
                 element.controllers!.any((ele) =>
