@@ -260,7 +260,7 @@ class StoreUserTiming {
   });
 
   String? storeUserTimingId;
-  int? dayOfWeek;
+  dynamic dayOfWeek;
   bool? is24HrsActive;
   String? startTime;
   String? endTime;
@@ -268,7 +268,7 @@ class StoreUserTiming {
 
   StoreUserTiming copyWith({
     String? storeUserTimingId,
-    int? dayOfWeek,
+    dynamic dayOfWeek,
     bool? is24HrsActive,
     String? startTime,
     String? endTime,
@@ -305,7 +305,7 @@ class StoreUserTiming {
 
 class ProductImages {
   String? productImageId;
-  int? order;
+  dynamic order;
   String? status;
   Images? image;
 
@@ -401,7 +401,7 @@ class Store {
   String? status;
   String? createdAt;
   String? updatedAt;
-  int? taxValue;
+  dynamic taxValue;
 
 
   Store({
@@ -432,7 +432,7 @@ class Store {
   });
 
   Store copyWith({
-    int? taxValue,
+    dynamic taxValue,
     Images? image,
     Images? logo,
     bool? isFavouriteStore,

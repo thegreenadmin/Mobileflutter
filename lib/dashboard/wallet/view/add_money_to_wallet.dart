@@ -180,11 +180,11 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       textInputAction: TextInputAction.next,
                       autofocus: false,
                       keyboardType:
-                      const TextInputType.numberWithOptions(
-                          decimal: true),
+                          const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100),
-                        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^(\d+)?\.?\d{0,2}'))
                       ],
                       style: const TextStyle(
                           color: AppColors.black,

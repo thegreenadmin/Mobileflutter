@@ -9,7 +9,6 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProvider extends GetConnect {
-  
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     try {
