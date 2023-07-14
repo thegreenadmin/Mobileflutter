@@ -629,10 +629,13 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                   AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.next,
                               autofocus: false,
-                              keyboardType: TextInputType.phone,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               inputFormatters: [
+                                LengthLimitingTextInputFormatter(100),
                                 FilteringTextInputFormatter.allow(
-                                    RegExp(r"[0-9.]")),
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
