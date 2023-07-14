@@ -382,6 +382,7 @@ class AddCardController extends GetxController {
         getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data as Iterable<Datum>);
+
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {
           selectedStore.value = storeList[0].storeId.toString();
@@ -397,11 +398,11 @@ class AddCardController extends GetxController {
             Utility.showAlertMessage(value.body['message']);
             SharedPreferenceStorage.clearData();
             await Get.offAll(const StartJourneyScreen());
-          } else {
-            if (value.body['message'] != null) {
-              Utility.showAlertMessage(value.body['message']);
-            }
           }
+        }
+      } else {
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
