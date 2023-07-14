@@ -151,16 +151,18 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  permissionStoreList.any((element) => element.isStoreOwner == true) ||
+                                  hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
+                                              element.storeId == ownerStoresController.storeId.value && element.isStoreOwner == true ||
                                               element.storeId ==
-                                                  ownerStoresController
-                                                      .storeList[index].storeId
-                                                      .toString() &&
-                                              element.controllers!.any((ele) =>
-                                                  ele.controllerKey ==
-                                                  PermissionKey
-                                                      .deleteStore.statusName))
+                                                      ownerStoresController
+                                                          .storeList[index]
+                                                          .storeId
+                                                          .toString() &&
+                                                  element.controllers!.any((ele) =>
+                                                      ele.controllerKey ==
+                                                      PermissionKey.deleteStore
+                                                          .statusName))
                                       ? Utility.showConfirmAlertMessage(
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
@@ -170,8 +172,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                   .storeList[index].storeId
                                                   .toString());
                                         })
-                                      : Utility.showAlertMessage(
-                                          AlertStringConstants.notAuthorizedToStoreText);
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                   return null;
                                 },
                                 child: InkWell(

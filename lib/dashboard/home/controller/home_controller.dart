@@ -18,7 +18,6 @@ class HomeController extends GetxController {
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
   RxInt pageId = 0.obs;
-  RxBool? hasStoreAccess = false.obs;
   RxBool? isLoading = false.obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();

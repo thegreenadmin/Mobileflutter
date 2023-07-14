@@ -195,13 +195,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .push(MaterialPageRoute(
                                       builder: (_) => const OwnerInboxScreen(),
                                     ));*/
+                              hasStoreAccess.value && permissionStoreList.isEmpty ||
                                   permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
-                                          permissionStoreList.any((element) =>
-                                              element.controllers!.any((ele) =>
-                                                  ele.controllerKey ==
-                                                  PermissionKey.manageMessages
-                                                      .statusName))
+                                          element.isStoreOwner == true ||
+                                          element.controllers!.any((ele) =>
+                                              ele.controllerKey ==
+                                              PermissionKey
+                                                  .manageMessages.statusName))
                                       ? Get.to(() => const OwnerInboxScreen(),
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(
@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           width10SizedBox,
-                          Obx(() => homeController.hasStoreAccess!.value
+                          Obx(() => hasStoreAccess.value
                               ? RawMaterialButton(
                                   elevation: 0,
                                   onPressed: () {
@@ -947,22 +947,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                     //   builder: (_) =>
                                     //   const EditProductScreen(),
                                     // ));
+                                    hasStoreAccess.value && permissionStoreList.isEmpty ||
                                     permissionStoreList.any((element) =>
-                                                element.isStoreOwner == true) ||
-                                            permissionStoreList.any((element) =>
-                                                element.storeId ==
+                                            element.storeId == homeController.ownerFeatureProductList[index].storeId &&
+                                                element.isStoreOwner == true ||
+                                            element.storeId ==
                                                     homeController
                                                         .ownerFeatureProductList[
                                                             index]
                                                         .storeId &&
-                                                element.controllers!.any(
-                                                    (ele) =>
-                                                        ele.controllerKey ==
-                                                        PermissionKey
-                                                            .editProduct
-                                                            .statusName))
-                                        ? Get.to(
-                                            () => const EditProductScreen(),
+                                                element.controllers!.any((ele) =>
+                                                    ele.controllerKey ==
+                                                    PermissionKey.editProduct
+                                                        .statusName))
+                                        ? Get.to(() => const EditProductScreen(),
                                             id: pageIdApp.value,
                                             arguments: {
                                                 "isFromHome": true,
@@ -972,7 +970,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .storeId
                                               })
                                         : Utility.showAlertMessage(
-                                            AlertStringConstants.notAuthorizedToStoreText);
+                                            AlertStringConstants
+                                                .notAuthorizedToStoreText);
                                   }
                                 },
                                 child: Column(

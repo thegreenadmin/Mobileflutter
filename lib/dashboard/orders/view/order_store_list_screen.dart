@@ -111,21 +111,25 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const OrdersHomeMainScreen(),
                               // ));
-                              permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true) ||
+                              hasStoreAccess.value && permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
                                           element.storeId ==
-                                              ordersController
-                                                  .storeList[index].storeId &&
-                                          element.controllers!.any((ele) =>
-                                              ele.controllerKey ==
-                                              PermissionKey
-                                                  .manageOrders.statusName))
+                                                  ordersController
+                                                      .storeList[index]
+                                                      .storeId &&
+                                              element.isStoreOwner == true ||
+                                          element.storeId ==
+                                                  ordersController
+                                                      .storeList[index]
+                                                      .storeId &&
+                                              element.controllers!.any((ele) =>
+                                                  ele.controllerKey ==
+                                                  PermissionKey
+                                                      .manageOrders.statusName))
                                   ? Get.to(const OrdersHomeMainScreen(),
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
-                                      AlertStringConstants
-                                          .notAuthorizedToStoreText);
+                                      AlertStringConstants.notAuthorizedToStoreText);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

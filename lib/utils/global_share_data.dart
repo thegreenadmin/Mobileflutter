@@ -1,11 +1,13 @@
-import 'package:get/get.dart';
 import 'dart:convert';
 
-  RxString roleApp = "".obs;
-  RxString authToken = "".obs;
-  RxInt pageIdApp = 0.obs;
-  GetPermissionsModel getPermissionsModel = GetPermissionsModel();
-  RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
+import 'package:get/get.dart';
+
+RxString roleApp = "".obs;
+RxString authToken = "".obs;
+RxInt pageIdApp = 0.obs;
+RxBool hasStoreAccess = false.obs;
+GetPermissionsModel getPermissionsModel = GetPermissionsModel();
+RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 
 enum PermissionKey {
   manageTransaction,
@@ -73,9 +75,11 @@ extension StatusExtension on PermissionKey {
   }
 }
 
-GetPermissionsModel getPermissionsModelFromJson(String str) => GetPermissionsModel.fromJson(json.decode(str));
+GetPermissionsModel getPermissionsModelFromJson(String str) =>
+    GetPermissionsModel.fromJson(json.decode(str));
 
-String getPermissionsModelToJson(GetPermissionsModel data) => json.encode(data.toJson());
+String getPermissionsModelToJson(GetPermissionsModel data) =>
+    json.encode(data.toJson());
 
 class GetPermissionsModel {
   int? status;
@@ -99,17 +103,19 @@ class GetPermissionsModel {
         data: data ?? this.data,
       );
 
-  factory GetPermissionsModel.fromJson(Map<String, dynamic> json) => GetPermissionsModel(
-    status: json["status"],
-    message: json["message"],
-    data: json["data"] == null ? null : PermissionData.fromJson(json["data"]),
-  );
+  factory GetPermissionsModel.fromJson(Map<String, dynamic> json) =>
+      GetPermissionsModel(
+        status: json["status"],
+        message: json["message"],
+        data:
+            json["data"] == null ? null : PermissionData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class PermissionData {
@@ -127,12 +133,17 @@ class PermissionData {
       );
 
   factory PermissionData.fromJson(Map<String, dynamic> json) => PermissionData(
-    stores: json["stores"] == null ? [] : List<PermissionStore>.from(json["stores"]!.map((x) => PermissionStore.fromJson(x))),
-  );
+        stores: json["stores"] == null
+            ? []
+            : List<PermissionStore>.from(
+                json["stores"]!.map((x) => PermissionStore.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "stores": stores == null ? [] : List<dynamic>.from(stores!.map((x) => x.toJson())),
-  };
+        "stores": stores == null
+            ? []
+            : List<dynamic>.from(stores!.map((x) => x.toJson())),
+      };
 }
 
 class PermissionStore {
@@ -161,19 +172,25 @@ class PermissionStore {
         controllers: controllers ?? this.controllers,
       );
 
-  factory PermissionStore.fromJson(Map<String, dynamic> json) => PermissionStore(
-    storeId: json["store_id"],
-    storeName: json["store_name"],
-    isStoreOwner: json["is_store_owner"],
-    controllers: json["controllers"] == null ? [] : List<PermissionController>.from(json["controllers"]!.map((x) => PermissionController.fromJson(x))),
-  );
+  factory PermissionStore.fromJson(Map<String, dynamic> json) =>
+      PermissionStore(
+        storeId: json["store_id"],
+        storeName: json["store_name"],
+        isStoreOwner: json["is_store_owner"],
+        controllers: json["controllers"] == null
+            ? []
+            : List<PermissionController>.from(json["controllers"]!
+                .map((x) => PermissionController.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_id": storeId,
-    "store_name": storeName,
-    "is_store_owner": isStoreOwner,
-    "controllers": controllers == null ? [] : List<dynamic>.from(controllers!.map((x) => x.toJson())),
-  };
+        "store_id": storeId,
+        "store_name": storeName,
+        "is_store_owner": isStoreOwner,
+        "controllers": controllers == null
+            ? []
+            : List<dynamic>.from(controllers!.map((x) => x.toJson())),
+      };
 }
 
 class PermissionController {
@@ -198,15 +215,16 @@ class PermissionController {
         controllerName: controllerName ?? this.controllerName,
       );
 
-  factory PermissionController.fromJson(Map<String, dynamic> json) => PermissionController(
-    controllerId: json["controller_id"],
-    controllerKey: json["controller_key"],
-    controllerName: json["controller_name"],
-  );
+  factory PermissionController.fromJson(Map<String, dynamic> json) =>
+      PermissionController(
+        controllerId: json["controller_id"],
+        controllerKey: json["controller_key"],
+        controllerName: json["controller_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "controller_id": controllerId,
-    "controller_key": controllerKey,
-    "controller_name": controllerName,
-  };
+        "controller_id": controllerId,
+        "controller_key": controllerKey,
+        "controller_name": controllerName,
+      };
 }

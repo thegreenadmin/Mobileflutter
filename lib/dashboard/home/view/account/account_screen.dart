@@ -111,8 +111,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
-                                    //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -180,7 +178,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 Obx(
-                  () => accountController.hasStoreAccess.value == false
+                  () => hasStoreAccess.value == false
                       ? height0SizedBox
                       : const Divider(
                           thickness: 3,
@@ -188,7 +186,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                 ),
                 Obx(
-                  () => accountController.hasStoreAccess.value == false
+                  () => hasStoreAccess.value == false
                       ? height0SizedBox
                       : InkWell(
                           highlightColor: Colors.transparent,
@@ -242,7 +240,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           )),
                 ),
                 Obx(
-                  () => accountController.hasStoreAccess.value == false
+                  () => hasStoreAccess.value == false
                       ? height0SizedBox
                       : const Divider(
                           thickness: 3,
@@ -267,10 +265,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          // SharedPreferenceStorage.setData("context", context);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const PersonalInfoScreen(),
-                          // ));
                           Get.to(const PersonalInfoScreen(),
                               id: pageIdApp.value);
                         },
@@ -360,13 +354,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          // SharedPreferenceStorage.setData("context", context);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const TransactionScreen(),
-                          // ));
-                          permissionStoreList.any((element) =>
-                                      element.isStoreOwner == true) ||
+                          hasStoreAccess.value && permissionStoreList.isEmpty ||
                                   permissionStoreList.any((element) =>
+                                      element.isStoreOwner == true ||
                                       element.controllers!.any((ele) =>
                                           ele.controllerKey ==
                                           PermissionKey
@@ -410,10 +400,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          // SharedPreferenceStorage.setData("context", context);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const AccountIdScreen(),
-                          // ));
                           Get.to(const AccountIdScreen(), id: pageIdApp.value);
                         },
                         child: Row(
@@ -459,15 +445,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (_) =>
-                                  //       const ActiveMembershipScreen(),
-                                  // ));
-
-                                  permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true)
+                                  hasStoreAccess.value &&
+                                              permissionStoreList.isEmpty ||
+                                          permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true)
                                       ? Get.to(const ActiveMembershipScreen(),
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(

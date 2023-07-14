@@ -203,18 +203,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               : "false";
                       Get.parameters["IsAddCategory"] = "true";
 
-                      // SharedPreferenceStorage.setData("context", context);
-                      // Navigator.of(context)
-                      //     .push(MaterialPageRoute(
-                      //   builder: (_) => const AddNewCategoryScreen(),
-                      // ))
-
                       Get.parameters["categoryId"] = "";
 
-                      permissionStoreList.any(
-                                  (element) => element.isStoreOwner == true) ||
-                              permissionStoreList.any((element) =>
-                                  element.storeId ==
+                      hasStoreAccess.value && permissionStoreList.isEmpty ||
+                      permissionStoreList.any((element) =>
+                              element.storeId ==
+                                      manageStoreController.storeId.value &&
+                                  element.isStoreOwner == true ||
+                              element.storeId ==
                                       manageStoreController.storeId.value &&
                                   element.controllers!.any((ele) =>
                                       ele.controllerKey ==
@@ -309,11 +305,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           resizeDuration: const Duration(milliseconds: 200),
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
-                            permissionStoreList.any((element) => element.isStoreOwner == true) ||
-                                    permissionStoreList.any((element) =>
-                                        element.storeId ==
-                                            manageStoreController
-                                                .storeId.value &&
+                            hasStoreAccess.value && permissionStoreList.isEmpty ||
+                            permissionStoreList.any((element) =>
+                                    element.storeId == manageStoreController.storeId.value &&
+                                        element.isStoreOwner == true ||
+                                    element.storeId == manageStoreController.storeId.value &&
                                         element.controllers!.any((ele) =>
                                             ele.controllerKey ==
                                             PermissionKey.editProductCategories
@@ -448,19 +444,21 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         //   builder: (_) =>
                                         //       const EditCategoryScreen(),
                                         // ))
-
+                                        hasStoreAccess.value && permissionStoreList.isEmpty ||
                                         permissionStoreList.any((element) =>
+                                                element.storeId == manageStoreController.storeId.value &&
                                                     element.isStoreOwner ==
-                                                    true) &&
-                                                permissionStoreList.any((element) =>
-                                                    element.storeId ==
-                                                        manageStoreController.storeId.value
+                                                        true ||
+                                                element.storeId ==
+                                                        manageStoreController
+                                                            .storeId.value
                                                             .toString() &&
-                                                    element.controllers!.any((ele) =>
-                                                        ele.controllerKey ==
-                                                        PermissionKey
-                                                            .editProductCategories
-                                                            .statusName))
+                                                    element.controllers!.any(
+                                                        (ele) =>
+                                                            ele.controllerKey ==
+                                                            PermissionKey
+                                                                .editProductCategories
+                                                                .statusName))
                                             ? Get.to(const EditCategoryScreen(),
                                                     id: pageIdApp.value,
                                                     arguments: {
@@ -478,8 +476,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                 manageStoreController
                                                     .apiGetCategoriesList();
                                               })
-                                            : Utility.showAlertMessage(
-                                                AlertStringConstants.notAuthorizedToStoreText);
+                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4),

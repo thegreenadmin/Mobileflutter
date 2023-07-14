@@ -45,15 +45,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                         ele.controllerKey ==
                         PermissionKey.editStore.statusName))
                     .toString());
-                permissionStoreList
-                            .any((element) => element.isStoreOwner == true) ||
+                hasStoreAccess.value && permissionStoreList.isEmpty ||
                         permissionStoreList.any((element) =>
                             element.storeId ==
-                                ownerStoresController.storeId.value
-                                    .toString() &&
-                            element.controllers!.any((ele) =>
-                                ele.controllerKey ==
-                                PermissionKey.editStore.statusName))
+                                    ownerStoresController.storeId.value &&
+                                element.isStoreOwner == true ||
+                            element.storeId ==
+                                    ownerStoresController.storeId.value
+                                        .toString() &&
+                                element.controllers!.any((ele) =>
+                                    ele.controllerKey ==
+                                    PermissionKey.editStore.statusName))
                     ? Get.to(const EditStoreDetailScreen(), id: pageIdApp.value)
                     : Utility.showAlertMessage(
                         AlertStringConstants.notAuthorizedToStoreText);
@@ -278,16 +280,17 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const WorkerListScreen(),
                 // ));
-
-                permissionStoreList
-                            .any((element) => element.isStoreOwner == true) ||
+                hasStoreAccess.value && permissionStoreList.isEmpty ||
                         permissionStoreList.any((element) =>
                             element.storeId ==
-                                ownerStoresController.storeId.value
-                                    .toString() &&
-                            element.controllers!.any((ele) =>
-                                ele.controllerKey ==
-                                PermissionKey.viewStoreUsers.statusName))
+                                    ownerStoresController.storeId.value &&
+                                element.isStoreOwner == true ||
+                            element.storeId ==
+                                    ownerStoresController.storeId.value
+                                        .toString() &&
+                                element.controllers!.any((ele) =>
+                                    ele.controllerKey ==
+                                    PermissionKey.viewStoreUsers.statusName))
                     ? Get.to(const WorkerListScreen(),
                         id: pageIdApp.value,
                         arguments: {

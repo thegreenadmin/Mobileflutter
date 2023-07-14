@@ -370,21 +370,22 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .orderStatus!
                                           .orderStatusName == //"11"
                                       OrderStatusEnum.returnRequest.statusName
-                                  ? permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
+                                  ? hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
+                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
+                                                  element.isStoreOwner ==
+                                                      true ||
                                               element.storeId ==
-                                                  ordersHomeMainController
-                                                      .ownerOrderHistoryList![
-                                                          index]
-                                                      .storeId &&
-                                              element.controllers!.any((ele) =>
-                                                  ele.controllerKey ==
-                                                  PermissionKey
-                                                      .manageReturnRequests
-                                                      .statusName))
-                                      ? Get.to(const MarkReturnOrderScreen(),
-                                              id: pageIdApp.value)!
+                                                      ordersHomeMainController
+                                                          .ownerOrderHistoryList![
+                                                              index]
+                                                          .storeId &&
+                                                  element.controllers!.any((ele) =>
+                                                      ele.controllerKey ==
+                                                      PermissionKey
+                                                          .manageReturnRequests
+                                                          .statusName))
+                                      ? Get.to(const MarkReturnOrderScreen(), id: pageIdApp.value)!
                                           .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
                                       : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
                                   /*: ordersHomeMainController

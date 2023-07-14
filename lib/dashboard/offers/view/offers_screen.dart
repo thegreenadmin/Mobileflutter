@@ -125,9 +125,10 @@ class _OffersScreenState extends State<OffersScreen> {
                                 onTap: () {
                                   Get.parameters["isFrom"] =
                                       StringConstants.addOfferText;
-                                  permissionStoreList.any((element) =>
-                                              element.isStoreOwner == true) ||
+                                  hasStoreAccess.value &&
+                                              permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
+                                              element.isStoreOwner == true ||
                                               element.controllers!.any((ele) =>
                                                   ele.controllerKey ==
                                                   PermissionKey
@@ -337,54 +338,61 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         Alignment.bottomCenter,
                                                     children: [
                                                       ClipRRect(
-                                                        borderRadius: BorderRadius.circular(8.0),
-                                                        child:  offersController
-                                                            .getUserOfferList[
-                                                        index]
-                                                            .offers![
-                                                        i]
-                                                            .image!
-                                                            .dynamicUrl ==
-                                                            null ||
-                                                            offersController
-                                                                .getUserOfferList[
-                                                            index]
-                                                                .offers![i]
-                                                                .image!
-                                                                .dynamicUrl!
-                                                                .isEmpty
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                        child: offersController
+                                                                        .getUserOfferList[
+                                                                            index]
+                                                                        .offers![
+                                                                            i]
+                                                                        .image!
+                                                                        .dynamicUrl ==
+                                                                    null ||
+                                                                offersController
+                                                                    .getUserOfferList[
+                                                                        index]
+                                                                    .offers![i]
+                                                                    .image!
+                                                                    .dynamicUrl!
+                                                                    .isEmpty
                                                             ? Image.asset(
-                                                          ImageConstants
-                                                              .medicine,
-                                                          width: WidgetConstants
-                                                              .screenWidth *
-                                                              0.8,
-                                                        )
+                                                                ImageConstants
+                                                                    .medicine,
+                                                                width: WidgetConstants
+                                                                        .screenWidth *
+                                                                    0.8,
+                                                              )
                                                             : Image.network(
-                                                          offersController
-                                                              .getUserOfferList[
-                                                          index]
-                                                              .offers![i]
-                                                              .image!
-                                                              .dynamicUrl!
-                                                              .toString(),
-                                                          fit: BoxFit.fill,
-                                                          width: WidgetConstants
-                                                              .screenWidth *
-                                                              0.8,
-
-                                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                            return Image.asset(
-                                                              ImageConstants
-                                                                  .medicine,
-                                                              width: WidgetConstants
-                                                                  .screenWidth *
-                                                                  0.8,
-                                                            );
-                                                          },
-                                                        ),
+                                                                offersController
+                                                                    .getUserOfferList[
+                                                                        index]
+                                                                    .offers![i]
+                                                                    .image!
+                                                                    .dynamicUrl!
+                                                                    .toString(),
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                width: WidgetConstants
+                                                                        .screenWidth *
+                                                                    0.8,
+                                                                errorBuilder: (BuildContext
+                                                                        context,
+                                                                    Object
+                                                                        exception,
+                                                                    StackTrace?
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                    ImageConstants
+                                                                        .medicine,
+                                                                    width: WidgetConstants
+                                                                            .screenWidth *
+                                                                        0.8,
+                                                                  );
+                                                                },
+                                                              ),
                                                       ),
-
                                                       SizedBox(
                                                         height: 55,
                                                         child: Card(
@@ -504,17 +512,19 @@ class _OffersScreenState extends State<OffersScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  permissionStoreList.any((element) => element.isStoreOwner == true) ||
+                                  hasStoreAccess.value &&
+                                              permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
-                                              element.storeId ==
-                                                  offersController
-                                                      .getOwnerOfferList[index]
-                                                      .store!
-                                                      .storeId &&
-                                              element.controllers!.any((ele) =>
-                                                  ele.controllerKey ==
-                                                  PermissionKey
-                                                      .editOffers.statusName))
+                                              element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
+                                                  element.isStoreOwner ==
+                                                      true ||
+                                              element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
+                                                  element.controllers!.any(
+                                                      (ele) =>
+                                                          ele.controllerKey ==
+                                                          PermissionKey
+                                                              .editOffers
+                                                              .statusName))
                                       ? Utility.showConfirmAlertMessage(
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
@@ -534,8 +544,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                           await offersController
                                               .apiDeleteOffer();
                                         })
-                                      : Utility.showAlertMessage(AlertStringConstants
-                                          .notAuthorizedToStoreText);
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
 
                                   return null;
                                 },
@@ -685,40 +694,43 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   //   builder: (_) =>
                                                   //       const EditOfferScreen(),
                                                   // ))
-
-                                                  permissionStoreList.any((element) =>
-                                                              element.isStoreOwner ==
-                                                              true) &&
+                                                  hasStoreAccess.value &&
+                                                              permissionStoreList
+                                                                  .isEmpty ||
                                                           permissionStoreList.any((element) =>
                                                               element.storeId ==
-                                                                  offersController
-                                                                      .getOwnerOfferList[
-                                                                          index]
-                                                                      .store!
-                                                                      .storeId &&
-                                                              element.controllers!.any((ele) =>
-                                                                  ele.controllerKey ==
-                                                                  PermissionKey
-                                                                      .editOffers
-                                                                      .statusName))
-                                                      ? Get.to(() => const EditOfferScreen(),
-                                                              id: pageIdApp.value,
-                                                              arguments: {
-                                                              "isFrom":
-                                                                  StringConstants
-                                                                      .editOfferText,
-                                                              "storeId": offersController
-                                                                      .getOwnerOfferList[
-                                                                          index]
-                                                                      .store!
-                                                                      .storeId ??
-                                                                  "",
-                                                              "offerId": offersController
-                                                                      .getOwnerOfferList[
-                                                                          index]
-                                                                      .offerId ??
-                                                                  ""
-                                                            })!
+                                                                      offersController
+                                                                          .getOwnerOfferList[
+                                                                              index]
+                                                                          .store!
+                                                                          .storeId &&
+                                                                  element.isStoreOwner ==
+                                                                      true ||
+                                                              element.storeId ==
+                                                                      offersController
+                                                                          .getOwnerOfferList[
+                                                                              index]
+                                                                          .store!
+                                                                          .storeId &&
+                                                                  element
+                                                                      .controllers!
+                                                                      .any((ele) => ele.controllerKey == PermissionKey.editOffers.statusName))
+                                                      ? Get.to(() => const EditOfferScreen(), id: pageIdApp.value, arguments: {
+                                                          "isFrom":
+                                                              StringConstants
+                                                                  .editOfferText,
+                                                          "storeId": offersController
+                                                                  .getOwnerOfferList[
+                                                                      index]
+                                                                  .store!
+                                                                  .storeId ??
+                                                              "",
+                                                          "offerId": offersController
+                                                                  .getOwnerOfferList[
+                                                                      index]
+                                                                  .offerId ??
+                                                              ""
+                                                        })!
                                                           .then((value) {
                                                           roleApp.value ==
                                                                   Role
@@ -741,7 +753,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                         height8SizedBox,
                                         height12SizedBox,
                                         SizedBox(
-                                            height: WidgetConstants.screenHeight * 0.2,
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.2,
                                             width: WidgetConstants.screenWidth,
                                             child: Row(
                                               mainAxisAlignment:
@@ -754,47 +768,55 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       Alignment.bottomCenter,
                                                   children: [
                                                     ClipRRect(
-                                                      borderRadius: BorderRadius.circular(8.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
                                                       child: offersController
-                                                          .getOwnerOfferList[
-                                                      index]
-                                                          .image!
-                                                          .dynamicUrl ==
-                                                          null ||
-                                                          offersController
-                                                              .getOwnerOfferList[
-                                                          index]
-                                                              .image!
-                                                              .dynamicUrl!
-                                                              .isEmpty
+                                                                      .getOwnerOfferList[
+                                                                          index]
+                                                                      .image!
+                                                                      .dynamicUrl ==
+                                                                  null ||
+                                                              offersController
+                                                                  .getOwnerOfferList[
+                                                                      index]
+                                                                  .image!
+                                                                  .dynamicUrl!
+                                                                  .isEmpty
                                                           ? Image.asset(
-                                                        ImageConstants
-                                                            .medicine,
-                                                        width: WidgetConstants
-                                                            .screenWidth *
-                                                            0.8,
-                                                      )
+                                                              ImageConstants
+                                                                  .medicine,
+                                                              width: WidgetConstants
+                                                                      .screenWidth *
+                                                                  0.8,
+                                                            )
                                                           : Image.network(
-                                                        offersController
-                                                            .getOwnerOfferList[
-                                                        index]
-                                                            .image!
-                                                            .dynamicUrl
-                                                            .toString(),
-                                                        fit: BoxFit.fill,
-                                                        width: WidgetConstants
-                                                            .screenWidth *
-                                                            0.8,
-                                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                          return Image.asset(
-                                                            ImageConstants
-                                                                .medicine,
-                                                            width: WidgetConstants
-                                                                .screenWidth *
-                                                                0.8,
-                                                          );
-                                                        },
-                                                      ),
+                                                              offersController
+                                                                  .getOwnerOfferList[
+                                                                      index]
+                                                                  .image!
+                                                                  .dynamicUrl
+                                                                  .toString(),
+                                                              fit: BoxFit.fill,
+                                                              width: WidgetConstants
+                                                                      .screenWidth *
+                                                                  0.8,
+                                                              errorBuilder: (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace?
+                                                                      stackTrace) {
+                                                                return Image
+                                                                    .asset(
+                                                                  ImageConstants
+                                                                      .medicine,
+                                                                  width: WidgetConstants
+                                                                          .screenWidth *
+                                                                      0.8,
+                                                                );
+                                                              },
+                                                            ),
                                                     ),
                                                     SizedBox(
                                                       height: 55,

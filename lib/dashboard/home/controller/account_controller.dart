@@ -36,7 +36,6 @@ class AccountController extends GetxController {
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
   RxBool isLoading = false.obs;
-  RxBool hasStoreAccess = false.obs;
 
   RxBool plan30 = false.obs;
   RxBool plan90 = false.obs;

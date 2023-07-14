@@ -25,7 +25,6 @@ class OtpVerificationController extends GetxController {
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  RxBool hasStoreAccess = false.obs;
 
   @override
   void onInit() {
