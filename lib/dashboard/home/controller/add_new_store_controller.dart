@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:file_picker/file_picker.dart';
@@ -459,9 +460,10 @@ class AddNewStoreController extends GetxController {
         storeIdValue.value = value?.body["data"]['store_id'].toString() ?? "";
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
-        Get.back(id: pageIdApp.value);
+        apiGetPermissions();
         await createDynamicLink();
         await apiDynamicLink();
+        Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -472,6 +474,41 @@ class AddNewStoreController extends GetxController {
         }
       }
     });
+  }
+
+  ///GET STORE PERMISSIONS
+  Future apiGetPermissions() async {
+    try {
+      debugPrint(
+          "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
+      Map<String, String> headers = {
+        'Authorization': "Bearer ${authToken.value.toString()}",
+      };
+      debugPrint("GET STORE PERMISSIONS TOKEN ********** $headers");
+      UserProvider()
+          .getWithHeadersApi(
+              ServerCommunicator().baseUrl +
+                  ServerCommunicator().storePermissionsList,
+              headers,
+              showLoading: false)
+          .then((value) async {
+        log("GET STORE PERMISSIONS RESPONSE *******${value?.body}");
+        if (value?.body["status"] == ApiConstants.statusCode201 ||
+            value?.body["status"] == ApiConstants.statusCode200) {
+          getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
+          permissionStoreList.clear();
+          permissionStoreList.value = getPermissionsModel.data!.stores!;
+        } else if (value?.body["status"] == ApiConstants.statusCode401) {
+          Utility.showAlertMessage(value?.body['message']);
+        } else {
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
+          }
+        }
+      });
+    } catch (e) {
+      log("GET STORE PERMISSIONS ERROR*******${e.toString()}");
+    }
   }
 
   ///Dynamic link
