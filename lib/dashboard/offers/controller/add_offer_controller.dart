@@ -68,9 +68,7 @@ class AddOffersController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -123,7 +121,7 @@ class AddOffersController extends GetxController {
   void onInit() {
     super.onInit();
     apiGetStoreList();
-    // isFrom.value = Get.arguments["isFrom"] ?? "";
+
     isFrom.value = Get.parameters["isFrom"] ?? "";
     if (isFrom.value == StringConstants.addOfferText) {
     } else {
@@ -338,7 +336,6 @@ class AddOffersController extends GetxController {
                 status: "deleted",
                 createdAt: storeProductList[i].createdAt,
                 updatedAt: storeProductList[i].updatedAt,
-                //   quantityTypeId: storeProductList[i].quantity,
               ),
             ));
           }
@@ -434,7 +431,6 @@ class AddOffersController extends GetxController {
         "offer_name": offerNameTextController.text.trim(),
         "image_url": offerImageOriginalLinkFromServer.value.trim(),
         "offer_value": double.parse(discountOrOfferTextController.text.trim()),
-        //"is_expired": false
       },
       "offer_products": selectedProducts
     };
@@ -452,9 +448,8 @@ class AddOffersController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         radioValue.value = "";
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
-        // Navigator.of(context).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

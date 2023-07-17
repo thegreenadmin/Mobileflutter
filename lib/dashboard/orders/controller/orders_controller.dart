@@ -213,7 +213,6 @@ class OrdersController extends GetxController {
                         itemPadding:
                             const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
-                          // _selectedIcon ?? Icons.star,
                           Icons.star,
                           color: Colors.amber,
                         ),
@@ -299,7 +298,7 @@ class OrdersController extends GetxController {
                         ),
                         onTap: () {
                           Get.back(id: pageIdApp.value);
-                          // Navigator.pop(ctxX);
+
                           apiCreateReview();
                         },
                         height: 50,
@@ -358,7 +357,6 @@ class OrdersController extends GetxController {
                               splashColor: Colors.transparent,
                               onTap: () {
                                 Get.back(id: pageIdApp.value);
-                                // Navigator.of(ctxx).pop();
                               },
                               child: Image.asset(
                                 ImageConstants.cross,
@@ -378,7 +376,12 @@ class OrdersController extends GetxController {
                                 borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
                                     color: AppColors.white, width: 1)),
-                            child: orderItemObj.value.product?.productImages
+                            child: orderItemObj.value.product == null ||
+                                    orderItemObj.value.product?.productImages ==
+                                        null ||
+                                    orderItemObj.value.product!.productImages!
+                                        .isEmpty ||
+                                    orderItemObj.value.product?.productImages
                                             ?.first.image?.dynamicUrl ==
                                         null ||
                                     orderItemObj.value.product!.productImages!
@@ -633,10 +636,7 @@ class OrdersController extends GetxController {
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
-        //  Get.back(id:pageIdApp.value );
-        // Navigator.of(ctx).pop();
-        // Get.back();
-        // Get.offAll(BottomNavigation());
+        apiGetOrderDetailsApi();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -688,9 +688,7 @@ class OrdersController extends GetxController {
         reasonController.clear();
         apiGetOrderDetailsApi();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -744,7 +742,7 @@ class OrdersController extends GetxController {
     }
     orderListResponse = OrderListResponse();
     isDataLoading.value = orderList.isNotEmpty ? true : false;
-    // orderListResponse = order_list.OrderListResponse();
+
     isLoading.value = orderList.isNotEmpty ? true : false;
     debugPrint("role List URL**********${role!.value}");
     debugPrint("Order List URL****${page.value}******"

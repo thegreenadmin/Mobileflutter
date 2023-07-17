@@ -119,9 +119,7 @@ class AddNewStoreController extends GetxController {
         debugPrint("PRIVACY FILEE *********** $termsFile");
         uploadPdfToServer();
       }
-    } else {
-      // User canceled the picker
-    }
+    } else {}
   }
 
   @override
@@ -229,9 +227,7 @@ class AddNewStoreController extends GetxController {
           await apiUploadImage();
           update();
         }
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -375,7 +371,6 @@ class AddNewStoreController extends GetxController {
         "store_phone_code": countryCode.value
       },
       "store_address": {
-        // "state_id": stateId.value.trim(),
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
@@ -420,7 +415,7 @@ class AddNewStoreController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        // Get.back();
+
         openingTimeTextController.clear();
         closingTimeTextController.clear();
         deliveryServicesTextController.clear();

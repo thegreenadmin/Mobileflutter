@@ -359,8 +359,7 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
-        // Get.back();
+
         update();
       } else {
         if (value.body['message'] != null) {
@@ -413,8 +412,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
-        // Get.back();
+
         update();
       } else {
         if (value?.body['message'] != null) {
@@ -456,8 +454,7 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
-        // Get.back();
+
         update();
       } else {
         if (value.body['message'] != null) {
@@ -509,7 +506,7 @@ class OrdersHomeMainController extends GetxController {
           element.isSelected = false;
         }
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
+
         update();
       } else {
         if (value.body['message'] != null) {

@@ -66,12 +66,12 @@ class UserInboxDetailController extends GetxController {
         await apiUploadImage();
         update();
       } else {
-        // api();
+
       }
     }, onCameraClick: () async {
-      // Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-      // Navigator.of(context).pop();
-      // Get.back();
+
+
+
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -82,7 +82,7 @@ class UserInboxDetailController extends GetxController {
         await apiUploadImage();
         update();
       } else {
-        // api();
+
       }
     });
   }

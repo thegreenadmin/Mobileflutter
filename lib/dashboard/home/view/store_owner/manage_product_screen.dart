@@ -24,7 +24,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         border: Border.all(
-            width: 0, //
+            width: 0,
             color: AppColors.blacklight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
@@ -144,7 +144,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
                                     Get.back(id: pageIdApp.value);
-                                    // Navigator.of(context).pop();
+
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -318,7 +318,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                     AlertStringConstants.areYouSureText,
                                     okay: StringConstants.deleteText,
                                     okayTap: () {
-                                    // Navigator.pop(Get.context!);
+
 
                                     manageStoreController.categoryId.value =
                                         manageStoreController
@@ -441,13 +441,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .categoriesList[index]
                                                     .categoryId ??
                                                 "";
-                                        // SharedPreferenceStorage.setData(
-                                        //     "context", context);
-                                        // Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //   builder: (_) =>
-                                        //       const EditCategoryScreen(),
-                                        // ))
                                         hasStoreAccess.value && permissionStoreList.isEmpty ||
                                         permissionStoreList.any((element) =>
                                                 element.storeId == manageStoreController.storeId.value &&
@@ -506,13 +499,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                 "";
                                         manageStoreController
                                             .apiGetStoreProducts();
-                                        // SharedPreferenceStorage.setData(
-                                        //     "context", context);
-                                        // Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //   builder: (_) =>
-                                        //       const ProductListScreen(),
-                                        // ));
+
                                         Get.to(const ProductListScreen(),
                                             id: pageIdApp.value);
                                       },

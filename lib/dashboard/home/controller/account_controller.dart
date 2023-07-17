@@ -148,11 +148,8 @@ class AccountController extends GetxController {
         idProofImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      //Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -162,9 +159,7 @@ class AccountController extends GetxController {
         idProofImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -281,7 +276,6 @@ class AccountController extends GetxController {
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
-                    //suffixText: "*$days Days",
                     hintText: StringConstants.numberOfDaysText,
                     hintStyle:
                         const TextStyle(color: AppColors.grey, fontSize: 14),
@@ -946,7 +940,7 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         Get.back(id: pageIdApp.value);
-        // Get.back(id: pageIdApp.value);
+
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

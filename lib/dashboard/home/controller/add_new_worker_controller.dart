@@ -181,7 +181,6 @@ class AddNewWorkerController extends GetxController {
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
-        // Utility.showAlertMessage(value?.body['message'] ?? "",color: AppColors.green);
         Utility.showToast(value?.body['message'] ?? "");
         resetForm();
         await apiGetWorkerList();
@@ -264,7 +263,7 @@ class AddNewWorkerController extends GetxController {
               .toString();
           debugPrint("test isSelected dayOfWeek");
           debugPrint(element.id.toString());
-          // print(employeeTimings.firstWhere((data) => data.dayOfWeek == element.id).dayOfWeek!=element.id);
+
           if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
             employeeTimings.add(employeeTiming);
           }
@@ -310,7 +309,7 @@ class AddNewWorkerController extends GetxController {
         Utility.showToast(value.body['message']);
         resetForm();
         await apiGetWorkerList();
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -377,12 +376,8 @@ class AddNewWorkerController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-      //Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -392,9 +387,7 @@ class AddNewWorkerController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 

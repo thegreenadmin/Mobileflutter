@@ -128,7 +128,6 @@ class StoreHomeMainController extends GetxController {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
 
-    // print(lastSelectedIndex);
     popUpIndex.value = 1;
     if (i == 0) {
       await apiGetStoreOffersApi();
@@ -393,7 +392,6 @@ class StoreHomeMainController extends GetxController {
                 InkWell(
                   onTap: () {
                     Get.back();
-                    // Navigator.of(ctx).pop();
                   },
                   child: Container(
                     height: 50.0,
@@ -418,7 +416,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () {
                     if (itemsCount.value != 0) {
                       Get.back();
-                      // Navigator.of(ctx).pop();
+
                       apiAddToCart(context);
                     } else {
                       Utility.showToast(
@@ -499,9 +497,6 @@ class StoreHomeMainController extends GetxController {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-
-          // await apiGetCartListApi(context,
-          //     storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -545,9 +540,6 @@ class StoreHomeMainController extends GetxController {
             value.body["data"]["message_head_id"] ?? "";
         SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
-        // Navigator.of(ctx).push(MaterialPageRoute(
-        //   builder: (_) => const UserInboxDetailScreen(),
-        // ));
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -695,7 +687,6 @@ class StoreHomeMainController extends GetxController {
             isFromHome.value == true) {
           isDeleteCartItem.value = false;
           Get.until((route) => route.isFirst, id: pageIdApp.value);
-          // Navigator.of(context).popUntil((route) => route.isFirst);
         } else if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == false) {
@@ -976,7 +967,6 @@ class StoreHomeMainController extends GetxController {
             ),
             height25SizedBox,
             Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () async {
@@ -1011,9 +1001,6 @@ class StoreHomeMainController extends GetxController {
                     apiGetCartListApi();
                     apiGetUserWalletBalance();
                     Get.to(() => const CartScreen(), id: pageIdApp.value);
-                    // Navigator.of(ctx).pushReplacement(MaterialPageRoute(
-                    //   builder: (_) => const CartScreen(),
-                    // ));
                   },
                   child: Container(
                     height: 50.0,
@@ -1281,7 +1268,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: showLoading.value) //orderBy == "2" ? true : false)
+            showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Feature ProductList Store *******${value?.body}");
@@ -1462,7 +1449,6 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
-        // storeAddress.value.store?.isFavouriteStore = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1506,7 +1492,6 @@ class StoreHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
-        // storeAddress.value.store?.isFavouriteStore = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1631,7 +1616,6 @@ class StoreHomeMainController extends GetxController {
       "category_id": null,
       "is_favourite_products": false,
       "is_previous_products": true,
-      // "offer_id":
       "filters": [
         // {
         //     "filter_by": "is_featured_product",
@@ -1648,7 +1632,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().shopStoreProductList,
             headers,
-            showLoading: false) //orderBy == "2" ? true : false)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("PREVIOUS ORDERS BODY *******${value?.body}");

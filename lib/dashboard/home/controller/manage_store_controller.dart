@@ -101,10 +101,9 @@ class ManageStoreController extends GetxController {
         return Utility.showAlertMessage(
             AlertStringConstants.only5MaximumImagesCanSelectText);
       }
-      //else {
+
       imageFileList!.addAll(selectedImages);
       apiUploadMultipleImage(imageUrlList.length);
-      // }
     }
   }
 
@@ -170,10 +169,6 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit(BuildContext bCntx) async {
     if (validateAndSave()) {
       try {
-        // if (imageFileList!.length < 1) {
-        //   Utility.showAlertMessage(
-        //       AlertStringConstants.pleaseUploadAtLeastOneImageText);
-        // } else
         if (selectedCategories.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectCategoriesText);
@@ -239,7 +234,6 @@ class ManageStoreController extends GetxController {
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
-    //if (imageFileList!.isNotEmpty) {
 
     for (var i = 0; i < imageFileList!.length; i++) {
       request.files.add(http.MultipartFile(
@@ -265,9 +259,7 @@ class ManageStoreController extends GetxController {
       inputData.productImages = imagesList.isEmpty ? [] : imagesList;
       imageUrlList.refresh();
     });
-    //} else {
-    // Utility.showAlertMessage("Please Select atleast one image");
-    // }
+
     return null;
   }
 
@@ -705,12 +697,6 @@ class ManageStoreController extends GetxController {
     inputData.product = product;
     List<ProductCategories> listProductCategory = <ProductCategories>[];
     for (int i = 0; i < selectedCategories.length; i++) {
-      // ProductCategory productCategory = ProductCategory();
-      // productCategory.status = "active";
-      // productCategory.productCategoryId = categoryId.value;
-      // productCategory.category =
-      //     Categorys(categoryId: int.parse(categoryId.value));
-      // listProductCategory.add(productCategory);
       ProductCategories productCategory = ProductCategories();
       productCategory.status = selectedCategories[i]['status'];
       productCategory.categoryId =
@@ -768,7 +754,6 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        // Get.back();
 
         productNameTextController.clear();
         quantityTextController.clear();

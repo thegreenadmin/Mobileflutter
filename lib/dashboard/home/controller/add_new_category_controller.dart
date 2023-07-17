@@ -122,13 +122,8 @@ class AddNewCategoryController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -138,9 +133,7 @@ class AddNewCategoryController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -237,7 +230,6 @@ class AddNewCategoryController extends GetxController {
         categoryImageDynamicLinkFromServer.value = "";
         Get.delete<ManageStoreController>();
         Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
-        // Get.back(id: pageIdApp.value);
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -313,9 +305,9 @@ class AddNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
-        // Navigator.of(contextt).pop();
+
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {
