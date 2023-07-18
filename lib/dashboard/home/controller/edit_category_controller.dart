@@ -109,9 +109,6 @@ class EditNewCategoryController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext ncontext) {
     return Utility.showSelectionMediaDialog(ncontext, onGalleryClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -121,13 +118,8 @@ class EditNewCategoryController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-      // Get.back(id:pageIdApp.value );
-      // Navigator.of(context).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -137,9 +129,7 @@ class EditNewCategoryController extends GetxController {
         categoryImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -232,10 +222,8 @@ class EditNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
-        // Get.back();
-        // Navigator.of(nContext).pop();
+
         Get.back(id: pageIdApp.value);
-        // Navigator.of(Get.context!).pop();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -311,9 +299,9 @@ class EditNewCategoryController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
-        // Navigator.of(contextt).pop();
+
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
       } else if (value.body["status"] == ApiConstants.statusCode401) {

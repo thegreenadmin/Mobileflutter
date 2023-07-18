@@ -1,7 +1,7 @@
 import 'orders_model.dart';
 
 class GetUserTransactionModel {
-  int? status;
+  dynamic status;
   String? message;
   UserTransactionData? data;
 
@@ -27,7 +27,7 @@ class GetUserTransactionModel {
 }
 
 class UserTransactionData {
-  int? totalCount;
+  dynamic totalCount;
   List<Transactionss>? transactions;
 
   UserTransactionData({this.totalCount, this.transactions});
@@ -274,10 +274,10 @@ class TransactionHistories {
 
 class ReturnOrderItem {
   String? orderItemId;
-  int? returnItemsCount;
+  dynamic returnItemsCount;
   String? remarks;
-  double? totalTaxReversed;
-  double? totalAmountReversed;
+  dynamic totalTaxReversed;
+  dynamic totalAmountReversed;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -334,7 +334,7 @@ class TransactionList {
   String? stripePaymentIntentTransactionId;
   String? stripePayoutTransactionId;
   String? transactionType;
-  int? transactionAmount;
+  dynamic transactionAmount;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -404,8 +404,8 @@ class Membership {
   String? membershipId;
   String? transactionId;
   String? membershipPlanId;
-  int? membershipCharge;
-  int? duration;
+  dynamic membershipCharge;
+  dynamic duration;
   String? expiredAt;
   MembershipPlan? membershipPlan;
   Transaction? transaction;
@@ -457,10 +457,10 @@ class Membership {
   String? id;
   String? planName;
   String? planType;
-  int? plan30Charge;
-  int? plan90Charge;
-  int? plan180Charge;
-  int? plan365Charge;
+   dynamic plan30Charge;
+   dynamic plan90Charge;
+   dynamic plan180Charge;
+   dynamic plan365Charge;
   String? planDescription;
   String? status;
   String? createdAt;

@@ -48,10 +48,9 @@ class OffersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if (Get.parameters['isFromNotification'] != "false") {
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
-      // }
+
       getData();
     });
   }

@@ -77,10 +77,6 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
 
                           storeHomeMainController.category.value =
                               storeHomeMainController.categoriesList[index];
-                          // SharedPreferenceStorage.setData("context", context);
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const UserProductListScreen(),
-                          // ));
                           await Get.to(const UserProductListScreen(),
                               id: pageIdApp.value);
                         },

@@ -195,9 +195,7 @@ class OwnerStoresController extends GetxController {
         debugPrint("PRIVACY FILE *********** $termsFile");
         uploadPdfToServer();
       }
-    } else {
-      // User canceled the picker
-    }
+    } else {}
   }
 
   ///Api upload PDF to server
@@ -290,8 +288,6 @@ class OwnerStoresController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      // Get.back();
-      //  Navigator.of(Get.context!).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -307,12 +303,8 @@ class OwnerStoresController extends GetxController {
           await apiUploadImage();
           update();
         }
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      // Get.back();
-      //  Navigator.of(Get.context!).pop();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -328,9 +320,7 @@ class OwnerStoresController extends GetxController {
           await apiUploadImage();
           update();
         }
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 
@@ -761,7 +751,6 @@ class OwnerStoresController extends GetxController {
       },
       "store_address": {
         "store_address_id": int.parse(storeAddressId!.value),
-        // "state_id": stateId.value,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",

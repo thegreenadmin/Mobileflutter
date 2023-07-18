@@ -20,7 +20,8 @@ class PayOutScreenState extends State<PayOutScreen> {
   final AddCardController addCardController = Get.put(AddCardController());
 
   @override
-  initState() {
+  void initState() {
+    super.initState();
     addCardController.apiGetBankAccountList();
   }
 
@@ -44,7 +45,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
-                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -127,11 +127,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                                             fontWeight: FontWeight.w500))
                                     : DropdownButtonFormField<String>(
                                         value: addCardController
-                                                        .storeNameValue.value !=
-                                                    null &&
-                                                addCardController
-                                                        .storeNameValue.value !=
-                                                    ""
+                                                    .storeNameValue.value !=
+                                                ""
                                             ? addCardController.storeList
                                                 .firstWhere((element) =>
                                                     element.storeId
@@ -209,110 +206,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                             ],
                           ),
                   ),
-                  // Obx(() => addCardController.storeList.isEmpty
-                  //     ? Column(
-                  //         children: [
-                  //           addCardController.isStoreLoading.value
-                  //               ? height0SizedBox
-                  //               : Row(
-                  //                   mainAxisAlignment: MainAxisAlignment.start,
-                  //                   crossAxisAlignment:
-                  //                       CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     const Icon(
-                  //                       Icons.warning_amber,
-                  //                       color: AppColors.grey,
-                  //                       size: 24.0,
-                  //                     ),
-                  //                     width4SizedBox,
-                  //                     Flexible(
-                  //                         child: Text(
-                  //                             StringConstants
-                  //                                 .toKnowBalanceYouDontHaveText,
-                  //                             style: TextStyle(
-                  //                                 color: AppColors.blacklight,
-                  //                                 fontSize: 18))),
-                  //                   ],
-                  //                 )
-                  //         ],
-                  //       )
-                  //     : Row(
-                  //         children: [
-                  //           Expanded(
-                  //             flex: 4,
-                  //             child: Text(
-                  //               StringConstants.selectStoreText,
-                  //               style: const TextStyle(
-                  //                 color: AppColors.black,
-                  //                 fontSize: 16,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //           Expanded(
-                  //             flex: 6,
-                  //             child: DropdownButtonFormField<String>(
-                  //               isExpanded: true,
-                  //               decoration: InputDecoration(
-                  //                 enabledBorder: UnderlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(5.0),
-                  //                   borderSide: const BorderSide(
-                  //                     color: AppColors.grey,
-                  //                     width: 1.0,
-                  //                   ),
-                  //                 ),
-                  //                 border: UnderlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(5.0),
-                  //                   borderSide: const BorderSide(
-                  //                     color: AppColors.primary,
-                  //                     width: 1.0,
-                  //                   ),
-                  //                 ),
-                  //                 focusedBorder: UnderlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(5.0),
-                  //                   borderSide: const BorderSide(
-                  //                     color: AppColors.primary,
-                  //                     width: 1.0,
-                  //                   ),
-                  //                 ),
-                  //                 errorBorder: UnderlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(5.0),
-                  //                   borderSide: const BorderSide(
-                  //                     color: AppColors.primary,
-                  //                     width: 1.0,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               hint: Text(
-                  //                 StringConstants.selectStoreText,
-                  //                 style: const TextStyle(
-                  //                   color: AppColors.grey,
-                  //                 ),
-                  //               ),
-                  //               items: addCardController.storeList
-                  //                   .map((dynamic value) {
-                  //                 return DropdownMenuItem<String>(
-                  //                   value: value.storeId,
-                  //                   child: Text(
-                  //                     value.storeName,
-                  //                     style: const TextStyle(
-                  //                         color: AppColors.black,
-                  //                         fontSize: 16,
-                  //                         fontWeight: FontWeight.w500),
-                  //                   ),
-                  //                 );
-                  //               }).toList(),
-                  //               onChanged: (value) {
-                  //                 addCardController.storeId!.value =
-                  //                     value.toString();
-                  //                 addCardController.selectedStore.value =
-                  //                     value.toString();
-                  //                 addCardController.apiGetOwnerWalletBalance();
-                  //                 addCardController.apiGetStoreServiceCharge();
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       )),
                   height25SizedBox,
                   Row(
                     children: [
@@ -339,7 +232,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                           : Expanded(
                               flex: 6,
                               child: Text(
-                                  "\$${addCardController.ownerWalletBalance!.value}",
+                                  "\$${addCardController.ownerWalletBalance?.value ?? "0.00"}",
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
@@ -371,20 +264,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                               FilteringTextInputFormatter.allow(
                                   RegExp(r'^(\d+)?\.?\d{0,2}'))
                             ],
-                            onChanged: (value) {
-                              // addCardController.totalWithdrawAmount.value =
-                              //     double.parse((double.parse(addCardController
-                              //                 .payoutAmountTextController
-                              //                 .text) +
-                              //             double.parse(addCardController
-                              //                     .payoutAmountTextController
-                              //                     .text) *
-                              //                 (double.parse(addCardController
-                              //                         .storeServiceCharge.value
-                              //                         .toString()) /
-                              //                     100))
-                              //         .toStringAsFixed(2));
-                            },
+                            onChanged: (value) {},
                             textInputAction: TextInputAction.next,
                             autofocus: false,
                             style: const TextStyle(
@@ -447,14 +327,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text(
-                            //   "Service charges are ${addCardController.storeServiceCharge}%",
-                            //   style: const TextStyle(
-                            //       color: AppColors.black,
-                            //       fontSize: 16,
-                            //       fontWeight: FontWeight.w500),
-                            // ),
-                            // height10SizedBox,
                             Row(
                               children: [
                                 Image.asset(
@@ -464,7 +336,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                                 width10SizedBox,
                                 Text(
                                   "Withdraw all \$${addCardController.payoutAmountTextController.text}",
-                                  // " Withdraw all \$${addCardController.totalWithdrawAmount.value}",
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
@@ -551,16 +422,6 @@ class PayOutScreenState extends State<PayOutScreen> {
                                               addCardController
                                                   .apiGetBankAccountList();
                                             });
-                                            // SharedPreferenceStorage.setData(
-                                            //     "context", context);
-                                            // Navigator.of(context)
-                                            //     .push(MaterialPageRoute(
-                                            //       builder: (_) =>
-                                            //           const CreateOwnerBankAccount(),
-                                            //     ))
-                                            //     // Get.to(() => const CreateOwnerBankAccount())!
-                                            //     .then((value) => addCardController
-                                            //         .apiGetBankAccountList());
                                           },
                                           height: 50,
                                           width:

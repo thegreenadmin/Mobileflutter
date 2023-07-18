@@ -104,7 +104,7 @@ class SearchStoreUserController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    //
+
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     searchController.clear();
@@ -445,9 +445,7 @@ class SearchStoreUserController extends GetxController {
           }
           storeAddresses.addAll(storeAddressesNewList);
           for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {
-              // favStoreAddresses.add(element);
-            }
+            if (element.store?.isFavouriteStore == true) {}
           }
         }
         storeAddresses.toSet().toList();
@@ -467,7 +465,6 @@ class SearchStoreUserController extends GetxController {
           }
 
           Get.back(id: pageIdApp.value);
-          // Navigator.of(context).pop();
         }
         if (isSearch) {
           zipCodeTextController.clear();
@@ -650,25 +647,10 @@ class SearchStoreUserController extends GetxController {
           storeAddresses.clear();
           page.value = 1;
           apiGetNearByStores();
-          // for (var element in storeAddresses) {
-          //   if (element.store?.storeId == id) {
-          //     debugPrint("Create before isFavouriteStore*******${element.store?.isFavouriteStore}");
-          //     element.store?.isFavouriteStore = true;
-          //     debugPrint("Create vstoreId *******${element.store?.storeId}");
-          //     debugPrint("Create after isFavouriteStore*******${element.store?.isFavouriteStore}");
-          //     // favStoreAddresses.remove(element);
-          //   }
-          // }
         } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
           apiGetPreviousStores(Get.context!);
-          // for (var element in previousStore) {
-          //   if (element.storeId == id) {
-          //     element.isFavouriteStore = true;
-          //     // favStoreAddresses.remove(element);
-          //   }
-          // }
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -720,22 +702,10 @@ class SearchStoreUserController extends GetxController {
           storeAddresses.clear();
           page.value = 1;
           apiGetNearByStores();
-          // for (var element in storeAddresses) {
-          //   if (element.store?.storeId == id) {
-          //     element.store?.isFavouriteStore = false;
-          //     // favStoreAddresses.remove(element);
-          //   }
-          // }
         } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
           apiGetPreviousStores(Get.context!);
-          // for (var element in previousStore) {
-          //   if (element.storeId == id) {
-          //     element.isFavouriteStore = false;
-          //     // favStoreAddresses.remove(element);
-          //   }
-          // }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

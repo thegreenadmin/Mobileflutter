@@ -1,7 +1,7 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
@@ -9,7 +9,6 @@ import 'package:thegreenmall/authentication/signup/controller/signup_controller.
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
-import 'package:get/get.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
@@ -177,6 +176,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterLastNameText;
+                          } else if (value.length < 2) {
+                            return AlertStringConstants
+                                .lastNameMustContainsText;
                           }
                           return null;
                         },
@@ -358,7 +360,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     height8SizedBox,
-                    InkWell(
+                    TextFormField(
                       onTap: () async {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
@@ -392,65 +394,68 @@ class _SignupScreenState extends State<SignupScreen> {
                             signupController.dateTextController.text);
                         bool result = signupController.isAdultCheck(
                             signupController.dateTextController.text);
-                        if (result) {
-                        } else {
+                        if (!result) {
                           signupController.ageAlertDailogue(Get.context);
                           signupController.dateTextController.clear();
                         }
                       },
-                      child: TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.done,
-                        enabled: false,
-                        style: const TextStyle(
-                            color: AppColors.black,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseSelectDateText;
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textInputAction: TextInputAction.done,
+                      enabled: true,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      controller: signupController.dateTextController,
+                      decoration: InputDecoration(
+                        labelText: StringConstants.dobText,
+                        labelStyle: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: signupController.dateTextController,
-                        decoration: InputDecoration(
-                          labelText: StringConstants.dobText,
-                          labelStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blacklight,
-                              decoration: TextDecoration.none),
-                          fillColor: Colors.white,
-                          contentPadding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 5, bottom: 5),
-                          hintText: StringConstants.ageText,
-                          hintStyle: const TextStyle(color: AppColors.primary),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.blacklight,
+                            decoration: TextDecoration.none),
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.only(
+                            left: 10, right: 10, top: 5, bottom: 5),
+                        hintText: StringConstants.ageText,
+                        hintStyle: const TextStyle(color: AppColors.primary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.0,
                           ),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.grey,
+                            width: 1.0,
                           ),
-                          prefixIcon: Image.asset(
-                            ImageConstants.calendar,
-                            scale: 2.8,
-                          ),
+                        ),
+                        prefixIcon: Image.asset(
+                          ImageConstants.calendar,
+                          scale: 2.8,
                         ),
                       ),
                     ),

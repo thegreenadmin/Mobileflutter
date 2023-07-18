@@ -56,9 +56,6 @@ class OwnerInboxDetailController extends GetxController {
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-      // Navigator.of(context).pop();
-      // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.gallery,
@@ -68,13 +65,8 @@ class OwnerInboxDetailController extends GetxController {
         userSelectedImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     }, onCameraClick: () async {
-      //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-      // Navigator.of(context).pop();
-      // Get.back();
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -84,9 +76,7 @@ class OwnerInboxDetailController extends GetxController {
         userSelectedImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-        // api();
-      }
+      } else {}
     });
   }
 

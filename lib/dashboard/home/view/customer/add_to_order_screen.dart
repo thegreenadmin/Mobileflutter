@@ -501,13 +501,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                       .product!
                                       .productImages!
                                       .isEmpty
-                              ? Image.asset(
-                                  ImageConstants.defaultProduct,
-                                  fit: BoxFit.fill,
-                                  height: 120,
-                                  width: 120,
-                                  color: AppColors.grey.withOpacity(0.4),
-                                )
+                              ? Image.asset(ImageConstants.defaultProduct,
+                                  fit: BoxFit.fill, height: 120, width: 120)
                               : Column(
                                   children: [
                                     CarouselSlider(

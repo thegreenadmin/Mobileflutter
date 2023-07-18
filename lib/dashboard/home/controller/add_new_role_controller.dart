@@ -86,8 +86,6 @@ class AddNewRoleController extends GetxController {
         if (controllerIdsList.isEmpty) {
           Utility.showAlertMessage(strings
               .AlertStringConstants.pleaseSelectAtleastOnePermissionText);
-          // Utility.showToast(
-          //     AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
           await apiCreateRole(mcontext);
         }
@@ -182,7 +180,7 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -267,9 +265,7 @@ class AddNewRoleController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
-        // Navigator.of(buildContext).pushReplacement(MaterialPageRoute(
-        //   builder: (_) => const StartJourneyScreen(),
-        // ));
+
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -376,9 +372,8 @@ class AddNewRoleController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        // Get.back();
+
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

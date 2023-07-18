@@ -45,7 +45,6 @@ class TransactionDetailController extends GetxController {
     isCurrentMonthSelected.value = true;
     if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      // apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
       apiGetOwnerTransactionDetail();

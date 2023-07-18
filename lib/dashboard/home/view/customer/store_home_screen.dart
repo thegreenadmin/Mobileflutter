@@ -287,8 +287,6 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   fit: BoxFit.fill,
                                                   height: 180,
                                                   width: 160,
-                                                  // color: AppColors.grey
-                                                  //     .withOpacity(0.4),
                                                 ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),

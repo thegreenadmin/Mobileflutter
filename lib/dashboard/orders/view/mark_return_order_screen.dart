@@ -409,6 +409,17 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                             child: ordersHomeMainController
                                                             .getOrderItems[
                                                                 index]
+                                                            .product
+                                                            ?.productImages ==
+                                                        null ||
+                                                    ordersHomeMainController
+                                                        .getOrderItems[index]
+                                                        .product!
+                                                        .productImages!
+                                                        .isEmpty ||
+                                                    ordersHomeMainController
+                                                            .getOrderItems[
+                                                                index]
                                                             .product!
                                                             .productImages!
                                                             .first
