@@ -634,6 +634,10 @@ class AlertStringConstants {
   static String invalidQuantityText = "Invalid quantity";
   static String invalidInputText = "Invalid input";
 
+  //L
+  static String lastNameMustContainsText =
+      "Last name must contains 2 characters";
+
 //N
   static String noProductFoundForThisStore =
       "No products found for this store.";
@@ -649,6 +653,7 @@ class AlertStringConstants {
   //P
   static String pleaseFillAllDetailsText = "Please fill all of the details";
   static String pleaseSelectOrderTypeText = "Please select order type";
+  static String pleaseSelectDateText = "Please select a date";
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseSelectOneFilterText = "Please select one filter";
   static String pleaseSelectQuantityUnitText = "Please select quantity unit";

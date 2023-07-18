@@ -138,14 +138,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                         children: [
                                           InkWell(
                                             onTap: () async {
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context)
-                                              //     .push(MaterialPageRoute(
-                                              //       builder: (_) =>
-                                              //           const CartScreen(),
-                                              //     ))
-                                              await Get.to(const CartScreen(),
+                                              await Get.to(
+                                                      () => const CartScreen(),
                                                       id: pageIdApp.value)
                                                   ?.then((value) =>
                                                       searchStoreUserController
@@ -252,11 +246,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         child: InkWell(
                           onTap: () async {
                             searchStoreUserController.searchController.clear();
-                            // SharedPreferenceStorage.setData("context", context);
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //   builder: (_) => const FilterOptionScreen(),
-                            // ));
-                            await Get.to(const FilterOptionScreen(),
+                            await Get.to(() => const FilterOptionScreen(),
                                 id: pageIdApp.value);
                           },
                           child: Image.asset(
