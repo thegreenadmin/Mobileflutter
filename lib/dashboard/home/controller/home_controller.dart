@@ -100,7 +100,7 @@ class HomeController extends GetxController {
                       builder: (_) => const AccountScreen(),
                     ));*/
                     Get.back(id: pageIdApp.value);
-                    await Get.to(const AccountScreen(),
+                    await Get.to(() => const AccountScreen(),
                         id: int.parse(SharedPreferenceStorage.getData("pageId")
                             .toString()));
                   },
@@ -127,7 +127,7 @@ class HomeController extends GetxController {
             child: GestureDetector(
               onTap: () async {
                 Get.back(id: pageIdApp.value);
-                await Get.to(const AccountScreen(),
+                await Get.to(() => const AccountScreen(),
                     id: int.parse(
                         SharedPreferenceStorage.getData("pageId").toString()));
               },

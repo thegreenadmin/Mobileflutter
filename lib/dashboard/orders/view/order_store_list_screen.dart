@@ -126,7 +126,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                                   ele.controllerKey ==
                                                   PermissionKey
                                                       .manageOrders.statusName))
-                                  ? Get.to(const OrdersHomeMainScreen(),
+                                  ? Get.to(() => const OrdersHomeMainScreen(),
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
                                       AlertStringConstants.notAuthorizedToStoreText);

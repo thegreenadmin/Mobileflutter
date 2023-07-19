@@ -335,105 +335,96 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   false &&
                               manageStoreController.categoriesList.isEmpty
                           ? height0SizedBox
-                          : SizedBox(
-                              width: Get.width,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  for (var i = 0;
-                                      i <
-                                          manageStoreController
-                                              .categoriesList.length;
-                                      i++)
-                                    InkWell(
-                                      onTap: () {
-                                        if (manageStoreController
-                                                .categoriesList[i].isSelected ==
-                                            true) {
-                                          manageStoreController
-                                              .categoriesList[i]
-                                              .isSelected = false;
-                                          for (var item in manageStoreController
-                                              .selectedCategories) {
-                                            if (item['category']
-                                                    ['category_id'] ==
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .categoryId) {
-                                              item['status'] = "deleted";
-                                              debugPrint(manageStoreController
-                                                  .selectedCategories
-                                                  .toString());
-                                            }
-                                          }
-                                        } else {
-                                          manageStoreController
-                                              .categoriesList[i]
-                                              .isSelected = true;
-                                          for (var item in manageStoreController
-                                              .selectedCategories) {
-                                            if (item['category']
-                                                    ['category_id'] ==
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .categoryId) {
-                                              item['status'] = "active";
-                                              debugPrint(manageStoreController
-                                                  .selectedCategories
-                                                  .toString());
-                                            }
+                          : Wrap(
+                              children: [
+                                for (var i = 0;
+                                    i <
+                                        manageStoreController
+                                            .categoriesList.length;
+                                    i++)
+                                  InkWell(
+                                    onTap: () {
+                                      if (manageStoreController
+                                              .categoriesList[i].isSelected ==
+                                          true) {
+                                        manageStoreController.categoriesList[i]
+                                            .isSelected = false;
+                                        for (var item in manageStoreController
+                                            .selectedCategories) {
+                                          if (item['category']['category_id'] ==
+                                              manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryId) {
+                                            item['status'] = "deleted";
+                                            debugPrint(manageStoreController
+                                                .selectedCategories
+                                                .toString());
                                           }
                                         }
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 15,
-                                              right: 15,
-                                              top: 10,
-                                              bottom: 10),
-                                          margin: const EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 5,
-                                                blurRadius: 7,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
+                                      } else {
+                                        manageStoreController.categoriesList[i]
+                                            .isSelected = true;
+                                        for (var item in manageStoreController
+                                            .selectedCategories) {
+                                          if (item['category']['category_id'] ==
+                                              manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryId) {
+                                            item['status'] = "active";
+                                            debugPrint(manageStoreController
+                                                .selectedCategories
+                                                .toString());
+                                          }
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 15,
+                                            right: 15,
+                                            top: 10,
+                                            bottom: 10),
+                                        margin: const EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
+                                          color: manageStoreController
+                                                      .categoriesList[i]
+                                                      .isSelected ==
+                                                  true
+                                              ? AppColors.primary
+                                              : AppColors.primarylight,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(100),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryName ??
+                                              "",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
                                             color: manageStoreController
                                                         .categoriesList[i]
                                                         .isSelected ==
                                                     true
-                                                ? AppColors.primary
-                                                : AppColors.primarylight,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(100),
-                                            ),
+                                                ? AppColors.primarylight
+                                                : AppColors.primary,
                                           ),
-                                          child: Text(
-                                            manageStoreController
-                                                    .categoriesList[i]
-                                                    .categoryName ??
-                                                "",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: manageStoreController
-                                                          .categoriesList[i]
-                                                          .isSelected ==
-                                                      true
-                                                  ? AppColors.primarylight
-                                                  : AppColors.primary,
-                                            ),
-                                          )),
-                                    )
-                                ],
-                              ),
+                                        )),
+                                  )
+                              ],
                             )),
                       height20SizedBox,
                       Text.rich(

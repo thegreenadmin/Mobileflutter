@@ -81,7 +81,7 @@
 //                       highlightColor: Colors.transparent,
 //                       splashColor: Colors.transparent,
 //                       onTap: () {
-//                         Get.to(const EditStoreDetailScreen());
+//                         Get.to(()=>const EditStoreDetailScreen());
 //                       },
 //                       child: Text(StringConstants.editText,
 //                           style: const TextStyle(

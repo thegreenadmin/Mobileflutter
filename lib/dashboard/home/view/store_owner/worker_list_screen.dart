@@ -119,7 +119,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                       element.controllers!.any((ele) =>
                                           ele.controllerKey ==
                                           PermissionKey.createUser.statusName))
-                          ? Get.to(const AddNewWorkerScreen(),
+                          ? Get.to(() => const AddNewWorkerScreen(),
                               id: pageIdApp.value)
                           : Utility.showAlertMessage(
                               AlertStringConstants.notAuthorizedToStoreText);

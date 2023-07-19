@@ -372,9 +372,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       OrderStatusEnum.returnRequest.statusName
                                   ? hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
-                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
-                                                  element.isStoreOwner ==
-                                                      true ||
+                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId && element.isStoreOwner == true ||
                                               element.storeId ==
                                                       ordersHomeMainController
                                                           .ownerOrderHistoryList![
@@ -385,7 +383,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                       PermissionKey
                                                           .manageReturnRequests
                                                           .statusName))
-                                      ? Get.to(const MarkReturnOrderScreen(), id: pageIdApp.value)!
+                                      ? Get.to(() => const MarkReturnOrderScreen(),
+                                              id: pageIdApp.value)!
                                           .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
                                       : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
                                   /*: ordersHomeMainController
@@ -408,7 +407,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                               .orderStatusName == //7
                                           OrderStatusEnum.cancelled.statusName
                                       ? null*/
-                                  : Get.to(const MarkOrderStatusScreen(), id: pageIdApp.value);
+                                  : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value);
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(

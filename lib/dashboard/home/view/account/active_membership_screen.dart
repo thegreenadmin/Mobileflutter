@@ -247,8 +247,9 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const SelectMembershipPlan(),
                 //     ))
-                Get.to(const SelectMembershipPlan(), id: pageIdApp.value)!.then(
-                    (value) => accountController.apiGetActiveMembershipList());
+                Get.to(() => const SelectMembershipPlan(), id: pageIdApp.value)!
+                    .then((value) =>
+                        accountController.apiGetActiveMembershipList());
               },
               height: 50,
               text: StringConstants.selectMembershipPlanText,

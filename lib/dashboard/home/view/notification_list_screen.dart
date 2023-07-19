@@ -134,7 +134,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 ? notificationListController
                                         .notificationList[index]
                                         .isNotificationForStore!
-                                    ? Get.to(const OrdersHomeMainScreen(),
+                                    ? Get.to(() => const OrdersHomeMainScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
                                             "isFromNotification": true,
@@ -144,7 +144,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                         .storeId ??
                                                     ""
                                           })
-                                    : Get.to(const OrderConfirmationScreen(),
+                                    : Get.to(
+                                        () => const OrderConfirmationScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
                                             "isFromNotification": true,
@@ -157,7 +158,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 : notificationListController
                                             .notificationList[index].offerId !=
                                         null
-                                    ? Get.to(const OffersScreen(),
+                                    ? Get.to(() => const OffersScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
                                             "isFromNotification": true,

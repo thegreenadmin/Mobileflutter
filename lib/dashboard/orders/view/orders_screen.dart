@@ -484,7 +484,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   .toString() ??
                                               "";
 
-                                      Get.to(const OrderConfirmationScreen(),
+                                      Get.to(
+                                              () =>
+                                                  const OrderConfirmationScreen(),
                                               id: pageIdApp.value)
                                           ?.then((value) {
                                         ordersController.apiGetOrderListApi();
@@ -862,7 +864,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                       .first
                                                       .orderStatus!
                                                       .orderStatusName == //"12"
-                                                  OrderStatusEnum.returnConfirmed
+                                                  OrderStatusEnum
+                                                      .returnConfirmed
                                                       .statusName
                                               ? Get.to(() => const ReturnConfirmOrderScreen(),
                                                   id: int.parse(

@@ -292,6 +292,9 @@ class ManageStoreController extends GetxController {
               categoriesList[i].isSelected = true;
             }
           }
+          if (categoriesList[i].categoryId.toString() == categoryId.value) {
+            categoriesList[i].isSelected = true;
+          }
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

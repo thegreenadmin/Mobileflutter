@@ -265,7 +265,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Get.to(const PersonalInfoScreen(),
+                          Get.to(() => const PersonalInfoScreen(),
                               id: pageIdApp.value);
                         },
                         child: Row(
@@ -309,7 +309,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   // Navigator.of(context).push(MaterialPageRoute(
                                   //   builder: (_) => const AddCardScreen(),
                                   // ));
-                                  Get.to(const AddCardScreen(),
+                                  Get.to(() => const AddCardScreen(),
                                       id: accountController.pageId.value);
                                 },
                                 child: Row(
@@ -361,7 +361,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                           ele.controllerKey ==
                                           PermissionKey
                                               .manageTransaction.statusName))
-                              ? Get.to(const TransactionScreen(),
+                              ? Get.to(() => const TransactionScreen(),
                                   id: pageIdApp.value)
                               : Utility.showAlertMessage(AlertStringConstants
                                   .notAuthorizedToStoreText);
@@ -400,7 +400,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          Get.to(const AccountIdScreen(), id: pageIdApp.value);
+                          Get.to(() => const AccountIdScreen(),
+                              id: pageIdApp.value);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -449,7 +450,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                               permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
                                               element.isStoreOwner == true)
-                                      ? Get.to(const ActiveMembershipScreen(),
+                                      ? Get.to(
+                                          () => const ActiveMembershipScreen(),
                                           id: pageIdApp.value)
                                       : Utility.showAlertMessage(
                                           AlertStringConstants

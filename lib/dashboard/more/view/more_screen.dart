@@ -179,7 +179,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const ContactUsScreen(),
                 // ));
-                Get.to(const ContactUsScreen(), id: pageIdApp.value);
+                Get.to(() => const ContactUsScreen(), id: pageIdApp.value);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

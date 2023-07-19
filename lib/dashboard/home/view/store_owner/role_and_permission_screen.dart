@@ -110,7 +110,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                             ele.controllerKey ==
                                             PermissionKey.assignDesignationUser
                                                 .statusName))
-                            ? Get.to(const AddNewRoleScreen(),
+                            ? Get.to(()=>const AddNewRoleScreen(),
                                     id: pageIdApp.value)!
                                 .then((value) => addNewRoleController.apiGetStoreRole())
                             : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
@@ -261,7 +261,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                             PermissionKey
                                                                 .editDesignation
                                                                 .statusName))
-                                            ? Get.to(const EditRoleScreen(), id: pageIdApp.value)!
+                                            ? Get.to(()=>const EditRoleScreen(), id: pageIdApp.value)!
                                                 .then((value) => addNewRoleController.apiGetStoreRole())
                                             : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                       },

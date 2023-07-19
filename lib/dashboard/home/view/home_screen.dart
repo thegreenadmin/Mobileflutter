@@ -285,6 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       //   builder: (_) =>
                                       //       const OwnerStoresListScreen(),
                                       // ));
+                                      Get.parameters["isFromHome"] = 'false';
                                       Get.parameters["firstName"] =
                                           homeController.firstName?.value
                                                   .toString() ??
@@ -396,13 +397,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                Get.to(() => const TransactionScreen(),
-                                    id: pageIdApp.value);
-                                // SharedPreferenceStorage.setData(
-                                //     "context", context);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //   builder: (_) => const TransactionScreen(),
-                                // ));
+                                hasStoreAccess.value &&
+                                            permissionStoreList.isEmpty ||
+                                        permissionStoreList.any((element) =>
+                                            element.isStoreOwner == true ||
+                                            element.controllers!.any((ele) =>
+                                                ele.controllerKey ==
+                                                PermissionKey.manageTransaction
+                                                    .statusName))
+                                    ? Get.to(() => const TransactionScreen(),
+                                        id: pageIdApp.value)
+                                    : Utility.showAlertMessage(
+                                        AlertStringConstants
+                                            .notAuthorizedToStoreText);
                               },
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.all(14.0),
@@ -671,7 +678,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //       const ManageStoreMainScreen(),
                                               // ));
                                               Get.parameters["isFromHome"] =
-                                                  "true";
+                                                  "false";
                                               Get.parameters["storeId"] =
                                                   item.store!.storeId ?? "";
                                               Get.to(
@@ -928,8 +935,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   if (homeController.isLoading?.value ==
                                       false) {
-                                    // SharedPreferenceStorage.setData(
-                                    //     "context", context);
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["storeId"] = homeController
                                         .ownerFeatureProductList[index].storeId;
@@ -944,10 +949,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .category
                                                 ?.categoryName ??
                                             "";
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //   builder: (_) =>
-                                    //   const EditProductScreen(),
-                                    // ));
                                     hasStoreAccess.value &&
                                                 permissionStoreList.isEmpty ||
                                             permissionStoreList.any((element) =>

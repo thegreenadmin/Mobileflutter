@@ -93,7 +93,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         // Navigator.of(context).push(MaterialPageRoute(
                         //   builder: (_) => const PersonalInfoEditScreen(),
                         // ));
-                        Get.to(const PersonalInfoEditScreen(),
+                        Get.to(() => const PersonalInfoEditScreen(),
                             id: pageIdApp.value);
                       },
                       child: Text(StringConstants.editText,

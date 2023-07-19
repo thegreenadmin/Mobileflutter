@@ -86,13 +86,13 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           // await Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (_) => const AddToOrderScreen(),
                           // ));
-                          await Get.to(const AddToOrderScreen(),
+                          await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value)
                               ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
                                   });
-                          // Get.to(const AddToOrderScreen());
+                          // Get.to(()=>const AddToOrderScreen());
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

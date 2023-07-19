@@ -193,7 +193,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     fit: BoxFit.cover,
                                                   )
                                                 : Image.asset(
-                                                    ImageConstants.defaultProduct,
+                                                    ImageConstants
+                                                        .defaultProduct,
                                                     fit: BoxFit.cover,
                                                     // color: AppColors.grey
                                                     //     .withOpacity(0.4),
@@ -1177,7 +1178,7 @@ class _CartScreenState extends State<CartScreen> {
                                     //     .push(MaterialPageRoute(
                                     //   builder: (_) => const AddMoneyToWallet(),
                                     // ))
-                                    await Get.to(const AddMoneyToWallet(),
+                                    await Get.to(() => const AddMoneyToWallet(),
                                             id: pageIdApp.value)
                                         ?.then((value) {
                                       storeHomeMainController
@@ -1185,7 +1186,7 @@ class _CartScreenState extends State<CartScreen> {
                                     });
 
                                     Get.parameters["isFromCartScreen"] = "true";
-                                    // Get.to(const WalletScreen(),
+                                    // Get.to(()=>const WalletScreen(),
                                     //     arguments: {"isFromCartScreen": true});
                                   },
                                   child: Text(
@@ -1266,7 +1267,7 @@ class _CartScreenState extends State<CartScreen> {
                                           okay: StringConstants.addFundsText,
                                           okayTap: () async {
                                         Get.back();
-                                        await Get.to(const AddMoneyToWallet(),
+                                        await Get.to(()=>const AddMoneyToWallet(),
                                                 id: pageIdApp.value)
                                             ?.then((value) {
                                           storeHomeMainController

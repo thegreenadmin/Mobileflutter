@@ -56,7 +56,10 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 element.controllers!.any((ele) =>
                                     ele.controllerKey ==
                                     PermissionKey.editStore.statusName))
-                    ? Get.to(const EditStoreDetailScreen(), id: pageIdApp.value)
+                    ? Get.to(() => const EditStoreDetailScreen(),
+                            id: pageIdApp.value)
+                        ?.then((value) =>
+                            ownerStoresController.apiGetParticularStore())
                     : Utility.showAlertMessage(
                         AlertStringConstants.notAuthorizedToStoreText);
               },
@@ -127,7 +130,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                     ownerStoresController.storeName.value;
                 Get.parameters["storeLocation"] =
                     ownerStoresController.storeLocation.value;
-                Get.to(const MangeProductScreen(),
+                Get.to(() => const MangeProductScreen(),
                     id: pageIdApp.value,
                     arguments: {
                       "storeId": ownerStoresController.storeId.value,
@@ -204,7 +207,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (_) => const RoleAndPermissionScreen(),
                 // ));
-                Get.to(const RoleAndPermissionScreen(),
+                Get.to(() => const RoleAndPermissionScreen(),
                     id: pageIdApp.value,
                     arguments: {
                       "storeId": ownerStoresController.storeId.value,
@@ -291,7 +294,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> {
                                 element.controllers!.any((ele) =>
                                     ele.controllerKey ==
                                     PermissionKey.viewStoreUsers.statusName))
-                    ? Get.to(const WorkerListScreen(),
+                    ? Get.to(() => const WorkerListScreen(),
                         id: pageIdApp.value,
                         arguments: {
                             "storeId": ownerStoresController.storeId.value,

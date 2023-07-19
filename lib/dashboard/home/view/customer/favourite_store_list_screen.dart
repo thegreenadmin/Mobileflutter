@@ -69,7 +69,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                   searchStoreUserController
                                           .favouriteStore[index].storeId ??
                                       "";
-                              await Get.to(const StoreHomeMainScreen(),
+                              await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),

@@ -76,7 +76,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                       //     .push(MaterialPageRoute(
                                       //   builder: (_) => const AddOfferScreen(),
                                       // ))
-                                      Get.to(const AddOfferScreen(),
+                                      Get.to(() => const AddOfferScreen(),
                                           id: pageIdApp.value,
                                           arguments: {
                                             "isFrom":

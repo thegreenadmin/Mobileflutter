@@ -567,7 +567,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       splashColor: Colors.transparent,
                       onTap: () {
                         Get.back();
-                        Get.to(const LoginScreen());
+                        Get.to(() => const LoginScreen());
                       },
                       child: Center(
                         child: Text(

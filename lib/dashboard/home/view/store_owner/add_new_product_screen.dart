@@ -314,105 +314,90 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     Obx(
                       () => manageStoreController.categoriesList.isEmpty
                           ? height0SizedBox
-                          : SizedBox(
-                              width: Get.width,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Wrap(
-                                      children: [
-                                        for (var i = 0;
-                                            i <
-                                                manageStoreController
-                                                    .categoriesList.length;
-                                            i++)
-                                          InkWell(
-                                            onTap: () {
-                                              if (manageStoreController
+                          : Wrap(
+                              children: [
+                                for (var i = 0;
+                                    i <
+                                        manageStoreController
+                                            .categoriesList.length;
+                                    i++)
+                                  InkWell(
+                                    onTap: () {
+                                      if (manageStoreController
+                                              .categoriesList[i].isSelected ==
+                                          true) {
+                                        for (var item in manageStoreController
+                                            .selectedCategories) {
+                                          if (item['category_id'] ==
+                                              manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryId) {
+                                            item['status'] = "deleted";
+                                          }
+                                        }
+                                        manageStoreController.categoriesList[i]
+                                            .isSelected = false;
+                                      } else {
+                                        for (var item in manageStoreController
+                                            .selectedCategories) {
+                                          if (item['category_id'] ==
+                                              manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryId) {
+                                            item['status'] = "active";
+                                          }
+                                        }
+                                        manageStoreController.categoriesList[i]
+                                            .isSelected = true;
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 15,
+                                            right: 15,
+                                            top: 10,
+                                            bottom: 10),
+                                        margin: const EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
+                                          color: manageStoreController
                                                       .categoriesList[i]
                                                       .isSelected ==
-                                                  true) {
-                                                for (var item
-                                                    in manageStoreController
-                                                        .selectedCategories) {
-                                                  if (item['category_id'] ==
-                                                      manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryId) {
-                                                    item['status'] = "deleted";
-                                                  }
-                                                }
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .isSelected = false;
-                                              } else {
-                                                for (var item
-                                                    in manageStoreController
-                                                        .selectedCategories) {
-                                                  if (item['category_id'] ==
-                                                      manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryId) {
-                                                    item['status'] = "active";
-                                                  }
-                                                }
-                                                manageStoreController
-                                                    .categoriesList[i]
-                                                    .isSelected = true;
-                                              }
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 15,
-                                                    right: 15,
-                                                    top: 10,
-                                                    bottom: 10),
-                                                margin: const EdgeInsets.all(3),
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.1),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset:
-                                                          const Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                  color: manageStoreController
-                                                              .categoriesList[i]
-                                                              .isSelected ==
-                                                          true
-                                                      ? AppColors.primary
-                                                      : AppColors.primarylight,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(100),
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  manageStoreController
-                                                          .categoriesList[i]
-                                                          .categoryName ??
-                                                      "",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: manageStoreController
-                                                                .categoriesList[
-                                                                    i]
-                                                                .isSelected ==
-                                                            true
-                                                        ? AppColors.primarylight
-                                                        : AppColors.primary,
-                                                  ),
-                                                )),
-                                          )
-                                      ],
-                                    ),
-                                  ]),
+                                                  true
+                                              ? AppColors.primary
+                                              : AppColors.primarylight,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(100),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          manageStoreController
+                                                  .categoriesList[i]
+                                                  .categoryName ??
+                                              "",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: manageStoreController
+                                                        .categoriesList[i]
+                                                        .isSelected ==
+                                                    true
+                                                ? AppColors.primarylight
+                                                : AppColors.primary,
+                                          ),
+                                        )),
+                                  )
+                              ],
                             ),
                     ),
                     height20SizedBox,
@@ -515,11 +500,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       decimal: true),
                               inputFormatters: <TextInputFormatter>[
                                 LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-
                               textInputAction: TextInputAction.next,
                               autofocus: false,
                               style: const TextStyle(
@@ -606,7 +591,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(100),
-                          FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^(\d+)?\.?\d{0,2}'))
                         ],
                         style: const TextStyle(
                             color: AppColors.black,
@@ -971,7 +957,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               autofocus: false,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               style: const TextStyle(
                                   color: AppColors.black,
@@ -1143,7 +1130,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                         decimal: true),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(100),
-                                  FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ],
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -1232,7 +1220,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,
@@ -1320,7 +1309,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,
@@ -1411,7 +1401,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   autofocus: false,
                                   inputFormatters: <TextInputFormatter>[
                                     LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   style: const TextStyle(
                                       color: AppColors.black,

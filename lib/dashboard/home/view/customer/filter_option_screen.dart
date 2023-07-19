@@ -37,8 +37,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
-                                  // Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -186,7 +184,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   )),
               height15SizedBox,
               DropdownButtonFormField<String>(
-                value: "Open Now",
+                // value: "Open Now",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -237,11 +235,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   );
                 }).toList(),
                 onChanged: (v) {
-                  if (v == "Open Now") {
+                  searchStoreUserController.isOpenNow.value = v ?? "";
+                  /*if (v == "Open Now") {
                     searchStoreUserController.isOpenNow.value = true;
                   } else {
                     searchStoreUserController.isOpenNow.value = false;
-                  }
+                  }*/
                 },
               ),
               height15SizedBox,
@@ -300,7 +299,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                 .text = date.format(context).toString();
 
                             searchStoreUserController.openingTime.value =
-                                "${date.hour}:${date.minute}:00";
+                                Utility.formatDateTime(
+                                        searchStoreUserController
+                                            .openingTimeTextController.text,
+                                        firstFormat: "hh:mm",
+                                        secFormat: "HH:mm:ss")
+                                    .toString();
                           },
                           decoration: InputDecoration(
                               errorMaxLines: 3,
@@ -397,7 +401,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                                   .closingTimeTextController
                                   .text = date.format(context).toString();
                               searchStoreUserController.closingTime.value =
-                                  "${date.hour}:${date.minute}:00";
+                                  Utility.formatDateTime(
+                                          searchStoreUserController
+                                              .closingTimeTextController.text,
+                                          firstFormat: "hh:mm",
+                                          secFormat: "HH:mm:ss")
+                                      .toString();
                             },
                             decoration: InputDecoration(
                               errorMaxLines: 3,

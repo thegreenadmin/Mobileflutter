@@ -667,6 +667,55 @@ class OwnerStoresController extends GetxController {
               }
             }
           }
+
+          storeTimingList.clear();
+          if (storeTimings.isNotEmpty) {
+            for (int i = 0; i < weekDaysList.length; i++) {
+              for (var element in storeTimings) {
+                if (element["day_of_week"] == weekDaysList[i].id) {
+                  storeTimingList.add({
+                    "store_timing_id": element["store_timing_id"],
+                    "is_24_hours_active": false,
+                    "status": weekDaysList[i].isSelected == true
+                        ? "active"
+                        : "deleted",
+                    "day_of_week": weekDaysList[i].id,
+                    "opening_time": Utility.formatDateTime(
+                            openingTimeTextController.text.trim(),
+                            firstFormat: "hh:mm a",
+                            secFormat: "HH:mm:ss")
+                        .toString(),
+                    "closing_time": Utility.formatDateTime(
+                            closingTimeTextController.text.trim(),
+                            firstFormat: "hh:mm a",
+                            secFormat: "HH:mm:ss")
+                        .toString()
+                  });
+                }
+              }
+              if (weekDaysList[i].isSelected == true) {
+                if (!storeTimingList.any((element) =>
+                    element["day_of_week"] == weekDaysList[i].id)) {
+                  storeTimingList.add({
+                    "store_timing_id": null,
+                    "is_24_hours_active": false,
+                    "status": "active",
+                    "day_of_week": weekDaysList[i].id,
+                    "opening_time": Utility.formatDateTime(
+                            openingTimeTextController.text.trim(),
+                            firstFormat: "hh:mm a",
+                            secFormat: "HH:mm:ss")
+                        .toString(),
+                    "closing_time": Utility.formatDateTime(
+                            closingTimeTextController.text.trim(),
+                            firstFormat: "hh:mm a",
+                            secFormat: "HH:mm:ss")
+                        .toString()
+                  });
+                }
+              }
+            }
+          }
         }
         var concatenate = StringBuffer();
         if (storeDeliveryServices.isNotEmpty) {
@@ -780,7 +829,7 @@ class OwnerStoresController extends GetxController {
         }
       ]
     };
-    debugPrint("UPDATE STORE DETAIL BODY**********$data");
+    log("UPDATE STORE DETAIL BODY**********$data");
 
     UserProvider()
         .putWithHeadersApi(

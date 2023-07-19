@@ -242,20 +242,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     Radius.circular(12.0),
                                   )),
                               child: InkWell(
-                                onTap: () async {
+                                onTap: () {
                                   manageStoreController.productId.value =
                                       manageStoreController
                                               .storeProductList[index]
                                               .productId ??
                                           "";
-                                  await manageStoreController
+                                   manageStoreController
                                       .apiGetProductDetails();
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  // await Navigator.of(context)
-                                  //     .push(MaterialPageRoute(
-                                  //   builder: (_) => const EditProductScreen(),
-                                  // ))
+
                                   hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
                                               element.storeId ==

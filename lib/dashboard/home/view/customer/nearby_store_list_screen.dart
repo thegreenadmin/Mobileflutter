@@ -88,7 +88,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           .store
                                           ?.storeId ??
                                       "";
-                              await Get.to(const StoreHomeMainScreen(),
+                              await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
                               // Navigator.of(context).push(MaterialPageRoute(
                               //   builder: (_) => const StoreHomeMainScreen(),

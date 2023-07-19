@@ -23,9 +23,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
       width: WidgetConstants.screenWidth * 0.90,
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border.all(
-            width: 0,
-            color: AppColors.blacklight),
+        border: Border.all(width: 0, color: AppColors.blacklight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -144,7 +142,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                   onPressed: () {
                                     Get.delete<ManageStoreController>();
                                     Get.back(id: pageIdApp.value);
-
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -206,16 +203,16 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                       Get.parameters["categoryId"] = "";
 
                       hasStoreAccess.value && permissionStoreList.isEmpty ||
-                      permissionStoreList.any((element) =>
-                              element.storeId ==
-                                      manageStoreController.storeId.value &&
-                                  element.isStoreOwner == true ||
-                              element.storeId ==
-                                      manageStoreController.storeId.value &&
-                                  element.controllers!.any((ele) =>
-                                      ele.controllerKey ==
-                                      PermissionKey
-                                          .createProductCategories.statusName))
+                              permissionStoreList.any((element) =>
+                                  element.storeId ==
+                                          manageStoreController.storeId.value &&
+                                      element.isStoreOwner == true ||
+                                  element.storeId ==
+                                          manageStoreController.storeId.value &&
+                                      element.controllers!.any((ele) =>
+                                          ele.controllerKey ==
+                                          PermissionKey.createProductCategories
+                                              .statusName))
                           ? Get.to(() => const AddNewCategoryScreen(),
                                   id: pageIdApp.value,
                                   arguments: {
@@ -306,33 +303,38 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           key: UniqueKey(),
                           confirmDismiss: (DismissDirection direction) async {
                             hasStoreAccess.value && permissionStoreList.isEmpty ||
-                            permissionStoreList.any((element) =>
-                                    element.storeId == manageStoreController.storeId.value &&
-                                        element.isStoreOwner == true ||
-                                    element.storeId == manageStoreController.storeId.value &&
-                                        element.controllers!.any((ele) =>
-                                            ele.controllerKey ==
-                                            PermissionKey.editProductCategories
-                                                .statusName))
+                                    permissionStoreList.any((element) =>
+                                        element.storeId == manageStoreController.storeId.value &&
+                                            element.isStoreOwner == true ||
+                                        element.storeId == manageStoreController.storeId.value &&
+                                            element.controllers!.any((ele) =>
+                                                ele.controllerKey ==
+                                                PermissionKey
+                                                    .editProductCategories
+                                                    .statusName))
                                 ? Utility.showConfirmAlertMessage(
                                     AlertStringConstants.areYouSureText,
                                     okay: StringConstants.deleteText,
                                     okayTap: () {
-
-
                                     manageStoreController.categoryId.value =
                                         manageStoreController
                                             .categoriesList[index].categoryId
                                             .toString();
                                     manageStoreController.apiDeleteCategory();
                                   })
-                                : Utility.showAlertMessage(AlertStringConstants
-                                    .notAuthorizedToStoreText);
+                                : Utility.showAlertMessage(
+                                    AlertStringConstants.notAuthorizedToStoreText);
 
                             return null;
                           },
                           child: InkWell(
                             onTap: () {
+                              Get.parameters["categoryName"] = manageStoreController
+                                  .categoriesList[index].categoryName ??
+                                  "";
+                              Get.parameters["categoryId"] =  manageStoreController
+                                  .categoriesList[index].categoryId ??
+                                  "";
                               manageStoreController.categoryName.value =
                                   manageStoreController
                                           .categoriesList[index].categoryName ??
@@ -370,21 +372,29 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                   width: 1)),
                                           child: Obx(() => CircleAvatar(
                                                 radius: 24.0,
-                                                backgroundImage: manageStoreController
-                                                    .categoriesList[index]
-                                                    .image?.dynamicUrl!=null ? NetworkImage(
+                                                backgroundImage:
                                                     manageStoreController
-                                                        .categoriesList[index]
-                                                        .image!
-                                                        .dynamicUrl
-                                                        .toString()) :const AssetImage(ImageConstants
-                                              .defaultCategory)
-                                          as ImageProvider,
+                                                                .categoriesList[
+                                                                    index]
+                                                                .image
+                                                                ?.dynamicUrl !=
+                                                            null
+                                                        ? NetworkImage(
+                                                            manageStoreController
+                                                                .categoriesList[
+                                                                    index]
+                                                                .image!
+                                                                .dynamicUrl
+                                                                .toString())
+                                                        : const AssetImage(
+                                                                ImageConstants
+                                                                    .defaultCategory)
+                                                            as ImageProvider,
                                                 backgroundColor:
                                                     Colors.transparent,
                                               )),
                                         ),
-                                        width10SizedBox, 
+                                        width10SizedBox,
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -442,33 +452,32 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                     .categoryId ??
                                                 "";
                                         hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                        permissionStoreList.any((element) =>
-                                                element.storeId == manageStoreController.storeId.value &&
-                                                    element.isStoreOwner ==
-                                                        true ||
-                                                element.storeId ==
-                                                        manageStoreController
-                                                            .storeId.value
-                                                            .toString() &&
-                                                    element.controllers!.any(
-                                                        (ele) =>
+                                                permissionStoreList.any((element) =>
+                                                    element.storeId ==
+                                                            manageStoreController
+                                                                .storeId
+                                                                .value &&
+                                                        element.isStoreOwner ==
+                                                            true ||
+                                                    element.storeId ==
+                                                            manageStoreController
+                                                                .storeId.value
+                                                                .toString() &&
+                                                        element.controllers!.any((ele) =>
                                                             ele.controllerKey ==
                                                             PermissionKey
                                                                 .editProductCategories
                                                                 .statusName))
-                                            ? Get.to(const EditCategoryScreen(),
-                                                    id: pageIdApp.value,
-                                                    arguments: {
-                                                    "storeId":
-                                                        manageStoreController
-                                                            .storeId.value,
-                                                    "categoryId":
-                                                        manageStoreController
-                                                                .categoriesList[
-                                                                    index]
-                                                                .categoryId ??
-                                                            ""
-                                                  })!
+                                            ? Get.to(() => const EditCategoryScreen(), id: pageIdApp.value, arguments: {
+                                                "storeId": manageStoreController
+                                                    .storeId.value,
+                                                "categoryId":
+                                                    manageStoreController
+                                                            .categoriesList[
+                                                                index]
+                                                            .categoryId ??
+                                                        ""
+                                              })!
                                                 .then((value) {
                                                 manageStoreController
                                                     .apiGetCategoriesList();
@@ -500,7 +509,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         manageStoreController
                                             .apiGetStoreProducts();
 
-                                        Get.to(const ProductListScreen(),
+                                        Get.to(() => const ProductListScreen(),
                                             id: pageIdApp.value);
                                       },
                                       icon: Icon(

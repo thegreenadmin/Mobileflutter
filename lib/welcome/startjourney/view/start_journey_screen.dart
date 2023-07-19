@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
@@ -6,7 +7,6 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:get/get.dart';
 import 'package:thegreenmall/welcome/startjourney/controller/start_journey_controller.dart';
 
 class StartJourneyScreen extends StatefulWidget {
@@ -65,7 +65,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                       colors: [AppColors.primary, AppColors.primary],
                     ),
                     onTap: () {
-                      Get.to(const LoginScreen());
+                      Get.to(() => const LoginScreen());
                     },
                     height: 50,
                     text: StringConstants.loginYourAccountText,

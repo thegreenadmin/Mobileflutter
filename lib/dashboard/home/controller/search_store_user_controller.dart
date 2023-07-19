@@ -59,7 +59,7 @@ class SearchStoreUserController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isFavLoading = false.obs;
-  RxBool isOpenNow = false.obs;
+  RxString isOpenNow = "".obs;
 
   RxBool isDataLoading = false.obs;
   RxBool isClicked = false.obs;
@@ -113,7 +113,7 @@ class SearchStoreUserController extends GetxController {
     apiActiveCartApi();
   }
 
-  //Get Active Cart Api
+  ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
     debugPrint(
@@ -163,7 +163,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Get Cart List Api
+  ///Get Cart List Api
   Future apiGetCartListApi({String storeId = ""}) async {
     isLoading.value = true;
     debugPrint(
@@ -212,7 +212,7 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
-  //Get User Wallet Balance Api
+  ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
     isLoading.value = true;
     debugPrint("User Wallet Balance URL**********"
@@ -395,8 +395,8 @@ class SearchStoreUserController extends GetxController {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": zipCodeTextController.text != "" ? null : lng,
-      "latitude": zipCodeTextController.text != "" ? null : lat,
+      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng,
+      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat,
       "city": city.value,
       "place_id": placeId.value,
       "state": state.value,
@@ -406,14 +406,18 @@ class SearchStoreUserController extends GetxController {
       "mileage": mileageTextController.text != ""
           ? int.parse(mileageTextController.text)
           : 100,
-      "is_open_now": isOpenNow.value,
+      "is_open_now": isOpenNow.value == ""
+          ? null
+          : isOpenNow.value == "Open Now"
+              ? true
+              : false,
       "opening_time": openingTimeTextController.text != ""
           ? Utility.formatDateTime(openingTimeTextController.text,
-              firstFormat: "hh:mm a", secFormat: "hh:mm:ss")
+              firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
           : "00:00:00",
       "closing_time": closingTimeTextController.text != ""
           ? Utility.formatDateTime(closingTimeTextController.text,
-              firstFormat: "hh:mm a", secFormat: "hh:mm:ss")
+              firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
           : "24:00:00",
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
@@ -457,7 +461,7 @@ class SearchStoreUserController extends GetxController {
           closingTimeTextController.clear();
           mileageTextController.clear();
           deliveryServicesController.clear();
-          isOpenNow.value = true;
+          isOpenNow.value = "";
           deliveryServicesList.clear();
           initialIndex.value = 0;
           for (var element in deliveryServices) {
@@ -471,7 +475,7 @@ class SearchStoreUserController extends GetxController {
           openingTimeTextController.clear();
           closingTimeTextController.clear();
           mileageTextController.clear();
-          isOpenNow.value = false;
+          isOpenNow.value = "";
           initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

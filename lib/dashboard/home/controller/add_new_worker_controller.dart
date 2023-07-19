@@ -155,12 +155,12 @@ class AddNewWorkerController extends GetxController {
         employeeTiming.startTime = Utility.formatDateTime(
                 startTimeTextController.text,
                 firstFormat: "hh:mm",
-                secFormat: "hh:mm:ss")
+                secFormat: "HH:mm:ss")
             .toString();
         employeeTiming.endTime = Utility.formatDateTime(
                 endTimeTextController.text,
                 firstFormat: "hh:mm",
-                secFormat: "hh:mm:ss")
+                secFormat: "HH:mm:ss")
             .toString();
         employeeTimings.add(employeeTiming);
       }
@@ -233,12 +233,12 @@ class AddNewWorkerController extends GetxController {
             employeeTiming.startTime = Utility.formatDateTime(
                     startTimeTextController.text,
                     firstFormat: "hh:mm a",
-                    secFormat: "hh:mm:ss")
+                    secFormat: "HH:mm:ss")
                 .toString();
             employeeTiming.endTime = Utility.formatDateTime(
                     endTimeTextController.text,
                     firstFormat: "hh:mm a",
-                    secFormat: "hh:mm:ss")
+                    secFormat: "HH:mm:ss")
                 .toString();
             employeeTimings.add(employeeTiming);
           }
@@ -254,12 +254,12 @@ class AddNewWorkerController extends GetxController {
           employeeTiming.startTime = Utility.formatDateTime(
                   startTimeTextController.text,
                   firstFormat: "hh:mm a",
-                  secFormat: "hh:mm:ss")
+                  secFormat: "HH:mm:ss")
               .toString();
           employeeTiming.endTime = Utility.formatDateTime(
                   endTimeTextController.text,
                   firstFormat: "hh:mm a",
-                  secFormat: "hh:mm:ss")
+                  secFormat: "HH:mm:ss")
               .toString();
           debugPrint("test isSelected dayOfWeek");
           debugPrint(element.id.toString());
@@ -280,12 +280,12 @@ class AddNewWorkerController extends GetxController {
           employeeTiming.startTime = Utility.formatDateTime(
                   startTimeTextController.text,
                   firstFormat: "hh:mm a",
-                  secFormat: "hh:mm:ss")
+                  secFormat: "HH:mm:ss")
               .toString();
           employeeTiming.endTime = Utility.formatDateTime(
                   endTimeTextController.text,
                   firstFormat: "hh:mm a",
-                  secFormat: "hh:mm:ss")
+                  secFormat: "HH:mm:ss")
               .toString();
 
           debugPrint("test else dayOfWeek");

@@ -546,7 +546,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               //   builder: (_) =>
                               //       const AddToOrderScreen(),
                               // ));
-                              await Get.to(const AddToOrderScreen(),
+                              await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value);
                             },
                             child: Column(

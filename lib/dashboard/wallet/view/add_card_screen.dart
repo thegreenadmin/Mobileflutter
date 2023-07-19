@@ -196,7 +196,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddCardDetailScreen(),
                 //     ))
-                Get.to(const AddCardDetailScreen(), id: pageIdApp.value)!
+                Get.to(() => const AddCardDetailScreen(), id: pageIdApp.value)!
                     .then((value) => addCardController.apiGetCardList(context));
               },
               height: 50,

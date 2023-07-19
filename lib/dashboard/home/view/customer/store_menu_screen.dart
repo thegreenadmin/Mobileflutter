@@ -77,7 +77,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
 
                           storeHomeMainController.category.value =
                               storeHomeMainController.categoriesList[index];
-                          await Get.to(const UserProductListScreen(),
+                          await Get.to(() => const UserProductListScreen(),
                               id: pageIdApp.value);
                         },
                         child: Container(

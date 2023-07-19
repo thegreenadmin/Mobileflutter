@@ -451,7 +451,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddNewStoreScreen(),
                 //     ))
-                Get.to(const AddNewStoreScreen(), id: pageIdApp.value)!
+                Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
                     .then((value) => ownerStoresController.apiGetStoreList());
               },
               height: 50,

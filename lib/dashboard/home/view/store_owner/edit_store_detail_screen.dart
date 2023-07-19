@@ -1569,6 +1569,99 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                     .openingTimeTextController
                                                     .text =
                                                 date.format(context).toString();
+                                            ownerStoreController.storeTimingList
+                                                .clear();
+                                            if (ownerStoreController
+                                                .storeTimings.isNotEmpty) {
+                                              for (int i = 0;
+                                                  i <
+                                                      ownerStoreController
+                                                          .weekDaysList.length;
+                                                  i++) {
+                                                for (var element
+                                                    in ownerStoreController
+                                                        .storeTimings) {
+                                                  if (element["day_of_week"] ==
+                                                      ownerStoreController
+                                                          .weekDaysList[i].id) {
+                                                    element["status"] =
+                                                        ownerStoreController
+                                                                    .weekDaysList[
+                                                                        i]
+                                                                    .isSelected ==
+                                                                true
+                                                            ? "active"
+                                                            : "deleted";
+                                                    element["opening_time"] =
+                                                        Utility.formatDateTime(
+                                                                ownerStoreController
+                                                                    .openingTimeTextController
+                                                                    .text
+                                                                    .trim(),
+                                                                firstFormat:
+                                                                    "hh:mm a",
+                                                                secFormat:
+                                                                    "HH:mm:ss")
+                                                            .toString();
+                                                    element["closing_time"] =
+                                                        Utility.formatDateTime(
+                                                                ownerStoreController
+                                                                    .closingTimeTextController
+                                                                    .text
+                                                                    .trim(),
+                                                                firstFormat:
+                                                                    "hh:mm a",
+                                                                secFormat:
+                                                                    "HH:mm:ss")
+                                                            .toString();
+                                                    ownerStoreController
+                                                        .storeTimingList
+                                                        .add(element);
+                                                    /* ownerStoreController
+                                                        .storeTimingList
+                                                        .add({
+                                                      "store_timing_id": element[
+                                                          "store_timing_id"],
+                                                      "is_24_hours_active":
+                                                          false,
+                                                      "status": ownerStoreController
+                                                                  .weekDaysList[
+                                                                      i]
+                                                                  .isSelected ==
+                                                              true
+                                                          ? "active"
+                                                          : "deleted",
+                                                      "day_of_week":
+                                                          ownerStoreController
+                                                              .weekDaysList[i]
+                                                              .id,
+                                                      "opening_time": Utility
+                                                              .formatDateTime(
+                                                                  ownerStoreController
+                                                                      .openingTimeTextController
+                                                                      .text
+                                                                      .trim(),
+                                                                  firstFormat:
+                                                                      "hh:mm a",
+                                                                  secFormat:
+                                                                      "hh:mm:ss")
+                                                          .toString(),
+                                                      "closing_time": Utility
+                                                              .formatDateTime(
+                                                                  ownerStoreController
+                                                                      .closingTimeTextController
+                                                                      .text
+                                                                      .trim(),
+                                                                  firstFormat:
+                                                                      "hh:mm a",
+                                                                  secFormat:
+                                                                      "hh:mm:ss")
+                                                          .toString()
+                                                    });*/
+                                                  }
+                                                }
+                                              }
+                                            }
                                           },
                                           decoration: InputDecoration(
                                             hintText:
@@ -1706,6 +1799,99 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                     .closingTimeTextController
                                                     .text =
                                                 date.format(context).toString();
+                                            ownerStoreController.storeTimingList
+                                                .clear();
+                                            if (ownerStoreController
+                                                .storeTimings.isNotEmpty) {
+                                              for (int i = 0;
+                                                  i <
+                                                      ownerStoreController
+                                                          .weekDaysList.length;
+                                                  i++) {
+                                                for (var element
+                                                    in ownerStoreController
+                                                        .storeTimings) {
+                                                  if (element["day_of_week"] ==
+                                                      ownerStoreController
+                                                          .weekDaysList[i].id) {
+                                                    element["status"] =
+                                                        ownerStoreController
+                                                                    .weekDaysList[
+                                                                        i]
+                                                                    .isSelected ==
+                                                                true
+                                                            ? "active"
+                                                            : "deleted";
+                                                    element["opening_time"] =
+                                                        Utility.formatDateTime(
+                                                                ownerStoreController
+                                                                    .openingTimeTextController
+                                                                    .text
+                                                                    .trim(),
+                                                                firstFormat:
+                                                                    "hh:mm a",
+                                                                secFormat:
+                                                                    "HH:mm:ss")
+                                                            .toString();
+                                                    element["closing_time"] =
+                                                        Utility.formatDateTime(
+                                                                ownerStoreController
+                                                                    .closingTimeTextController
+                                                                    .text
+                                                                    .trim(),
+                                                                firstFormat:
+                                                                    "hh:mm a",
+                                                                secFormat:
+                                                                    "HH:mm:ss")
+                                                            .toString();
+                                                    ownerStoreController
+                                                        .storeTimingList
+                                                        .add(element);
+                                                    /* ownerStoreController
+                                                        .storeTimingList
+                                                        .add({
+                                                      "store_timing_id": element[
+                                                          "store_timing_id"],
+                                                      "is_24_hours_active":
+                                                          false,
+                                                      "status": ownerStoreController
+                                                                  .weekDaysList[
+                                                                      i]
+                                                                  .isSelected ==
+                                                              true
+                                                          ? "active"
+                                                          : "deleted",
+                                                      "day_of_week":
+                                                          ownerStoreController
+                                                              .weekDaysList[i]
+                                                              .id,
+                                                      "opening_time": Utility
+                                                              .formatDateTime(
+                                                                  ownerStoreController
+                                                                      .openingTimeTextController
+                                                                      .text
+                                                                      .trim(),
+                                                                  firstFormat:
+                                                                      "hh:mm a",
+                                                                  secFormat:
+                                                                      "hh:mm:ss")
+                                                          .toString(),
+                                                      "closing_time": Utility
+                                                              .formatDateTime(
+                                                                  ownerStoreController
+                                                                      .closingTimeTextController
+                                                                      .text
+                                                                      .trim(),
+                                                                  firstFormat:
+                                                                      "hh:mm a",
+                                                                  secFormat:
+                                                                      "hh:mm:ss")
+                                                          .toString()
+                                                    });*/
+                                                  }
+                                                }
+                                              }
+                                            }
                                           },
                                           decoration: InputDecoration(
                                             hintText:
@@ -1813,7 +1999,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                       .text
                                                       .trim(),
                                                   firstFormat: "hh:mm a",
-                                                  secFormat: "hh:mm:ss")
+                                                  secFormat: "HH:mm:ss")
                                               .toString(),
                                           "closing_time": Utility.formatDateTime(
                                                   ownerStoreController
@@ -1821,7 +2007,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                       .text
                                                       .trim(),
                                                   firstFormat: "hh:mm a",
-                                                  secFormat: "hh:mm:ss")
+                                                  secFormat: "HH:mm:ss")
                                               .toString()
                                         });
                                       }
@@ -1841,12 +2027,22 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                           "status": "active",
                                           "day_of_week": ownerStoreController
                                               .weekDaysList[i].id,
-                                          "opening_time": ownerStoreController
-                                              .openingTimeTextController.text
-                                              .trim(),
-                                          "closing_time": ownerStoreController
-                                              .closingTimeTextController.text
-                                              .trim()
+                                          "opening_time": Utility.formatDateTime(
+                                                  ownerStoreController
+                                                      .openingTimeTextController
+                                                      .text
+                                                      .trim(),
+                                                  firstFormat: "hh:mm a",
+                                                  secFormat: "HH:mm:ss")
+                                              .toString(),
+                                          "closing_time": Utility.formatDateTime(
+                                                  ownerStoreController
+                                                      .closingTimeTextController
+                                                      .text
+                                                      .trim(),
+                                                  firstFormat: "hh:mm a",
+                                                  secFormat: "HH:mm:ss")
+                                              .toString()
                                         });
                                       }
                                     }
