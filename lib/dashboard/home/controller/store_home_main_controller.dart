@@ -148,7 +148,7 @@ class StoreHomeMainController extends GetxController {
   void popUpMenuChange(int i) async {
     popUpIndex.value = i;
     if (i == 0) {
-      await apiGetPreviousOrders();
+      apiGetPreviousOrders();
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
       if (Get.parameters["categoryId"] != "") {
@@ -1271,7 +1271,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Feature ProductList Store *******${value?.body}");
+      log("Feature ProductList Store *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         featureProductListResponse =

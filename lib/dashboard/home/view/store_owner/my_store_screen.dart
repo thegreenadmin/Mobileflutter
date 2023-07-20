@@ -255,9 +255,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                             .productImages!
                                             .isEmpty
                                         ? Image.asset(
-                                            ImageConstants.nopicfound,
-                                            color:
-                                                AppColors.grey.withOpacity(0.4),
+                                            ImageConstants.defaultProduct,
                                             fit: BoxFit.fill,
                                           )
                                         : Image.network(

@@ -227,7 +227,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                   .dynamicUrl!
                                                   .isEmpty
                                           ? const AssetImage(
-                                              ImageConstants.nopicfound,
+                                              ImageConstants.storeicon,
                                             ) as ImageProvider
                                           : NetworkImage(ownerInboxController
                                                   .inboxList[index]

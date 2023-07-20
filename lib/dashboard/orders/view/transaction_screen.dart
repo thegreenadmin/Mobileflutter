@@ -337,7 +337,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                       backgroundImage:
                                                           AssetImage(
                                                         ImageConstants
-                                                            .nopicfound,
+                                                            .storeicon,
                                                       ),
                                                       backgroundColor:
                                                           Colors.transparent,

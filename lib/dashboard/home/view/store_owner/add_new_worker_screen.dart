@@ -830,6 +830,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   ),
                                 ),
                                 DropdownButtonFormField<String>(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   isExpanded: true,
                                   validator: (value) {
                                     if (addNewWorkerController

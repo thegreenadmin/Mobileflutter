@@ -126,6 +126,8 @@ class PayOutScreenState extends State<PayOutScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500))
                                     : DropdownButtonFormField<String>(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
                                         value: addCardController
                                                     .storeNameValue.value !=
                                                 ""

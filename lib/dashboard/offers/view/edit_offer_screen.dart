@@ -340,6 +340,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     Obx(() => addOffersController.storeList.isEmpty
                         ? height0SizedBox
                         : DropdownButtonFormField<String>(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             value: addOffersController.storeIdValue.value != ""
                                 ? addOffersController.storeList
                                     .firstWhere((element) =>
@@ -545,6 +547,8 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   .discountType.value.isEmpty
                               ? height0SizedBox
                               : DropdownButtonFormField<String>(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   value: addOffersController
                                           .discountType.value.isNotEmpty
                                       ? addOffersController.discountType.value

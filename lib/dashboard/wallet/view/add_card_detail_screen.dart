@@ -136,13 +136,13 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         labelText: StringConstants.cardNumberText, // 'Number',
                         hintText:
                             StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
-                        hintStyle: const TextStyle(color: Colors.black),
+                        hintStyle: TextStyle(color: AppColors.blacklight),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
                         enabledBorder: border,
                       ),
                       expiryDateDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.black),
+                        hintStyle: TextStyle(color: AppColors.blacklight),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
                         enabledBorder: border,
@@ -151,7 +151,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         hintText: StringConstants.x2Text, //'XX/XX',
                       ),
                       cvvCodeDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.black),
+                        hintStyle: TextStyle(color: AppColors.blacklight),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
                         enabledBorder: border,
@@ -159,7 +159,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         hintText: StringConstants.x1Text, //'XXX',
                       ),
                       cardHolderDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.black),
+                        hintStyle: TextStyle(color: AppColors.blacklight),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: border,
                         enabledBorder: border,

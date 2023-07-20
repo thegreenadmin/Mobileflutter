@@ -820,6 +820,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         ? height0SizedBox
                         : Obx(
                             () => DropdownButtonFormField<String>(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (addNewWorkerController
                                         .storeRoleList.isNotEmpty &&

@@ -151,18 +151,14 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 key: UniqueKey(),
                                 confirmDismiss:
                                     (DismissDirection direction) async {
-                                  hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                  hasStoreAccess.value &&
+                                              permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
-                                              element.storeId == ownerStoresController.storeId.value && element.isStoreOwner == true ||
                                               element.storeId ==
-                                                      ownerStoresController
-                                                          .storeList[index]
-                                                          .storeId
-                                                          .toString() &&
-                                                  element.controllers!.any((ele) =>
-                                                      ele.controllerKey ==
-                                                      PermissionKey.deleteStore
-                                                          .statusName))
+                                                  ownerStoresController
+                                                      .storeList[index]
+                                                      .storeId &&
+                                              element.isStoreOwner == true)
                                       ? Utility.showConfirmAlertMessage(
                                           AlertStringConstants.areYouSureText,
                                           okay: StringConstants.deleteText,
@@ -172,7 +168,9 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                   .storeList[index].storeId
                                                   .toString());
                                         })
-                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                                      : Utility.showAlertMessage(
+                                          AlertStringConstants
+                                              .notAuthorizedToStoreText);
                                   return null;
                                 },
                                 child: InkWell(
@@ -187,13 +185,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                             "";
                                     await ownerStoresController
                                         .apiGetParticularStore();
-                                    /* SharedPreferenceStorage.setData(
-                                        "context", context);
-                                    await Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) =>
-                                          const ManageStoreMainScreen(),
-                                    ));*/
 
                                     await Get.to(
                                         () => const ManageStoreMainScreen(),

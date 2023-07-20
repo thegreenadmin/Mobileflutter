@@ -17,48 +17,6 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primarylight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              Get.back(id:pageIdApp.value);
-
-                              // Navigator.of(context).pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                              size: 24.0,
-                            ),
-                          ),
-                          width10SizedBox,
-                          Text(
-                            StringConstants.previousOrdersText,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
-                    ])),
-          )),*/
       body: Container(
           height: WidgetConstants.screenHeight,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -109,10 +67,10 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio:
-                                (WidgetConstants.screenWidth + 120) /
+                                (WidgetConstants.screenWidth + 200) /
                                     WidgetConstants.screenHeight,
                             mainAxisSpacing: 0.0,
-                            crossAxisSpacing: 0.0,
+                            crossAxisSpacing: 10.0,
                             crossAxisCount: 2,
                           ),
                           itemBuilder: (BuildContext context, int i) {
@@ -121,49 +79,43 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Card(
-                                    shape: BeveledRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    elevation: 0,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          storeHomeMainController
-                                                      .previousOrderList[i]
-                                                      .productImages!
-                                                      .isNotEmpty &&
-                                                  storeHomeMainController
-                                                          .previousOrderList[i]
-                                                          .productImages
-                                                          ?.first
-                                                          .image
-                                                          ?.dynamicUrl !=
-                                                      null
-                                              ? Image.network(
-                                                  storeHomeMainController
-                                                      .previousOrderList[i]
-                                                      .productImages!
-                                                      .first
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString(),
-                                                  fit: BoxFit.fill,
-                                                  height: 148,
-                                                  width: 148,
-                                                )
-                                              : Image.asset(
-                                                  ImageConstants.nopicfound,
-                                                  fit: BoxFit.fill,
-                                                  height: 148,
-                                                  width: 148,
-                                                  color: AppColors.grey
-                                                      .withOpacity(0.4),
-                                                ),
-                                        ],
-                                      ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        storeHomeMainController
+                                                    .previousOrderList[i]
+                                                    .productImages!
+                                                    .isNotEmpty &&
+                                                storeHomeMainController
+                                                        .previousOrderList[i]
+                                                        .productImages
+                                                        ?.first
+                                                        .image
+                                                        ?.dynamicUrl !=
+                                                    null
+                                            ? Image.network(
+                                                storeHomeMainController
+                                                    .previousOrderList[i]
+                                                    .productImages!
+                                                    .first
+                                                    .image!
+                                                    .dynamicUrl
+                                                    .toString(),
+                                                fit: BoxFit.fill,
+                                                height: 148,
+                                                width: 148,
+                                              )
+                                            : Image.asset(
+                                                ImageConstants.nopicfound,
+                                                fit: BoxFit.fill,
+                                                height: 148,
+                                                width: 148,
+                                                color: AppColors.grey
+                                                    .withOpacity(0.4),
+                                              ),
+                                      ],
                                     ),
                                   ),
                                   height5SizedBox,
@@ -188,7 +140,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                   .previousOrderList[i]
                                                   .description ??
                                               "",
-                                          maxLines: 2,
+                                          maxLines: 1,
                                           style: TextStyle(
                                               overflow: TextOverflow.visible,
                                               color: AppColors.blacklight,

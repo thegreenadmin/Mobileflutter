@@ -171,6 +171,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500))
                                   : DropdownButtonFormField<String>(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
                                       value: walletController
                                                       .storeNameValue!.value !=
                                                   "" &&

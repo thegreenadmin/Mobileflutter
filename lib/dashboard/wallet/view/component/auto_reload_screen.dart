@@ -7,8 +7,8 @@ import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class AutoReloadScreen extends StatefulWidget {
-  bool isFromEdit = false;
-  AutoReloadScreen({Key? key, this.isFromEdit = false}) : super(key: key);
+  final bool isFromEdit;
+  const AutoReloadScreen({Key? key, this.isFromEdit = false}) : super(key: key);
 
   @override
   State<AutoReloadScreen> createState() => _AutoReloadScreenState();
@@ -218,7 +218,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               validator: (value) {
                                 if (walletController.autoChargeType.value ==
                                         "threshold" &&
-                                    (value == null || value!.trim().isEmpty)) {
+                                    (value == null || value.trim().isEmpty)) {
                                   return AlertStringConstants
                                       .pleaseEnterChargeAmountText;
                                 }
@@ -422,6 +422,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 ),
                                 height6SizedBox,
                                 DropdownButtonFormField<String>(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   value: widget.isFromEdit
                                       ? walletController.frequencyTextController
                                                   .text ==
@@ -501,8 +503,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                             ),
                     ),
                     Obx(() => walletController.autoChargeType.value !=
-                                "threshold" &&
-                            walletController.selectedFrequency.value == "30"
+                            "threshold" /*&&
+                            walletController.selectedFrequency.value == "30"*/
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -516,6 +518,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               ),
                               height6SizedBox,
                               DropdownButtonFormField<String>(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 value: widget.isFromEdit
                                     ? walletController
                                                 .frequencyTextController.text ==
@@ -523,7 +527,17 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                         ? walletController.day.value
                                         : null
                                     : null,
-                                //value: walletController.autoChargeType.value,
+                                validator: (value) {
+                                  if (walletController.autoChargeType.value !=
+                                      "threshold") {
+                                    if (value == null || value.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseSelectDayOfMonthText;
+                                    }
+                                    return null;
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
                                   enabledBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -598,6 +612,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 ),
                                 height6SizedBox,
                                 DropdownButtonFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   value: widget.isFromEdit
                                       ? walletController.frequencyTextController
                                                   .text ==
@@ -605,7 +621,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                           ? walletController.day.value
                                           : null
                                       : null,
-                                  //value: walletController.autoChargeType.value,
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -1004,7 +1019,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     height6SizedBox,
                     Obx(() => Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 30),
+                              horizontal: 10, vertical: 10),
                           child: addCardController.cardList.isEmpty
                               ? addCardController.isLoading.value == true
                                   ? height0SizedBox
@@ -1069,7 +1084,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                       ],
                                     )
                               : ListView.separated(
-                                  padding: const EdgeInsets.only(bottom: 50),
+                                  padding: const EdgeInsets.only(bottom: 8),
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return height15SizedBox;
@@ -1198,7 +1213,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                     );
                                   }),
                         )),
-                    height20SizedBox,
+                    height10SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,

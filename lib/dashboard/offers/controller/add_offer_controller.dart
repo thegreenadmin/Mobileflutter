@@ -273,11 +273,95 @@ class AddOffersController extends GetxController {
     });
   }
 
-  ///Get store products have no offer
+  /// Get store products List Api
   Future apiGetStoreProducts() async {
     isLoading.value = true;
     debugPrint(
-      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
+      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+    );
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
+    Map body = {
+      "q": "",
+      "store_id": storeId.value,
+      "page": 1,
+      "page_size": 1000,
+      "order_by": "product_id",
+      "order_type": "ASC",
+      "category_id": null,
+      "filters": []
+    };
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
+      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
+        storeProductList.value = getStoreProductList.data!.products!;
+        if (isFrom.value == StringConstants.editOfferText) {
+          productMergedList.clear();
+          offerProducts.clear();
+          offerProducts.addAll(getOfferDetailModel.data!.offerProducts!);
+          productMergedList.addAll(offerProducts);
+          for (int i = 0; i < storeProductList.length; i++) {
+            productMergedList.add(OfferProduct(
+              offerProductId: storeProductList[i].productId,
+              product: Product(
+                description: storeProductList[i].description,
+                discountType: storeProductList[i].discountType,
+                discountValue: storeProductList[i].discountValue,
+                isEnabled: storeProductList[i].isEnabled,
+                height: storeProductList[i].height,
+                isFeaturedProduct: storeProductList[i].isFeaturedProduct,
+                length: storeProductList[i].length,
+                storeId: storeProductList[i].storeId,
+                isProductReturnable: storeProductList[i].isProductReturnable,
+                productId: storeProductList[i].productId,
+                productName: storeProductList[i].productName,
+                quantity: storeProductList[i].quantity,
+                productPrice: storeProductList[i].productPrice,
+                returnDaysCount: storeProductList[i].returnDaysCount,
+                weight: storeProductList[i].weight,
+                width: storeProductList[i].width,
+                status: "deleted",
+                createdAt: storeProductList[i].createdAt,
+                updatedAt: storeProductList[i].updatedAt,
+              ),
+            ));
+          }
+        } else {
+          if (storeProductList.isEmpty && radioValue.value == "product") {
+            Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
+          }
+        }
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
+
+  ///Get store products have no offer
+  Future apiGetStoreNonOfferProducts() async {
+    isLoading.value = true;
+    debugPrint(
+      "GET STORE PRODUCTS LIST URL**********"
+      "${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
     );
 
     Map<String, String> headers = {

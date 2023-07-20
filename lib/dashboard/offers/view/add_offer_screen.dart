@@ -336,6 +336,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                     ),
                     height8SizedBox,
                     Obx(() => DropdownButtonFormField<String>(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           value: addOffersController.storeIdValue.value != ""
                               ? addOffersController.storeIdValue.value
                               : null,
@@ -566,6 +567,15 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         Flexible(
                           flex: 5,
                           child: DropdownButtonFormField<String>(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return AlertStringConstants
+                                    .pleaseSelectDiscountType;
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),

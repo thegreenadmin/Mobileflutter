@@ -19,7 +19,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           height15SizedBox,
           Padding(
@@ -64,10 +64,10 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                         storeHomeMainController.featureProductList.length,
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (WidgetConstants.screenWidth + 120) /
+                      childAspectRatio: (WidgetConstants.screenWidth + 190) /
                           WidgetConstants.screenHeight,
                       mainAxisSpacing: 0.0,
-                      crossAxisSpacing: 0.0,
+                      crossAxisSpacing: 10.0,
                       crossAxisCount: 2,
                     ),
                     itemBuilder: (BuildContext context, int i) {
@@ -78,31 +78,28 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                   .featureProductList[i].productId
                                   .toString();
                           storeHomeMainController.apiGetShopProductDetailApi();
-                          // SharedPreferenceStorage.setData("context", context);
+
                           storeHomeMainController.apiGetCartListApi();
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
-                          // await Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (_) => const AddToOrderScreen(),
-                          // ));
+
                           await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value)
                               ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
                                   });
-                          // Get.to(()=>const AddToOrderScreen());
                         },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Card(
-                              shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              elevation: 0,
-                              child: ClipRRect(
+                        child: Card(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          elevation: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Stack(
                                   alignment: Alignment.topRight,
@@ -156,52 +153,54 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                   ],
                                 ),
                               ),
-                            ),
-                            height5SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  storeHomeMainController
-                                          .featureProductList[i].productName ??
-                                      "",
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                storeHomeMainController.featureProductList[i]
-                                        .description!.isEmpty
-                                    ? height0SizedBox
-                                    : height4SizedBox,
-                                storeHomeMainController.featureProductList[i]
-                                        .description!.isEmpty
-                                    ? height0SizedBox
-                                    : Text(
-                                        storeHomeMainController
-                                                .featureProductList[i]
-                                                .description ??
-                                            "",
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                            color: AppColors.blacklight,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                storeHomeMainController.featureProductList[i]
-                                        .description!.isEmpty
-                                    ? height0SizedBox
-                                    : height4SizedBox,
-                                Text(
-                                  "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ],
+                              height5SizedBox,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    storeHomeMainController
+                                            .featureProductList[i]
+                                            .productName ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  storeHomeMainController.featureProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : height4SizedBox,
+                                  storeHomeMainController.featureProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : Text(
+                                          storeHomeMainController
+                                                  .featureProductList[i]
+                                                  .description ??
+                                              "",
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: AppColors.blacklight,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                  storeHomeMainController.featureProductList[i]
+                                          .description!.isEmpty
+                                      ? height0SizedBox
+                                      : height4SizedBox,
+                                  Text(
+                                    "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

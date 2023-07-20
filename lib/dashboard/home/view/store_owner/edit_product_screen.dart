@@ -452,6 +452,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Flexible(
                             flex: 5,
                             child: Obx(() => DropdownButtonFormField<String>(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: (v) {
                                     if (v == null || v.trim() == '') {
                                       return AlertStringConstants
@@ -893,6 +895,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 : Flexible(
                                     flex: 5,
                                     child: DropdownButtonFormField<String>(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
                                       value: manageStoreController
                                           .discountValueType.value,
                                       decoration: InputDecoration(
@@ -1048,6 +1052,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               .selectedFeaturedType.value.isEmpty
                           ? height0SizedBox
                           : DropdownButtonFormField<String>(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               value: manageStoreController
                                   .selectedFeaturedType.value,
                               validator: (v) {
@@ -1513,6 +1519,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                           .isEmpty
                                       ? height0SizedBox
                                       : DropdownButtonFormField<String>(
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           value: manageStoreController
                                               .selectedProductReturnableType
                                               .value,

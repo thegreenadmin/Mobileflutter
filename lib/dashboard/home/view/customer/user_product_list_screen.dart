@@ -26,43 +26,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     StringConstants.favoriteText,
     StringConstants.optionsText,
   ].obs;
-/*
-  @override
-  void initState() {
-    super.initState();
-    if (Get.parameters["isFromHome"] == null ? false : Get.parameters['isFromHome'] != "false") {
-      storeHomeMainController.isFromHome.value = Get.parameters["isFromHome"]=="true"?true:false;
-
-      storeHomeMainController.productId.value =
-      Get.parameters["productId"] == null ? "" : Get.parameters["productId"] ?? "";
-    }
-    storeHomeMainController.storeId.value =
-    Get.parameters["storeId"] == null ? "" : Get.parameters["storeId"] ?? "";
-    storeHomeMainController.apiGetUserDetailsApi();
-    if (storeHomeMainController.isFromHome.value) {
-      nearby.Store store = nearby.Store();
-      store.storeId = storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
-      storeHomeMainController.selectedIndex.value = 0;
-      storeHomeMainController.apiGetStoreDetailsApi();
-      storeHomeMainController.apiGetCartListApi(context);
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.apiGetShopProductDetailApi();
-    } else {
-      nearby.Store store = nearby.Store();
-      store.storeId =storeHomeMainController.storeId.value;
-      storeHomeMainController.storeAddress.value.store = store;
-      storeHomeMainController.isFavouriteStore.value = store.isFavouriteStore ?? false;
-      // storeAddress.value = Get.arguments["storeAddress"] ?? {};
-      // isFavouriteStore.value =
-      //     storeAddress.value.store?.isFavouriteStore ?? false;
-      storeHomeMainController.setupScrollController(Get.context);
-      storeHomeMainController.apiGetStoreDetailsApi();
-      storeHomeMainController.onIndexChange(0);
-    }
-    storeHomeMainController.apiGetUserWalletBalance();
-  }*/
 
   void contactAlertDailogue(
     context,
@@ -519,10 +482,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
-                              (WidgetConstants.screenWidth + 120) /
+                              (WidgetConstants.screenWidth + 190) /
                                   WidgetConstants.screenHeight,
                           mainAxisSpacing: 0.0,
-                          crossAxisSpacing: 0.0,
+                          crossAxisSpacing: 10.0,
                           crossAxisCount: 2,
                         ),
                         itemBuilder: (BuildContext context, int i) {
@@ -535,29 +498,22 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                               storeHomeMainController
                                   .apiGetShopProductDetailApi();
                               await storeHomeMainController.apiGetCartListApi();
-                              // SharedPreferenceStorage
-                              //     .setData(
-                              //         "context", context);
+
                               Get.parameters['isFromFav'] = "false";
                               Get.parameters["isFromHome"] = "false";
                               Get.parameters['isFromMenu'] = "true";
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(
-                              //   builder: (_) =>
-                              //       const AddToOrderScreen(),
-                              // ));
                               await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value);
                             },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Card(
-                                  shape: BeveledRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  elevation: 0,
-                                  child: ClipRRect(
+                            child: Card(
+                              elevation: 0,
+                              shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Stack(
                                       alignment: Alignment.topRight,
@@ -637,10 +593,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                       ],
                                     ),
                                   ),
-                                ),
-                                height5SizedBox,
-                                Expanded(
-                                  child: Column(
+                                  height5SizedBox,
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -670,10 +624,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                       .featureProductList[i]
                                                       .description ??
                                                   "",
-                                              maxLines: 2,
+                                              maxLines: 1,
                                               style: TextStyle(
                                                   overflow:
-                                                      TextOverflow.visible,
+                                                      TextOverflow.ellipsis,
                                                   color: AppColors.blacklight,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400),
@@ -693,8 +647,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
