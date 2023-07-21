@@ -877,7 +877,6 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
-        selectedFrequency.value = "";
         routingTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
@@ -889,7 +888,6 @@ class WalletController extends GetxController {
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -954,18 +952,13 @@ class WalletController extends GetxController {
                       .toString() ??
                   "";
             }
-
-            if (getAutoRechargeModel
-                    .data!.userWalletAutoCharge!.thresholdAmount ==
-                null) {
-              if (getAutoRechargeModel.data!.userWalletAutoCharge!.frequency ==
-                  7) {
-                frequencyTextController.text = "7";
-                selectedFrequency.value = "7";
-              } else {
-                selectedFrequency.value = "30";
-                frequencyTextController.text = "30";
-              }
+            if (getAutoRechargeModel.data?.userWalletAutoCharge?.frequency ==
+                7) {
+              frequencyTextController.text = "7";
+              selectedFrequency.value = "7";
+            } else {
+              selectedFrequency.value = "30";
+              frequencyTextController.text = "30";
             }
 
             if (getAutoRechargeModel
@@ -975,13 +968,9 @@ class WalletController extends GetxController {
             } else {
               autoChargeType.value = "threshold";
             }
-            frequencyTextController.text = getAutoRechargeModel
-                .data!.userWalletAutoCharge!.frequency
-                .toString();
 
-            day.value = getAutoRechargeModel.data?.userWalletAutoCharge?.day
-                    .toString() ??
-                "";
+            day.value =
+                getAutoRechargeModel.data?.userWalletAutoCharge?.day ?? "";
 
             userWalletAutoChargeId.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.userWalletAutoChargeId

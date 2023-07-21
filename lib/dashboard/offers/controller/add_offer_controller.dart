@@ -30,7 +30,6 @@ class AddOffersController extends GetxController {
   RxString offerImageOriginalLinkFromServer = "".obs;
   RxString offerImageDynamicLinkFromServer = "".obs;
   RxInt pageId = 0.obs;
-  RxString storeId = "".obs;
   RxString offerId = "".obs;
   RxString isFrom = "".obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
@@ -125,10 +124,10 @@ class AddOffersController extends GetxController {
     isFrom.value = Get.parameters["isFrom"] ?? "";
     if (isFrom.value == StringConstants.addOfferText) {
     } else {
-      storeId.value = Get.parameters["storeId"] ?? "";
+      storeIdValue.value = Get.parameters["storeId"] ?? "";
       offerId.value = Get.parameters["offerId"] ?? "";
 
-      if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
+      if (storeIdValue.value.isNotEmpty && offerId.value.isNotEmpty) {
         apiGetOffersDetail();
       }
     }
@@ -286,7 +285,7 @@ class AddOffersController extends GetxController {
     };
     Map body = {
       "q": "",
-      "store_id": storeId.value,
+      "store_id": storeIdValue.value,
       "page": 1,
       "page_size": 1000,
       "order_by": "product_id",
@@ -443,7 +442,7 @@ class AddOffersController extends GetxController {
   ///Get Offers Detail List Api
   Future apiGetOffersDetail() async {
     debugPrint(
-      "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
+      "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
     );
 
     Map<String, String> headers = {
@@ -452,7 +451,7 @@ class AddOffersController extends GetxController {
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
             headers,
             showLoading: false)
         .then((value) async {

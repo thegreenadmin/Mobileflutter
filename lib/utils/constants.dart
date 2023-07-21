@@ -655,6 +655,7 @@ class AlertStringConstants {
   static String pleaseSelectOrderTypeText = "Please select order type";
   static String pleaseSelectDateText = "Please select a date";
   static String pleaseSelectDayOfMonthText = "Please select day of month";
+  static String pleaseSelectDayOfWeekText = "Please select day of week";
   static String pleaseEnterNameText = "Please enter name";
   static String pleaseSelectOneFilterText = "Please select one filter";
   static String pleaseSelectQuantityUnitText = "Please select quantity unit";

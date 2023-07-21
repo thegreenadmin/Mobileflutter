@@ -325,7 +325,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 ),
                               )),
                     ),
-
                     height20SizedBox,
                     Obx(
                       () => walletController.autoChargeType.value == "threshold"
@@ -431,7 +430,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                           ? "Monthly"
                                           : "Weekly"
                                       : null,
-                                  //value: walletController.autoChargeType.value,
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -486,11 +484,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                     addCardController
                                         .selectedPaymentForFrequency
                                         .value = v.toString();
-
-                                    if (addCardController
-                                            .selectedPaymentForFrequency
-                                            .value ==
-                                        "Monthly") {
+                                    if (v.toString() == "Monthly") {
                                       walletController.selectedFrequency.value =
                                           "30";
                                     } else {
@@ -503,8 +497,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                             ),
                     ),
                     Obx(() => walletController.autoChargeType.value !=
-                            "threshold" /*&&
-                            walletController.selectedFrequency.value == "30"*/
+                                "threshold" &&
+                            walletController.selectedFrequency.value == "30"
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -524,12 +518,17 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                     ? walletController
                                                 .frequencyTextController.text ==
                                             "30"
-                                        ? walletController.day.value
+                                        ? walletController.day.value != ""
+                                            ? walletController.day.value
+                                            : null
                                         : null
                                     : null,
                                 validator: (value) {
                                   if (walletController.autoChargeType.value !=
-                                      "threshold") {
+                                          "threshold" &&
+                                      walletController
+                                              .selectedFrequency.value ==
+                                          "30") {
                                     if (value == null || value.trim().isEmpty) {
                                       return AlertStringConstants
                                           .pleaseSelectDayOfMonthText;
@@ -618,9 +617,30 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                       ? walletController.frequencyTextController
                                                   .text ==
                                               "7"
-                                          ? walletController.day.value
+                                          ? walletController.day.value != ""
+                                              ? int.parse(walletController
+                                                          .day.value) <=
+                                                      7
+                                                  ? walletController.day.value
+                                                  : null
+                                              : null
                                           : null
                                       : null,
+                                  validator: (value) {
+                                    if (walletController.autoChargeType.value !=
+                                            "threshold" &&
+                                        walletController
+                                                .selectedFrequency.value ==
+                                            "7") {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        return AlertStringConstants
+                                            .pleaseSelectDayOfWeekText;
+                                      }
+                                      return null;
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -679,335 +699,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                             )
                           : height0SizedBox,
                     ),
-
-                    // walletController.autoChargeType.value == "threshold"
-                    //     ? height0SizedBox
-                    //     : height20SizedBox,
-                    // Obx(
-                    //   () => walletController.autoChargeType.value == "threshold"
-                    //       ? height0SizedBox
-                    //       : Row(
-                    //           children: [
-                    //             Expanded(
-                    //               flex: 4,
-                    //               child: Column(
-                    //                 crossAxisAlignment:
-                    //                     CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Text(
-                    //                     StringConstants.startDateText,
-                    //                     style: const TextStyle(
-                    //                         color: AppColors.black,
-                    //                         fontSize: 16,
-                    //                         fontWeight: FontWeight.w400),
-                    //                   ),
-                    //                   height10SizedBox,
-                    //                   InkWell(
-                    //                     onTap: () async {
-                    //                       DateTime date = DateTime.now();
-                    //                       FocusScope.of(context)
-                    //                           .requestFocus(FocusNode());
-                    //                       date = (await showDatePicker(
-                    //                         helpText:
-                    //                             StringConstants.selectDateText,
-                    //                         builder: (BuildContext context,
-                    //                             Widget? child) {
-                    //                           return Theme(
-                    //                             data:
-                    //                                 ThemeData.light().copyWith(
-                    //                               colorScheme:
-                    //                                   const ColorScheme.light(
-                    //                                       primary: AppColors
-                    //                                           .primary),
-                    //                               buttonTheme:
-                    //                                   const ButtonThemeData(
-                    //                                       textTheme:
-                    //                                           ButtonTextTheme
-                    //                                               .primary),
-                    //                             ),
-                    //                             child: child!,
-                    //                           );
-                    //                         },
-                    //                         context: context,
-                    //                         initialDate: DateTime.now(),
-                    //                         firstDate: DateTime.utc(1200, 1, 1),
-                    //                         lastDate: DateTime(5100),
-                    //                       ))!;
-                    //                       final DateFormat formatter =
-                    //                           DateFormat('yyyy-MM-dd');
-                    //                       walletController.startformattedDate!
-                    //                           .value = formatter.format(date);
-                    //                       walletController
-                    //                               .startDateTextController
-                    //                               .text =
-                    //                           walletController
-                    //                               .startformattedDate!.value;
-                    //                       walletController.dateOfEvent.value =
-                    //                           date.toIso8601String();
-                    //                     },
-                    //                     child: TextFormField(
-                    //                       autovalidateMode: AutovalidateMode
-                    //                           .onUserInteraction,
-                    //                       textInputAction: TextInputAction.done,
-                    //                       enabled: false,
-                    //                       style: const TextStyle(
-                    //                           color: AppColors.black,
-                    //                           fontSize: 16,
-                    //                           fontWeight: FontWeight.w400),
-                    //                       controller: walletController
-                    //                           .startDateTextController,
-                    //                       decoration: InputDecoration(
-                    //                         fillColor: Colors.white,
-                    //                         contentPadding:
-                    //                             const EdgeInsets.only(
-                    //                                 left: 10,
-                    //                                 right: 10,
-                    //                                 top: 5,
-                    //                                 bottom: 5),
-                    //                         hintText:
-                    //                             StringConstants.startDateText,
-                    //                         hintStyle: const TextStyle(
-                    //                             color: AppColors.grey),
-                    //                         border: UnderlineInputBorder(
-                    //                           borderRadius:
-                    //                               BorderRadius.circular(5.0),
-                    //                           borderSide: const BorderSide(
-                    //                             color: AppColors.primary,
-                    //                             width: 1.0,
-                    //                           ),
-                    //                         ),
-                    //                         errorBorder: UnderlineInputBorder(
-                    //                           borderRadius:
-                    //                               BorderRadius.circular(5.0),
-                    //                           borderSide: const BorderSide(
-                    //                             color: AppColors.primary,
-                    //                             width: 1.0,
-                    //                           ),
-                    //                         ),
-                    //                         focusedBorder: UnderlineInputBorder(
-                    //                           borderRadius:
-                    //                               BorderRadius.circular(5.0),
-                    //                           borderSide: const BorderSide(
-                    //                             color: AppColors.primary,
-                    //                             width: 1.0,
-                    //                           ),
-                    //                         ),
-                    //                         disabledBorder:
-                    //                             UnderlineInputBorder(
-                    //                           borderRadius:
-                    //                               BorderRadius.circular(5.0),
-                    //                           borderSide: const BorderSide(
-                    //                             color: AppColors.grey,
-                    //                             width: 1.0,
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             ),
-                    // width20SizedBox,
-                    // Expanded(
-                    //   flex: 4,
-                    //   child: Column(
-                    //     crossAxisAlignment:
-                    //         CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text(
-                    //         StringConstants.endDateText,
-                    //         style: const TextStyle(
-                    //             color: AppColors.black,
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.w400),
-                    //       ),
-                    //       height10SizedBox,
-                    //       InkWell(
-                    //         onTap: () async {
-                    //           DateTime date = DateTime.now();
-                    //           FocusScope.of(context)
-                    //               .requestFocus(FocusNode());
-                    //           date = (await showDatePicker(
-                    //             helpText:
-                    //                 StringConstants.selectDateText,
-                    //             builder: (BuildContext context,
-                    //                 Widget? child) {
-                    //               return Theme(
-                    //                 data:
-                    //                     ThemeData.light().copyWith(
-                    //                   colorScheme:
-                    //                       const ColorScheme.light(
-                    //                           primary: AppColors
-                    //                               .primary),
-                    //                   buttonTheme:
-                    //                       const ButtonThemeData(
-                    //                           textTheme:
-                    //                               ButtonTextTheme
-                    //                                   .primary),
-                    //                 ),
-                    //                 child: child!,
-                    //               );
-                    //             },
-                    //             context: context,
-                    //             initialDate: DateTime.now(),
-                    //             firstDate: DateTime.utc(1200, 1, 1),
-                    //             lastDate: DateTime(5100),
-                    //           ))!;
-                    //           final DateFormat formatter =
-                    //               DateFormat('yyyy-MM-dd');
-                    //           walletController.endformattedDate!
-                    //               .value = formatter.format(date);
-                    //           walletController
-                    //                   .endDateTextController.text =
-                    //               walletController
-                    //                   .endformattedDate!.value;
-                    //           walletController.dateOfEvent.value =
-                    //               date.toIso8601String();
-                    //         },
-                    //         child: TextFormField(
-                    //           autovalidateMode: AutovalidateMode
-                    //               .onUserInteraction,
-                    //           textInputAction: TextInputAction.done,
-                    //           enabled: false,
-                    //           style: const TextStyle(
-                    //               color: AppColors.black,
-                    //               fontSize: 16,
-                    //               fontWeight: FontWeight.w400),
-                    //           controller: walletController
-                    //               .endDateTextController,
-                    //           decoration: InputDecoration(
-                    //             fillColor: Colors.white,
-                    //             contentPadding:
-                    //                 const EdgeInsets.only(
-                    //                     left: 10,
-                    //                     right: 10,
-                    //                     top: 5,
-                    //                     bottom: 5),
-                    //             hintText:
-                    //                 StringConstants.endDateText,
-                    //             hintStyle: const TextStyle(
-                    //                 color: AppColors.grey),
-                    //             border: UnderlineInputBorder(
-                    //               borderRadius:
-                    //                   BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             errorBorder: UnderlineInputBorder(
-                    //               borderRadius:
-                    //                   BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             focusedBorder: UnderlineInputBorder(
-                    //               borderRadius:
-                    //                   BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             disabledBorder:
-                    //                 UnderlineInputBorder(
-                    //               borderRadius:
-                    //                   BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.grey,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
-                    // ],
-                    //   ),
-                    //),
-                    // Obx(
-                    //   () => walletController.autoChargeType.value == "threshold"
-                    //       ? height20SizedBox
-                    //       : height0SizedBox,
-                    // ),
-                    // Obx(
-                    //   () => walletController.autoChargeType.value == "threshold"
-                    //       ? Text(
-                    //           StringConstants.frequencyText,
-                    //           style: const TextStyle(
-                    //               color: AppColors.black,
-                    //               fontSize: 16,
-                    //               fontWeight: FontWeight.w400),
-                    //         )
-                    //       : height0SizedBox,
-                    // ),
-                    // height4SizedBox,
-                    // Obx(
-                    //   () => walletController.autoChargeType.value == "threshold"
-                    //       ? TextFormField(
-                    //           autovalidateMode:
-                    //               AutovalidateMode.onUserInteraction,
-                    //           keyboardType: TextInputType.phone,
-                    //           textInputAction: TextInputAction.next,
-                    //           autofocus: false,
-                    //           inputFormatters: <TextInputFormatter>[
-                    //             LengthLimitingTextInputFormatter(100),
-                    //           ],
-                    //           style: const TextStyle(
-                    //               color: AppColors.black,
-                    //               fontSize: 16,
-                    //               fontWeight: FontWeight.w400),
-                    //           controller:
-                    //               walletController.frequencyTextController,
-                    //           validator: (value) {
-                    //             if (value == null || value.trim().isEmpty) {
-                    //               return AlertStringConstants
-                    //                   .pleaseEnterFrequencyText;
-                    //             }
-                    //             return null;
-                    //           },
-                    //           textCapitalization: TextCapitalization.words,
-                    //           decoration: InputDecoration(
-                    //             isDense: true,
-                    //             hintText: StringConstants.frequencyText,
-                    //             hintStyle:
-                    //                 const TextStyle(color: AppColors.grey),
-                    //             fillColor: Colors.white,
-                    //             border: UnderlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             errorBorder: UnderlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             focusedBorder: UnderlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.primary,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //             enabledBorder: UnderlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(5.0),
-                    //               borderSide: const BorderSide(
-                    //                 color: AppColors.grey,
-                    //                 width: 1.0,
-                    //               ),
-                    //             ),
-                    //           ))
-                    //       : height0SizedBox,
-                    // ),
                     height20SizedBox,
                     Text(
                       StringConstants.selectCardText,

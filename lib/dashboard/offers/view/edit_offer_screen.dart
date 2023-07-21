@@ -23,10 +23,10 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
     addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
     if (addOffersController.isFrom.value == StringConstants.addOfferText) {
     } else {
-      addOffersController.storeId.value = Get.parameters["storeId"] ?? "";
+      addOffersController.storeIdValue.value = Get.parameters["storeId"] ?? "";
       addOffersController.offerId.value = Get.parameters["offerId"] ?? "";
 
-      if (addOffersController.storeId.value.isNotEmpty &&
+      if (addOffersController.storeIdValue.value.isNotEmpty &&
           addOffersController.offerId.value.isNotEmpty) {
         addOffersController.apiGetOffersDetail();
       }
