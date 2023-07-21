@@ -33,6 +33,7 @@ class AddOffersController extends GetxController {
   RxString storeId = "".obs;
   RxString offerId = "".obs;
   RxString isFrom = "".obs;
+  RxString storeName = "".obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
   RxList<dynamic> selectedProducts = <dynamic>[].obs;
@@ -42,8 +43,8 @@ class AddOffersController extends GetxController {
 
   late AddOfferRequestModel addOfferRequestModel = AddOfferRequestModel();
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
-  List<OfferProduct> offerProducts = <OfferProduct>[];
 
+  List<OfferProduct> offerProducts = <OfferProduct>[];
   RxList<OfferProduct> productMergedList = <OfferProduct>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -127,7 +128,6 @@ class AddOffersController extends GetxController {
     } else {
       storeId.value = Get.parameters["storeId"] ?? "";
       offerId.value = Get.parameters["offerId"] ?? "";
-
       if (storeId.value.isNotEmpty && offerId.value.isNotEmpty) {
         apiGetOffersDetail();
       }
@@ -277,20 +277,19 @@ class AddOffersController extends GetxController {
   Future apiGetStoreProducts() async {
     isLoading.value = true;
     debugPrint(
-      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+      "GET STORE PRODUCTS LIST URL ADD**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
     );
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
     Map body = {
       "q": "",
-      "store_id": storeId.value,
+      "store_id": storeIdValue.value,
       "page": 1,
       "page_size": 1000,
       "order_by": "product_id",
-      "order_type": "ASC",
+      "order_type": "DESC",
       "category_id": null,
       "filters": []
     };
@@ -312,32 +311,36 @@ class AddOffersController extends GetxController {
           productMergedList.clear();
           offerProducts.clear();
           offerProducts.addAll(getOfferDetailModel.data!.offerProducts!);
-          productMergedList.addAll(offerProducts);
           for (int i = 0; i < storeProductList.length; i++) {
-            productMergedList.add(OfferProduct(
-              offerProductId: storeProductList[i].productId,
-              product: Product(
-                description: storeProductList[i].description,
-                discountType: storeProductList[i].discountType,
-                discountValue: storeProductList[i].discountValue,
-                isEnabled: storeProductList[i].isEnabled,
-                height: storeProductList[i].height,
-                isFeaturedProduct: storeProductList[i].isFeaturedProduct,
-                length: storeProductList[i].length,
-                storeId: storeProductList[i].storeId,
-                isProductReturnable: storeProductList[i].isProductReturnable,
-                productId: storeProductList[i].productId,
-                productName: storeProductList[i].productName,
-                quantity: storeProductList[i].quantity,
-                productPrice: storeProductList[i].productPrice,
-                returnDaysCount: storeProductList[i].returnDaysCount,
-                weight: storeProductList[i].weight,
-                width: storeProductList[i].width,
-                status: "deleted",
-                createdAt: storeProductList[i].createdAt,
-                updatedAt: storeProductList[i].updatedAt,
-              ),
-            ));
+            for (int j = 0; j < offerProducts.length; j++) {
+              productMergedList.add(OfferProduct(
+                offerProductId: offerProducts[j].offerProductId,
+                product: Product(
+                  description: storeProductList[i].description,
+                  discountType: storeProductList[i].discountType,
+                  discountValue: storeProductList[i].discountValue,
+                  isEnabled: storeProductList[i].isEnabled,
+                  height: storeProductList[i].height,
+                  isFeaturedProduct: storeProductList[i].isFeaturedProduct,
+                  length: storeProductList[i].length,
+                  storeId: storeProductList[i].storeId,
+                  isProductReturnable: storeProductList[i].isProductReturnable,
+                  productId: storeProductList[i].productId,
+                  productName: storeProductList[i].productName,
+                  quantity: storeProductList[i].quantity,
+                  productPrice: storeProductList[i].productPrice,
+                  returnDaysCount: storeProductList[i].returnDaysCount,
+                  weight: storeProductList[i].weight,
+                  width: storeProductList[i].width,
+                  status: offerProducts[j].productId ==
+                          storeProductList[i].productId
+                      ? "active"
+                      : "deleted",
+                  createdAt: storeProductList[i].createdAt,
+                  updatedAt: storeProductList[i].updatedAt,
+                ),
+              ));
+            }
           }
         } else {
           if (storeProductList.isEmpty && radioValue.value == "product") {
@@ -363,7 +366,6 @@ class AddOffersController extends GetxController {
       "GET STORE PRODUCTS LIST URL**********"
       "${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
     );
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -445,7 +447,6 @@ class AddOffersController extends GetxController {
     debugPrint(
       "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeId.value}&offer_id=${offerId.value}",
     );
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -475,9 +476,8 @@ class AddOffersController extends GetxController {
         storeIdValue.value =
             getOfferDetailModel.data!.store!.storeId.toString();
         discountType.value = getOfferDetailModel.data!.offerType!;
-
+        storeName.value = getOfferDetailModel.data!.store!.storeName!;
         apiGetStoreProducts();
-
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

@@ -321,7 +321,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                       TextSpan(
                         children: [
                           TextSpan(
-                              text: StringConstants.selectStoreText,
+                              text: StringConstants.selectedStoreText,
                               style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
@@ -336,80 +336,87 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         ],
                       ),
                     ),
-                    height8SizedBox,
-                    Obx(() => addOffersController.storeList.isEmpty
-                        ? height0SizedBox
-                        : DropdownButtonFormField<String>(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            value: addOffersController.storeIdValue.value != ""
-                                ? addOffersController.storeList
-                                    .firstWhere((element) =>
-                                        element.storeId ==
-                                        addOffersController.storeIdValue.value)
-                                    .storeId
-                                : null,
-                            isExpanded: true,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            hint: Text(
-                              StringConstants.selectTypeText,
-                              style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                            ),
-                            items: addOffersController.storeList
-                                .map((dynamic value) {
-                              return DropdownMenuItem<String>(
-                                value: value.storeId,
-                                child: Text(
-                                  value.storeName,
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (value) async {
-                              addOffersController.storeIdValue.value =
-                                  value.toString();
-                              if (addOffersController.radioValue.value !=
-                                  "store") {
-                                await addOffersController.apiGetStoreProducts();
-                                setState(() {});
-                              }
-                              setState(() {});
-                            },
-                          )),
-                    height20SizedBox,
+                    height15SizedBox,
+
+                    Obx(() => Text(
+                          addOffersController.storeName.value,
+                          style: const TextStyle(
+                              color: AppColors.black, fontSize: 16),
+                        )),
+
+                    // Obx(() => addOffersController.storeList.isEmpty
+                    //     ? height0SizedBox
+                    //     : DropdownButtonFormField<String>(
+                    //         autovalidateMode:
+                    //             AutovalidateMode.onUserInteraction,
+                    //         value: addOffersController.storeIdValue.value != ""
+                    //             ? addOffersController.storeList
+                    //                 .firstWhere((element) =>
+                    //                     element.storeId ==
+                    //                     addOffersController.storeIdValue.value)
+                    //                 .storeId
+                    //             : null,
+                    //         isExpanded: true,
+                    //         decoration: InputDecoration(
+                    //           enabledBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.grey,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           border: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           focusedBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //           errorBorder: UnderlineInputBorder(
+                    //             borderRadius: BorderRadius.circular(5.0),
+                    //             borderSide: const BorderSide(
+                    //               color: AppColors.primary,
+                    //               width: 1.0,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         hint: Text(
+                    //           StringConstants.selectTypeText,
+                    //           style: const TextStyle(
+                    //               color: AppColors.grey, fontSize: 14),
+                    //         ),
+                    //         items: addOffersController.storeList
+                    //             .map((dynamic value) {
+                    //           return DropdownMenuItem<String>(
+                    //             value: value.storeId,
+                    //             child: Text(
+                    //               value.storeName,
+                    //               style: const TextStyle(
+                    //                   color: AppColors.black,
+                    //                   fontSize: 16,
+                    //                   fontWeight: FontWeight.w500),
+                    //             ),
+                    //           );
+                    //         }).toList(),
+                    //         onChanged: (value) async {
+                    //           addOffersController.storeIdValue.value =
+                    //               value.toString();
+                    //           if (addOffersController.radioValue.value !=
+                    //               "store") {
+                    //             await addOffersController.apiGetStoreProducts();
+                    //             setState(() {});
+                    //           }
+                    //           setState(() {});
+                    //         },
+                    //       )),
+                    height5SizedBox,
                     Obx(
                       () => addOffersController.radioValue.value == "store"
                           ? height0SizedBox

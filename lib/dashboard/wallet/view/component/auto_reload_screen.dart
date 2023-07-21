@@ -291,7 +291,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 isDense: true,
-                                hintText: "eg \$10",
+                                hintText: "eg \$10.00",
                                 hintStyle:
                                     const TextStyle(color: AppColors.grey),
                                 fillColor: Colors.white,
@@ -371,7 +371,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                         TextCapitalization.words,
                                     decoration: InputDecoration(
                                       isDense: true,
-                                      hintText: StringConstants.amountText,
+                                      hintText: "eg \$10.00",
                                       hintStyle: const TextStyle(
                                           color: AppColors.grey),
                                       fillColor: Colors.white,
