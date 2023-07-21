@@ -487,6 +487,7 @@ class StringConstants {
   static String storePersonText = "Store Person";
   static String storeOpeningText = "Store Opening";
   static String selectStoreText = "Select store";
+  static String selectedStoreText = "Selected store";
   static String shopYourFavouriteText = "Shop your favorite";
   static String sepText = "September";
   static String selectCountryText = "Select Country";

@@ -288,7 +288,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                               prefixStyle:
                                   const TextStyle(color: AppColors.black),
                               isDense: true,
-                              hintText: "eg \$100",
+                              hintText: "eg \$100.00",
                               hintStyle: const TextStyle(color: AppColors.grey),
                               fillColor: Colors.white,
                               border: UnderlineInputBorder(
