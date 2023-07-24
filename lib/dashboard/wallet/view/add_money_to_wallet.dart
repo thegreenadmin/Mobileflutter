@@ -64,10 +64,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   void onApplePayResult(paymentResult) {
     debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
     try {
-      final token = paymentResult['token'];
-      final tokenJson = Map.castFrom(json.decode(token));
-      debugPrint("transactionIdentifierJson *************$tokenJson");
-
+      //final token = paymentResult['token'];
+      //final tokenJson = Map.castFrom(json.decode(token));
+      //debugPrint("transactionIdentifierJson *************$tokenJson");
+      addCardController.apiPaymentIntent(context, "Apple pay");
       //final transactionId = paymentResult['token']['transactionId'];
       //  final transactionIdentifierJson =
       // Map.castFrom(json.decode(transactionIdentifier));
@@ -82,6 +82,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
       debugPrint("APPLE PAYMENT error *************${e.toString()}");
+      Utility.showAlertMessage(e.toString());
       //An error has occured
     }
   }
@@ -418,6 +419,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       ],
                     ),
                   ),
+                  height15SizedBox,
                   Obx(
                     () => addCardController.selectPaymentType.value == "G-Pay"
                         ? GooglePayButton(
