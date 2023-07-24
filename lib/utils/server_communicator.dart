@@ -86,6 +86,7 @@ class ServerCommunicator {
   String pageFaq = 'page/faq';
   String pageAbout = 'page/about';
   String previousStoreList = 'shop/stores/list/previous';
+  String paymentIntent = 'user/wallet/recharge/paymentMethod';
 
 //Q
 //R

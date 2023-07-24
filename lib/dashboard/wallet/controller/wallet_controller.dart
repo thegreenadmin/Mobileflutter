@@ -1142,4 +1142,6 @@ class WalletController extends GetxController {
       }
     });
   }
+
+
 }

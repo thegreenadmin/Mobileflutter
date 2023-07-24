@@ -899,4 +899,50 @@ class AddCardController extends GetxController {
       }
     });
   }
+
+  /// Add Money to stripe wallet
+  Future apiPaymentIntent(BuildContext ctx, String type) async {
+    debugPrint(
+        "PAYMENT INTENT URL *******${ServerCommunicator().baseUrl + ServerCommunicator().paymentIntent}");
+    Map body = {
+      "payment_service_name": type,
+      "amount": double.parse(amountTextController.text) * 100
+    };
+    if (amountTextController.text.split(".").length == 1) {
+      print(int.parse(amountTextController.text.split(".")[0]) * 100);
+    } else {
+      if (amountTextController.text.split(".")[1].length == 1) {
+        print(int.parse(amountTextController.text.split(".")[0]) * 100 +
+            int.parse("${amountTextController.text.split(".")[1]}0"));
+      } else {
+        print(int.parse(amountTextController.text.split(".")[0]) * 100 +
+            int.parse(amountTextController.text.split(".")[1]));
+      }
+    }
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer ${authToken.value.toString()}",
+    };
+    debugPrint("PAYMENT INTENT BODY *******$body");
+    debugPrint("PAYMENT INTENT HEADERS *******$headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl + ServerCommunicator().paymentIntent,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      if (value != null) {
+        debugPrint("PAYMENT INTENT RESPONSE *******${value.body}");
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
+          Utility.showToast(value.body['message']);
+        } else if (value.statusCode == ApiConstants.statusCode401) {
+          Utility.showAlertMessage(value.body['message']);
+        } else {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
 }

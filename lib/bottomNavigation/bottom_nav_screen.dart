@@ -42,8 +42,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Get.back(id: id);
         return false;
       },
-      child: Obx(()=> Scaffold(
-         /* extendBody: true,
+      child: Obx(
+        () => Scaffold(
+          /* extendBody: true,
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
               backgroundColor: AppColors.primary,
@@ -70,30 +71,33 @@ class _BottomNavigationState extends State<BottomNavigation> {
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: [
-                  Obx(() => BottomNavigationBar(
+                  Obx(
+                    () => BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       selectedLabelStyle:
-                      const TextStyle(color: AppColors.primary),
+                          const TextStyle(color: AppColors.primary),
                       selectedFontSize: 0.0,
                       elevation: 0,
                       showSelectedLabels: true,
                       showUnselectedLabels: false,
                       backgroundColor: AppColors.white,
-                      currentIndex: bottomNavigationPageController.selectedIndex.value,
-                      onTap: (i) { bottomNavigationPageController.onItemTapped(i);
+                      currentIndex:
+                          bottomNavigationPageController.selectedIndex.value,
+                      onTap: (i) {
+                        bottomNavigationPageController.onItemTapped(i);
                       },
                       items: [
                         BottomNavigationBarItem(
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  0
+                                          .selectedIndex.value ==
+                                      0
                                   ? ImageConstants.homefill
                                   : ImageConstants.home,
                               color: bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  0
+                                          .selectedIndex.value ==
+                                      0
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.8,
@@ -103,8 +107,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                      .selectedIndex.value ==
-                                      0
+                                              .selectedIndex.value ==
+                                          0
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -117,13 +121,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  1
+                                          .selectedIndex.value ==
+                                      1
                                   ? ImageConstants.walletfill
                                   : ImageConstants.wallet,
                               color: bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  1
+                                          .selectedIndex.value ==
+                                      1
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.8,
@@ -133,8 +137,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.walletText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                      .selectedIndex.value ==
-                                      1
+                                              .selectedIndex.value ==
+                                          1
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -147,13 +151,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  2
+                                          .selectedIndex.value ==
+                                      2
                                   ? ImageConstants.orderfillIcon
                                   : ImageConstants.orderIcon,
                               color: bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  2
+                                          .selectedIndex.value ==
+                                      2
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.6,
@@ -163,8 +167,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.ordersText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                      .selectedIndex.value ==
-                                      2
+                                              .selectedIndex.value ==
+                                          2
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -177,13 +181,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  3
+                                          .selectedIndex.value ==
+                                      3
                                   ? ImageConstants.offersfill
                                   : ImageConstants.offers,
                               color: bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  3
+                                          .selectedIndex.value ==
+                                      3
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.6,
@@ -193,8 +197,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.offersText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                      .selectedIndex.value ==
-                                      3
+                                              .selectedIndex.value ==
+                                          3
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -207,13 +211,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  4
+                                          .selectedIndex.value ==
+                                      4
                                   ? ImageConstants.morefill
                                   : ImageConstants.more,
                               color: bottomNavigationPageController
-                                  .selectedIndex.value ==
-                                  4
+                                          .selectedIndex.value ==
+                                      4
                                   ? AppColors.primary
                                   : AppColors.blacklight,
                               scale: 3.8,
@@ -223,8 +227,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.moreText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                      .selectedIndex.value ==
-                                      4
+                                              .selectedIndex.value ==
+                                          4
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -241,24 +245,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
           ),
           body: IndexedStack(
-              index: bottomNavigationPageController.selectedIndex.value,
-              children: [
-                  const _TabNav(0, HomeScreen()),
-                  const _TabNav(1, WalletScreen()),
-                bottomNavigationPageController.roleInApp.value ==
-                Role.storeOwnerRoleText ?
-                    bottomNavigationPageController.storeList.length > 1 ||
-                    bottomNavigationPageController.storeList.isEmpty
-                    ? const _TabNav(2, OrderStoresListScreen())
-                    : const _TabNav(3, OrdersHomeMainScreen())
-                    : const _TabNav(4, OrdersScreen()),
-                  const _TabNav(5, OffersScreen()),
-                  const _TabNav(6, MoreScreen()),],
-            ),
+            index: bottomNavigationPageController.selectedIndex.value,
+            children: [
+              const _TabNav(0, HomeScreen()),
+              const _TabNav(1, WalletScreen()),
+              bottomNavigationPageController.roleInApp.value ==
+                      Role.storeOwnerRoleText
+                  ? bottomNavigationPageController.storeList.length > 1 ||
+                          bottomNavigationPageController.storeList.isEmpty
+                      ? const _TabNav(2, OrderStoresListScreen())
+                      : const _TabNav(3, OrdersHomeMainScreen())
+                  : const _TabNav(4, OrdersScreen()),
+              const _TabNav(5, OffersScreen()),
+              const _TabNav(6, MoreScreen()),
+            ],
+          ),
 
-
-
-         /* body: TabNavigator(
+          /* body: TabNavigator(
             key: tabNavigator,
             tabs: <TabItem>[
               TabItem(tab1, const HomeScreen()),
@@ -277,13 +280,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
             popStack: true,
           ),*/
           /*body: buildNavigator(),*/
-         /* body: Obx(
+          /* body: Obx(
                 () => IndexedStack(
               children:bottomNavigationPageController.tabs,
               index: bottomNavigationPageController.selectedIndex.toInt()??0,
             ),
           ),*/
-         /* body: bottomNavigationPageController.selectedTab,*/
+          /* body: bottomNavigationPageController.selectedTab,*/
         ),
       ),
     );
@@ -354,19 +357,17 @@ class TabNavigatorState extends State<TabNavigator> {
   }
 }*/
 
-
 /// sub navigators.
 class _TabNav extends GetView<BottomNavController> {
   final int navKey;
   final Widget tab;
-   const _TabNav(this.navKey,this.tab);
+  const _TabNav(this.navKey, this.tab);
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: Get.nestedKey(navKey),
-      onGenerateRoute: (settings) =>
-          MaterialPageRoute(builder: (_) => tab),
+      onGenerateRoute: (settings) => MaterialPageRoute(builder: (_) => tab),
     );
   }
 }
