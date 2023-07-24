@@ -55,6 +55,7 @@ class GetStoreNonOfferData {
 class NonOfferProductsList {
   bool? isSelected = false;
   String? productId;
+  String? offerProductId;
   String? storeId;
   dynamic quantity;
   bool? isFeaturedProduct;
@@ -72,6 +73,7 @@ class NonOfferProductsList {
   dynamic weight;
   bool? isEnabled;
   String? status;
+  String? offerStatus = "deleted";
   String? createdAt;
   String? updatedAt;
   QuantityType? quantityType;
@@ -82,6 +84,7 @@ class NonOfferProductsList {
   NonOfferProductsList(
       {this.isSelected,
       this.productId,
+      this.offerProductId,
       this.storeId,
       this.quantity,
       this.isFeaturedProduct,
@@ -99,6 +102,7 @@ class NonOfferProductsList {
       this.weight,
       this.isEnabled,
       this.status,
+      this.offerStatus,
       this.createdAt,
       this.updatedAt,
       this.quantityType,
@@ -106,8 +110,67 @@ class NonOfferProductsList {
       this.productImages,
       this.productContents});
 
+  NonOfferProductsList copyWith({
+    bool? isSelected = false,
+    String? productId,
+    String? offerProductId,
+    String? storeId,
+    dynamic quantity,
+    bool? isFeaturedProduct,
+    String? productName,
+    String? description,
+    dynamic productPrice,
+    dynamic sellingPrice,
+    String? discountType,
+    dynamic discountValue,
+    bool? isProductReturnable,
+    dynamic returnDaysCount,
+    dynamic length,
+    dynamic width,
+    dynamic height,
+    dynamic weight,
+    bool? isEnabled,
+    String? status,
+    String? offerStatus = "deleted",
+    String? createdAt,
+    String? updatedAt,
+    QuantityType? quantityType,
+    List<ProductCategories>? productCategories,
+    List<ProductImages>? productImages,
+    List<ProductContents>? productContents,
+  }) =>
+      NonOfferProductsList(
+        status: status ?? this.status,
+        isSelected: isSelected ?? this.isSelected,
+        productId: productId ?? this.productId,
+        offerProductId: offerProductId ?? this.offerProductId,
+        storeId: storeId ?? this.storeId,
+        quantity: quantity ?? this.quantity,
+        isFeaturedProduct: isFeaturedProduct ?? this.isFeaturedProduct,
+        productName: productName ?? this.productName,
+        description: description ?? this.description,
+        productPrice: productPrice ?? this.productPrice,
+        sellingPrice: sellingPrice ?? this.sellingPrice,
+        discountType: discountType ?? this.discountType,
+        discountValue: discountValue ?? this.discountValue,
+        isProductReturnable: isProductReturnable ?? this.isProductReturnable,
+        returnDaysCount: returnDaysCount ?? this.returnDaysCount,
+        length: length ?? this.length,
+        width: width ?? this.width,
+        height: height ?? this.height,
+        weight: weight ?? this.weight,
+        isEnabled: isEnabled ?? this.isEnabled,
+        offerStatus: offerStatus ?? this.offerStatus,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        quantityType: quantityType ?? this.quantityType,
+        productCategories: productCategories ?? this.productCategories,
+        productImages: productImages ?? this.productImages,
+        productContents: productContents ?? this.productContents,
+      );
   NonOfferProductsList.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
+    offerProductId = json['offer_product_id'];
     storeId = json['store_id'];
     quantity = json['quantity'];
     isFeaturedProduct = json['is_featured_product'];
@@ -153,6 +216,7 @@ class NonOfferProductsList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['product_id'] = productId;
+    data['offer_product_id'] = offerProductId;
     data['store_id'] = storeId;
     data['quantity'] = quantity;
     data['is_featured_product'] = isFeaturedProduct;

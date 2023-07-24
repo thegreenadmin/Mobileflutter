@@ -44,6 +44,7 @@ class AddOffersController extends GetxController {
   late GetOfferDetailModel getOfferDetailModel = GetOfferDetailModel();
 
   List<OfferProduct> offerProducts = <OfferProduct>[];
+  RxList<OfferProduct> offerProductDetail = <OfferProduct>[].obs;
   RxList<OfferProduct> productMergedList = <OfferProduct>[].obs;
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -129,7 +130,7 @@ class AddOffersController extends GetxController {
       offerId.value = Get.parameters["offerId"] ?? "";
 
       if (storeIdValue.value.isNotEmpty && offerId.value.isNotEmpty) {
-        apiGetOffersDetail();
+        apiGetStoreProducts();
       }
     }
     getPage();
@@ -258,8 +259,10 @@ class AddOffersController extends GetxController {
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeIdValue.value.isEmpty && storeList.isNotEmpty) {
-          storeIdValue.value = storeList[0].storeId.toString();
-          apiGetStoreProducts();
+          if (isFrom.value != StringConstants.editOfferText) {
+            storeIdValue.value = storeList[0].storeId.toString();
+            apiGetStoreProducts();
+          }
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -308,44 +311,7 @@ class AddOffersController extends GetxController {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
         if (isFrom.value == StringConstants.editOfferText) {
-          productMergedList.clear();
-          offerProducts.clear();
-          offerProducts.addAll(getOfferDetailModel.data!.offerProducts!);
-          for (int i = 0; i < storeProductList.length; i++) {
-            for (int j = 0; j < offerProducts.length; j++) {
-              productMergedList.add(OfferProduct(
-                offerProductId: offerProducts[j].offerProductId,
-                product: Product(
-                  description: storeProductList[i].description,
-                  discountType: storeProductList[i].discountType,
-                  discountValue: storeProductList[i].discountValue,
-                  isEnabled: storeProductList[i].isEnabled,
-                  height: storeProductList[i].height,
-                  isFeaturedProduct: storeProductList[i].isFeaturedProduct,
-                  length: storeProductList[i].length,
-                  storeId: storeProductList[i].storeId,
-                  isProductReturnable: storeProductList[i].isProductReturnable,
-                  productId: storeProductList[i].productId,
-                  productName: storeProductList[i].productName,
-                  quantity: storeProductList[i].quantity,
-                  productPrice: storeProductList[i].productPrice,
-                  returnDaysCount: storeProductList[i].returnDaysCount,
-                  weight: storeProductList[i].weight,
-                  width: storeProductList[i].width,
-                  status: offerProducts[j].productId ==
-                          storeProductList[i].productId
-                      ? "active"
-                      : "deleted",
-                  createdAt: storeProductList[i].createdAt,
-                  updatedAt: storeProductList[i].updatedAt,
-                ),
-              ));
-            }
-          }
-        } else {
-          if (storeProductList.isEmpty && radioValue.value == "product") {
-            Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
-          }
+          apiGetOffersDetail();
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -455,9 +421,9 @@ class AddOffersController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
-      debugPrint("GET OFFER DETAIL RESPONSE *******${value!.body}");
+      log("GET OFFER DETAIL RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOfferDetailModel = GetOfferDetailModel.fromJson(value.body);
@@ -468,16 +434,29 @@ class AddOffersController extends GetxController {
             getOfferDetailModel.data!.image!.dynamicUrl ?? "";
         offerImageOriginalLinkFromServer.value =
             getOfferDetailModel.data!.image!.orignalUrl ?? "";
+
+        offerProductDetail.value =
+            getOfferDetailModel.data?.offerProducts ?? [];
         if (getOfferDetailModel.data!.isOfferForStore == true) {
           radioValue.value = "store";
         } else {
           radioValue.value = "product";
+
+          for (var product in storeProductList) {
+            for (var element in offerProductDetail) {
+              if (product.productId == element.productId) {
+                product.offerStatus = element.status;
+                product.offerProductId = element.offerProductId;
+              }
+            }
+          }
         }
+
         storeIdValue.value =
             getOfferDetailModel.data!.store!.storeId.toString();
         discountType.value = getOfferDetailModel.data!.offerType!;
         storeName.value = getOfferDetailModel.data!.store!.storeName!;
-        apiGetStoreProducts();
+
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
@@ -493,17 +472,6 @@ class AddOffersController extends GetxController {
 
   ///Update Offer Api
   Future apiUpdateOffer() async {
-    selectedProducts.clear();
-    for (int i = 0; i < productMergedList.length; i++) {
-      selectedProducts.add({
-        "offer_product_id": productMergedList[i].offerProductId!,
-        "product_id": productMergedList[i].product!.productId,
-        "status": productMergedList[i].product!.status
-      });
-    }
-    debugPrint(
-        "UPDATE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferEdit}");
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -518,7 +486,7 @@ class AddOffersController extends GetxController {
       },
       "offer_products": selectedProducts
     };
-    debugPrint("UPDATE OFFER BODY**********$body");
+    log("UPDATE OFFER BODY**********$body");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .putWithHeadersApi(

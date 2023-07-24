@@ -374,10 +374,10 @@ class HomeController extends GetxController {
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
-      log("OWNER OFFERS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
+      log("OWNER OFFERS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
         if (getOwnerOfferList.isNotEmpty) {
           for (int i = 0; i < getOwnerOfferList.length; i++) {
@@ -387,13 +387,13 @@ class HomeController extends GetxController {
             ownerCarouselImgList.add(getOwnerOfferList[i].image!.dynamicUrl!);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

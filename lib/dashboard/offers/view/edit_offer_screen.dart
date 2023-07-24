@@ -16,7 +16,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
 
-  @override
+  /* @override
   initState() {
     super.initState();
     addOffersController.apiGetStoreList();
@@ -31,7 +31,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
         addOffersController.apiGetOffersDetail();
       }
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -420,7 +420,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     Obx(
                       () => addOffersController.radioValue.value == "store"
                           ? height0SizedBox
-                          : addOffersController.productMergedList.isEmpty
+                          : addOffersController.storeProductList.isEmpty
                               ? height0SizedBox
                               : SizedBox(
                                   width: Get.width,
@@ -433,93 +433,179 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                             for (var i = 0;
                                                 i <
                                                     addOffersController
-                                                        .productMergedList
+                                                        .storeProductList
                                                         .length;
                                                 i++)
-                                              Obx(() => InkWell(
-                                                    onTap: () {
+                                              InkWell(
+                                                onTap: () {
+                                                  addOffersController
+                                                      .selectedProducts
+                                                      .clear();
+                                                  addOffersController
+                                                          .storeProductList[i]
+                                                          .offerStatus =
                                                       addOffersController
-                                                          .productMergedList[i]
-                                                          .product!
-                                                          .status = addOffersController
-                                                                  .productMergedList[
+                                                                  .storeProductList[
                                                                       i]
-                                                                  .product!
-                                                                  .status ==
+                                                                  .offerStatus ==
                                                               "deleted"
                                                           ? "active"
                                                           : "deleted";
 
-                                                      setState(() {});
-                                                    },
-                                                    child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                top: 10,
-                                                                bottom: 10),
-                                                        margin: const EdgeInsets
-                                                            .all(3),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                              spreadRadius: 5,
-                                                              blurRadius: 7,
-                                                              offset:
-                                                                  const Offset(
-                                                                      0, 2),
-                                                            ),
-                                                          ],
-                                                          color: addOffersController
-                                                                      .productMergedList[
+                                                  if (addOffersController
+                                                      .offerProductDetail
+                                                      .isNotEmpty) {
+                                                    for (int i = 0;
+                                                        i <
+                                                            addOffersController
+                                                                .storeProductList
+                                                                .length;
+                                                        i++) {
+                                                      for (var ele
+                                                          in addOffersController
+                                                              .offerProductDetail) {
+                                                        if (ele.offerProductId ==
+                                                            addOffersController
+                                                                .storeProductList[
+                                                                    i]
+                                                                .offerProductId) {
+                                                          addOffersController
+                                                              .selectedProducts
+                                                              .add({
+                                                            "offer_product_id":
+                                                                addOffersController
+                                                                    .storeProductList[
+                                                                        i]
+                                                                    .offerProductId,
+                                                            "product_id":
+                                                                addOffersController
+                                                                    .storeProductList[
+                                                                        i]
+                                                                    .productId,
+                                                            "status":
+                                                                addOffersController
+                                                                    .storeProductList[
+                                                                        i]
+                                                                    .offerStatus
+                                                          });
+                                                        }
+                                                      }
+
+                                                      if (addOffersController
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .offerStatus ==
+                                                              "active" &&
+                                                          !addOffersController
+                                                              .offerProductDetail
+                                                              .any((element) =>
+                                                                  element
+                                                                      .offerProductId ==
+                                                                  addOffersController
+                                                                      .storeProductList[
                                                                           i]
-                                                                      .product!
-                                                                      .status! ==
-                                                                  "deleted"
-                                                              ? AppColors
-                                                                  .primarylight
-                                                              : AppColors
-                                                                  .primary,
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(
-                                                            Radius.circular(
-                                                                100),
-                                                          ),
-                                                        ),
-                                                        child: Obx(() => Text(
+                                                                      .offerProductId)) {
+                                                        addOffersController
+                                                            .selectedProducts
+                                                            .add({
+                                                          "offer_product_id":
                                                               addOffersController
-                                                                      .productMergedList[
-                                                                          i]
-                                                                      .product!
-                                                                      .productName ??
-                                                                  "",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: addOffersController
-                                                                              .productMergedList[
-                                                                                  i]
-                                                                              .product!
-                                                                              .status! ==
-                                                                          "deleted"
-                                                                      ? AppColors
-                                                                          .primary
-                                                                      : AppColors
-                                                                          .white),
-                                                            ))),
-                                                  ))
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .offerProductId,
+                                                          "product_id":
+                                                              addOffersController
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .productId,
+                                                          "status":
+                                                              addOffersController
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .offerStatus
+                                                        });
+                                                      }
+                                                    }
+                                                  } else {
+                                                    for (var data
+                                                        in addOffersController
+                                                            .storeProductList) {
+                                                      if (data.offerStatus ==
+                                                          "active") {
+                                                        addOffersController
+                                                            .selectedProducts
+                                                            .add({
+                                                          "offer_product_id":
+                                                              null,
+                                                          "product_id":
+                                                              data.productId,
+                                                          "status":
+                                                              data.offerStatus
+                                                        });
+                                                      }
+                                                    }
+                                                  }
+
+                                                  setState(() {});
+                                                },
+                                                child: Obx(() => Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15,
+                                                            right: 15,
+                                                            top: 10,
+                                                            bottom: 10),
+                                                    margin:
+                                                        const EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.1),
+                                                          spreadRadius: 5,
+                                                          blurRadius: 7,
+                                                          offset: const Offset(
+                                                              0, 2),
+                                                        ),
+                                                      ],
+                                                      color: addOffersController
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .offerStatus ==
+                                                              "deleted"
+                                                          ? AppColors
+                                                              .primarylight
+                                                          : AppColors.primary,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(100),
+                                                      ),
+                                                    ),
+                                                    child: Obx(() => Text(
+                                                          addOffersController
+                                                                  .storeProductList[
+                                                                      i]
+                                                                  .productName ??
+                                                              "",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: addOffersController
+                                                                          .storeProductList[
+                                                                              i]
+                                                                          .offerStatus ==
+                                                                      "deleted"
+                                                                  ? AppColors
+                                                                      .primary
+                                                                  : AppColors
+                                                                      .white),
+                                                        )))),
+                                              )
                                           ],
                                         ),
                                       ]),

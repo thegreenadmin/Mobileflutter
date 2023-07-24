@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -63,7 +65,7 @@ class OffersController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    role.value = await SharedPreferenceStorage.getData(Role.role);
+    role.value = roleApp.value;
     if (role.value == Role.customerRoleText) {
       getCurrentLocation();
     } else {
@@ -94,7 +96,7 @@ class OffersController extends GetxController {
       "store_id": null,
       "page": 1,
       "page_size": 10,
-      "order_by": "offer_name",
+      "order_by": "offer_id",
       "order_type": "DESC",
       "filters": []
     };
@@ -107,18 +109,18 @@ class OffersController extends GetxController {
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
-      debugPrint("OWNER OFFERS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value.body);
+      debugPrint("OWNER OFFERS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -143,7 +145,7 @@ class OffersController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading!.value = false;
-      debugPrint("USER OFFERS LIST RESPONSE *******${value!.body}");
+      log("USER OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
@@ -217,7 +219,7 @@ class OffersController extends GetxController {
       "q": "",
       "store_id": storeId,
       "page": 1,
-      "page_size": 5,
+      "page_size": 1000,
       "order_by": "product_id",
       "order_type": "DESC",
       "category_id": null,
