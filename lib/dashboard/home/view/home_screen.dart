@@ -846,16 +846,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    CommonWidgets.cachedNetworkImage(
-                                        homeController
-                                            .featuredUserProductList[index]
-                                            .productImages![0]
-                                            .image!
-                                            .dynamicUrl
-                                            .toString(),
-                                      width: WidgetConstants
-                                          .screenWidth *
-                                          0.4,),
+                                    ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: CommonWidgets.cachedNetworkImage(
+                                          homeController
+                                              .featuredUserProductList[index]
+                                              .productImages![0]
+                                              .image!
+                                              .dynamicUrl
+                                              .toString(), height: WidgetConstants.screenHeight * 0.22,
+                                        width: WidgetConstants
+                                            .screenWidth *
+                                            0.4,),
+                                    ),
                                     /*SizedBox(
                                       height:
                                           WidgetConstants.screenHeight * 0.22,
@@ -988,16 +992,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    CommonWidgets.cachedNetworkImage(
-                                        homeController
-                                                .ownerFeatureProductList[index]
-                                                .productImages?[0]
-                                                .image
-                                                ?.dynamicUrl
-                                                .toString() ??
-                                            "",width: WidgetConstants
-                                        .screenWidth *
-                                        0.4,),
+                                    ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: CommonWidgets.cachedNetworkImage(
+                                          homeController
+                                                  .ownerFeatureProductList[index]
+                                                  .productImages?[0]
+                                                  .image
+                                                  ?.dynamicUrl
+                                                  .toString() ??
+                                              "",width: WidgetConstants
+                                          .screenWidth *
+                                          0.4,
+                                      height: WidgetConstants.screenHeight * 0.22,),
+                                    ),
                                     /*SizedBox(
                                       height:
                                           WidgetConstants.screenHeight * 0.22,
