@@ -514,7 +514,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           6.0),
-                                                  child: Image.network(
+                                                 child:  CommonWidgets.cachedNetworkImage(
+                                                     item.image?.dynamicUrl
+                                                         .toString() ??
+                                                         "",
+                                                     height: WidgetConstants
+                                                         .screenHeight *
+                                                         0.6,
+                                                     width: WidgetConstants
+                                                         .screenWidth *
+                                                         0.4
+                                                 ),
+                                                 /* child: Image.network(
                                                       item.image?.dynamicUrl
                                                               .toString() ??
                                                           "",
@@ -524,7 +535,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                           0.6,
                                                       width: WidgetConstants
                                                               .screenWidth *
-                                                          0.4),
+                                                          0.4),*/
                                                 )),
                                               ))
                                           .toList(),

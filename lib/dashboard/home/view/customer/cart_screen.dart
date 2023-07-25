@@ -167,7 +167,16 @@ class _CartScreenState extends State<CartScreen> {
                                                 border: Border.all(
                                                     color: AppColors.primary,
                                                     width: 0)),
-                                            child: storeHomeMainController
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                              storeHomeMainController
+                                                      .cartItems[i]
+                                                      .product
+                                                      ?.image
+                                                      ?.dynamicUrl ??
+                                                  "",
+                                            ),
+                                            /*child: storeHomeMainController
                                                             .cartItems[i]
                                                             .product !=
                                                         null &&
@@ -198,7 +207,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     fit: BoxFit.cover,
                                                     // color: AppColors.grey
                                                     //     .withOpacity(0.4),
-                                                  ),
+                                                  ),*/
                                           ),
                                         ),
                                         width10SizedBox,

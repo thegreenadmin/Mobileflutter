@@ -77,32 +77,22 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Container(
-                                width: 80,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                        color: AppColors.primary, width: 0)),
-                                child: offersController
-                                        .featuredUserProductList[index]
-                                        .productImages!
-                                        .isNotEmpty
-                                    ? Image.network(
-                                        offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .first
-                                                .image!
-                                                .dynamicUrl ??
-                                            "",
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.asset(
-                                        ImageConstants.defaultProduct,
-                                        fit: BoxFit.cover,
-                                        // color: AppColors.grey.withOpacity(0.4),
-                                      ),
-                              ),
+                                  width: 80,
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                          color: AppColors.primary, width: 0)),
+                                  child: CommonWidgets.cachedNetworkImage(
+                                    offersController
+                                            .featuredUserProductList[index]
+                                            .productImages!
+                                            .first
+                                            .image!
+                                            .dynamicUrl ??
+                                        "",
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
                           ),
                           width20SizedBox,

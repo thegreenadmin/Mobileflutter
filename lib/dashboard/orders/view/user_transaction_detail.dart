@@ -104,14 +104,18 @@ class _UserTransactionDetailScreenState
                                             border: Border.all(
                                                 color: AppColors.white,
                                                 width: 1)),
-                                        child: CircleAvatar(
+                                        child: CommonWidgets.cachedNetworkImage(
+                                            userTransactionDetailController
+                                                .storeImage
+                                                .toString()),
+                                        /*child: CircleAvatar(
                                           radius: 30.0,
                                           backgroundImage: NetworkImage(
                                               userTransactionDetailController
                                                   .storeImage
                                                   .toString()),
                                           backgroundColor: Colors.transparent,
-                                        ),
+                                        ),*/
                                       )
                                     : Container(
                                         decoration: BoxDecoration(

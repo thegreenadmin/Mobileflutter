@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 import 'edit_product_screen.dart';
 
@@ -131,14 +126,15 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
-                                              child: Image.network(
-                                                  ownerStoresController
-                                                          .getOwnerOfferList[
-                                                              index]
-                                                          .image
-                                                          ?.dynamicUrl ??
-                                                      "",
-                                                  fit: BoxFit.cover),
+                                              child: CommonWidgets
+                                                  .cachedNetworkImage(
+                                                      ownerStoresController
+                                                              .getOwnerOfferList[
+                                                                  index]
+                                                              .image
+                                                              ?.dynamicUrl ??
+                                                          "",
+                                                      fit: BoxFit.cover),
                                             ),
                                           )
                                         : Image.asset(
@@ -250,23 +246,12 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                           Radius.circular(20))),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
-                                    child: ownerStoresController
-                                            .storeProductList[i]
-                                            .productImages!
-                                            .isEmpty
-                                        ? Image.asset(
-                                            ImageConstants.defaultProduct,
-                                            fit: BoxFit.fill,
-                                          )
-                                        : Image.network(
-                                            ownerStoresController
-                                                .storeProductList[i]
-                                                .productImages![0]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
-                                            fit: BoxFit.fill,
-                                          ),
+                                    child: CommonWidgets.cachedNetworkImage(
+                                      ownerStoresController.storeProductList[i]
+                                          .productImages![0].image!.dynamicUrl
+                                          .toString(),
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
                               ),

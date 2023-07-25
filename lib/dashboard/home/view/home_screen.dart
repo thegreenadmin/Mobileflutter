@@ -527,13 +527,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               if (homeController
                                                       .isLoading?.value ==
                                                   false) {
-                                                // SharedPreferenceStorage.setData(
-                                                //     "context", context);
-                                                // Navigator.of(context)
-                                                //     .push(MaterialPageRoute(
-                                                //   builder: (_) =>
-                                                //       const StoreHomeMainScreen(),
-                                                // ));
                                                 Get.parameters["isFromHome"] =
                                                     "true";
                                                 Get.parameters["isFromFav"] =
@@ -552,7 +545,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(6.0),
-                                              child: Image.network(
+                                              child: CommonWidgets
+                                                  .cachedNetworkImage(
+                                                      item.image?.dynamicUrl
+                                                              .toString() ??
+                                                          "",
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.30,
+                                                      width: WidgetConstants
+                                                              .screenWidth *
+                                                          0.85),
+                                              /*child: Image.network(
                                                   item.image?.dynamicUrl
                                                           .toString() ??
                                                       "",
@@ -562,7 +566,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       0.3,
                                                   width: WidgetConstants
                                                           .screenWidth *
-                                                      0.85),
+                                                      0.85),*/
                                             )),
                                           ))
                                       .toList(),
@@ -670,13 +674,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             if (homeController
                                                     .isLoading?.value ==
                                                 false) {
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context)
-                                              //     .push(MaterialPageRoute(
-                                              //   builder: (_) =>
-                                              //       const ManageStoreMainScreen(),
-                                              // ));
                                               Get.parameters["isFromHome"] =
                                                   "false";
                                               Get.parameters["storeId"] =
@@ -692,16 +689,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             "",
                                                   });
                                             }
-                                            // Get.parameters["offerId"] =
-                                            //     item.offerId ?? "";
-                                            // Get.parameters["storeId"] =
-                                            //     item.store!.storeId ?? "";
                                           },
                                           child: Center(
                                               child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(6.0),
-                                            child: Image.network(
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                                    item.image?.dynamicUrl ??
+                                                        "",
+                                                    height: WidgetConstants
+                                                            .screenHeight *
+                                                        0.30,
+                                                    width: WidgetConstants
+                                                            .screenWidth *
+                                                        0.85),
+                                            /*child: Image.network(
                                                 item.image?.dynamicUrl ?? "",
                                                 fit: BoxFit.fill,
                                                 height: WidgetConstants
@@ -709,7 +712,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     0.30,
                                                 width: WidgetConstants
                                                         .screenWidth *
-                                                    0.85),
+                                                    0.85),*/
                                           )),
                                         ))
                                     .toList(),
@@ -821,11 +824,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .featuredUserProductList[index]
                                             .storeId ??
                                         "";
-                                    // SharedPreferenceStorage.setData(
-                                    //     "context", context);
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //   builder: (_) => const AddToOrderScreen(),
-                                    // ));
 
                                     Get.to(() => const AddToOrderScreen(),
                                         id: pageIdApp.value,
@@ -848,7 +846,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SizedBox(
+                                    CommonWidgets.cachedNetworkImage(
+                                        homeController
+                                            .featuredUserProductList[index]
+                                            .productImages![0]
+                                            .image!
+                                            .dynamicUrl
+                                            .toString(),
+                                      width: WidgetConstants
+                                          .screenWidth *
+                                          0.4,),
+                                    /*SizedBox(
                                       height:
                                           WidgetConstants.screenHeight * 0.22,
                                       width: WidgetConstants.screenWidth * 0.44,
@@ -899,7 +907,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .screenWidth *
                                                       0.4,
                                                 )),
-                                    ),
+                                    ),*/
                                     height8SizedBox,
                                     Text(
                                       homeController
@@ -980,7 +988,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SizedBox(
+                                    CommonWidgets.cachedNetworkImage(
+                                        homeController
+                                                .ownerFeatureProductList[index]
+                                                .productImages?[0]
+                                                .image
+                                                ?.dynamicUrl
+                                                .toString() ??
+                                            "",width: WidgetConstants
+                                        .screenWidth *
+                                        0.4,),
+                                    /*SizedBox(
                                       height:
                                           WidgetConstants.screenHeight * 0.22,
                                       width: WidgetConstants.screenWidth * 0.44,
@@ -1027,7 +1045,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .screenWidth *
                                                       0.4,
                                                 )),
-                                    ),
+                                    ),*/
                                     height8SizedBox,
                                     Text(
                                       homeController

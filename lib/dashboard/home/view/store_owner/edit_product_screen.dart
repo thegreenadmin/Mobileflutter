@@ -120,7 +120,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     padding:
                                                         const EdgeInsets.all(
                                                             4.0),
-                                                    child: Image.network(
+                                                    child: CommonWidgets.cachedNetworkImage(
                                                       manageStoreController
                                                           .imageUrlList[index]
                                                           .dynamicImageUrl!,

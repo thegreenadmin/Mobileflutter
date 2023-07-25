@@ -116,13 +116,21 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            child: Image.network(
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                                    storeHomeMainController
+                                                            .offersList[index]
+                                                            .image
+                                                            ?.dynamicUrl ??
+                                                        "",
+                                                    fit: BoxFit.cover),
+                                            /*Image.network(
                                                 storeHomeMainController
                                                         .offersList[index]
                                                         .image
                                                         ?.dynamicUrl ??
                                                     "",
-                                                fit: BoxFit.cover),
+                                                fit: BoxFit.cover),*/
                                           ),
                                         )
                                       : Image.asset(
@@ -257,7 +265,19 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                       child: Stack(
                                         alignment: Alignment.topRight,
                                         children: [
-                                          storeHomeMainController
+                                          CommonWidgets.cachedNetworkImage(
+                                            storeHomeMainController
+                                                    .featureProductList[index]
+                                                    .productImages
+                                                    ?.first
+                                                    .image
+                                                    ?.dynamicUrl ??
+                                                "",
+                                            fit: BoxFit.fill,
+                                            height: 180.0,
+                                            width: 160.0,
+                                          ),
+                                          /*storeHomeMainController
                                                       .featureProductList[index]
                                                       .productImages!
                                                       .isNotEmpty &&
@@ -287,7 +307,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   fit: BoxFit.fill,
                                                   height: 180,
                                                   width: 160,
-                                                ),
+                                                ),*/
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: storeHomeMainController

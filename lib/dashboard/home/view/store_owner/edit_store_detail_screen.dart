@@ -175,7 +175,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Image.network(
+                                                  CommonWidgets.cachedNetworkImage(
                                                       ownerStoreController
                                                           .editStoreLogoDynamicLinkFromServer
                                                           .value,
@@ -298,7 +298,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
-                                        child: Image.network(
+                                        child: CommonWidgets.cachedNetworkImage(
                                             ownerStoreController
                                                 .editStoreImageDynamicLinkFromServer
                                                 .value,

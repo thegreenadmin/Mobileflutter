@@ -165,7 +165,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
-                                        child: Image.network(
+                                        child: CommonWidgets.cachedNetworkImage(
                                             addOffersController
                                                 .offerImageDynamicLinkFromServer
                                                 .value,

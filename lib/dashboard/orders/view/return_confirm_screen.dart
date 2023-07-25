@@ -249,45 +249,22 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                               color: AppColors
                                                                   .white,
                                                               width: 1)),
-                                                      child: ordersHomeMainController
-                                                                      .getStoreOrderDetailModel
-                                                                      .value
-                                                                      .data
-                                                                      ?.userProof
-                                                                      ?.image
-                                                                      ?.dynamicUrl ==
-                                                                  null ||
-                                                              ordersHomeMainController
-                                                                  .getStoreOrderDetailModel
-                                                                  .value
-                                                                  .data!
-                                                                  .userProof!
-                                                                  .image!
-                                                                  .dynamicUrl!
-                                                                  .isEmpty
-                                                          ? Image.asset(
-                                                              ImageConstants
-                                                                  .nopicfound,
-                                                              fit: BoxFit.fill,
-                                                              color: AppColors
-                                                                  .grey
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                              // height: 70,
-                                                            )
-                                                          : Image.network(
-                                                              ordersHomeMainController
-                                                                      .getStoreOrderDetailModel
-                                                                      .value
-                                                                      .data
-                                                                      ?.userProof
-                                                                      ?.image
-                                                                      ?.dynamicUrl
-                                                                      .toString() ??
-                                                                  "",
-                                                              // height: 70,
-                                                              fit: BoxFit.fill,
-                                                            ),
+                                                      child: CommonWidgets
+                                                          .cachedNetworkImage(
+                                                        ordersHomeMainController
+                                                                .getStoreOrderDetailModel
+                                                                .value
+                                                                .data
+                                                                ?.userProof
+                                                                ?.image
+                                                                ?.dynamicUrl
+                                                                .toString() ??
+                                                            "",
+                                                        // height: 70,
+                                                        fit: BoxFit.fill,
+                                                        assetImg: ImageConstants
+                                                            .nopicfound,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -373,7 +350,18 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: ordersHomeMainController
+                                          child:
+                                              CommonWidgets.cachedNetworkImage(
+                                            ordersHomeMainController
+                                                .getOrderItems[index]
+                                                .product!
+                                                .productImages!
+                                                .first
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                          ),
+                                          /* child: ordersHomeMainController
                                                           .getOrderItems[index]
                                                           .product!
                                                           .productImages!
@@ -402,7 +390,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                       .first
                                                       .image!
                                                       .dynamicUrl
-                                                      .toString()),
+                                                      .toString()),*/
                                         ),
                                       ),
                                       width10SizedBox,
@@ -453,9 +441,9 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                         ordersHomeMainController
                                                             .getOrderItems[
                                                                 index]
-                                                            .product!
-                                                            .quantity
-                                                            .toString(),
+                                                            .orderItemCount
+                                                            .toString()
+                                                            .padLeft(2, '0'),
                                                         style: TextStyle(
                                                             color: AppColors
                                                                 .blacklight,

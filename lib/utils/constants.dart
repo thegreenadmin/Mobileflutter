@@ -402,7 +402,7 @@ class StringConstants {
 
   //Q
   static String quantityUnitText = "Quantity Unit";
-  static String qtyText = "Qty";
+  static String qtyText = "Quantity";
 
   //R
   static String registerHereText = " Register Here!!";

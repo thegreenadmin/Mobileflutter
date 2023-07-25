@@ -918,7 +918,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                               color: AppColors.blacklight,
                                               strokeWidth: 1,
                                               dashPattern: const [4, 4],
-                                              child: Image.network(
+                                              child: CommonWidgets
+                                                  .cachedNetworkImage(
                                                 accountController
                                                     .idProofImageDynamicLinkFromServer
                                                     .value,
@@ -926,6 +927,14 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                 width:
                                                     WidgetConstants.screenWidth,
                                               ),
+                                              /*child: Image.network(
+                                                accountController
+                                                    .idProofImageDynamicLinkFromServer
+                                                    .value,
+                                                fit: BoxFit.cover,
+                                                width:
+                                                    WidgetConstants.screenWidth,
+                                              ),*/
                                             ),
                                           )),
                                     ),

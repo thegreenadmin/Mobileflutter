@@ -443,29 +443,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                                 color: AppColors
                                                                     .white,
                                                                 width: 1)),
-                                                        child: ordersHomeMainController
-                                                                        .getStoreOrderDetailModel
-                                                                        .value
-                                                                        .data
-                                                                        ?.userProof
-                                                                        ?.image
-                                                                        ?.dynamicUrl ==
-                                                                    null ||
-                                                                ordersHomeMainController
-                                                                    .getStoreOrderDetailModel
-                                                                    .value
-                                                                    .data!
-                                                                    .userProof!
-                                                                    .image!
-                                                                    .dynamicUrl!
-                                                                    .isEmpty
-                                                            ? Image.asset(
-                                                                ImageConstants
-                                                                    .nopicfound,
-                                                                fit: BoxFit.fill,
-                                                                height: 200,
-                                                              )
-                                                            : Image.network(
+                                                        child:  CommonWidgets.cachedNetworkImage(
                                                                 ordersHomeMainController
                                                                         .getStoreOrderDetailModel
                                                                         .value
@@ -475,8 +453,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                                         ?.dynamicUrl
                                                                         .toString() ??
                                                                     "",
-                                                                height: 200,
+                                                                height: 200.0,
                                                                 fit: BoxFit.fill,
+                                                          assetImg: ImageConstants
+                                                              .nopicfound,
                                                               ),
                                                       ),
                                                     ),
@@ -562,34 +542,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                           flex: 2,
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
-                                            child: ordersHomeMainController
-                                                .getOrderItems[index]
-                                                .product!
-                                                .productImages!
-                                                .isEmpty ||
-                                                ordersHomeMainController
-                                                    .getOrderItems[index]
-                                                    .product!
-                                                    .productImages!
-                                                    .first
-                                                    .image!
-                                                    .dynamicUrl ==
-                                                    null ||
-                                                ordersHomeMainController
-                                                    .getOrderItems[index]
-                                                    .product!
-                                                    .productImages!
-                                                    .first
-                                                    .image!
-                                                    .dynamicUrl!
-                                                    .isEmpty
-                                                ? Image.asset(
-                                              ImageConstants.defaultProduct,
-                                              fit: BoxFit.fill,
-                                              // color: AppColors.grey.withOpacity(0.4),
-                                              height: 70,
-                                            )
-                                                : Image.network(
+                                            child:  CommonWidgets.cachedNetworkImage(
                                               ordersHomeMainController
                                                   .getOrderItems[index]
                                                   .product!
@@ -598,16 +551,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 70,
+                                              height: 70.0,
                                               fit: BoxFit.fill,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return Image.asset(
-                                                  ImageConstants
-                                                      .nopicfound,
-                                                  height: 70,
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
                                             ),
                                           ),
                                         ),
@@ -696,10 +641,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
-                                                              .getOrderItems[index]
-                                                              .product!
-                                                              .quantity
-                                                              .toString(),
+                                                              .getOrderItems[index].orderItemCount
+                                                              .toString().padLeft(2, '0'),
                                                           style: const TextStyle(
                                                               color: AppColors.black,
                                                               fontWeight: FontWeight.w600,

@@ -114,7 +114,46 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: CircleAvatar(
+                                          child:
+                                              CommonWidgets.cachedNetworkImage(
+                                            searchStoreUserController
+                                                    .previousStore[index]
+                                                    .logo
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
+                                            fit: BoxFit.contain,
+                                            imageBuilder:
+                                                (context, imageProvider) {
+                                              return CircleAvatar(
+                                                radius: 25.0,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                backgroundImage: imageProvider,
+                                              );
+                                            },
+                                            assetImg: ImageConstants.storeicon,
+                                            placeholder: (context, url) =>
+                                                const CircleAvatar(
+                                              radius: 25.0,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              backgroundImage: AssetImage(
+                                                ImageConstants.storeicon,
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const CircleAvatar(
+                                              radius: 25.0,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              backgroundImage: AssetImage(
+                                                ImageConstants.storeicon,
+                                              ),
+                                            ),
+                                          ),
+                                          /*child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundImage:
                                                 searchStoreUserController
@@ -141,7 +180,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                                                 .toString() ??
                                                             ""),
                                             backgroundColor: Colors.transparent,
-                                          ),
+                                          ),*/
                                         ),
                                         width10SizedBox,
                                         SizedBox(

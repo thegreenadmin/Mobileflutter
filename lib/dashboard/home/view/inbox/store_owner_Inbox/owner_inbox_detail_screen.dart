@@ -424,11 +424,19 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                             shape: BoxShape.rectangle,
                                           ),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(0.0),
-                                              ),
-                                              child: Image.network(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(0.0),
+                                            ),
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                              messageList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                              height: 220.0,
+                                            ),
+                                            /* child: Image.network(
                                                 messageList[index]
                                                     .image!
                                                     .dynamicUrl
@@ -436,7 +444,8 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                 height: 220,
                                                 // width: 200,
                                                 fit: BoxFit.fill,
-                                              )),
+                                              )*/
+                                          ),
                                         ),
                                       ),
                                 messageList[index].image!.dynamicUrl == "" ||
@@ -567,11 +576,18 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           shape: BoxShape.rectangle,
                                         ),
                                         child: ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(0.0),
-                                            ),
-                                            child: Image.network(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(0.0),
+                                          ),
+                                          child:
+                                              CommonWidgets.cachedNetworkImage(
+                                            messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                            height: 220.0,
+                                          ),
+                                          /* child: Image.network(
                                               messageList[index]
                                                   .image!
                                                   .dynamicUrl
@@ -579,7 +595,8 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               height: 220,
                                               // width: 200,
                                               fit: BoxFit.fill,
-                                            )),
+                                            )*/
+                                        ),
                                       ),
                                     ),
                               height10SizedBox,

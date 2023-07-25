@@ -104,7 +104,18 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                 child: Stack(
                                   alignment: Alignment.topRight,
                                   children: [
-                                    storeHomeMainController
+                                    CommonWidgets.cachedNetworkImage(
+                                      storeHomeMainController
+                                              .featureProductList[i]
+                                              .productImages
+                                              ?.first
+                                              .image!
+                                              .dynamicUrl ??
+                                          "",
+                                      height: 148.0,
+                                      width: 148.0,
+                                    ),
+                                    /*storeHomeMainController
                                                 .featureProductList[i]
                                                 .productImages!
                                                 .isNotEmpty &&
@@ -134,7 +145,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                             width: 148,
                                             // color:
                                             //     AppColors.grey.withOpacity(0.4),
-                                          ),
+                                          ),*/
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: storeHomeMainController

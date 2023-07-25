@@ -180,14 +180,13 @@ class BottomNavController extends GetxController {
       }
     } else if (selectedIndex.value == 1) {
       try {
-        // Get.delete<WalletController>();
         Future.delayed(Duration.zero, () {
           pageIdApp.value = 1;
           WalletController walletController = Get.put(WalletController());
           walletController.onInit();
         });
       } catch (e) {
-        //Pass
+        debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
       }
     } else if (selectedIndex.value == 2) {
       try {
@@ -208,11 +207,14 @@ class BottomNavController extends GetxController {
             pageIdApp.value = 4;
           }
 
+          debugPrint("Bottom Nav  Page Id:-----------${pageIdApp.value}");
+          debugPrint(
+              "Bottom Nav  storeList.length:-----------${storeList.length}");
           OrdersController ordersController = Get.put(OrdersController());
           ordersController.onInit();
         });
       } catch (e) {
-        //Pass
+        debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
       }
     } else if (selectedIndex.value == 3) {
       try {
@@ -222,7 +224,7 @@ class BottomNavController extends GetxController {
           offersController.onInit();
         });
       } catch (e) {
-        //Pass
+        debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
       }
     } else if (selectedIndex.value == 4) {
       try {
@@ -232,7 +234,7 @@ class BottomNavController extends GetxController {
           moreController.onInit();
         });
       } catch (e) {
-        //Pass
+        debugPrint("Bottom Nav  More Error:-----------${e.toString()}");
       }
     }
   }

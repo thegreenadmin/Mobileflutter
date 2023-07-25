@@ -394,7 +394,7 @@ class OrdersController extends GetxController {
                                     ))
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
-                                    child: Image.network(
+                                    child: CommonWidgets.cachedNetworkImage(
                                       orderItemObj.value.product?.productImages
                                               ?.first.image?.dynamicUrl ??
                                           "",

@@ -130,16 +130,21 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
-                                        width:
-                                            WidgetConstants.screenWidth * 0.8,
-                                        height:
-                                            WidgetConstants.screenHeight * 0.2,
-                                        color: AppColors.primarylight,
-                                        child: Image.network(
+                                      width: WidgetConstants.screenWidth * 0.8,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.2,
+                                      color: AppColors.primarylight,
+                                      child: CommonWidgets.cachedNetworkImage(
+                                        addOffersController
+                                            .offerImageDynamicLinkFromServer
+                                            .value,
+                                      ),
+                                      /*child: Image.network(
                                             addOffersController
                                                 .offerImageDynamicLinkFromServer
                                                 .value,
-                                            fit: BoxFit.cover)),
+                                            fit: BoxFit.cover)*/
+                                    ),
                                   ),
                                 ],
                               ),

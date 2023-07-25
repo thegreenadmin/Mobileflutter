@@ -174,11 +174,16 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Image.network(
+                                                  CommonWidgets.cachedNetworkImage(
                                                       addNewStoreController
                                                           .storeLogoDynamicLinkFromServer
                                                           .value,
-                                                      fit: BoxFit.cover)
+                                                      fit: BoxFit.cover),
+                                                  /*Image.network(
+                                                      addNewStoreController
+                                                          .storeLogoDynamicLinkFromServer
+                                                          .value,
+                                                      fit: BoxFit.cover)*/
                                                 ]),
                                           ),
                                         ),
@@ -297,7 +302,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
-                                        child: Image.network(
+                                        child: CommonWidgets.cachedNetworkImage(
                                             addNewStoreController
                                                 .storeImageDynamicLinkFromServer
                                                 .value,

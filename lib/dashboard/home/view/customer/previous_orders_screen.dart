@@ -84,7 +84,18 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                     child: Stack(
                                       alignment: Alignment.topRight,
                                       children: [
-                                        storeHomeMainController
+                                        CommonWidgets.cachedNetworkImage(
+                                          storeHomeMainController
+                                              .previousOrderList[i]
+                                              .productImages!
+                                              .first
+                                              .image!
+                                              .dynamicUrl
+                                              .toString(),
+                                          height: 148.0,
+                                          width: 148.0,
+                                        ),
+                                        /*storeHomeMainController
                                                     .previousOrderList[i]
                                                     .productImages!
                                                     .isNotEmpty &&
@@ -114,7 +125,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                 width: 148,
                                                 color: AppColors.grey
                                                     .withOpacity(0.4),
-                                              ),
+                                              ),*/
                                       ],
                                     ),
                                   ),

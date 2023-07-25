@@ -300,31 +300,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     border: Border.all(
                                                         color: AppColors.white,
                                                         width: 1)),
-                                                child: manageStoreController
-                                                                .storeProductList[
-                                                                    index]
-                                                                .productImages![
-                                                                    0]
-                                                                .image!
-                                                                .dynamicUrl ==
-                                                            null ||
-                                                        manageStoreController
-                                                            .storeProductList[
-                                                                index]
-                                                            .productImages![0]
-                                                            .image!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? Image.asset(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                        fit: BoxFit.fill,
-                                                        height: 100,
-                                                        width: WidgetConstants
-                                                                .screenWidth *
-                                                            0.3,
-                                                      )
-                                                    : Image.network(
+                                                child: CommonWidgets.cachedNetworkImage(
                                                         manageStoreController
                                                             .storeProductList[
                                                                 index]
@@ -333,7 +309,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                             .dynamicUrl
                                                             .toString(),
                                                         fit: BoxFit.fill,
-                                                        height: 100,
+                                                        height: 100.0,
                                                         width: WidgetConstants
                                                                 .screenWidth *
                                                             0.3,

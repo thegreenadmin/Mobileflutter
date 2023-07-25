@@ -419,13 +419,20 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                     color: AppColors.blacklight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
-                                    child: Image.network(
+                                    child: CommonWidgets.cachedNetworkImage(
+                                        accountController
+                                            .idProofImageDynamicLinkFromServer
+                                            .value,
+                                        width: WidgetConstants.screenWidth,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.3),
+                                    /* child: Image.network(
                                       accountController
                                           .idProofImageDynamicLinkFromServer
                                           .value,
                                       fit: BoxFit.cover,
                                       width: WidgetConstants.screenWidth,
-                                    ),
+                                    ),*/
                                   ),
                                 )),
                           ),

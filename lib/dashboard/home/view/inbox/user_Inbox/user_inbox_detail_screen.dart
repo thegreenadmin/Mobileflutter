@@ -248,10 +248,18 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(50.0),
-                                    ),
-                                    child: Image.network(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(50.0),
+                                  ),
+                                  child: CommonWidgets.cachedNetworkImage(
+                                    messageList[index]
+                                        .image!
+                                        .dynamicUrl
+                                        .toString(),
+                                    height: 45.0,
+                                    width: 45.0,
+                                  ),
+                                  /*child: Image.network(
                                       messageList[index]
                                           .image!
                                           .dynamicUrl
@@ -259,7 +267,8 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                       height: 45,
                                       width: 45,
                                       fit: BoxFit.fill,
-                                    )),
+                                    )*/
+                                ),
                               ),
                         width10SizedBox,
                         Flexible(
@@ -314,11 +323,19 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                             shape: BoxShape.rectangle,
                                           ),
                                           child: ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(0.0),
-                                              ),
-                                              child: Image.network(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(0.0),
+                                            ),
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                              messageList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                              height: 220.0,
+                                            ),
+                                            /*child: Image.network(
                                                 messageList[index]
                                                     .image!
                                                     .dynamicUrl
@@ -327,7 +344,8 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                 // width: 200,
 
                                                 fit: BoxFit.fill,
-                                              )),
+                                              )*/
+                                          ),
                                         ),
                                       ),
                                 messageList[index].image!.dynamicUrl == "" ||
@@ -458,11 +476,18 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                           shape: BoxShape.rectangle,
                                         ),
                                         child: ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(0.0),
-                                            ),
-                                            child: Image.network(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(0.0),
+                                          ),
+                                          child:
+                                              CommonWidgets.cachedNetworkImage(
+                                            messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                            height: 220.0,
+                                          ),
+                                          /* child: Image.network(
                                               messageList[index]
                                                   .image!
                                                   .dynamicUrl
@@ -470,7 +495,8 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                               height: 220,
                                               // width: 200,
                                               fit: BoxFit.fill,
-                                            )),
+                                            )*/
+                                        ),
                                       ),
                                     ),
                               height10SizedBox,

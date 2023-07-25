@@ -278,45 +278,22 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                               color: AppColors
                                                                   .white,
                                                               width: 1)),
-                                                      child: ordersHomeMainController
-                                                                      .getStoreOrderDetailModel
-                                                                      .value
-                                                                      .data
-                                                                      ?.userProof
-                                                                      ?.image
-                                                                      ?.dynamicUrl ==
-                                                                  null ||
-                                                              ordersHomeMainController
-                                                                  .getStoreOrderDetailModel
-                                                                  .value
-                                                                  .data!
-                                                                  .userProof!
-                                                                  .image!
-                                                                  .dynamicUrl!
-                                                                  .isEmpty
-                                                          ? Image.asset(
-                                                              ImageConstants
-                                                                  .nopicfound,
-                                                              fit: BoxFit.fill,
-                                                              color: AppColors
-                                                                  .grey
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                              height: 200,
-                                                            )
-                                                          : Image.network(
-                                                              ordersHomeMainController
-                                                                      .getStoreOrderDetailModel
-                                                                      .value
-                                                                      .data
-                                                                      ?.userProof
-                                                                      ?.image
-                                                                      ?.dynamicUrl
-                                                                      .toString() ??
-                                                                  "",
-                                                              height: 200,
-                                                              fit: BoxFit.fill,
-                                                            ),
+                                                      child: CommonWidgets
+                                                          .cachedNetworkImage(
+                                                        ordersHomeMainController
+                                                                .getStoreOrderDetailModel
+                                                                .value
+                                                                .data
+                                                                ?.userProof
+                                                                ?.image
+                                                                ?.dynamicUrl
+                                                                .toString() ??
+                                                            "",
+                                                        height: 200.0,
+                                                        fit: BoxFit.fill,
+                                                        assetImg: ImageConstants
+                                                            .nopicfound,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -406,41 +383,8 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                 border: Border.all(
                                                     color: AppColors.white,
                                                     width: 1)),
-                                            child: ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product
-                                                            ?.productImages ==
-                                                        null ||
-                                                    ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .productImages!
-                                                        .isEmpty ||
-                                                    ordersHomeMainController
-                                                            .getOrderItems[
-                                                                index]
-                                                            .product!
-                                                            .productImages!
-                                                            .first
-                                                            .image!
-                                                            .dynamicUrl ==
-                                                        null ||
-                                                    ordersHomeMainController
-                                                        .getOrderItems[index]
-                                                        .product!
-                                                        .productImages!
-                                                        .first
-                                                        .image!
-                                                        .dynamicUrl!
-                                                        .isEmpty
-                                                ? Image.asset(
-                                                    ImageConstants
-                                                        .defaultProduct,
-                                                    // color: AppColors.grey
-                                                    //     .withOpacity(0.4),
-                                                  )
-                                                : Image.network(
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
                                                     ordersHomeMainController
                                                         .getOrderItems[index]
                                                         .product!

@@ -341,29 +341,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0),
-                                                        child: offersController
-                                                                        .getUserOfferList[
-                                                                            index]
-                                                                        .offers![
-                                                                            i]
-                                                                        .image!
-                                                                        .dynamicUrl ==
-                                                                    null ||
-                                                                offersController
-                                                                    .getUserOfferList[
-                                                                        index]
-                                                                    .offers![i]
-                                                                    .image!
-                                                                    .dynamicUrl!
-                                                                    .isEmpty
-                                                            ? Image.asset(
-                                                                ImageConstants
-                                                                    .medicine,
-                                                                width: WidgetConstants
-                                                                        .screenWidth *
-                                                                    0.8,
-                                                              )
-                                                            : Image.network(
+                                                        child:  CommonWidgets.cachedNetworkImage(
                                                                 offersController
                                                                     .getUserOfferList[
                                                                         index]
@@ -376,21 +354,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 width: WidgetConstants
                                                                         .screenWidth *
                                                                     0.8,
-                                                                errorBuilder: (BuildContext
-                                                                        context,
-                                                                    Object
-                                                                        exception,
-                                                                    StackTrace?
-                                                                        stackTrace) {
-                                                                  return Image
-                                                                      .asset(
-                                                                    ImageConstants
-                                                                        .medicine,
-                                                                    width: WidgetConstants
-                                                                            .screenWidth *
-                                                                        0.8,
-                                                                  );
-                                                                },
+                                                               assetImg: ImageConstants
+                                                                   .medicine,
                                                               ),
                                                       ),
                                                       SizedBox(
@@ -771,26 +736,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.0),
-                                                      child: offersController
-                                                                      .getOwnerOfferList[
-                                                                          index]
-                                                                      .image!
-                                                                      .dynamicUrl ==
-                                                                  null ||
-                                                              offersController
-                                                                  .getOwnerOfferList[
-                                                                      index]
-                                                                  .image!
-                                                                  .dynamicUrl!
-                                                                  .isEmpty
-                                                          ? Image.asset(
-                                                              ImageConstants
-                                                                  .medicine,
-                                                              width: WidgetConstants
-                                                                      .screenWidth *
-                                                                  0.8,
-                                                            )
-                                                          : Image.network(
+                                                      child:  CommonWidgets.cachedNetworkImage(
                                                               offersController
                                                                   .getOwnerOfferList[
                                                                       index]
@@ -801,21 +747,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               width: WidgetConstants
                                                                       .screenWidth *
                                                                   0.8,
-                                                              errorBuilder: (BuildContext
-                                                                      context,
-                                                                  Object
-                                                                      exception,
-                                                                  StackTrace?
-                                                                      stackTrace) {
-                                                                return Image
-                                                                    .asset(
-                                                                  ImageConstants
-                                                                      .medicine,
-                                                                  width: WidgetConstants
-                                                                          .screenWidth *
-                                                                      0.8,
-                                                                );
-                                                              },
+                                                              assetImg: ImageConstants
+                                                                  .medicine,
                                                             ),
                                                     ),
                                                     SizedBox(

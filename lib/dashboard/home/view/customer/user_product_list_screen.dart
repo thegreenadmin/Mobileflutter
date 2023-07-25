@@ -518,7 +518,19 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                     child: Stack(
                                       alignment: Alignment.topRight,
                                       children: [
-                                        storeHomeMainController
+                                        CommonWidgets.cachedNetworkImage(
+                                          storeHomeMainController
+                                                  .featureProductList[i]
+                                                  .productImages
+                                                  ?.first
+                                                  .image!
+                                                  .dynamicUrl ??
+                                              "",
+                                          fit: BoxFit.fill,
+                                          height: 148.0,
+                                          width: 148.0,
+                                        ),
+                                        /*  storeHomeMainController
                                                     .featureProductList[i]
                                                     .productImages!
                                                     .isNotEmpty &&
@@ -546,7 +558,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 fit: BoxFit.fill,
                                                 height: 148,
                                                 width: 148,
-                                              ),
+                                              ),*/
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: storeHomeMainController

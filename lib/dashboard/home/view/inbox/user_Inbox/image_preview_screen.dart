@@ -89,11 +89,16 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                               Get.width,
                               Get.height,
                             )),
-                            child: Image.network(
+                            child: CommonWidgets.cachedNetworkImage(
+                              widget.image,
+                              fit: BoxFit.fill,
+                            ),
+                            /*child: Image.network(
                               widget.image,
                               fit: BoxFit.fill,
                               filterQuality: FilterQuality.high,
-                            ))),
+                            )*/
+                          )),
               ),
             )
           ]),
