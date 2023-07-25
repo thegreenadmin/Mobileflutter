@@ -659,13 +659,13 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 ),
                               ),
                               width10SizedBox,
-                              Text(
-                                userInboxDetailController.storeName.value,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                              Obx(() => Text(
+                                    userInboxDetailController.storeName.value,
+                                    style: const TextStyle(
+                                        fontSize: 22,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  )),
                             ],
                           ),
                           Image.asset(

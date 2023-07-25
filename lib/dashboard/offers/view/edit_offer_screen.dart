@@ -252,68 +252,40 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         )),
                     height20SizedBox,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          flex: 4,
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: StringConstants.offerFor,
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.offerFor,
+                                  style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              const TextSpan(
+                                text: "*",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        width15SizedBox,
+                        Obx(() =>
+                            addOffersController.radioValue.value == "store"
+                                ? Text(StringConstants.storeText,
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                const TextSpan(
-                                  text: "*",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Row(
-                              children: [
-                                Obx(() => Radio(
-                                      activeColor: AppColors.primary,
-                                      value: "store",
-                                      groupValue:
-                                          addOffersController.radioValue.value,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          addOffersController.radioValue.value =
-                                              value.toString();
-                                        });
-                                      },
-                                    )),
-                                Text(StringConstants.storeText)
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Obx(() => Radio(
-                                      activeColor: AppColors.primary,
-                                      value: "product",
-                                      groupValue:
-                                          addOffersController.radioValue.value,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          addOffersController.radioValue.value =
-                                              value.toString();
-                                        });
-                                      },
-                                    )),
-                                Text(StringConstants.productText)
-                              ],
-                            ),
-                          ],
-                        )
+                                        fontWeight: FontWeight.w500))
+                                : Text(StringConstants.productText,
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500)))
                       ],
                     ),
                     height12SizedBox,
