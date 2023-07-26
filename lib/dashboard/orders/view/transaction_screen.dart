@@ -350,36 +350,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                             color:
                                                                 AppColors.white,
                                                             width: 1)),
-                                                    child: CircleAvatar(
+                                                    child: CommonWidgets
+                                                        .circleCachedNetworkImage(
+                                                      transactionController
+                                                          .userTransactionList![
+                                                              index]
+                                                          .store!
+                                                          .logo!
+                                                          .dynamicUrl
+                                                          .toString(),
+                                                      fit: BoxFit.contain,
                                                       radius: 25.0,
-                                                      backgroundImage: transactionController
-                                                                      .userTransactionList![
-                                                                          index]
-                                                                      .store!
-                                                                      .logo!
-                                                                      .dynamicUrl ==
-                                                                  null ||
-                                                              transactionController
-                                                                  .userTransactionList![
-                                                                      index]
-                                                                  .store!
-                                                                  .logo!
-                                                                  .dynamicUrl!
-                                                                  .isEmpty
-                                                          ? const AssetImage(
-                                                                  ImageConstants
-                                                                      .nopicfound)
-                                                              as ImageProvider
-                                                          : NetworkImage(
-                                                              transactionController
-                                                                  .userTransactionList![
-                                                                      index]
-                                                                  .store!
-                                                                  .logo!
-                                                                  .dynamicUrl
-                                                                  .toString()),
-                                                      backgroundColor:
-                                                          Colors.transparent,
+                                                      assetImg: ImageConstants
+                                                          .nopicfound,
                                                     ),
                                                   )),
                                         width10SizedBox,
@@ -786,36 +769,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     border: Border.all(
                                                         color: AppColors.white,
                                                         width: 1)),
-                                                child: CircleAvatar(
+                                                child: CommonWidgets
+                                                    .circleCachedNetworkImage(
+                                                  transactionController
+                                                      .ownerOrderTransactionList![
+                                                          index]
+                                                      .store!
+                                                      .logo!
+                                                      .dynamicUrl
+                                                      .toString(),
+                                                  fit: BoxFit.contain,
                                                   radius: 25.0,
-                                                  backgroundImage: transactionController
-                                                                  .ownerOrderTransactionList![
-                                                                      index]
-                                                                  .store!
-                                                                  .logo!
-                                                                  .dynamicUrl ==
-                                                              null ||
-                                                          transactionController
-                                                              .ownerOrderTransactionList![
-                                                                  index]
-                                                              .store!
-                                                              .logo!
-                                                              .dynamicUrl!
-                                                              .isEmpty
-                                                      ? const AssetImage(
-                                                              ImageConstants
-                                                                  .nopicfound)
-                                                          as ImageProvider
-                                                      : NetworkImage(
-                                                          transactionController
-                                                              .ownerOrderTransactionList![
-                                                                  index]
-                                                              .store!
-                                                              .logo!
-                                                              .dynamicUrl
-                                                              .toString()),
-                                                  backgroundColor:
-                                                      Colors.transparent,
+                                                  assetImg:
+                                                      ImageConstants.nopicfound,
                                                 ),
                                               ),
                                             ),

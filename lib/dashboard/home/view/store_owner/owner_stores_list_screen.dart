@@ -214,28 +214,17 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                                       color:
                                                           AppColors.transparent,
                                                       width: 1)),
-                                              child: CircleAvatar(
+                                              child: CommonWidgets
+                                                  .circleCachedNetworkImage(
+                                                ownerStoresController
+                                                    .storeList[index]
+                                                    .logo!
+                                                    .dynamicUrl
+                                                    .toString(),
+                                                fit: BoxFit.contain,
                                                 radius: 26.0,
-                                                backgroundImage:
-                                                    ownerStoresController
-                                                                .storeList[
-                                                                    index]
-                                                                .logo!
-                                                                .dynamicUrl !=
-                                                            null
-                                                        ? NetworkImage(
-                                                            ownerStoresController
-                                                                .storeList[
-                                                                    index]
-                                                                .logo!
-                                                                .dynamicUrl
-                                                                .toString())
-                                                        : const AssetImage(
-                                                            ImageConstants
-                                                                .nopicfound,
-                                                          ) as ImageProvider,
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                assetImg:
+                                                    ImageConstants.nopicfound,
                                               ),
                                             ),
                                           ),

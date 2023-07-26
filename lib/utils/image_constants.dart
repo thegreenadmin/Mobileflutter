@@ -92,8 +92,8 @@ class ImageConstants {
   static const String membership = '$assetsIcon/membership.png';
   //N
   static const String nodata = '$assetsIcon/nodata.png';
-  //static const String nopicfound = '$assetsIcon/nopicfound.png';
-  static const String nopicfound = '$assetsIcon/nopicfoundd.png';
+  static const String nopicfound = '$assetsIcon/nopicfound.png';
+  // static const String nopicfound = '$assetsIcon/nopicfoundd.png';
   //O
   static const String offercheck = '$assetsIcon/offercheck.png';
   static const String offers = '$assetsIcon/offers.png';

@@ -107,33 +107,17 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: CircleAvatar(
+                                          child: CommonWidgets
+                                              .circleCachedNetworkImage(
+                                            searchStoreUserController
+                                                    .favouriteStore[index]
+                                                    .logo
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
+                                            fit: BoxFit.contain,
                                             radius: 25.0,
-                                            backgroundImage:
-                                                searchStoreUserController
-                                                                .favouriteStore[
-                                                                    index]
-                                                                .logo ==
-                                                            null &&
-                                                        searchStoreUserController
-                                                            .favouriteStore[
-                                                                index]
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        searchStoreUserController
-                                                                .favouriteStore[
-                                                                    index]
-                                                                .logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                            backgroundColor: Colors.transparent,
+                                            assetImg: ImageConstants.nopicfound,
                                           ),
                                         ),
                                         width10SizedBox,

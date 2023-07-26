@@ -101,24 +101,18 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                           border: Border.all(
                                               color: AppColors.white,
                                               width: 1)),
-                                      child: CircleAvatar(
+                                      child: CommonWidgets
+                                          .circleCachedNetworkImage(
+                                        storeHomeMainController
+                                                .categoriesList[index]
+                                                .image
+                                                ?.dynamicUrl
+                                                .toString() ??
+                                            "",
+                                        fit: BoxFit.contain,
                                         radius: 25.0,
-                                        backgroundImage: storeHomeMainController
-                                                    .categoriesList[index]
-                                                    .image
-                                                    ?.dynamicUrl ==
-                                                null
-                                            ? const AssetImage(ImageConstants
-                                                    .defaultCategory)
-                                                as ImageProvider
-                                            : NetworkImage(
-                                                storeHomeMainController
-                                                        .categoriesList[index]
-                                                        .image
-                                                        ?.dynamicUrl
-                                                        .toString() ??
-                                                    ""),
-                                        backgroundColor: Colors.transparent,
+                                        assetImg:
+                                            ImageConstants.defaultCategory,
                                       ),
                                     ),
                                     width10SizedBox,

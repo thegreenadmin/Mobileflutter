@@ -430,7 +430,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                        "${StringConstants.qtyText.toUpperCase()}: ",
+                                                        "${StringConstants.qtyText}: ",
                                                         style: TextStyle(
                                                             color: AppColors
                                                                 .blacklight,

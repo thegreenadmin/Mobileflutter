@@ -122,17 +122,20 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-                                    child: Obx(() => CircleAvatar(
-                                          radius: 24.0,
-                                          backgroundImage: NetworkImage(
-                                              storeOfferDetailController
-                                                  .storeOfferDetailList[index]
-                                                  .productImages![0]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString()),
-                                          backgroundColor: Colors.transparent,
-                                        )),
+                                    child: Obx(
+                                      () => CommonWidgets
+                                          .circleCachedNetworkImage(
+                                        storeOfferDetailController
+                                            .storeOfferDetailList[index]
+                                            .productImages![0]
+                                            .image!
+                                            .dynamicUrl
+                                            .toString(),
+                                        fit: BoxFit.contain,
+                                        radius: 24.0,
+                                        assetImg: ImageConstants.nopicfound,
+                                      ),
+                                    ),
                                   ),
                                   width10SizedBox,
                                   Column(

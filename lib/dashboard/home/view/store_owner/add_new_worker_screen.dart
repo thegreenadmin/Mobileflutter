@@ -104,30 +104,16 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                     ),
-                                    child: addNewWorkerController
-                                                    .userImageDynamicLinkFromServer
-                                                    .value ==
-                                                "" ||
-                                            addNewWorkerController
-                                                .userImageDynamicLinkFromServer
-                                                .value
-                                                .isEmpty
-                                        ? const CircleAvatar(
-                                            radius: 50.0,
-                                            backgroundImage: AssetImage(
-                                              ImageConstants.userAccount,
-                                            ),
-                                            backgroundColor:
-                                                AppColors.primarylight,
-                                          )
-                                        : CircleAvatar(
-                                            radius: 50.0,
-                                            backgroundImage: NetworkImage(
-                                                addNewWorkerController
-                                                    .userImageDynamicLinkFromServer
-                                                    .value),
-                                            backgroundColor: Colors.transparent,
-                                          ),
+                                    child:
+                                        CommonWidgets.circleCachedNetworkImage(
+                                      addNewWorkerController
+                                          .userImageDynamicLinkFromServer.value,
+                                      fit: BoxFit.contain,
+                                      radius: 50.0,
+                                      assetBackgroundColor:
+                                          AppColors.primarylight,
+                                      assetImg: ImageConstants.userAccount,
+                                    ),
                                   )),
                             ),
                           ],

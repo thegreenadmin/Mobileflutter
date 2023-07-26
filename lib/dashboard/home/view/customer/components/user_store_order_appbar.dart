@@ -241,41 +241,14 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: AppColors.white, width: 1)),
-                            child: CircleAvatar(
-                              radius: 28.0,
-                              backgroundImage: storeHomeMainController
-                                              .storeDetailsResponse
-                                              .value
-                                              .data ==
-                                          null ||
-                                      storeHomeMainController
-                                              .storeDetailsResponse
-                                              .value
-                                              .data!
-                                              .store!
-                                              .logo!
-                                              .dynamicUrl ==
-                                          null ||
-                                      storeHomeMainController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data!
-                                          .store!
-                                          .logo!
-                                          .dynamicUrl!
-                                          .isEmpty
-                                  ? const AssetImage(ImageConstants.storeicon)
-                                      as ImageProvider
-                                  : NetworkImage(storeHomeMainController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data!
-                                          .store!
-                                          .logo!
-                                          .dynamicUrl ??
-                                      ""),
-                              backgroundColor: Colors.transparent,
-                            ),
+                            child: CommonWidgets.circleCachedNetworkImage(
+                                storeHomeMainController.storeDetailsResponse
+                                        .value.data!.store!.logo!.dynamicUrl ??
+                                    "",
+                                fit: BoxFit.contain,
+                                radius: 28.0,
+                                assetImg: ImageConstants.storeicon,
+                                assetBackgroundColor: Colors.grey.shade50),
                           ),
                           width10SizedBox,
                           Column(

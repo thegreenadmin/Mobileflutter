@@ -1,5 +1,3 @@
-/*
-* add icon to add game view*/
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -139,71 +137,48 @@ class CommonWidgets {
     );
   }
 
-  // static Widget appBarHome(String title) {
-  //   return AppBar(
-  //       leading: Padding(
-  //         padding: const EdgeInsets.all(10.0),
-  //         child: Container(
-  //           height: 45,
-  //           width: 45,
-  //           decoration: const BoxDecoration(
-  //             image: DecorationImage(
-  //               image: AssetImage("assets/images/splash_logo.png"),
-  //               fit: BoxFit.fill,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       automaticallyImplyLeading: false,
-  //       backgroundColor: Colors.transparent,
-  //       elevation: 0,
-  //       centerTitle: true,
-  //       title: CommonWidgets.txtViewMediumBold(
-  //         title,
-  //         AppColors.blacklightColor,
-  //         18,
-  //       ));
-  // }
-
-  // static Widget mainInternetTopSnackBar(Widget furtherWidget) {
-  //   return Obx(
-  //     () => Column(
-  //       children: [
-  //         AnimatedSwitcher(
-  //             duration: const Duration(seconds: 2),
-  //             child: !isNetworkConnected.value
-  //                 ? Material(
-  //                     elevation: 0.0,
-  //                     borderOnForeground: false,
-  //                     child: Container(
-  //                       color: Colors.redAccent,
-  //                       child: SafeArea(
-  //                         top: true,
-  //                         left: false,
-  //                         right: false,
-  //                         bottom: false,
-  //                         child: Container(
-  //                           width: WidgetConstants.screenWidth,
-  //                           height: 30,
-  //                           color: Colors.redAccent,
-  //                           child: const Center(
-  //                             child: Text(
-  //                               "No Internet Connection",
-  //                               textAlign: TextAlign.center,
-  //                               style: TextStyle(
-  //                                   fontSize: 15,
-  //                                   fontWeight: FontWeight.w500,
-  //                                   color: Colors.white),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   )
-  //                 : const SizedBox()),
-  //         Expanded(child: furtherWidget)
-  //       ],
-  //     ),
-  //   );
-  // }
+  static Widget circleCachedNetworkImage(String imgUrl,
+      {BoxFit? fit,
+      double? width,
+      height,
+      radius,
+      String assetImg = ImageConstants.defaultProduct,
+      Widget Function(BuildContext, ImageProvider<Object>)? imageBuilder,
+      Widget Function(BuildContext, String, dynamic)? errorWidget,
+      Widget Function(BuildContext, String)? placeholder,
+      Color? color,
+      assetColor,
+      Color? assetBackgroundColor,
+      BlendMode? colorBlendMode}) {
+    return CachedNetworkImage(
+      filterQuality: FilterQuality.high,
+      imageUrl: imgUrl,
+      fit: fit ?? BoxFit.fill,
+      width: width,
+      color: color,
+      colorBlendMode: colorBlendMode,
+      height: height,
+      placeholder: placeholder ??
+          (context, url) => CircleAvatar(
+                radius: radius ?? 25.0,
+                backgroundColor: assetBackgroundColor ?? Colors.transparent,
+                backgroundImage: AssetImage(
+                  assetImg,
+                ),
+              ),
+      imageBuilder: imageBuilder ??
+          (context, imageProvider) {
+            return CircleAvatar(
+              radius: radius ?? 25.0,
+              backgroundColor: Colors.transparent,
+              backgroundImage: imageProvider,
+            );
+          },
+      errorWidget: (context, url, error) => CircleAvatar(
+        radius: radius ?? 25.0,
+        backgroundColor: assetBackgroundColor ?? Colors.transparent,
+        backgroundImage: AssetImage(assetImg),
+      ),
+    );
+  }
 }

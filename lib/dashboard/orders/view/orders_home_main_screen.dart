@@ -168,36 +168,21 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                           color: AppColors.white, width: 1)),
-                                  child: CircleAvatar(
+
+                                  child: CommonWidgets
+                                      .circleCachedNetworkImage(
+                                    ordersHomeMainController
+                                        .storeDetailsResponse
+                                        .value
+                                        .data!
+                                        .store!
+                                        .logo!
+                                        .dynamicUrl ??
+                                        "",
+                                    fit: BoxFit.contain,
                                     radius: 28.0,
-                                    backgroundImage: ordersHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!
-                                                    .store!
-                                                    .logo!
-                                                    .dynamicUrl ==
-                                                null ||
-                                            ordersHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data!
-                                                .store!
-                                                .logo!
-                                                .dynamicUrl!
-                                                .isEmpty
-                                        ? const AssetImage(
-                                                ImageConstants.storeicon)
-                                            as ImageProvider
-                                        : NetworkImage(ordersHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data!
-                                                .store!
-                                                .logo!
-                                                .dynamicUrl ??
-                                            ""),
-                                    backgroundColor: Colors.transparent,
+                                    assetImg: ImageConstants
+                                        .storeicon,
                                   ),
                                 ),
                                 width10SizedBox,

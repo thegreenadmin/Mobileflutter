@@ -212,31 +212,15 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-                                    child: CircleAvatar(
+                                    child:
+                                        CommonWidgets.circleCachedNetworkImage(
+                                      userInboxController.inboxList[index].store
+                                              ?.logo?.dynamicUrl
+                                              .toString() ??
+                                          "",
+                                      fit: BoxFit.contain,
                                       radius: 22.0,
-                                      backgroundImage: userInboxController
-                                                      .inboxList[index]
-                                                      .store
-                                                      ?.logo
-                                                      ?.dynamicUrl ==
-                                                  null ||
-                                              userInboxController
-                                                  .inboxList[index]
-                                                  .store!
-                                                  .logo!
-                                                  .dynamicUrl!
-                                                  .isEmpty
-                                          ? const AssetImage(
-                                              ImageConstants.storeicon,
-                                            ) as ImageProvider
-                                          : NetworkImage(userInboxController
-                                                  .inboxList[index]
-                                                  .store
-                                                  ?.logo
-                                                  ?.dynamicUrl
-                                                  .toString() ??
-                                              ""),
-                                      backgroundColor: Colors.transparent,
+                                      assetImg: ImageConstants.storeicon,
                                     ),
                                   ),
                                 ),

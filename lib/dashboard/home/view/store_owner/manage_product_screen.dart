@@ -370,29 +370,18 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: Obx(() => CircleAvatar(
-                                                radius: 24.0,
-                                                backgroundImage:
-                                                    manageStoreController
-                                                                .categoriesList[
-                                                                    index]
-                                                                .image
-                                                                ?.dynamicUrl !=
-                                                            null
-                                                        ? NetworkImage(
-                                                            manageStoreController
-                                                                .categoriesList[
-                                                                    index]
-                                                                .image!
-                                                                .dynamicUrl
-                                                                .toString())
-                                                        : const AssetImage(
-                                                                ImageConstants
-                                                                    .defaultCategory)
-                                                            as ImageProvider,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                              )),
+                                          child: Obx(() =>
+                                           CommonWidgets.circleCachedNetworkImage(
+                                             manageStoreController
+                                                 .categoriesList[
+                                             index]
+                                                 .image!
+                                                 .dynamicUrl
+                                                 .toString(),
+                                            fit: BoxFit.contain,
+                                            radius: 24.0,
+                                            assetImg: ImageConstants.defaultCategory,
+                                          ),),
                                         ),
                                         width10SizedBox,
                                         Column(

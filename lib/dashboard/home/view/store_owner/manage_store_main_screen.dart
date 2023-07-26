@@ -151,19 +151,12 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                         color: AppColors.white, width: 1)),
-                                child: CircleAvatar(
+                                child: CommonWidgets.circleCachedNetworkImage(
+                                  ownerStoresController
+                                      .editStoreLogoDynamicLinkFromServer.value,
+                                  fit: BoxFit.contain,
                                   radius: 28.0,
-                                  backgroundImage: ownerStoresController
-                                          .editStoreLogoDynamicLinkFromServer
-                                          .value
-                                          .isEmpty
-                                      ? const AssetImage(
-                                          ImageConstants.nopicfound,
-                                        ) as ImageProvider
-                                      : NetworkImage(ownerStoresController
-                                          .editStoreLogoDynamicLinkFromServer
-                                          .value),
-                                  backgroundColor: Colors.transparent,
+                                  assetImg: ImageConstants.nopicfound,
                                 ),
                               ),
                               width10SizedBox,

@@ -166,6 +166,11 @@ class AddOffersController extends GetxController {
         } else if (discountType.value.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectDiscountType);
+        } else if (selectedProducts.isEmpty ||
+            selectedProducts
+                .every((element) => element["status"] == "deleted")) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectProductToProceedText);
         } else {
           isValidateFromAddOffer ? await apiAddOffer() : await apiUpdateOffer();
         }
@@ -447,6 +452,11 @@ class AddOffersController extends GetxController {
               if (product.productId == element.productId) {
                 product.offerStatus = element.status;
                 product.offerProductId = element.offerProductId;
+                selectedProducts.add({
+                  "offer_product_id": element.offerProductId,
+                  "product_id": element.productId,
+                  "status": element.status
+                });
               }
             }
           }

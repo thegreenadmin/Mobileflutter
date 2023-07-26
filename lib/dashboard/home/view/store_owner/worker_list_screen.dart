@@ -286,42 +286,19 @@ class _WorkerListScreenState extends State<WorkerListScreen> {
                                                   border: Border.all(
                                                       color: AppColors.white,
                                                       width: 1)),
-                                              child: addNewWorkerController
-                                                              .workerList[index]
-                                                              .user
-                                                              ?.image
-                                                              ?.dynamicUrl !=
-                                                          null &&
-                                                      addNewWorkerController
-                                                              .workerList[index]
-                                                              .user
-                                                              ?.image
-                                                              ?.dynamicUrl !=
-                                                          ""
-                                                  ? CircleAvatar(
-                                                      radius: 36.0,
-                                                      backgroundImage: NetworkImage(
-                                                          addNewWorkerController
-                                                                  .workerList[
-                                                                      index]
-                                                                  .user
-                                                                  ?.image
-                                                                  ?.dynamicUrl
-                                                                  .toString() ??
-                                                              ""),
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                    )
-                                                  : const CircleAvatar(
-                                                      radius: 36.0,
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                        ImageConstants
-                                                            .userAccount,
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                    ),
+                                              child: CommonWidgets.circleCachedNetworkImage(
+                                                addNewWorkerController
+                                                    .workerList[
+                                                index]
+                                                    .user
+                                                    ?.image
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                    "",
+                                                fit: BoxFit.contain,
+                                                radius: 36.0,
+                                                assetImg: ImageConstants.userAccount,
+                                              ),
                                             ),
                                           ],
                                         ),

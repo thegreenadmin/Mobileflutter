@@ -90,36 +90,20 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                           color: AppColors.white, width: 1)),
-                                  child: CircleAvatar(
+                                  child: CommonWidgets
+                                      .circleCachedNetworkImage(
+                                    ordersHomeMainController
+                                        .storeDetailsResponse
+                                        .value
+                                        .data!
+                                        .store!
+                                        .logo!
+                                        .dynamicUrl ??
+                                        "",
+                                    fit: BoxFit.contain,
                                     radius: 28.0,
-                                    backgroundImage: ordersHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!
-                                                    .store!
-                                                    .logo!
-                                                    .dynamicUrl ==
-                                                null ||
-                                            ordersHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data!
-                                                .store!
-                                                .logo!
-                                                .dynamicUrl!
-                                                .isEmpty
-                                        ? const AssetImage(
-                                                ImageConstants.storeicon)
-                                            as ImageProvider
-                                        : NetworkImage(ordersHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data!
-                                                .store!
-                                                .logo!
-                                                .dynamicUrl ??
-                                            ""),
-                                    backgroundColor: Colors.transparent,
+                                    assetImg: ImageConstants
+                                        .storeicon,
                                   ),
                                 ),
                                 width10SizedBox,
@@ -633,7 +617,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                          "${StringConstants.qtyText.toUpperCase()}: ",
+                                                          "${StringConstants.qtyText}: ",
                                                           style: TextStyle(
                                                               color: AppColors.blacklight,
                                                               fontWeight:

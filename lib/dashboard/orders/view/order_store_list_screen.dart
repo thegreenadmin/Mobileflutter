@@ -151,22 +151,17 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                             border: Border.all(
                                                 color: AppColors.white,
                                                 width: 1)),
-                                        child: CircleAvatar(
+                                        child: CommonWidgets
+                                            .circleCachedNetworkImage(
+                                          ordersController
+                                              .storeList[index]
+                                              .logo!
+                                              .dynamicUrl
+                                              .toString(),
+                                          fit: BoxFit.contain,
                                           radius: 24.0,
-                                          backgroundImage: ordersController
-                                                      .storeList[index]
-                                                      .logo!
-                                                      .dynamicUrl !=
-                                                  null
-                                              ? NetworkImage(ordersController
-                                                  .storeList[index]
-                                                  .logo!
-                                                  .dynamicUrl
-                                                  .toString())
-                                              : const AssetImage(
-                                                  ImageConstants.nopicfound,
-                                                ) as ImageProvider,
-                                          backgroundColor: Colors.transparent,
+                                          assetImg: ImageConstants
+                                              .nopicfound,
                                         ),
                                       ),
                                     ),

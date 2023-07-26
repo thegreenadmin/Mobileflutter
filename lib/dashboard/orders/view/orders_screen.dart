@@ -513,34 +513,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   border: Border.all(
                                                       color: AppColors.white,
                                                       width: 1)),
-                                              child: CircleAvatar(
+                                              child: CommonWidgets
+                                                  .circleCachedNetworkImage(
+                                                ordersController.orderList[i]
+                                                        .store?.logo?.dynamicUrl
+                                                        .toString() ??
+                                                    "",
+                                                fit: BoxFit.contain,
                                                 radius: 22.0,
-                                                backgroundImage: ordersController
-                                                                .orderList[i]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl ==
-                                                            null ||
-                                                        ordersController
-                                                            .orderList[i]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        ordersController
-                                                                .orderList[i]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                assetImg:
+                                                    ImageConstants.nopicfound,
                                               ),
                                             ),
                                             width5SizedBox,
@@ -927,36 +909,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                   border: Border.all(
                                                       color: AppColors.white,
                                                       width: 1)),
-                                              child: CircleAvatar(
+                                              child: CommonWidgets
+                                                  .circleCachedNetworkImage(
+                                                ordersController
+                                                        .storeOrderList[i]
+                                                        .store
+                                                        ?.logo
+                                                        ?.dynamicUrl
+                                                        .toString() ??
+                                                    "",
+                                                fit: BoxFit.contain,
                                                 radius: 22.0,
-                                                backgroundImage: ordersController
-                                                                .storeOrderList[
-                                                                    i]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl ==
-                                                            null ||
-                                                        ordersController
-                                                            .storeOrderList[i]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        ordersController
-                                                                .storeOrderList[
-                                                                    i]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                                backgroundColor:
-                                                    Colors.transparent,
+                                                assetImg:
+                                                    ImageConstants.nopicfound,
                                               ),
                                             ),
                                             width5SizedBox,

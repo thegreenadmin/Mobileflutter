@@ -127,36 +127,18 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: CircleAvatar(
+                                          child: CommonWidgets
+                                              .circleCachedNetworkImage(
+                                            searchStoreUserController
+                                                    .storeAddresses[index]
+                                                    .store
+                                                    ?.logo
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
+                                            fit: BoxFit.contain,
                                             radius: 25.0,
-                                            backgroundImage:
-                                                searchStoreUserController
-                                                                .storeAddresses[
-                                                                    index]
-                                                                .store!
-                                                                .logo ==
-                                                            null &&
-                                                        searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .store!
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        searchStoreUserController
-                                                                .storeAddresses[
-                                                                    index]
-                                                                .store
-                                                                ?.logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                            backgroundColor: Colors.transparent,
+                                            assetImg: ImageConstants.nopicfound,
                                           ),
                                         ),
                                         width10SizedBox,

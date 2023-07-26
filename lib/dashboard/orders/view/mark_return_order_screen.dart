@@ -435,7 +435,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                          "${StringConstants.qtyText.toUpperCase()}: ",
+                                                          "${StringConstants.qtyText}: ",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,

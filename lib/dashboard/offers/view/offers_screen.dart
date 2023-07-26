@@ -213,28 +213,16 @@ class _OffersScreenState extends State<OffersScreen> {
                                             border: Border.all(
                                                 color: AppColors.white,
                                                 width: 1)),
-                                        child: CircleAvatar(
+                                        child: CommonWidgets
+                                            .circleCachedNetworkImage(
+                                          offersController
+                                              .getUserOfferList[index]
+                                              .logo!
+                                              .dynamicUrl
+                                              .toString(),
+                                          fit: BoxFit.contain,
                                           radius: 24.0,
-                                          backgroundImage: offersController
-                                                          .getUserOfferList[
-                                                              index]
-                                                          .logo!
-                                                          .dynamicUrl ==
-                                                      null ||
-                                                  offersController
-                                                      .getUserOfferList[index]
-                                                      .logo!
-                                                      .dynamicUrl!
-                                                      .isEmpty
-                                              ? const AssetImage(
-                                                  ImageConstants.nopicfound,
-                                                ) as ImageProvider
-                                              : NetworkImage(offersController
-                                                  .getUserOfferList[index]
-                                                  .logo!
-                                                  .dynamicUrl
-                                                  .toString()),
-                                          backgroundColor: Colors.transparent,
+                                          assetImg: ImageConstants.nopicfound,
                                         ),
                                       ),
                                       width10SizedBox,
@@ -341,22 +329,23 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0),
-                                                        child:  CommonWidgets.cachedNetworkImage(
-                                                                offersController
-                                                                    .getUserOfferList[
-                                                                        index]
-                                                                    .offers![i]
-                                                                    .image!
-                                                                    .dynamicUrl!
-                                                                    .toString(),
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                width: WidgetConstants
-                                                                        .screenWidth *
-                                                                    0.8,
-                                                               assetImg: ImageConstants
-                                                                   .medicine,
-                                                              ),
+                                                        child: CommonWidgets
+                                                            .cachedNetworkImage(
+                                                          offersController
+                                                              .getUserOfferList[
+                                                                  index]
+                                                              .offers![i]
+                                                              .image!
+                                                              .dynamicUrl!
+                                                              .toString(),
+                                                          fit: BoxFit.fill,
+                                                          width: WidgetConstants
+                                                                  .screenWidth *
+                                                              0.8,
+                                                          assetImg:
+                                                              ImageConstants
+                                                                  .medicine,
+                                                        ),
                                                       ),
                                                       SizedBox(
                                                         height: 55,
@@ -538,35 +527,18 @@ class _OffersScreenState extends State<OffersScreen> {
                                                           color:
                                                               AppColors.white,
                                                           width: 1)),
-                                                  child: CircleAvatar(
+                                                  child: CommonWidgets
+                                                      .circleCachedNetworkImage(
+                                                    offersController
+                                                        .getOwnerOfferList[
+                                                            index]
+                                                        .store!
+                                                        .logo!
+                                                        .dynamicUrl!,
+                                                    fit: BoxFit.contain,
                                                     radius: 24.0,
-                                                    backgroundImage: offersController
-                                                                    .getOwnerOfferList[
-                                                                        index]
-                                                                    .store!
-                                                                    .logo!
-                                                                    .dynamicUrl ==
-                                                                null ||
-                                                            offersController
-                                                                .getOwnerOfferList[
-                                                                    index]
-                                                                .store!
-                                                                .logo!
-                                                                .dynamicUrl!
-                                                                .isEmpty
-                                                        ? const AssetImage(
-                                                            ImageConstants
-                                                                .nopicfound,
-                                                          ) as ImageProvider
-                                                        : NetworkImage(
-                                                            offersController
-                                                                .getOwnerOfferList[
-                                                                    index]
-                                                                .store!
-                                                                .logo!
-                                                                .dynamicUrl!),
-                                                    backgroundColor:
-                                                        Colors.transparent,
+                                                    assetImg: ImageConstants
+                                                        .nopicfound,
                                                   ),
                                                 ),
                                                 width10SizedBox,
@@ -736,20 +708,21 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.0),
-                                                      child:  CommonWidgets.cachedNetworkImage(
-                                                              offersController
-                                                                  .getOwnerOfferList[
-                                                                      index]
-                                                                  .image!
-                                                                  .dynamicUrl
-                                                                  .toString(),
-                                                              fit: BoxFit.fill,
-                                                              width: WidgetConstants
-                                                                      .screenWidth *
-                                                                  0.8,
-                                                              assetImg: ImageConstants
-                                                                  .medicine,
-                                                            ),
+                                                      child: CommonWidgets
+                                                          .cachedNetworkImage(
+                                                        offersController
+                                                            .getOwnerOfferList[
+                                                                index]
+                                                            .image!
+                                                            .dynamicUrl
+                                                            .toString(),
+                                                        fit: BoxFit.fill,
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.8,
+                                                        assetImg: ImageConstants
+                                                            .medicine,
+                                                      ),
                                                     ),
                                                     SizedBox(
                                                       height: 55,

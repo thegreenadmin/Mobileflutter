@@ -212,32 +212,19 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-                                    child: CircleAvatar(
-                                      radius: 22.0,
-                                      backgroundImage: ownerInboxController
-                                                      .inboxList[index]
-                                                      .store
-                                                      ?.logo
-                                                      ?.dynamicUrl ==
-                                                  null ||
-                                              ownerInboxController
-                                                  .inboxList[index]
-                                                  .store!
-                                                  .logo!
-                                                  .dynamicUrl!
-                                                  .isEmpty
-                                          ? const AssetImage(
-                                              ImageConstants.storeicon,
-                                            ) as ImageProvider
-                                          : NetworkImage(ownerInboxController
-                                                  .inboxList[index]
-                                                  .store
-                                                  ?.logo
-                                                  ?.dynamicUrl
-                                                  .toString() ??
-                                              ""),
-                                      backgroundColor: Colors.transparent,
-                                    ),
+                                    child:
+                                        CommonWidgets.circleCachedNetworkImage(
+                                            ownerInboxController
+                                                    .inboxList[index]
+                                                    .store
+                                                    ?.logo
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
+                                            fit: BoxFit.contain,
+                                            radius: 22.0,
+                                            assetImg: ImageConstants.storeicon,
+                                           ),
                                   ),
                                 ),
                                 width8SizedBox,

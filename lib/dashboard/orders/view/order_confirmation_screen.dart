@@ -163,36 +163,21 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-                                    child: CircleAvatar(
+
+                                    child: CommonWidgets
+                                        .circleCachedNetworkImage(
+                                      ordersController
+                                          .storeDetailsResponse
+                                          .value
+                                          .data!
+                                          .store!
+                                          .logo!
+                                          .dynamicUrl ??
+                                          "",
+                                      fit: BoxFit.contain,
                                       radius: 28.0,
-                                      backgroundImage: ordersController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .logo!
-                                                      .dynamicUrl ==
-                                                  null ||
-                                              ordersController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data!
-                                                  .store!
-                                                  .logo!
-                                                  .dynamicUrl!
-                                                  .isEmpty
-                                          ? const AssetImage(
-                                                  ImageConstants.storeicon)
-                                              as ImageProvider
-                                          : NetworkImage(ordersController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data!
-                                                  .store!
-                                                  .logo!
-                                                  .dynamicUrl ??
-                                              ""),
-                                      backgroundColor: Colors.transparent,
+                                      assetImg: ImageConstants
+                                          .storeicon,
                                     ),
                                   ),
                                   width10SizedBox,
@@ -763,46 +748,20 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           border: Border.all(
                                               color: AppColors.white,
                                               width: 1)),
-                                      child: CircleAvatar(
+                                      child: CommonWidgets
+                                          .circleCachedNetworkImage(
+                                        ordersController
+                                            .orderItems[i]
+                                            .product
+                                            ?.productImages
+                                            ?.first
+                                            .image
+                                            ?.dynamicUrl ??
+                                            "",
+                                        fit: BoxFit.contain,
                                         radius: 22.0,
-                                        backgroundImage: ordersController
-                                                        .orderItems[i]
-                                                        .product
-                                                        ?.productImages ==
-                                                    null ||
-                                                ordersController
-                                                    .orderItems[i]
-                                                    .product!
-                                                    .productImages!
-                                                    .isEmpty ||
-                                                ordersController
-                                                        .orderItems[i]
-                                                        .product
-                                                        ?.productImages
-                                                        ?.first
-                                                        .image
-                                                        ?.dynamicUrl ==
-                                                    null ||
-                                                ordersController
-                                                    .orderItems[i]
-                                                    .product!
-                                                    .productImages!
-                                                    .first
-                                                    .image!
-                                                    .dynamicUrl!
-                                                    .isEmpty
-                                            ? const AssetImage(
-                                                    ImageConstants.defaultProduct)
-                                                as ImageProvider
-                                            : NetworkImage(ordersController
-                                                    .orderItems[i]
-                                                    .product
-                                                    ?.productImages
-                                                    ?.first
-                                                    .image
-                                                    ?.dynamicUrl ??
-                                                ""),
-                                        backgroundColor: Colors.transparent,
+                                        assetImg: ImageConstants
+                                            .defaultProduct,
                                       ),
                                     ),
                                     width5SizedBox,

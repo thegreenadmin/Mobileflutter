@@ -96,30 +96,16 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  child: addNewWorkerController
-                                                  .userImageDynamicLinkFromServer
-                                                  .value ==
-                                              "" ||
-                                          addNewWorkerController
-                                              .userImageDynamicLinkFromServer
-                                              .isEmpty
-                                      ? const CircleAvatar(
-                                          radius: 50.0,
-                                          backgroundImage: AssetImage(
-                                            ImageConstants.userAccount,
-                                          ),
-                                          backgroundColor:
-                                              AppColors.primarylight,
-                                        )
-                                      : CircleAvatar(
-                                          radius: 50.0,
-                                          backgroundImage: NetworkImage(
-                                            addNewWorkerController
-                                                .userImageDynamicLinkFromServer
-                                                .toString(),
-                                          ),
-                                          backgroundColor: Colors.transparent,
-                                        ),
+                                  child: CommonWidgets.circleCachedNetworkImage(
+                                    addNewWorkerController
+                                        .userImageDynamicLinkFromServer.value
+                                        .toString(),
+                                    fit: BoxFit.contain,
+                                    radius: 50.0,
+                                    assetBackgroundColor:
+                                        AppColors.primarylight,
+                                    assetImg: ImageConstants.userAccount,
+                                  ),
                                 ),
                               ),
                             ),

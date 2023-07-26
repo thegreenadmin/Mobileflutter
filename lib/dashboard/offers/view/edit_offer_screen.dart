@@ -252,7 +252,6 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         )),
                     height20SizedBox,
                     Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text.rich(
                           TextSpan(

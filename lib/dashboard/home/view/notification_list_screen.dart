@@ -232,35 +232,18 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                           border: Border.all(
                                               color: AppColors.white,
                                               width: 1)),
-                                      child: CircleAvatar(
+                                      child: CommonWidgets
+                                          .circleCachedNetworkImage(
+                                        notificationListController
+                                                .notificationList[index]
+                                                .store
+                                                ?.logo
+                                                ?.dynamicUrl
+                                                .toString() ??
+                                            "",
+                                        fit: BoxFit.contain,
                                         radius: 22.0,
-                                        backgroundImage:
-                                            notificationListController
-                                                            .notificationList[
-                                                                index]
-                                                            .store
-                                                            ?.logo
-                                                            ?.dynamicUrl ==
-                                                        null ||
-                                                    notificationListController
-                                                        .notificationList[index]
-                                                        .store!
-                                                        .logo!
-                                                        .dynamicUrl!
-                                                        .isEmpty
-                                                ? const AssetImage(
-                                                    ImageConstants.nopicfound,
-                                                  ) as ImageProvider
-                                                : NetworkImage(
-                                                    notificationListController
-                                                            .notificationList[
-                                                                index]
-                                                            .store
-                                                            ?.logo
-                                                            ?.dynamicUrl
-                                                            .toString() ??
-                                                        ""),
-                                        backgroundColor: Colors.transparent,
+                                        assetImg: ImageConstants.nopicfound,
                                       ),
                                     ),
                                   ),
