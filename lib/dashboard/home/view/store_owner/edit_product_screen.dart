@@ -463,7 +463,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   },
                                   value: manageStoreController
                                               .quantityValue.value !=
-                                          ""
+                                          "" && manageStoreController.quantityTypeList.isNotEmpty
                                       ? manageStoreController.quantityTypeList
                                           .firstWhere((element) =>
                                               element.quantityTypeId ==
