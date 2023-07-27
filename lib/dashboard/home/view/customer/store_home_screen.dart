@@ -229,7 +229,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                         : ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) {
-                              return width5SizedBox;
+                              return width8SizedBox;
                             },
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
@@ -274,40 +274,12 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                     ?.dynamicUrl ??
                                                 "",
                                             fit: BoxFit.fill,
-                                            height: 180.0,
-                                            width: 160.0,
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.22,
+                                            width: WidgetConstants.screenWidth *
+                                                0.4,
                                           ),
-                                          /*storeHomeMainController
-                                                      .featureProductList[index]
-                                                      .productImages!
-                                                      .isNotEmpty &&
-                                                  storeHomeMainController
-                                                          .featureProductList[
-                                                              index]
-                                                          .productImages
-                                                          ?.first
-                                                          .image
-                                                          ?.dynamicUrl !=
-                                                      null
-                                              ? Image.network(
-                                                  storeHomeMainController
-                                                          .featureProductList[
-                                                              index]
-                                                          .productImages
-                                                          ?.first
-                                                          .image
-                                                          ?.dynamicUrl ??
-                                                      "",
-                                                  fit: BoxFit.fill,
-                                                  height: 180,
-                                                  width: 160,
-                                                )
-                                              : Image.asset(
-                                                  ImageConstants.defaultProduct,
-                                                  fit: BoxFit.fill,
-                                                  height: 180,
-                                                  width: 160,
-                                                ),*/
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: storeHomeMainController

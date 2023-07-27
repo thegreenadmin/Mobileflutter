@@ -436,15 +436,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                   .toString(),
                                               height: 220.0,
                                             ),
-                                            /* child: Image.network(
-                                                messageList[index]
-                                                    .image!
-                                                    .dynamicUrl
-                                                    .toString(),
-                                                height: 220,
-                                                // width: 200,
-                                                fit: BoxFit.fill,
-                                              )*/
                                           ),
                                         ),
                                       ),

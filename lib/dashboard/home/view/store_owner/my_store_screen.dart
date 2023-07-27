@@ -65,12 +65,6 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                     onTap: () {
                                       Get.parameters["isFrom"] =
                                           StringConstants.addOfferText;
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) => const AddOfferScreen(),
-                                      // ))
                                       Get.to(() => const AddOfferScreen(),
                                           id: pageIdApp.value,
                                           arguments: {
@@ -102,85 +96,60 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                 ownerStoresController.getOwnerOfferList.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: Stack(
-                                  alignment: Alignment.bottomCenter,
-                                  children: [
-                                    ownerStoresController
-                                                    .getOwnerOfferList[index]
-                                                    .image
-                                                    ?.dynamicUrl !=
-                                                null &&
-                                            ownerStoresController
-                                                    .getOwnerOfferList[index]
-                                                    .image
-                                                    ?.dynamicUrl !=
-                                                ""
-                                        ? SizedBox(
-                                            height: 200,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                60,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: CommonWidgets
-                                                  .cachedNetworkImage(
-                                                      ownerStoresController
-                                                              .getOwnerOfferList[
-                                                                  index]
-                                                              .image
-                                                              ?.dynamicUrl ??
-                                                          "",
-                                                      fit: BoxFit.cover),
+                              return Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: CommonWidgets.cachedNetworkImage(
+                                      ownerStoresController
+                                              .getOwnerOfferList[index]
+                                              .image
+                                              ?.dynamicUrl ??
+                                          "",
+                                      fit: BoxFit.cover,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.3,
+                                      width: WidgetConstants.screenWidth * 0.87,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 55,
+                                    child: Card(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      )),
+                                      color: Colors.white,
+                                      elevation: 2.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 12.0,
+                                            right: 12,
+                                            bottom: 10,
+                                            top: 10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              ownerStoresController
+                                                      .getOwnerOfferList[index]
+                                                      .offerName ??
+                                                  "",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14),
                                             ),
-                                          )
-                                        : Image.asset(
-                                            ImageConstants.nopicfound,
-                                            color:
-                                                AppColors.grey.withOpacity(0.4),
-                                          ),
-                                    SizedBox(
-                                      height: 55,
-                                      child: Card(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        )),
-                                        color: Colors.white,
-                                        elevation: 2.0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 12.0,
-                                              right: 12,
-                                              bottom: 10,
-                                              top: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                ownerStoresController
-                                                        .getOwnerOfferList[
-                                                            index]
-                                                        .offerName ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               );
                             }),
                   )),
@@ -201,10 +170,10 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                 () => ownerStoresController.storeProductList.isEmpty
                     ? height0SizedBox
                     : SizedBox(
-                        height: 280,
+                        height: WidgetConstants.screenHeight * 0.3,
                         child: ListView.separated(
                           separatorBuilder: (BuildContext context, int index) {
-                            return width10SizedBox;
+                            return width8SizedBox;
                           },
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
@@ -238,20 +207,15 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                             .storeProductList[i].storeId
                                       });
                                 },
-                                child: Container(
-                                  height: 150,
-                                  width: 140,
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: CommonWidgets.cachedNetworkImage(
-                                      ownerStoresController.storeProductList[i]
-                                          .productImages![0].image!.dynamicUrl
-                                          .toString(),
-                                      fit: BoxFit.fill,
-                                    ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: CommonWidgets.cachedNetworkImage(
+                                    ownerStoresController.storeProductList[i]
+                                        .productImages![0].image!.dynamicUrl
+                                        .toString(),
+                                    fit: BoxFit.fill,
+                                    height: WidgetConstants.screenHeight * 0.18,
+                                    width: WidgetConstants.screenWidth * 0.35,
                                   ),
                                 ),
                               ),
@@ -282,7 +246,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                                     .storeProductList[i]
                                                     .description ??
                                                 "",
-                                            maxLines: 2,
+                                            maxLines: 1,
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 color: AppColors.blacklight,

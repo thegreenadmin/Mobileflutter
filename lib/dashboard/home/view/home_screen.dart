@@ -550,23 +550,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       item.image?.dynamicUrl
                                                               .toString() ??
                                                           "",
+                                                  assetImg: ImageConstants.nopicfound,
                                                       height: WidgetConstants
                                                               .screenHeight *
                                                           0.30,
                                                       width: WidgetConstants
                                                               .screenWidth *
                                                           0.85),
-                                              /*child: Image.network(
-                                                  item.image?.dynamicUrl
-                                                          .toString() ??
-                                                      "",
-                                                  fit: BoxFit.fill,
-                                                  height: WidgetConstants
-                                                          .screenHeight *
-                                                      0.3,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.85),*/
                                             )),
                                           ))
                                       .toList(),
@@ -698,21 +688,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .cachedNetworkImage(
                                                     item.image?.dynamicUrl ??
                                                         "",
+                                                    assetImg: ImageConstants.nopicfound,
                                                     height: WidgetConstants
                                                             .screenHeight *
                                                         0.30,
                                                     width: WidgetConstants
                                                             .screenWidth *
                                                         0.85),
-                                            /*child: Image.network(
-                                                item.image?.dynamicUrl ?? "",
-                                                fit: BoxFit.fill,
-                                                height: WidgetConstants
-                                                        .screenHeight *
-                                                    0.30,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.85),*/
                                           )),
                                         ))
                                     .toList(),
@@ -860,58 +842,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .screenWidth *
                                             0.4,),
                                     ),
-                                    /*SizedBox(
-                                      height:
-                                          WidgetConstants.screenHeight * 0.22,
-                                      width: WidgetConstants.screenWidth * 0.44,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: homeController
-                                                          .featuredUserProductList[
-                                                              index]
-                                                          .productImages ==
-                                                      null ||
-                                                  homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty ||
-                                                  homeController
-                                                          .featuredUserProductList[
-                                                              index]
-                                                          .productImages![0]
-                                                          .image!
-                                                          .dynamicUrl ==
-                                                      null ||
-                                                  homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty
-                                              ? Image.asset(
-                                                  ImageConstants.defaultProduct,
-                                                  fit: BoxFit.fill,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.4,
-                                                  // color: AppColors.grey
-                                                  //     .withOpacity(0.4),
-                                                )
-                                              : Image.network(
-                                                  homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productImages![0]
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString(),
-                                                  fit: BoxFit.fill,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.4,
-                                                )),
-                                    ),*/
                                     height8SizedBox,
                                     Text(
                                       homeController
@@ -1007,54 +937,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           0.4,
                                       height: WidgetConstants.screenHeight * 0.22,),
                                     ),
-                                    /*SizedBox(
-                                      height:
-                                          WidgetConstants.screenHeight * 0.22,
-                                      width: WidgetConstants.screenWidth * 0.44,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: homeController
-                                                          .ownerFeatureProductList[
-                                                              index]
-                                                          .productImages ==
-                                                      null ||
-                                                  homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty ||
-                                                  homeController
-                                                          .ownerFeatureProductList[
-                                                              index]
-                                                          .productImages![0]
-                                                          .image!
-                                                          .dynamicUrl ==
-                                                      null
-                                              ? Image.asset(
-                                                  ImageConstants.defaultProduct,
-                                                  fit: BoxFit.fill,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.4,
-                                                  // color: AppColors.grey
-                                                  //     .withOpacity(0.4),
-                                                )
-                                              : Image.network(
-                                                  homeController
-                                                          .ownerFeatureProductList[
-                                                              index]
-                                                          .productImages?[0]
-                                                          .image
-                                                          ?.dynamicUrl
-                                                          .toString() ??
-                                                      "",
-                                                  fit: BoxFit.fill,
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.4,
-                                                )),
-                                    ),*/
                                     height8SizedBox,
                                     Text(
                                       homeController
