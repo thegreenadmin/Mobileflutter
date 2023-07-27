@@ -482,7 +482,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
-                              (WidgetConstants.screenWidth + 190) /
+                              (WidgetConstants.screenHeight * 0.47 +
+                                      WidgetConstants.screenHeight * 0.25) /
                                   WidgetConstants.screenHeight,
                           mainAxisSpacing: 0.0,
                           crossAxisSpacing: 10.0,
@@ -527,8 +528,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                   .dynamicUrl ??
                                               "",
                                           fit: BoxFit.fill,
-                                          height: 148.0,
-                                          width: 148.0,
+                                          height: WidgetConstants.screenHeight *
+                                              0.19,
+                                          width:
+                                              WidgetConstants.screenWidth * 0.4,
                                         ),
                                         /*  storeHomeMainController
                                                     .featureProductList[i]

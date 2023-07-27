@@ -17,6 +17,7 @@ class ImageConstants {
   static const String alertInfo = '$assetsIcon/alertInfo.png';
   static const String alertMark = '$assetsIcon/alertMark.png';
   static const String alert48 = '$assetsIcon/alert48.png';
+  static const String americanexpress = '$assetsIcon/americanexpress.png';
 
   //B
   static const String bag = '$assetsIcon/bag.png';
@@ -37,6 +38,7 @@ class ImageConstants {
   static const String cross = '$assetsIcon/cross.png';
   static const String curb = '$assetsIcon/curb.png';
   static const String cart = '$assetsIcon/cart.png';
+  static const String card = '$assetsIcon/card.png';
   static const String circlefull = '$assetsIcon/circlefull.png';
   //D
   static const String deleteicon = '$assetsIcon/deleteicon.png';
@@ -47,6 +49,7 @@ class ImageConstants {
   static const String defaultProduct = '$assetsIcon/default_product.png';
   static const String defaultCategory = '$assetsIcon/default_category.png';
   static const String debitcard = '$assetsIcon/debitcard.png';
+  static const String discovecard = '$assetsIcon/discover.png';
   //E
   static const String edit = '$assetsIcon/edit.png';
   static const String editstore = '$assetsIcon/editstore.png';
@@ -147,6 +150,8 @@ class ImageConstants {
   static const String user = '$assetsIcon/user.png';
   static const String userAccount = '$assetsIcon/userAccount.png';
   static const String wallet = '$assetsIcon/wallet.png';
+  //V
+  static const String visacard = '$assetsIcon/visa.png';
   //W
   static const String walletCard = '$assetsIcon/walletCard.png';
   static const String walletfill = '$assetsIcon/walletfill.png';
