@@ -64,7 +64,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                         storeHomeMainController.featureProductList.length,
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (WidgetConstants.screenWidth + 190) /
+                      childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
+                              WidgetConstants.screenHeight * 0.25) /
                           WidgetConstants.screenHeight,
                       mainAxisSpacing: 0.0,
                       crossAxisSpacing: 10.0,
@@ -112,8 +113,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                               .image!
                                               .dynamicUrl ??
                                           "",
-                                      height: 148.0,
-                                      width: 148.0,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.19,
+                                      width: WidgetConstants.screenWidth * 0.4,
                                     ),
                                     /*storeHomeMainController
                                                 .featureProductList[i]

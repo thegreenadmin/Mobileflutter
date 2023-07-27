@@ -243,7 +243,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     color: AppColors.white, width: 1)),
                             child: CommonWidgets.circleCachedNetworkImage(
                                 storeHomeMainController.storeDetailsResponse
-                                        .value.data!.store!.logo!.dynamicUrl ??
+                                        .value.data?.store?.logo?.dynamicUrl ??
                                     "",
                                 fit: BoxFit.contain,
                                 radius: 28.0,
