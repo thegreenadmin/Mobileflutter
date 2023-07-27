@@ -109,7 +109,7 @@ class AddCardScreenState extends State<AddCardScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           padding: const EdgeInsets.only(
-                              left: 20, right: 10, top: 15, bottom: 15),
+                              left: 10, right: 10, top: 15, bottom: 15),
                           color: AppColors.primarylight,
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,21 +118,43 @@ class AddCardScreenState extends State<AddCardScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(top: 8.0),
-                                    //   child: Image.asset(
-                                    //       ImageConstants.mastercard,
-                                    //       fit: BoxFit.cover,
-                                    //       scale: 5),
-                                    // ),
-                                    //  width15SizedBox,
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Image.asset(
+                                        addCardController.cardList[index].card!
+                                                    .brand ==
+                                                "Visa"
+                                            ? ImageConstants.visacard
+                                            : addCardController.cardList[index]
+                                                        .card!.brand ==
+                                                    "MasterCard"
+                                                ? ImageConstants.mastercard
+                                                : addCardController
+                                                            .cardList[index]
+                                                            .card!
+                                                            .brand ==
+                                                        "American Express"
+                                                    ? ImageConstants
+                                                        .americanexpress
+                                                    : addCardController
+                                                                .cardList[index]
+                                                                .card!
+                                                                .brand ==
+                                                            "Discover"
+                                                        ? ImageConstants
+                                                            .discovecard
+                                                        : ImageConstants.card,
+                                        height: 20,
+                                      ),
+                                    ),
+                                    width15SizedBox,
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           addCardController
-                                              .cardList[index].card!.funding
+                                              .cardList[index].card!.brand
                                               .toString()
                                               .toUpperCase(),
                                           style: const TextStyle(

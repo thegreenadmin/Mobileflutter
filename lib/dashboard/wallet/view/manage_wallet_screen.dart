@@ -648,7 +648,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 padding: const EdgeInsets.only(
-                                    left: 20, right: 10, top: 15, bottom: 15),
+                                    left: 10, right: 10, top: 15, bottom: 15),
                                 color: AppColors.primarylight,
                                 child: Row(
                                     mainAxisAlignment:
@@ -664,9 +664,37 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                             padding:
                                                 const EdgeInsets.only(top: 8.0),
                                             child: Image.asset(
-                                                ImageConstants.mastercard,
-                                                fit: BoxFit.cover,
-                                                scale: 5),
+                                              walletController.cardList[index]
+                                                          .card!.brand ==
+                                                      "Visa"
+                                                  ? ImageConstants.visacard
+                                                  : walletController
+                                                              .cardList[index]
+                                                              .card!
+                                                              .brand ==
+                                                          "MasterCard"
+                                                      ? ImageConstants
+                                                          .mastercard
+                                                      : walletController
+                                                                  .cardList[
+                                                                      index]
+                                                                  .card!
+                                                                  .brand ==
+                                                              "American Express"
+                                                          ? ImageConstants
+                                                              .americanexpress
+                                                          : walletController
+                                                                      .cardList[
+                                                                          index]
+                                                                      .card!
+                                                                      .brand ==
+                                                                  "Discover"
+                                                              ? ImageConstants
+                                                                  .discovecard
+                                                              : ImageConstants
+                                                                  .card,
+                                              height: 20,
+                                            ),
                                           ),
                                           width15SizedBox,
                                           Column(
@@ -674,9 +702,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                walletController.cardList[index]
-                                                    .card!.funding
-                                                    .toString(),
+                                                walletController
+                                                    .cardList[index].card!.brand
+                                                    .toString()
+                                                    .toUpperCase(),
                                                 style: const TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 15,
