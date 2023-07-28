@@ -623,12 +623,28 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                   const EdgeInsets
                                                                           .only(
                                                                       top: 8.0),
-                                                              child: Image.asset(
-                                                                  ImageConstants
-                                                                      .mastercard,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  scale: 5),
+                                                              child:
+                                                                  Image.asset(
+                                                                addCardController
+                                                                            .cardList[
+                                                                                index]
+                                                                            .card!
+                                                                            .brand ==
+                                                                        "Visa"
+                                                                    ? ImageConstants
+                                                                        .visacard
+                                                                    : addCardController.cardList[index].card!.brand ==
+                                                                            "MasterCard"
+                                                                        ? ImageConstants
+                                                                            .mastercard
+                                                                        : addCardController.cardList[index].card!.brand ==
+                                                                                "American Express"
+                                                                            ? ImageConstants.americanexpress
+                                                                            : addCardController.cardList[index].card!.brand == "Discover"
+                                                                                ? ImageConstants.discovecard
+                                                                                : ImageConstants.card,
+                                                                height: 20,
+                                                              ),
                                                             ),
                                                             width15SizedBox,
                                                             Column(
@@ -641,8 +657,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                       .cardList[
                                                                           index]
                                                                       .card!
-                                                                      .funding
-                                                                      .toString(),
+                                                                      .brand
+                                                                      .toString()
+                                                                      .toUpperCase(),
                                                                   style: TextStyle(
                                                                       color: addCardController
                                                                                   .selectedIndex!.value ==

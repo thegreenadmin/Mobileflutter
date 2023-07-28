@@ -137,6 +137,7 @@ class WalletController extends GetxController {
       }
       getApiData();
     } else {
+      await apiGetCardList(Get.context!);
       await apiGetBankAccountList();
       await apiGetStoreList();
       await apiGetCountries();
