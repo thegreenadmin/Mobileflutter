@@ -142,6 +142,7 @@ class ManageStoreController extends GetxController {
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
+      apiGetStoreProducts();
       apiGetProductDetails();
     }
   }
@@ -331,6 +332,7 @@ class ManageStoreController extends GetxController {
         quantityListResponse =
             quantity_model.QuantityListResponse.fromJson(value?.body);
         quantityTypeList.value = quantityListResponse.data?.quantityTypes ?? [];
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -515,6 +517,7 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value.body);
         storeProductList.value = getStoreProductList.data!.products!;
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

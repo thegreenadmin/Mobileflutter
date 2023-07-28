@@ -166,9 +166,10 @@ class AddOffersController extends GetxController {
         } else if (discountType.value.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectDiscountType);
-        } else if (selectedProducts.isEmpty ||
-            selectedProducts
-                .every((element) => element["status"] == "deleted")) {
+        } else if (radioValue.value != "store" &&
+            (selectedProducts.isEmpty ||
+                selectedProducts
+                    .every((element) => element["status"] == "deleted"))) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectProductToProceedText);
         } else {

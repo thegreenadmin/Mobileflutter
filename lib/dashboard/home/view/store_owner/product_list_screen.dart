@@ -107,7 +107,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           PermissionKey
                                               .createProduct.statusName))
                           ? Get.to(() => const AddNewProductScreen(),
-                              id: pageIdApp.value)
+                              id: pageIdApp.value)?.then((value) {
+                        manageStoreController
+                            .apiGetStoreProducts();
+                      })
                           : Utility.showAlertMessage(
                               AlertStringConstants.notAuthorizedToStoreText);
 
@@ -280,21 +283,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     children: [
                                       Flexible(
                                         flex: 3,
-                                        child: manageStoreController
-                                                .storeProductList[index]
-                                                .productImages!
-                                                .isEmpty
-                                            ? Image.asset(
-                                                ImageConstants.defaultProduct,
-                                                // color: AppColors.grey
-                                                //     .withOpacity(0.4),
-                                                fit: BoxFit.fill,
-                                                height: 100,
-                                                width: WidgetConstants
-                                                        .screenWidth *
-                                                    0.3,
-                                              )
-                                            : Container(
+                                        child: Container(
                                                 decoration: BoxDecoration(
                                                     shape: BoxShape.rectangle,
                                                     border: Border.all(
@@ -347,28 +336,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     .description!
                                                     .isEmpty
                                                 ? height0SizedBox
-                                                : SizedBox(
-                                                    width: 190,
-                                                    child: Text(
-                                                      manageStoreController
-                                                              .storeProductList[
-                                                                  index]
-                                                              .description ??
-                                                          "",
-                                                      style: TextStyle(
-                                                          fontSize: 14.0,
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                  ),
+                                                : Text(
+                                                  manageStoreController
+                                                          .storeProductList[
+                                                              index]
+                                                          .description ??
+                                                      "",
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: AppColors
+                                                          .blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
                                             manageStoreController
                                                     .storeProductList[index]
                                                     .description!
                                                     .isEmpty
                                                 ? height0SizedBox
-                                                : height8SizedBox,
+                                                : height5SizedBox,
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

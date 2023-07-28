@@ -335,14 +335,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                               Get.parameters["categoryId"] =  manageStoreController
                                   .categoriesList[index].categoryId ??
                                   "";
-                              manageStoreController.categoryName.value =
-                                  manageStoreController
-                                          .categoriesList[index].categoryName ??
-                                      "";
-                              manageStoreController.categoryId.value =
-                                  manageStoreController
-                                          .categoriesList[index].categoryId ??
-                                      "";
                               manageStoreController.apiGetStoreProducts();
                               Get.to(() => const ProductListScreen(),
                                   id: pageIdApp.value);
