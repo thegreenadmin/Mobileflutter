@@ -752,12 +752,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           .circleCachedNetworkImage(
                                         ordersController
                                             .orderItems[i]
+                                            .product!=null && ordersController
+                                            .orderItems[i]
+                                            .product
+                                            ?.productImages!=null && ordersController
+                                            .orderItems[i]
+                                            .product!.productImages!.isNotEmpty ? ordersController
+                                            .orderItems[i]
                                             .product
                                             ?.productImages
                                             ?.first
                                             .image
                                             ?.dynamicUrl ??
-                                            "",
+                                            "":"",
                                         fit: BoxFit.contain,
                                         radius: 22.0,
                                         assetImg: ImageConstants

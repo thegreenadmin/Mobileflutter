@@ -168,21 +168,18 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                           color: AppColors.white, width: 1)),
-
-                                  child: CommonWidgets
-                                      .circleCachedNetworkImage(
+                                  child: CommonWidgets.circleCachedNetworkImage(
                                     ordersHomeMainController
-                                        .storeDetailsResponse
-                                        .value
-                                        .data!
-                                        .store!
-                                        .logo!
-                                        .dynamicUrl ??
+                                            .storeDetailsResponse
+                                            .value
+                                            .data!
+                                            .store!
+                                            .logo!
+                                            .dynamicUrl ??
                                         "",
                                     fit: BoxFit.contain,
                                     radius: 28.0,
-                                    assetImg: ImageConstants
-                                        .storeicon,
+                                    assetImg: ImageConstants.storeicon,
                                   ),
                                 ),
                                 width10SizedBox,
@@ -392,7 +389,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                               .orderStatusName == //7
                                           OrderStatusEnum.cancelled.statusName
                                       ? null*/
-                                  : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value);
+                                  : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value)?.then((value) {
+                                      ordersHomeMainController.onIndexChange(
+                                          ordersHomeMainController
+                                              .selectedIndex.value);
+                                    });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
