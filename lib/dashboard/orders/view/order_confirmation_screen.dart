@@ -163,21 +163,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-
-                                    child: CommonWidgets
-                                        .circleCachedNetworkImage(
+                                    child:
+                                        CommonWidgets.circleCachedNetworkImage(
                                       ordersController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data!
-                                          .store!
-                                          .logo!
-                                          .dynamicUrl ??
+                                              .storeDetailsResponse
+                                              .value
+                                              .data!
+                                              .store!
+                                              .logo!
+                                              .dynamicUrl ??
                                           "",
                                       fit: BoxFit.contain,
                                       radius: 28.0,
-                                      assetImg: ImageConstants
-                                          .storeicon,
+                                      assetImg: ImageConstants.storeicon,
                                     ),
                                   ),
                                   width10SizedBox,
@@ -739,8 +737,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
@@ -751,17 +748,16 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       child: CommonWidgets
                                           .circleCachedNetworkImage(
                                         ordersController
-                                            .orderItems[i]
-                                            .product
-                                            ?.productImages
-                                            ?.first
-                                            .image
-                                            ?.dynamicUrl ??
+                                                .orderItems[i]
+                                                .product
+                                                ?.productImages
+                                                ?.first
+                                                .image
+                                                ?.dynamicUrl ??
                                             "",
                                         fit: BoxFit.contain,
                                         radius: 22.0,
-                                        assetImg: ImageConstants
-                                            .defaultProduct,
+                                        assetImg: ImageConstants.defaultProduct,
                                       ),
                                     ),
                                     width5SizedBox,
@@ -782,8 +778,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
@@ -806,8 +801,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                             "\$${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w600,
+                                                                FontWeight.w600,
                                                             fontSize: 14,
                                                             color: AppColors
                                                                 .blacklight),
@@ -818,7 +812,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       TextOverflow.visible,
                                                 ),
                                               ),
-
                                             ],
                                           ),
                                           Text.rich(
@@ -826,37 +819,35 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               children: [
                                                 TextSpan(
                                                     text:
-                                                    "${StringConstants.qtyText}: ",
+                                                        "${StringConstants.qtyText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
                                                             .blacklight,
                                                         fontWeight:
-                                                        FontWeight
-                                                            .w400,
+                                                            FontWeight.w400,
                                                         fontSize: 14)),
                                                 TextSpan(
-                                                  text:
-                                                  ordersController.orderItems[i].orderItemCount?.toString().padLeft(2, '0') ?? "0",
+                                                  text: ordersController
+                                                          .orderItems[i]
+                                                          .orderItemCount
+                                                          ?.toString()
+                                                          .padLeft(2, '0') ??
+                                                      "0",
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .w600,
+                                                          FontWeight.w600,
                                                       fontSize: 14,
-                                                      color: AppColors
-                                                          .blacklight),
+                                                      color:
+                                                          AppColors.blacklight),
                                                 ),
                                               ],
                                             ),
-                                            overflow:
-                                            TextOverflow.visible,
+                                            overflow: TextOverflow.visible,
                                           ),
                                           height8SizedBox,
                                           Visibility(
                                             visible: ordersController.orderItems[i].product != null &&
-                                                ordersController
-                                                        .orderItems[i]
-                                                        .product
-                                                        ?.productReviews !=
+                                                ordersController.orderItems[i].product?.productReviews !=
                                                     null &&
                                                 ordersController
                                                     .orderItems[i]
@@ -883,7 +874,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                         .orderItems[i]
                                                         .returnOrderItems!
                                                         .isEmpty &&
-                                                    ordersController.orderStatusTypeName.value != OrderStatusEnum.returnCancelled.statusName),
+                                                    ordersController.orderStatusTypeName.value !=
+                                                        OrderStatusEnum.returnCancelled.statusName),
                                             child: RatingBar.builder(
                                               initialRating: ordersController
                                                           .orderItems[i]
@@ -1002,8 +994,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                                     .completedText,
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w600,
+                                                                FontWeight.w600,
                                                             fontSize: 14,
                                                             color: AppColors
                                                                 .blacklight),
@@ -1017,31 +1008,42 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               ],
                                             ),
                                           ),
-
                                           Visibility(
-                                            visible: ordersController
-                                                .orderItems[i]
-                                                .product!
-                                                .productReviews ==null && ordersController
-                                                .orderItems[i]
-                                                .product!
-                                                .productReviews!.isEmpty && ordersController.activeStep.value == 3 &&
+                                            visible:
                                                 ordersController
+                                                            .orderItems[i]
+                                                            .product!
+                                                            .productReviews ==
+                                                        null &&
+                                                    ordersController
+                                                        .orderItems[i]
+                                                        .product!
+                                                        .productReviews!
+                                                        .isEmpty &&
+                                                    ordersController.activeStep.value ==
+                                                        3 &&
+                                                    ordersController
                                                         .orderItems[i]
                                                         .returnOrderItems!
                                                         .isEmpty &&
-                                                    (ordersController.orderStatusTypeName.value !=
-                                                        OrderStatusEnum
-                                                            .returnRequest
-                                                            .statusName ||
-                                                    ordersController.orderStatusTypeName.value !=
-                                                        OrderStatusEnum
-                                                            .returnConfirmed
-                                                            .statusName ||
-                                                    ordersController.orderStatusTypeName.value !=
-                                                        OrderStatusEnum
-                                                            .returnCancelled
-                                                            .statusName),
+                                                    (ordersController
+                                                                .orderStatusTypeName
+                                                                .value !=
+                                                            OrderStatusEnum
+                                                                .returnRequest
+                                                                .statusName ||
+                                                        ordersController
+                                                                .orderStatusTypeName
+                                                                .value !=
+                                                            OrderStatusEnum
+                                                                .returnConfirmed
+                                                                .statusName ||
+                                                        ordersController
+                                                                .orderStatusTypeName
+                                                                .value !=
+                                                            OrderStatusEnum
+                                                                .returnCancelled
+                                                                .statusName),
                                             child: CustomButton(
                                               gradient: const LinearGradient(
                                                 begin: Alignment.topCenter,
@@ -1087,11 +1089,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 width: 1,
                                               ),
                                               textColor: AppColors.primary,
-                                              width: WidgetConstants
-                                                      .screenWidth *
-                                                  0.25,
-                                              text:
-                                                  StringConstants.rateNowText,
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.25,
+                                              text: StringConstants.rateNowText,
                                               borderRadius: 10,
                                               fontWeight: FontWeight.w500,
                                               iconL: false,
@@ -1148,50 +1149,47 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                   ),*/
                                           height6SizedBox,
                                           Visibility(
-                                            visible:
-                                                ordersController.activeStep.value == 3 &&
-                                                    ordersController
-                                                            .orderItems[i]
-                                                            .enableReturnButton ==
-                                                        true &&
-                                                    ordersController
-                                                            .orderItems[i]
-                                                            .returnOrderItems!
-                                                            .isEmpty &&
-                                                        ordersController
-                                                                .orderStatusTypeName
-                                                                .value !=
-                                                            OrderStatusEnum
-                                                                .returnRequest
-                                                                .statusName &&
-                                                    ordersController.orderStatusTypeName.value !=
-                                                        OrderStatusEnum
-                                                            .cancelled
-                                                            .statusName &&
-                                                    ordersController
-                                                            .orderStatusTypeName
-                                                            .value !=
-                                                        OrderStatusEnum
-                                                            .returnConfirmed
-                                                            .statusName &&
-                                                    ordersController
-                                                            .orderStatusTypeName
-                                                            .value !=
-                                                        OrderStatusEnum
-                                                            .returnCancelled
-                                                            .statusName,
+                                            visible: ordersController
+                                                        .activeStep.value ==
+                                                    3 &&
+                                                ordersController.orderItems[i]
+                                                        .enableReturnButton ==
+                                                    true &&
+                                                ordersController.orderItems[i]
+                                                    .returnOrderItems!.isEmpty &&
+                                                ordersController.orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .returnRequest
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancelled.statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .returnConfirmed
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .returnCancelled
+                                                        .statusName,
                                             child: InkWell(
                                               onTap: () {
                                                 Utility.showConfirmAlertMessage(
                                                     AlertStringConstants
                                                         .returnOrderAlertText,
-                                                    okay: StringConstants
-                                                        .yesText,
-                                                    cancelText:
-                                                        StringConstants
-                                                            .noText,
-                                                    okayTap: () {
-                                                  ordersController.orderItemObj.value =
+                                                    okay:
+                                                        StringConstants.yesText,
+                                                    cancelText: StringConstants
+                                                        .noText, okayTap: () {
+                                                  ordersController
+                                                          .orderItemObj.value =
                                                       ordersController
                                                           .orderItems[i];
                                                   ordersController
@@ -1200,11 +1198,9 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 });
                                               },
                                               child: Text(
-                                                StringConstants
-                                                    .returnOrderText,
+                                                StringConstants.returnOrderText,
                                                 style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600,
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: 14,
                                                     color: AppColors.red),
                                               ),
@@ -1217,25 +1213,23 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 ),
                                 Visibility(
                                   visible: ordersController.orderItems[i].product != null &&
-                                      ordersController.orderItems[i].product
-                                              ?.productReviews !=
+                                      ordersController.orderItems[i].product?.productReviews !=
                                           null &&
                                       ordersController.orderItems[i].product!
                                           .productReviews!.isNotEmpty &&
-                                      (ordersController.orderItems[i]
-                                              .returnOrderItems!.isEmpty &&
+                                      (ordersController.orderItems[i].returnOrderItems!.isEmpty &&
                                           ordersController.orderStatusTypeName.value !=
-                                              OrderStatusEnum.returnRequest
-                                                  .statusName) &&
-                                      (ordersController.orderItems[i]
-                                              .returnOrderItems!.isEmpty &&
+                                              OrderStatusEnum
+                                                  .returnRequest.statusName) &&
+                                      (ordersController.orderItems[i].returnOrderItems!.isEmpty &&
                                           ordersController.orderStatusTypeName.value !=
                                               OrderStatusEnum.returnConfirmed
                                                   .statusName) &&
                                       (ordersController.orderItems[i]
                                               .returnOrderItems!.isEmpty &&
                                           ordersController.orderStatusTypeName.value !=
-                                              OrderStatusEnum.returnCancelled.statusName) &&
+                                              OrderStatusEnum.returnCancelled
+                                                  .statusName) &&
                                       (ordersController.orderItems[i]
                                               .returnOrderItems!.isEmpty &&
                                           ordersController.orderStatusTypeName.value !=
@@ -1252,10 +1246,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 text:
                                                     "${StringConstants.reviewText}: ",
                                                 style: TextStyle(
-                                                    color:
-                                                        AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w400,
+                                                    color: AppColors.blacklight,
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 14)),
                                             TextSpan(
                                               text: ordersController
@@ -1284,8 +1276,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 14,
-                                                  color:
-                                                      AppColors.blacklight),
+                                                  color: AppColors.blacklight),
                                             ),
                                           ],
                                         ),
@@ -1300,25 +1291,26 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                 Visibility(
                                   visible: ordersController.orderItems[i]
                                               .returnOrderItems!.isNotEmpty &&
-                                          ordersController.orderStatusTypeName
-                                                  .value ==
+                                          ordersController
+                                                  .orderStatusTypeName.value ==
                                               OrderStatusEnum
                                                   .returnRequest.statusName ||
                                       ordersController.orderItems[i]
                                               .returnOrderItems!.isNotEmpty &&
-                                          ordersController.orderStatusTypeName
-                                                  .value ==
-                                              OrderStatusEnum.returnConfirmed
-                                                  .statusName ||
+                                          ordersController
+                                                  .orderStatusTypeName.value ==
+                                              OrderStatusEnum
+                                                  .returnConfirmed.statusName ||
                                       ordersController.orderItems[i]
                                               .returnOrderItems!.isNotEmpty &&
-                                          ordersController.orderStatusTypeName
-                                                  .value ==
+                                          ordersController
+                                                  .orderStatusTypeName.value ==
                                               OrderStatusEnum
-                                                  .returnCancelled.statusName || ordersController.orderItems[i]
+                                                  .returnCancelled.statusName ||
+                                      ordersController.orderItems[i]
                                               .returnOrderItems!.isNotEmpty &&
-                                          ordersController.orderStatusTypeName
-                                                  .value ==
+                                          ordersController
+                                                  .orderStatusTypeName.value ==
                                               OrderStatusEnum
                                                   .returned.statusName,
                                   child: Column(
@@ -1509,10 +1501,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                 text:
                                                     "${StringConstants.returnReasonText}: ",
                                                 style: TextStyle(
-                                                    color:
-                                                        AppColors.blacklight,
-                                                    fontWeight:
-                                                        FontWeight.w400,
+                                                    color: AppColors.blacklight,
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 14)),
                                             TextSpan(
                                               text: ordersController
@@ -1534,8 +1524,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14,
-                                                  color:
-                                                      AppColors.blacklight),
+                                                  color: AppColors.blacklight),
                                             ),
                                           ],
                                         ),

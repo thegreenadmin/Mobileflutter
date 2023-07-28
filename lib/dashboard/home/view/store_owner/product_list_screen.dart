@@ -107,10 +107,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           PermissionKey
                                               .createProduct.statusName))
                           ? Get.to(() => const AddNewProductScreen(),
-                              id: pageIdApp.value)?.then((value) {
-                        manageStoreController
-                            .apiGetStoreProducts();
-                      })
+                                  id: pageIdApp.value)
+                              ?.then((value) {
+                              manageStoreController.apiGetStoreProducts();
+                            })
                           : Utility.showAlertMessage(
                               AlertStringConstants.notAuthorizedToStoreText);
 
@@ -251,8 +251,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               .storeProductList[index]
                                               .productId ??
                                           "";
-                                   manageStoreController
-                                      .apiGetProductDetails();
+                                  manageStoreController.apiGetProductDetails();
 
                                   hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
@@ -284,25 +283,48 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       Flexible(
                                         flex: 3,
                                         child: Container(
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.rectangle,
-                                                    border: Border.all(
-                                                        color: AppColors.white,
-                                                        width: 1)),
-                                                child: CommonWidgets.cachedNetworkImage(
-                                                        manageStoreController
-                                                            .storeProductList[
-                                                                index]
-                                                            .productImages![0]
-                                                            .image!
-                                                            .dynamicUrl
-                                                            .toString(),
-                                                        fit: BoxFit.fill,
-                                                        height: 100.0,
-                                                        width: WidgetConstants
-                                                                .screenWidth *
-                                                            0.3,
-                                                      )),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: CommonWidgets
+                                                .cachedNetworkImage(
+                                              manageStoreController
+                                                              .storeProductList[
+                                                                  index]
+                                                              .productImages ==
+                                                          null ||
+                                                      manageStoreController
+                                                          .storeProductList[
+                                                              index]
+                                                          .productImages!
+                                                          .isEmpty ||
+                                                      manageStoreController
+                                                              .storeProductList[
+                                                                  index]
+                                                              .productImages![0]
+                                                              .image!
+                                                              .dynamicUrl ==
+                                                          null ||
+                                                      manageStoreController
+                                                          .storeProductList[
+                                                              index]
+                                                          .productImages!
+                                                          .isEmpty
+                                                  ? ""
+                                                  : manageStoreController
+                                                      .storeProductList[index]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString(),
+                                              fit: BoxFit.fill,
+                                              height: 100.0,
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.3,
+                                            )),
                                       ),
                                       width12SizedBox,
                                       Flexible(
@@ -337,20 +359,21 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     .isEmpty
                                                 ? height0SizedBox
                                                 : Text(
-                                                  manageStoreController
-                                                          .storeProductList[
-                                                              index]
-                                                          .description ??
-                                                      "",
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: AppColors
-                                                          .blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
+                                                    manageStoreController
+                                                            .storeProductList[
+                                                                index]
+                                                            .description ??
+                                                        "",
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize: 14.0,
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                             manageStoreController
                                                     .storeProductList[index]
                                                     .description!
