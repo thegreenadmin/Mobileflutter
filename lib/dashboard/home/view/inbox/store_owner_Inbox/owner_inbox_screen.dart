@@ -223,7 +223,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                 "",
                                             fit: BoxFit.contain,
                                             radius: 22.0,
-                                            assetImg: ImageConstants.storeicon,
+                                            assetImg: ImageConstants.nopicfound,
                                            ),
                                   ),
                                 ),

@@ -200,18 +200,39 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                               ?.categoryName ??
                                           "";
                                   Get.to(() => const EditProductScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {
+                                          id: pageIdApp.value,
+                                          arguments: {
                                         "isFromHome": true,
                                         'storeId': ownerStoresController
                                             .storeProductList[i].storeId
-                                      });
+                                      })!
+                                      .then((value) => ownerStoresController
+                                          .apiGetFeaturedProducts());
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: CommonWidgets.cachedNetworkImage(
                                     ownerStoresController.storeProductList[i]
-                                        .productImages![0].image!.dynamicUrl
+                                        .productImages ==
+                                                  null ||
+                                              ownerStoresController
+                                                  .storeProductList[i]
+                                                  .productImages!
+                                                  .isEmpty ||
+                                              ownerStoresController
+                                                      .storeProductList[i]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl ==
+                                                  null ||
+                                              ownerStoresController
+                                                  .storeProductList[i]
+                                                  .productImages!
+                                                  .isEmpty
+                                          ? ""
+                                          : ownerStoresController
+                                              .storeProductList[i]
+                                              .productImages![0].image!.dynamicUrl
                                         .toString(),
                                     fit: BoxFit.fill,
                                     height: WidgetConstants.screenHeight * 0.18,

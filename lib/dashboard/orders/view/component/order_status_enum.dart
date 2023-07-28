@@ -36,7 +36,7 @@ extension StatusExtension on OrderStatusEnum {
         return 'return confirmed';
       case OrderStatusEnum.returnCancelled:
         return 'return cancelled';
-     case OrderStatusEnum.returned:
+      case OrderStatusEnum.returned:
         return 'returned';
       case OrderStatusEnum.cancelled:
         return 'cancelled';

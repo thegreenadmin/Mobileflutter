@@ -103,12 +103,20 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                               width: 1)),
                                       child: CommonWidgets
                                           .circleCachedNetworkImage(
-                                        storeHomeMainController
-                                                .categoriesList[index]
-                                                .image
-                                                ?.dynamicUrl
-                                                .toString() ??
-                                            "",
+                                        storeHomeMainController.categoriesList
+                                                    .isNotEmpty &&
+                                                storeHomeMainController
+                                                        .categoriesList[index]
+                                                        .image
+                                                        ?.dynamicUrl !=
+                                                    null
+                                            ? storeHomeMainController
+                                                    .categoriesList[index]
+                                                    .image
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                ""
+                                            : "",
                                         fit: BoxFit.contain,
                                         radius: 25.0,
                                         assetImg:

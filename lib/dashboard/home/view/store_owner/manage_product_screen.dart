@@ -329,12 +329,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                           },
                           child: InkWell(
                             onTap: () {
-                              Get.parameters["categoryName"] = manageStoreController
-                                  .categoriesList[index].categoryName ??
-                                  "";
-                              Get.parameters["categoryId"] =  manageStoreController
-                                  .categoriesList[index].categoryId ??
-                                  "";
+                              Get.parameters["categoryName"] =
+                                  manageStoreController
+                                          .categoriesList[index].categoryName ??
+                                      "";
+                              Get.parameters["categoryId"] =
+                                  manageStoreController
+                                          .categoriesList[index].categoryId ??
+                                      "";
                               manageStoreController.categoryName.value =
                                   manageStoreController
                                           .categoriesList[index].categoryName ??
@@ -370,18 +372,20 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                               border: Border.all(
                                                   color: AppColors.white,
                                                   width: 1)),
-                                          child: Obx(() =>
-                                           CommonWidgets.circleCachedNetworkImage(
-                                             manageStoreController
-                                                 .categoriesList[
-                                             index]
-                                                 .image!
-                                                 .dynamicUrl
-                                                 .toString(),
-                                            fit: BoxFit.contain,
-                                            radius: 24.0,
-                                            assetImg: ImageConstants.defaultCategory,
-                                          ),),
+                                          child: Obx(
+                                            () => CommonWidgets
+                                                .circleCachedNetworkImage(
+                                              manageStoreController
+                                                  .categoriesList[index]
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString(),
+                                              fit: BoxFit.contain,
+                                              radius: 24.0,
+                                              assetImg: ImageConstants
+                                                  .defaultCategory,
+                                            ),
+                                          ),
                                         ),
                                         width10SizedBox,
                                         Column(

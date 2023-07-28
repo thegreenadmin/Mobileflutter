@@ -107,12 +107,24 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                   children: [
                                     CommonWidgets.cachedNetworkImage(
                                       storeHomeMainController
-                                              .featureProductList[i]
-                                              .productImages
-                                              ?.first
-                                              .image!
-                                              .dynamicUrl ??
-                                          "",
+                                                  .featureProductList[i]
+                                                  .productImages!
+                                                  .isNotEmpty &&
+                                              storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .productImages
+                                                      ?.first
+                                                      .image
+                                                      ?.dynamicUrl !=
+                                                  null
+                                          ? storeHomeMainController
+                                                  .featureProductList[i]
+                                                  .productImages
+                                                  ?.first
+                                                  .image!
+                                                  .dynamicUrl ??
+                                              ""
+                                          : "",
                                       height:
                                           WidgetConstants.screenHeight * 0.19,
                                       width: WidgetConstants.screenWidth * 0.4,

@@ -247,7 +247,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     "",
                                 fit: BoxFit.contain,
                                 radius: 28.0,
-                                assetImg: ImageConstants.storeicon,
+                                assetImg: ImageConstants.nopicfound,
                                 assetBackgroundColor: Colors.grey.shade50),
                           ),
                           width10SizedBox,

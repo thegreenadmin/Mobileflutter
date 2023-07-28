@@ -267,12 +267,27 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                         children: [
                                           CommonWidgets.cachedNetworkImage(
                                             storeHomeMainController
-                                                    .featureProductList[index]
-                                                    .productImages
-                                                    ?.first
-                                                    .image
-                                                    ?.dynamicUrl ??
-                                                "",
+                                                        .featureProductList[
+                                                            index]
+                                                        .productImages!
+                                                        .isNotEmpty &&
+                                                    storeHomeMainController
+                                                            .featureProductList[
+                                                                index]
+                                                            .productImages
+                                                            ?.first
+                                                            .image
+                                                            ?.dynamicUrl !=
+                                                        null
+                                                ? storeHomeMainController
+                                                        .featureProductList[
+                                                            index]
+                                                        .productImages
+                                                        ?.first
+                                                        .image
+                                                        ?.dynamicUrl ??
+                                                    ""
+                                                : "",
                                             fit: BoxFit.fill,
                                             height:
                                                 WidgetConstants.screenHeight *

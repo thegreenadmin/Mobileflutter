@@ -220,7 +220,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                           "",
                                       fit: BoxFit.contain,
                                       radius: 22.0,
-                                      assetImg: ImageConstants.storeicon,
+                                      assetImg: ImageConstants.nopicfound,
                                     ),
                                   ),
                                 ),

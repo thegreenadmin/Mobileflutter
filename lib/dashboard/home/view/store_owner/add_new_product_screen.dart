@@ -239,7 +239,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
+                          LengthLimitingTextInputFormatter(25),
                         ],
                         style: const TextStyle(
                             color: AppColors.black,
@@ -490,7 +490,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 manageStoreController.quantityValue.value =
                                     value.toString();
                               },
-                            ),
+                            )),
                           ),
                         ),
                         width15SizedBox,

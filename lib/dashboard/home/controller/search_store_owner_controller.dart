@@ -845,9 +845,9 @@ class OwnerStoresController extends GetxController {
         if (Get.parameters['isFromHome'] == "true") {
           Get.back(id: pageIdApp.value);
         } else {
+          apiGetStoreList();
           Get.back(id: pageIdApp.value);
           Get.back(id: pageIdApp.value);
-          await apiGetStoreList();
           storeNameTextController.clear();
           einTextController.clear();
           nickNameTextController.clear();
