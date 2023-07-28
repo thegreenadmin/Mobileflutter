@@ -920,7 +920,7 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("GET AUTO RECHARGE DETAIL RESPONSE *******${value?.body}");
+      log("GET AUTO RECHARGE DETAIL RESPONSE *******${jsonEncode(value?.body)}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getAutoRechargeModel = GetAutoRechargeModel.fromJson(value?.body);
@@ -970,7 +970,11 @@ class WalletController extends GetxController {
             }
 
             day.value =
-                getAutoRechargeModel.data?.userWalletAutoCharge?.day ?? "";
+                getAutoRechargeModel.data?.userWalletAutoCharge?.day != null
+                    ? getAutoRechargeModel.data?.userWalletAutoCharge?.day
+                            .toString() ??
+                        ""
+                    : "";
 
             userWalletAutoChargeId.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.userWalletAutoChargeId
@@ -1142,6 +1146,4 @@ class WalletController extends GetxController {
       }
     });
   }
-
-
 }

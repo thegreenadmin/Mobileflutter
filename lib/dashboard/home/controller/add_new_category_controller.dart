@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 import '../view/store_owner/add_new_product_screen.dart';
+import 'manage_store_controller.dart';
 
 class AddNewCategoryController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -227,7 +228,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
-        // Get.delete<ManageStoreController>();
+        Get.find<ManageStoreController>().onInit();
         Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
       } else {
         if (value.body['message'] != null) {
