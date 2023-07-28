@@ -847,10 +847,42 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                         const EdgeInsets.only(
                                                             top: 8.0),
                                                     child: Image.asset(
-                                                        ImageConstants
-                                                            .mastercard,
-                                                        fit: BoxFit.cover,
-                                                        scale: 5),
+                                                      walletController
+                                                                  .cardList[
+                                                                      index]
+                                                                  .card!
+                                                                  .brand ==
+                                                              "Visa"
+                                                          ? ImageConstants
+                                                              .visacard
+                                                          : walletController
+                                                                      .cardList[
+                                                                          index]
+                                                                      .card!
+                                                                      .brand ==
+                                                                  "MasterCard"
+                                                              ? ImageConstants
+                                                                  .mastercard
+                                                              : walletController
+                                                                          .cardList[
+                                                                              index]
+                                                                          .card!
+                                                                          .brand ==
+                                                                      "American Express"
+                                                                  ? ImageConstants
+                                                                      .americanexpress
+                                                                  : walletController
+                                                                              .cardList[
+                                                                                  index]
+                                                                              .card!
+                                                                              .brand ==
+                                                                          "Discover"
+                                                                      ? ImageConstants
+                                                                          .discovecard
+                                                                      : ImageConstants
+                                                                          .card,
+                                                      height: 20,
+                                                    ),
                                                   ),
                                                   width15SizedBox,
                                                   Column(
@@ -862,8 +894,9 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                         addCardController
                                                             .cardList[index]
                                                             .card!
-                                                            .funding
-                                                            .toString(),
+                                                            .brand
+                                                            .toString()
+                                                            .toUpperCase(),
                                                         style: TextStyle(
                                                             color: addCardController
                                                                         .selectedIndex!

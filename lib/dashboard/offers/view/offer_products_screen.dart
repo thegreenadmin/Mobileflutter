@@ -85,12 +85,33 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                           color: AppColors.primary, width: 0)),
                                   child: CommonWidgets.cachedNetworkImage(
                                     offersController
-                                            .featuredUserProductList[index]
-                                            .productImages!
-                                            .first
-                                            .image!
-                                            .dynamicUrl ??
-                                        "",
+                                                    .featuredUserProductList[
+                                                        index]
+                                                    .productImages ==
+                                                null ||
+                                            offersController
+                                                .featuredUserProductList[index]
+                                                .productImages!
+                                                .isEmpty ||
+                                            offersController
+                                                    .featuredUserProductList[
+                                                        index]
+                                                    .productImages![0]
+                                                    .image!
+                                                    .dynamicUrl ==
+                                                null ||
+                                            offersController
+                                                .featuredUserProductList[index]
+                                                .productImages!
+                                                .isEmpty
+                                        ? ""
+                                        : offersController
+                                                .featuredUserProductList[index]
+                                                .productImages!
+                                                .first
+                                                .image!
+                                                .dynamicUrl ??
+                                            "",
                                     fit: BoxFit.cover,
                                   )),
                             ),

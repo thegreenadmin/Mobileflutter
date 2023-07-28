@@ -137,6 +137,7 @@ class WalletController extends GetxController {
       }
       getApiData();
     } else {
+      await apiGetCardList(Get.context!);
       await apiGetBankAccountList();
       await apiGetStoreList();
       await apiGetCountries();
@@ -970,7 +971,7 @@ class WalletController extends GetxController {
             }
 
             day.value =
-                getAutoRechargeModel.data?.userWalletAutoCharge?.day ?? "";
+                getAutoRechargeModel.data?.userWalletAutoCharge?.day ?? 1;
 
             userWalletAutoChargeId.value = getAutoRechargeModel
                 .data!.userWalletAutoCharge!.userWalletAutoChargeId
@@ -1142,6 +1143,4 @@ class WalletController extends GetxController {
       }
     });
   }
-
-
 }
