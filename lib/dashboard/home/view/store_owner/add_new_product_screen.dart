@@ -421,12 +421,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 5,
-                          child: Obx(
-                            () => DropdownButtonFormField<String>(
+                    Row(children: [
+                      Flexible(
+                        flex: 5,
+                        child: Obx(() => DropdownButtonFormField<String>(
                               isExpanded: true,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -491,79 +489,75 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     value.toString();
                               },
                             )),
-                          ),
-                        ),
-                        width15SizedBox,
-                        Flexible(
-                          flex: 5,
-                          child: TextFormField(
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller:
-                                  manageStoreController.quantityTextController,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterQuantityText;
-                                } else if (value == ".") {
-                                  return AlertStringConstants.invalidInputText;
-                                } else if (double.parse(value) == 0.0) {
-                                  return AlertStringConstants
-                                      .invalidQuantityText;
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                hintText: StringConstants.enterQuantityText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
+                      ),
+                      width15SizedBox,
+                      Flexible(
+                        flex: 5,
+                        child: TextFormField(
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: <TextInputFormatter>[
+                              LengthLimitingTextInputFormatter(100),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
+                            ],
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            textInputAction: TextInputAction.next,
+                            autofocus: false,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            controller:
+                                manageStoreController.quantityTextController,
+                            validator: (value) {
+                              if (value!.trim().isEmpty) {
+                                return AlertStringConstants
+                                    .pleaseEnterQuantityText;
+                              } else if (value == ".") {
+                                return AlertStringConstants.invalidInputText;
+                              } else if (double.parse(value) == 0.0) {
+                                return AlertStringConstants.invalidQuantityText;
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: StringConstants.enterQuantityText,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              fillColor: Colors.white,
+                              border: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
                                 ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
                                 ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1.0,
                                 ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: AppColors.grey,
+                                  width: 1.0,
                                 ),
-                              )),
-                        ),
-                      ],
-                    ),
+                              ),
+                            )),
+                      ),
+                    ]),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
