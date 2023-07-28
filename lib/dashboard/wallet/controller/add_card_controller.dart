@@ -837,7 +837,7 @@ class AddCardController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET OWNER WALLET BALANCE RESPONSE *******${value?.body}");
+      debugPrint("GET OWNER WALLET BALANCE RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         if (value?.body['data']['balance'] != null) {

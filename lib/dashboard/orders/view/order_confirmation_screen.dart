@@ -163,21 +163,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: AppColors.white, width: 1)),
-
-                                    child: CommonWidgets
-                                        .circleCachedNetworkImage(
+                                    child:
+                                        CommonWidgets.circleCachedNetworkImage(
                                       ordersController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data!
-                                          .store!
-                                          .logo!
-                                          .dynamicUrl ??
+                                              .storeDetailsResponse
+                                              .value
+                                              .data!
+                                              .store!
+                                              .logo!
+                                              .dynamicUrl ??
                                           "",
                                       fit: BoxFit.contain,
                                       radius: 28.0,
-                                      assetImg: ImageConstants
-                                          .storeicon,
+                                      assetImg: ImageConstants.storeicon,
                                     ),
                                   ),
                                   width10SizedBox,
@@ -739,8 +737,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
@@ -751,7 +748,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                       child: CommonWidgets
                                           .circleCachedNetworkImage(
                                         ordersController
-                                            .orderItems[i]
+                                                .orderItems[i]
                                             .product!=null && ordersController
                                             .orderItems[i]
                                             .product
@@ -759,11 +756,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             .orderItems[i]
                                             .product!.productImages!.isNotEmpty ? ordersController
                                             .orderItems[i]
-                                            .product
-                                            ?.productImages
-                                            ?.first
-                                            .image
-                                            ?.dynamicUrl ??
+                                                .product
+                                                ?.productImages
+                                                ?.first
+                                                .image
+                                                ?.dynamicUrl ??
                                             "":"",
                                         fit: BoxFit.contain,
                                         radius: 22.0,
@@ -825,7 +822,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                       TextOverflow.visible,
                                                 ),
                                               ),
-
                                             ],
                                           ),
                                           Text.rich(
@@ -833,7 +829,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               children: [
                                                 TextSpan(
                                                     text:
-                                                    "${StringConstants.qtyText}: ",
+                                                        "${StringConstants.qtyText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
                                                             .blacklight,
