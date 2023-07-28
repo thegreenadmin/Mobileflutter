@@ -86,12 +86,24 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                       children: [
                                         CommonWidgets.cachedNetworkImage(
                                           storeHomeMainController
-                                              .previousOrderList[i]
-                                              .productImages!
-                                              .first
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(),
+                                                      .previousOrderList[i]
+                                                      .productImages!
+                                                      .isNotEmpty &&
+                                                  storeHomeMainController
+                                                          .previousOrderList[i]
+                                                          .productImages
+                                                          ?.first
+                                                          .image
+                                                          ?.dynamicUrl !=
+                                                      null
+                                              ? storeHomeMainController
+                                                  .previousOrderList[i]
+                                                  .productImages!
+                                                  .first
+                                                  .image!
+                                                  .dynamicUrl
+                                                  .toString()
+                                              : "",
                                           height: 148.0,
                                           width: 148.0,
                                         ),

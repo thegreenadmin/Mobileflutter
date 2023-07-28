@@ -847,18 +847,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(8.0),
                                       child: CommonWidgets.cachedNetworkImage(
-                                          homeController
-                                              .featuredUserProductList[index]
-                                              .productImages![0]
-                                              .image!
-                                              .dynamicUrl
-                                              .toString(), height: WidgetConstants.screenHeight * 0.22,
-                                        width: WidgetConstants
-                                            .screenWidth *
-                                            0.4,),
+                                        homeController
+                                                        .featuredUserProductList[
+                                                            index]
+                                                        .productImages ==
+                                                    null ||
+                                                homeController
+                                                    .featuredUserProductList[
+                                                        index]
+                                                    .productImages!
+                                                    .isEmpty ||
+                                                homeController
+                                                        .featuredUserProductList[
+                                                            index]
+                                                        .productImages![0]
+                                                        .image!
+                                                        .dynamicUrl ==
+                                                    null ||
+                                                homeController
+                                                    .featuredUserProductList[
+                                                        index]
+                                                    .productImages!
+                                                    .isEmpty
+                                            ? ""
+                                            : homeController
+                                                .featuredUserProductList[index]
+                                                .productImages![0]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                        height:
+                                            WidgetConstants.screenHeight * 0.22,
+                                        width:
+                                            WidgetConstants.screenWidth * 0.4,
+                                      ),
                                     ),
                                     /*SizedBox(
                                       height:
@@ -867,7 +891,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
-                                          child: homeController
+                                          child: 
+                                          homeController
                                                           .featuredUserProductList[
                                                               index]
                                                           .productImages ==
@@ -961,31 +986,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .category
                                                 ?.categoryName ??
                                             "";
-                                    hasStoreAccess.value &&
-                                                permissionStoreList.isEmpty ||
+                                    hasStoreAccess.value && permissionStoreList.isEmpty ||
                                             permissionStoreList.any((element) =>
-                                                element.storeId == homeController.ownerFeatureProductList[index].storeId &&
+                                                element.storeId ==
+                                                        homeController
+                                                            .ownerFeatureProductList[
+                                                                index]
+                                                            .storeId &&
                                                     element.isStoreOwner ==
                                                         true ||
-                                                element.storeId == homeController.ownerFeatureProductList[index].storeId &&
+                                                element.storeId ==
+                                                        homeController
+                                                            .ownerFeatureProductList[
+                                                                index]
+                                                            .storeId &&
                                                     element.controllers!.any(
                                                         (ele) =>
                                                             ele.controllerKey ==
-                                                            PermissionKey
-                                                                .editProduct
-                                                                .statusName))
-                                        ? Get.to(
-                                            () => const EditProductScreen(),
-                                            id: pageIdApp.value,
-                                            arguments: {
-                                                "isFromHome": true,
-                                                'storeId': homeController
-                                                    .ownerFeatureProductList[
-                                                        index]
-                                                    .storeId
-                                              })
-                                        : Utility.showAlertMessage(
-                                            AlertStringConstants.notAuthorizedToStoreText);
+                                                            PermissionKey.editProduct.statusName))
+                                        ? Get.to(() => const EditProductScreen(), id: pageIdApp.value, arguments: {
+                                            "isFromHome": true,
+                                            'storeId': homeController
+                                                .ownerFeatureProductList[index]
+                                                .storeId
+                                          })!
+                                            .then((value) => homeController.apiGetOwnerFeaturedProducts())
+                                        : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                   }
                                 },
                                 child: Column(
@@ -993,19 +1019,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(8.0),
                                       child: CommonWidgets.cachedNetworkImage(
-                                          homeController
-                                                  .ownerFeatureProductList[index]
-                                                  .productImages?[0]
-                                                  .image
-                                                  ?.dynamicUrl
-                                                  .toString() ??
-                                              "",width: WidgetConstants
-                                          .screenWidth *
-                                          0.4,
-                                      height: WidgetConstants.screenHeight * 0.22,),
+                                        assetImg: ImageConstants.defaultProduct,
+                                        homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .productImages ==
+                                                    null ||
+                                                homeController
+                                                    .ownerFeatureProductList[
+                                                        index]
+                                                    .productImages!
+                                                    .isEmpty ||
+                                                homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .productImages![0]
+                                                        .image!
+                                                        .dynamicUrl ==
+                                                    null
+                                            ? ""
+                                            : homeController
+                                                    .ownerFeatureProductList[
+                                                        index]
+                                                    .productImages?[0]
+                                                    .image
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
+                                        width:
+                                            WidgetConstants.screenWidth * 0.4,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.22,
+                                      ),
                                     ),
                                     /*SizedBox(
                                       height:
@@ -1014,7 +1061,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
-                                          child: homeController
+                                          child: 
+                                          homeController
                                                           .ownerFeatureProductList[
                                                               index]
                                                           .productImages ==

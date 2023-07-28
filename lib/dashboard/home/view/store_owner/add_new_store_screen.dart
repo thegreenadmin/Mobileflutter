@@ -338,7 +338,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
+                          LengthLimitingTextInputFormatter(25),
                         ],
                         style: const TextStyle(
                             color: AppColors.black,

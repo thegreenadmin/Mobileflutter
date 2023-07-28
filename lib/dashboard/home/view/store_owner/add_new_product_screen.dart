@@ -239,7 +239,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
+                          LengthLimitingTextInputFormatter(25),
                         ],
                         style: const TextStyle(
                             color: AppColors.black,
@@ -425,71 +425,71 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       children: [
                         Flexible(
                           flex: 5,
-                          child: DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (v) {
-                              if (v == null || v.trim() == '') {
-                                return AlertStringConstants
-                                    .pleaseSelectQuantityUnitText;
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              errorMaxLines: 3,
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
+                          child: Obx(() => DropdownButtonFormField<String>(
+                                isExpanded: true,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (v) {
+                                  if (v == null || v.trim() == '') {
+                                    return AlertStringConstants
+                                        .pleaseSelectQuantityUnitText;
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  errorMaxLines: 3,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.grey,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  border: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            hint: Text(
-                              StringConstants.selectTypeText,
-                              style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                            ),
-                            items: manageStoreController.quantityTypeList
-                                .map((dynamic value) {
-                              return DropdownMenuItem<String>(
-                                value: value.quantityTypeId,
-                                child: Text(
-                                  value.quantityTypeName,
+                                hint: Text(
+                                  StringConstants.selectTypeText,
                                   style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
+                                      color: AppColors.grey, fontSize: 14),
                                 ),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              manageStoreController.quantityValue.value =
-                                  value.toString();
-                            },
-                          ),
+                                items: manageStoreController.quantityTypeList
+                                    .map((dynamic value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value.quantityTypeId,
+                                    child: Text(
+                                      value.quantityTypeName,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  manageStoreController.quantityValue.value =
+                                      value.toString();
+                                },
+                              )),
                         ),
                         width15SizedBox,
                         Flexible(

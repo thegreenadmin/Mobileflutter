@@ -228,7 +228,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
-        Get.delete<ManageStoreController>();
+        // Get.delete<ManageStoreController>();
         Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
       } else {
         if (value.body['message'] != null) {

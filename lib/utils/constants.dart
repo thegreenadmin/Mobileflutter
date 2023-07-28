@@ -696,7 +696,7 @@ class AlertStringConstants {
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
   static String pleaseEnterTermsAndConditions =
-      "Please agree to terms and condition";
+      "Please agree to terms and conditions";
   static String pleaseSelectAge = "Please select age";
   static String pleaseEnterContentAndStrainText =
       "Please enter contents and strains";

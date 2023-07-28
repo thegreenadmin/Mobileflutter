@@ -456,8 +456,8 @@ class AddNewStoreController extends GetxController {
         dynamicLink =
             ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
         apiGetPermissions();
-        await createDynamicLink();
-        await apiDynamicLink();
+        // await createDynamicLink();
+        // await apiDynamicLink();
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
