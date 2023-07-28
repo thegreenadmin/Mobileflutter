@@ -199,15 +199,26 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                               .category
                                               ?.categoryName ??
                                           "";
-                                  Get.to(() => const EditProductScreen(),
-                                          id: pageIdApp.value,
-                                          arguments: {
-                                        "isFromHome": true,
-                                        'storeId': ownerStoresController
-                                            .storeProductList[i].storeId
-                                      })!
-                                      .then((value) => ownerStoresController
-                                          .apiGetFeaturedProducts());
+                                  hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                          permissionStoreList.any((element) =>
+                                              element.storeId == ownerStoresController.storeProductList[i].storeId && element.isStoreOwner == true ||
+                                              element.storeId ==
+                                                      ownerStoresController
+                                                          .storeProductList[i]
+                                                          .storeId &&
+                                                  element.controllers!.any((ele) =>
+                                                      ele.controllerKey ==
+                                                      PermissionKey.editProduct
+                                                          .statusName))
+                                      ? Get.to(() => const EditProductScreen(),
+                                              id: pageIdApp.value,
+                                              arguments: {
+                                              "isFromHome": true,
+                                              'storeId': ownerStoresController
+                                                  .storeProductList[i].storeId
+                                            })!
+                                          .then((value) => ownerStoresController.apiGetFeaturedProducts())
+                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),

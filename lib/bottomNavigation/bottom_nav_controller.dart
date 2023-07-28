@@ -154,13 +154,13 @@ class BottomNavController extends GetxController {
     getRole();
     if (roleApp.value == Role.storeOwnerRoleText &&
         index == 2 &&
-        (!hasStoreAccess.value &&
+        (!hasStoreAccess.value ||
             permissionStoreList.isNotEmpty &&
-            !permissionStoreList.any((element) =>
-                element.isStoreOwner == true ||
-                element.controllers!.any((ele) =>
-                    ele.controllerKey ==
-                    PermissionKey.manageOrders.statusName)))) {
+                !permissionStoreList.any((element) =>
+                    element.isStoreOwner == true ||
+                    element.controllers!.any((ele) =>
+                        ele.controllerKey ==
+                        PermissionKey.manageOrders.statusName)))) {
       Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
     } else {
       selectedIndex.value = index;
@@ -176,7 +176,7 @@ class BottomNavController extends GetxController {
           homeController.onInit();
         });
       } catch (e) {
-        //Pass
+        debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
       }
     } else if (selectedIndex.value == 1) {
       try {
