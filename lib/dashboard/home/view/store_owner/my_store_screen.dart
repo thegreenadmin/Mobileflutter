@@ -213,27 +213,29 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: CommonWidgets.cachedNetworkImage(
                                     ownerStoresController.storeProductList[i]
-                                        .productImages ==
-                                                  null ||
-                                              ownerStoresController
-                                                  .storeProductList[i]
-                                                  .productImages!
-                                                  .isEmpty ||
-                                              ownerStoresController
-                                                      .storeProductList[i]
-                                                      .productImages![0]
-                                                      .image!
-                                                      .dynamicUrl ==
-                                                  null ||
-                                              ownerStoresController
-                                                  .storeProductList[i]
-                                                  .productImages!
-                                                  .isEmpty
-                                          ? ""
-                                          : ownerStoresController
-                                              .storeProductList[i]
-                                              .productImages![0].image!.dynamicUrl
-                                        .toString(),
+                                                    .productImages ==
+                                                null ||
+                                            ownerStoresController
+                                                .storeProductList[i]
+                                                .productImages!
+                                                .isEmpty ||
+                                            ownerStoresController
+                                                    .storeProductList[i]
+                                                    .productImages![0]
+                                                    .image!
+                                                    .dynamicUrl ==
+                                                null ||
+                                            ownerStoresController
+                                                .storeProductList[i]
+                                                .productImages!
+                                                .isEmpty
+                                        ? ""
+                                        : ownerStoresController
+                                            .storeProductList[i]
+                                            .productImages![0]
+                                            .image!
+                                            .dynamicUrl
+                                            .toString(),
                                     fit: BoxFit.fill,
                                     height: WidgetConstants.screenHeight * 0.18,
                                     width: WidgetConstants.screenWidth * 0.35,

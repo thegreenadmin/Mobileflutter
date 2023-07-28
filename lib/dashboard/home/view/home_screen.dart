@@ -550,7 +550,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       item.image?.dynamicUrl
                                                               .toString() ??
                                                           "",
-                                                  assetImg: ImageConstants.nopicfound,
+                                                      assetImg: ImageConstants
+                                                          .nopicfound,
                                                       height: WidgetConstants
                                                               .screenHeight *
                                                           0.30,
@@ -688,7 +689,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .cachedNetworkImage(
                                                     item.image?.dynamicUrl ??
                                                         "",
-                                                    assetImg: ImageConstants.nopicfound,
+                                                    assetImg: ImageConstants
+                                                        .nopicfound,
                                                     height: WidgetConstants
                                                             .screenHeight *
                                                         0.30,
