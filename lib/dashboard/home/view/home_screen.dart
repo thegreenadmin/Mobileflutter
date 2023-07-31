@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/search_store_user_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_screen.dart';
@@ -39,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150.0),
+        preferredSize: const Size.fromHeight(170.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -127,6 +129,97 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
+                            Obx(
+                              () => Visibility(
+                                visible: homeController.role!.value ==
+                                        Role.customerRoleText &&
+                                    homeController.searchStoreUserController
+                                            .cartCount.value !=
+                                        0,
+                                //      ||
+                                // storeHomeMainController
+                                //     .productDetailResponse
+                                //     .value
+                                //     .data!
+                                //     .product!
+                                //     .cartItems!
+                                //     .isNotEmpty,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              Get.parameters["storeId"] =
+                                                  homeController
+                                                      .searchStoreUserController
+                                                      .storeIdValue
+                                                      .value;
+                                              await Get.to(
+                                                      () => const CartScreen(),
+                                                      id: pageIdApp.value)
+                                                  ?.then((value) => homeController
+                                                      .searchStoreUserController
+                                                      .apiActiveCartApi());
+                                            },
+                                            child: Stack(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 22.0,
+                                                  backgroundColor: Colors.white,
+                                                  child: Image.asset(
+                                                      ImageConstants.cart,
+                                                      height: 16),
+                                                ),
+                                                Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              1.5),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.red,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.5),
+                                                      ),
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                        minWidth: 15,
+                                                        minHeight: 15,
+                                                      ),
+                                                      child: Obx(
+                                                        () => Text(
+                                                          homeController
+                                                              .searchStoreUserController
+                                                              .cartItems
+                                                              .length
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 if (homeController.isLoading?.value == false) {

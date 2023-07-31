@@ -136,7 +136,9 @@ class ManageStoreController extends GetxController {
     }
     if (Get.parameters["categoryId"] != "") {
       categoryId.value = Get.parameters["categoryId"] ?? "";
+      print("hellloooooooooooooooo" + Get.parameters["categoryId"].toString());
     }
+
     await apiGetCategoriesList();
     apiGetQuantityList();
     if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
@@ -170,12 +172,12 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit(BuildContext bCntx) async {
     if (validateAndSave()) {
       try {
-        if (selectedCategories.isEmpty) {
-          Utility.showAlertMessage(
-              AlertStringConstants.pleaseSelectCategoriesText);
-        } else {
-          apiCreateProduct(bCntx);
-        }
+        // if (selectedCategories.isEmpty) {
+        //   Utility.showAlertMessage(
+        //       AlertStringConstants.pleaseSelectCategoriesText);
+        // } else {
+        apiCreateProduct(bCntx);
+        // }
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -412,7 +414,6 @@ class ManageStoreController extends GetxController {
         : heightTextController.text.trim());
     product.weight = double.parse(weightTextController.text.trim());
     product.isEnabled = isEnabled.value;
-
     inputData.product = product;
     List<ProductCategories> listProductCategory = <ProductCategories>[];
     listProductCategory.add(ProductCategories(categoryId: categoryId.value));
@@ -430,7 +431,6 @@ class ManageStoreController extends GetxController {
           order: 1)
     ];
     inputData.productImages ??= [];
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -471,7 +471,6 @@ class ManageStoreController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {

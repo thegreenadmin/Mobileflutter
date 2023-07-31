@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
@@ -21,6 +22,8 @@ class HomeController extends GetxController {
   RxBool? isLoading = false.obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
+
+  //Get.find<SearchStoreUserController>().onInit();
 
   late GetUserOfferModel userOffersModel = GetUserOfferModel();
   RxList<UserOffers> userOfferList = <UserOffers>[].obs;
@@ -45,10 +48,12 @@ class HomeController extends GetxController {
   RxList<DataList> featuredUserProductList = <DataList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
   @override
   void onInit() {
     super.onInit();
+    searchStoreUserController.onInit();
     apiGetUserDetail();
     getPage();
     getCurrentLocation();

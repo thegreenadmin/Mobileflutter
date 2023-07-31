@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
@@ -25,6 +26,8 @@ class OffersController extends GetxController {
   RxInt pageId = 0.obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
   RxList<OffersList> getOwnerOfferList = <OffersList>[].obs;
@@ -50,6 +53,7 @@ class OffersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      searchStoreUserController.onInit();
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
 

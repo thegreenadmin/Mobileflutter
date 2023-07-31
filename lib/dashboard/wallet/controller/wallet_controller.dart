@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
@@ -59,7 +60,8 @@ class WalletController extends GetxController {
   RxInt? type = 0.obs;
 
   RxBool isFromCartScreen = false.obs;
-
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
       store.StoreDetailsResponse().obs;
 
@@ -116,7 +118,9 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    searchStoreUserController.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+       searchStoreUserController.onInit();
       getPage();
     });
   }

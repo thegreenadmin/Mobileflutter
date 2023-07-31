@@ -4,6 +4,7 @@ import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart'
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
+import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class OffersScreen extends StatefulWidget {
@@ -20,75 +21,23 @@ class _OffersScreenState extends State<OffersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90.0),
-        child: Container(
-          color: AppColors.primarylight,
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Obx(
-                                  () => offersController
-                                              .isFromNotification.value ==
-                                          true
-                                      ? InkWell(
-                                          onTap: () async {
-                                            Get.until((route) => route.isFirst,
-                                                id: pageIdApp.value);
-                                            // Navigator.of(Get.context!).popUntil(
-                                            //     (route) => route.isFirst);
-                                          },
-                                          child: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.black,
-                                            size: 24.0,
-                                          ),
-                                        )
-                                      : height0SizedBox,
-                                ),
-                                offersController.isFromNotification.value ==
-                                        true
-                                    ? width10SizedBox
-                                    : height0SizedBox,
-                                Obx(
-                                  () => Text(
-                                    'Hi, ${offersController.firstName?.value} ${offersController.lastName?.value}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            height4SizedBox,
-                            Text(
-                              StringConstants.offersText,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
-                      ]),
-                ],
-              )),
-        ),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.15),
+        child: Obx(() => CommonAppBar(
+            showActiveCart: true,
+            role: offersController.role.value,
+            cartCount:
+                offersController.searchStoreUserController.cartCount.value,
+            storeId:
+                offersController.searchStoreUserController.storeIdValue.value,
+            cartLength:
+                offersController.searchStoreUserController.cartItems.length,
+            firstName: offersController.firstName!.value,
+            labelText: StringConstants.offersText,
+            lastName: offersController.lastName!.value,
+            okayTap: () {
+              offersController.searchStoreUserController.apiActiveCartApi();
+            },
+            isFromNotification: false)),
       ),
       body: Container(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),

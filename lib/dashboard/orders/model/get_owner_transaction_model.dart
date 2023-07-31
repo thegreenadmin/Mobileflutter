@@ -139,8 +139,8 @@ class OrderTransaction {
   String? orderId;
   String? orderTransactionType;
   String? storeServiceChargeType;
-  double? storeServiceChargeValue;
-  double? storeTotalServiceCharged;
+  dynamic storeServiceChargeValue;
+  dynamic storeTotalServiceCharged;
   String? orderServiceChargeType;
   dynamic orderServiceChargeValue;
   dynamic orderTotalServiceCharged;

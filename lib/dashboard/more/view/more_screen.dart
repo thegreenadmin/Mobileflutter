@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
+import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -21,49 +22,22 @@ class _MoreScreenState extends State<MoreScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(95.0),
-        child: Container(
-          color: AppColors.primarylight,
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Obx(
-                              () => Text(
-                                'Hi, ${moreController.firstName?.value} ${moreController.lastName?.value}',
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                            height4SizedBox,
-                            Text(
-                              StringConstants.moreText,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
-                      ]),
-                  height10SizedBox,
-                ],
-              )),
-        ),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.15),
+        child: Obx(() => CommonAppBar(
+            showActiveCart: false,
+            role: moreController.role!.value,
+            cartCount: moreController.searchStoreUserController.cartCount.value,
+            storeId:
+                moreController.searchStoreUserController.storeIdValue.value,
+            cartLength:
+                moreController.searchStoreUserController.cartItems.length,
+            firstName: moreController.firstName!.value,
+            labelText: StringConstants.moreText,
+            lastName: moreController.lastName!.value,
+            okayTap: () {
+              moreController.searchStoreUserController.apiActiveCartApi();
+            },
+            isFromNotification: false)),
       ),
       body: SingleChildScrollView(
         child: Container(

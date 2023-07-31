@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
@@ -173,6 +174,7 @@ class BottomNavController extends GetxController {
         Future.delayed(Duration.zero, () {
           pageIdApp.value = 0;
           HomeController homeController = Get.put(HomeController());
+
           homeController.onInit();
         });
       } catch (e) {

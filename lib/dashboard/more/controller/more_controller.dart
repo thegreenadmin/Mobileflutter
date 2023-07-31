@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class MoreController extends GetxController {
@@ -9,6 +10,10 @@ class MoreController extends GetxController {
   RxString email = "".obs;
   RxString phone = "".obs;
   RxInt pageId = 0.obs;
+
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
+
   @override
   void onInit() {
     super.onInit();
