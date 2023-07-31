@@ -120,7 +120,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     padding:
                                                         const EdgeInsets.all(
                                                             4.0),
-                                                    child: CommonWidgets.cachedNetworkImage(
+                                                    child: CommonWidgets
+                                                        .cachedNetworkImage(
                                                       manageStoreController
                                                           .imageUrlList[index]
                                                           .dynamicImageUrl!,
@@ -344,40 +345,40 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     i++)
                                   InkWell(
                                     onTap: () {
-                                      if (manageStoreController
-                                              .categoriesList[i].isSelected ==
-                                          true) {
-                                        manageStoreController.categoriesList[i]
-                                            .isSelected = false;
-                                        for (var item in manageStoreController
-                                            .selectedCategories) {
-                                          if (item['category']['category_id'] ==
-                                              manageStoreController
-                                                  .categoriesList[i]
-                                                  .categoryId) {
-                                            item['status'] = "deleted";
-                                            debugPrint(manageStoreController
-                                                .selectedCategories
-                                                .toString());
-                                          }
-                                        }
-                                      } else {
-                                        manageStoreController.categoriesList[i]
-                                            .isSelected = true;
-                                        for (var item in manageStoreController
-                                            .selectedCategories) {
-                                          if (item['category']['category_id'] ==
-                                              manageStoreController
-                                                  .categoriesList[i]
-                                                  .categoryId) {
-                                            item['status'] = "active";
-                                            debugPrint(manageStoreController
-                                                .selectedCategories
-                                                .toString());
-                                          }
-                                        }
-                                      }
-                                      setState(() {});
+                                      // if (manageStoreController
+                                      //         .categoriesList[i].isSelected ==
+                                      //     true) {
+                                      //   manageStoreController.categoriesList[i]
+                                      //       .isSelected = false;
+                                      //   for (var item in manageStoreController
+                                      //       .selectedCategories) {
+                                      //     if (item['category']['category_id'] ==
+                                      //         manageStoreController
+                                      //             .categoriesList[i]
+                                      //             .categoryId) {
+                                      //       item['status'] = "deleted";
+                                      //       debugPrint(manageStoreController
+                                      //           .selectedCategories
+                                      //           .toString());
+                                      //     }
+                                      //   }
+                                      // } else {
+                                      //   manageStoreController.categoriesList[i]
+                                      //       .isSelected = true;
+                                      //   for (var item in manageStoreController
+                                      //       .selectedCategories) {
+                                      //     if (item['category']['category_id'] ==
+                                      //         manageStoreController
+                                      //             .categoriesList[i]
+                                      //             .categoryId) {
+                                      //       item['status'] = "active";
+                                      //       debugPrint(manageStoreController
+                                      //           .selectedCategories
+                                      //           .toString());
+                                      //     }
+                                      //   }
+                                      // }
+                                      // setState(() {});
                                     },
                                     child: Container(
                                         padding: const EdgeInsets.only(
@@ -462,8 +463,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     return null;
                                   },
                                   value: manageStoreController
-                                              .quantityValue.value !=
-                                          "" && manageStoreController.quantityTypeList.isNotEmpty
+                                                  .quantityValue.value !=
+                                              "" &&
+                                          manageStoreController
+                                              .quantityTypeList.isNotEmpty
                                       ? manageStoreController.quantityTypeList
                                           .firstWhere((element) =>
                                               element.quantityTypeId ==

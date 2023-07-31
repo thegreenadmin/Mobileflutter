@@ -253,7 +253,6 @@ class OrdersHomeMainController extends GetxController {
     isLoading.value = true;
     debugPrint("STORE ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}");
-
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
@@ -278,7 +277,6 @@ class OrdersHomeMainController extends GetxController {
               getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
           secFormat: '',
         ).toString();
-
         orderAmount.value = getStoreOrderDetailModel
             .value.data!.order!.totalAmount
             .toStringAsFixed(2);

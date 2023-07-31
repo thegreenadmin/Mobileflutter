@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -16,7 +17,8 @@ import '../view/component/order_status_enum.dart';
 class OrdersController extends GetxController {
   TextEditingController reviewController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
-
+  final SearchStoreUserController searchStoreUserController =
+      Get.put(SearchStoreUserController());
   RxBool isActiveOrders = false.obs;
   RxBool isFromNotification = false.obs;
   RxBool isHome = false.obs;
@@ -71,6 +73,7 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      searchStoreUserController.onInit();
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
       if (Get.parameters['storeId'] != "" &&
