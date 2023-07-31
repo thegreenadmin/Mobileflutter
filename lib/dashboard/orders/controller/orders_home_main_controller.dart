@@ -265,13 +265,14 @@ class OrdersHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("STORE ORDER DETAIL RESPONSE **********${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      log("STORE ORDER DETAIL RESPONSE **********${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         getStoreOrderDetailModel.value =
-            GetStoreOrderDetailModel.fromJson(value.body);
+            GetStoreOrderDetailModel.fromJson(value?.body);
+        log("STORE ORDER DETAIL RESPONSE customerName**********${getStoreOrderDetailModel.value.data!.order!.customerName.toString()}");
         customerName.value =
-            getStoreOrderDetailModel.value.data!.order!.customerName.toString();
+            getStoreOrderDetailModel.value.data?.order?.customerName ?? "";
         orderDate.value = Utility.parseDateTime(
           DateTime.parse(
               getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
@@ -311,13 +312,14 @@ class OrdersHomeMainController extends GetxController {
                           ? false
                           : true;
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

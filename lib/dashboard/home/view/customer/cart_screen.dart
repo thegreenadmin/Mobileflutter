@@ -298,10 +298,13 @@ class _CartScreenState extends State<CartScreen> {
                                                   InkWell(
                                                       onTap: () {
                                                         storeHomeMainController
-                                                                    .cartItems[
-                                                                        i]
-                                                                    .itemsCount !=
-                                                                0
+                                                                        .cartItems[
+                                                                            i]
+                                                                        .itemsCount !=
+                                                                    0 &&
+                                                                !storeHomeMainController
+                                                                    .isLoading
+                                                                    .value
                                                             ? storeHomeMainController.apiUpdateCart(
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
@@ -346,19 +349,21 @@ class _CartScreenState extends State<CartScreen> {
                                                   width6SizedBox,
                                                   InkWell(
                                                     onTap: () {
-                                                      storeHomeMainController.apiUpdateCart(
-                                                          cartItemId: int.parse(
-                                                              storeHomeMainController
-                                                                      .cartItems[
-                                                                          i]
-                                                                      .cartItemId ??
-                                                                  "0"),
-                                                          quantity:
-                                                              storeHomeMainController
+                                                      !storeHomeMainController
+                                                              .isLoading.value
+                                                          ? storeHomeMainController.apiUpdateCart(
+                                                              cartItemId: int.parse(
+                                                                  storeHomeMainController
+                                                                          .cartItems[
+                                                                              i]
+                                                                          .cartItemId ??
+                                                                      "0"),
+                                                              quantity: storeHomeMainController
                                                                       .cartItems[
                                                                           i]
                                                                       .itemsCount! +
-                                                                  1);
+                                                                  1)
+                                                          : null;
                                                     },
                                                     child: Image.asset(
                                                       ImageConstants.add,

@@ -66,7 +66,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           children: [
                             Row(
                               children: [
-                                Obx(
+                                /*Obx(
                                   () =>
                                       walletController.isFromCartScreen.value ==
                                               true
@@ -83,10 +83,11 @@ class _WalletScreenState extends State<WalletScreen> {
                                               ),
                                             )
                                           : height0SizedBox,
-                                ),
-                                walletController.isFromCartScreen.value == true
+                                ),*/
+                                /*walletController.isFromCartScreen.value == true
                                     ? width10SizedBox
-                                    : height0SizedBox,
+                                    :*/
+                                height0SizedBox,
                                 Obx(
                                   () => Text(
                                     'Hi, ${walletController.firstName?.value} ${walletController.lastName?.value}',

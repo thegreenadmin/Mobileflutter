@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
@@ -18,14 +19,12 @@ import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
-
-import '../dashboard/home/model/get_store_list_model.dart';
-import '../utils/constants.dart';
-import '../utils/global_share_data.dart';
 
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
@@ -64,7 +63,6 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
-    roleApp.value = await SharedPreferenceStorage.getData(Role.role);
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
     if (roleInApp.value == Role.customerRoleText) {
       storeList.clear();
@@ -74,7 +72,7 @@ class BottomNavController extends GetxController {
   }
 
   ///Get Store List Api
-  Future apiGetStoreList() async {
+  apiGetStoreList() async {
     isLoading.value = true;
     debugPrint(
         "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
@@ -87,10 +85,11 @@ class BottomNavController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
             headers,
-            showLoading: false)
+            showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET BottomNav STORE RESPONSE *******${value!.body}");
+      debugPrint(
+          "GET BottomNav STORE LIST RESPONSE ******* ${pageIdApp.value} ${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value.body);
@@ -100,6 +99,7 @@ class BottomNavController extends GetxController {
           Get.parameters["storeId"] = storeList.first.storeId;
           Get.parameters["storeCount"] = storeList.length.toString();
         }
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -150,7 +150,7 @@ class BottomNavController extends GetxController {
     const MoreScreen(),
   ];
 
-  onItemTapped(int index) {
+  onItemTapped(int index) async {
     getRole();
     if (roleApp.value == Role.storeOwnerRoleText &&
         index == 2 &&
@@ -165,7 +165,7 @@ class BottomNavController extends GetxController {
     } else {
       selectedIndex.value = index;
     }
-
+    debugPrint("Bottom Nav  pageIdApp Error:-----------${pageIdApp.value}");
     Get.until((route) => route.isFirst, id: pageIdApp.value);
     SharedPreferenceStorage.removeData("pageId");
     if (selectedIndex.value == 0) {
@@ -191,14 +191,16 @@ class BottomNavController extends GetxController {
     } else if (selectedIndex.value == 2) {
       try {
         if (roleInApp.value == Role.customerRoleText) {
-          storeList.clear();
+          // storeList.clear();
+          pageIdApp.value = 4;
         } else {
           apiGetStoreList();
         }
 
-        Future.delayed(const Duration(milliseconds: 200), () {
+        Future.delayed(const Duration(milliseconds: 100), () {
           if (roleInApp.value == Role.storeOwnerRoleText) {
-            if (storeList.length > 1 || storeList.isEmpty) {
+            if ((storeList.length > 1 || storeList.isEmpty) &&
+                !isLoading.value) {
               pageIdApp.value = 2;
             } else {
               pageIdApp.value = 3;
@@ -207,7 +209,7 @@ class BottomNavController extends GetxController {
             pageIdApp.value = 4;
           }
 
-          debugPrint("Bottom Nav  Page Id:-----------${pageIdApp.value}");
+          debugPrint("Bottom Nav  Page Id AFTER:-----------${pageIdApp.value}");
           debugPrint(
               "Bottom Nav  storeList.length:-----------${storeList.length}");
           OrdersController ordersController = Get.put(OrdersController());

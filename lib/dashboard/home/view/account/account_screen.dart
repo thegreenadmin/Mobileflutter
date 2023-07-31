@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
@@ -200,6 +201,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               Get.parameters[Role.role] =
                                   Role.storeOwnerRoleText;
                               roleApp.value = Role.storeOwnerRoleText;
+                              Get.put(BottomNavController()).onReady();
                               Get.until((route) => route.isFirst,
                                   id: pageIdApp.value);
                             } else {
@@ -209,7 +211,6 @@ class _AccountScreenState extends State<AccountScreen> {
                               accountController.roleId?.value =
                                   Role.customerRoleText;
                               Get.parameters[Role.role] = Role.customerRoleText;
-
                               Get.until((route) => route.isFirst,
                                   id: pageIdApp.value);
                             }
@@ -304,11 +305,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (_) => const AddCardScreen(),
-                                  // ));
                                   Get.to(() => const AddCardScreen(),
                                       id: accountController.pageId.value);
                                 },

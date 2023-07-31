@@ -351,6 +351,7 @@ class StringConstants {
   static String orderIdText = "order Id";
   static String orderidText = "order-Id";
   static String orderReadyText = "Order Ready";
+  static String prepareOrderText = "Prepare Order";
   static String orderedDateText = "Ordered Date";
   static String orderDateText = "Order Date";
   static String orderAmountText = "Order Amount";
@@ -383,6 +384,7 @@ class StringConstants {
   static String permissionText = "Permission";
   static String permissionsText = "Permissions";
   static String productText = "Product";
+  static String productsText = "Products";
   static String payNowText = "Pay Now";
   static String priceText = "Price";
   static String pendingText = "Pending";

@@ -211,7 +211,6 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Obx(() => SizedBox(
-                    // height: WidgetConstants.screenHeight *0.25,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -910,7 +909,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                       },
                       height: 50,
                       text: ordersHomeMainController.selectedIndex.value == 0
-                          ? StringConstants.orderReadyText
+                          ? StringConstants.prepareOrderText
                           : ordersHomeMainController.selectedIndex.value == 1 &&
                                   ordersHomeMainController
                                           .getStoreOrderDetailModel

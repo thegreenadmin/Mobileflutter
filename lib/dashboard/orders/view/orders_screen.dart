@@ -713,7 +713,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                     children: [
                                                       TextSpan(
                                                           text:
-                                                              "${StringConstants.productText}: ",
+                                                              "${StringConstants.productsText}: ",
                                                           style: const TextStyle(
                                                               color: AppColors
                                                                   .black,
