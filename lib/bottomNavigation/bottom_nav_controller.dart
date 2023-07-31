@@ -64,11 +64,11 @@ class BottomNavController extends GetxController {
 
   getRole() async {
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
-    if (roleInApp.value == Role.customerRoleText) {
-      storeList.clear();
-    } else {
-      apiGetStoreList();
-    }
+    // if (roleInApp.value == Role.customerRoleText) {
+    //   storeList.clear();
+    // } else {
+    apiGetStoreList();
+    // }
   }
 
   ///Get Store List Api
