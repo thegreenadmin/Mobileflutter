@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+
 import '../dashboard/orders/view/order_store_list_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -27,12 +28,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
       Get.put(BottomNavController());
 
   // GlobalKey<TabNavigatorState> tabNavigator = GlobalKey<TabNavigatorState>();
-  final GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab1 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab2 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab3 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
+  //  GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
