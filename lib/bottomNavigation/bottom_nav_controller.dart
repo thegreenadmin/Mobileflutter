@@ -6,24 +6,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
-import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
-import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
-import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
-import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class BottomNavController extends GetxController {
@@ -64,11 +54,12 @@ class BottomNavController extends GetxController {
 
   getRole() async {
     roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
-    // if (roleInApp.value == Role.customerRoleText) {
-    //   storeList.clear();
-    // } else {
-    apiGetStoreList();
-    // }
+    if (roleInApp.value == Role.customerRoleText) {
+      storeList.clear();
+    } else {
+      isLoading.value = true;
+      apiGetStoreList();
+    }
   }
 
   ///Get Store List Api
@@ -80,12 +71,13 @@ class BottomNavController extends GetxController {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().storeList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint(
@@ -142,105 +134,103 @@ class BottomNavController extends GetxController {
     });
   }
 
-  List<Widget> tabs = [
+  /*List<Widget> tabs = [
     const HomeScreen(),
     const WalletScreen(),
     const OrdersScreen(),
     const OffersScreen(),
     const MoreScreen(),
-  ];
+  ];*/
 
   onItemTapped(int index) async {
-    getRole();
-    if (roleApp.value == Role.storeOwnerRoleText &&
-        index == 2 &&
-        (!hasStoreAccess.value ||
-            permissionStoreList.isNotEmpty &&
-                !permissionStoreList.any((element) =>
-                    element.isStoreOwner == true ||
-                    element.controllers!.any((ele) =>
-                        ele.controllerKey ==
-                        PermissionKey.manageOrders.statusName)))) {
-      Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-    } else {
-      selectedIndex.value = index;
-    }
-    debugPrint("Bottom Nav  pageIdApp Error:-----------${pageIdApp.value}");
-    Get.until((route) => route.isFirst, id: pageIdApp.value);
-    SharedPreferenceStorage.removeData("pageId");
-    if (selectedIndex.value == 0) {
-      try {
-        Future.delayed(Duration.zero, () {
-          pageIdApp.value = 0;
-          HomeController homeController = Get.put(HomeController());
-          homeController.onInit();
-        });
-      } catch (e) {
-        debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
+    if (!isLoading.value) {
+      getRole();
+      if (roleApp.value == Role.storeOwnerRoleText &&
+          index == 2 &&
+          (!hasStoreAccess.value ||
+              permissionStoreList.isNotEmpty &&
+                  !permissionStoreList.any((element) =>
+                      element.isStoreOwner == true ||
+                      element.controllers!.any((ele) =>
+                          ele.controllerKey ==
+                          PermissionKey.manageOrders.statusName)))) {
+        Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+      } else {
+        selectedIndex.value = index;
       }
-    } else if (selectedIndex.value == 1) {
-      try {
-        Future.delayed(Duration.zero, () {
-          pageIdApp.value = 1;
-          WalletController walletController = Get.put(WalletController());
-          walletController.onInit();
-        });
-      } catch (e) {
-        debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
-      }
-    } else if (selectedIndex.value == 2) {
-      try {
-        if (roleInApp.value == Role.customerRoleText) {
-          // storeList.clear();
-          pageIdApp.value = 4;
-        } else {
-          apiGetStoreList();
+      debugPrint("Bottom Nav  pageIdApp Error:-----------${pageIdApp.value}");
+      Get.until((route) => route.isFirst, id: pageIdApp.value);
+      SharedPreferenceStorage.removeData("pageId");
+      if (selectedIndex.value == 0) {
+        try {
+          Future.delayed(Duration.zero, () {
+            pageIdApp.value = 0;
+            Get.put(HomeController()).onInit();
+          });
+        } catch (e) {
+          debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
         }
-
-        Future.delayed(const Duration(milliseconds: 100), () {
-          if (roleInApp.value == Role.storeOwnerRoleText) {
-            if ((storeList.length > 1 || storeList.isEmpty) &&
-                !isLoading.value) {
-              pageIdApp.value = 2;
-            } else {
-              pageIdApp.value = 3;
-            }
-          } else {
+      } else if (selectedIndex.value == 1) {
+        try {
+          Future.delayed(Duration.zero, () {
+            pageIdApp.value = 1;
+            Get.put(WalletController()).onInit();
+          });
+        } catch (e) {
+          debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
+        }
+      } else if (selectedIndex.value == 2) {
+        try {
+          if (roleInApp.value == Role.customerRoleText) {
+            // storeList.clear();
             pageIdApp.value = 4;
+          } else {
+            apiGetStoreList();
           }
 
-          debugPrint("Bottom Nav  Page Id AFTER:-----------${pageIdApp.value}");
-          debugPrint(
-              "Bottom Nav  storeList.length:-----------${storeList.length}");
-          OrdersController ordersController = Get.put(OrdersController());
-          ordersController.onInit();
-        });
-      } catch (e) {
-        debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
-      }
-    } else if (selectedIndex.value == 3) {
-      try {
-        Future.delayed(Duration.zero, () async {
-          pageIdApp.value = 5;
-          OffersController offersController = Get.put(OffersController());
-          offersController.onInit();
-        });
-      } catch (e) {
-        debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
-      }
-    } else if (selectedIndex.value == 4) {
-      try {
-        Future.delayed(Duration.zero, () async {
-          pageIdApp.value = 6;
-          MoreController moreController = Get.put(MoreController());
-          moreController.onInit();
-        });
-      } catch (e) {
-        debugPrint("Bottom Nav  More Error:-----------${e.toString()}");
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (roleInApp.value == Role.storeOwnerRoleText) {
+              if (storeList.length > 1 || storeList.isEmpty) {
+                pageIdApp.value = 2;
+              } else {
+                pageIdApp.value = 3;
+              }
+            } else {
+              pageIdApp.value = 4;
+            }
+
+            debugPrint(
+                "Bottom Nav  Page Id AFTER:-----------${pageIdApp.value}");
+            debugPrint(
+                "Bottom Nav  storeList.length:-----------${storeList.length}");
+            Get.put(OrdersController()).onInit();
+          });
+        } catch (e) {
+          debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
+        }
+      } else if (selectedIndex.value == 3) {
+        try {
+          Future.delayed(Duration.zero, () async {
+            pageIdApp.value = 5;
+            OffersController offersController = Get.put(OffersController());
+            offersController.onInit();
+          });
+        } catch (e) {
+          debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
+        }
+      } else if (selectedIndex.value == 4) {
+        try {
+          Future.delayed(Duration.zero, () async {
+            pageIdApp.value = 6;
+            Get.put(MoreController()).onInit();
+          });
+        } catch (e) {
+          debugPrint("Bottom Nav  More Error:-----------${e.toString()}");
+        }
       }
     }
   }
 
-  Widget get selectedTab =>
-      selectedIndex.value == 0 ? const HomeScreen() : tabs[selectedIndex.value];
+  /*Widget get selectedTab =>
+      selectedIndex.value == 0 ? const HomeScreen() : tabs[selectedIndex.value];*/
 }

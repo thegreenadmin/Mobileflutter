@@ -259,7 +259,7 @@ class ManageStoreController extends GetxController {
             dynamicImageUrl: imageData['dynamic_url']));
       }
       imageUrlList.addAll(imagesList);
-      inputData.productImages = imagesList.isEmpty ? [] : imagesList;
+      inputData.productImages = imageUrlList.isEmpty ? [] : imageUrlList;
       imageUrlList.refresh();
     });
 
