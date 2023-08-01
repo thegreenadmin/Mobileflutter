@@ -21,8 +21,8 @@ class ImagePickerClass {
         // });
       } else {
         picker.pickMultiImage().then((value) async {
-          for (int i = 0; i < (value.length ); i++) {
-            imageFile.add(value.elementAt(i).path );
+          for (int i = 0; i < (value.length); i++) {
+            imageFile.add(value.elementAt(i).path);
           }
         }).catchError((error) {
           debugPrint(error.toString());
