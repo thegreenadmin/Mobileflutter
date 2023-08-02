@@ -48,6 +48,9 @@ class OrdersHomeMainController extends GetxController {
       if (Get.parameters["storeId"] != "") {
         storeId.value = Get.parameters["storeId"] ?? "";
       }
+      if (Get.parameters["orderId"] != '') {
+        apiGetStoreOrderDetail();
+      }
       if (Get.parameters["storeCount"] != "") {
         storeCount.value = Get.parameters["storeCount"] ?? "";
       }

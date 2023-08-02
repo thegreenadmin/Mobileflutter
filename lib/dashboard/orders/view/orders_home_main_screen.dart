@@ -322,13 +322,13 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                               debugPrint("get key: --- ${pageIdApp.value}");
                               ordersHomeMainController.storeId.value =
                                   ordersHomeMainController
-                                          .ownerOrderHistoryList![index]
+                                          .ownerOrderHistoryList?[index]
                                           .storeId ??
                                       "";
 
                               ordersHomeMainController.orderId.value =
                                   ordersHomeMainController
-                                          .ownerOrderHistoryList![index]
+                                          .ownerOrderHistoryList?[index]
                                           .orderId ??
                                       "";
 
@@ -343,7 +343,15 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .ownerOrderHistoryList![index]
                                           .orderId ??
                                       "";
-                              ordersHomeMainController.apiGetStoreOrderDetail();
+                              debugPrint("get orderId: --- ${ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .orderId}");
+                              debugPrint("get storeId: --- ${ordersHomeMainController
+                                  .ownerOrderHistoryList![index]
+                                  .storeId}");
+
+                              ordersHomeMainController.onInit();
+                              // ordersHomeMainController.apiGetStoreOrderDetail();
 
                               ordersHomeMainController
                                           .ownerOrderHistoryList![index]
