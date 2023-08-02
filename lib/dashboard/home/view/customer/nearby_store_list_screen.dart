@@ -18,16 +18,6 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
-  /* @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchStoreUserController.searchController.clear();
-     searchStoreUserController.setupScrollController();
-      searchStoreUserController.apiActiveCartApi();
-    });
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +70,6 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
                             onTap: () async {
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
                               Get.parameters["storeId"] =
                                   searchStoreUserController
                                           .storeAddresses[index]
@@ -90,9 +78,6 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                       "";
                               await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const StoreHomeMainScreen(),
-                              // ));
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),
@@ -133,8 +118,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                     .storeAddresses[index]
                                                     .store
                                                     ?.logo
-                                                    ?.dynamicUrl
-                                                    .toString() ??
+                                                    ?.dynamicUrl ??
                                                 "",
                                             fit: BoxFit.contain,
                                             radius: 25.0,

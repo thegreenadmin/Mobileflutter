@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 mixin PreferredSizeWidget on Widget {
-  Size get preferredSize => Size.fromHeight(WidgetConstants.screenHeight *
-      0.15); // Implement your preferredSize logic here
+  Size get preferredSize =>
+      Size.fromHeight(WidgetConstants.screenHeight * 0.15);
 }
 
 class CommonAppBar extends StatefulWidget with PreferredSizeWidget {
-  String firstName = "";
-  String role = "";
-  String lastName = "";
-  String labelText = "";
-  String storeId = "";
-  int cartCount = 0;
-  int cartLength = 0;
-  bool isFromNotification = false;
-  bool showActiveCart = false;
-  void Function()? okayTap;
+  final String firstName;
+  final String role;
+  final String lastName;
+  final String labelText;
+  final String storeId;
+  final int cartCount;
+  final int cartLength;
+  final bool isFromNotification;
+  final bool showActiveCart;
+  final void Function()? okayTap;
   CommonAppBar({
     Key? key,
     this.firstName = "",

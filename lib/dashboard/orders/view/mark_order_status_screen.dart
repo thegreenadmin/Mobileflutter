@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
 import 'package:thegreenmall/utils/utils.dart';
+
+import 'component/order_status_enum.dart';
 
 class MarkOrderStatusScreen extends StatefulWidget {
   const MarkOrderStatusScreen({super.key});

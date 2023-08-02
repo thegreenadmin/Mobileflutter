@@ -119,40 +119,11 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                             searchStoreUserController
                                                     .previousStore[index]
                                                     .logo
-                                                    ?.dynamicUrl
-                                                    .toString() ??
+                                                    ?.dynamicUrl ??
                                                 "",
                                             fit: BoxFit.contain,
-                                            assetImg: ImageConstants.storeicon,
+                                            assetImg: ImageConstants.nopicfound,
                                           ),
-                                          /*child: CircleAvatar(
-                                            radius: 25.0,
-                                            backgroundImage:
-                                                searchStoreUserController
-                                                                .previousStore[
-                                                                    index]
-                                                                .logo ==
-                                                            null &&
-                                                        searchStoreUserController
-                                                            .previousStore[
-                                                                index]
-                                                            .logo!
-                                                            .dynamicUrl!
-                                                            .isEmpty
-                                                    ? const AssetImage(
-                                                        ImageConstants
-                                                            .nopicfound,
-                                                      ) as ImageProvider
-                                                    : NetworkImage(
-                                                        searchStoreUserController
-                                                                .previousStore[
-                                                                    index]
-                                                                .logo
-                                                                ?.dynamicUrl
-                                                                .toString() ??
-                                                            ""),
-                                            backgroundColor: Colors.transparent,
-                                          ),*/
                                         ),
                                         width10SizedBox,
                                         SizedBox(

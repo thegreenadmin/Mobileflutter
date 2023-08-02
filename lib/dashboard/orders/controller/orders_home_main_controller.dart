@@ -40,21 +40,23 @@ class OrdersHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    selectedIndex.value = 0;
-    isFromNotification.value =
-        Get.parameters["isFromNotification"] == "true" ? true : false;
-    orderId.value = Get.parameters["orderId"] ?? "";
-    if (Get.parameters["storeId"] != "") {
-      storeId.value = Get.parameters["storeId"] ?? "";
-    }
-    if (Get.parameters["storeCount"] != "") {
-      storeCount.value = Get.parameters["storeCount"] ?? "";
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      selectedIndex.value = 0;
+      isFromNotification.value =
+          Get.parameters["isFromNotification"] == "true" ? true : false;
+      orderId.value = Get.parameters["orderId"] ?? "";
+      if (Get.parameters["storeId"] != "") {
+        storeId.value = Get.parameters["storeId"] ?? "";
+      }
+      if (Get.parameters["storeCount"] != "") {
+        storeCount.value = Get.parameters["storeCount"] ?? "";
+      }
 
-    apiGetStoreDetails();
-    role!.value = Role.storeOwnerRoleText;
-    apiGetOwnerOrderHistory();
-    getPage();
+      apiGetStoreDetails();
+      role!.value = Role.storeOwnerRoleText;
+      apiGetOwnerOrderHistory();
+      getPage();
+    });
   }
 
   getPage() async {
@@ -82,25 +84,25 @@ class OrdersHomeMainController extends GetxController {
       case 0: //Active Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       case 1: //In-progress Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       case 2: //Pickup Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       case 3: //Completed Orders
         {
           debugPrint(selectedIndex.value.toString());
-          apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       default:
@@ -267,49 +269,54 @@ class OrdersHomeMainController extends GetxController {
       log("STORE ORDER DETAIL RESPONSE **********${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        getStoreOrderDetailModel.value =
-            GetStoreOrderDetailModel.fromJson(value?.body);
-        log("STORE ORDER DETAIL RESPONSE customerName**********${getStoreOrderDetailModel.value.data!.order!.customerName.toString()}");
-        customerName.value =
-            getStoreOrderDetailModel.value.data?.order?.customerName ?? "";
-        orderDate.value = Utility.parseDateTime(
-          DateTime.parse(
-              getStoreOrderDetailModel.value.data!.order!.orderDate.toString()),
-          secFormat: '',
-        ).toString();
-        orderAmount.value = getStoreOrderDetailModel
-            .value.data!.order!.totalAmount
-            .toStringAsFixed(2);
-        orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
-        storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
-        orderStatusId.value = getStoreOrderDetailModel
-                .value.data?.order?.orderHistories?.last.orderStatusId ??
-            "0";
-        orderHistories.value =
-            getStoreOrderDetailModel.value.data!.order!.orderHistories!;
-        getOrderItems.value =
-            getStoreOrderDetailModel.value.data!.order!.orderItems!;
-        for (var element in getOrderItems) {
-          element.isSelected = selectedIndex.value == 0 &&
-                  element.orderItemStatus ==
-                      OrderStatusEnum.receivedOrder.statusName
-              ? false
-              : selectedIndex.value == 1 &&
-                      element.orderItemStatus ==
-                          OrderStatusEnum.inProgress.statusName
-                  ? false
-                  : selectedIndex.value == 2 &&
-                              element.orderItemStatus !=
-                                  OrderStatusEnum.inTransit.statusName ||
-                          selectedIndex.value == 2 &&
-                              element.orderItemStatus !=
-                                  OrderStatusEnum.readyForPickup.statusName
-                      ? false
-                      : element.orderItemStatus ==
-                              OrderStatusEnum.cancelled.statusName
-                          ? false
-                          : true;
-        }
+        Future.delayed(const Duration(milliseconds: 100), () {
+          getStoreOrderDetailModel.value =
+              GetStoreOrderDetailModel.fromJson(value?.body);
+          log("STORE ORDER DETAIL RESPONSE customerName**********${getStoreOrderDetailModel.value.data!.order!.customerName.toString()}");
+          customerName.value =
+              getStoreOrderDetailModel.value.data?.order?.customerName ?? "";
+          orderDate.value = Utility.parseDateTime(
+            DateTime.parse(getStoreOrderDetailModel.value.data!.order!.orderDate
+                .toString()),
+            secFormat: '',
+          ).toString();
+          orderAmount.value = getStoreOrderDetailModel
+              .value.data!.order!.totalAmount
+              .toStringAsFixed(2);
+          orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
+          storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
+          orderStatusId.value = getStoreOrderDetailModel
+                  .value.data?.order?.orderHistories?.last.orderStatusId ??
+              "0";
+          orderHistories.value =
+              getStoreOrderDetailModel.value.data!.order!.orderHistories!;
+          getOrderItems.value =
+              getStoreOrderDetailModel.value.data!.order!.orderItems!;
+          log("STORE ORDER DETAIL RESPONSE customerName**********"
+              "${customerName.value}*${orderAmount.value}*${orderStatusId.value}*${orderDate.value}");
+
+          for (var element in getOrderItems) {
+            element.isSelected = selectedIndex.value == 0 &&
+                    element.orderItemStatus ==
+                        OrderStatusEnum.receivedOrder.statusName
+                ? false
+                : selectedIndex.value == 1 &&
+                        element.orderItemStatus ==
+                            OrderStatusEnum.inProgress.statusName
+                    ? false
+                    : selectedIndex.value == 2 &&
+                                element.orderItemStatus !=
+                                    OrderStatusEnum.inTransit.statusName ||
+                            selectedIndex.value == 2 &&
+                                element.orderItemStatus !=
+                                    OrderStatusEnum.readyForPickup.statusName
+                        ? false
+                        : element.orderItemStatus ==
+                                OrderStatusEnum.cancelled.statusName
+                            ? false
+                            : true;
+          }
+        });
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

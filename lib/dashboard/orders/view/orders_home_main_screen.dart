@@ -332,8 +332,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .orderId ??
                                       "";
 
-                              ordersHomeMainController.apiGetStoreOrderDetail();
-
                               Get.parameters["storeId"] =
                                   ordersHomeMainController
                                           .ownerOrderHistoryList![index]
@@ -345,21 +343,21 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .ownerOrderHistoryList![index]
                                           .orderId ??
                                       "";
+                              ordersHomeMainController.apiGetStoreOrderDetail();
+
                               ordersHomeMainController
                                           .ownerOrderHistoryList![index]
                                           .orderHistories!
                                           .first
                                           .orderStatus!
-                                          .orderStatusName == //"11"
+                                          .orderStatusName ==
                                       OrderStatusEnum.returnRequest.statusName
                                   ? hasStoreAccess.value && permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
-                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId && element.isStoreOwner == true ||
-                                              element.storeId ==
-                                                      ordersHomeMainController
-                                                          .ownerOrderHistoryList![
-                                                              index]
-                                                          .storeId &&
+                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
+                                                  element.isStoreOwner ==
+                                                      true ||
+                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
                                                   element.controllers!.any((ele) =>
                                                       ele.controllerKey ==
                                                       PermissionKey
