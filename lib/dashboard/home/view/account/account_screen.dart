@@ -198,6 +198,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                   Role.role, Role.storeOwnerRoleText);
                               accountController.roleId?.value =
                                   Role.storeOwnerRoleText;
+
+                              Get.parameters["orderId"] = "";
                               Get.parameters[Role.role] =
                                   Role.storeOwnerRoleText;
                               roleApp.value = Role.storeOwnerRoleText;
@@ -210,6 +212,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               roleApp.value = Role.customerRoleText;
                               accountController.roleId?.value =
                                   Role.customerRoleText;
+                              Get.parameters["orderId"] = "";
                               Get.parameters[Role.role] = Role.customerRoleText;
                               Get.until((route) => route.isFirst,
                                   id: pageIdApp.value);
