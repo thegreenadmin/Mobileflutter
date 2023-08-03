@@ -72,11 +72,19 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                               categoryId: storeHomeMainController
                                       .categoriesList[index].categoryId ??
                                   "0");
+                          Get.parameters["categoryName"] =
+                              storeHomeMainController
+                                  .categoriesList[index].categoryName;
                           Get.parameters["categoryId"] = storeHomeMainController
                               .categoriesList[index].categoryId;
-
-                          storeHomeMainController.category.value =
-                              storeHomeMainController.categoriesList[index];
+                          storeHomeMainController.categoryName.value =
+                              storeHomeMainController
+                                      .categoriesList[index].categoryName ??
+                                  '';
+                          storeHomeMainController.categoryId.value =
+                              storeHomeMainController
+                                      .categoriesList[index].categoryId ??
+                                  '';
                           await Get.to(() => const UserProductListScreen(),
                               id: pageIdApp.value);
                         },

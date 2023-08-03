@@ -21,7 +21,7 @@ class StoreHomeMainController extends GetxController {
   late StoreCategoriesListResponse categoriesListResponse =
       StoreCategoriesListResponse();
   RxList<Category> categoriesList = <Category>[].obs;
-  Rx<Category> category = Category().obs;
+  // Rx<Category> category = Category().obs;
 
   Rx<ShopProductDetailResponse> productDetailResponse =
       ShopProductDetailResponse().obs;
@@ -51,6 +51,8 @@ class StoreHomeMainController extends GetxController {
   RxString storeDeliveryServiceId = "0".obs;
   RxString userAddressId = "0".obs;
   RxString productId = "".obs;
+  RxString categoryId = "".obs;
+  RxString categoryName = "".obs;
   RxBool isFromHome = false.obs;
   RxBool isFromFav = false.obs;
   RxBool isFromMenu = false.obs;
@@ -84,6 +86,8 @@ class StoreHomeMainController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
+      categoryName.value = Get.parameters["categoryName"] ?? "";
+      categoryId.value = Get.parameters["categoryId"] ?? "";
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;

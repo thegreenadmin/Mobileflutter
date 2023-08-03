@@ -74,12 +74,10 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                     itemBuilder: (BuildContext context, int i) {
                       return InkWell(
                         onTap: () async {
-                          storeHomeMainController.productId.value =
-                              storeHomeMainController
-                                  .featureProductList[i].productId
-                                  .toString();
+                          Get.parameters['productId'] = storeHomeMainController
+                              .featureProductList[i].productId
+                              .toString();
                           storeHomeMainController.apiGetShopProductDetailApi();
-
                           storeHomeMainController.apiGetCartListApi();
                           Get.parameters['isFromFav'] = "true";
                           Get.parameters["isFromHome"] = "false";

@@ -422,32 +422,34 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  storeHomeMainController.category.value.categoryName ?? "",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColors.black),
-                ),
-                PopupMenuButton(
-                  offset: const Offset(0, 25),
-                  shape: const TooltipShape(),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: Image.asset(
-                    ImageConstants.productFilter,
-                    scale: 2.5,
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    storeHomeMainController.categoryName.value ?? "",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColors.black),
                   ),
-                  onSelected: (String value) async {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  itemBuilder: (context) =>
-                      productFilterCreateOptionsPopUpList(context)!,
-                ),
-              ],
+                  PopupMenuButton(
+                    offset: const Offset(0, 25),
+                    shape: const TooltipShape(),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: Image.asset(
+                      ImageConstants.productFilter,
+                      scale: 2.5,
+                    ),
+                    onSelected: (String value) async {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    itemBuilder: (context) =>
+                        productFilterCreateOptionsPopUpList(context)!,
+                  ),
+                ],
+              ),
             ),
             height10SizedBox,
             Obx(
@@ -492,7 +494,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         itemBuilder: (BuildContext context, int i) {
                           return InkWell(
                             onTap: () async {
-                              storeHomeMainController.productId.value =
+                              Get.parameters['productId'] =
                                   storeHomeMainController
                                       .featureProductList[i].productId
                                       .toString();
@@ -702,8 +704,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   onTap: () async {
                     await storeHomeMainController.apiFeatureProductListApi(
                         categoryId:
-                            storeHomeMainController.category.value.categoryId ??
-                                "0",
+                            storeHomeMainController.categoryId.value ?? "0",
                         orderBy: "2",
                         orderType: "2");
                     // Navigator.of(contx).pop();
@@ -734,8 +735,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           child: GestureDetector(
             onTap: () async {
               await storeHomeMainController.apiFeatureProductListApi(
-                categoryId:
-                    storeHomeMainController.category.value.categoryId ?? "0",
+                categoryId: storeHomeMainController.categoryId.value ?? "0",
                 orderBy: "2",
               );
               // Navigator.of(contx).pop();
