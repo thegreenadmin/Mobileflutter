@@ -348,136 +348,139 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     ?.image
                                     ?.dynamicUrl !=
                                 null,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  )),
-                              child: Column(children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              border: Border.all(
-                                                  color: AppColors.white,
-                                                  width: 1)),
-                                          child: Image.asset(
-                                            ImageConstants.licenseImg,
-                                            fit: BoxFit.fill,
-                                            height: 40,
-                                            width: 55,
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.greylight,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      )),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                border: Border.all(
+                                                    color: AppColors.white,
+                                                    width: 1)),
+                                            child: Image.asset(
+                                              ImageConstants.licenseImg,
+                                              fit: BoxFit.fill,
+                                              height: 40,
+                                              width: 55,
+                                            ),
                                           ),
-                                        ),
-                                        width8SizedBox,
-                                        Text(StringConstants.identityProofText,
-                                            style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16)),
-                                      ],
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        if (ordersHomeMainController
-                                                .getStoreOrderDetailModel
-                                                .value
-                                                .data
-                                                ?.userProof
-                                                ?.image
-                                                ?.dynamicUrl !=
-                                            null) {
-                                          showDialog(
-                                            context: Get.context!,
-                                            barrierDismissible: false,
-                                            builder: (_) => AlertDialog(
-                                              icon: Align(
-                                                alignment: Alignment.topRight,
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Get.back(); // Navigator.pop(_);
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.clear,
-                                                    color: AppColors.primary,
-                                                    size: 24.0,
+                                          width8SizedBox,
+                                          Text(StringConstants.identityProofText,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16)),
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          if (ordersHomeMainController
+                                                  .getStoreOrderDetailModel
+                                                  .value
+                                                  .data
+                                                  ?.userProof
+                                                  ?.image
+                                                  ?.dynamicUrl !=
+                                              null) {
+                                            showDialog(
+                                              context: Get.context!,
+                                              barrierDismissible: false,
+                                              builder: (_) => AlertDialog(
+                                                icon: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Get.back(); // Navigator.pop(_);
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.clear,
+                                                      color: AppColors.primary,
+                                                      size: 24.0,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          16)),
-                                              content: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Center(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            shape: BoxShape
-                                                                .rectangle,
-                                                            border: Border.all(
-                                                                color: AppColors
-                                                                    .white,
-                                                                width: 1)),
-                                                        child: CommonWidgets
-                                                            .cachedNetworkImage(
-                                                          ordersHomeMainController
-                                                                  .getStoreOrderDetailModel
-                                                                  .value
-                                                                  .data
-                                                                  ?.userProof
-                                                                  ?.image
-                                                                  ?.dynamicUrl
-                                                                  .toString() ??
-                                                              "",
-                                                          height: 200.0,
-                                                          fit: BoxFit.fill,
-                                                          assetImg:
-                                                              ImageConstants
-                                                                  .nopicfound,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16)),
+                                                content: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10.0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Center(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                              border: Border.all(
+                                                                  color: AppColors
+                                                                      .white,
+                                                                  width: 1)),
+                                                          child: CommonWidgets
+                                                              .cachedNetworkImage(
+                                                            ordersHomeMainController
+                                                                    .getStoreOrderDetailModel
+                                                                    .value
+                                                                    .data
+                                                                    ?.userProof
+                                                                    ?.image
+                                                                    ?.dynamicUrl
+                                                                    .toString() ??
+                                                                "",
+                                                            height: 200.0,
+                                                            fit: BoxFit.fill,
+                                                            assetImg:
+                                                                ImageConstants
+                                                                    .nopicfound,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
+                                                actions: const <Widget>[],
                                               ),
-                                              actions: const <Widget>[],
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: Text(StringConstants.viewText,
-                                          style: const TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              color: AppColors.primary,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14)),
-                                    ),
-                                  ],
+                                            );
+                                          }
+                                        },
+                                        child: Text(StringConstants.viewText,
+                                            style: const TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: AppColors.primary,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ]),
+                                Divider(
+                                  height: 10,
+                                  color: AppColors.blacklight,
+                                ),
+                              ],
                             ),
                           ),
-                          Divider(
-                            height: 10,
-                            color: AppColors.blacklight,
-                          ),
+
                         ]),
                   )),
               Obx(() => Expanded(

@@ -44,14 +44,20 @@ class OrdersHomeMainController extends GetxController {
       selectedIndex.value = 0;
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
-      orderId.value = Get.parameters["orderId"] ?? "";
-      if (Get.parameters["storeId"] != "") {
+
+      if (Get.parameters["storeId"] != "" &&
+          Get.parameters["storeId"] != null) {
         storeId.value = Get.parameters["storeId"] ?? "";
       }
-      if (Get.parameters["orderId"] != '') {
+      if (Get.parameters["orderId"] != "" &&
+          Get.parameters["orderId"] != null) {
+        debugPrint(
+            "OrdersHomeMainController orderId =============${Get.parameters["orderId"]}");
+        orderId.value = Get.parameters["orderId"] ?? "";
         apiGetStoreOrderDetail();
       }
-      if (Get.parameters["storeCount"] != "") {
+      if (Get.parameters["storeCount"] != "" &&
+          Get.parameters["storeCount"] != null) {
         storeCount.value = Get.parameters["storeCount"] ?? "";
       }
 
