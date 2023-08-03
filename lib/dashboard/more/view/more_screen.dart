@@ -22,7 +22,7 @@ class _MoreScreenState extends State<MoreScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.15),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.08),
         child: Obx(() => CommonAppBar(
             showActiveCart: false,
             role: moreController.role!.value,

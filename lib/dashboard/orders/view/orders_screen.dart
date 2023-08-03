@@ -337,7 +337,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.15),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.08),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: ordersController.role!.value,
