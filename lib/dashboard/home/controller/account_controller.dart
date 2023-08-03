@@ -1077,7 +1077,6 @@ class AccountController extends GetxController {
     SharedPreferenceStorage.removeData("token");
     SharedPreferenceStorage.removeData("context");
     SharedPreferenceStorage.clearData();
-    Get.arguments.clear();
     Get.parameters.clear();
     await Get.offAll(const StartJourneyScreen());
   }
