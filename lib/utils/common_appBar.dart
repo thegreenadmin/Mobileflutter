@@ -5,7 +5,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 mixin PreferredSizeWidget on Widget {
   Size get preferredSize =>
-      Size.fromHeight(WidgetConstants.screenHeight * 0.15);
+      Size.fromHeight(WidgetConstants.screenHeight * 0.08);
 }
 
 class CommonAppBar extends StatefulWidget with PreferredSizeWidget {
