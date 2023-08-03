@@ -274,6 +274,20 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                 readOnly: true,
                                 textCapitalization: TextCapitalization.words,
                                 decoration: InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 1.0,
+                                    ),
+                                  ),
                                   labelText: StringConstants.addressLine1Text,
                                   labelStyle: const TextStyle(
                                       color: AppColors.black, fontSize: 16),
@@ -289,13 +303,6 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                     ),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     borderSide: const BorderSide(
                                       color: AppColors.primary,
