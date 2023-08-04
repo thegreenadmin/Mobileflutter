@@ -50,6 +50,7 @@ class HomeController extends GetxController {
   dynamic lng = 0.0;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
+
   @override
   void onInit() {
     super.onInit();
