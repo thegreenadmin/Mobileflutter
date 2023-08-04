@@ -21,7 +21,8 @@ class _OffersScreenState extends State<OffersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
- preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.14),
+        preferredSize: const Size.fromHeight(90),
+        //preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.14),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: offersController.role.value,
