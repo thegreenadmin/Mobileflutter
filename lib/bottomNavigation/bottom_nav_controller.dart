@@ -19,7 +19,6 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class BottomNavController extends GetxController {
   final selectedIndex = 0.obs;
   final lastSelectedIndex = 0.obs;
-  RxString roleInApp = "".obs;
   RxBool isLoading = false.obs;
   RxBool hasPermission = false.obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
@@ -53,8 +52,7 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
-    roleInApp.value = await SharedPreferenceStorage.getData(Role.role);
-    if (roleInApp.value == Role.customerRoleText) {
+    if (roleApp.value == Role.customerRoleText) {
       storeList.clear();
     } else {
       isLoading.value = true;
@@ -181,7 +179,7 @@ class BottomNavController extends GetxController {
         }
       } else if (selectedIndex.value == 2) {
         try {
-          if (roleInApp.value == Role.customerRoleText) {
+          if (roleApp.value == Role.customerRoleText) {
             // storeList.clear();
             pageIdApp.value = 4;
           } else {
@@ -189,7 +187,7 @@ class BottomNavController extends GetxController {
           }
 
           Future.delayed(const Duration(milliseconds: 100), () {
-            if (roleInApp.value == Role.storeOwnerRoleText) {
+            if (roleApp.value == Role.storeOwnerRoleText) {
               if (storeList.length > 1 || storeList.isEmpty) {
                 pageIdApp.value = 2;
               } else {

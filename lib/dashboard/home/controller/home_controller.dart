@@ -53,10 +53,11 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchStoreUserController.onInit();
+
     apiGetUserDetail();
     getPage();
     getCurrentLocation();
+    searchStoreUserController.onInit();
   }
 
   getPage() async {
@@ -176,7 +177,7 @@ class HomeController extends GetxController {
         lastName!.value = getUserDetailModel.data?.user?.lastName ?? "";
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
-        hasStoreAccess!.value =
+        hasStoreAccess.value =
             getUserDetailModel.data?.user?.hasStoreAccess ?? false;
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
