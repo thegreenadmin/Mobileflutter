@@ -41,7 +41,6 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      selectedIndex.value = 0;
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
 
@@ -51,8 +50,6 @@ class OrdersHomeMainController extends GetxController {
       }
       if (Get.parameters["orderId"] != "" &&
           Get.parameters["orderId"] != null) {
-        debugPrint(
-            "OrdersHomeMainController orderId =============${Get.parameters["orderId"]}");
         orderId.value = Get.parameters["orderId"] ?? "";
         apiGetStoreOrderDetail();
       }

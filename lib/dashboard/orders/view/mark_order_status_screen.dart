@@ -103,7 +103,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         "",
                                     fit: BoxFit.contain,
                                     radius: 28.0,
-                                    assetImg: ImageConstants.storeicon,
+                                    assetImg: ImageConstants.nopicfound,
                                   ),
                                 ),
                                 width10SizedBox,
