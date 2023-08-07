@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _pullRefresh() async {
-    homeController.apiGetUserDetail();
-    homeController.getCurrentLocation();
-    homeController.searchStoreUserController.apiActiveCartApi();
+    homeController.onInit();
   }
 
   @override
