@@ -253,13 +253,6 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
-                                  /* SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                        builder: (_) =>
-                                            const AddMoneyToWallet(),
-                                      ))*/
                                   debugPrint(
                                       "AddMoneyToWallet .pageId.value :------ ${walletController.pageId.value}");
                                   Get.to(
