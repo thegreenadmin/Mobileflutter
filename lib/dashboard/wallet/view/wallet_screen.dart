@@ -237,17 +237,12 @@ class _WalletScreenState extends State<WalletScreen> {
                                         size: 50,
                                       ),
                                     )
-                                  : GetBuilder<WalletController>(
-                                      id: 'action',
-                                      builder: (logic) {
-                                        return Text(
-                                          "\$${logic.userWalletBalance?.value ?? ""}",
-                                          style: const TextStyle(
-                                              color: AppColors.white,
-                                              fontSize: 26,
-                                              fontWeight: FontWeight.w500),
-                                        );
-                                      },
+                                  : Text(
+                                      "\$${walletController.userWalletBalance?.value ?? "0.00"}",
+                                      style: const TextStyle(
+                                          color: AppColors.white,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w500),
                                     ),
                               height8SizedBox,
                               Text(

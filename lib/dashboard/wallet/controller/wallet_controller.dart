@@ -33,7 +33,7 @@ class WalletController extends GetxController {
   RxString cvvCode = ''.obs;
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
-  RxString? userWalletBalance = "".obs;
+  RxString? userWalletBalance = "0.00".obs;
   RxString? ownerWalletBalance = "0.00".obs;
   RxString? storeNameValue = "".obs;
   RxString autoChargeType = "threshold".obs;
@@ -578,7 +578,7 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         userWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
-        update(["action"]);
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
