@@ -587,6 +587,7 @@ class AddCardController extends GetxController {
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Get.back(id: pageIdApp.value);
+
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";

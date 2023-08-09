@@ -251,42 +251,39 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                           ),
                         )),
                     height20SizedBox,
-                    Row(
-                      children: [
-                        Text.rich(
+
+                    Text.rich(
+                      TextSpan(
+                        children: [
                           TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: StringConstants.offerFor,
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400)),
-                              const TextSpan(
-                                text: "*",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                              text: StringConstants.offerFor,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                          const TextSpan(
+                            text: "*",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        width15SizedBox,
-                        Obx(() =>
-                            addOffersController.radioValue.value == "store"
-                                ? Text(StringConstants.storeText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500))
-                                : Text(StringConstants.productText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500)))
-                      ],
+                        ],
+                      ),
                     ),
+                    height15SizedBox,
+                    Obx(() => addOffersController.radioValue.value == "store"
+                        ? Text(StringConstants.storeText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500))
+                        : Text(StringConstants.productText,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500))),
+
                     height12SizedBox,
                     Text.rich(
                       TextSpan(

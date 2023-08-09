@@ -7,12 +7,15 @@ class ServerCommunicator {
 
   // ********************** STAGING SERVER *************
 
-  String baseUrl = "http://18.224.191.88:3520/api/v1/";
-  String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
-  String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+  // String baseUrl = "http://18.224.191.88:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
+  // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
-  //Not yet!
+
+  String baseUrl = "http://3.22.24.155:3520/api/v1/";
+  String baseUrlWithoutV1 = "http://3.22.24.155:3520/api/";
+  String baseUrlWithoutApi = "http://3.22.24.155:3520/";
 
 //********************************* URLS **********************
 //A

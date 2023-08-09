@@ -149,7 +149,7 @@ class OffersController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading!.value = false;
-      log("USER OFFERS LIST RESPONSE *******${value!.body}");
+      debugPrint("USER OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
