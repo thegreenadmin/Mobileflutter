@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              padding: const EdgeInsets.only(left: 12.0, right: 4, top: 50),
               child: Column(
                 children: [
                   Row(

@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
@@ -250,8 +251,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             children: [
               const _TabNav(0, HomeScreen()),
               const _TabNav(1, WalletScreen()),
-              bottomNavigationPageController.roleInApp.value ==
-                      Role.storeOwnerRoleText
+              roleApp.value == Role.storeOwnerRoleText
                   ? bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
                       ? const _TabNav(2, OrderStoresListScreen())

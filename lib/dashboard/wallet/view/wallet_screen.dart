@@ -50,7 +50,7 @@ class _WalletScreenState extends State<WalletScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.08),
+        preferredSize: const Size.fromHeight(90),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: walletController.role!.value,
