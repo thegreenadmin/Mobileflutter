@@ -540,7 +540,9 @@ class WalletController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Get.back(id: pageIdApp.value);
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Get.back(id: pageIdApp.value);
+          });
           // Navigator.of(ctx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
