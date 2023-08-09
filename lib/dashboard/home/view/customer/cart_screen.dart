@@ -1186,13 +1186,8 @@ class _CartScreenState extends State<CartScreen> {
                                           fontWeight: FontWeight.w500),
                                     )),
                                 InkWell(
-                                  onTap: () async {
-                                    // SharedPreferenceStorage.setData("context", context);
-                                    // Navigator.of(context)
-                                    //     .push(MaterialPageRoute(
-                                    //   builder: (_) => const AddMoneyToWallet(),
-                                    // ))
-                                    await Get.to(() => const AddMoneyToWallet(),
+                                  onTap: () {
+                                    Get.to(() => const AddMoneyToWallet(),
                                             id: pageIdApp.value)
                                         ?.then((value) {
                                       storeHomeMainController
@@ -1200,8 +1195,6 @@ class _CartScreenState extends State<CartScreen> {
                                     });
 
                                     Get.parameters["isFromCartScreen"] = "true";
-                                    // Get.to(()=>const WalletScreen(),
-                                    //     arguments: {"isFromCartScreen": true});
                                   },
                                   child: Text(
                                     StringConstants.addFundText,

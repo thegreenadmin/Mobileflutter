@@ -505,15 +505,6 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                         ],
                                                       ),
                                                       onTap: () async {
-                                                        // SharedPreferenceStorage
-                                                        //     .setData("context",
-                                                        //     context);
-                                                        // Navigator.of(context)
-                                                        //     .push(
-                                                        //     MaterialPageRoute(
-                                                        //       builder: (_) =>
-                                                        //       const AddCardDetailScreen(),
-                                                        //     ))
                                                         await Get.to(
                                                                 const AddCardDetailScreen(),
                                                                 id: pageIdApp
@@ -709,10 +700,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       end: Alignment.bottomCenter,
                       colors: [AppColors.primary, AppColors.primary],
                     ),
-                    onTap: () async {
+                    onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      await addCardController
-                          .validateAndSubmitFunction(context);
+                      addCardController.validateAndSubmitFunction(context);
                     },
                     height: 50,
                     text: StringConstants.addText,

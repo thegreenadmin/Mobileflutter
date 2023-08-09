@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -40,8 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async {
+    var role = await SharedPreferenceStorage.getData(Role.role);
     var token = await SharedPreferenceStorage.getData('token');
     Future.delayed(const Duration(seconds: 3)).then((value) async {
+      roleApp.value = role ?? "";
       if (token != null) {
         authToken.value = token;
         Get.offAll(() => const BottomNavigation());

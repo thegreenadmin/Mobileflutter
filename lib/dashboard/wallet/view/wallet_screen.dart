@@ -237,7 +237,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ),
                                     )
                                   : Text(
-                                      "\$${walletController.userWalletBalance!.value}",
+                                      "\$${walletController.userWalletBalance?.value ?? "0.00"}",
                                       style: const TextStyle(
                                           color: AppColors.white,
                                           fontSize: 26,

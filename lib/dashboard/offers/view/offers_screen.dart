@@ -293,7 +293,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               0.8,
                                                           assetImg:
                                                               ImageConstants
-                                                                  .medicine,
+                                                                  .nopicfound,
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -670,7 +670,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 .screenWidth *
                                                             0.8,
                                                         assetImg: ImageConstants
-                                                            .medicine,
+                                                            .nopicfound,
                                                       ),
                                                     ),
                                                     SizedBox(

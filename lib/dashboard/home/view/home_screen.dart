@@ -31,8 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _pullRefresh() async {
-    homeController.apiGetUserDetail();
-    homeController.getCurrentLocation();
+    homeController.onInit();
   }
 
   @override
@@ -130,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Obx(
                               () => Visibility(
-                                visible: homeController.role!.value ==
+                                visible: roleApp.value ==
                                         Role.customerRoleText &&
                                     homeController.searchStoreUserController
                                             .cartCount.value !=

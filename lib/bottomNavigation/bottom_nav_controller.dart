@@ -44,9 +44,7 @@ class BottomNavController extends GetxController {
               : 0;
       Future.delayed(Duration.zero, () {
         getRole();
-        if (permissionStoreList.isEmpty) {
-          apiGetPermissions();
-        }
+        apiGetPermissions();
       });
       onItemTapped(0);
     });
@@ -158,7 +156,7 @@ class BottomNavController extends GetxController {
       } else {
         selectedIndex.value = index;
       }
-      debugPrint("Bottom Nav  pageIdApp Error:-----------${pageIdApp.value}");
+      debugPrint("Bottom Nav  pageIdApp:-============${pageIdApp.value}");
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {

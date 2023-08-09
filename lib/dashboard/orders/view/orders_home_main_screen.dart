@@ -179,7 +179,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                         "",
                                     fit: BoxFit.contain,
                                     radius: 28.0,
-                                    assetImg: ImageConstants.storeicon,
+                                    assetImg: ImageConstants.nopicfound,
                                   ),
                                 ),
                                 width10SizedBox,

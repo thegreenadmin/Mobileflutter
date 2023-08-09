@@ -278,7 +278,7 @@ class OrdersHomeMainController extends GetxController {
       log("STORE ORDER DETAIL RESPONSE **********${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        Future.delayed(const Duration(milliseconds: 100), () {
+        Future.delayed(Duration.zero, () {
           getStoreOrderDetailModel.value =
               GetStoreOrderDetailModel.fromJson(value?.body);
           log("STORE ORDER DETAIL RESPONSE customerName**********${getStoreOrderDetailModel.value.data!.order!.customerName.toString()}");

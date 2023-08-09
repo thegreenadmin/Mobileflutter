@@ -224,8 +224,7 @@ class AddCardController extends GetxController {
   }
 
   // Fields Validation Method
-  Future validateAndSubmitFunction(BuildContext context,
-      {bool isFromPayout = false}) async {
+  validateAndSubmitFunction(BuildContext context, {bool isFromPayout = false}) {
     if (validateAndSave1()) {
       try {
         if (selectPaymentType.isEmpty) {
@@ -235,7 +234,7 @@ class AddCardController extends GetxController {
             userStripeCardId!.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
         } else {
-          await apiAddMoneyToWallet(context);
+          apiAddMoneyToWallet(context);
         }
       } catch (_) {}
     } else {
@@ -560,7 +559,7 @@ class AddCardController extends GetxController {
   }
 
   /// Add Money to stripe wallet
-  Future apiAddMoneyToWallet(BuildContext ctx) async {
+  apiAddMoneyToWallet(BuildContext ctx) {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -581,12 +580,13 @@ class AddCardController extends GetxController {
                 ServerCommunicator().userWalletRechargeStripe,
             headers,
             showLoading: true)
-        .then((value) async {
+        .then((value) {
       if (value != null) {
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Get.back(id: pageIdApp.value);
+
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";

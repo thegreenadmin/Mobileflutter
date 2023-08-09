@@ -31,7 +31,7 @@ class OtpVerificationController extends GetxController {
     super.onInit();
     phoneNumber.value = Get.arguments["phoneNumber"] ?? "";
     countryCode.value = Get.arguments["countryCode"] ?? "";
-    getFcmToken();
+    // getFcmToken();
   }
 
   getFcmToken() async {
@@ -54,7 +54,11 @@ class OtpVerificationController extends GetxController {
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
-        apiOtpVerify();
+        await messaging.getToken().then((value) {
+          fcmToken!.value = value ?? "";
+          debugPrint("FCM TOKEN *************$fcmToken");
+          apiOtpVerify();
+        });
       } catch (_) {}
     } else {
       autoValidate.value = true;

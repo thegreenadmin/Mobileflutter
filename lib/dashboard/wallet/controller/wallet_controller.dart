@@ -33,7 +33,7 @@ class WalletController extends GetxController {
   RxString cvvCode = ''.obs;
   RxString selectPaymentType = "".obs;
   RxString? userStripeCardId = "".obs;
-  RxString? userWalletBalance = "".obs;
+  RxString? userWalletBalance = "0.00".obs;
   RxString? ownerWalletBalance = "0.00".obs;
   RxString? storeNameValue = "".obs;
   RxString autoChargeType = "threshold".obs;
@@ -118,9 +118,11 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchStoreUserController.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchStoreUserController.onInit();
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.onInit();
+      }
+
       getPage();
     });
   }

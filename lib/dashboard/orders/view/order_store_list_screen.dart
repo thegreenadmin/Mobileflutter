@@ -106,11 +106,8 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                               Get.parameters["storeId"] =
                                   ordersController.storeList[index].storeId ??
                                       "";
+                              Get.parameters["orderId"] = "";
 
-                              // SharedPreferenceStorage.setData("context", context);
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const OrdersHomeMainScreen(),
-                              // ));
                               hasStoreAccess.value && permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
                                           element.storeId ==
@@ -154,14 +151,11 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                                         child: CommonWidgets
                                             .circleCachedNetworkImage(
                                           ordersController
-                                              .storeList[index]
-                                              .logo!
-                                              .dynamicUrl
+                                              .storeList[index].logo!.dynamicUrl
                                               .toString(),
                                           fit: BoxFit.contain,
                                           radius: 24.0,
-                                          assetImg: ImageConstants
-                                              .nopicfound,
+                                          assetImg: ImageConstants.nopicfound,
                                         ),
                                       ),
                                     ),
