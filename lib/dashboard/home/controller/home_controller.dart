@@ -54,11 +54,10 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    debugPrint("Home controller====> called");
     apiGetUserDetail();
     getPage();
     getCurrentLocation();
-    searchStoreUserController.onInit();
   }
 
   getPage() async {
@@ -79,12 +78,12 @@ class HomeController extends GetxController {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    if (roleVal == Role.customerRoleText) {
+    role!.value = roleApp.value;
+    if (roleApp.value == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();
+      searchStoreUserController.onInit();
     } else {
       role!.value = Role.storeOwnerRoleText;
       await apiGetOwnerOffersList();

@@ -485,8 +485,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
                               (WidgetConstants.screenHeight * 0.47 +
-                                      WidgetConstants.screenHeight * 0.25) /
-                                  WidgetConstants.screenHeight,
+                                      WidgetConstants.screenHeight * 0.22) /
+                                  WidgetConstants.screenHeight ,
                           mainAxisSpacing: 0.0,
                           crossAxisSpacing: 10.0,
                           crossAxisCount: 2,

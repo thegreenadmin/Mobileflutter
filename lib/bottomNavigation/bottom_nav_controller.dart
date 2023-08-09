@@ -43,9 +43,7 @@ class BottomNavController extends GetxController {
               : 0;
       Future.delayed(Duration.zero, () {
         getRole();
-        if (permissionStoreList.isEmpty) {
-          apiGetPermissions();
-        }
+        apiGetPermissions();
       });
       onItemTapped(0);
     });
@@ -156,24 +154,21 @@ class BottomNavController extends GetxController {
       } else {
         selectedIndex.value = index;
       }
-      debugPrint("Bottom Nav  pageIdApp Error:-----------${pageIdApp.value}");
+      debugPrint("Bottom Nav  pageIdApp:-============${pageIdApp.value}");
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
         try {
-          Future.delayed(Duration.zero, () {
-            pageIdApp.value = 0;
-            Get.put(HomeController()).onInit();
-          });
+          pageIdApp.value = 0;
+          Get.put(HomeController()).onInit();
         } catch (e) {
           debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 1) {
         try {
-          Future.delayed(Duration.zero, () {
-            pageIdApp.value = 1;
-            Get.put(WalletController()).onInit();
-          });
+          pageIdApp.value = 1;
+          Get.delete<WalletController>();
+          Get.put(WalletController()).onInit();
         } catch (e) {
           debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
         }
@@ -208,20 +203,15 @@ class BottomNavController extends GetxController {
         }
       } else if (selectedIndex.value == 3) {
         try {
-          Future.delayed(Duration.zero, () async {
-            pageIdApp.value = 5;
-            OffersController offersController = Get.put(OffersController());
-            offersController.onInit();
-          });
+          pageIdApp.value = 5;
+          Get.put(OffersController()).onInit();
         } catch (e) {
           debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 4) {
         try {
-          Future.delayed(Duration.zero, () async {
-            pageIdApp.value = 6;
-            Get.put(MoreController()).onInit();
-          });
+          pageIdApp.value = 6;
+          Get.put(MoreController()).onInit();
         } catch (e) {
           debugPrint("Bottom Nav  More Error:-----------${e.toString()}");
         }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_id_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/active_membership_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_screen.dart';
@@ -203,7 +204,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               Get.parameters[Role.role] =
                                   Role.storeOwnerRoleText;
                               roleApp.value = Role.storeOwnerRoleText;
-                              Get.put(BottomNavController()).onReady();
+                              Get.find<BottomNavController>().onReady();
+                              // Get.find<BottomNavController>().onReady();
+                              // Get.put(BottomNavController()).onReady();
                               Get.until((route) => route.isFirst,
                                   id: pageIdApp.value);
                             } else {

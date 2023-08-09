@@ -72,7 +72,9 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchStoreUserController.onInit();
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.onInit();
+      }
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
       if (Get.parameters['storeId'] != "" &&

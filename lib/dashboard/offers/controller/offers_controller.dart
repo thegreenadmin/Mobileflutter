@@ -53,7 +53,9 @@ class OffersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchStoreUserController.onInit();
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.onInit();
+      }
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
 

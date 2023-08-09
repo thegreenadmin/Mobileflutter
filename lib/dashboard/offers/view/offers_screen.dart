@@ -17,12 +17,12 @@ class OffersScreen extends StatefulWidget {
 class _OffersScreenState extends State<OffersScreen> {
   OffersController offersController = Get.put(OffersController());
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(90),
-        //preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.14),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: offersController.role.value,
@@ -294,7 +294,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               0.8,
                                                           assetImg:
                                                               ImageConstants
-                                                                  .medicine,
+                                                                  .nopicfound,
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -671,7 +671,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 .screenWidth *
                                                             0.8,
                                                         assetImg: ImageConstants
-                                                            .medicine,
+                                                            .nopicfound,
                                                       ),
                                                     ),
                                                     SizedBox(

@@ -118,9 +118,11 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchStoreUserController.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       searchStoreUserController.onInit();
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.onInit();
+      }
+
       getPage();
     });
   }
@@ -141,18 +143,18 @@ class WalletController extends GetxController {
       }
       getApiData();
     } else {
+      await apiGetStoreList();
+      await apiGetAccountDetails();
       await apiGetCardList(Get.context!);
       await apiGetBankAccountList();
-      await apiGetStoreList();
       await apiGetCountries();
-      await apiGetAccountDetails();
     }
     update();
   }
 
   getApiData() async {
-    await apiGetCardList(Get.context!);
     await apiGetUserWalletBalance();
+    await apiGetCardList(Get.context!);
     await apiGetAutoRechargeDetail();
   }
 
@@ -574,7 +576,7 @@ class WalletController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode201) {
         userWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
-        update();
+        update(["action"]);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

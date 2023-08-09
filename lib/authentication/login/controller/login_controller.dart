@@ -68,25 +68,25 @@ class LoginController extends GetxController {
             ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
             showLoading: true)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201) {
+      debugPrint("LOGIN RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201) {
         phoneTextController.clear();
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
 
         Get.parameters["isFromCartScreen"] = "true";
         Get.to(() => const OtpVerificationScreen(), arguments: {
           "phoneNumber": phoneNumber.value.trim(),
           "countryCode": countryCode.value.trim()
         });
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //User not exist
-        Utility.showAlertMessage(value.body['message']);
-      } else if (value.body["status"] == ApiConstants.statusCode400) {
+        Utility.showAlertMessage(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
