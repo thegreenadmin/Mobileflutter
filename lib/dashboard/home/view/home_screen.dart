@@ -129,11 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Obx(
                               () => Visibility(
-                                visible: roleApp.value ==
-                                        Role.customerRoleText &&
-                                    homeController.searchStoreUserController
-                                            .cartCount.value !=
-                                        0,
+                                visible:
+                                    roleApp.value == Role.customerRoleText &&
+                                        homeController.searchStoreUserController
+                                                .cartCount.value !=
+                                            0,
                                 //      ||
                                 // storeHomeMainController
                                 //     .productDetailResponse
