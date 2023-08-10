@@ -94,14 +94,15 @@ class AddOffersController extends GetxController {
       debugPrint(
           "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == ApiConstants.statusCode200 ||
+          res.statusCode == ApiConstants.statusCode201) {
         offerImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
         offerImageDynamicLinkFromServer.value =
             responseData['data']['urls']['dynamic_url'];
 
         return responseData;
-      } else if (res.statusCode == 403) {
+      } else if (res.statusCode == ApiConstants.statusCode403) {
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {

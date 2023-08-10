@@ -404,7 +404,7 @@ class SearchStoreUserController extends GetxController {
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
           ? int.parse(mileageTextController.text)
-          : 100,
+          : 500,
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"
@@ -413,11 +413,11 @@ class SearchStoreUserController extends GetxController {
       "opening_time": openingTimeTextController.text != ""
           ? Utility.formatDateTime(openingTimeTextController.text,
               firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
-          : "00:00:00",
+          : null,
       "closing_time": closingTimeTextController.text != ""
           ? Utility.formatDateTime(closingTimeTextController.text,
               firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
-          : "24:00:00",
+          : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
       "delivery_services": deliveryServicesList
