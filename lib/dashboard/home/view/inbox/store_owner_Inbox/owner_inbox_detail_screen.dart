@@ -434,7 +434,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 220.0,
+                                              height: 100.0,
                                             ),
                                           ),
                                         ),

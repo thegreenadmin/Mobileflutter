@@ -333,7 +333,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 220.0,
+                                              height: 100.0,
                                             ),
                                             /*child: Image.network(
                                                 messageList[index]
