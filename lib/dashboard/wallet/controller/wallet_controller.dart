@@ -538,7 +538,7 @@ class WalletController extends GetxController {
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
           userStripeCardId!.value.isEmpty;
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(const Duration(seconds: 1), () {
             Get.back(id: pageIdApp.value);
           });
           // Navigator.of(ctx).pop();

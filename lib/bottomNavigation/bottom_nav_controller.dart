@@ -105,7 +105,7 @@ class BottomNavController extends GetxController {
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     debugPrint(
-        "GET STORE PERMISSIONS URL BOTTOM**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
+        "GET STORE PERMISSIONS URL BOTTOM **********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
     Map<String, String> headers = {
       'Authorization': "Bearer ${authToken.value.toString()}",
     };
