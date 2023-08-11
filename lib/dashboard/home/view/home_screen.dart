@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${homeController.firstName!.value} ${homeController.lastName!.value}",
+                                  "Hi, ${firstName.value} ${lastName.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
@@ -347,11 +347,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       //       const SearchStoreUserScreen(),
                                       // ));
                                       Get.parameters["firstName"] =
-                                          homeController.firstName?.value
+                                          firstName.value
                                                   .toString() ??
                                               "";
                                       Get.parameters["lastName"] =
-                                          homeController.lastName?.value
+                                          lastName.value
                                                   .toString() ??
                                               "";
 
@@ -363,9 +363,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         id: pageIdApp.value,
                                         arguments: {
                                           "firstName":
-                                              homeController.firstName!.value,
+                                              firstName.value,
                                           "lastName":
-                                              homeController.lastName!.value,
+                                              lastName.value,
                                         },
                                       );
                                     } else {
@@ -378,11 +378,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       // ));
                                       Get.parameters["isFromHome"] = 'false';
                                       Get.parameters["firstName"] =
-                                          homeController.firstName?.value
+                                          firstName.value
                                                   .toString() ??
                                               "";
                                       Get.parameters["lastName"] =
-                                          homeController.lastName?.value
+                                          lastName.value
                                                   .toString() ??
                                               "";
                                       Get.parameters['storeId'] = "";
@@ -391,9 +391,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         id: pageIdApp.value,
                                         arguments: {
                                           "firstName":
-                                              homeController.firstName!.value,
+                                              firstName.value,
                                           "lastName":
-                                              homeController.lastName!.value,
+                                              lastName.value,
                                         },
                                       );
                                     }
@@ -441,9 +441,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         id: pageIdApp.value,
                                         arguments: {
                                           "firstName":
-                                              homeController.firstName!.value,
+                                              firstName.value,
                                           "lastName":
-                                              homeController.lastName!.value,
+                                              lastName.value,
                                         },
                                       );
                                     }

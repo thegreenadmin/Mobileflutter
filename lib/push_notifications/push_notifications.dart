@@ -1,19 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/order_store_list_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -107,35 +105,34 @@ void selectNotification(NotificationResponse notificationResponse) async {
   debugPrint("Message--------->${notificationResponse.payload}");
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
-  SharedPreferenceStorage.setData("context", Get.context!);
+  // SharedPreferenceStorage.setData("context", Get.context!);
 
   //******************  ORDER ********************
 
   if (notificationData.type == "order" &&
-      notificationData.senderType == "user") {
+      notificationData.senderType == "store") {
     if (roleApp.value == Role.customerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
       roleApp.value = Role.storeOwnerRoleText;
       Get.parameters["orderId"] = "";
       Get.parameters[Role.role] = Role.storeOwnerRoleText;
-      //   Get.until((route) => route.isFirst, id: pageIdApp.value);
     }
     Future.delayed(const Duration(milliseconds: 600), () async {
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["orderId"] = notificationData.orderId.toString();
       Get.parameters["isFromNotification"] = "true";
-      Get.to(() => const OrderStoresListScreen(), id: pageIdApp.value);
+      Get.put(OrdersHomeMainController()).onInit();
+      Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value);
     });
   } else if (notificationData.type == "order" &&
-      notificationData.senderType == "store") {
+      notificationData.senderType == "user") {
     if (roleApp.value == Role.storeOwnerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
       roleApp.value = Role.customerRoleText;
 
       Get.parameters["orderId"] = "";
       Get.parameters[Role.role] = Role.customerRoleText;
-      Get.until((route) => route.isFirst, id: pageIdApp.value);
     }
     Future.delayed(const Duration(milliseconds: 600), () async {
       Get.parameters["isFromTransaction"] = "false";
@@ -154,7 +151,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
         roleApp.value = Role.customerRoleText;
         Get.parameters["orderId"] = "";
         Get.parameters[Role.role] = Role.customerRoleText;
-        Get.until((route) => route.isFirst, id: pageIdApp.value);
       }
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
@@ -170,7 +166,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
       roleApp.value = Role.storeOwnerRoleText;
       Get.parameters["orderId"] = "";
       Get.parameters[Role.role] = Role.storeOwnerRoleText;
-      Get.until((route) => route.isFirst, id: pageIdApp.value);
     }
     Future.delayed(const Duration(seconds: 2), () async {
       Get.parameters["isFromTransaction"] = "false";
@@ -186,7 +181,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
       roleApp.value = Role.customerRoleText;
       Get.parameters["orderId"] = "";
       Get.parameters[Role.role] = Role.customerRoleText;
-      Get.until((route) => route.isFirst, id: pageIdApp.value);
     }
     Future.delayed(const Duration(seconds: 2), () async {
       Get.parameters["isFromTransaction"] = "false";

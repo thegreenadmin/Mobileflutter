@@ -69,8 +69,8 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                             searchStoreUserController.previousStore.length) {
                           return InkWell(
                             onTap: () async {
-                              SharedPreferenceStorage.setData(
-                                  "context", context);
+                              // SharedPreferenceStorage.setData(
+                              //     "context", context);
                               Get.parameters["storeId"] =
                                   searchStoreUserController
                                           .previousStore[index].storeId ??

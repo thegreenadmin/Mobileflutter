@@ -542,7 +542,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =
             value.body["data"]["message_head_id"] ?? "";
-        SharedPreferenceStorage.setData("context", ctx);
+        // SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

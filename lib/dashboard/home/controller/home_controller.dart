@@ -12,8 +12,8 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class HomeController extends GetxController {
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxString? email = "".obs;
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
@@ -173,10 +173,10 @@ class HomeController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
-        firstName!.value = getUserDetailModel.data?.user?.firstName ?? "";
-        lastName!.value = getUserDetailModel.data?.user?.lastName ?? "";
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
+        firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
+        lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
         hasStoreAccess.value =
             getUserDetailModel.data?.user?.hasStoreAccess ?? false;
         SharedPreferenceStorage.setData(StringConstants.firstNameText,

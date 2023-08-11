@@ -337,7 +337,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:const Size.fromHeight(90),
+        preferredSize: const Size.fromHeight(90),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: ordersController.role!.value,
@@ -347,9 +347,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ordersController.searchStoreUserController.storeIdValue.value,
             cartLength:
                 ordersController.searchStoreUserController.cartItems.length,
-            firstName: ordersController.firstName!.value,
+            firstName: firstName.value,
             labelText: StringConstants.ordersText,
-            lastName: ordersController.lastName!.value,
+            lastName: lastName.value,
             okayTap: () {
               ordersController.searchStoreUserController.apiActiveCartApi();
             },
@@ -755,8 +755,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     ordersController.storeOrderList.length) {
                                   return InkWell(
                                     onTap: () {
-                                      SharedPreferenceStorage.setData(
-                                          "context", context);
+                                      // SharedPreferenceStorage.setData(
+                                      //     "context", context);
 
                                       Get.parameters["storeId"] =
                                           ordersController.storeOrderList[i]

@@ -447,7 +447,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               child: Obx(
                 () => InkWell(
                     onTap: () async {
-                      SharedPreferenceStorage.setData("context", context);
+                      // SharedPreferenceStorage.setData("context", context);
 
                       roleApp.value == Role.customerRoleText
                           ? /*Navigator.of(context)

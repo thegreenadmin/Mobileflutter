@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
+
 import '../view/component/order_status_enum.dart';
 
 class OrdersController extends GetxController {
@@ -113,12 +114,12 @@ class OrdersController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+    // firstName?.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+    //         "";
+    // lastName?.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+    //         "";
     role?.value = roleApp.value;
   }
 

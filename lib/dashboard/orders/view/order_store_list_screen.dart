@@ -35,7 +35,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
                           children: [
                             Obx(
                               () => Text(
-                                'Hi, ${ordersController.firstName?.value} ${ordersController.lastName?.value}',
+                                'Hi, ${firstName.value} ${lastName.value}',
                                 style: const TextStyle(
                                     fontSize: 20,
                                     color: AppColors.black,

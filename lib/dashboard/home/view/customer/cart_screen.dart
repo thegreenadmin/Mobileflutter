@@ -937,8 +937,8 @@ class _CartScreenState extends State<CartScreen> {
                                             flex: 2,
                                             child: InkWell(
                                               onTap: () {
-                                                SharedPreferenceStorage.setData(
-                                                    "context", context);
+                                                // SharedPreferenceStorage.setData(
+                                                //     "context", context);
                                                 Get.parameters["isFromCart"] =
                                                     "true";
                                                 storeHomeMainController
