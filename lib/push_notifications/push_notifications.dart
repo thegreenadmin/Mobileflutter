@@ -130,7 +130,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
     if (roleApp.value == Role.storeOwnerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
       roleApp.value = Role.customerRoleText;
-
       Get.parameters["orderId"] = "";
       Get.parameters[Role.role] = Role.customerRoleText;
     }
