@@ -157,7 +157,7 @@ class BottomNavController extends GetxController {
       } else {
         selectedIndex.value = index;
       }
-      debugPrint("Bottom Nav  pageIdApp:-============${pageIdApp.value}");
+      debugPrint("Bottom Nav  pageIdApp:- ${pageIdApp.value}");
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
@@ -181,7 +181,6 @@ class BottomNavController extends GetxController {
       } else if (selectedIndex.value == 2) {
         try {
           if (roleApp.value == Role.customerRoleText) {
-            // storeList.clear();
             pageIdApp.value = 4;
           } else {
             apiGetStoreList();
@@ -200,11 +199,6 @@ class BottomNavController extends GetxController {
               Get.put(OrdersController()).onInit();
               pageIdApp.value = 4;
             }
-
-            debugPrint(
-                "Bottom Nav  Page Id AFTER:-----------${pageIdApp.value}");
-            debugPrint(
-                "Bottom Nav  storeList.length:-----------${storeList.length}");
           });
         } catch (e) {
           debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
