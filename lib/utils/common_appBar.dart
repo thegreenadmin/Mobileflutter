@@ -75,7 +75,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                                 ? width10SizedBox
                                 : height0SizedBox,
                             Text(
-                              'Hi,${widget.firstName} ${widget.lastName}',
+                              'Hi, ${widget.firstName} ${widget.lastName}',
                               style: const TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,

@@ -10,7 +10,9 @@ import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: "Main Navigator");
@@ -111,26 +113,13 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Navigator.of(Get.context!).push(MaterialPageRoute(
         builder: (_) => const OrdersScreen(),
       ));
-      /*Get.to(() => const OrdersScreen(), arguments: {
-        "isFromTransaction": false,
-        "storeId": notificationData.storeId.toString(),
-        "orderId": notificationData.orderId.toString(),
-        "isFromNotification": true
-      });*/
     });
   } else if (notificationData.type == "offer") {
     Future.delayed(const Duration(milliseconds: 600), () async {
       Get.parameters["isFromTransaction"] = "false";
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["orderId"] = notificationData.orderId.toString();
-      Navigator.of(Get.context!).push(MaterialPageRoute(
-        builder: (_) => const OffersScreen(),
-      ));
-      /* Get.to(() => const OffersScreen(), arguments: {
-        "isFromTransaction": false,
-        "storeId": notificationData.storeId.toString(),
-        "orderId": notificationData.orderId.toString(),
-      });*/
+      Get.to(() => const OffersScreen(), id: pageIdApp.value);
     });
   } else if (notificationData.type == "message" &&
       notificationData.senderType == "user") {
@@ -139,14 +128,7 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["messageHeadId"] =
           notificationData.messageHeadId.toString();
-      Navigator.of(Get.context!).push(MaterialPageRoute(
-        builder: (_) => const OwnerInboxDetailScreen(),
-      ));
-      /* Get.to(() => const OwnerInboxDetailScreen(), arguments: {
-        "isFromTransaction": false,
-        "storeId": notificationData.storeId ?? "",
-        "messageHeadId": notificationData.messageHeadId.toString(),
-      });*/
+      Get.to(() => const OwnerInboxDetailScreen(), id: pageIdApp.value);
     });
   } else if (notificationData.type == "message" &&
       notificationData.senderType == "store") {
@@ -155,89 +137,7 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Get.parameters["storeId"] = notificationData.storeId.toString();
       Get.parameters["messageHeadId"] =
           notificationData.messageHeadId.toString();
-      Navigator.of(Get.context!).push(MaterialPageRoute(
-        builder: (_) => const UserInboxDetailScreen(),
-      ));
-      /*Get.to(() => const UserInboxDetailScreen(), arguments: {
-        "isFromTransaction": false,
-        "storeId": notificationData.storeId ?? "",
-        "messageHeadId": notificationData.messageHeadId.toString(),
-      });*/
+      Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
     });
   }
-
-  // debugPrint("selectNotification" + json.decode(payload!).toString());
-  // RealTimeNotification notificationData =
-  //     RealTimeNotification.fromJson(json.decode(payload));
-  // if (notificationData.type == "sendRequest") {
-  //   Get.to(() => const EventsScreen(
-  //       isDrawerInvitationOpen: false,
-  //       isFromNotification: true,
-  //       isSent: false));
-  // } else if (notificationData.type == "acceptRequest") {
-  //   Get.to(() => const EventsScreen(
-  //       isDrawerInvitationOpen: false, isFromNotification: true, isSent: true));
-  // } else if (notificationData.type == "sendGroupMessage") {
-  //   Future.delayed(const Duration(milliseconds: 1400), () async {
-  //     Get.to(
-  //         GroupChatDetailScreen(
-  //           groupId: notificationData.groupId.toString(),
-  //           groupName: notificationData.groupName.toString(),
-  //         ),
-  //         arguments: {
-  //           "groupId": notificationData.groupId.toString(),
-  //           "groupName": notificationData.groupName.toString(),
-  //         });
-  //   });
-  // } else if (notificationData.type == "sendMessage") {
-  //   Future.delayed(const Duration(milliseconds: 1400), () async {
-  //     Get.to(
-  //         () => PersonalChatDetailScreen(
-  //               groupId: "",
-  //               messageSenderLastName: "",
-  //               messageSenderName: notificationData.senerName.toString(),
-  //               requestReceiverId: notificationData.senderId.toString(),
-  //               requestSenderId: notificationData.recieverId.toString(),
-  //             ),
-  //         arguments: {
-  //           "isPersonal": true,
-  //           "groupId": "",
-  //           "messageSenderLastName": "",
-  //           "messageSenderName": notificationData.senerName.toString(),
-  //           "requestReceiverId": notificationData.senderId.toString(),
-  //           "requestSenderId": notificationData.recieverId.toString(),
-  //         });
-  //   });
-  // } else if (notificationData.type == "isArchieve" &&
-  //     notificationData.isGroup == "false") {
-  //   Future.delayed(const Duration(milliseconds: 1400), () async {
-  //     Get.to(
-  //         () => PersonalChatDetailScreen(
-  //               messageSenderLastName: "",
-  //               messageSenderName: notificationData.senerName.toString(),
-  //               requestReceiverId: notificationData.senderId.toString(),
-  //               requestSenderId: notificationData.recieverId.toString(),
-  //             ),
-  //         arguments: {
-  //           "isPersonal": true,
-  //           "messageSenderLastName": "",
-  //           "messageSenderName": notificationData.senerName.toString(),
-  //           "requestReceiverId": notificationData.senderId.toString(),
-  //           "requestSenderId": notificationData.recieverId.toString(),
-  //         });
-  //   });
-  // } else if (notificationData.type == "isArchieve" &&
-  //     notificationData.isGroup == "true") {
-  //   Future.delayed(const Duration(milliseconds: 1400), () async {
-  //     Get.to(
-  //         GroupChatDetailScreen(
-  //           groupId: notificationData.groupId.toString(),
-  //           groupName: notificationData.groupName.toString(),
-  //         ),
-  //         arguments: {
-  //           "groupId": notificationData.groupId.toString(),
-  //           "groupName": notificationData.groupName.toString(),
-  //         });
-  //   });
-  // }
 }
