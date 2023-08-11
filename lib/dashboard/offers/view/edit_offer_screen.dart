@@ -309,7 +309,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                     Obx(() => Text(
                           addOffersController.storeName.value,
                           style: const TextStyle(
-                              color: AppColors.black, fontSize: 16),
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black,
+                              fontSize: 16),
                         )),
 
                     // Obx(() => addOffersController.storeList.isEmpty
