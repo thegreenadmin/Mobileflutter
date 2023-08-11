@@ -310,8 +310,11 @@ class OrdersHomeMainController extends GetxController {
                         OrderStatusEnum.receivedOrder.statusName
                 ? false
                 : selectedIndex.value == 1 &&
-                        element.orderItemStatus ==
-                            OrderStatusEnum.inProgress.statusName
+                            element.orderItemStatus ==
+                                OrderStatusEnum.inProgress.statusName ||
+                        selectedIndex.value == 1 &&
+                            element.orderItemStatus ==
+                                OrderStatusEnum.receivedOrder.statusName
                     ? false
                     : selectedIndex.value == 2 &&
                                 element.orderItemStatus !=

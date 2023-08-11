@@ -464,7 +464,9 @@ class ManageStoreController extends GetxController {
         heightTextController.clear();
         daysTextController.clear();
         weightTextController.clear();
+        imageUrlList.clear();
         isEnabled.value = false;
+        isProductReturnable.value = false;
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];
@@ -772,7 +774,9 @@ class ManageStoreController extends GetxController {
         heightTextController.clear();
         daysTextController.clear();
         weightTextController.clear();
+        imageUrlList.clear();
         isEnabled.value = false;
+        isProductReturnable.value = false;
         discountType.value = "";
         isFeatured.value = false;
         selectedCategories.value = [];

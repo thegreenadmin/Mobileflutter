@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -189,11 +190,14 @@ class BottomNavController extends GetxController {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (roleApp.value == Role.storeOwnerRoleText) {
               if (storeList.length > 1 || storeList.isEmpty) {
+                Get.put(OrdersController()).onInit();
                 pageIdApp.value = 2;
               } else {
+                Get.put(OrdersHomeMainController()).onInit();
                 pageIdApp.value = 3;
               }
             } else {
+              Get.put(OrdersController()).onInit();
               pageIdApp.value = 4;
             }
 
@@ -201,7 +205,6 @@ class BottomNavController extends GetxController {
                 "Bottom Nav  Page Id AFTER:-----------${pageIdApp.value}");
             debugPrint(
                 "Bottom Nav  storeList.length:-----------${storeList.length}");
-            Get.put(OrdersController()).onInit();
           });
         } catch (e) {
           debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
