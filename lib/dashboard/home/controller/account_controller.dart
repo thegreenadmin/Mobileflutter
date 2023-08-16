@@ -380,7 +380,8 @@ class AccountController extends GetxController {
             responseData['data']['urls']['dynamic_url'];
         await apiAddUserIdProof();
         return responseData;
-      } else if (res.statusCode == ApiConstants.statusCode401) {
+      }
+      else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {

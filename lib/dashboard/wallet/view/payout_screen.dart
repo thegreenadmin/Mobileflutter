@@ -554,9 +554,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      addCardController.validateAndSavePayOut(
-                        context,
-                      );
+                      addCardController.validateAndSavePayOut();
                     },
                     height: 50,
                     text: StringConstants.oKText,

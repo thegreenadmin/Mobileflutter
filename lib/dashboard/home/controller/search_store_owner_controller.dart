@@ -276,10 +276,10 @@ class OwnerStoresController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext contextt) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        apiUpdateStoreDetail(contextt);
+        apiUpdateStoreDetail();
       } catch (_) {}
     } else {
       autoValidate.value = true;
@@ -777,7 +777,7 @@ class OwnerStoresController extends GetxController {
   }
 
   ///Update Store Details Api
-  Future apiUpdateStoreDetail(BuildContext ctx) async {
+  Future apiUpdateStoreDetail() async {
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
 

@@ -145,7 +145,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             InkWell(
               onTap: () {
                 Get.back();
-                storeHomeMainController.apiContactStore(context);
+                storeHomeMainController.apiContactStore();
               },
               child: Container(
                 height: 50.0,

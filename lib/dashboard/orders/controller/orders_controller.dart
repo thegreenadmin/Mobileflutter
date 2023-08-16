@@ -526,7 +526,7 @@ class OrdersController extends GetxController {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          apiReturnOrder(ctxx);
+                          apiReturnOrder();
                         },
                         height: 50,
                         text: StringConstants.submitText,
@@ -655,7 +655,7 @@ class OrdersController extends GetxController {
   }
 
   ///RETURN ORDER
-  Future apiReturnOrder(BuildContext ctx) async {
+  Future apiReturnOrder() async {
     isLoading.value = true;
     debugPrint("RETURN ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
@@ -1073,7 +1073,7 @@ class OrdersController extends GetxController {
   }
 
   ///Cancel Order Api
-  Future apiCancelOrder(context) async {
+  Future apiCancelOrder() async {
     isLoading.value = true;
     debugPrint("Cancel Order URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
@@ -1120,7 +1120,7 @@ class OrdersController extends GetxController {
   }
 
   ///Cancel Order Api
-  Future apiCancelReturnRequestOrder(context) async {
+  Future apiCancelReturnRequestOrder() async {
     isLoading.value = true;
     debugPrint("CANCEL REQUEST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
@@ -1168,7 +1168,7 @@ class OrdersController extends GetxController {
   }
 
   ///Cancel Order Api
-  Future apiReadyPickupOrder(BuildContext ctx) async {
+  Future apiReadyPickupOrder() async {
     isLoading.value = true;
     debugPrint("Ready Pickup URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().readyPickup}");

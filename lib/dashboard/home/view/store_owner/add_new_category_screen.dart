@@ -259,7 +259,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController.validateAndSubmit(context);
+                        addNewCategoryController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveAndAddProductText,

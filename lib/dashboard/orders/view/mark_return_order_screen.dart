@@ -561,7 +561,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                         AlertStringConstants.rejectReturnOrderAlertText,
                         okay: StringConstants.yesText,
                         cancelText: StringConstants.noText, okayTap: () {
-                      ordersHomeMainController.apiRejectReturnRequest(context);
+                      ordersHomeMainController.apiRejectReturnRequest();
                     });
                   },
                   height: 50,
@@ -589,7 +589,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
                         okay: StringConstants.yesText,
                         cancelText: StringConstants.noText, okayTap: () {
                       ordersHomeMainController
-                          .apiCompleteReturnRequest(context);
+                          .apiCompleteReturnRequest();
                     });
                   },
                   height: 50,

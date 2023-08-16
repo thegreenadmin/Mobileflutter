@@ -67,14 +67,14 @@ class EditNewCategoryController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext nCon) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          await apiAddCategory(nCon);
+          await apiAddCategory();
         }
       } catch (_) {}
     } else {
@@ -180,7 +180,7 @@ class EditNewCategoryController extends GetxController {
   }
 
   ///Add Category Api
-  Future apiAddCategory(BuildContext nContext) async {
+  Future apiAddCategory() async {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 

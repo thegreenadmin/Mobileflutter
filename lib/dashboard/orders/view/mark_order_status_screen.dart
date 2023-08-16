@@ -843,7 +843,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             AlertStringConstants.cancelOrderAlertText,
                             okay: StringConstants.yesText,
                             cancelText: StringConstants.noText, okayTap: () {
-                          ordersHomeMainController.apiCancelOrder(context);
+                          ordersHomeMainController.apiCancelOrder();
                         });
                       } else {
                         Utility.showAlertMessage(AlertStringConstants

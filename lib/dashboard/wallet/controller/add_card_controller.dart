@@ -122,16 +122,16 @@ class AddCardController extends GetxController {
     role.value = roleVal;
     getGKey();
     await apiGetUserWalletBalance();
-    await apiGetCardList(Get.context!);
+    await apiGetCardList();
     await apiGetBankAccountList();
     await apiGetStoreList();
-    await apiGetUserDetailApi(Get.context);
+    await apiGetUserDetailApi();
     await apiGetCountries();
     await apiGetAccountDetails();
   }
 
   //Get User Detail Info Api
-  Future apiGetUserDetailApi(context) async {
+  Future apiGetUserDetailApi() async {
     debugPrint(
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
 
@@ -234,7 +234,7 @@ class AddCardController extends GetxController {
             userStripeCardId!.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
         } else {
-          apiAddMoneyToWallet(context);
+          apiAddMoneyToWallet();
         }
       } catch (_) {}
     } else {
@@ -242,13 +242,13 @@ class AddCardController extends GetxController {
     }
   }
 
-  validateAndSavePayOut(BuildContext ctxx) {
+  validateAndSavePayOut() {
     if (validateAndSave2()) {
       try {
         if (storeId!.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
         } else {
-          apiCreatePayout(ctxx);
+          apiCreatePayout();
         }
       } catch (_) {}
     } else {
@@ -440,7 +440,7 @@ class AddCardController extends GetxController {
       if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
-        await apiCreateCard(context);
+        await apiCreateCard();
         str = "";
         parts = [];
         month = "";
@@ -456,7 +456,7 @@ class AddCardController extends GetxController {
   }
 
   ///Api Create Card
-  Future apiCreateCard(context) async {
+  Future apiCreateCard() async {
     debugPrint(
         "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
     Map body = {"token_id": stripeToken.value};
@@ -479,7 +479,7 @@ class AddCardController extends GetxController {
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
-          await apiGetCardList(context);
+          await apiGetCardList();
           cardNumber.value = "";
           expiryDate.value = "";
           cardHolderName.value = "";
@@ -517,7 +517,7 @@ class AddCardController extends GetxController {
   }
 
   ///Get Card List Api
-  Future apiGetCardList(context) async {
+  Future apiGetCardList() async {
     userStripeCardId?.value = "";
     cardList.clear();
     isLoading.value = true;
@@ -559,7 +559,7 @@ class AddCardController extends GetxController {
   }
 
   /// Add Money to stripe wallet
-  apiAddMoneyToWallet(BuildContext ctx) {
+  apiAddMoneyToWallet() {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -667,10 +667,10 @@ class AddCardController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await apiGetCardList(Get.context!);
+        await apiGetCardList();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
-        await apiGetCardList(Get.context!);
+        await apiGetCardList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -723,7 +723,7 @@ class AddCardController extends GetxController {
   }
 
   ///Api create payout
-  Future apiCreatePayout(BuildContext ctxxx) async {
+  Future apiCreatePayout() async {
     debugPrint(
         "CREATE PAYOUT API *******${ServerCommunicator().baseUrl + ServerCommunicator().storeStripePayoutCreate}");
     Map body = {
@@ -901,7 +901,7 @@ class AddCardController extends GetxController {
   }
 
   /// Add Money to stripe wallet
-  Future apiPaymentIntent(BuildContext ctx, String type) async {
+  Future apiPaymentIntent(  String type) async {
     debugPrint(
         "PAYMENT INTENT URL *******${ServerCommunicator().baseUrl + ServerCommunicator().paymentIntent}");
     Map body = {

@@ -1744,7 +1744,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             });
                           }
                         }
-                        manageStoreController.validateAndSubmit(context);
+                        manageStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveText,

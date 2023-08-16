@@ -71,14 +71,14 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext nCon) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          await apiAddCategory(nCon);
+          await apiAddCategory();
         }
       } catch (_) {}
     } else {
@@ -96,14 +96,14 @@ class AddNewCategoryController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdate(BuildContext cntext) async {
+  void validateAndSubmitUpdate() async {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          await apiUpdateCategory(cntext);
+          await apiUpdateCategory();
         }
       } catch (_) {}
     } else {
@@ -184,7 +184,7 @@ class AddNewCategoryController extends GetxController {
   }
 
   ///Add Category Api
-  Future apiAddCategory(BuildContext nContext) async {
+  Future apiAddCategory() async {
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 
@@ -276,7 +276,7 @@ class AddNewCategoryController extends GetxController {
   }
 
   ///Update Category Api
-  Future apiUpdateCategory(BuildContext contextt) async {
+  Future apiUpdateCategory() async {
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
 

@@ -177,7 +177,7 @@ class AddNewStoreController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext ctx) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
         if (storeLogoDynamicLinkFromServer.isEmpty) {
@@ -185,7 +185,7 @@ class AddNewStoreController extends GetxController {
         } else if (storeImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
-          apiCreateStore(ctx);
+          apiCreateStore();
         }
       } catch (_) {}
     } else {
@@ -358,7 +358,7 @@ class AddNewStoreController extends GetxController {
   }
 
   ///Create Store Api
-  Future apiCreateStore(BuildContext contextt) async {
+  Future apiCreateStore() async {
     Map data = {
       "store": {
         "store_name": storeNameTextController.text.trim(),

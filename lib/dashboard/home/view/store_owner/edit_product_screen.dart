@@ -1762,7 +1762,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                         onTap: () {
                           manageStoreController
-                              .validateAndSubmitUpdateProduct(context);
+                              .validateAndSubmitUpdateProduct();
                         },
                         height: 50,
                         text: StringConstants.saveText,

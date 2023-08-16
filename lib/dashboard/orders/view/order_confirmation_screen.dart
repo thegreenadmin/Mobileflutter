@@ -576,7 +576,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            ordersController.apiReadyPickupOrder(context);
+                            ordersController.apiReadyPickupOrder();
                           },
                           height: 50,
                           width: WidgetConstants.screenWidth * 0.5,
@@ -669,7 +669,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         AlertStringConstants.cancelReturnRequestAlertText,
                         okay: StringConstants.yesText,
                         cancelText: StringConstants.noText, okayTap: () {
-                      ordersController.apiCancelReturnRequestOrder(context);
+                      ordersController.apiCancelReturnRequestOrder();
                     });
                   },
                   height: 35,

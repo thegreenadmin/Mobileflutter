@@ -169,14 +169,14 @@ class ManageStoreController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext bCntx) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
         // if (selectedCategories.isEmpty) {
         //   Utility.showAlertMessage(
         //       AlertStringConstants.pleaseSelectCategoriesText);
         // } else {
-        apiCreateProduct(bCntx);
+        apiCreateProduct();
         // }
       } catch (_) {}
     } else {
@@ -194,7 +194,7 @@ class ManageStoreController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdateProduct(BuildContext ctx) async {
+  void validateAndSubmitUpdateProduct() async {
     if (validateAndSaveUpdateProduct()) {
       try {
         for (int i = 0; i < categoriesList.length; i++) {
@@ -219,7 +219,7 @@ class ManageStoreController extends GetxController {
         if (data.isEmpty) {
           Utility.showAlertMessage("Please select categories");
         } else {
-          apiUpdateStoreProductDetail(ctx);
+          apiUpdateStoreProductDetail();
         }
       } catch (_) {}
     } else {
@@ -348,7 +348,7 @@ class ManageStoreController extends GetxController {
   }
 
   /// Get Products List Api
-  Future apiGetProductList(BuildContext bctxx) async {
+  Future apiGetProductList() async {
     categoriesList.clear();
     isLoading.value = true;
     debugPrint("GET PRODUCT LIST URL **********"
@@ -382,7 +382,7 @@ class ManageStoreController extends GetxController {
   }
 
   /// Create Product Api
-  Future apiCreateProduct(BuildContext cntx) async {
+  Future apiCreateProduct() async {
     inputData.storeId = int.parse(storeId.value);
     InputProduct product = InputProduct();
     product.quantityTypeId = int.parse(quantityValue.value);
@@ -617,13 +617,7 @@ class ManageStoreController extends GetxController {
           for (int j = 0; j < selectedCategories.length; j++) {
             if (categoriesList[i].categoryId.toString() ==
                 selectedCategories[j]['category']['category_id'].toString()) {
-              debugPrint(
-                  "category name *******${categoriesList[i].categoryName}");
-              debugPrint("categoriesList Index*******" + i.toString());
-              print(categoriesList[i].isSelected ?? false);
               categoriesList[i].isSelected = true;
-              debugPrint(
-                  "categoriesList ID*******${categoriesList[i].isSelected}");
             }
           }
         }
@@ -660,7 +654,7 @@ class ManageStoreController extends GetxController {
   }
 
   /// Update  Store Product Api
-  Future apiUpdateStoreProductDetail(BuildContext ctxx) async {
+  Future apiUpdateStoreProductDetail() async {
     debugPrint(
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
 
@@ -819,11 +813,11 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await apiGetProductList(buildCtxt);
+        await apiGetProductList();
         update();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
-        await apiGetProductList(buildCtxt);
+        await apiGetProductList();
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

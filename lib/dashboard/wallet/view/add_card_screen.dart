@@ -21,7 +21,7 @@ class AddCardScreenState extends State<AddCardScreen> {
   @override
   void initState() {
     addCardController.apiGetUserWalletBalance();
-    addCardController.apiGetCardList(context);
+    addCardController.apiGetCardList();
     super.initState();
   }
 
@@ -212,14 +212,14 @@ class AddCardScreenState extends State<AddCardScreen> {
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () {
-                addCardController.apiGetUserDetailApi(Get.context!);
+                addCardController.apiGetUserDetailApi();
                 // SharedPreferenceStorage.setData("context", context);
                 // Navigator.of(context)
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const AddCardDetailScreen(),
                 //     ))
                 Get.to(() => const AddCardDetailScreen(), id: pageIdApp.value)!
-                    .then((value) => addCardController.apiGetCardList(context));
+                    .then((value) => addCardController.apiGetCardList());
               },
               height: 50,
               text: StringConstants.addNewCardText,

@@ -946,10 +946,10 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                       ),
                       onTap: () {
                         widget.isFromEdit == true
-                            ? walletController.validateAndSubmit(context,
+                            ? walletController.validateAndSubmit(
                                 isFromAutoRecharge: true, updateAutoData: true)
                             //walletController.apiUpdateAutoRecharge(context)
-                            : walletController.validateAndSubmit(context,
+                            : walletController.validateAndSubmit(
                                 isFromAutoRecharge: true);
                       },
                       height: 50,

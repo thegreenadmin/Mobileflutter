@@ -80,14 +80,14 @@ class AddNewRoleController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext mcontext) async {
+  void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
           Utility.showAlertMessage(strings
               .AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
-          await apiCreateRole(mcontext);
+          await apiCreateRole();
         }
       } catch (_) {}
     } else {
@@ -105,10 +105,10 @@ class AddNewRoleController extends GetxController {
     }
   }
 
-  void validateAndSubmitUpdate(BuildContext contextt) async {
+  void validateAndSubmitUpdate() async {
     if (validateAndSaveUpdate()) {
       try {
-        await apiEditRole(contextt);
+        await apiEditRole();
       } catch (_) {}
     } else {
       autoValidateUpdate.value = true;
@@ -150,7 +150,7 @@ class AddNewRoleController extends GetxController {
   }
 
   ///Create Role Api
-  Future apiCreateRole(BuildContext cntext) async {
+  Future apiCreateRole() async {
     createRoleRequestModel.storeId = int.parse(storeId.value);
     createRoleRequestModel.roleName = roleNameTextController.text.trim();
 
@@ -234,7 +234,7 @@ class AddNewRoleController extends GetxController {
   }
 
   ///Delete Store Role
-  Future apiDeleteRole(BuildContext buildContext) async {
+  Future apiDeleteRole() async {
     debugPrint(
         "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
 
@@ -330,7 +330,7 @@ class AddNewRoleController extends GetxController {
   }
 
   ///Edit Role Api
-  Future apiEditRole(BuildContext ctx) async {
+  Future apiEditRole() async {
     selectedRoles.clear();
     bool isEmptyList = true;
     for (int i = 0; i < permissionListMerged.length; i++) {

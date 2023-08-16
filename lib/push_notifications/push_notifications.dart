@@ -102,7 +102,6 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 
 void selectNotification(NotificationResponse notificationResponse) async {
   debugPrint("payload 2---------->${notificationResponse.payload}");
-  debugPrint("Message--------->${notificationResponse.payload}");
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
   // SharedPreferenceStorage.setData("context", Get.context!);

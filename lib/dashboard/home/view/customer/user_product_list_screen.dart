@@ -105,7 +105,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
             InkWell(
               onTap: () {
                 Get.back();
-                storeHomeMainController.apiContactStore(context);
+                storeHomeMainController.apiContactStore();
               },
               child: Container(
                 height: 50.0,
@@ -486,7 +486,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           childAspectRatio:
                               (WidgetConstants.screenHeight * 0.47 +
                                       WidgetConstants.screenHeight * 0.22) /
-                                  WidgetConstants.screenHeight ,
+                                  WidgetConstants.screenHeight,
                           mainAxisSpacing: 0.0,
                           crossAxisSpacing: 10.0,
                           crossAxisCount: 2,

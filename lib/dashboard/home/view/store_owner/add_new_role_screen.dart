@@ -302,7 +302,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  addNewRoleController.validateAndSubmit(context);
+                  addNewRoleController.validateAndSubmit();
                 },
                 height: 50,
                 text: StringConstants.saveText,

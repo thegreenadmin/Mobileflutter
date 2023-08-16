@@ -31,7 +31,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
   @override
   void initState() {
     super.initState();
-    addCardController.apiGetCardList(Get.context!);
+    addCardController.apiGetCardList();
     _payClient = Pay({
       PayProvider.google_pay: PaymentConfiguration.fromJsonString(
           payment_configurations.defaultGooglePay),
@@ -67,7 +67,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
       //final token = paymentResult['token'];
       //final tokenJson = Map.castFrom(json.decode(token));
       //debugPrint("transactionIdentifierJson *************$tokenJson");
-      addCardController.apiPaymentIntent(context, "Apple pay");
+      addCardController.apiPaymentIntent("Apple pay");
       //final transactionId = paymentResult['token']['transactionId'];
       //  final transactionIdentifierJson =
       // Map.castFrom(json.decode(transactionIdentifier));
@@ -511,8 +511,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                     .value)
                                                             ?.then((value) {
                                                           addCardController
-                                                              .apiGetCardList(
-                                                                  context);
+                                                              .apiGetCardList();
                                                         });
                                                       },
                                                       height: 50,

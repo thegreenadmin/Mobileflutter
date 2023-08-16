@@ -212,7 +212,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                                         .roleId
                                                         .toString();
                                                 addNewRoleController
-                                                    .apiDeleteRole(context);
+                                                    .apiDeleteRole();
                                               })
                                             : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
 

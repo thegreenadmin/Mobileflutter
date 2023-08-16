@@ -152,7 +152,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             InkWell(
               onTap: () {
                 Get.back();
-                storeHomeMainController.apiContactStore(context);
+                storeHomeMainController.apiContactStore();
               },
               child: Container(
                 height: 50.0,

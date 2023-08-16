@@ -107,13 +107,13 @@ class AddNewWorkerController extends GetxController {
     }
   }
 
-  void validateAndSubmit(BuildContext ctx, {bool isEdit = false}) async {
+  void validateAndSubmit({bool isEdit = false}) async {
     if (validateAndSave()) {
       try {
         if (isEdit) {
-          apiEditWorker(ctx);
+          apiEditWorker();
         } else {
-          apiAddWorker(ctx);
+          apiAddWorker();
         }
       } catch (_) {}
     } else {
@@ -122,7 +122,7 @@ class AddNewWorkerController extends GetxController {
   }
 
   /// Add Worker Api
-  Future<dynamic> apiAddWorker(BuildContext contextt) async {
+  Future<dynamic> apiAddWorker() async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",
@@ -196,7 +196,7 @@ class AddNewWorkerController extends GetxController {
   }
 
   /// Edit Worker Api
-  Future<dynamic> apiEditWorker(BuildContext contx) async {
+  Future<dynamic> apiEditWorker() async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
         "EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");

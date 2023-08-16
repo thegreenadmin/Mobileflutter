@@ -458,8 +458,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                               () => const AddCardScreen(),
                               id: pageIdApp.value,
                             )!
-                              .then((value) =>
-                                  walletController.apiGetCardList(context))
+                              .then(
+                                  (value) => walletController.apiGetCardList())
                           : /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                 builder: (_) => const CreateOwnerBankAccount(),
@@ -735,7 +735,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                 okayTap: () async {
                                               Get.back();
                                               walletController.apiDeleteCard(
-                                                  context,
                                                   userStripeCardId:
                                                       walletController
                                                               .cardList[index]

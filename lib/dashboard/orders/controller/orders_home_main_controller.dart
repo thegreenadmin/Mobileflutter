@@ -343,7 +343,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   ///Confirm Return Request
-  Future apiConfirmReturnRequest(BuildContext ctx) async {
+  Future apiConfirmReturnRequest() async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
@@ -389,7 +389,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   ///Complete Return Request
-  Future apiCompleteReturnRequest(BuildContext ctx) async {
+  Future apiCompleteReturnRequest() async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
@@ -442,7 +442,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   ///Reject Return Request
-  Future apiRejectReturnRequest(BuildContext ctx) async {
+  Future apiRejectReturnRequest() async {
     isLoading.value = true;
     debugPrint(
         "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
@@ -484,7 +484,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   ///Cancel order ready
-  Future apiCancelOrder(BuildContext ctx) async {
+  Future apiCancelOrder() async {
     isLoading.value = true;
     debugPrint(
         "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");

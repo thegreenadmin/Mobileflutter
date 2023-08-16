@@ -34,9 +34,9 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
       ),
     );
     addCardController.apiGetUserWalletBalance();
-    addCardController.apiGetCardList(context);
+    addCardController.apiGetCardList();
     addCardController.apiGetCountries();
-    addCardController.apiGetUserDetailApi(Get.context);
+    addCardController.apiGetUserDetailApi();
   }
 
   @override

@@ -541,7 +541,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                 colors: [AppColors.primary, AppColors.primary],
               ),
               onTap: () {
-                ordersHomeMainController.apiCompleteReturnRequest(context);
+                ordersHomeMainController.apiCompleteReturnRequest();
                 // if(ordersHomeMainController.getOrderItems.every((element) => element.isSelected==true)){
                 //   ordersHomeMainController.apiCompleteReturnRequest();
                 // }else{

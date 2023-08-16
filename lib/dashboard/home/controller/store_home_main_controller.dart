@@ -516,7 +516,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   ///Api Contact store
-  Future apiContactStore(BuildContext ctx) async {
+  Future apiContactStore() async {
     isLoading.value = true;
     debugPrint("CONTACT STORE URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().messageStore}?store_id=${storeId.value}");
@@ -887,7 +887,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   ///Delete Cart Api
-  Future apiDeleteCart(BuildContext ctxx, {int cartItemId = 0}) async {
+  Future apiDeleteCart( {int cartItemId = 0}) async {
     isLoading.value = true;
     debugPrint("DELETE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");

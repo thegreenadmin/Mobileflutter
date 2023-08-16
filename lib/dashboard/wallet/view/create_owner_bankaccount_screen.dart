@@ -423,7 +423,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                       ),
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        walletController.validateAndSubmit(context,
+                        walletController.validateAndSubmit(
                             isFromCreateOwnerBankBalance: true);
                       },
                       height: 50,

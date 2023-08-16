@@ -265,8 +265,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewCategoryController
-                            .validateAndSubmitUpdate(context);
+                        addNewCategoryController.validateAndSubmitUpdate();
                       },
                       height: 50,
                       text: StringConstants.saveAndUpdateCategoryText,

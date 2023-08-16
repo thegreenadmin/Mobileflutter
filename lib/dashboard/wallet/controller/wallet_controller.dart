@@ -143,7 +143,7 @@ class WalletController extends GetxController {
       }
       getApiData();
     } else {
-      await apiGetCardList(Get.context!);
+      await apiGetCardList();
       await apiGetBankAccountList();
       await apiGetStoreList();
       await apiGetCountries();
@@ -153,7 +153,7 @@ class WalletController extends GetxController {
   }
 
   getApiData() async {
-    await apiGetCardList(Get.context!);
+    await apiGetCardList();
     await apiGetUserWalletBalance();
     await apiGetAutoRechargeDetail();
   }
@@ -186,7 +186,7 @@ class WalletController extends GetxController {
   }
 
   // Fields Validation Method
-  void validateAndSubmit(BuildContext mcontext,
+  void validateAndSubmit(
       {bool isFromCreateOwnerBankBalance = false,
       bool updateAutoData = false,
       isFromAutoRecharge = false}) async {
@@ -209,9 +209,9 @@ class WalletController extends GetxController {
           } else if (userStripeCardId!.value.isEmpty) {
             Utility.showAlertMessage("Please add card");
           } else if (updateAutoData == true) {
-            apiUpdateAutoRecharge(mcontext);
+            apiUpdateAutoRecharge();
           } else {
-            apiCreateAutoRecharge(mcontext);
+            apiCreateAutoRecharge();
           }
         } catch (_) {}
       } else {
@@ -226,7 +226,7 @@ class WalletController extends GetxController {
             userStripeCardId!.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
         } else {
-          await apiAddMoneyToWallet(mcontext);
+          await apiAddMoneyToWallet();
         }
       } else {
         autoValidate.value = true;
@@ -235,7 +235,7 @@ class WalletController extends GetxController {
       if (accountHolderTypeText.isEmpty) {
         Utility.showAlertMessage("Please select account holder type");
       } else {
-        apiCreateBankToken(mcontext);
+        apiCreateBankToken();
       }
     }
     /* if (validateAndSaveAutoCharge()) {
@@ -397,7 +397,7 @@ class WalletController extends GetxController {
   }
 
   /// Crate Stripe Token
-  Future<void> apiCreateStripeToken(context) async {
+  Future<void> apiCreateStripeToken() async {
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
@@ -422,7 +422,7 @@ class WalletController extends GetxController {
       if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
-        await apiCreateCard(context);
+        await apiCreateCard();
       } else {
         debugPrint(response.reasonPhrase);
       }
@@ -432,7 +432,7 @@ class WalletController extends GetxController {
   }
 
   ///Api Create Card
-  Future apiCreateCard(context) async {
+  Future apiCreateCard() async {
     debugPrint(
         "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
     Map body = {"token_id": stripeToken.value};
@@ -456,10 +456,8 @@ class WalletController extends GetxController {
             value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
-          // Get.back();
           Get.back(id: pageIdApp.value);
-          // Navigator.of(context).pop();
-          await apiGetCardList(context);
+          await apiGetCardList();
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
         } else {
@@ -470,7 +468,7 @@ class WalletController extends GetxController {
   }
 
   ///Get Card List Api
-  Future apiGetCardList(BuildContext context) async {
+  Future apiGetCardList() async {
     isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}");
@@ -509,7 +507,7 @@ class WalletController extends GetxController {
   }
 
   /// Add Money to stripe wallet
-  Future apiAddMoneyToWallet(BuildContext ctx) async {
+  Future apiAddMoneyToWallet() async {
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -543,7 +541,6 @@ class WalletController extends GetxController {
           Future.delayed(const Duration(seconds: 1), () {
             Get.back(id: pageIdApp.value);
           });
-          // Navigator.of(ctx).pop();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
@@ -592,7 +589,7 @@ class WalletController extends GetxController {
   }
 
   ///Delete Card api
-  Future apiDeleteCard(context, {String userStripeCardId = ""}) async {
+  Future apiDeleteCard({String userStripeCardId = ""}) async {
     debugPrint(
         "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
 
@@ -614,10 +611,10 @@ class WalletController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await apiGetCardList(context);
+        await apiGetCardList();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
-        await apiGetCardList(context);
+        await apiGetCardList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -672,7 +669,7 @@ class WalletController extends GetxController {
   }
 
   /// Create Bank Token
-  Future<void> apiCreateBankToken(BuildContext ctxx) async {
+  Future<void> apiCreateBankToken() async {
     try {
       var headers = {
         'Authorization':
@@ -703,7 +700,7 @@ class WalletController extends GetxController {
 
         bankToken.value = parsed['id'].toString();
 
-        apiCreateStoreStripeAccount(ctxx);
+        apiCreateStoreStripeAccount();
       } else if (response.statusCode == 400) {
         var parsed = jsonDecode(streamResponse.body);
         Utility.showAlertMessage(parsed['error']['message'].toString());
@@ -716,7 +713,7 @@ class WalletController extends GetxController {
     }
   }
 
-  Future apiCreateStoreStripeAccount(BuildContext ctxx) async {
+  Future apiCreateStoreStripeAccount() async {
     isLoading.value = true;
     debugPrint(
         "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
@@ -751,7 +748,6 @@ class WalletController extends GetxController {
         routingTextController.clear();
         accountNumberTextController.clear();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctxx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -845,7 +841,7 @@ class WalletController extends GetxController {
   }
 
   ///Create Auto Recharge
-  Future apiCreateAutoRecharge(BuildContext ctxx) async {
+  Future apiCreateAutoRecharge() async {
     isLoading.value = true;
     debugPrint(
         "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
@@ -1008,7 +1004,7 @@ class WalletController extends GetxController {
   }
 
   ///Update Auto Recharge
-  Future apiUpdateAutoRecharge(BuildContext ctxx) async {
+  Future apiUpdateAutoRecharge() async {
     isLoading.value = true;
     debugPrint(
         "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
@@ -1062,7 +1058,7 @@ class WalletController extends GetxController {
         startDateTextController.clear();
         endDateTextController.clear();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctxx).pop(ctxx);
+
         await apiGetAutoRechargeDetail();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

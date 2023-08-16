@@ -2060,7 +2060,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewStoreController.validateAndSubmit(context);
+                        addNewStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text:
