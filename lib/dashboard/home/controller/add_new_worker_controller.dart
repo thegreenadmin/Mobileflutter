@@ -294,7 +294,7 @@ class AddNewWorkerController extends GetxController {
       }
     }
     editWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("EDIT WORKER BOSY ***${editWorkerRequest.toJson()}");
+    debugPrint("EDIT WORKER BODY ***${editWorkerRequest.toJson()}");
 
     UserProvider()
         .putWithHeadersApi(
