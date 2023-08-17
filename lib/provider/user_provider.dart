@@ -41,6 +41,13 @@ class UserProvider extends GetConnect {
         title: "Alert!",
       );
       return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
+        title: "Alert!",
+      );
+      return null;
     } catch (e) {
       if (showLoading) Get.back();
       debugPrint("Alert:------");
@@ -92,6 +99,13 @@ class UserProvider extends GetConnect {
         title: "Alert!",
       );
       return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
+        title: "Alert!",
+      );
+      return null;
     } catch (e) {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
@@ -136,6 +150,13 @@ class UserProvider extends GetConnect {
         title: "Alert!",
       );
       return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
+        title: "Alert!",
+      );
+      return null;
     } catch (e) {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
@@ -169,7 +190,6 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
-        //  Utility.showAlertMessage("FCM Error",title: "Alert!");
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
@@ -190,6 +210,13 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
         "Connection timed out.",
+        title: "Alert!",
+      );
+      return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
         title: "Alert!",
       );
       return null;
@@ -226,6 +253,7 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
+        if (showLoading) Get.back();
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
@@ -239,12 +267,18 @@ class UserProvider extends GetConnect {
         "Please check your network connection.",
         title: "No Internet Connection!",
       );
-      // Utility.showAlertMessage("FCM Error",title: );
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
         "Connection timed out.",
+        title: "Alert!",
+      );
+      return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
         title: "Alert!",
       );
       return null;
@@ -301,6 +335,13 @@ class UserProvider extends GetConnect {
         title: "Alert!",
       );
       return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
+        title: "Alert!",
+      );
+      return null;
     } catch (e) {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
@@ -352,6 +393,13 @@ class UserProvider extends GetConnect {
       if (showLoading) Get.back();
       Utility.showAlertMessage(
         "Connection timed out.",
+        title: "Alert!",
+      );
+      return null;
+    } on Exception catch (e) {
+      if (showLoading) Get.back();
+      Utility.showAlertMessage(
+        e.toString(),
         title: "Alert!",
       );
       return null;
