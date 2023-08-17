@@ -146,7 +146,7 @@ class WalletController extends GetxController {
       await apiGetCardList();
       await apiGetBankAccountList();
       await apiGetStoreList();
-     // await apiGetCountries();
+      // await apiGetCountries();
       await apiGetAccountDetails();
     }
     update();
