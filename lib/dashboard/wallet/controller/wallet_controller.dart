@@ -146,7 +146,7 @@ class WalletController extends GetxController {
       await apiGetCardList();
       await apiGetBankAccountList();
       await apiGetStoreList();
-      await apiGetCountries();
+     // await apiGetCountries();
       await apiGetAccountDetails();
     }
     update();
@@ -363,7 +363,7 @@ class WalletController extends GetxController {
         .getWithHeadersApi(
             ServerCommunicator().baseUrl + ServerCommunicator().ownersStoreList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isStoresLoading.value = false;
       log("GET STORE RESPONSE *******${jsonEncode(value!.body)}");

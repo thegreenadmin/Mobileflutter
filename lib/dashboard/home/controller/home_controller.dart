@@ -61,10 +61,10 @@ class HomeController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -182,7 +182,7 @@ class HomeController extends GetxController {
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
-            StringConstants.lastNameText, lastName!.value);
+            StringConstants.lastNameText, lastName.value);
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
