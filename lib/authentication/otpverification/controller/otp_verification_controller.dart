@@ -107,7 +107,7 @@ class OtpVerificationController extends GetxController {
         apiGetPermissions();
         Get.offAll(() => const BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        //email must be unique & user already exists
+        //Email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
         if (value.body['message'] != null) {
