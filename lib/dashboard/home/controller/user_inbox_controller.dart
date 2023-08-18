@@ -17,8 +17,6 @@ class UserInboxController extends GetxController {
   late UserInboxModel inboxModel = UserInboxModel();
   RxList<MessageHead> inboxList = <MessageHead>[].obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
   RxBool showPreviousMessages = false.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
@@ -30,19 +28,7 @@ class UserInboxController extends GetxController {
     isInboxSelected.value = true;
     showPreviousMessages.value = false;
     apiGetInboxList();
-    getPage();
-  }
-
-  getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
   }
 
   ///Get Inbox message heads List Api

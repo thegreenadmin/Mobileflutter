@@ -690,7 +690,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  userInboxDetailController.isloading.value
+                                  userInboxDetailController.isLoading.value
                                       ? height0SizedBox
                                       : Column(
                                           children: [
