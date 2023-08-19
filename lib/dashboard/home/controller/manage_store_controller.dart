@@ -136,7 +136,6 @@ class ManageStoreController extends GetxController {
     }
     if (Get.parameters["categoryId"] != "") {
       categoryId.value = Get.parameters["categoryId"] ?? "";
-      print("hellloooooooooooooooo" + Get.parameters["categoryId"].toString());
     }
 
     await apiGetCategoriesList();
@@ -156,7 +155,7 @@ class ManageStoreController extends GetxController {
     {"isSelected": false, "day": "Thursday"},
     {"isSelected": false, "day": "Friday"},
     {"isSelected": false, "day": "Saturday"},
-    {"isSelected": false, "day": "Sunday"},
+    {"isSelected": false, "day": "Sunday"},                                                                                                 
   ].obs;
 
   bool validateAndSave() {
