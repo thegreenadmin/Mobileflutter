@@ -126,7 +126,7 @@ class AddCardController extends GetxController {
     await apiGetBankAccountList();
     await apiGetStoreList();
     await apiGetUserDetailApi();
-    await apiGetCountries();
+    // await apiGetCountries();
     await apiGetAccountDetails();
   }
 
@@ -177,7 +177,7 @@ class AddCardController extends GetxController {
             addressLine2TextController.text = userAddress[i].addressLine2 ?? "";
             cityTextController.text = userAddress[i].city ?? "";
             zipCodeTextController.text = userAddress[i].postalCode ?? "";
-            await apiGetCountries();
+            // await apiGetCountries();
           }
         }
       } else if (value.body["status"] == 401) {
@@ -901,7 +901,7 @@ class AddCardController extends GetxController {
   }
 
   /// Add Money to stripe wallet
-  Future apiPaymentIntent(  String type) async {
+  Future apiPaymentIntent(String type) async {
     debugPrint(
         "PAYMENT INTENT URL *******${ServerCommunicator().baseUrl + ServerCommunicator().paymentIntent}");
     Map body = {
