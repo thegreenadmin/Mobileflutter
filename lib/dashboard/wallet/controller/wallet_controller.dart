@@ -511,6 +511,7 @@ class WalletController extends GetxController {
 
   /// Add Money to stripe wallet
   Future apiAddMoneyToWallet() async {
+    isLoading.value = true;
     debugPrint(
         "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
     Map body = {
@@ -533,6 +534,7 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       if (value != null) {
+        isLoading.value = false;
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
@@ -593,6 +595,7 @@ class WalletController extends GetxController {
 
   ///Delete Card api
   Future apiDeleteCard({String userStripeCardId = ""}) async {
+    isLoading.value = true;
     debugPrint(
         "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
 
@@ -610,6 +613,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("DELETE CARD RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -673,6 +677,7 @@ class WalletController extends GetxController {
 
   /// Create Bank Token
   Future<void> apiCreateBankToken() async {
+    isLoading.value = true;
     try {
       var headers = {
         'Authorization':
@@ -717,6 +722,7 @@ class WalletController extends GetxController {
   }
 
   Future apiCreateStoreStripeAccount() async {
+    isLoading.value = true;
     debugPrint(
         "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
 
@@ -736,6 +742,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("CREATE OWNER STRIPE BANK ACCOUNT BODY ******* $body");
       debugPrint(
           "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value!.body}");
@@ -843,6 +850,7 @@ class WalletController extends GetxController {
 
   ///Create Auto Recharge
   Future apiCreateAutoRecharge() async {
+    isLoading.value = true;
     debugPrint(
         "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
 
@@ -876,6 +884,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("CREATE AUTO RECHARGE BODY ******* $body");
       debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
@@ -1004,6 +1013,7 @@ class WalletController extends GetxController {
 
   ///Update Auto Recharge
   Future apiUpdateAutoRecharge() async {
+    isLoading.value = true;
     debugPrint(
         "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
 
@@ -1039,6 +1049,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
       debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
@@ -1073,6 +1084,7 @@ class WalletController extends GetxController {
 
   ///Delete autoCharge api
   Future apiDisableAutoRecharge() async {
+    isLoading.value = true;
     debugPrint(
         "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}");
 
@@ -1093,6 +1105,7 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("DISABLE AUTO CHARGE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {

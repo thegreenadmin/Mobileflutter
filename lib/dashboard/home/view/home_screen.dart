@@ -218,8 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(100),
+                            GestureDetector(
+                              //borderRadius: BorderRadius.circular(100),
                               onTap: () {
                                 if (homeController.isLoading?.value == false) {
                                   // SharedPreferenceStorage.setData(
