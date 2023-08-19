@@ -119,11 +119,13 @@ class WalletController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (roleApp.value == Role.customerRoleText) {
-        searchStoreUserController.onInit();
-      }
+      if (Get.parameters["isController"] != "no") {
+        if (roleApp.value == Role.customerRoleText) {
+          searchStoreUserController.onInit();
+        }
 
-      getPage();
+        getPage();
+      }
     });
   }
 

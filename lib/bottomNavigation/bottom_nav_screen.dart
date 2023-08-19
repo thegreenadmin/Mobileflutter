@@ -35,6 +35,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
   //  GlobalKey<NavigatorState> tab4 = GlobalKey<NavigatorState>();
   //  GlobalKey<NavigatorState> tab5 = GlobalKey<NavigatorState>();
   //  GlobalKey<NavigatorState> tab6 = GlobalKey<NavigatorState>();
+  @override
+  void initState() {
+    Get.parameters["isController"] = "no";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

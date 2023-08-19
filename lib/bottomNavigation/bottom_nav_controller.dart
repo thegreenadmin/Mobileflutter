@@ -170,6 +170,7 @@ class BottomNavController extends GetxController {
           debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 1) {
+        Get.parameters["isController"] = "yes";
         try {
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 1;
@@ -179,6 +180,7 @@ class BottomNavController extends GetxController {
           debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 2) {
+        Get.parameters["isController"] = "yes";
         try {
           if (roleApp.value == Role.customerRoleText) {
             pageIdApp.value = 4;
@@ -204,6 +206,7 @@ class BottomNavController extends GetxController {
           debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 3) {
+        Get.parameters["isController"] = "yes";
         try {
           Future.delayed(Duration.zero, () async {
             pageIdApp.value = 5;
@@ -214,6 +217,7 @@ class BottomNavController extends GetxController {
           debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 4) {
+        Get.parameters["isController"] = "yes";
         try {
           Future.delayed(Duration.zero, () async {
             pageIdApp.value = 6;

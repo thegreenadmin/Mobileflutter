@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -53,13 +51,15 @@ class OffersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (roleApp.value == Role.customerRoleText) {
-        searchStoreUserController.onInit();
-      }
-      isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
+      if (Get.parameters["isController"] != "no") {
+        if (roleApp.value == Role.customerRoleText) {
+          searchStoreUserController.onInit();
+        }
+        isFromNotification.value =
+            Get.parameters["isFromNotification"] == "true" ? true : false;
 
-      getData();
+        getData();
+      }
     });
   }
 

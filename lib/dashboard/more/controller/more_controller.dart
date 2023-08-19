@@ -17,7 +17,9 @@ class MoreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getData();
+    if (Get.parameters["isController"] != "no") {
+      getData();
+    }
   }
 
   getData() async {
