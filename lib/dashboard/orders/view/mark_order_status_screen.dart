@@ -361,7 +361,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Row(
                                         children: [
@@ -379,7 +380,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                             ),
                                           ),
                                           width8SizedBox,
-                                          Text(StringConstants.identityProofText,
+                                          Text(
+                                              StringConstants.identityProofText,
                                               style: const TextStyle(
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w600,
@@ -418,8 +420,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                         BorderRadius.circular(
                                                             16)),
                                                 content: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(10.0),
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
@@ -432,8 +434,9 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               shape: BoxShape
                                                                   .rectangle,
                                                               border: Border.all(
-                                                                  color: AppColors
-                                                                      .white,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
                                                                   width: 1)),
                                                           child: CommonWidgets
                                                               .cachedNetworkImage(
@@ -480,7 +483,6 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                               ],
                             ),
                           ),
-
                         ]),
                   )),
               Obx(() => Expanded(
@@ -544,13 +546,28 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                             child: CommonWidgets
                                                 .cachedNetworkImage(
                                               ordersHomeMainController
-                                                  .getOrderItems[index]
-                                                  .product!
-                                                  .productImages!
-                                                  .first
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
+                                                          .getOrderItems[index]
+                                                          .product!
+                                                          .productImages!
+                                                          .isEmpty ||
+                                                      ordersHomeMainController
+                                                              .getOrderItems[
+                                                                  index]
+                                                              .product!
+                                                              .productImages!
+                                                              .first
+                                                              .image!
+                                                              .dynamicUrl ==
+                                                          null
+                                                  ? ""
+                                                  : ordersHomeMainController
+                                                      .getOrderItems[index]
+                                                      .product!
+                                                      .productImages!
+                                                      .first
+                                                      .image!
+                                                      .dynamicUrl
+                                                      .toString(),
                                               height: 70.0,
                                               fit: BoxFit.fill,
                                             ),

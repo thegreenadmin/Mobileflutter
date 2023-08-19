@@ -219,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             InkWell(
+                              borderRadius: BorderRadius.circular(100),
                               onTap: () {
                                 if (homeController.isLoading?.value == false) {
                                   // SharedPreferenceStorage.setData(
@@ -347,13 +348,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       //       const SearchStoreUserScreen(),
                                       // ));
                                       Get.parameters["firstName"] =
-                                          firstName.value
-                                                  .toString() ??
-                                              "";
+                                          firstName.value.toString() ?? "";
                                       Get.parameters["lastName"] =
-                                          lastName.value
-                                                  .toString() ??
-                                              "";
+                                          lastName.value.toString() ?? "";
 
                                       Get.parameters["isFromHome"] = "true";
                                       Get.parameters["isFromFav"] = "false";
@@ -362,10 +359,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         () => const SearchStoreUserScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
-                                          "firstName":
-                                              firstName.value,
-                                          "lastName":
-                                              lastName.value,
+                                          "firstName": firstName.value,
+                                          "lastName": lastName.value,
                                         },
                                       );
                                     } else {
@@ -378,22 +373,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       // ));
                                       Get.parameters["isFromHome"] = 'false';
                                       Get.parameters["firstName"] =
-                                          firstName.value
-                                                  .toString() ??
-                                              "";
+                                          firstName.value.toString() ?? "";
                                       Get.parameters["lastName"] =
-                                          lastName.value
-                                                  .toString() ??
-                                              "";
+                                          lastName.value.toString() ?? "";
                                       Get.parameters['storeId'] = "";
                                       Get.to(
                                         () => const OwnerStoresListScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
-                                          "firstName":
-                                              firstName.value,
-                                          "lastName":
-                                              lastName.value,
+                                          "firstName": firstName.value,
+                                          "lastName": lastName.value,
                                         },
                                       );
                                     }
@@ -440,10 +429,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         () => const SearchStoreUserScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
-                                          "firstName":
-                                              firstName.value,
-                                          "lastName":
-                                              lastName.value,
+                                          "firstName": firstName.value,
+                                          "lastName": lastName.value,
                                         },
                                       );
                                     }
