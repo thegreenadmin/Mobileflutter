@@ -72,6 +72,7 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (roleApp.value == Role.customerRoleText) {
         searchStoreUserController.onInit();
@@ -104,13 +105,10 @@ class OrdersController extends GetxController {
         page.value = 1;
         apiGetStoreOrderListApi();
       }
-
       apiGetOrderStatusListApi();
       getPage();
       setupScrollController();
     });
-
-    super.onInit();
   }
 
   getPage() async {
@@ -891,7 +889,7 @@ class OrdersController extends GetxController {
             data,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Store Order  List *******${value?.body}");

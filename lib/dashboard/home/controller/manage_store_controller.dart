@@ -283,10 +283,10 @@ class ManageStoreController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CATEGORIES LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getCategoriesModel = GetCategoriesModel.fromJson(value.body);
+      debugPrint("GET CATEGORIES LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getCategoriesModel = GetCategoriesModel.fromJson(value?.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
@@ -299,13 +299,13 @@ class ManageStoreController extends GetxController {
             categoriesList[i].isSelected = true;
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

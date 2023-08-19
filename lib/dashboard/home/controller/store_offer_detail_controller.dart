@@ -22,19 +22,7 @@ class StoreOfferDetailController extends GetxController {
     storeId.value = Get.parameters["storeId"] ?? "";
     offerId.value = Get.parameters["offerId"] ?? "";
     apiGetStoreOffersDetail();
-    getPage();
-  }
-
-  getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
   }
 
   ///Get store offer detail

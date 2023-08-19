@@ -154,9 +154,7 @@ class OwnerStoresController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];

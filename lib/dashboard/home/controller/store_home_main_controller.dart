@@ -15,14 +15,11 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class StoreHomeMainController extends GetxController {
   Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
   late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
-
   RxList<Offer> offersList = <Offer>[].obs;
 
   late StoreCategoriesListResponse categoriesListResponse =
       StoreCategoriesListResponse();
   RxList<Category> categoriesList = <Category>[].obs;
-  // Rx<Category> category = Category().obs;
-
   Rx<ShopProductDetailResponse> productDetailResponse =
       ShopProductDetailResponse().obs;
 
@@ -887,7 +884,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   ///Delete Cart Api
-  Future apiDeleteCart( {int cartItemId = 0}) async {
+  Future apiDeleteCart({int cartItemId = 0}) async {
     isLoading.value = true;
     debugPrint("DELETE CART URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");

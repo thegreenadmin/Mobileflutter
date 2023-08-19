@@ -492,8 +492,7 @@ class SearchStoreUserController extends GetxController {
   }
 
   ///Get Previous Stores Api
-  Future apiGetPreviousStores(
-    context, {
+  Future apiGetPreviousStores({
     bool isFilter = false,
   }) async {
     isClicked.value = true;
@@ -552,8 +551,7 @@ class SearchStoreUserController extends GetxController {
   }
 
   ///Get Favorite Stores Api
-  Future apiGetFavoriteStores(
-    context, {
+  Future apiGetFavoriteStores({
     bool isFilter = false,
   }) async {
     isClicked.value = true;
@@ -643,7 +641,7 @@ class SearchStoreUserController extends GetxController {
         if (type.value == 2) {
           favouriteStore.clear();
           page.value = 1;
-          apiGetFavoriteStores(Get.context!);
+          apiGetFavoriteStores();
         } else if (type.value == 0) {
           debugPrint("Create Favourite Store *******${type.value}");
           debugPrint("Create Favourite Store *******${type.value}");
@@ -653,7 +651,7 @@ class SearchStoreUserController extends GetxController {
         } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
-          apiGetPreviousStores(Get.context!);
+          apiGetPreviousStores();
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -700,7 +698,7 @@ class SearchStoreUserController extends GetxController {
         if (type.value == 2) {
           favouriteStore.clear();
           page.value = 1;
-          apiGetFavoriteStores(Get.context!);
+          apiGetFavoriteStores();
         } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
@@ -708,7 +706,7 @@ class SearchStoreUserController extends GetxController {
         } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
-          apiGetPreviousStores(Get.context!);
+          apiGetPreviousStores();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

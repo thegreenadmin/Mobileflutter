@@ -421,10 +421,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                   await searchStoreUserController.apiGetNearByStores();
                 } else if (i == 1 &&
                     searchStoreUserController.isClicked.value == false) {
-                  await searchStoreUserController.apiGetPreviousStores(context);
+                  await searchStoreUserController.apiGetPreviousStores();
                 } else if (i == 2 &&
                     searchStoreUserController.isClicked.value == false) {
-                  await searchStoreUserController.apiGetFavoriteStores(context);
+                  await searchStoreUserController.apiGetFavoriteStores();
                 }
               },
               tabs: [

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -118,7 +116,7 @@ class BottomNavController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      log("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value!.body}");
+      debugPrint("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getPermissionsModel = GetPermissionsModel.fromJson(value.body);
@@ -201,7 +199,7 @@ class BottomNavController extends GetxController {
             }
           });
         } catch (e) {
-          debugPrint("Bottom Nav  Order Error:-----------${e.toString()}");
+          debugPrint("Bottom Nav Order Error:-----------${e.toString()}");
         }
       } else if (selectedIndex.value == 3) {
         try {

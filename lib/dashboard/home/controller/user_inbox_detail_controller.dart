@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class UserInboxDetailController extends GetxController {
-  RxBool isloading = false.obs;
+  RxBool isLoading = false.obs;
 
   TextEditingController messageTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -39,19 +39,7 @@ class UserInboxDetailController extends GetxController {
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
 
     apiGetMessagesList();
-    getPage();
-  }
-
-  getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -65,13 +53,8 @@ class UserInboxDetailController extends GetxController {
         userSelectedImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-
-      }
+      } else {}
     }, onCameraClick: () async {
-
-
-
       XFile? pickedFile = await ImagePickerClass.picker.pickImage(
           imageQuality: 50,
           source: ImageSource.camera,
@@ -81,9 +64,7 @@ class UserInboxDetailController extends GetxController {
         userSelectedImage.value = pickedFile;
         await apiUploadImage();
         update();
-      } else {
-
-      }
+      } else {}
     });
   }
 
@@ -136,7 +117,7 @@ class UserInboxDetailController extends GetxController {
 
   ///Get Messages List Api
   Future apiGetMessagesList() async {
-    isloading.value = true;
+    isLoading.value = true;
     debugPrint(
         "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");
 
@@ -151,7 +132,7 @@ class UserInboxDetailController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isloading.value = false;
+      isLoading.value = false;
       debugPrint("MESSAGE LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
@@ -194,7 +175,7 @@ class UserInboxDetailController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isloading.value = false;
+      isLoading.value = false;
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
