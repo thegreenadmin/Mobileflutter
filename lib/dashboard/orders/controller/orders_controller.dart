@@ -74,40 +74,43 @@ class OrdersController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (roleApp.value == Role.customerRoleText) {
-        searchStoreUserController.onInit();
-      }
-      isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
-      if (Get.parameters['storeId'] != "" &&
-          Get.parameters['storeId'] != null) {
-        storeId.value = Get.parameters["storeId"] ?? "";
-        if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+      if (Get.parameters["isController"] != "no") {
+        if (roleApp.value == Role.customerRoleText) {
+          searchStoreUserController.onInit();
+        }
+        isFromNotification.value =
+            Get.parameters["isFromNotification"] == "true" ? true : false;
+        if (Get.parameters['storeId'] != "" &&
+            Get.parameters['storeId'] != null) {
           storeId.value = Get.parameters["storeId"] ?? "";
+          if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+            storeId.value = Get.parameters["storeId"] ?? "";
+            apiGetStoreDetailsApi();
+          }
           apiGetStoreDetailsApi();
         }
-        apiGetStoreDetailsApi();
-      }
 
-      orderStatus.value = Get.parameters["orderStatus"] ?? "";
-      isHome.value = Get.parameters["isHome"] == "true" ? true : false;
-      isActiveOrders.value = true;
-      orderStatusId.value = 2;
-      orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
-      role!.value = SharedPreferenceStorage.getData(Role.role).toString();
-      role!.value = roleApp.value;
-      uerSelectedTab.value = 0;
-      if (role!.value == Role.customerRoleText) {
-        page.value = 1;
-        apiGetOrderListApi();
-      } else {
-        apiGetStoreList();
-        page.value = 1;
-        apiGetStoreOrderListApi();
+        orderStatus.value = Get.parameters["orderStatus"] ?? "";
+        isHome.value = Get.parameters["isHome"] == "true" ? true : false;
+        isActiveOrders.value = true;
+        orderStatusId.value = 2;
+        orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
+        role!.value = SharedPreferenceStorage.getData(Role.role).toString();
+        role!.value = roleApp.value;
+        uerSelectedTab.value = 0;
+        if (role!.value == Role.customerRoleText) {
+          page.value = 1;
+          apiGetOrderListApi();
+        } else {
+          apiGetStoreList();
+          page.value = 1;
+          apiGetStoreOrderListApi();
+        }
+
+        apiGetOrderStatusListApi();
+        getPage();
+        setupScrollController();
       }
-      apiGetOrderStatusListApi();
-      getPage();
-      setupScrollController();
     });
   }
 
