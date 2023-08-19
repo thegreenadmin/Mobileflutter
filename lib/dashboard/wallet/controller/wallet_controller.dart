@@ -54,6 +54,7 @@ class WalletController extends GetxController {
   RxBool isCvvFocused = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isOwnerWalletBalanceLoading = false.obs;
   RxBool isStoresLoading = false.obs;
   RxBool isAutoRechargeEnable = false.obs;
   RxInt? selectedIndex = 0.obs;
@@ -122,7 +123,6 @@ class WalletController extends GetxController {
       if (roleApp.value == Role.customerRoleText) {
         searchStoreUserController.onInit();
       }
-
       getPage();
     });
   }
@@ -366,7 +366,7 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isStoresLoading.value = false;
-      log("GET STORE RESPONSE *******${jsonEncode(value!.body)}");
+      debugPrint("GET STORE RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
@@ -714,7 +714,6 @@ class WalletController extends GetxController {
   }
 
   Future apiCreateStoreStripeAccount() async {
-    isLoading.value = true;
     debugPrint(
         "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
 
@@ -734,7 +733,6 @@ class WalletController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value = false;
       debugPrint("CREATE OWNER STRIPE BANK ACCOUNT BODY ******* $body");
       debugPrint(
           "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value!.body}");
@@ -842,7 +840,6 @@ class WalletController extends GetxController {
 
   ///Create Auto Recharge
   Future apiCreateAutoRecharge() async {
-    isLoading.value = true;
     debugPrint(
         "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
 
@@ -876,7 +873,6 @@ class WalletController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value = false;
       debugPrint("CREATE AUTO RECHARGE BODY ******* $body");
       debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
@@ -1005,7 +1001,6 @@ class WalletController extends GetxController {
 
   ///Update Auto Recharge
   Future apiUpdateAutoRecharge() async {
-    isLoading.value = true;
     debugPrint(
         "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
 
@@ -1041,7 +1036,6 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
       debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
       debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||

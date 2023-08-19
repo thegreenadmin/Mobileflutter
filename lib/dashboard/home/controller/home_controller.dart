@@ -12,8 +12,6 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class HomeController extends GetxController {
-  // RxString? firstName = "".obs;
-  // RxString? lastName = "".obs;
   RxString? email = "".obs;
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
@@ -241,7 +239,6 @@ class HomeController extends GetxController {
 
   ///Feature ProductList Store Api [USER OLD]
   Future apiGetUserFeaturedProductsOLD() async {
-    isLoading!.value = true;
     debugPrint("USER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
 
@@ -277,7 +274,6 @@ class HomeController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
       debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -299,7 +295,6 @@ class HomeController extends GetxController {
 
   ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
-    isLoading!.value = true;
     String url =
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
     debugPrint("USER FEATURED PRODUCT URL**********$url");
@@ -331,7 +326,6 @@ class HomeController extends GetxController {
     UserProvider()
         .getWithHeadersApi(url, headers, showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
       debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -354,7 +348,6 @@ class HomeController extends GetxController {
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     ownerCarouselImgList.clear();
-    isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
 
@@ -378,7 +371,6 @@ class HomeController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
       log("OWNER OFFERS LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -407,7 +399,6 @@ class HomeController extends GetxController {
 
   ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
-    isLoading!.value = true;
     debugPrint("OWNER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}");
 
@@ -441,7 +432,6 @@ class HomeController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
       debugPrint("OWNER FEATURED PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -58,7 +56,6 @@ class OffersController extends GetxController {
       }
       isFromNotification.value =
           Get.parameters["isFromNotification"] == "true" ? true : false;
-
       getData();
     });
   }
@@ -92,7 +89,6 @@ class OffersController extends GetxController {
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer ${authToken.value.toString()}",

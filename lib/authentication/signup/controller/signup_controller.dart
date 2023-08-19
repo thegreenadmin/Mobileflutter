@@ -41,15 +41,6 @@ class SignupController extends GetxController {
   RxBool autoValidate = false.obs;
   RxBool isFromOwner = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Get.arguments['isFromOwner'] == null
-    //     ? false
-    //     : Get.parameters["isFromOwner"];
-    // isFromOwner.value = Get.arguments['isFromOwner'];
-  }
-
   void ageAlertDailogue(
     context,
   ) {
@@ -214,9 +205,6 @@ class SignupController extends GetxController {
       debugPrint("CREATE USER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        // countryCode.value = "";
-        // phoneNumber.value = "";
-
         await apiGenerateOtp();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists

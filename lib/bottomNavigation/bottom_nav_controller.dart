@@ -36,7 +36,6 @@ class BottomNavController extends GetxController {
         ));
         initialRemoteMessage = null;
       }
-
       lastSelectedIndex.value = selectedIndex.value =
           Get.parameters["currentIndex"] != null
               ? int.parse(Get.parameters["currentIndex"].toString())
@@ -183,7 +182,6 @@ class BottomNavController extends GetxController {
           } else {
             apiGetStoreList();
           }
-
           Future.delayed(const Duration(milliseconds: 100), () {
             if (roleApp.value == Role.storeOwnerRoleText) {
               if (storeList.length > 1 || storeList.isEmpty) {

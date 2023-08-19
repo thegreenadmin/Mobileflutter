@@ -93,9 +93,7 @@ class OtpVerificationController extends GetxController {
         SharedPreferenceStorage.setData("pageId", 0);
         authToken.value = value.body['data']['token'];
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
-        debugPrint("SharedPreferenceStorage: token: ------ ");
-        debugPrint(authToken.value.toString());
-
+        debugPrint("SHAREDPREFERENCE STORAGE TOKEN ******* ${authToken.value}");
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
