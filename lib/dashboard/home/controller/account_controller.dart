@@ -380,8 +380,7 @@ class AccountController extends GetxController {
             responseData['data']['urls']['dynamic_url'];
         await apiAddUserIdProof();
         return responseData;
-      }
-      else if (res.statusCode == ApiConstants.statusCode401) {
+      } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
@@ -477,11 +476,11 @@ class AccountController extends GetxController {
                 getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
-        await apiGetCountries();
+        // await apiGetCountries();
         await apiGetMembershipList();
         await apiGetActiveMembershipList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
-        await apiGetCountries();
+        // await apiGetCountries();
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
