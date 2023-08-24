@@ -664,7 +664,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                          "${StringConstants.qtyText}: ",
+                                                          "${StringConstants.qtyText}:",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,

@@ -130,7 +130,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 inactiveColor: AppColors.grey),
                             onChanged: (v) {},
                             onCompleted: (value) {
-                              otpVerificationController.validateAndSubmitOtp();
+                              if (otpVerificationController.isLoading.value ==
+                                  false) {
+                                otpVerificationController
+                                    .validateAndSubmitOtp();
+                              }
                             },
                           ),
                         ),
@@ -139,7 +143,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () {
-                            otpVerificationController.validateAndSubmitOtp();
+                            if (otpVerificationController.isLoading.value ==
+                                false) {
+                              otpVerificationController.validateAndSubmitOtp();
+                            }
                           },
                           child: Center(
                             child: Text.rich(

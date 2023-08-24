@@ -105,12 +105,14 @@ class SearchStoreUserController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
+    var roleVal = roleApp.value;
     role?.value = roleVal;
     searchController.clear();
     page.value = 1;
-    setupScrollController();
-    apiActiveCartApi();
+    if (roleApp.value == Role.customerRoleText) {
+      setupScrollController();
+      apiActiveCartApi();
+    }
   }
 
   ///Get Active Cart Api

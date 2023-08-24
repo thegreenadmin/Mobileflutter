@@ -22,6 +22,7 @@ class OtpVerificationController extends GetxController {
 
   RxString phoneNumber = "".obs;
   RxString countryCode = "".obs;
+  RxBool isLoading = false.obs;
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -67,6 +68,7 @@ class OtpVerificationController extends GetxController {
 
   ///Otp Verify Api
   Future apiOtpVerify() async {
+    isLoading.value = true;
     var rng = math.Random();
     Map data = {
       "phone": phoneNumber.value.trim(),
@@ -84,6 +86,7 @@ class OtpVerificationController extends GetxController {
             data, ServerCommunicator().baseUrl + ServerCommunicator().otpVerify,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -102,7 +105,7 @@ class OtpVerificationController extends GetxController {
           SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
           roleApp.value = Role.customerRoleText;
         }
-        apiGetPermissions();
+        // apiGetPermissions();
         Get.offAll(() => const BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         //Email must be unique & user already exists

@@ -46,8 +46,7 @@ class HomeController extends GetxController {
   RxList<DataList> featuredUserProductList = <DataList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-  final SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
+  late final SearchStoreUserController searchStoreUserController;
 
   @override
   void onInit() {
@@ -81,6 +80,7 @@ class HomeController extends GetxController {
       role!.value = Role.customerRoleText;
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();
+      searchStoreUserController = Get.put(SearchStoreUserController());
       searchStoreUserController.onInit();
     } else {
       role!.value = Role.storeOwnerRoleText;

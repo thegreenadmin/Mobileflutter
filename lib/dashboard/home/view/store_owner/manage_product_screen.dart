@@ -392,125 +392,124 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              width: 150,
-                                              child: Obx(() => Text(
-                                                    manageStoreController
-                                                            .categoriesList[
-                                                                index]
-                                                            .categoryName ??
-                                                        "",
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )),
-                                            ),
+                                            Obx(() => Text(
+                                                  manageStoreController
+                                                          .categoriesList[
+                                                              index]
+                                                          .categoryName ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )),
                                             height4SizedBox,
-                                            SizedBox(
-                                              width: 180,
-                                              child: Obx(() => Text(
-                                                    manageStoreController
-                                                                .categoriesList[
-                                                                    index]
-                                                                .totalProducts! >
-                                                            1
-                                                        ? "${manageStoreController.categoriesList[index].totalProducts} Products"
-                                                        : "${manageStoreController.categoriesList[index].totalProducts} Product",
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  )),
-                                            ),
+                                            Obx(() => Text(
+                                                  manageStoreController
+                                                              .categoriesList[
+                                                                  index]
+                                                              .totalProducts! >
+                                                          1
+                                                      ? "${manageStoreController.categoriesList[index].totalProducts} Products"
+                                                      : "${manageStoreController.categoriesList[index].totalProducts} Product",
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: AppColors
+                                                          .blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                )),
                                           ],
                                         ),
                                       ],
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        manageStoreController.categoryId.value =
-                                            manageStoreController
-                                                    .categoriesList[index]
-                                                    .categoryId ??
-                                                "";
-                                        Get.parameters["storeId"] =
-                                            manageStoreController.storeId.value;
-                                        Get.parameters["categoryId"] =
-                                            manageStoreController
-                                                    .categoriesList[index]
-                                                    .categoryId ??
-                                                "";
-                                        hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                                permissionStoreList.any((element) =>
-                                                    element.storeId ==
-                                                            manageStoreController
-                                                                .storeId
-                                                                .value &&
-                                                        element.isStoreOwner ==
-                                                            true ||
-                                                    element.storeId ==
-                                                            manageStoreController
-                                                                .storeId.value
-                                                                .toString() &&
-                                                        element.controllers!.any((ele) =>
-                                                            ele.controllerKey ==
-                                                            PermissionKey
-                                                                .editProductCategories
-                                                                .statusName))
-                                            ? Get.to(() => const EditCategoryScreen(), id: pageIdApp.value, arguments: {
-                                                "storeId": manageStoreController
-                                                    .storeId.value,
-                                                "categoryId":
-                                                    manageStoreController
-                                                            .categoriesList[
-                                                                index]
-                                                            .categoryId ??
-                                                        ""
-                                              })!
-                                                .then((value) {
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            manageStoreController.categoryId.value =
                                                 manageStoreController
-                                                    .apiGetCategoriesList();
-                                              })
-                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Image.asset(
-                                          ImageConstants.circleedit,
-                                          scale: 3,
+                                                        .categoriesList[index]
+                                                        .categoryId ??
+                                                    "";
+                                            Get.parameters["storeId"] =
+                                                manageStoreController.storeId.value;
+                                            Get.parameters["categoryId"] =
+                                                manageStoreController
+                                                        .categoriesList[index]
+                                                        .categoryId ??
+                                                    "";
+                                            hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                                    permissionStoreList.any((element) =>
+                                                        element.storeId ==
+                                                                manageStoreController
+                                                                    .storeId
+                                                                    .value &&
+                                                            element.isStoreOwner ==
+                                                                true ||
+                                                        element.storeId ==
+                                                                manageStoreController
+                                                                    .storeId.value
+                                                                    .toString() &&
+                                                            element.controllers!.any((ele) =>
+                                                                ele.controllerKey ==
+                                                                PermissionKey
+                                                                    .editProductCategories
+                                                                    .statusName))
+                                                ? Get.to(() => const EditCategoryScreen(), id: pageIdApp.value, arguments: {
+                                                    "storeId": manageStoreController
+                                                        .storeId.value,
+                                                    "categoryId":
+                                                        manageStoreController
+                                                                .categoriesList[
+                                                                    index]
+                                                                .categoryId ??
+                                                            ""
+                                                  })!
+                                                    .then((value) {
+                                                    manageStoreController
+                                                        .apiGetCategoriesList();
+                                                  })
+                                                : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 4),
+                                            child: Image.asset(
+                                              ImageConstants.circleedit,
+                                              scale: 3,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      padding: EdgeInsets.zero,
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        manageStoreController.categoryName
-                                            .value = manageStoreController
+                                        IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            manageStoreController.categoryName
+                                                .value = manageStoreController
                                                 .categoriesList[index]
                                                 .categoryName ??
-                                            "";
-                                        manageStoreController.categoryId.value =
-                                            manageStoreController
+                                                "";
+                                            manageStoreController.categoryId.value =
+                                                manageStoreController
                                                     .categoriesList[index]
                                                     .categoryId ??
-                                                "";
-                                        manageStoreController
-                                            .apiGetStoreProducts();
+                                                    "";
+                                            manageStoreController
+                                                .apiGetStoreProducts();
 
-                                        Get.to(() => const ProductListScreen(),
-                                            id: pageIdApp.value);
-                                      },
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios_rounded,
-                                        color: AppColors.blackmedium,
-                                        size: 14.0,
-                                      ),
+                                            Get.to(() => const ProductListScreen(),
+                                                id: pageIdApp.value);
+                                          },
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            color: AppColors.blackmedium,
+                                            size: 14.0,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+
                                   ],
                                 ),
                               ]),

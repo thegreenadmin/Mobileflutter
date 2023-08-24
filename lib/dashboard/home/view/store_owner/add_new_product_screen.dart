@@ -48,15 +48,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           ),
                           width10SizedBox,
                           Obx(
-                            () => SizedBox(
-                              width: 250,
-                              child: Text(
-                                manageStoreController.categoryName.value,
-                                style: const TextStyle(
-                                    fontSize: 22,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
+                            () => Text(
+                              manageStoreController.categoryName.value,
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
                             ),
                           )
                         ],

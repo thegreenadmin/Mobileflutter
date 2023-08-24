@@ -50,18 +50,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(() => SizedBox(
-                                      width: 250,
-                                      child: Text(
-                                        manageStoreController
-                                            .categoryName.value,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    )),
+                                Obx(() => Text(
+                                  manageStoreController
+                                      .categoryName.value,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600),
+                                )),
                               ],
                             ),
                           ],
