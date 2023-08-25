@@ -74,9 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.w400,
                               fontSize: 16),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        height30SizedBox,
                         IntlPhoneField(
                           initialCountryCode: 'US',
                           // countries:loginController.countryCodes,
