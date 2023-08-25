@@ -494,9 +494,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Text.rich(
                             TextSpan(
                               children: [
-                                const TextSpan(
-                                    text:
-                                        'By checking this box, you agree to the green mall Inc’s '),
+                                TextSpan(
+                                    text: StringConstants
+                                        .termsAndConditions1Text),
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
@@ -508,15 +508,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       .pagePolicy)
                                               .toString()));
                                     },
-                                  text: 'Terms & Conditions',
+                                  text: StringConstants.termsAndConditionsText,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                const TextSpan(
-                                    text:
-                                        ' and acknowledge the receipts of the green mall Inc’s '),
+                                TextSpan(
+                                  text: StringConstants.termsAndConditions2Text,
+                                ),
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
@@ -528,7 +528,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       .pagePolicy)
                                               .toString()));
                                     },
-                                  text: 'Privacy policy',
+                                  text: StringConstants.termsAndConditions3Text,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,

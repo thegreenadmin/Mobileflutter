@@ -509,7 +509,12 @@ class StringConstants {
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
 
+  static String termsAndConditions1Text =
+      "By checking this box, you agree to the green mall Inc’s ";
   static String termsAndConditionsText = "Terms & Conditions";
+  static String termsAndConditions2Text =
+      " and acknowledge the receipts of the green mall Inc’s ";
+  static String termsAndConditions3Text = "Privacy policy";
   static String transactionHistoryText = "Transaction History";
   static String transactionsHistoryText = "Transactions History";
   static String townOrCityText = "Town or City";
