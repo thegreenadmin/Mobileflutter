@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -84,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 30,
                         ),
                         IntlPhoneField(
-                          initialCountryCode: 'US',
+                          initialCountryCode: StringConstants.usText,
                           // countries:loginController.countryCodes,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: loginController.phoneTextController,
