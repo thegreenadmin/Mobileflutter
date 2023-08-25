@@ -484,9 +484,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Text.rich(
                             TextSpan(
                               children: [
-                                TextSpan(
-                                    text: StringConstants
-                                        .termsAndConditions1Text),
+                                TextSpan(text: StringConstants.byCheckingText),
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
@@ -504,21 +502,19 @@ class _SignupScreenState extends State<SignupScreen> {
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                TextSpan(
-                                  text: StringConstants.termsAndConditions2Text,
-                                ),
+                                TextSpan(text: StringConstants.acknowledgeText),
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Get.to(WebviewPageScreen(
-                                          isFrom: "privacy",
+                                          isFrom: StringConstants.privacyText,
                                           url: Uri.parse(ServerCommunicator()
                                                       .baseUrlWithoutApi +
                                                   ServerCommunicator()
                                                       .pagePolicy)
                                               .toString()));
                                     },
-                                  text: StringConstants.termsAndConditions3Text,
+                                  text: StringConstants.privacyPolicyText,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,

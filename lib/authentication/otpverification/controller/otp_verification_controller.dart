@@ -76,7 +76,9 @@ class OtpVerificationController extends GetxController {
       "otp": otpTextController.text.trim(),
       "device_id": rng.nextInt(100).toString(), //Random numbers
       "device_token": fcmToken!.value.trim(),
-      "device_type": Platform.isAndroid ? "GCM" : "APNS"
+      "device_type": Platform.isAndroid
+          ? StringConstants.gcmText
+          : StringConstants.apnsText,
     };
     debugPrint("OTP VERIFY BODY********** $data");
     debugPrint(

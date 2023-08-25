@@ -15,6 +15,8 @@ class StringConstants {
   static String accountText = "Account";
   static String acceptText = "Accept";
   static String ageText = "Age";
+  static String acknowledgeText =
+      ' and acknowledge the receipts of the green mall Inc’s ';
   static String accountIdText = "Account ID";
   static String appIconAndSkinUpdateText = "App Icon & Skin Update";
   static String aboutUsText = "About us";
@@ -78,8 +80,11 @@ class StringConstants {
   static String activeMembershipsText = "Active Memberships";
   static String availableBalanceText = "Available Balance";
   static String amountToPayText = "Amount to pay";
+  static String apnsText = "APNS";
 
   //B
+  static String byCheckingText =
+      'By checking this box, you agree to the green mall Inc’s ';
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
@@ -232,6 +237,7 @@ class StringConstants {
   static String galleryText = "Gallery";
   static String gPayText = "G-Pay";
   static String goToCartText = "Go to Cart";
+  static String gcmText = "GCM";
 
   //H
   static String helpAndPolicyText = "Help & Policies";
@@ -401,6 +407,7 @@ class StringConstants {
   static String previousOrdersText = "Previous Orders";
   static String productsListText = "Products List";
   static String profilePicText = "Profile Picture";
+  static String privacyText = "privacy";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
@@ -537,6 +544,7 @@ class StringConstants {
       "You need to add store first in order the check the balance.";
 
   //U
+  static String usText = "US";
   static String usingOurSearchText =
       "Using our search feature, browse through\nnearby stores to find the specific product\nfor you.";
   static String usingOurDigitalPlatformText =
