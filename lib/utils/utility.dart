@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import "package:google_maps_webservice/geocoding.dart";
+import 'package:intl/intl.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class Utility {
-
   static void showMessage(String title, String message) {
     Get.snackbar(title, message,
         margin: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
@@ -51,8 +45,7 @@ class Utility {
     return ServerCommunicator().baseUrlWithoutV1 + url;
   }
 
-  static void showConfirmAlertMessage(
-      title,
+  static void showConfirmAlertMessage(title,
       {String description = "",
       String? cancelText,
       String? okay,
@@ -102,7 +95,7 @@ class Utility {
                 children: [
                   InkWell(
                     onTap: () {
-                      cancelTap ??Get.back();
+                      cancelTap ?? Get.back();
                     },
                     child: Container(
                       height: WidgetConstants.screenHeight * 0.08,
@@ -158,7 +151,8 @@ class Utility {
   static void showAlertMessage(description,
       {String? title,
       String? cancelText,
-      String? okay,Color? color,
+      String? okay,
+      Color? color,
       void Function()? okayTap,
       void Function()? cancelTap}) {
     showDialog(
@@ -173,7 +167,7 @@ class Utility {
             height10SizedBox,
             Image.asset(
               ImageConstants.alert48,
-              color:color ??  AppColors.red,
+              color: color ?? AppColors.red,
               // scale: 1.5,
             ),
             height12SizedBox,
@@ -201,9 +195,8 @@ class Utility {
             height25SizedBox,
             InkWell(
               onTap: () {
-                okayTap ??Get.back();
+                okayTap ?? Get.back();
                 // okayTap ?? Navigator.pop(_);
-
               },
               child: Container(
                 height: 50.0,
@@ -432,13 +425,14 @@ class Utility {
         });
   }
 
-  static String extractLocality(GeocodingResult result, String typeData,{bool isShortName =false}) {
+  static String extractLocality(GeocodingResult result, String typeData,
+      {bool isShortName = false}) {
     for (final component in result.addressComponents) {
       for (final type in component.types) {
         if (type == typeData) {
-          if(isShortName){
+          if (isShortName) {
             return component.shortName;
-          }else {
+          } else {
             return component.longName;
           }
         }
@@ -446,7 +440,6 @@ class Utility {
     }
     return '';
   }
-
 }
 
 extension StringCasingExtension on String {

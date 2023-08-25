@@ -3,11 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/authentication/otpverification/controller/otp_verification_controller.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({Key? key}) : super(key: key);

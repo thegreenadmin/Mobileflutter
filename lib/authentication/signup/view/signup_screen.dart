@@ -7,16 +7,11 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/custom_button.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
-  bool isFromOwner = false;
-  SignupScreen({super.key, this.isFromOwner = false});
+  final bool isFromOwner;
+  const SignupScreen({super.key, this.isFromOwner = false});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -28,7 +23,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String? formattedDate;
   String? formattedDateToCompare;
   TimeOfDay selectedTime = TimeOfDay.now();
-
 
   @override
   Widget build(BuildContext context) {

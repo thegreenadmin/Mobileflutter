@@ -7,11 +7,7 @@ import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
-import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 import '../dashboard/orders/view/order_store_list_screen.dart';
 

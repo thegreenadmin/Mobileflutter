@@ -340,17 +340,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onPressed: () {
                                     if (roleApp.value ==
                                         Role.customerRoleText) {
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) =>
-                                      //       const SearchStoreUserScreen(),
-                                      // ));
                                       Get.parameters["firstName"] =
-                                          firstName.value.toString() ?? "";
+                                          firstName.value.toString();
                                       Get.parameters["lastName"] =
-                                          lastName.value.toString() ?? "";
+                                          lastName.value.toString();
 
                                       Get.parameters["isFromHome"] = "true";
                                       Get.parameters["isFromFav"] = "false";
@@ -364,18 +357,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       );
                                     } else {
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-                                      // Navigator.of(context)
-                                      //     .push(MaterialPageRoute(
-                                      //   builder: (_) =>
-                                      //       const OwnerStoresListScreen(),
-                                      // ));
+
                                       Get.parameters["isFromHome"] = 'false';
                                       Get.parameters["firstName"] =
-                                          firstName.value.toString() ?? "";
+                                          firstName.value.toString();
                                       Get.parameters["lastName"] =
-                                          lastName.value.toString() ?? "";
+                                          lastName.value;
                                       Get.parameters['storeId'] = "";
                                       Get.to(
                                         () => const OwnerStoresListScreen(),
