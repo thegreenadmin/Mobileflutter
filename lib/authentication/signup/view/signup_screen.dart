@@ -29,10 +29,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String? formattedDateToCompare;
   TimeOfDay selectedTime = TimeOfDay.now();
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
