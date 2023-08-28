@@ -319,7 +319,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: () {
-                              debugPrint("get key: --- ${pageIdApp.value}");
                               ordersHomeMainController.storeId.value =
                                   ordersHomeMainController
                                           .ownerOrderHistoryList?[index]
@@ -343,11 +342,6 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                           .ownerOrderHistoryList![index]
                                           .orderId ??
                                       "";
-                              debugPrint(
-                                  "get orderId: --- ${ordersHomeMainController.ownerOrderHistoryList![index].orderId}");
-                              debugPrint(
-                                  "get storeId: --- ${ordersHomeMainController.ownerOrderHistoryList![index].storeId}");
-
                               ordersHomeMainController.onInit();
 
                               ordersHomeMainController
@@ -487,7 +481,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                    "${StringConstants.estimatedDeliveyDateText}: ",
+                                                    "${StringConstants.estimatedDeliveryDateText}: ",
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(

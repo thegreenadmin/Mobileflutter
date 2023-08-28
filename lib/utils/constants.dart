@@ -190,7 +190,7 @@ class StringConstants {
 
   static String enableStoreText = "Enable Store";
   static String emailText = "Email";
-  static String estimatedDeliveyDateText = "Estimated delivery date";
+  static String estimatedDeliveryDateText = "Estimated Delivery Date";
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
   static String emailUsText = "Email us";
@@ -620,7 +620,7 @@ class StringConstants {
   static String walletTransactionText = "Wallet Transaction";
   static String whatWouldLikeNowText = "What would like to do now?";
   static String withdrawAll = "Withdraw all";
-  
+
   //X
   static String x1Text = "XXX";
   static String x2Text = "MM/YY";
