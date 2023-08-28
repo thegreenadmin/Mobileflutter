@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -38,6 +39,9 @@ class CommonAppBar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
+  final StoreHomeMainController storeHomeMainController =
+      Get.put(StoreHomeMainController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,11 +112,20 @@ class _CommonAppBarState extends State<CommonAppBar> {
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        await Get.to(() => const CartScreen(),
-                                                id: pageIdApp.value)
-                                            ?.then((value) => widget.okayTap);
                                         Get.parameters["storeId"] =
                                             widget.storeId;
+                                        storeHomeMainController
+                                            .apiGetUserDetailsApi();
+                                        storeHomeMainController
+                                            .apiGetUserWalletBalance();
+
+                                        await Get.to(() => const CartScreen(),
+                                                id: pageIdApp.value)
+                                            ?.then((value) {
+                                          widget.okayTap;
+                                          storeHomeMainController
+                                              .apiActiveCartApi();
+                                        });
                                       },
                                       child: Stack(
                                         children: [
