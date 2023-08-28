@@ -95,7 +95,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
           paymentResult['paymentMethodData']['tokenizationData']['token'];
       final tokenJson = Map.castFrom(json.decode(token));
       debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
-      var tokenId = tokenJson['id'];
+      //var tokenId = tokenJson['id'];
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
       debugPrint("GOOGLE PAYMENT error *************${e.toString()}");

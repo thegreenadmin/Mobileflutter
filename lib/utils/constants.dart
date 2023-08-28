@@ -560,6 +560,7 @@ class StringConstants {
       "The image must be at least 190 x 190 pixels. Maximum file size is 2 MB";
   static String twentyFourSevenText = "24x7";
   static String theGreenMallText = "the green mall";
+  static String theGreenMallTitleText = "thegreenmall";
   static String totalBalanceText = "Total Balance";
   static String thresholdText = "Threshold";
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
@@ -620,7 +621,7 @@ class StringConstants {
   static String walletTransactionText = "Wallet Transaction";
   static String whatWouldLikeNowText = "What would like to do now?";
   static String withdrawAll = "Withdraw all";
-  
+
   //X
   static String x1Text = "XXX";
   static String x2Text = "MM/YY";
