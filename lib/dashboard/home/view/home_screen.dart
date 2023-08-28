@@ -538,7 +538,9 @@ class _HomeScreenState extends State<HomeScreen> {
             height: WidgetConstants.screenHeight * 0.84,
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
               Obx(() => roleApp.value == Role.customerRoleText
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
