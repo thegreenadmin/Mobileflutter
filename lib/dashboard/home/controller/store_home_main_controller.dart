@@ -459,7 +459,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -520,7 +521,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -561,7 +563,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -598,7 +601,8 @@ class StoreHomeMainController extends GetxController {
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -639,7 +643,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -715,7 +720,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     List selectedItems = [];
@@ -803,7 +809,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map<String, dynamic> data = {
@@ -848,7 +855,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map<String, dynamic> data = {
@@ -891,7 +899,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map<String, dynamic> data = {
@@ -1038,7 +1047,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -1073,7 +1083,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -1117,7 +1128,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1165,7 +1177,8 @@ class StoreHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -1236,7 +1249,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {
@@ -1430,7 +1444,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1472,7 +1487,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -1515,7 +1531,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -1559,7 +1576,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"product_id": int.parse(id ?? "0")};
@@ -1604,7 +1622,8 @@ class StoreHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {

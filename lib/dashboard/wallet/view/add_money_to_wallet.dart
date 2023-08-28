@@ -173,7 +173,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                       onChanged: (value) {
                         addCardController.paymentItems.clear();
                         addCardController.paymentItems.add(PaymentItem(
-                          label: 'Total',
+                          label: StringConstants.totalText,
                           amount: value,
                           status: PaymentItemStatus.unknown,
                         ));
@@ -249,9 +249,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                           flex: 2,
                           child: InkWell(
                             onTap: () {
-                              addCardController.paymentType!.value = "card";
+                              addCardController.paymentType!.value =
+                                  StringConstants.cardText.toLowerCase();
                               addCardController.selectPaymentType.value =
-                                  "card";
+                                  StringConstants.cardText.toLowerCase();
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -260,7 +261,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                   border: Border.all(
                                     color:
                                         addCardController.paymentType!.value ==
-                                                "card"
+                                                StringConstants.cardText
+                                                    .toLowerCase()
                                             ? AppColors.primary
                                             : AppColors.blacklight,
                                   )),
@@ -270,7 +272,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  addCardController.paymentType!.value == "card"
+                                  addCardController.paymentType!.value ==
+                                          StringConstants.cardText.toLowerCase()
                                       ? Stack(
                                           alignment: Alignment.center,
                                           children: [
@@ -305,9 +308,10 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 child: InkWell(
                                   onTap: () {
                                     addCardController.paymentType!.value =
-                                        "G-Pay";
+                                        StringConstants.gPayText;
+
                                     addCardController.selectPaymentType.value =
-                                        "G-Pay";
+                                        StringConstants.gPayText;
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -316,7 +320,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                         border: Border.all(
                                           color: addCardController
                                                       .paymentType!.value ==
-                                                  "G-Pay"
+                                                  StringConstants.gPayText
                                               ? AppColors.primary
                                               : AppColors.blacklight,
                                         )),
@@ -329,7 +333,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         addCardController.paymentType!.value ==
-                                                "G-Pay"
+                                                StringConstants.gPayText
                                             ? Stack(
                                                 alignment: Alignment.center,
                                                 children: [
@@ -363,9 +367,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 child: InkWell(
                                   onTap: () {
                                     addCardController.paymentType!.value =
-                                        "applePay";
+                                        StringConstants.applePaysText;
                                     addCardController.selectPaymentType.value =
-                                        "applePay";
+                                        StringConstants.applePaysText;
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -374,7 +378,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                         border: Border.all(
                                           color: addCardController
                                                       .paymentType!.value ==
-                                                  "applePay"
+                                                  StringConstants.applePaysText
                                               ? AppColors.primary
                                               : AppColors.blacklight,
                                         )),
@@ -387,7 +391,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         addCardController.paymentType!.value ==
-                                                "applePay"
+                                                StringConstants.applePaysText
                                             ? Stack(
                                                 alignment: Alignment.center,
                                                 children: [
@@ -421,7 +425,8 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                   ),
                   height15SizedBox,
                   Obx(
-                    () => addCardController.selectPaymentType.value == "G-Pay"
+                    () => addCardController.selectPaymentType.value ==
+                            StringConstants.gPayText
                         ? GooglePayButton(
                             onError: (Object? error) {
                               debugPrint(
@@ -440,7 +445,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             ),
                           )
                         : addCardController.selectPaymentType.value ==
-                                "applePay"
+                                StringConstants.applePaysText
                             ? ApplePayButton(
                                 width: WidgetConstants.screenWidth,
                                 height: 45,
@@ -457,7 +462,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                 ),
                               )
                             : addCardController.selectPaymentType.value ==
-                                    "card"
+                                    StringConstants.cardText.toLowerCase()
                                 ? Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 30),
@@ -620,17 +625,19 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                                                 index]
                                                                             .card!
                                                                             .brand ==
-                                                                        "Visa"
+                                                                        StringConstants
+                                                                            .visaText
                                                                     ? ImageConstants
                                                                         .visacard
                                                                     : addCardController.cardList[index].card!.brand ==
-                                                                            "MasterCard"
+                                                                            StringConstants
+                                                                                .masterCardText
                                                                         ? ImageConstants
                                                                             .mastercard
                                                                         : addCardController.cardList[index].card!.brand ==
-                                                                                "American Express"
+                                                                                StringConstants.americanExpressText
                                                                             ? ImageConstants.americanexpress
-                                                                            : addCardController.cardList[index].card!.brand == "Discover"
+                                                                            : addCardController.cardList[index].card!.brand == StringConstants.discoverText
                                                                                 ? ImageConstants.discovecard
                                                                                 : ImageConstants.card,
                                                                 height: 20,

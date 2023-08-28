@@ -252,9 +252,9 @@ class AccountController extends GetxController {
             children: [
               height10SizedBox,
               height12SizedBox,
-              const Text(
-                "Enter number of days",
-                style: TextStyle(
+              Text(
+                StringConstants.enterNumberOfDaysText,
+                style: const TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w500),
@@ -316,7 +316,8 @@ class AccountController extends GetxController {
                   InkWell(
                     onTap: () async {
                       if (noOfDaysTextController.text.isEmpty) {
-                        Utility.showAlertMessage("Please enter days");
+                        Utility.showAlertMessage(
+                            AlertStringConstants.pleaseEnterDaysText);
                       } else {
                         Get.back();
                         apiCreateMembershipPlan();
@@ -358,7 +359,8 @@ class AccountController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -423,7 +425,8 @@ class AccountController extends GetxController {
         "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -497,7 +500,8 @@ class AccountController extends GetxController {
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -542,7 +546,8 @@ class AccountController extends GetxController {
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -589,7 +594,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "user": {
@@ -662,7 +668,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "proof_type_id": 1,
@@ -701,7 +708,8 @@ class AccountController extends GetxController {
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -797,7 +805,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "notification_type": notificationType,
@@ -841,7 +850,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
     debugPrint("CREATE USER ACCESS BODY**********$data");
@@ -878,7 +888,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -915,7 +926,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "membership_plan_id": membershipPlanId,
@@ -965,7 +977,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1001,7 +1014,8 @@ class AccountController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
     debugPrint("DELETE USER BODY**********$data");
@@ -1037,7 +1051,8 @@ class AccountController extends GetxController {
         "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -1065,17 +1080,17 @@ class AccountController extends GetxController {
   }
 
   clearData() async {
-    SharedPreferenceStorage.removeData("firstName");
+    SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
     SharedPreferenceStorage.removeData(StringConstants.firstNameText);
     SharedPreferenceStorage.removeData(StringConstants.lastNameText);
     SharedPreferenceStorage.removeData(StringConstants.emailText);
     SharedPreferenceStorage.removeData(StringConstants.authenticatedText);
     SharedPreferenceStorage.removeData(StringConstants.currentUserIdText);
     SharedPreferenceStorage.removeData(Role.role);
-    SharedPreferenceStorage.removeData("lastName");
-    SharedPreferenceStorage.removeData("email");
-    SharedPreferenceStorage.removeData("token");
-    SharedPreferenceStorage.removeData("context");
+    SharedPreferenceStorage.removeData(StringConstants.lastNameSmallText);
+    SharedPreferenceStorage.removeData(StringConstants.emailText.toLowerCase());
+    SharedPreferenceStorage.removeData(StringConstants.tokenText);
+    SharedPreferenceStorage.removeData(StringConstants.contextText);
     SharedPreferenceStorage.clearData();
     Get.parameters.clear();
     await Get.offAll(const StartJourneyScreen());

@@ -337,7 +337,7 @@ class PayOutScreenState extends State<PayOutScreen> {
                                 ),
                                 width10SizedBox,
                                 Text(
-                                  "Withdraw all \$${addCardController.payoutAmountTextController.text}",
+                                  "${StringConstants.withdrawAll} \$${addCardController.payoutAmountTextController.text}",
                                   style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,

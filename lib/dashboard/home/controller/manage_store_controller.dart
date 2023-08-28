@@ -149,13 +149,13 @@ class ManageStoreController extends GetxController {
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
-    {"isSelected": false, "day": "Monday"},
-    {"isSelected": false, "day": "Tuesday"},
-    {"isSelected": false, "day": "Wednesday"},
-    {"isSelected": false, "day": "Thursday"},
-    {"isSelected": false, "day": "Friday"},
-    {"isSelected": false, "day": "Saturday"},
-    {"isSelected": false, "day": "Sunday"},                                                                                                 
+    {"isSelected": false, "day": StringConstants.mondayText},
+    {"isSelected": false, "day": StringConstants.tuesdayText},
+    {"isSelected": false, "day": StringConstants.wednesdayText},
+    {"isSelected": false, "day": StringConstants.thursdayText},
+    {"isSelected": false, "day": StringConstants.fridayText},
+    {"isSelected": false, "day": StringConstants.saturdayText},
+    {"isSelected": false, "day": StringConstants.sundayText},
   ].obs;
 
   bool validateAndSave() {
@@ -234,7 +234,8 @@ class ManageStoreController extends GetxController {
             ServerCommunicator().fileUploadMultiple));
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     for (var i = 0; i < imageFileList!.length; i++) {
@@ -273,7 +274,8 @@ class ManageStoreController extends GetxController {
         "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -318,7 +320,8 @@ class ManageStoreController extends GetxController {
         "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -354,7 +357,8 @@ class ManageStoreController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -432,7 +436,8 @@ class ManageStoreController extends GetxController {
     inputData.productImages ??= [];
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
     debugPrint(
@@ -491,7 +496,8 @@ class ManageStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {
       "q": "",
@@ -539,7 +545,8 @@ class ManageStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -659,7 +666,8 @@ class ManageStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     inputData.storeId = int.parse(storeId.value);
@@ -797,7 +805,8 @@ class ManageStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
     debugPrint("DELETE PRODUCT BODY ************* $data");
@@ -837,7 +846,8 @@ class ManageStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
     debugPrint("DELETE CATEGORY BODY ************* $data");

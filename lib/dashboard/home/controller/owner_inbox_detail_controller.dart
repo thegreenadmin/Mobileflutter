@@ -87,7 +87,8 @@ class OwnerInboxDetailController extends GetxController {
       m_dio.FormData formData = m_dio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -135,7 +136,8 @@ class OwnerInboxDetailController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -170,7 +172,8 @@ class OwnerInboxDetailController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     Map body = {

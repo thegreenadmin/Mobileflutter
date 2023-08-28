@@ -79,7 +79,8 @@ class AddOffersController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            StringConstants.bearerText + authToken.value.toString(),
       };
       formData.files.add(MapEntry(
           "file",
@@ -192,7 +193,8 @@ class AddOffersController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<OfferProducts> offerProductList = <OfferProducts>[];
     Offer offer = Offer();
@@ -251,7 +253,8 @@ class AddOffersController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -294,7 +297,8 @@ class AddOffersController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {
       "q": "",
@@ -344,7 +348,8 @@ class AddOffersController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {
       "q": "",
@@ -425,7 +430,8 @@ class AddOffersController extends GetxController {
     );
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -489,7 +495,8 @@ class AddOffersController extends GetxController {
   Future apiUpdateOffer() async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {
       "store_id": storeIdValue.value,

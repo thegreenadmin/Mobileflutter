@@ -82,7 +82,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                       colors: [AppColors.white, AppColors.white],
                     ),
                     onTap: () {
-                      Get.to(SignupScreen(
+                      Get.to(const SignupScreen(
                         isFromOwner: false,
                       ));
                     },
@@ -98,7 +98,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                   InkWell(
                     onTap: () {
                       Get.to(
-                        SignupScreen(isFromOwner: true),
+                        const SignupScreen(isFromOwner: true),
                       );
                     },
                     child: Row(

@@ -16,23 +16,6 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
 
-  /* @override
-  initState() {
-    super.initState();
-    addOffersController.apiGetStoreList();
-    addOffersController.isFrom.value = Get.parameters["isFrom"] ?? "";
-    if (addOffersController.isFrom.value == StringConstants.addOfferText) {
-    } else {
-      addOffersController.storeIdValue.value = Get.parameters["storeId"] ?? "";
-      addOffersController.offerId.value = Get.parameters["offerId"] ?? "";
-
-      if (addOffersController.storeIdValue.value.isNotEmpty &&
-          addOffersController.offerId.value.isNotEmpty) {
-        addOffersController.apiGetOffersDetail();
-      }
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +36,6 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
-                              // Navigator.of(context).pop();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -97,9 +79,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -185,9 +167,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -261,9 +243,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -294,9 +276,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -591,9 +573,9 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),

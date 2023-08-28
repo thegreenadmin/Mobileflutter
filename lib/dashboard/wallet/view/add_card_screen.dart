@@ -123,24 +123,27 @@ class AddCardScreenState extends State<AddCardScreen> {
                                       child: Image.asset(
                                         addCardController.cardList[index].card!
                                                     .brand ==
-                                                "Visa"
+                                                StringConstants.visaText
                                             ? ImageConstants.visacard
                                             : addCardController.cardList[index]
                                                         .card!.brand ==
-                                                    "MasterCard"
+                                                    StringConstants
+                                                        .masterCardText
                                                 ? ImageConstants.mastercard
                                                 : addCardController
                                                             .cardList[index]
                                                             .card!
                                                             .brand ==
-                                                        "American Express"
+                                                        StringConstants
+                                                            .americanExpressText
                                                     ? ImageConstants
                                                         .americanexpress
                                                     : addCardController
                                                                 .cardList[index]
                                                                 .card!
                                                                 .brand ==
-                                                            "Discover"
+                                                            StringConstants
+                                                                .discoverText
                                                         ? ImageConstants
                                                             .discovecard
                                                         : ImageConstants.card,

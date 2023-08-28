@@ -138,7 +138,8 @@ class OrdersHomeMainController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -175,7 +176,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map body = {
@@ -267,7 +269,8 @@ class OrdersHomeMainController extends GetxController {
     debugPrint("STORE ORDER DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -352,7 +355,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -398,7 +402,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -451,7 +456,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map body = {
@@ -493,7 +499,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -545,7 +552,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -598,7 +606,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -654,7 +663,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
     for (var element in getOrderItems) {
@@ -710,7 +720,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     List<dynamic> orderItems = [];
 

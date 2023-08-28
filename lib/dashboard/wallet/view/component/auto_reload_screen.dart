@@ -78,7 +78,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         flex: 4,
                         child: InkWell(
                           onTap: () {
-                            walletController.autoChargeType.value = "threshold";
+                            walletController.autoChargeType.value =
+                                StringConstants.thresholdText.toLowerCase();
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -87,7 +88,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 border: Border.all(
                                   color:
                                       walletController.autoChargeType.value ==
-                                              "threshold"
+                                              StringConstants.thresholdText
+                                                  .toLowerCase()
                                           ? AppColors.primary
                                           : AppColors.blacklight,
                                 )),
@@ -98,7 +100,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 walletController.autoChargeType.value ==
-                                        "threshold"
+                                        StringConstants.thresholdText
+                                            .toLowerCase()
                                     ? Stack(
                                         alignment: Alignment.center,
                                         children: [
@@ -195,7 +198,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     ),
                     height4SizedBox,
                     Obx(
-                      () => walletController.autoChargeType.value == "threshold"
+                      () => walletController.autoChargeType.value ==
+                              StringConstants.thresholdText.toLowerCase()
                           ? TextFormField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -217,7 +221,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                   walletController.chargeAmountTextController,
                               validator: (value) {
                                 if (walletController.autoChargeType.value ==
-                                        "threshold" &&
+                                        StringConstants.thresholdText
+                                            .toLowerCase() &&
                                     (value == null || value.trim().isEmpty)) {
                                   return AlertStringConstants
                                       .pleaseEnterChargeAmountText;
@@ -327,7 +332,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     ),
                     height20SizedBox,
                     Obx(
-                      () => walletController.autoChargeType.value == "threshold"
+                      () => walletController.autoChargeType.value ==
+                              StringConstants.thresholdText.toLowerCase()
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -497,7 +503,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                             ),
                     ),
                     Obx(() => walletController.autoChargeType.value !=
-                                "threshold" &&
+                                StringConstants.thresholdText.toLowerCase() &&
                             walletController.selectedFrequency.value == "30"
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,7 +531,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                     : null,
                                 validator: (value) {
                                   if (walletController.autoChargeType.value !=
-                                          "threshold" &&
+                                          StringConstants.thresholdText
+                                              .toLowerCase() &&
                                       walletController
                                               .selectedFrequency.value ==
                                           "30") {
@@ -596,7 +603,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         : height0SizedBox),
                     Obx(
                       () => walletController.autoChargeType.value !=
-                                  "threshold" &&
+                                  StringConstants.thresholdText.toLowerCase() &&
                               walletController.selectedFrequency.value == "7"
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -628,7 +635,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                       : null,
                                   validator: (value) {
                                     if (walletController.autoChargeType.value !=
-                                            "threshold" &&
+                                            StringConstants.thresholdText
+                                                .toLowerCase() &&
                                         walletController
                                                 .selectedFrequency.value ==
                                             "7") {
@@ -852,7 +860,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                                       index]
                                                                   .card!
                                                                   .brand ==
-                                                              "Visa"
+                                                              StringConstants
+                                                                  .visaText
                                                           ? ImageConstants
                                                               .visacard
                                                           : walletController
@@ -860,7 +869,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                                           index]
                                                                       .card!
                                                                       .brand ==
-                                                                  "MasterCard"
+                                                                  StringConstants
+                                                                      .masterCardText
                                                               ? ImageConstants
                                                                   .mastercard
                                                               : walletController
@@ -868,7 +878,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                                               index]
                                                                           .card!
                                                                           .brand ==
-                                                                      "American Express"
+                                                                      StringConstants
+                                                                          .americanExpressText
                                                                   ? ImageConstants
                                                                       .americanexpress
                                                                   : walletController
@@ -876,7 +887,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                                                   index]
                                                                               .card!
                                                                               .brand ==
-                                                                          "Discover"
+                                                                          StringConstants
+                                                                              .discoverText
                                                                       ? ImageConstants
                                                                           .discovecard
                                                                       : ImageConstants

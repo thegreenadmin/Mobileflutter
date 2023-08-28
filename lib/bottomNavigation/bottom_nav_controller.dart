@@ -64,7 +64,8 @@ class BottomNavController extends GetxController {
         "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}"
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -104,7 +105,8 @@ class BottomNavController extends GetxController {
     debugPrint(
         "GET STORE PERMISSIONS URL BOTTOM **********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}"
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

@@ -125,7 +125,8 @@ class OtpVerificationController extends GetxController {
       debugPrint(
           "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       debugPrint("GET STORE PERMISSIONS TOKEN ********** $headers");
       UserProvider()

@@ -543,9 +543,9 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                   color: AppColors.blacklight,
                                 ),
                                 width15SizedBox,
-                                const Text(
-                                  "Connect Bank Account",
-                                  style: TextStyle(
+                                Text(
+                                  StringConstants.connectBankAccountText,
+                                  style: const TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -666,13 +666,14 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                             child: Image.asset(
                                               walletController.cardList[index]
                                                           .card!.brand ==
-                                                      "Visa"
+                                                      StringConstants.visaText
                                                   ? ImageConstants.visacard
                                                   : walletController
                                                               .cardList[index]
                                                               .card!
                                                               .brand ==
-                                                          "MasterCard"
+                                                          StringConstants
+                                                              .masterCardText
                                                       ? ImageConstants
                                                           .mastercard
                                                       : walletController
@@ -680,7 +681,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                                       index]
                                                                   .card!
                                                                   .brand ==
-                                                              "American Express"
+                                                              StringConstants
+                                                                  .americanExpressText
                                                           ? ImageConstants
                                                               .americanexpress
                                                           : walletController
@@ -688,7 +690,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                                                           index]
                                                                       .card!
                                                                       .brand ==
-                                                                  "Discover"
+                                                                  StringConstants
+                                                                      .discoverText
                                                               ? ImageConstants
                                                                   .discovecard
                                                               : ImageConstants

@@ -85,13 +85,13 @@ class AddNewStoreController extends GetxController {
   RxList<dynamic> selectedWeekDaysList = [].obs;
 
   RxList<Categories> weekDaysList = [
-    Categories(id: 1, name: "Monday", isSelected: false),
-    Categories(id: 2, name: "Tuesday", isSelected: false),
-    Categories(id: 3, name: "Wednesday", isSelected: false),
-    Categories(id: 4, name: "Thursday", isSelected: false),
-    Categories(id: 5, name: "Friday", isSelected: false),
-    Categories(id: 6, name: "Saturday", isSelected: false),
-    Categories(id: 7, name: "Sunday", isSelected: false),
+    Categories(id: 1, name: StringConstants.mondayText, isSelected: false),
+    Categories(id: 2, name: StringConstants.tuesdayText, isSelected: false),
+    Categories(id: 3, name: StringConstants.wednesdayText, isSelected: false),
+    Categories(id: 4, name: StringConstants.thursdayText, isSelected: false),
+    Categories(id: 5, name: StringConstants.fridayText, isSelected: false),
+    Categories(id: 6, name: StringConstants.saturdayText, isSelected: false),
+    Categories(id: 7, name: StringConstants.sundayText, isSelected: false),
   ].obs;
 
   RxList<dynamic> storeTimmingList = <dynamic>[].obs;
@@ -238,7 +238,8 @@ class AddNewStoreController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -296,7 +297,8 @@ class AddNewStoreController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -399,7 +401,8 @@ class AddNewStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("CREATE STORE BODY********** $data");
     debugPrint(
@@ -477,7 +480,8 @@ class AddNewStoreController extends GetxController {
       debugPrint(
           "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       debugPrint("GET STORE PERMISSIONS TOKEN ********** $headers");
       UserProvider()
@@ -513,7 +517,8 @@ class AddNewStoreController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {
@@ -551,7 +556,8 @@ class AddNewStoreController extends GetxController {
         "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -605,7 +611,8 @@ class AddNewStoreController extends GetxController {
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -642,7 +649,8 @@ class AddNewStoreController extends GetxController {
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

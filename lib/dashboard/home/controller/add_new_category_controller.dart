@@ -144,7 +144,8 @@ class AddNewCategoryController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -190,7 +191,8 @@ class AddNewCategoryController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("ADD CATEGORY headers********** $headers");
     debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
@@ -244,7 +246,8 @@ class AddNewCategoryController extends GetxController {
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -282,7 +285,8 @@ class AddNewCategoryController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),

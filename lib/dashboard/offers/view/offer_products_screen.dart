@@ -43,9 +43,9 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                 ),
                               ),
                               width10SizedBox,
-                              const Text(
-                                "Offer Products",
-                                style: TextStyle(
+                              Text(
+                                StringConstants.offerProductsText,
+                                style: const TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -123,7 +123,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Product Name: ${offersController.featuredUserProductList[index].productName}",
+                                    "${StringConstants.productNameText}: ${offersController.featuredUserProductList[index].productName}",
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 20),
                                   ),
@@ -133,19 +133,22 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                           .isEmpty
                                       ? height0SizedBox
                                       : Text(
-                                          "Description: ${offersController.featuredUserProductList[index].description}",
+                                          "${StringConstants.descriptionText}: ${offersController.featuredUserProductList[index].description}",
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 15),
                                         ),
                                   Text(
-                                    "Discount Value: ${offersController.featuredUserProductList[index].discountValue.toStringAsFixed(2)}",
+                                    "${StringConstants.discountValueText}: " +
+                                        offersController
+                                            .featuredUserProductList[index]
+                                            .discountValue
+                                            .toStringAsFixed(2),
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 15),
                                   ),
                                   Text(
-                                    "Offer Price: " +
-                                        "\$" +
+                                    "${StringConstants.offerPriceText}: \$" +
                                         offersController
                                             .featuredUserProductList[index]
                                             .offerPrice
@@ -154,15 +157,15 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                         color: Colors.black, fontSize: 15),
                                   ),
                                   Text(
-                                    "Discount Type: ${offersController.featuredUserProductList[index].discountType}",
+                                    "${StringConstants.discountTypeText}: ${offersController.featuredUserProductList[index].discountType}",
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 15),
                                   ),
                                   Row(
                                     children: [
-                                      const Text(
-                                        "Featured Product: ",
-                                        style: TextStyle(
+                                      Text(
+                                        "${StringConstants.featuredProductText}: ",
+                                        style: const TextStyle(
                                             color: Colors.black, fontSize: 15),
                                       ),
                                       Text(

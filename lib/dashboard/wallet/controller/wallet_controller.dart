@@ -103,13 +103,13 @@ class WalletController extends GetxController {
   RxList<Datum> storeList = <Datum>[].obs;
   RxList<String> monthDayList = <String>[].obs;
   RxList<Categories> weekDaysList = [
-    Categories(id: 1, name: "Monday", isSelected: false),
-    Categories(id: 2, name: "Tuesday", isSelected: false),
-    Categories(id: 3, name: "Wednesday", isSelected: false),
-    Categories(id: 4, name: "Thursday", isSelected: false),
-    Categories(id: 5, name: "Friday", isSelected: false),
-    Categories(id: 6, name: "Saturday", isSelected: false),
-    Categories(id: 7, name: "Sunday", isSelected: false),
+    Categories(id: 1, name: StringConstants.mondayText, isSelected: false),
+    Categories(id: 2, name: StringConstants.tuesdayText, isSelected: false),
+    Categories(id: 3, name: StringConstants.wednesdayText, isSelected: false),
+    Categories(id: 4, name: StringConstants.thursdayText, isSelected: false),
+    Categories(id: 5, name: StringConstants.fridayText, isSelected: false),
+    Categories(id: 6, name: StringConstants.saturdayText, isSelected: false),
+    Categories(id: 7, name: StringConstants.sundayText, isSelected: false),
   ].obs;
 
   RxString capability = "".obs;
@@ -149,7 +149,6 @@ class WalletController extends GetxController {
       await apiGetCardList();
       await apiGetBankAccountList();
       await apiGetStoreList();
-      // await apiGetCountries();
       await apiGetAccountDetails();
     }
     update();
@@ -197,20 +196,29 @@ class WalletController extends GetxController {
       if (validateAndSaveAutoCharge()) {
         try {
           if (autoChargeType.value.isEmpty) {
-            Utility.showAlertMessage("Please select auto-reload type");
-          } else if (autoChargeType.value == "threshold" &&
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseSelectAutoReloadText);
+          } else if (autoChargeType.value ==
+                  StringConstants.thresholdText.toLowerCase() &&
               chargeAmountTextController.text.isEmpty) {
-            Utility.showAlertMessage("Please enter charge amount");
-          } else if (autoChargeType.value == "threshold" &&
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseEnterChargeAmountText);
+          } else if (autoChargeType.value ==
+                  StringConstants.thresholdText.toLowerCase() &&
               thresholdAmountTextController.text.isEmpty) {
-            Utility.showAlertMessage("Please enter amount");
-          } else if (autoChargeType.value != "threshold" &&
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseEnterAmountText);
+          } else if (autoChargeType.value !=
+                  StringConstants.thresholdText.toLowerCase() &&
               selectedFrequency.value.isEmpty) {
-            Utility.showAlertMessage("Please select payment type");
-          } else if (autoChargeType.value != "threshold" && day.value.isEmpty) {
-            Utility.showAlertMessage("Please select day");
+            Utility.showAlertMessage(
+                AlertStringConstants.pleaseSelectPaymentTypeText);
+          } else if (autoChargeType.value !=
+                  StringConstants.thresholdText.toLowerCase() &&
+              day.value.isEmpty) {
+            Utility.showAlertMessage(AlertStringConstants.pleaseSelectDayText);
           } else if (userStripeCardId!.value.isEmpty) {
-            Utility.showAlertMessage("Please add card");
+            Utility.showAlertMessage(AlertStringConstants.pleaseAddCardText);
           } else if (updateAutoData == true) {
             apiUpdateAutoRecharge();
           } else {
@@ -236,7 +244,8 @@ class WalletController extends GetxController {
       }
     } else {
       if (accountHolderTypeText.isEmpty) {
-        Utility.showAlertMessage("Please select account holder type");
+        Utility.showAlertMessage(
+            AlertStringConstants.pleaseSelectAccountHolderTypeText);
       } else {
         apiCreateBankToken();
       }
@@ -287,7 +296,8 @@ class WalletController extends GetxController {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -324,7 +334,8 @@ class WalletController extends GetxController {
         "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -359,7 +370,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -407,7 +419,7 @@ class WalletController extends GetxController {
     var year = parts[1].trim();
     try {
       var headers = {
-        'Authorization':
+        StringConstants.authorizationText:
             'Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
@@ -442,7 +454,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("CREATE CARD BODY *******$body");
     debugPrint("CREATE CARD HEADERS *******$headers");
@@ -478,7 +491,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -521,7 +535,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("ADD MONEY TO WALLET BODY *******$body");
     debugPrint("ADD MONEY TO WALLET HEADERS *******$headers");
@@ -565,7 +580,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -601,7 +617,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {"user_stripe_card_id": userStripeCardId};
 
@@ -642,7 +659,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -680,7 +698,7 @@ class WalletController extends GetxController {
     isLoading.value = true;
     try {
       var headers = {
-        'Authorization':
+        StringConstants.authorizationText:
             'Basic c2tfdGVzdF81MU1uYUpkRlZuTW1IaGtHWTFQU3dCRkZGakdGT29EWUt0Z2Z0aVNtUkdKdDJzY0lTSlBaT1o2YXkyeWlMSmlMMW5Kb2cyaEFpZDRDNU5SNGFTMVZVZmZvNDAwN3hBVG03eU46',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
@@ -728,7 +746,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map<String, String> body = {
       "token_id": bankToken.value,
@@ -778,7 +797,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -816,7 +836,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {"user_stripe_bank_id": userStripeBankId};
 
@@ -856,7 +877,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map<String, String> body = {
       "auto_charge_type": autoChargeType.value,
@@ -923,7 +945,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1019,7 +1042,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map<String, String> body = {
       "user_wallet_auto_charge_id": userWalletAutoChargeId.value,
@@ -1090,7 +1114,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map body = {
       "user_wallet_auto_charge_id": getAutoRechargeModel
@@ -1134,7 +1159,8 @@ class WalletController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()

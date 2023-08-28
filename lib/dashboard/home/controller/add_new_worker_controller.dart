@@ -29,15 +29,15 @@ class AddNewWorkerController extends GetxController {
   RxList<Categories> weekDaysList = [
     Categories(
       id: 1,
-      name: "Monday",
+      name: StringConstants.mondayText,
       isSelected: false,
     ),
-    Categories(id: 2, name: "Tuesday", isSelected: false),
-    Categories(id: 3, name: "Wednesday", isSelected: false),
-    Categories(id: 4, name: "Thursday", isSelected: false),
-    Categories(id: 5, name: "Friday", isSelected: false),
-    Categories(id: 6, name: "Saturday", isSelected: false),
-    Categories(id: 7, name: "Sunday", isSelected: false),
+    Categories(id: 2, name: StringConstants.tuesdayText, isSelected: false),
+    Categories(id: 3, name: StringConstants.wednesdayText, isSelected: false),
+    Categories(id: 4, name: StringConstants.thursdayText, isSelected: false),
+    Categories(id: 5, name: StringConstants.fridayText, isSelected: false),
+    Categories(id: 6, name: StringConstants.saturdayText, isSelected: false),
+    Categories(id: 7, name: StringConstants.sundayText, isSelected: false),
   ].obs;
 
   RxBool isLoading = false.obs;
@@ -125,7 +125,8 @@ class AddNewWorkerController extends GetxController {
   Future<dynamic> apiAddWorker() async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     add_worker.AddWorkerRequest addWorkerRequest =
         add_worker.AddWorkerRequest();
@@ -203,7 +204,8 @@ class AddNewWorkerController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     EditWorkerRequest editWorkerRequest = EditWorkerRequest();
     editWorkerRequest.storeId = int.parse(storeId.value);
@@ -327,11 +329,12 @@ class AddNewWorkerController extends GetxController {
   Future<dynamic> apiDeleteWorker() async {
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
-        "deleteWithHeadersApi WORKER***${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
+        "DELETE WORKER URL **********${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value),
@@ -345,7 +348,7 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("deleteWorker RESPONSE *******${value!.body}");
+      debugPrint("DELETE WORKER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value.body['message']);
@@ -398,7 +401,8 @@ class AddNewWorkerController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
 
       formData.files.add(MapEntry(
@@ -445,7 +449,8 @@ class AddNewWorkerController extends GetxController {
         "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -518,7 +523,8 @@ class AddNewWorkerController extends GetxController {
         "GET USER STORE LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -551,7 +557,8 @@ class AddNewWorkerController extends GetxController {
         "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -585,7 +592,8 @@ class AddNewWorkerController extends GetxController {
         "API ROLE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -619,7 +627,8 @@ class AddNewWorkerController extends GetxController {
         "GET STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(

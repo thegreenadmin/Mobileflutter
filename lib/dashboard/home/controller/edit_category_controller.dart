@@ -140,7 +140,8 @@ class EditNewCategoryController extends GetxController {
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        'Authorization': "Bearer ${authToken.value.toString()}",
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
@@ -182,20 +183,21 @@ class EditNewCategoryController extends GetxController {
   ///Add Category Api
   Future apiAddCategory() async {
     debugPrint(
-        "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
+        "ADD CATEGORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("ADD CATEGORY headers********** $headers");
-    debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
+    debugPrint("ADD CATEGORY HEADERS ********** $headers");
+    debugPrint("ADD CATEGORY STORE ID ********** ${int.parse(storeId.value)}");
     debugPrint(
-        "ADD CATEGORY is_featured_category********** ${isFeaturedTypeSelected.value}");
+        "ADD CATEGORY IS FEATURED CATEGORY ********* ${isFeaturedTypeSelected.value}");
     debugPrint(
-        "ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
+        "ADD CATEGORY CATEGORY NAME ********** ${categoryNameTextController.text.trim()}");
     debugPrint(
-        "ADD CATEGORY image_url********** ${categoryImageOriginalLinkFromServer.value}");
+        "ADD CATEGORY IMAGE URL ********** ${categoryImageOriginalLinkFromServer.value}");
 
     Map body = {
       "store_id": int.parse(storeId.value),
@@ -238,7 +240,8 @@ class EditNewCategoryController extends GetxController {
         "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
 
     Map<String, String> headers = {
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
@@ -276,7 +279,8 @@ class EditNewCategoryController extends GetxController {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${authToken.value.toString()}",
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "store_id": int.parse(storeId.value),
