@@ -18,9 +18,7 @@ class GetUserOfferListModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
-    if (data != null) {
-      data['data'] = this.data!.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }

@@ -49,7 +49,7 @@ class OnBoardFourState extends State<OnBoardFour> {
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Image.asset(
-                                    "assets/bottle.png",
+                                    ImageConstants.bottle,
                                     scale: 3,
                                   )),
                             ),

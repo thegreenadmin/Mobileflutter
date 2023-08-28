@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
@@ -109,7 +110,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'thegreenmall',
+      title: StringConstants.theGreenMallTitleText,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Inter",
