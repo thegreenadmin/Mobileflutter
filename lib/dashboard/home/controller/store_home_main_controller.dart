@@ -88,30 +88,32 @@ class StoreHomeMainController extends GetxController {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-      getCurrentLocation();
-      apiGetUserDetailsApi();
-      apiGetShopProductDetailApi();
-      if (isFromMenu.value) {
-        selectedIndex.value = 1;
-        lastSelectedIndex.value = 1;
-        onIndexChange(1);
-      }
-      if (isFromFav.value) {
-        selectedIndex.value = 2;
-        lastSelectedIndex.value = 2;
-        showLoading.value = false;
-        onIndexChange(2);
-      }
-      if (isFromHome.value) {
-        selectedIndex.value = 0;
-        lastSelectedIndex.value = 0;
-        showLoading.value = false;
-        onIndexChange(0);
-      }
+      if (roleApp.value == Role.customerRoleText) {
+        getCurrentLocation();
+        apiGetUserDetailsApi();
+        if (storeId.value != "" && productId.value != "") {
+          apiGetShopProductDetailApi();
+        }
 
-      apiGetUserWalletBalance();
-      apiGetCartListApi();
-      apiActiveCartApi();
+        if (isFromMenu.value) {
+          selectedIndex.value = 1;
+          lastSelectedIndex.value = 1;
+          onIndexChange(1);
+        }
+        if (isFromFav.value) {
+          selectedIndex.value = 2;
+          lastSelectedIndex.value = 2;
+          showLoading.value = false;
+          onIndexChange(2);
+        }
+        if (isFromHome.value) {
+          selectedIndex.value = 0;
+          lastSelectedIndex.value = 0;
+          showLoading.value = false;
+          onIndexChange(0);
+        }
+        apiGetUserWalletBalance();
+      }
     });
   }
 
@@ -1095,6 +1097,10 @@ class StoreHomeMainController extends GetxController {
         } else if (value.body["data"]["balance"] is double) {
           walletBalance.value = value.body["data"]["balance"] ?? 0.0;
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
+        }
+        if (storeId.value != "") {
+          apiGetCartListApi();
+          apiActiveCartApi();
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
