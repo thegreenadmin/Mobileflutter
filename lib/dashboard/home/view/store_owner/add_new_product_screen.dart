@@ -1772,7 +1772,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        print("manageStoreController.isLoading.value:---------");
+                        print(
+                            "manageStoreController.isLoading.value:---------");
                         print(manageStoreController.isLoading.value);
                         if (manageStoreController.isLoading.value != true) {
                           manageStoreController.selectedCategories.clear();

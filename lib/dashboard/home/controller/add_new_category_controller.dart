@@ -223,7 +223,7 @@ class AddNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("GET CATEGORY RESPONSE *******${value!.body}");
+      debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
