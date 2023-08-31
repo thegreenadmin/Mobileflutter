@@ -232,7 +232,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                         controller: signupController.emailTextController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterEmailText;

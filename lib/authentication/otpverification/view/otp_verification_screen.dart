@@ -128,6 +128,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             onCompleted: (value) {
                               if (otpVerificationController.isLoading.value ==
                                   false) {
+                                otpVerificationController.isLoading.value =
+                                    true;
                                 otpVerificationController
                                     .validateAndSubmitOtp();
                               }
