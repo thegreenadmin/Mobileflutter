@@ -80,7 +80,7 @@ class AddOffersController extends GetxController {
 
       Map<String, String> headers = {
         StringConstants.authorizationText:
-            StringConstants.bearerText + authToken.value.toString(),
+            "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",

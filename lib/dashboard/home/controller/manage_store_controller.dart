@@ -41,7 +41,7 @@ class ManageStoreController extends GetxController {
   RxBool isNotify = false.obs;
   RxBool isFeaturedTypeSelected = false.obs;
   RxBool isFeatured = false.obs;
-  RxBool isEnabled = false.obs;
+  RxBool isEnabled = true.obs;
   RxBool isProductReturnable = false.obs;
   RxBool isSelectedCategory = false.obs;
   RxString storeId = "".obs;
@@ -202,7 +202,7 @@ class ManageStoreController extends GetxController {
     daysTextController.clear();
     weightTextController.clear();
     imageUrlList.clear();
-    isEnabled.value = false;
+    isEnabled.value = true;
     isProductReturnable.value = false;
     discountType.value = "";
     isFeatured.value = false;
@@ -755,7 +755,7 @@ class ManageStoreController extends GetxController {
         daysTextController.clear();
         weightTextController.clear();
         imageUrlList.clear();
-        isEnabled.value = false;
+        isEnabled.value = true;
         isProductReturnable.value = false;
         discountType.value = "";
         isFeatured.value = false;

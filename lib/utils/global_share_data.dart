@@ -8,6 +8,8 @@ RxString lastName = "".obs;
 RxString authToken = "".obs;
 RxInt pageIdApp = 0.obs;
 RxBool hasStoreAccess = false.obs;
+RxBool forFirstTimeCustomer = false.obs;
+RxBool forFirstTimeOwner = false.obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 

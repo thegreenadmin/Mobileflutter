@@ -160,10 +160,21 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                           WidgetConstants.screenHeight * 0.2,
                                       color: AppColors.primarylight,
                                       child: CommonWidgets.cachedNetworkImage(
-                                          addNewCategoryController
-                                              .categoryImageDynamicLinkFromServer
-                                              .value,
-                                          fit: BoxFit.cover),
+                                        addNewCategoryController
+                                            .categoryImageDynamicLinkFromServer
+                                            .value,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => SizedBox(
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.2,
+                                            width:
+                                                WidgetConstants.screenHeight *
+                                                    0.8,
+                                            child: const Center(
+                                                child:
+                                                    CircularProgressIndicator())),
+                                      ),
                                       /*child: Image.network(
                                             addNewCategoryController
                                                 .categoryImageDynamicLinkFromServer

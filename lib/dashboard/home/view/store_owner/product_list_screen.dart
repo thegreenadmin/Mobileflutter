@@ -110,26 +110,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             })
                           : Utility.showAlertMessage(
                               AlertStringConstants.notAuthorizedToStoreText);
-
-                      manageStoreController.productNameTextController.clear();
-                      manageStoreController.productNameTextController.clear();
-                      manageStoreController.quantityTextController.clear();
-                      manageStoreController.pricePerUnitTextController.clear();
-                      manageStoreController.shortDescriptionTextController
-                          .clear();
-                      manageStoreController.discountOrOfferTextController
-                          .clear();
-                      manageStoreController.additionalLinkTextController
-                          .clear();
-                      manageStoreController.contentsAndStrainsTextController
-                          .clear();
-                      manageStoreController.lengthTextController.clear();
-                      manageStoreController.breadthTextController.clear();
-                      manageStoreController.heightTextController.clear();
-                      manageStoreController.weightTextController.clear();
-                      manageStoreController.daysTextController.clear();
-                      manageStoreController.isEnabled.value = false;
-                      manageStoreController.imageFileList!.clear();
+                      manageStoreController.resetForm();
                     },
                     child: Row(
                       children: [
@@ -400,13 +381,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                                   .productPrice ==
                                                               null
                                                           ? ""
-                                                          : "\$" +
-                                                              manageStoreController
-                                                                  .storeProductList[
-                                                                      index]
-                                                                  .productPrice
-                                                                  .toStringAsFixed(
-                                                                      2),
+                                                          : "\$${manageStoreController
+                                                          .storeProductList[
+                                                      index]
+                                                          .productPrice
+                                                          .toStringAsFixed(
+                                                          2)}",
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:

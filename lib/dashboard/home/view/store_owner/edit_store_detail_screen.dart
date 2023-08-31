@@ -179,7 +179,17 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                       ownerStoreController
                                                           .editStoreLogoDynamicLinkFromServer
                                                           .value,
-                                                      fit: BoxFit.cover)
+                                                      fit: BoxFit.cover,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        width: WidgetConstants
+                                                            .screenWidth *
+                                                            0.85,
+                                                        height: WidgetConstants
+                                                            .screenHeight *
+                                                            0.2,
+                                                        child: const Center(
+                                                            child:
+                                                            CircularProgressIndicator())),)
                                                 ]),
                                           ),
                                         ),
@@ -302,7 +312,17 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             ownerStoreController
                                                 .editStoreImageDynamicLinkFromServer
                                                 .value,
-                                            fit: BoxFit.cover)),
+                                            fit: BoxFit.cover,
+                                          placeholder: (context, url) => SizedBox(
+                                              width: WidgetConstants
+                                                  .screenWidth *
+                                                  0.85,
+                                              height: WidgetConstants
+                                                  .screenHeight *
+                                                  0.2,
+                                              child: const Center(
+                                                  child:
+                                                  CircularProgressIndicator())),)),
                                   ),
                                 ],
                               ),

@@ -105,6 +105,12 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                     assetBackgroundColor:
                                         AppColors.primarylight,
                                     assetImg: ImageConstants.userAccount,
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
+                                            radius: 25.0,
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator())),
                                   ),
                                 ),
                               ),

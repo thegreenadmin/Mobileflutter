@@ -26,12 +26,12 @@ class AccountController extends GetxController {
   TextEditingController countryTextController = TextEditingController();
   TextEditingController noOfDaysTextController = TextEditingController();
   RxBool isScreenLockNotify = false.obs;
-  RxBool isUserInboxMessagesNotify = false.obs;
-  RxBool isOwnerInboxMessagesNotify = false.obs;
-  RxBool isUserTippingNotify = false.obs;
-  RxBool isOwnerTippingNotify = false.obs;
-  RxBool isOwnerOfferNotify = false.obs;
-  RxBool isUserOfferNotify = false.obs;
+  RxBool isUserInboxMessagesNotify = true.obs;
+  RxBool isOwnerInboxMessagesNotify = true.obs;
+  RxBool isUserTippingNotify = true.obs;
+  RxBool isOwnerTippingNotify = true.obs;
+  RxBool isOwnerOfferNotify = true.obs;
+  RxBool isUserOfferNotify = true.obs;
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
@@ -117,8 +117,7 @@ class AccountController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
@@ -128,8 +127,24 @@ class AccountController extends GetxController {
     roleId?.value = await SharedPreferenceStorage.getData(Role.role);
     if (roleId?.value == Role.customerRoleText) {
       await apiGetNotificationStatus(false);
+      if (forFirstTimeCustomer.value) {
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: false, notificationType: "message");
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: false, notificationType: "order");
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: false, notificationType: "offer");
+      }
     } else {
-      await apiGetNotificationStatus(true);
+      if (forFirstTimeOwner.value) {
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: true, notificationType: "message");
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: true, notificationType: "order");
+        await apiUpdateNotificationStatus(
+            isEnabled: true, isOwner: true, notificationType: "offer");
+        await apiGetNotificationStatus(true);
+      }
     }
 
     isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
@@ -825,10 +840,15 @@ class AccountController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        if (SharedPreferenceStorage.getData(Role.role).toString() ==
-            Role.customerRoleText) {
+        if (roleApp.value == Role.customerRoleText) {
           await apiGetNotificationStatus(false);
+          if (notificationType == "offer") {
+            forFirstTimeCustomer.value = false;
+          }
         } else {
+          if (notificationType == "offer") {
+            forFirstTimeOwner.value = false;
+          }
           await apiGetNotificationStatus(true);
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {

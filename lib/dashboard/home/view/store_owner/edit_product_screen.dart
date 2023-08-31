@@ -129,6 +129,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                           .imageUrlList[index]
                                                           .dynamicImageUrl!,
                                                       fit: BoxFit.cover,
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.1,
+                                                      width: WidgetConstants
+                                                              .screenHeight *
+                                                          0.1,
+                                                      placeholder: (context, url) => SizedBox(
+                                                          height: WidgetConstants
+                                                                  .screenHeight *
+                                                              0.1,
+                                                          width: WidgetConstants
+                                                                  .screenHeight *
+                                                              0.1,
+                                                          child: const Center(
+                                                              child:
+                                                                  CircularProgressIndicator())),
                                                     ),
                                                   ),
                                                   InkWell(

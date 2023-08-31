@@ -101,9 +101,11 @@ class OtpVerificationController extends GetxController {
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
+          forFirstTimeOwner.value = true;
           SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
           roleApp.value = Role.storeOwnerRoleText;
         } else {
+          forFirstTimeCustomer.value = true;
           SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
           roleApp.value = Role.customerRoleText;
         }

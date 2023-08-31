@@ -108,17 +108,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     },
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    // itemCount: manageStoreController
-                                    //     .imageFileList!.length,
                                     itemCount: manageStoreController
                                         .imageUrlList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      /*  return Image.file(
-                                        File(manageStoreController
-                                            .imageFileList![index].path),
-                                        fit: BoxFit.cover,
-                                      );*/
                                       return manageStoreController
                                                   .imageUrlList[index].status ==
                                               "deleted"
@@ -135,6 +128,22 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                         .imageUrlList[index]
                                                         .dynamicImageUrl!,
                                                     fit: BoxFit.cover,
+                                                    height: WidgetConstants
+                                                            .screenHeight *
+                                                        0.1,
+                                                    width: WidgetConstants
+                                                            .screenHeight *
+                                                        0.1,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        height: WidgetConstants
+                                                                .screenHeight *
+                                                            0.1,
+                                                        width: WidgetConstants
+                                                                .screenHeight *
+                                                            0.1,
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator())),
                                                   ),
                                                 ),
                                                 InkWell(

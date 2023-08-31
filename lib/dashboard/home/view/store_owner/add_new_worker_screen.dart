@@ -113,6 +113,20 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                       assetBackgroundColor:
                                           AppColors.primarylight,
                                       assetImg: ImageConstants.userAccount,
+                                      placeholder: (context, url) =>
+                                          const CircleAvatar(
+                                              radius: 25.0,
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator())),
+                                      // placeholder: (context, url) => SizedBox(
+                                      //     width:
+                                      //     WidgetConstants.screenWidth * 0.85,
+                                      //     height:
+                                      //     WidgetConstants.screenHeight * 0.2,
+                                      //     child: const Center(
+                                      //         child:
+                                      //         CircularProgressIndicator())),
                                     ),
                                   )),
                             ),

@@ -148,10 +148,21 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: CommonWidgets.cachedNetworkImage(
-                                            addOffersController
-                                                .offerImageDynamicLinkFromServer
-                                                .value,
-                                            fit: BoxFit.cover)),
+                                          addOffersController
+                                              .offerImageDynamicLinkFromServer
+                                              .value,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => SizedBox(
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.8,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.2,
+                                              child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator())),
+                                        )),
                                   ),
                                 ],
                               ),

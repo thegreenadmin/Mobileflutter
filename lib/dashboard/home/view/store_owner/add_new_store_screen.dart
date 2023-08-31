@@ -174,11 +174,23 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  CommonWidgets.cachedNetworkImage(
-                                                      addNewStoreController
-                                                          .storeLogoDynamicLinkFromServer
-                                                          .value,
-                                                      fit: BoxFit.cover),
+                                                  CommonWidgets
+                                                      .cachedNetworkImage(
+                                                    addNewStoreController
+                                                        .storeLogoDynamicLinkFromServer
+                                                        .value,
+                                                    fit: BoxFit.cover,
+                                                    placeholder: (context, url) => SizedBox(
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.85,
+                                                        height: WidgetConstants
+                                                                .screenHeight *
+                                                            0.2,
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator())),
+                                                  ),
                                                   /*Image.network(
                                                       addNewStoreController
                                                           .storeLogoDynamicLinkFromServer
@@ -303,10 +315,21 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: CommonWidgets.cachedNetworkImage(
-                                            addNewStoreController
-                                                .storeImageDynamicLinkFromServer
-                                                .value,
-                                            fit: BoxFit.cover)),
+                                          addNewStoreController
+                                              .storeImageDynamicLinkFromServer
+                                              .value,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => SizedBox(
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.85,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.2,
+                                              child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator())),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -2060,11 +2083,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        if(addNewStoreController.isLoading.value != true){
+                        if (addNewStoreController.isLoading.value != true) {
                           addNewStoreController.isLoading.value = true;
                           addNewStoreController.validateAndSubmit();
                         }
-
                       },
                       height: 50,
                       text:

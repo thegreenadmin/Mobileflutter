@@ -926,6 +926,17 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                 fit: BoxFit.cover,
                                                 width:
                                                     WidgetConstants.screenWidth,
+                                                placeholder: (context, url) =>
+                                                    SizedBox(
+                                                        width:
+                                                            WidgetConstants
+                                                                .screenWidth,
+                                                        height: WidgetConstants
+                                                                .screenHeight *
+                                                            0.3,
+                                                        child: const Center(
+                                                            child:
+                                                                CircularProgressIndicator())),
                                               ),
                                               /*child: Image.network(
                                                 accountController
