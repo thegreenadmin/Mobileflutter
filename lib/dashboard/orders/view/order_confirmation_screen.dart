@@ -1,4 +1,5 @@
 import 'package:easy_stepper/easy_stepper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
@@ -518,7 +519,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           stepShape: StepShape.circle,
                           borderThickness: 0,
                           stepRadius: WidgetConstants.screenWidth * 0.075,
-                          lineColor: AppColors.grey,
+                          // lineColor: AppColors.grey,
+                          activeLineColor: AppColors.grey,
                           lineType: LineType.normal,
                           activeStepBorderType: BorderType.normal,
                           unreachedStepBorderType: BorderType.normal,

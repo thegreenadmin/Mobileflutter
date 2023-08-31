@@ -1,4 +1,4 @@
-import 'package:easy_stepper/easy_stepper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
@@ -33,7 +33,6 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
-                         
                           },
                           icon: const Icon(
                             Icons.arrow_back,
