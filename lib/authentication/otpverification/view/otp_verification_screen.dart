@@ -143,6 +143,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           onTap: () {
                             if (otpVerificationController.isLoading.value ==
                                 false) {
+                              otpVerificationController.isLoading.value = true;
                               otpVerificationController.validateAndSubmitOtp();
                             }
                           },
@@ -175,7 +176,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               colors: [AppColors.primary, AppColors.primary],
                             ),
                             onTap: () {
-                              otpVerificationController.validateAndSubmitOtp();
+                              if (otpVerificationController.isLoading.value ==
+                                  false) {
+                                otpVerificationController.isLoading.value =
+                                    true;
+                                otpVerificationController
+                                    .validateAndSubmitOtp();
+                              }
                             },
                             height: 50,
                             text: StringConstants.submitText,
