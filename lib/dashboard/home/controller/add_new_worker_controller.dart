@@ -123,6 +123,7 @@ class AddNewWorkerController extends GetxController {
 
   /// Add Worker Api
   Future<dynamic> apiAddWorker() async {
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -179,6 +180,7 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("ADD WORKER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
@@ -198,6 +200,7 @@ class AddNewWorkerController extends GetxController {
 
   /// Edit Worker Api
   Future<dynamic> apiEditWorker() async {
+    isLoading.value = true;
     debugPrint("storeId ***${storeId.value}*");
     debugPrint(
         "EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
@@ -305,6 +308,7 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("EDIT WORKER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {

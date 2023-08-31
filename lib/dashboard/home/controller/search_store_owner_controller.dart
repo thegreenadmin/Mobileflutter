@@ -783,6 +783,7 @@ class OwnerStoresController extends GetxController {
 
   ///Update Store Details Api
   Future apiUpdateStoreDetail() async {
+    isLoading.value =true;
     debugPrint(
         "UPDATE STORE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetailsEdit}");
 
@@ -844,6 +845,7 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value =false;
       debugPrint("UPDATE STORE DETAIL RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {

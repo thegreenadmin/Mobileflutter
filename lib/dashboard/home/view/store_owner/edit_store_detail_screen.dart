@@ -2409,7 +2409,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        ownerStoreController.validateAndSubmit();
+                        if (ownerStoreController.isLoading.value != true) {
+                          ownerStoreController.isLoading.value = true;
+                          ownerStoreController.validateAndSubmit();
+                        }
                       },
                       height: 50,
                       text:

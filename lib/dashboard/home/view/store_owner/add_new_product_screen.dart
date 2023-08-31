@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +36,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
+                              manageStoreController.imageUrlList.clear();
                               Get.back(id: pageIdApp.value);
                             },
                             icon: const Icon(
@@ -75,7 +74,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => manageStoreController.imageFileList!.isEmpty
+                    Obx(() => manageStoreController.imageUrlList!.isEmpty ||
+                            manageStoreController.imageUrlList
+                                .every((element) => element.status == "deleted")
                         ? height0SizedBox
                         : Text.rich(
                             TextSpan(
@@ -91,7 +92,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                           )),
                     Obx(
-                      () => manageStoreController.imageFileList!.isEmpty
+                      () => manageStoreController.imageUrlList!.isEmpty ||
+                              manageStoreController.imageUrlList.every(
+                                  (element) => element.status == "deleted")
                           ? height0SizedBox
                           : SizedBox(
                               height: 100,
@@ -104,22 +107,61 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     },
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
+                                    // itemCount: manageStoreController
+                                    //     .imageFileList!.length,
                                     itemCount: manageStoreController
-                                        .imageFileList!.length,
+                                        .imageUrlList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return Image.file(
+                                      /*  return Image.file(
                                         File(manageStoreController
                                             .imageFileList![index].path),
                                         fit: BoxFit.cover,
-                                      );
+                                      );*/
+                                      return manageStoreController
+                                                  .imageUrlList[index].status ==
+                                              "deleted"
+                                          ? const SizedBox(height: 0, width: 0)
+                                          : Stack(
+                                              alignment: Alignment.topRight,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: CommonWidgets
+                                                      .cachedNetworkImage(
+                                                    manageStoreController
+                                                        .imageUrlList[index]
+                                                        .dynamicImageUrl!,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    manageStoreController
+                                                        .imageUrlList[index]
+                                                        .status = "deleted";
+                                                    setState(() {});
+                                                  },
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Icon(
+                                                        Icons.delete_forever,
+                                                        color:
+                                                            AppColors.primary),
+                                                  ),
+                                                )
+                                              ],
+                                            );
                                     }),
                               ),
                             ),
                     ),
                     height15SizedBox,
                     Obx(
-                      () => manageStoreController.imageFileList!.isEmpty
+                      () => manageStoreController.imageUrlList!.isEmpty ||
+                              manageStoreController.imageUrlList.every(
+                                  (element) => element.status == "deleted")
                           ? height0SizedBox
                           : InkWell(
                               onTap: () {
@@ -132,7 +174,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                     ),
                     Obx(
-                      () => manageStoreController.imageFileList!.isEmpty
+                      () => manageStoreController.imageUrlList!.isEmpty ||
+                              manageStoreController.imageUrlList.every(
+                                  (element) => element.status == "deleted")
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1728,20 +1772,25 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        manageStoreController.selectedCategories.clear();
-                        for (int i = 0;
-                            i < manageStoreController.categoriesList.length;
-                            i++) {
-                          if (manageStoreController
-                                  .categoriesList[i].isSelected ??
-                              false) {
-                            manageStoreController.selectedCategories.add({
-                              "category_id": manageStoreController
-                                  .categoriesList[i].categoryId
-                            });
+                        print("manageStoreController.isLoading.value:---------");
+                        print(manageStoreController.isLoading.value);
+                        if (manageStoreController.isLoading.value != true) {
+                          manageStoreController.selectedCategories.clear();
+                          for (int i = 0;
+                              i < manageStoreController.categoriesList.length;
+                              i++) {
+                            if (manageStoreController
+                                    .categoriesList[i].isSelected ??
+                                false) {
+                              manageStoreController.selectedCategories.add({
+                                "category_id": manageStoreController
+                                    .categoriesList[i].categoryId
+                              });
+                            }
                           }
+                          manageStoreController.isLoading.value = true;
+                          manageStoreController.validateAndSubmit();
                         }
-                        manageStoreController.validateAndSubmit();
                       },
                       height: 50,
                       text: StringConstants.saveText,

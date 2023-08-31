@@ -893,7 +893,10 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit();
+                        if (addNewWorkerController.isLoading.value != true) {
+                          addNewWorkerController.isLoading.value = true;
+                          addNewWorkerController.validateAndSubmit();
+                        }
                       },
                       height: 50,
                       text: StringConstants.saveText,

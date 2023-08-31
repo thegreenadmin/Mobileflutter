@@ -90,18 +90,22 @@ class ManageStoreController extends GetxController {
       maxHeight: 200,
       maxWidth: 200,
     );
+    int selectedCount = 0;
+    for (int i = 0; i < imageUrlList.length; i++) {
+      if (imageUrlList[i].status == "active") {
+        selectedCount = selectedCount + 1;
+      }
+    }
     if (selectedImages.isNotEmpty) {
-      int selectedCount = 0;
-      for (int i = 0; i < imageUrlList.length; i++) {
-        if (imageUrlList[i].status == "active") {
-          selectedCount = selectedCount + 1;
-        }
+      for (int i = 0; i < selectedImages.length; i++) {
+        selectedCount = selectedCount + 1;
       }
-      if (selectedCount >= 5) {
-        return Utility.showAlertMessage(
-            AlertStringConstants.only5MaximumImagesCanSelectText);
-      }
-
+    }
+    debugPrint("selectedCount : ============ ${selectedCount.toString()}");
+    if (selectedCount > 5) {
+      return Utility.showAlertMessage(
+          AlertStringConstants.only5MaximumImagesCanSelectText);
+    } else {
       imageFileList!.addAll(selectedImages);
       apiUploadMultipleImage(imageUrlList.length);
     }
@@ -349,43 +353,9 @@ class ManageStoreController extends GetxController {
     });
   }
 
-  /// Get Products List Api
-  Future apiGetProductList() async {
-    categoriesList.clear();
-    isLoading.value = true;
-    debugPrint("GET PRODUCT LIST URL **********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}");
-
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}",
-            headers,
-            showLoading: true)
-        .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET PRODUCT LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getCategoriesModel = GetCategoriesModel.fromJson(value.body);
-        categoriesList.value = getCategoriesModel.data!.categories!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        Get.offAll(const StartJourneyScreen());
-      } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
-        }
-      }
-    });
-  }
-
   /// Create Product Api
   Future apiCreateProduct() async {
+    isLoading.value = true;
     inputData.storeId = int.parse(storeId.value);
     InputProduct product = InputProduct();
     product.quantityTypeId = int.parse(quantityValue.value);
@@ -449,6 +419,7 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("CREATE PRODUCT RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -661,6 +632,7 @@ class ManageStoreController extends GetxController {
 
   /// Update  Store Product Api
   Future apiUpdateStoreProductDetail() async {
+    isLoading.value = true;
     debugPrint(
         "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
 
@@ -758,6 +730,7 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -799,7 +772,7 @@ class ManageStoreController extends GetxController {
   }
 
   /// Api Delete Product
-  Future apiDeleteProduct(BuildContext buildCtxt) async {
+  Future apiDeleteProduct() async {
     debugPrint(
         "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
 
@@ -821,12 +794,10 @@ class ManageStoreController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
-        await apiGetProductList();
-        update();
+        await apiGetStoreProducts();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
-        await apiGetProductList();
-        update();
+        await apiGetStoreProducts();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

@@ -262,7 +262,10 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  addNewRoleController.validateAndSubmitUpdate();
+                  if (addNewRoleController.isLoading.value != true) {
+                    addNewRoleController.isLoading.value = true;
+                    addNewRoleController.validateAndSubmitUpdate();
+                  }
                 },
                 height: 50,
                 text: StringConstants.saveText,

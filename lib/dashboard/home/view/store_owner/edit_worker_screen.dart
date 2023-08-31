@@ -888,8 +888,11 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        addNewWorkerController.validateAndSubmit(
-                            isEdit: true);
+                        if (addNewWorkerController.isLoading.value = true) {
+                          addNewWorkerController.isLoading.value = true;
+                          addNewWorkerController.validateAndSubmit(
+                              isEdit: true);
+                        }
                       },
                       height: 50,
                       text: StringConstants.saveText,

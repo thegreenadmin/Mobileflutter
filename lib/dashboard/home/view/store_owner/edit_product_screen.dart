@@ -44,6 +44,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
+                                manageStoreController.imageUrlList.clear();
                                 Get.back(id: pageIdApp.value);
                               },
                               icon: const Icon(
@@ -93,7 +94,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     fontWeight: FontWeight.w400)),
                       ),
                       Obx(
-                        () => manageStoreController.imageUrlList.isEmpty
+                        () => manageStoreController.imageUrlList.isEmpty ||
+                                manageStoreController.imageUrlList.every(
+                                    (element) => element.status == "deleted")
                             ? height0SizedBox
                             : SizedBox(
                                 height: 100,
@@ -152,7 +155,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       ),
                       height15SizedBox,
                       Obx(
-                        () => manageStoreController.imageUrlList.isEmpty
+                        () => manageStoreController.imageUrlList.isEmpty ||
+                                manageStoreController.imageUrlList.every(
+                                    (element) => element.status == "deleted")
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1761,8 +1766,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          manageStoreController
-                              .validateAndSubmitUpdateProduct();
+                          if (manageStoreController.isLoading.value != true) {
+                            manageStoreController.isLoading.value = true;
+                            manageStoreController
+                                .validateAndSubmitUpdateProduct();
+                          }
                         },
                         height: 50,
                         text: StringConstants.saveText,

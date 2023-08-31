@@ -29,6 +29,7 @@ class AddNewCategoryController extends GetxController {
   String? imageData;
   bool dataLoaded = false;
   RxBool isFeaturedTypeSelected = false.obs;
+  RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
   RxString? role = "".obs;
   RxString? firstName = "".obs;
@@ -186,6 +187,7 @@ class AddNewCategoryController extends GetxController {
 
   ///Add Category Api
   Future apiAddCategory() async {
+    isLoading.value = true;
     debugPrint(
         "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
 
@@ -220,6 +222,7 @@ class AddNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       log("GET CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -280,6 +283,7 @@ class AddNewCategoryController extends GetxController {
 
   ///Update Category Api
   Future apiUpdateCategory() async {
+    isLoading.value = true;
     debugPrint(
         "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
 
@@ -304,6 +308,7 @@ class AddNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       (value);
       debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||

@@ -41,6 +41,7 @@ class AddNewStoreController extends GetxController {
   late GlobalConfigs secureData;
 
   RxBool autoValidate = false.obs;
+  RxBool isLoading = false.obs;
   RxBool isStoreLogoSelected = false.obs;
   RxBool isTermsSelected = false.obs;
   RxBool is247Time = false.obs;
@@ -361,6 +362,7 @@ class AddNewStoreController extends GetxController {
 
   ///Create Store Api
   Future apiCreateStore() async {
+    isLoading.value = true;
     Map data = {
       "store": {
         "store_name": storeNameTextController.text.trim(),
@@ -414,6 +416,7 @@ class AddNewStoreController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("CREATE STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {

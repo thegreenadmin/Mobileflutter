@@ -228,7 +228,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               .storeProductList[index].productId
                                               .toString();
                                       manageStoreController
-                                          .apiDeleteProduct(context);
+                                          .apiDeleteProduct();
                                     })
                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                               return null;

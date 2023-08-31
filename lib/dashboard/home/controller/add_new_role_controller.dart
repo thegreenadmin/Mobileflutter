@@ -153,6 +153,7 @@ class AddNewRoleController extends GetxController {
 
   ///Create Role Api
   Future apiCreateRole() async {
+    isLoading.value = true;
     createRoleRequestModel.storeId = int.parse(storeId.value);
     createRoleRequestModel.roleName = roleNameTextController.text.trim();
 
@@ -179,6 +180,7 @@ class AddNewRoleController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("CREATE ROLE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
@@ -337,6 +339,7 @@ class AddNewRoleController extends GetxController {
 
   ///Edit Role Api
   Future apiEditRole() async {
+    isLoading.value = true;
     selectedRoles.clear();
     bool isEmptyList = true;
     for (int i = 0; i < permissionListMerged.length; i++) {
@@ -376,6 +379,7 @@ class AddNewRoleController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
+      isLoading.value = false;
       debugPrint("EDIT ROLE RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
