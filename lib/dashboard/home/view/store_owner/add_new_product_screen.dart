@@ -36,6 +36,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                             onPressed: () {
+                              manageStoreController.resetForm();
                               manageStoreController.imageUrlList.clear();
                               Get.back(id: pageIdApp.value);
                             },

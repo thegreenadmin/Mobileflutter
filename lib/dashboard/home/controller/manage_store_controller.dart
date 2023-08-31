@@ -188,6 +188,27 @@ class ManageStoreController extends GetxController {
     }
   }
 
+  void resetForm() {
+    productNameTextController.clear();
+    quantityTextController.clear();
+    pricePerUnitTextController.clear();
+    shortDescriptionTextController.clear();
+    discountOrOfferTextController.clear();
+    additionalLinkTextController.clear();
+    contentsAndStrainsTextController.clear();
+    lengthTextController.clear();
+    breadthTextController.clear();
+    heightTextController.clear();
+    daysTextController.clear();
+    weightTextController.clear();
+    imageUrlList.clear();
+    isEnabled.value = false;
+    isProductReturnable.value = false;
+    discountType.value = "";
+    isFeatured.value = false;
+    selectedCategories.value = [];
+  }
+
   bool validateAndSaveUpdateProduct() {
     final forms = updateFormKey.currentState;
     if (forms!.validate()) {
@@ -429,24 +450,7 @@ class ManageStoreController extends GetxController {
         Get.back(id: pageIdApp.value);
         Get.back(id: pageIdApp.value);
         await apiGetCategoriesList();
-        productNameTextController.clear();
-        quantityTextController.clear();
-        pricePerUnitTextController.clear();
-        shortDescriptionTextController.clear();
-        discountOrOfferTextController.clear();
-        additionalLinkTextController.clear();
-        contentsAndStrainsTextController.clear();
-        lengthTextController.clear();
-        breadthTextController.clear();
-        heightTextController.clear();
-        daysTextController.clear();
-        weightTextController.clear();
-        imageUrlList.clear();
-        isEnabled.value = false;
-        isProductReturnable.value = false;
-        discountType.value = "";
-        isFeatured.value = false;
-        selectedCategories.value = [];
+        resetForm();
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
