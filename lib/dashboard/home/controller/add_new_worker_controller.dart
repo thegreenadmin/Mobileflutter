@@ -117,6 +117,7 @@ class AddNewWorkerController extends GetxController {
         }
       } catch (_) {}
     } else {
+      isLoading.value = false;
       autoValidate.value = true;
     }
   }

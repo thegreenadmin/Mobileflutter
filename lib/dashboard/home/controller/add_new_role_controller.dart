@@ -92,6 +92,7 @@ class AddNewRoleController extends GetxController {
         }
       } catch (_) {}
     } else {
+      isLoading.value = false;
       autoValidate.value = true;
     }
   }
@@ -112,6 +113,7 @@ class AddNewRoleController extends GetxController {
         await apiEditRole();
       } catch (_) {}
     } else {
+      isLoading.value = false;
       autoValidateUpdate.value = true;
     }
   }

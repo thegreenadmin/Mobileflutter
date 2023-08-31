@@ -184,6 +184,7 @@ class ManageStoreController extends GetxController {
       } catch (_) {}
     } else {
       autoValidate.value = true;
+      isLoading.value = false;
     }
   }
 
@@ -226,6 +227,7 @@ class ManageStoreController extends GetxController {
         }
       } catch (_) {}
     } else {
+      isLoading.value = false;
       updateAutoValidate.value = true;
     }
   }

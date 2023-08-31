@@ -83,6 +83,7 @@ class AddNewCategoryController extends GetxController {
         }
       } catch (_) {}
     } else {
+      isLoading.value = false;
       autoValidate.value = true;
     }
   }
@@ -108,6 +109,7 @@ class AddNewCategoryController extends GetxController {
         }
       } catch (_) {}
     } else {
+      isLoading.value = false;
       updateAutoValidate.value = true;
     }
   }
