@@ -23,6 +23,7 @@ class OtpVerificationController extends GetxController {
   RxString phoneNumber = "".obs;
   RxString countryCode = "".obs;
   RxBool isLoading = false.obs;
+  RxBool isAutoReload = false.obs;
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
