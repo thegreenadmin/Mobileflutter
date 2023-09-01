@@ -214,17 +214,14 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                             color: AppColors.white, width: 1)),
                                     child:
                                         CommonWidgets.circleCachedNetworkImage(
-                                            ownerInboxController
-                                                    .inboxList[index]
-                                                    .store
-                                                    ?.logo
-                                                    ?.dynamicUrl
-                                                    .toString() ??
-                                                "",
-                                            fit: BoxFit.contain,
-                                            radius: 22.0,
-                                            assetImg: ImageConstants.nopicfound,
-                                           ),
+                                      ownerInboxController.inboxList[index]
+                                              .store?.logo?.dynamicUrl
+                                              .toString() ??
+                                          "",
+                                      fit: BoxFit.contain,
+                                      radius: 22.0,
+                                      assetImg: ImageConstants.nopicfound,
+                                    ),
                                   ),
                                 ),
                                 width8SizedBox,

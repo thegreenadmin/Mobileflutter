@@ -58,8 +58,8 @@ dependencies:
   global_configs: ^1.1.2
   easy_stepper: ^0.7.3
   flutter_rating_bar: ^4.0.1
-  firebase_messaging: ^14.4.0
-  firebase_core: ^2.9.0
+  firebase_messaging: ^14.6.7
+  firebase_core: ^2.15.1
   flutter_local_notifications: ^15.1.1
   local_auth: 
   passcode_screen: ^2.0.1

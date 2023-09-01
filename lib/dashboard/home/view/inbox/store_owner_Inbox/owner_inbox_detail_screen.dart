@@ -312,6 +312,15 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
             GestureDetector(
               onTap: () async {
                 if (ownerInboxDetailController
+                        .messageTextController.text.isEmpty &&
+                    ownerInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isNotEmpty) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await ownerInboxDetailController.apiSendMessage();
+                  print("C1 *****");
+                } else if (ownerInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
                       msg: "Please write something",
@@ -320,9 +329,25 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                } else {
+                  print("C2 *****");
+                } else if (ownerInboxDetailController
+                        .messageTextController.text.isNotEmpty &&
+                    ownerInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
+                  print("C3 *****");
+                } else if (ownerInboxDetailController
+                        .messageTextController.text.isNotEmpty &&
+                    ownerInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isNotEmpty) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await ownerInboxDetailController.apiSendMessage();
+                  print("C4 *****");
                 }
               },
               child: const Center(
@@ -591,7 +616,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                       ),
                                     ),
                               height10SizedBox,
-                              Text(messageList[index].message.toString(),
+                              Text(messageList[index].message ?? "",
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
