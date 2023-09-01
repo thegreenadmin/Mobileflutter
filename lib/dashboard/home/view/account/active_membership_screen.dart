@@ -39,7 +39,6 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           onPressed: () {
                             Get.back(id: accountController.pageId.value);
                             //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,

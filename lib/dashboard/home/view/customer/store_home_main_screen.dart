@@ -172,7 +172,6 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-                    // Navigator.of(context).pop();
                   },
                   child: Container(
                     height: 50.0,

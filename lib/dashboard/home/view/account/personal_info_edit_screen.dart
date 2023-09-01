@@ -48,7 +48,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     onPressed: () {
                                       // Get.back();
                                       Get.back(id: pageIdApp.value);
-                                      // Navigator.of(context).pop();
+
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,

@@ -23,6 +23,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
     super.initState();
     addCardController.selectPaymentType.value = "";
     walletController.monthDays();
+    addCardController.apiGetCardList();
   }
 
   @override
@@ -62,7 +63,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         splashColor: Colors.transparent,
                         onTap: () {
                           Get.back(id: pageIdApp.value);
-                          // Navigator.of(context).pop();
+
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -768,7 +769,11 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                 () =>
                                                     const AddCardDetailScreen(),
                                                 id: pageIdApp.value,
-                                              );
+                                              )!
+                                                  .then((value) {
+                                                addCardController
+                                                    .apiGetCardList();
+                                              });
                                             },
                                             height: 50,
                                             width: WidgetConstants.screenWidth *
@@ -855,44 +860,46 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                                         const EdgeInsets.only(
                                                             top: 8.0),
                                                     child: Image.asset(
-                                                      walletController
+                                                      addCardController
                                                                   .cardList[
                                                                       index]
-                                                                  .card!
-                                                                  .brand ==
-                                                              StringConstants
-                                                                  .visaText
-                                                          ? ImageConstants
-                                                              .visacard
-                                                          : walletController
+                                                                  .card !=
+                                                              null
+                                                          ? addCardController
                                                                       .cardList[
                                                                           index]
                                                                       .card!
                                                                       .brand ==
                                                                   StringConstants
-                                                                      .masterCardText
+                                                                      .visaText
                                                               ? ImageConstants
-                                                                  .mastercard
-                                                              : walletController
+                                                                  .visacard
+                                                              : addCardController
                                                                           .cardList[
                                                                               index]
                                                                           .card!
                                                                           .brand ==
                                                                       StringConstants
-                                                                          .americanExpressText
+                                                                          .masterCardText
                                                                   ? ImageConstants
-                                                                      .americanexpress
-                                                                  : walletController
+                                                                      .mastercard
+                                                                  : addCardController
                                                                               .cardList[
                                                                                   index]
                                                                               .card!
                                                                               .brand ==
                                                                           StringConstants
-                                                                              .discoverText
+                                                                              .americanExpressText
                                                                       ? ImageConstants
-                                                                          .discovecard
-                                                                      : ImageConstants
-                                                                          .card,
+                                                                          .americanexpress
+                                                                      : addCardController.cardList[index].card!.brand ==
+                                                                              StringConstants
+                                                                                  .discoverText
+                                                                          ? ImageConstants
+                                                                              .discovecard
+                                                                          : ImageConstants
+                                                                              .card
+                                                          : ImageConstants.card,
                                                       height: 20,
                                                     ),
                                                   ),

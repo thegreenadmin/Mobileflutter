@@ -38,7 +38,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
-                                // Navigator.of(context).pop();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -51,14 +50,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Obx(() => Text(
-                                  manageStoreController
-                                      .categoryName.value,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                                      manageStoreController.categoryName.value,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                               ],
                             ),
                           ],
@@ -208,8 +206,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           manageStoreController
                                               .storeProductList[index].productId
                                               .toString();
-                                      manageStoreController
-                                          .apiDeleteProduct();
+                                      manageStoreController.apiDeleteProduct();
                                     })
                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                               return null;
@@ -381,12 +378,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                                   .productPrice ==
                                                               null
                                                           ? ""
-                                                          : "\$${manageStoreController
-                                                          .storeProductList[
-                                                      index]
-                                                          .productPrice
-                                                          .toStringAsFixed(
-                                                          2)}",
+                                                          : "\$${manageStoreController.storeProductList[index].productPrice.toStringAsFixed(2)}",
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:

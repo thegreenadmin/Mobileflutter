@@ -132,7 +132,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-                    // Navigator.of(context).pop();
+
                   },
                   child: Container(
                     height: 50.0,

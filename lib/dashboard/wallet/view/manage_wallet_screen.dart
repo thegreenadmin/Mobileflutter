@@ -23,13 +23,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
   final WalletController walletController = Get.put(WalletController());
 
   bottomSheetToAddMoney(context, {isFromEdit = false}) {
-    // walletController.isautoRechargeEnable.value = false;
-    // walletController.chargeAmountTextController.clear();
-    // walletController.thresholdAmountTextController.clear();
-    // walletController.thresholdAmountTextController.clear();
-    // walletController.autoChargeType.value = "";
-    // walletController.selectedFrequency.value = "";
-
     return showModalBottomSheet(
         isScrollControlled: true,
         isDismissible: true,
@@ -38,21 +31,12 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),
         context: context,
         builder: (BuildContext ctxx) {
-          // return StatefulBuilder(
-          //     builder: (BuildContext context, StateSetter setState) {
-
           return Padding(
             padding: MediaQuery.of(ctxx).viewInsets,
             child: Wrap(
                 children: <Widget>[AutoReloadScreen(isFromEdit: isFromEdit)]),
           );
-        }).then((value) => {
-          // walletController.isautoRechargeEnable.value = false,
-          // walletController.chargeAmountTextController.clear(),
-          // walletController.thresholdAmountTextController.clear(),
-          // walletController.thresholdAmountTextController.clear(),
-          // walletController.autoChargeType.value = "",
-        });
+        }).then((value) => {walletController.apiGetCardList()});
   }
 
   @override
@@ -76,7 +60,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
-                            // Navigator.of(context).pop();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -447,24 +430,14 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
               child: Obx(
                 () => InkWell(
                     onTap: () async {
-                      // SharedPreferenceStorage.setData("context", context);
-
                       roleApp.value == Role.customerRoleText
-                          ? /*Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                builder: (_) => const AddCardScreen(),
-                              ))*/
-                          Get.to(
+                          ? Get.to(
                               () => const AddCardScreen(),
                               id: pageIdApp.value,
                             )!
                               .then(
                                   (value) => walletController.apiGetCardList())
-                          : /*Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                builder: (_) => const CreateOwnerBankAccount(),
-                              ))*/
-                          Get.to(
+                          : Get.to(
                               () => const CreateOwnerBankAccount(),
                               id: pageIdApp.value,
                             )!

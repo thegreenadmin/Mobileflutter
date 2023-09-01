@@ -134,7 +134,6 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                   onPressed: () {
                                     Get.delete<OwnerStoresController>();
                                     Get.back(id: pageIdApp.value);
-                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

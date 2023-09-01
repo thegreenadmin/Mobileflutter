@@ -41,7 +41,6 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
                                     //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                                    // Navigator.of(context).pop();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

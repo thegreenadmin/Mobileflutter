@@ -42,7 +42,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                       ?.reset();
                                   addNewWorkerController.resetForm();
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
