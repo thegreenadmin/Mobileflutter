@@ -63,6 +63,7 @@ class Messages {
   String? createdAt;
   String? updatedAt;
   String? messageId;
+  IconClass? icon;
   Images? image;
 
   Messages(
@@ -76,6 +77,7 @@ class Messages {
       this.createdAt,
       this.updatedAt,
       this.messageId,
+      this.icon,
       this.image});
 
   Messages.fromJson(Map<String, dynamic> json) {
@@ -89,6 +91,7 @@ class Messages {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     messageId = json['message_id'];
+    icon = json['icon'] != null ? IconClass.fromJson(json['icon']) : null;
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
   }
 
@@ -104,9 +107,31 @@ class Messages {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['message_id'] = messageId;
+    if (icon != null) {
+      data['icon'] = icon!.toJson();
+    }
     if (image != null) {
       data['image'] = image!.toJson();
     }
+    return data;
+  }
+}
+
+class IconClass {
+  String? orignalUrl;
+  String? dynamicUrl;
+
+  IconClass({this.orignalUrl, this.dynamicUrl});
+
+  IconClass.fromJson(Map<String, dynamic> json) {
+    orignalUrl = json['orignal_url'];
+    dynamicUrl = json['dynamic_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orignal_url'] = this.orignalUrl;
+    data['dynamic_url'] = this.dynamicUrl;
     return data;
   }
 }

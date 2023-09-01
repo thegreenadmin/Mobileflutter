@@ -20,48 +20,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
   final OwnerInboxDetailController ownerInboxDetailController =
       Get.put(OwnerInboxDetailController());
 
-  // Container buildCameraGridView() {
-  //   return Container(
-  //       height: 120,
-  //       child: Stack(
-  //         alignment: Alignment.topRight,
-  //         children: [
-  //           Container(
-  //             margin: const EdgeInsets.all(10),
-  //             width: 100,
-  //             height: 110,
-  //             padding: const EdgeInsets.all(8),
-  //             decoration: BoxDecoration(
-  //               border: Border.all(color: AppColors.primary, width: 2),
-  //               borderRadius: BorderRadius.circular(10),
-  //               image: DecorationImage(
-  //                 fit: BoxFit.cover,
-  //                 image: FileImage(
-  //                   File(personalChatDetailController.imageFile.value.path),
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           InkWell(
-  //             onTap: () {
-  //               setState(() {
-  //                 personalChatDetailController.pickedFile = null;
-  //               });
-  //             },
-  //             child: const CircleAvatar(
-  //               backgroundColor: Colors.red,
-  //               radius: 10,
-  //               child: Icon(
-  //                 Icons.horizontal_rule,
-  //                 color: AppColors.white,
-  //                 size: 10.0,
-  //               ),
-  //             ),
-  //           )
-  //         ],
-  //       ));
-  // }
-
   SizedBox buildPhotoLibraryGridView() {
     return SizedBox(
         height: 120,
@@ -146,94 +104,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
         // })
         );
   }
-
-  // sendMediaBottomSheet(context) {
-  //   return showModalBottomSheet(
-  //       isScrollControlled: true,
-  //       isDismissible: true,
-  //       barrierColor: AppColors.darkGreyColor.withOpacity(0.5),
-  //       context: context,
-  //       elevation: 0,
-  //       backgroundColor: Colors.transparent,
-  //       builder: (context) => Container(
-  //             color: Colors.transparent,
-  //             height: 150,
-  //             child: Container(
-  //               decoration: const BoxDecoration(
-  //                   color: Colors.white,
-  //                   borderRadius: BorderRadius.only(
-  //                     topLeft: Radius.circular(30.0),
-  //                     topRight: Radius.circular(30.0),
-  //                   )),
-  //               child: Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   const SizedBox(
-  //                     height: 20,
-  //                   ),
-  //                   Container(
-  //                     padding: const EdgeInsets.only(left: 10, right: 10),
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.center,
-  //                       children: [
-  //                         GestureDetector(
-  //                           onTap: () {
-  //                             Get.back();
-  //                             personalChatDetailController
-  //                                 .loadFilesFromDevice(FileType.image);
-  //                           },
-  //                           child: const Text(
-  //                             "Photo Library",
-  //                             style: TextStyle(
-  //                                 color: AppColors.blackColor,
-  //                                 fontSize: 16,
-  //                                 fontFamily: "Gilroy",
-  //                                 fontWeight: FontWeight.w700),
-  //                           ),
-  //                         ),
-  //                         const SizedBox(
-  //                           height: 20,
-  //                         ),
-  //                         GestureDetector(
-  //                           onTap: () {
-  //                             Get.back();
-  //                             personalChatDetailController
-  //                                 .loadFilesFromDevice(FileType.any);
-  //                           },
-  //                           child: const Text(
-  //                             "File",
-  //                             style: TextStyle(
-  //                                 fontSize: 16,
-  //                                 color: AppColors.blackColor,
-  //                                 fontFamily: "Gilroy",
-  //                                 fontWeight: FontWeight.w700),
-  //                           ),
-  //                         ),
-  //                         const Divider(
-  //                           thickness: 2,
-  //                           height: 20,
-  //                         ),
-  //                         GestureDetector(
-  //                           onTap: () {
-  //                             Get.back();
-  //                           },
-  //                           child: const Text(
-  //                             "CANCEL",
-  //                             style: TextStyle(
-  //                                 color: AppColors.primaryColor,
-  //                                 fontSize: 16,
-  //                                 fontFamily: "Gilroy",
-  //                                 fontWeight: FontWeight.w800),
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ));
-  // }
 
   Container _buildMessageComposer() {
     return Container(
@@ -361,12 +231,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
         ));
   }
 
-  // Future<String> getFilePath(String fileName) async {
-  //   String dir = (await getExternalStorageDirectory()).path;
-  //   String savePath = '$dir/$fileName';
-  //   return savePath;
-  // }
-
   _buildMessage(
     List<Message> messageList,
     int index,
@@ -424,17 +288,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () async {
-                                          // SharedPreferenceStorage.setData(
-                                          //     "context", context);
-                                          // Navigator.of(context)
-                                          //     .push(MaterialPageRoute(
-                                          //   builder: (_) => ImagePreviewScreen(
-                                          //     image: messageList[index]
-                                          //         .image!
-                                          //         .dynamicUrl
-                                          //         .toString(),
-                                          //   ),
-                                          // ));
                                           await Get.to(
                                               ImagePreviewScreen(
                                                 image: messageList[index]
@@ -495,27 +348,28 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               fontSize: 14,
                                               color: AppColors.white,
                                               fontWeight: FontWeight.w400,
-                                            )))
+                                            ))),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      Utility.parseDateTime(
+                                        DateTime.parse(
+                                          messageList[index]
+                                              .createdAt
+                                              .toString(),
+                                        ),
+                                        secFormat: '',
+                                      ).toString(),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                )
                               ],
                             ),
                           ),
                         ),
-                        width10SizedBox,
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Text(
-                              Utility.parseDateTime(
-                                DateTime.parse(
-                                  messageList[index].createdAt.toString(),
-                                ),
-                                secFormat: '',
-                              ).toString(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                              )),
-                        )
                       ]))));
     } else {
       return Padding(
@@ -530,24 +384,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                          Utility.parseDateTime(
-                            DateTime.parse(
-                              messageList[index].createdAt.toString(),
-                            ),
-                            secFormat: '',
-                          ).toString(),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: AppColors.blacklight,
-                            fontWeight: FontWeight.w400,
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
@@ -617,15 +453,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                     child:
                                                         CircularProgressIndicator())),
                                           ),
-                                          /* child: Image.network(
-                                              messageList[index]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
-                                              height: 220,
-                                              // width: 200,
-                                              fit: BoxFit.fill,
-                                            )*/
                                         ),
                                       ),
                                     ),
@@ -636,6 +463,21 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
                                   )),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                    Utility.parseDateTime(
+                                      DateTime.parse(
+                                        messageList[index].createdAt.toString(),
+                                      ),
+                                      secFormat: '',
+                                    ).toString(),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.blacklight,
+                                      fontWeight: FontWeight.w400,
+                                    )),
+                              ),
                             ],
                           ),
                         ),

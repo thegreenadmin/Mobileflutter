@@ -20,16 +20,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
   final UserInboxDetailController userInboxDetailController =
       Get.put(UserInboxDetailController());
 
-  /*@override
-  void initState() {
-    userInboxDetailController.storeId.value = Get.parameters["storeId"] ?? "";
-    userInboxDetailController.storeName.value =
-        Get.parameters["storeName"] ?? "";
-    userInboxDetailController.messageHeadId.value =
-        Get.parameters["messageHeadId"] ?? "";
-    userInboxDetailController.apiGetMessagesList();
-  }*/
-
   SizedBox buildPhotoLibraryGridView() {
     return SizedBox(
         height: 120,
@@ -190,6 +180,15 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
             GestureDetector(
               onTap: () async {
                 if (userInboxDetailController
+                        .messageTextController.text.isEmpty &&
+                    userInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isNotEmpty) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await userInboxDetailController.apiSendMessage();
+                  print("C1 *****");
+                } else if (userInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
                       msg: "Please write something",
@@ -198,10 +197,40 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                } else {
+                  print("C2 *****");
+                } else if (userInboxDetailController
+                        .messageTextController.text.isNotEmpty &&
+                    userInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
+                  print("C3 *****");
+                } else if (userInboxDetailController
+                        .messageTextController.text.isNotEmpty &&
+                    userInboxDetailController
+                        .userSelectedImageOriginalLinkFromServer
+                        .value
+                        .isNotEmpty) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await userInboxDetailController.apiSendMessage();
+                  print("C4 *****");
                 }
+
+                // if (userInboxDetailController
+                //     .messageTextController.text.isEmpty) {
+                //   Fluttertoast.showToast(
+                //       msg: "Please write something",
+                //       toastLength: Toast.LENGTH_SHORT,
+                //       gravity: ToastGravity.CENTER,
+                //       backgroundColor: AppColors.primary,
+                //       textColor: AppColors.white,
+                //       fontSize: 14.0);
+                // } else {
+                //   FocusScope.of(context).requestFocus(FocusNode());
+                //   await userInboxDetailController.apiSendMessage();
+                // }
               },
               child: const Center(
                 child: Icon(
@@ -232,7 +261,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        messageList[index].image!.dynamicUrl == null
+                        messageList[index].icon!.dynamicUrl == null
                             ? Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.white),
@@ -240,24 +269,24 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: const CircleAvatar(
-                                    radius: 20.0,
+                                    radius: 25.0,
                                     backgroundImage:
-                                        AssetImage(ImageConstants.nopicfound)))
+                                        AssetImage(ImageConstants.userAccount)))
                             : Container(
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(50.0),
+                                    Radius.circular(60.0),
                                   ),
                                   child: CommonWidgets.cachedNetworkImage(
                                     messageList[index]
-                                        .image!
+                                        .icon!
                                         .dynamicUrl
                                         .toString(),
-                                    width: WidgetConstants.screenHeight * 0.05,
-                                    height: WidgetConstants.screenHeight * 0.05,
+                                    width: WidgetConstants.screenHeight * 0.06,
+                                    height: WidgetConstants.screenHeight * 0.06,
                                     placeholder: (context, url) => SizedBox(
                                         height:
                                             WidgetConstants.screenHeight * 0.05,
@@ -265,15 +294,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                             child:
                                                 CircularProgressIndicator())),
                                   ),
-                                  /*child: Image.network(
-                                      messageList[index]
-                                          .image!
-                                          .dynamicUrl
-                                          .toString(),
-                                      height: 45,
-                                      width: 45,
-                                      fit: BoxFit.fill,
-                                    )*/
                                 ),
                               ),
                         width10SizedBox,
@@ -304,17 +324,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                     ? height0SizedBox
                                     : InkWell(
                                         onTap: () {
-                                          // SharedPreferenceStorage.setData(
-                                          //     "context", context);
-                                          // Navigator.of(context)
-                                          //     .push(MaterialPageRoute(
-                                          //   builder: (_) => ImagePreviewScreen(
-                                          //     image: messageList[index]
-                                          //         .image!
-                                          //         .dynamicUrl
-                                          //         .toString(),
-                                          //   ),
-                                          // ));
                                           Get.to(
                                               ImagePreviewScreen(
                                                 image: messageList[index]
@@ -351,16 +360,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                           child:
                                                               CircularProgressIndicator())),
                                             ),
-                                            /*child: Image.network(
-                                                messageList[index]
-                                                    .image!
-                                                    .dynamicUrl
-                                                    .toString(),
-                                                height: 220,
-                                                // width: 200,
-
-                                                fit: BoxFit.fill,
-                                              )*/
                                           ),
                                         ),
                                       ),
@@ -385,27 +384,28 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                               fontSize: 14,
                                               color: AppColors.white,
                                               fontWeight: FontWeight.w400,
-                                            )))
+                                            ))),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      Utility.parseDateTime(
+                                        DateTime.parse(
+                                          messageList[index]
+                                              .createdAt
+                                              .toString(),
+                                        ),
+                                        secFormat: '',
+                                      ).toString(),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                )
                               ],
                             ),
                           ),
                         ),
-                        width10SizedBox,
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Text(
-                              Utility.parseDateTime(
-                                DateTime.parse(
-                                  messageList[index].createdAt.toString(),
-                                ),
-                                secFormat: '',
-                              ).toString(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.blacklight,
-                                fontWeight: FontWeight.w400,
-                              )),
-                        )
                       ]))));
     } else {
       return Padding(
@@ -420,24 +420,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                          Utility.parseDateTime(
-                            DateTime.parse(
-                              messageList[index].createdAt.toString(),
-                            ),
-                            secFormat: '',
-                          ).toString(),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: AppColors.blacklight,
-                            fontWeight: FontWeight.w400,
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
@@ -454,7 +436,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         child: InkWell(
                           onLongPress: () {
                             Clipboard.setData(ClipboardData(
-                                text: messageList[index].message.toString()));
+                                text: messageList[index].message ?? ""));
                             Utility.showTopMessage(StringConstants.messageText,
                                 StringConstants.copiedToClipBoardText);
                           },
@@ -467,17 +449,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () {
-                                        // SharedPreferenceStorage.setData(
-                                        //     "context", context);
-                                        // Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //   builder: (_) => ImagePreviewScreen(
-                                        //     image: messageList[index]
-                                        //         .image!
-                                        //         .dynamicUrl
-                                        //         .toString(),
-                                        //   ),
-                                        // ));
                                         Get.to(
                                             ImagePreviewScreen(
                                               image: messageList[index]
@@ -517,25 +488,31 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                     child:
                                                         CircularProgressIndicator())),
                                           ),
-                                          /* child: Image.network(
-                                              messageList[index]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
-                                              height: 220,
-                                              // width: 200,
-                                              fit: BoxFit.fill,
-                                            )*/
                                         ),
                                       ),
                                     ),
                               height10SizedBox,
-                              Text(messageList[index].message.toString(),
+                              Text(messageList[index].message ?? "",
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
                                   )),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Text(
+                                    Utility.parseDateTime(
+                                      DateTime.parse(
+                                        messageList[index].createdAt.toString(),
+                                      ),
+                                      secFormat: '',
+                                    ).toString(),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.blacklight,
+                                      fontWeight: FontWeight.w400,
+                                    )),
+                              ),
                             ],
                           ),
                         ),
