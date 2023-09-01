@@ -165,7 +165,10 @@ class UserInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "message_head_id": messageHeadId.value,
-      "message": messageTextController.text.trim(),
+      "message": messageTextController.text.trim() == null ||
+              messageTextController.text.trim().isEmpty
+          ? ""
+          : messageTextController.text.trim(),
       "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
           ? null
           : userSelectedImageOriginalLinkFromServer.value

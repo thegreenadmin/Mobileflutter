@@ -21,7 +21,7 @@ class _OffersScreenState extends State<OffersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-      preferredSize:const Size.fromHeight(90),
+        preferredSize: const Size.fromHeight(90),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: offersController.role.value,
@@ -671,6 +671,13 @@ class _OffersScreenState extends State<OffersScreen> {
                                                             0.8,
                                                         assetImg: ImageConstants
                                                             .nopicfound,
+                                                        placeholder: (context, url) => SizedBox(
+                                                            width: WidgetConstants
+                                                                    .screenWidth *
+                                                                0.8,
+                                                            child: const Center(
+                                                                child:
+                                                                    CircularProgressIndicator())),
                                                       ),
                                                     ),
                                                     SizedBox(

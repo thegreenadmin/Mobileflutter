@@ -131,7 +131,6 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
-
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -257,9 +256,6 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                 ?.offerName ??
                                                             ""
                                                         : "${ownerInboxController.inboxList[index].user?.firstName ?? ""} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
-                                                    /* ownerInboxController.inboxList[index]
-                                                    .store!.storeName ??
-                                                "",*/
                                                     style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,

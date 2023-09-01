@@ -16,11 +16,6 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   @override
   void initState() {
     super.initState();
-    getPage();
-  }
-
-  getPage() async {
-    pageId.value = await SharedPreferenceStorage.getData("pageId");
   }
 
   @override
