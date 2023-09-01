@@ -315,11 +315,17 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               height:
                                                   WidgetConstants.screenHeight *
                                                       0.25,
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.4,
                                               placeholder: (context, url) =>
                                                   SizedBox(
                                                       height: WidgetConstants
                                                               .screenHeight *
                                                           0.25,
+                                                      width: WidgetConstants
+                                                              .screenWidth *
+                                                          0.4,
                                                       child: const Center(
                                                           child:
                                                               CircularProgressIndicator())),
