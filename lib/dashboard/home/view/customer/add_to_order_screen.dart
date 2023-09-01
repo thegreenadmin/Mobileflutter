@@ -525,17 +525,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                          .screenWidth *
                                                          0.4
                                                  ),
-                                                 /* child: Image.network(
-                                                      item.image?.dynamicUrl
-                                                              .toString() ??
-                                                          "",
-                                                      fit: BoxFit.fill,
-                                                      height: WidgetConstants
-                                                              .screenHeight *
-                                                          0.6,
-                                                      width: WidgetConstants
-                                                              .screenWidth *
-                                                          0.4),*/
                                                 )),
                                               ))
                                           .toList(),

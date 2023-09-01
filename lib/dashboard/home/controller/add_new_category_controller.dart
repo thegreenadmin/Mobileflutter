@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
@@ -123,6 +122,7 @@ class AddNewCategoryController extends GetxController {
           maxHeight: 900);
       if (pickedFile != null) {
         categoryImage.value = pickedFile;
+        categoryImageDynamicLinkFromServer.value = "xc";
         await apiUploadImage();
         update();
       } else {}
@@ -134,6 +134,7 @@ class AddNewCategoryController extends GetxController {
           maxHeight: 900);
       if (pickedFile != null) {
         categoryImage.value = pickedFile;
+        categoryImageDynamicLinkFromServer.value = "cf";
         await apiUploadImage();
         update();
       } else {}
@@ -235,6 +236,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
+        categoryImage.value = XFile("");
         Get.find<ManageStoreController>().onInit();
         Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
       } else {

@@ -164,6 +164,16 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                             .categoryImageDynamicLinkFromServer
                                             .value,
                                         fit: BoxFit.cover,
+                                        errorWidget: (context, url, e) => SizedBox(
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.2,
+                                            width:
+                                                WidgetConstants.screenHeight *
+                                                    0.8,
+                                            child: const Center(
+                                                child:
+                                                    CircularProgressIndicator())),
                                         placeholder: (context, url) => SizedBox(
                                             height:
                                                 WidgetConstants.screenHeight *

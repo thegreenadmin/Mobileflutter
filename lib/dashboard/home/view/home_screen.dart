@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+
 import 'store_owner/manage_store_main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -133,14 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         homeController.searchStoreUserController
                                                 .cartCount.value !=
                                             0,
-                                //      ||
-                                // storeHomeMainController
-                                //     .productDetailResponse
-                                //     .value
-                                //     .data!
-                                //     .product!
-                                //     .cartItems!
-                                //     .isNotEmpty,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
@@ -218,16 +211,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             GestureDetector(
-                              //borderRadius: BorderRadius.circular(100),
                               onTap: () {
                                 if (homeController.isLoading?.value == false) {
-                                  // SharedPreferenceStorage.setData(
-                                  //     "context", context);
-                                  //
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (_) =>
-                                  //       const NotificationListScreen(),
-                                  // ));
                                   Get.to(() => const NotificationListScreen(),
                                       id: pageIdApp.value);
                                 }
@@ -255,38 +240,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                             elevation: 0,
                             onPressed: () {
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              debugPrint(
-                                  "permissionStoreList:----${permissionStoreList.length}----------");
-                              debugPrint(permissionStoreList
-                                  .any(
-                                      (element) => element.isStoreOwner == true)
-                                  .toString());
-                              debugPrint(permissionStoreList
-                                  .any((element) => element.controllers!.any(
-                                      (ele) =>
-                                          ele.controllerKey ==
-                                          PermissionKey
-                                              .manageMessages.statusName))
-                                  .toString());
-                              // print(permissionStoreList.firstWhere((element) =>
-                              //     element.controllers!.any((ele) =>
-                              //     ele.controllerKey == PermissionKey.manageMessages.statusName)).controllers!.any(
-                              //         (ele) => ele.controllerKey == PermissionKey.manageMessages.statusName));
                               roleApp.value == Role.customerRoleText
-                                  ?
-                                  // Navigator.of(context)
-                                  //         .push(MaterialPageRoute(
-                                  //         builder: (_) => const UserInboxScreen(),
-                                  //       ))
-                                  Get.to(() => const UserInboxScreen(),
+                                  ? Get.to(() => const UserInboxScreen(),
                                       id: pageIdApp.value)
-                                  : /* Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                      builder: (_) => const OwnerInboxScreen(),
-                                    ));*/
-                                  hasStoreAccess.value &&
+                                  : hasStoreAccess.value &&
                                               permissionStoreList.isEmpty ||
                                           permissionStoreList.any((element) =>
                                               element.isStoreOwner == true ||
@@ -356,7 +313,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       );
                                     } else {
-
                                       Get.parameters["isFromHome"] = 'false';
                                       Get.parameters["firstName"] =
                                           firstName.value.toString();
@@ -490,17 +446,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
-                                /* SharedPreferenceStorage.setData(
-                                    "context", context);
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                  builder: (_) => const AccountScreen(),
-                                ))
-                                    .then((value) {
-                                  homeController.isLoading?.value =true;
-                                  homeController.onInit();
-                                  homeController.update();
-                                });*/
                                 Get.parameters["isFromCart"] = "false";
                                 Get.to(() => const AccountScreen(),
                                         id: pageIdApp.value,
@@ -538,9 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: WidgetConstants.screenHeight * 0.84,
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child:
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Obx(() => roleApp.value == Role.customerRoleText
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -558,7 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: homeController
                                           .featuredUserProductList.isEmpty
                                       ? WidgetConstants.screenHeight * 0.60
-                                      : WidgetConstants.screenHeight * 0.35,
+                                      : WidgetConstants.screenHeight * 0.30,
                                   child: Center(
                                     child: Column(
                                       crossAxisAlignment:
@@ -620,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .nopicfound,
                                                       height: WidgetConstants
                                                               .screenHeight *
-                                                          0.30,
+                                                          0.28,
                                                       width: WidgetConstants
                                                               .screenWidth *
                                                           0.85),
@@ -687,19 +630,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   : Column(
                       children: [
                         homeController.getOwnerOfferList.isEmpty
-                            ? /*homeController.isLoading!.value == true
-                                ? SizedBox(
-                                    height: WidgetConstants.screenHeight * 0.20,
-                                    child: const Center(
-                                        child: CircularProgressIndicator(
-                                            color: AppColors.primary)),
-                                  )
-                                :*/
-                            SizedBox(
+                            ? SizedBox(
                                 height: homeController
                                         .ownerFeatureProductList.isEmpty
                                     ? WidgetConstants.screenHeight * 0.60
-                                    : WidgetConstants.screenHeight * 0.35,
+                                    : WidgetConstants.screenHeight * 0.30,
                                 child: Center(
                                   child: Column(
                                     crossAxisAlignment:
@@ -759,7 +694,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .nopicfound,
                                                     height: WidgetConstants
                                                             .screenHeight *
-                                                        0.30,
+                                                        0.28,
                                                     width: WidgetConstants
                                                             .screenWidth *
                                                         0.85),
