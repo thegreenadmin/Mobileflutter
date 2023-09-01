@@ -451,7 +451,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 const BorderRadius.all(
-                                              Radius.circular(0.0),
+                                              Radius.circular(10.0),
                                             ),
                                             child: CommonWidgets
                                                 .cachedNetworkImage(
@@ -459,7 +459,17 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 100.0,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.25,
+                                              placeholder: (context, url) =>
+                                                  SizedBox(
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.25,
+                                                      child: const Center(
+                                                          child:
+                                                              CircularProgressIndicator())),
                                             ),
                                           ),
                                         ),
@@ -567,17 +577,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                   ? height0SizedBox
                                   : InkWell(
                                       onTap: () async {
-                                        // SharedPreferenceStorage.setData(
-                                        //     "context", context);
-                                        // Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //   builder: (_) => ImagePreviewScreen(
-                                        //     image: messageList[index]
-                                        //         .image!
-                                        //         .dynamicUrl
-                                        //         .toString(),
-                                        //   ),
-                                        // ));
                                         await Get.to(
                                             ImagePreviewScreen(
                                               image: messageList[index]
@@ -593,7 +592,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius: const BorderRadius.all(
-                                            Radius.circular(0.0),
+                                            Radius.circular(10.0),
                                           ),
                                           child:
                                               CommonWidgets.cachedNetworkImage(
@@ -601,7 +600,22 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                                 .image!
                                                 .dynamicUrl
                                                 .toString(),
-                                            height: 220.0,
+                                            width: WidgetConstants.screenWidth *
+                                                0.4,
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.25,
+                                            fit: BoxFit.fill,
+                                            placeholder: (context, url) => SizedBox(
+                                                height: WidgetConstants
+                                                        .screenHeight *
+                                                    0.25,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.4,
+                                                child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator())),
                                           ),
                                           /* child: Image.network(
                                               messageList[index]
@@ -766,7 +780,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
+
                                   // Get.back();
                                 },
                                 icon: const Icon(

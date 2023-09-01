@@ -256,8 +256,14 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                         .image!
                                         .dynamicUrl
                                         .toString(),
-                                    height: 45.0,
-                                    width: 45.0,
+                                    width: WidgetConstants.screenHeight * 0.05,
+                                    height: WidgetConstants.screenHeight * 0.05,
+                                    placeholder: (context, url) => SizedBox(
+                                        height:
+                                            WidgetConstants.screenHeight * 0.05,
+                                        child: const Center(
+                                            child:
+                                                CircularProgressIndicator())),
                                   ),
                                   /*child: Image.network(
                                       messageList[index]
@@ -325,7 +331,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 const BorderRadius.all(
-                                              Radius.circular(0.0),
+                                              Radius.circular(10.0),
                                             ),
                                             child: CommonWidgets
                                                 .cachedNetworkImage(
@@ -333,7 +339,17 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height: 100.0,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.25,
+                                              placeholder: (context, url) =>
+                                                  SizedBox(
+                                                      height: WidgetConstants
+                                                              .screenHeight *
+                                                          0.25,
+                                                      child: const Center(
+                                                          child:
+                                                              CircularProgressIndicator())),
                                             ),
                                             /*child: Image.network(
                                                 messageList[index]
@@ -477,7 +493,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius: const BorderRadius.all(
-                                            Radius.circular(0.0),
+                                            Radius.circular(10.0),
                                           ),
                                           child:
                                               CommonWidgets.cachedNetworkImage(
@@ -485,7 +501,21 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                                 .image!
                                                 .dynamicUrl
                                                 .toString(),
-                                            height: 220.0,
+                                            width: WidgetConstants.screenWidth *
+                                                0.4,
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.25,
+                                            placeholder: (context, url) => SizedBox(
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.4,
+                                                height: WidgetConstants
+                                                        .screenHeight *
+                                                    0.25,
+                                                child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator())),
                                           ),
                                           /* child: Image.network(
                                               messageList[index]
@@ -650,7 +680,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

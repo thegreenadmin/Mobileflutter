@@ -64,7 +64,6 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

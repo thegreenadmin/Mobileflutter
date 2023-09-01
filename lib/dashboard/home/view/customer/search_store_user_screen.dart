@@ -79,7 +79,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               constraints: const BoxConstraints(),
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
-                                // Navigator.of(context).pop();
+
                                 Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(

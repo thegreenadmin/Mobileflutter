@@ -36,7 +36,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-                                  // Navigator.of(context).pop();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

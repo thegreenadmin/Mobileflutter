@@ -40,7 +40,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
-                              // Navigator.of(context).pop();
+
                               Get.delete<AddNewStoreController>();
                             },
                             icon: const Icon(
