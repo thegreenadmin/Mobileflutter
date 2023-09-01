@@ -910,14 +910,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Get.parameters["productId"] = homeController
                                         .ownerFeatureProductList[index]
                                         .productId;
-                                    Get.parameters["categoryName"] =
+                                    Get.parameters["categoryName"] =homeController
+                                        .ownerFeatureProductList[index]
+                                        .productCategories!.isNotEmpty && homeController
+                                        .ownerFeatureProductList[index]
+                                        .productCategories!=null?
                                         homeController
                                                 .ownerFeatureProductList[index]
                                                 .productCategories
                                                 ?.first
                                                 .category
                                                 ?.categoryName ??
-                                            "";
+                                            "":"";
                                     hasStoreAccess.value && permissionStoreList.isEmpty ||
                                             permissionStoreList.any((element) =>
                                                 element.storeId ==
