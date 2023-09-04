@@ -175,12 +175,12 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        // if (selectedCategories.isEmpty) {
-        //   Utility.showAlertMessage(
-        //       AlertStringConstants.pleaseSelectCategoriesText);
-        // } else {
+        if (selectedCategories.isEmpty) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectCategoriesText);
+        } else {
         apiCreateProduct();
-        // }
+        }
       } catch (_) {}
     } else {
       autoValidate.value = true;
