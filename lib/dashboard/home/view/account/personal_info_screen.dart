@@ -88,10 +88,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        // SharedPreferenceStorage.setData("context", context);
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (_) => const PersonalInfoEditScreen(),
-                        // ));
                         Get.to(() => const PersonalInfoEditScreen(),
                             id: pageIdApp.value);
                       },
@@ -105,10 +101,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   ],
                 ),
                 height30SizedBox,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.firstNameText,
                   style: TextStyle(
@@ -125,16 +117,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(StringConstants.lastNameText,
                     style: TextStyle(
                         color: AppColors.blacklight,
@@ -149,16 +135,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(StringConstants.nickNameText,
                     style: TextStyle(
                         color: AppColors.blacklight,
@@ -173,16 +153,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(StringConstants.emailIdText,
                     style: TextStyle(
                         color: AppColors.blacklight,
@@ -197,16 +171,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.phoneNumberText,
                   style: TextStyle(
@@ -223,8 +191,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
@@ -237,10 +203,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       fontSize: 20),
                 ),
                 height30SizedBox,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.addressLine1Text,
                   style: TextStyle(
@@ -257,16 +219,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.addressLine2Text,
                   style: TextStyle(
@@ -283,16 +239,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.townOrCityText,
                   style: TextStyle(
@@ -309,16 +259,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.postalCodeText,
                   style: TextStyle(
@@ -335,16 +279,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.countryText,
                   style: TextStyle(
@@ -361,16 +299,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 const Divider(
                   thickness: 1,
                   height: 40,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
                 Text(
                   StringConstants.stateText,
                   style: TextStyle(
@@ -387,8 +319,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     )),
-                //   ],
-                // ),
                 height4SizedBox,
                 const Divider(
                   thickness: 1,
@@ -425,13 +355,6 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         width: WidgetConstants.screenWidth,
                                         height:
                                             WidgetConstants.screenHeight * 0.3),
-                                    /* child: Image.network(
-                                      accountController
-                                          .idProofImageDynamicLinkFromServer
-                                          .value,
-                                      fit: BoxFit.cover,
-                                      width: WidgetConstants.screenWidth,
-                                    ),*/
                                   ),
                                 )),
                           ),

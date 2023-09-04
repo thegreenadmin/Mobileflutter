@@ -164,7 +164,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      hintText: " Start typing here...",
+                      hintText: StringConstants.startTypingHereText,
                       hintStyle: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 14,
@@ -193,7 +193,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                 } else if (ownerInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please write something",
+                      msg: AlertStringConstants.pleaseWriteSomethingText,
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       backgroundColor: AppColors.primary,

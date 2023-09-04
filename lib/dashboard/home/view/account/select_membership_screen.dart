@@ -153,8 +153,9 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                           () => InkWell(
                                             onTap: () {
                                               accountController
-                                                  .membershipList[index]
-                                                  .selectedPlan = "plan30";
+                                                      .membershipList[index]
+                                                      .selectedPlan =
+                                                  StringConstants.plan30Text;
                                               debugPrint(index.toString());
                                               debugPrint(accountController
                                                   .membershipList[index]
@@ -172,15 +173,18 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                                   .membershipList[
                                                                       index]
                                                                   .selectedPlan ==
-                                                              "plan30"
+                                                              StringConstants
+                                                                  .plan30Text
                                                           ? ImageConstants.radio
                                                           : ImageConstants
                                                               .radioUnfill,
                                                       scale: 30,
                                                     ),
                                                     width10SizedBox,
-                                                    const Text("Monthly Plan",
-                                                        style: TextStyle(
+                                                    Text(
+                                                        StringConstants
+                                                            .monthlyPlanText,
+                                                        style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontSize: 16,
@@ -205,8 +209,9 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                           () => InkWell(
                                             onTap: () {
                                               accountController
-                                                  .membershipList[index]
-                                                  .selectedPlan = "plan90";
+                                                      .membershipList[index]
+                                                      .selectedPlan =
+                                                  StringConstants.plan90Text;
                                               debugPrint(index.toString());
                                               debugPrint(accountController
                                                   .membershipList[index]
@@ -224,15 +229,18 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                                   .membershipList[
                                                                       index]
                                                                   .selectedPlan ==
-                                                              "plan90"
+                                                              StringConstants
+                                                                  .plan90Text
                                                           ? ImageConstants.radio
                                                           : ImageConstants
                                                               .radioUnfill,
                                                       scale: 30,
                                                     ),
                                                     width10SizedBox,
-                                                    const Text("Quaterly Plan",
-                                                        style: TextStyle(
+                                                    Text(
+                                                        StringConstants
+                                                            .quaterlyPlanText,
+                                                        style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontSize: 16,
@@ -264,8 +272,9 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                           () => InkWell(
                                             onTap: () {
                                               accountController
-                                                  .membershipList[index]
-                                                  .selectedPlan = "plan180";
+                                                      .membershipList[index]
+                                                      .selectedPlan =
+                                                  StringConstants.plan180Text;
                                               debugPrint(index.toString());
                                               debugPrint(accountController
                                                   .membershipList[index]
@@ -283,15 +292,18 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                                   .membershipList[
                                                                       index]
                                                                   .selectedPlan ==
-                                                              "plan180"
+                                                              StringConstants
+                                                                  .plan180Text
                                                           ? ImageConstants.radio
                                                           : ImageConstants
                                                               .radioUnfill,
                                                       scale: 30,
                                                     ),
                                                     width10SizedBox,
-                                                    const Text("Half Yearly",
-                                                        style: TextStyle(
+                                                    Text(
+                                                        StringConstants
+                                                            .halfYearlyText,
+                                                        style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontSize: 16,
@@ -316,8 +328,9 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                           () => InkWell(
                                             onTap: () {
                                               accountController
-                                                  .membershipList[index]
-                                                  .selectedPlan = "plan365";
+                                                      .membershipList[index]
+                                                      .selectedPlan =
+                                                  StringConstants.plan365Text;
                                               debugPrint(index.toString());
                                               debugPrint(accountController
                                                   .membershipList[index]
@@ -335,15 +348,18 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                                   .membershipList[
                                                                       index]
                                                                   .selectedPlan ==
-                                                              "plan365"
+                                                              StringConstants
+                                                                  .plan365Text
                                                           ? ImageConstants.radio
                                                           : ImageConstants
                                                               .radioUnfill,
                                                       scale: 30,
                                                     ),
                                                     width10SizedBox,
-                                                    const Text("Yearly Plan   ",
-                                                        style: TextStyle(
+                                                    Text(
+                                                        StringConstants
+                                                            .yearlyPlanText,
+                                                        style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
                                                             fontSize: 16,

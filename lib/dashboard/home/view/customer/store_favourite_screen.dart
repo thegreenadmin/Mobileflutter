@@ -214,7 +214,8 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                       ? height0SizedBox
                                       : height4SizedBox,
                                   Text(
-                                    "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                    "${StringConstants.unitPriceText}: "
+                                    "\$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,

@@ -112,11 +112,11 @@ class StringConstants {
       "Enter your details to create an\naccount";
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
+  static String contactUsRequestText = "Contact us request";
   static String countryText = "Country";
   static String closingTimeText = "Closing Time";
   static String cityText = "City";
   static String closeText = "Close";
-  static String identityInfoText = "Identity Info";
   static String collectTheIdentityInfoText = "Collect the Identity Info";
   static String curbSideText = "Curb-side";
   static String cartText = "Cart";
@@ -221,9 +221,8 @@ class StringConstants {
   static String enterValueText = "Enter value";
   static String enterOfferNameText = "Enter Offer Name";
   static String enterNumberOfDaysText = "Enter Number Of Days";
+  static String enterRoleText = "Enter Role";
 
-  //I
-  static String identityProofText = "Identity Proof";
   //F
   static String fridayText = "Friday";
   static String firstNameSmallText = "firstName";
@@ -238,7 +237,6 @@ class StringConstants {
   static String featuredProductText = "Featured product";
   static String featuredText = "Featured";
   static String filterOptionsText = "Filter Options";
-  static String enterRoleText = "Enter Role";
   static String findStoreText = "Find Store";
   static String febText = "February";
   static String fullFillOrdersText = "Fulfill Orders";
@@ -260,6 +258,8 @@ class StringConstants {
   static String heightText = "Height";
   static String hereForPickupText = "I am here for pickup";
   static String highToLowText = "High to low";
+  static String halfYearlyText = "Half Yearly";
+  static String haveIssueText = "Have issue/question?";
 
   //I
   static String inboxText = "Inbox";
@@ -270,6 +270,9 @@ class StringConstants {
   static String imageText = "Image";
   static String individualText = "Individual";
   static String inSufficientFundText = "In-sufficient funds in your wallet ";
+  static String identityInfoText = "Identity Info";
+  static String identityProofText = "Identity Proof";
+  static String inboxMessages = "Inbox Messages";
 
   //J
   static String janText = "January";
@@ -307,19 +310,19 @@ class StringConstants {
   static String marchText = "March";
   static String mayText = "May";
   static String milesText = "Miles";
+  static String monthlyPlanText = "Monthly Plan";
   static String masterCardText = "MasterCard";
-
   static String membershipIdText = "Membership Id";
   static String membershipTransactionText = "Membership Transaction";
 
   //N
+  static String novText = "November";
   static String noMemberText = "No Member";
   static String nearbyText = "Nearby";
   static String nearYouText = " near you";
   static String notificationPreferencesText = "Notification Preferences";
   static String nameText = "Name";
   static String numberText = "Number";
-  static String inboxMessages = "Inbox Messages";
   static String nickNameText = "Nick Name";
   static String noProductFoundText = "No products found";
   static String noOrdersFoundText = "No orders found";
@@ -372,7 +375,6 @@ class StringConstants {
   static String orderConfirmationText = "Order Confirmation";
   static String orderConfirmedText = "Order Confirmed";
   static String octText = "October";
-  static String novText = "November";
   static String orderDetailText = "Order detail";
   static String orderIdText = "order Id";
   static String orderidText = "order-Id";
@@ -384,6 +386,10 @@ class StringConstants {
   static String orderTransactionText = "Order Transaction";
   static String offerProductDetailText = "Offer Product Detail";
   static String offerProductsText = "Offer Products";
+  static String offerIdText = "Offer Id";
+  static String orderShippedText = "Shipped";
+  static String orderDeliveredText = "Order delivered";
+  static String orderPickedText = "Order picked";
 
   //P
   static String pendingOrderText = "Pending Order";
@@ -429,10 +435,16 @@ class StringConstants {
   static String productsListText = "Products List";
   static String profilePicText = "Profile Picture";
   static String privacyText = "privacy";
+  static String plan30Text = "plan30";
+  static String plan90Text = "plan90";
+  static String plan180Text = "plan180";
+  static String plan365Text = "plan365";
+  static String planText = "Plan";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
   static String qtyText = "Quantity";
+  static String quaterlyPlanText = "Quaterly Plan";
 
   //R
   static String registerHereText = " Register Here!!";
@@ -471,9 +483,6 @@ class StringConstants {
   static String signUpText = "Sign up";
   static String saturdayText = "Saturday";
   static String sundayText = "Sunday";
-  static String orderShippedText = "Shipped";
-  static String orderDeliveredText = "Order delivered";
-  static String orderPickedText = "Order picked";
   static String shareYourFeedbackText = "Share your feedback";
   static String skipText = "Skip";
   static String storeText = "Store";
@@ -534,12 +543,15 @@ class StringConstants {
   static String storeAccessText = "Store Access";
   static String selectMembershipPlanText = "Select Membership Plan";
   static String selectStateText = "Select State Text";
+  static String startTypingHereText = " Start typing here...";
+  static String storeOfferAndDiscountText = "Store Offers & Discounts";
 
   //T
   static String tapTouploadStoreImageText = "Tap to upload Store Image";
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
   static String tokenText = "token";
+  static String tillText = "till";
   static String thursdayText = "Thursday";
   static String tuesdayText = "Tuesday";
   static String termsAndConditions1Text =
@@ -563,9 +575,7 @@ class StringConstants {
   static String theGreenMallTitleText = "thegreenmall";
   static String totalBalanceText = "Total Balance";
   static String thresholdText = "Threshold";
-  static String storeOfferAndDiscountText = "Store Offers & Discounts";
   static String theGreenMallAppNameText = "The Green Mall";
-
   static String transactionIdText = "Transaction ID";
   static String toKnowBalanceYouDontHaveText =
       "You need to add store first in order the check the balance.";
@@ -630,6 +640,7 @@ class StringConstants {
   //Y
   static String your420MarketPlace = "Your 420 Market Place";
   static String yesText = "Yes";
+  static String yearlyPlanText = "Yearly Plan   ";
   static String yourThoughtText = "Your Thoughts";
   static String yourAreQualifiedText =
       "You are qualified to own stores by selecting Okay.";
@@ -641,7 +652,6 @@ class StringConstants {
 
 //Bottom Tab bar
 class BottomNavStringConstants {
-//Alert Messages
   static String homeText = "Home";
   static String walletText = "Wallet";
   static String ordersText = "Orders";
@@ -664,6 +674,8 @@ class AlertStringConstants {
       "Are you sure you want to Log out?";
   static String areYouSureToConfirmReturnText =
       "Are you sure you want to accept return request?";
+  static String above18Text =
+      "The Green mall application is available for 18 years and above only!";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
@@ -671,6 +683,7 @@ class AlertStringConstants {
       "Do you really want to cancel ths order?";
   static String cancelReturnRequestAlertText =
       "Do you really want to cancel ths return request?";
+
   //E
   static String endTimeAlertText =
       "Closing time cannot be same as opening time";
@@ -690,6 +703,8 @@ class AlertStringConstants {
       "No products found for this store.";
   static String noHistoryFoundText = "No History Found";
   static String noDataFoundText = "No Data Found";
+  static String notAuthorizedToStoreText =
+      "Sorry, You are not authorized this. Contact your store owner for more info.";
 
   //O
   static String openingTimeAlertText =
@@ -800,10 +815,7 @@ class AlertStringConstants {
   static String pleaseAddCardText = "Please add card";
   static String pleaseSelectAccountHolderTypeText =
       "Please select account holder type";
-
-  //N
-  static String notAuthorizedToStoreText =
-      "Sorry, You are not authorized this. Contact your store owner for more info.";
+  static String pleaseWriteSomethingText = "Please write something";
 
   //R
 
@@ -814,16 +826,15 @@ class AlertStringConstants {
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
-
-  //T
-  static String above18Text =
-      "The Green mall application is available for 18 years and above only!";
 }
 
 //Roles in app
 class Role {
+  //R
   static String role = "role";
+  //S
   static String storeOwnerRoleText = "StoreOwnerRole";
+  //C
   static String customerRoleText = "CustomerRole";
 }
 

@@ -273,19 +273,21 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                         index]
                                                                     .offerId ==
                                                                 null
-                                                        ? "- Contact us Request"
+                                                        ? " - ${StringConstants.contactUsRequestText}"
                                                         : ownerInboxController
                                                                     .inboxList[
                                                                         index]
                                                                     .orderId !=
                                                                 null
-                                                            ? "- Order Id #${ownerInboxController.inboxList[index].orderId}"
+                                                            ? " - ${StringConstants.orderIdText.toUpperCase()} "
+                                                                "#${ownerInboxController.inboxList[index].orderId}"
                                                             : ownerInboxController
                                                                         .inboxList[
                                                                             index]
                                                                         .offerId !=
                                                                     null
-                                                                ? "- Offer Id #${ownerInboxController.inboxList[index].offerId}"
+                                                                ? " - ${StringConstants.offerIdText.toUpperCase()} "
+                                                                    "#${ownerInboxController.inboxList[index].offerId}"
                                                                 : "",
                                                     style: const TextStyle(
                                                         fontSize: 16.0,

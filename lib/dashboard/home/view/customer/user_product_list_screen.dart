@@ -114,10 +114,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "Have issue/question?",
-                    style: TextStyle(
+                    StringConstants.haveIssueText,
+                    style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 16.0,
                         color: Colors.white),
@@ -132,7 +132,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-
                   },
                   child: Container(
                     height: 50.0,
@@ -668,7 +667,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                           ? height0SizedBox
                                           : height4SizedBox,
                                       Text(
-                                        "Unit price: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                        "${StringConstants.unitPriceText}: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 14,

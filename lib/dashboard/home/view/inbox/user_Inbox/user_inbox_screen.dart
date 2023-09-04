@@ -287,19 +287,20 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                         index]
                                                                     .offerId !=
                                                                 null
-                                                            ? "- Offer Id #${userInboxController.inboxList[index].offerId}"
+                                                            ? " - ${StringConstants.offerIdText.toUpperCase()} "
+                                                                "#${userInboxController.inboxList[index].offerId}"
                                                             : userInboxController
                                                                         .inboxList[
                                                                             index]
                                                                         .orderId !=
                                                                     null
-                                                                ? "- Order Id "
+                                                                ? " - ${StringConstants.orderIdText.toUpperCase()} "
                                                                     "#${userInboxController.inboxList[index].orderId}"
                                                                 : userInboxController.inboxList[index].orderId ==
                                                                             null &&
                                                                         userInboxController.inboxList[index].offerId ==
                                                                             null
-                                                                    ? "- Contact us Request"
+                                                                    ? " - ${StringConstants.contactUsRequestText}"
                                                                     : "",
 
                                                     // : userInboxController

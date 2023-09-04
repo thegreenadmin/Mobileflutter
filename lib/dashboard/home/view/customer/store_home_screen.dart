@@ -124,13 +124,6 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                             ?.dynamicUrl ??
                                                         "",
                                                     fit: BoxFit.cover),
-                                            /*Image.network(
-                                                storeHomeMainController
-                                                        .offersList[index]
-                                                        .image
-                                                        ?.dynamicUrl ??
-                                                    "",
-                                                fit: BoxFit.cover),*/
                                           ),
                                         )
                                       : Image.asset(
@@ -389,7 +382,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                             ),
                                       height4SizedBox,
                                       Text(
-                                        "Unit price: \$${storeHomeMainController.featureProductList[index].productPrice ?? ""}",
+                                        "${StringConstants.unitPriceText}: \$${storeHomeMainController.featureProductList[index].productPrice ?? ""}",
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 14,
