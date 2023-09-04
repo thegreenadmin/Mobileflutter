@@ -547,7 +547,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                               hint: Text(
                                 StringConstants.selectTypeText,
                                 style: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.grey,
+                                    fontSize: 14),
                               ),
                               items: manageStoreController.quantityTypeList
                                   .map((dynamic value) {
@@ -1000,7 +1002,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             hint: Text(
                               StringConstants.selectTypeText,
                               style: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey,
+                                  fontSize: 14),
                             ),
                             items: <String>["Percentage", "Amount"]
                                 .map((String value) {
@@ -1116,7 +1120,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (v) {
                         if (v == null || v.trim() == '') {
-                          return AlertStringConstants.pleaseSelectAnyOneText;
+                          return AlertStringConstants
+                              .pleaseSelectAnyOneTypeText;
                         }
                         return null;
                       },
@@ -1155,7 +1160,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       hint: Text(
                         StringConstants.selectTypeText,
                         style: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey,
+                            fontSize: 14),
                       ),
                       items: <String>["Yes", "No"].map((String value) {
                         return DropdownMenuItem<String>(
@@ -1570,7 +1577,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 validator: (v) {
                                   if (v == null || v.trim() == '') {
                                     return AlertStringConstants
-                                        .pleaseSelectAnyOneText;
+                                        .pleaseSelectAnyOneTypeText;
                                   }
                                   return null;
                                 },
@@ -1609,7 +1616,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 hint: Text(
                                   StringConstants.selectTypeText,
                                   style: const TextStyle(
-                                      color: AppColors.grey, fontSize: 14),
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.grey,
+                                      fontSize: 14),
                                 ),
                                 items:
                                     <String>["Yes", "No"].map((String value) {
@@ -1746,10 +1755,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           children: [
                             Text(
                               StringConstants.enableProductText,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: AppColors.blacklight,
+                                color: AppColors.black,
                               ),
                             ),
                           ],

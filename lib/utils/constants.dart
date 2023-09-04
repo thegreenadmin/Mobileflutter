@@ -187,7 +187,7 @@ class StringConstants {
   static String descriptionOftheIssueText = "Description of the issue/question";
 
   //E
-
+  static String enterCategoryNameText = "Enter category name";
   static String enableStoreText = "Enable Store";
   static String emailText = "Email";
   static String estimatedDeliveryDateText = "Estimated Delivery Date";
@@ -779,6 +779,7 @@ class AlertStringConstants {
   static String pleaseSelectCardText = "Please select card";
   static String pleaseEnterValidCardText = "Please enter valid card number";
   static String pleaseSelectAnyOneText = "Please select any one";
+  static String pleaseSelectAnyOneTypeText = "Please select any one type";
   static String pleaseUploadCategoryImage = "Please upload category Image";
   static String pleaseEnterAccountNumberText = "Please enter account number";
   static String pleaseEnterRoutingNumberText = "Please enter routing number";

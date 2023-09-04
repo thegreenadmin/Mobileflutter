@@ -491,8 +491,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.nickNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
+                      style: const TextStyle(
+                          color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -905,8 +905,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
+                      style: const TextStyle(
+                          color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),

@@ -41,7 +41,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
-
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -175,21 +174,23 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  CommonWidgets.cachedNetworkImage(
-                                                      ownerStoreController
-                                                          .editStoreLogoDynamicLinkFromServer
-                                                          .value,
-                                                      fit: BoxFit.cover,
+                                                  CommonWidgets
+                                                      .cachedNetworkImage(
+                                                    ownerStoreController
+                                                        .editStoreLogoDynamicLinkFromServer
+                                                        .value,
+                                                    fit: BoxFit.cover,
                                                     placeholder: (context, url) => SizedBox(
                                                         width: WidgetConstants
-                                                            .screenWidth *
+                                                                .screenWidth *
                                                             0.85,
                                                         height: WidgetConstants
-                                                            .screenHeight *
+                                                                .screenHeight *
                                                             0.2,
                                                         child: const Center(
                                                             child:
-                                                            CircularProgressIndicator())),)
+                                                                CircularProgressIndicator())),
+                                                  )
                                                 ]),
                                           ),
                                         ),
@@ -309,20 +310,21 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,
                                         child: CommonWidgets.cachedNetworkImage(
-                                            ownerStoreController
-                                                .editStoreImageDynamicLinkFromServer
-                                                .value,
-                                            fit: BoxFit.cover,
+                                          ownerStoreController
+                                              .editStoreImageDynamicLinkFromServer
+                                              .value,
+                                          fit: BoxFit.cover,
                                           placeholder: (context, url) => SizedBox(
-                                              width: WidgetConstants
-                                                  .screenWidth *
-                                                  0.85,
-                                              height: WidgetConstants
-                                                  .screenHeight *
-                                                  0.2,
+                                              width:
+                                                  WidgetConstants.screenWidth *
+                                                      0.85,
+                                              height:
+                                                  WidgetConstants.screenHeight *
+                                                      0.2,
                                               child: const Center(
                                                   child:
-                                                  CircularProgressIndicator())),)),
+                                                      CircularProgressIndicator())),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -484,8 +486,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.nickNameText,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
+                      style: const TextStyle(
+                          color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -925,10 +927,11 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                     height20SizedBox,
                     Text(
                       StringConstants.addressLine2Text,
-                      style: TextStyle(
-                          color: AppColors.blacklight,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.black,
+                      ),
                     ),
                     height4SizedBox,
                     TextFormField(
@@ -2392,10 +2395,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           children: [
                             Text(
                               StringConstants.enableStoreText,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: AppColors.blacklight,
+                                color: AppColors.black,
                               ),
                             ),
                           ],

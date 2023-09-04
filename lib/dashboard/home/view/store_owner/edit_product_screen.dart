@@ -713,8 +713,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       height20SizedBox,
                       Text(
                         StringConstants.shortDescriptionText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
+                        style: const TextStyle(
+                            color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
@@ -780,8 +780,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       height20SizedBox,
                       Text(
                         StringConstants.contentsAndStrainsText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
+                        style: const TextStyle(
+                            color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
@@ -847,8 +847,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       height20SizedBox,
                       Text(
                         StringConstants.additionalLinksToResearchText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
+                        style: const TextStyle(
+                            color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
@@ -919,8 +919,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       height20SizedBox,
                       Text(
                         StringConstants.discountsOrOffersText,
-                        style: TextStyle(
-                            color: AppColors.blacklight,
+                        style: const TextStyle(
+                            color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
@@ -1761,10 +1761,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             children: [
                               Text(
                                 StringConstants.enableProductText,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.black,
                                 ),
                               ),
                             ],

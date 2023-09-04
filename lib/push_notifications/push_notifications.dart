@@ -108,8 +108,8 @@ void selectNotification(NotificationResponse notificationResponse) async {
 
   //******************  ORDER ********************
 
-  if (notificationData.type == "order" &&
-      notificationData.senderType == "store") {
+  if (notificationData.type == StringConstants.orderText.toLowerCase() &&
+      notificationData.senderType == StringConstants.storeText.toLowerCase()) {
     if (roleApp.value == Role.customerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
       roleApp.value = Role.storeOwnerRoleText;
@@ -124,8 +124,8 @@ void selectNotification(NotificationResponse notificationResponse) async {
       Get.put(OrdersHomeMainController()).onInit();
       Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value);
     });
-  } else if (notificationData.type == "order" &&
-      notificationData.senderType == "user") {
+  } else if (notificationData.type == StringConstants.orderText.toLowerCase() &&
+      notificationData.senderType == StringConstants.userText.toLowerCase()) {
     if (roleApp.value == Role.storeOwnerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
       roleApp.value = Role.customerRoleText;
@@ -157,8 +157,9 @@ void selectNotification(NotificationResponse notificationResponse) async {
     });
 
     //******************  MESSAGE  ********************
-  } else if (notificationData.type == "message" &&
-      notificationData.senderType == "user") {
+  } else if (notificationData.type ==
+          StringConstants.messageText.toLowerCase() &&
+      notificationData.senderType == StringConstants.userText.toLowerCase()) {
     if (roleApp.value == Role.customerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
       roleApp.value = Role.storeOwnerRoleText;
@@ -172,7 +173,8 @@ void selectNotification(NotificationResponse notificationResponse) async {
           notificationData.messageHeadId.toString();
       Get.to(() => const OwnerInboxDetailScreen(), id: pageIdApp.value);
     });
-  } else if (notificationData.type == "message" &&
+  } else if (notificationData.type ==
+          StringConstants.messageText.toLowerCase() &&
       notificationData.senderType == "store") {
     if (roleApp.value == Role.storeOwnerRoleText) {
       SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
