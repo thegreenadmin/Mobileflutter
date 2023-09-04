@@ -132,7 +132,7 @@ class UserInboxDetailController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("MESSAGE LIST RESPONSE *******${value!.body}");
@@ -185,6 +185,7 @@ class UserInboxDetailController extends GetxController {
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
+        await apiGetMessagesList();
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
@@ -192,7 +193,6 @@ class UserInboxDetailController extends GetxController {
         messageListModel = UserMessageListModel.fromJson(value.body);
         messageList.value = messageListModel.data?.messages ?? [];
         update();
-        await apiGetMessagesList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

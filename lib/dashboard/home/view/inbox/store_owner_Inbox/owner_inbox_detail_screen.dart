@@ -189,7 +189,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .isNotEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  print("C1 *****");
+                  debugPrint("C1 *****");
                 } else if (ownerInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
@@ -199,7 +199,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  print("C2 *****");
+                  debugPrint("C2 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -208,7 +208,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .isEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  print("C3 *****");
+                  debugPrint("C3 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -217,7 +217,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .isNotEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  print("C4 *****");
+                  debugPrint("C4 *****");
                 }
               },
               child: const Center(

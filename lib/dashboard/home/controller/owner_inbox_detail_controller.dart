@@ -144,7 +144,7 @@ class OwnerInboxDetailController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("MESSAGE LIST RESPONSE *******${value!.body}");

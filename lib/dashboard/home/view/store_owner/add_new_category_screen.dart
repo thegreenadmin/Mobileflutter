@@ -185,11 +185,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                                                 child:
                                                     CircularProgressIndicator())),
                                       ),
-                                      /*child: Image.network(
-                                            addNewCategoryController
-                                                .categoryImageDynamicLinkFromServer
-                                                .value,
-                                            fit: BoxFit.cover)*/
                                     ),
                                   ),
                                 ],
@@ -239,7 +234,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                         },
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                          hintText: StringConstants.enterNameText,
+                          hintText: StringConstants.enterCategoryNameText,
                           hintStyle: const TextStyle(
                               color: AppColors.grey, fontSize: 14),
                           fillColor: Colors.white,

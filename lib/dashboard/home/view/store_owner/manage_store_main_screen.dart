@@ -105,7 +105,6 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
           children: [
             Obx(() => Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xff7c94b6),
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       colorFilter: const ColorFilter.mode(

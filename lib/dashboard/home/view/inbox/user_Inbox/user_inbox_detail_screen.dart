@@ -217,20 +217,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                   await userInboxDetailController.apiSendMessage();
                   print("C4 *****");
                 }
-
-                // if (userInboxDetailController
-                //     .messageTextController.text.isEmpty) {
-                //   Fluttertoast.showToast(
-                //       msg: "Please write something",
-                //       toastLength: Toast.LENGTH_SHORT,
-                //       gravity: ToastGravity.CENTER,
-                //       backgroundColor: AppColors.primary,
-                //       textColor: AppColors.white,
-                //       fontSize: 14.0);
-                // } else {
-                //   FocusScope.of(context).requestFocus(FocusNode());
-                //   await userInboxDetailController.apiSendMessage();
-                // }
               },
               child: const Center(
                 child: Icon(
