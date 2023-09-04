@@ -145,6 +145,7 @@ class ImageConstants {
   //U
   static const String union = '$assetsIcon/union.png';
   static const String upload = '$assetsIcon/upload.png';
+
   static const String uploadbutton = '$assetsIcon/uploadbutton.png';
   static const String uploadpic = '$assetsIcon/uploadpic.png';
   static const String user = '$assetsIcon/user.png';

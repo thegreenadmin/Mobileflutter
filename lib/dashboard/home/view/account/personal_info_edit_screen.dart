@@ -46,9 +46,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
-                                      // Get.back();
                                       Get.back(id: pageIdApp.value);
-
                                     },
                                     icon: const Icon(
                                       Icons.arrow_back,
@@ -95,12 +93,24 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               fontSize: 20),
                         ),
                         height15SizedBox,
-                        Text(
-                          StringConstants.firstNameText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.firstNameText,
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
                         height4SizedBox,
                         TextFormField(
@@ -161,13 +171,26 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        Text(
-                          StringConstants.lastNameText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.lastNameText,
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         TextFormField(
                             autovalidateMode:
@@ -250,12 +273,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             controller:
                                 accountController.nickNameTextController,
                             keyboardType: TextInputType.text,
-                            /*  validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants.pleaseEnterNickNameText;
-                            }
-                            return null;
-                          },*/
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               hintText: StringConstants.nickNameText,
@@ -300,13 +317,26 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               fontSize: 20),
                         ),
                         height20SizedBox,
-                        Text(
-                          StringConstants.addressLine1Text,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.addressLine1Text,
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         InkWell(
                           onTap: () async {
@@ -517,13 +547,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        Text(
-                          StringConstants.townOrCityText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.townOrCityText
+                                      .toTitleCase(),
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         TextFormField(
                             autovalidateMode:
@@ -583,13 +627,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        Text(
-                          StringConstants.zipCodeText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text:
+                                      StringConstants.zipCodeText.toTitleCase(),
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         TextFormField(
                             autovalidateMode:
@@ -649,13 +707,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               ),
                             )),
                         height20SizedBox,
-                        Text(
-                          StringConstants.countryText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text:
+                                      StringConstants.countryText.toTitleCase(),
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         TextFormField(
                             autovalidateMode:
@@ -772,13 +844,26 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         //       },
                         //     )),
                         height20SizedBox,
-                        Text(
-                          StringConstants.stateText,
-                          style: TextStyle(
-                              color: AppColors.blacklight,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: StringConstants.stateText.toTitleCase(),
+                                  style: TextStyle(
+                                      color: AppColors.blacklight,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400)),
+                              TextSpan(
+                                text: StringConstants.starText,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
+
                         height4SizedBox,
                         // Obx(() => DropdownButtonFormField<StatesList>(
                         //       isExpanded: true,
@@ -938,14 +1023,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                             child:
                                                                 CircularProgressIndicator())),
                                               ),
-                                              /*child: Image.network(
-                                                accountController
-                                                    .idProofImageDynamicLinkFromServer
-                                                    .value,
-                                                fit: BoxFit.cover,
-                                                width:
-                                                    WidgetConstants.screenWidth,
-                                              ),*/
                                             ),
                                           )),
                                     ),
@@ -971,10 +1048,10 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                     side: const BorderSide(
                                                         color: AppColors
                                                             .primary)))),
-                                        child: const Text(
-                                          "Remove",
-                                          style:
-                                              TextStyle(color: AppColors.white),
+                                        child: Text(
+                                          StringConstants.removeText,
+                                          style: const TextStyle(
+                                              color: AppColors.white),
                                         ),
                                       ),
                                     )
@@ -990,8 +1067,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                         horizontal:
                                             WidgetConstants.screenWidth * 0.15,
                                         vertical: 20),
-                                    // padding: const EdgeInsets.only(
-                                    //     left: 0, right: 0, top: 20, bottom: 20),
                                     color: AppColors.primarylight,
                                     child: Column(
                                         crossAxisAlignment:
@@ -1000,7 +1075,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
-                                            "assets/upload.png",
+                                            ImageConstants.upload,
                                             scale: 2.5,
                                           ),
                                           height8SizedBox,
@@ -1035,9 +1110,9 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                           side: const BorderSide(
                                                               color: AppColors
                                                                   .primary)))),
-                                              child: const Text(
-                                                "Upload",
-                                                style: TextStyle(
+                                              child: Text(
+                                                StringConstants.uploadText,
+                                                style: const TextStyle(
                                                     color: AppColors.white),
                                               ),
                                             ),

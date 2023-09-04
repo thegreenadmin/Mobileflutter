@@ -172,7 +172,8 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                         ),
                                         height4SizedBox,
                                         Text(
-                                          "Unit price: \$${storeHomeMainController.previousOrderList[i].productPrice ?? ""}",
+                                          "${StringConstants.unitPriceText}: "
+                                          "\$${storeHomeMainController.previousOrderList[i].productPrice ?? ""}",
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 14,

@@ -162,7 +162,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      hintText: " Start typing here...",
+                      hintText: StringConstants.startTypingHereText,
                       hintStyle: TextStyle(
                           color: AppColors.blacklight,
                           fontSize: 14,
@@ -187,17 +187,17 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .isNotEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  print("C1 *****");
+                  debugPrint("C1 *****");
                 } else if (userInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please write something",
+                      msg: AlertStringConstants.pleaseWriteSomethingText,
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  print("C2 *****");
+                  debugPrint("C2 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -206,7 +206,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .isEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  print("C3 *****");
+                  debugPrint("C3 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -215,7 +215,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .isNotEmpty) {
                   FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  print("C4 *****");
+                  debugPrint("C4 *****");
                 }
               },
               child: const Center(

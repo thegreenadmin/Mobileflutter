@@ -54,7 +54,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                         ],
                       ),
                       Image.asset(
-                        "assets/homeMall.png",
+                        ImageConstants.homeMall,
                         scale: 4,
                       )
                     ])),
@@ -105,7 +105,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
-                                              "assets/upload.png",
+                                              ImageConstants.upload,
                                               scale: 2.5,
                                             ),
                                             height6SizedBox,
@@ -233,7 +233,8 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                               children: [
                                 Obx(() => Radio(
                                       activeColor: AppColors.primary,
-                                      value: "store",
+                                      value: StringConstants.storeText
+                                          .toLowerCase(),
                                       groupValue:
                                           addOffersController.radioValue.value,
                                       onChanged: (value) {
@@ -250,7 +251,8 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                               children: [
                                 Obx(() => Radio(
                                       activeColor: AppColors.primary,
-                                      value: "product",
+                                      value: StringConstants.productText
+                                          .toLowerCase(),
                                       groupValue:
                                           addOffersController.radioValue.value,
                                       onChanged: (value) {
@@ -339,7 +341,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                               addOffersController.storeIdValue.value =
                                   value.toString();
                               if (addOffersController.radioValue.value !=
-                                  "store") {
+                                  StringConstants.storeText.toLowerCase()) {
                                 await addOffersController.apiGetStoreProducts();
                                 setState(() {});
                               }
@@ -348,112 +350,111 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                           )),
                     height20SizedBox,
                     Obx(
-                      () => addOffersController.radioValue.value == "store"
-                          ? height0SizedBox
-                          : addOffersController.productMergedList.isEmpty
+                      () =>
+                          addOffersController.radioValue.value ==
+                                  StringConstants.storeText.toLowerCase()
                               ? height0SizedBox
-                              : SizedBox(
-                                  width: Get.width,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Wrap(
+                              : addOffersController.productMergedList.isEmpty
+                                  ? height0SizedBox
+                                  : SizedBox(
+                                      width: Get.width,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            for (var i = 0;
-                                                i <
-                                                    addOffersController
-                                                        .productMergedList
-                                                        .length;
-                                                i++)
-                                              Obx(() => InkWell(
-                                                    onTap: () {
-                                                      addOffersController
-                                                          .productMergedList[i]
-                                                          .product!
-                                                          .status = addOffersController
-                                                                  .productMergedList[
-                                                                      i]
-                                                                  .product!
-                                                                  .status ==
-                                                              "deleted"
-                                                          ? "active"
-                                                          : "deleted";
-
-                                                      setState(() {});
-                                                    },
-                                                    child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                top: 10,
-                                                                bottom: 10),
-                                                        margin: const EdgeInsets
-                                                            .all(3),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                              spreadRadius: 5,
-                                                              blurRadius: 7,
-                                                              offset:
-                                                                  const Offset(
-                                                                      0, 2),
-                                                            ),
-                                                          ],
-                                                          color: addOffersController
+                                            Wrap(
+                                              children: [
+                                                for (var i = 0;
+                                                    i <
+                                                        addOffersController
+                                                            .productMergedList
+                                                            .length;
+                                                    i++)
+                                                  Obx(() => InkWell(
+                                                        onTap: () {
+                                                          addOffersController
+                                                              .productMergedList[
+                                                                  i]
+                                                              .product!
+                                                              .status = addOffersController
                                                                       .productMergedList[
                                                                           i]
                                                                       .product!
-                                                                      .status! ==
+                                                                      .status ==
                                                                   "deleted"
-                                                              ? AppColors
-                                                                  .primarylight
-                                                              : AppColors
-                                                                  .primary,
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(
-                                                            Radius.circular(
-                                                                100),
-                                                          ),
-                                                        ),
-                                                        child: Obx(() => Text(
-                                                              addOffersController
-                                                                      .productMergedList[
-                                                                          i]
-                                                                      .product!
-                                                                      .productName ??
-                                                                  "",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: addOffersController
-                                                                              .productMergedList[
-                                                                                  i]
+                                                              ? "active"
+                                                              : "deleted";
+
+                                                          setState(() {});
+                                                        },
+                                                        child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 15,
+                                                                    right: 15,
+                                                                    top: 10,
+                                                                    bottom: 10),
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.1),
+                                                                  spreadRadius:
+                                                                      5,
+                                                                  blurRadius: 7,
+                                                                  offset:
+                                                                      const Offset(
+                                                                          0, 2),
+                                                                ),
+                                                              ],
+                                                              color: addOffersController
+                                                                          .productMergedList[
+                                                                              i]
+                                                                          .product!
+                                                                          .status! ==
+                                                                      "deleted"
+                                                                  ? AppColors
+                                                                      .primarylight
+                                                                  : AppColors
+                                                                      .primary,
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    100),
+                                                              ),
+                                                            ),
+                                                            child:
+                                                                Obx(() => Text(
+                                                                      addOffersController
+                                                                              .productMergedList[i]
                                                                               .product!
-                                                                              .status! ==
-                                                                          "deleted"
-                                                                      ? AppColors
-                                                                          .primary
-                                                                      : AppColors
-                                                                          .white),
-                                                            ))),
-                                                  ))
-                                          ],
-                                        ),
-                                      ]),
-                                ),
+                                                                              .productName ??
+                                                                          "",
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          color: addOffersController.productMergedList[i].product!.status! == "deleted"
+                                                                              ? AppColors.primary
+                                                                              : AppColors.white),
+                                                                    ))),
+                                                      ))
+                                              ],
+                                            ),
+                                          ]),
+                                    ),
                     ),
                     height20SizedBox,
                     Text(

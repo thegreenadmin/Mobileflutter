@@ -161,10 +161,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "Have issue/question?",
-                    style: TextStyle(
+                    StringConstants.haveIssueText,
+                    style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 16.0,
                         color: Colors.white),
@@ -179,7 +179,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 InkWell(
                   onTap: () {
                     Get.back();
-
                   },
                   child: Container(
                     height: 50.0,
@@ -514,17 +513,17 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           6.0),
-                                                 child:  CommonWidgets.cachedNetworkImage(
-                                                     item.image?.dynamicUrl
-                                                         .toString() ??
-                                                         "",
-                                                     height: WidgetConstants
-                                                         .screenHeight *
-                                                         0.6,
-                                                     width: WidgetConstants
-                                                         .screenWidth *
-                                                         0.4
-                                                 ),
+                                                  child: CommonWidgets
+                                                      .cachedNetworkImage(
+                                                          item.image?.dynamicUrl
+                                                                  .toString() ??
+                                                              "",
+                                                          height: WidgetConstants
+                                                                  .screenHeight *
+                                                              0.6,
+                                                          width: WidgetConstants
+                                                                  .screenWidth *
+                                                              0.4),
                                                 )),
                                               ))
                                           .toList(),
@@ -579,7 +578,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                               : 10,
                                                       height: 5.0,
                                                       margin: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           vertical: 8.0,
                                                           horizontal: 4.0),
                                                       decoration:

@@ -139,7 +139,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                     ),
                                                     width12SizedBox,
                                                     Text(
-                                                      "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} PLAN",
+                                                      "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} ${StringConstants.planText.toUpperCase()}",
                                                       style: const TextStyle(
                                                           color:
                                                               AppColors.primary,
@@ -172,9 +172,9 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                 height10SizedBox,
                                                 Row(
                                                   children: [
-                                                    const Text(
-                                                      "Amount: ",
-                                                      style: TextStyle(
+                                                    Text(
+                                                      "${StringConstants.amountText}: ",
+                                                      style: const TextStyle(
                                                           color:
                                                               AppColors.black,
                                                           fontSize: 16,
@@ -195,9 +195,9 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                 height10SizedBox,
                                                 Row(
                                                   children: [
-                                                    const Text(
-                                                      "Status: ",
-                                                      style: TextStyle(
+                                                    Text(
+                                                      "${StringConstants.statusText}: ",
+                                                      style: const TextStyle(
                                                           color:
                                                               AppColors.black,
                                                           fontSize: 16,
@@ -205,7 +205,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                               FontWeight.w600),
                                                     ),
                                                     Text(
-                                                      "${accountController.activeMembershipList[index].status!.capitalizeFirst} till ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
+                                                      "${accountController.activeMembershipList[index].status!.toCapitalized()} ${StringConstants.tillText} ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
                                                       style: const TextStyle(
                                                           color:
                                                               AppColors.black,
