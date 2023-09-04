@@ -75,23 +75,22 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(() => manageStoreController.imageUrlList!.isEmpty ||
-                            manageStoreController.imageUrlList
-                                .every((element) => element.status == "deleted")
-                        ? height0SizedBox
-                        : Text.rich(
-                            TextSpan(
+                    Obx(
+                      () => manageStoreController.imageUrlList!.isEmpty ||
+                              manageStoreController.imageUrlList.every(
+                                  (element) => element.status == "deleted")
+                          ? height0SizedBox
+                          : Column(
                               children: [
-                                TextSpan(
-                                    text:
-                                        StringConstants.uploadProductPhotosText,
+                                Text(StringConstants.uploadProductPhotosText,
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400)),
+                                height6SizedBox
                               ],
                             ),
-                          )),
+                    ),
                     Obx(
                       () => manageStoreController.imageUrlList!.isEmpty ||
                               manageStoreController.imageUrlList.every(
@@ -100,11 +99,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           : SizedBox(
                               height: 100,
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
                                 child: ListView.separated(
                                     separatorBuilder:
                                         (BuildContext context, int index) {
-                                      return width8SizedBox;
+                                      return width5SizedBox;
                                     },
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
@@ -121,7 +121,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                               children: [
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.all(4.0),
+                                                      const EdgeInsets.all(0.0),
                                                   child: CommonWidgets
                                                       .cachedNetworkImage(
                                                     manageStoreController
@@ -154,7 +154,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                     setState(() {});
                                                   },
                                                   child: const Padding(
-                                                    padding: EdgeInsets.all(5),
+                                                    padding: EdgeInsets.all(2),
                                                     child: Icon(
                                                         Icons.delete_forever,
                                                         color:

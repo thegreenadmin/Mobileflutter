@@ -44,6 +44,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 if (Get.parameters['isFromHome'] == 'true') {
                                   Get.delete<ManageStoreController>();
                                 }
+                                manageStoreController.resetForm();
                                 manageStoreController.imageUrlList.clear();
                                 Get.back(id: pageIdApp.value);
                               },
@@ -87,11 +88,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       Obx(
                         () => manageStoreController.imageFileList!.isEmpty
                             ? height0SizedBox
-                            : Text(StringConstants.uploadProductPhotosText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
+                            : Column(
+                                children: [
+                                  Text(StringConstants.uploadProductPhotosText,
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400)),
+                                  height6SizedBox
+                                ],
+                              ),
                       ),
                       Obx(
                         () => manageStoreController.imageUrlList.isEmpty ||
@@ -103,7 +109,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 6.0),
-                                  child: ListView.builder(
+                                  child: ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return width5SizedBox;
+                                      },
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: manageStoreController
@@ -122,29 +132,34 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            4.0),
-                                                    child: CommonWidgets
-                                                        .cachedNetworkImage(
-                                                      manageStoreController
-                                                          .imageUrlList[index]
-                                                          .dynamicImageUrl!,
-                                                      fit: BoxFit.cover,
-                                                      height: WidgetConstants
-                                                              .screenHeight *
-                                                          0.1,
-                                                      width: WidgetConstants
-                                                              .screenHeight *
-                                                          0.1,
-                                                      placeholder: (context, url) => SizedBox(
-                                                          height: WidgetConstants
-                                                                  .screenHeight *
-                                                              0.1,
-                                                          width: WidgetConstants
-                                                                  .screenHeight *
-                                                              0.1,
-                                                          child: const Center(
-                                                              child:
-                                                                  CircularProgressIndicator())),
+                                                            0.0),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: CommonWidgets
+                                                          .cachedNetworkImage(
+                                                        manageStoreController
+                                                            .imageUrlList[index]
+                                                            .dynamicImageUrl!,
+                                                        fit: BoxFit.cover,
+                                                        height: WidgetConstants
+                                                                .screenHeight *
+                                                            0.1,
+                                                        width: WidgetConstants
+                                                                .screenHeight *
+                                                            0.1,
+                                                        placeholder: (context, url) => SizedBox(
+                                                            height: WidgetConstants
+                                                                    .screenHeight *
+                                                                0.1,
+                                                            width: WidgetConstants
+                                                                    .screenHeight *
+                                                                0.1,
+                                                            child: const Center(
+                                                                child:
+                                                                    CircularProgressIndicator())),
+                                                      ),
                                                     ),
                                                   ),
                                                   InkWell(
@@ -156,7 +171,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                     },
                                                     child: const Padding(
                                                       padding:
-                                                          EdgeInsets.all(5),
+                                                          EdgeInsets.all(2),
                                                       child: Icon(
                                                           Icons.delete_forever,
                                                           color: AppColors

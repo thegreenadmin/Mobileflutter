@@ -742,24 +742,8 @@ class ManageStoreController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
 
-        productNameTextController.clear();
-        quantityTextController.clear();
-        pricePerUnitTextController.clear();
-        shortDescriptionTextController.clear();
-        discountOrOfferTextController.clear();
-        additionalLinkTextController.clear();
-        contentsAndStrainsTextController.clear();
-        lengthTextController.clear();
-        breadthTextController.clear();
-        heightTextController.clear();
-        daysTextController.clear();
-        weightTextController.clear();
-        imageUrlList.clear();
-        isEnabled.value = true;
-        isProductReturnable.value = false;
-        discountType.value = "";
-        isFeatured.value = false;
-        selectedCategories.value = [];
+        resetForm();
+
         if (Get.parameters['isFromHome'] == "true") {
           Get.delete<ManageStoreController>();
         }

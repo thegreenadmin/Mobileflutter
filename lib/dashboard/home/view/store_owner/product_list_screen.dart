@@ -263,42 +263,45 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                 border: Border.all(
                                                     color: AppColors.white,
                                                     width: 1)),
-                                            child: CommonWidgets
-                                                .cachedNetworkImage(
-                                              manageStoreController
-                                                              .storeProductList[
-                                                                  index]
-                                                              .productImages ==
-                                                          null ||
-                                                      manageStoreController
-                                                          .storeProductList[
-                                                              index]
-                                                          .productImages!
-                                                          .isEmpty ||
-                                                      manageStoreController
-                                                              .storeProductList[
-                                                                  index]
-                                                              .productImages![0]
-                                                              .image!
-                                                              .dynamicUrl ==
-                                                          null ||
-                                                      manageStoreController
-                                                          .storeProductList[
-                                                              index]
-                                                          .productImages!
-                                                          .isEmpty
-                                                  ? ""
-                                                  : manageStoreController
-                                                      .storeProductList[index]
-                                                      .productImages![0]
-                                                      .image!
-                                                      .dynamicUrl
-                                                      .toString(),
-                                              fit: BoxFit.fill,
-                                              height: 100.0,
-                                              width:
-                                                  WidgetConstants.screenWidth *
-                                                      0.3,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(8),
+                                              child: CommonWidgets
+                                                  .cachedNetworkImage(
+                                                manageStoreController
+                                                                .storeProductList[
+                                                                    index]
+                                                                .productImages ==
+                                                            null ||
+                                                        manageStoreController
+                                                            .storeProductList[
+                                                                index]
+                                                            .productImages!
+                                                            .isEmpty ||
+                                                        manageStoreController
+                                                                .storeProductList[
+                                                                    index]
+                                                                .productImages![0]
+                                                                .image!
+                                                                .dynamicUrl ==
+                                                            null ||
+                                                        manageStoreController
+                                                            .storeProductList[
+                                                                index]
+                                                            .productImages!
+                                                            .isEmpty
+                                                    ? ""
+                                                    : manageStoreController
+                                                        .storeProductList[index]
+                                                        .productImages![0]
+                                                        .image!
+                                                        .dynamicUrl
+                                                        .toString(),
+                                                fit: BoxFit.fill,
+                                                height: 100.0,
+                                                width:
+                                                    WidgetConstants.screenWidth *
+                                                        0.3,
+                                              ),
                                             )),
                                       ),
                                       width12SizedBox,
