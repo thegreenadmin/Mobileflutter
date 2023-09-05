@@ -25,9 +25,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTime() async {
     // Future.delayed(const Duration(seconds: 1)).then((value) async {
-    authh = await SharedPreferenceStorage.getData(
-            StringConstants.authenticatedText) ??
-        false;
+    // authh = await SharedPreferenceStorage.getData(
+    //         StringConstants.authenticatedText) ??
+    //     false;
+    authh = authenticatedBiometric.value;
     debugPrint("BIOMETRIC AUTHENTICATION 123******* ${authh}");
     authh != null && authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
@@ -98,8 +99,9 @@ class _SplashScreenState extends State<SplashScreen> {
     authorized = message;
     //});
     if (authenticated) {
-      SharedPreferenceStorage.setData(
-          StringConstants.authenticatedText, authenticated);
+      // SharedPreferenceStorage.setData(
+      //     StringConstants.authenticatedText, authenticated);
+      authenticatedBiometric.value = authenticated;
       await navigationPage();
     } else {
       _authenticateWithBiometrics();
