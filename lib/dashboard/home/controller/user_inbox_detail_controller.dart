@@ -154,6 +154,7 @@ class UserInboxDetailController extends GetxController {
 
   ///Send message by user api
   Future apiSendMessage() async {
+    isLoading.value = true;
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
 
@@ -179,19 +180,32 @@ class UserInboxDetailController extends GetxController {
             body,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        await apiGetMessagesList();
+        Messages msg = Messages();
+        msg.message = messageTextController.text;
+        msg.messageHeadId = messageList.first.messageHeadId;
+        msg.senderType = StringConstants.userText.toLowerCase();
+        msg.isCurrentMessage = true;
+        msg.isStoreRead = true;
+        msg.isUserRead = false;
+        msg.status = messageList.first.status;
+        msg.createdAt = DateTime.now().toUtc().toString();
+        msg.updatedAt = DateTime.now().toUtc().toString();
+        msg.image?.dynamicUrl =
+            userSelectedImageDynamicLinkFromServer.value ?? "";
+        msg.image?.orignalUrl =
+            userSelectedImageOriginalLinkFromServer.value ?? "";
+        messageTextController.text != "" ? messageList.insert(0, msg) : null;
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
         userSelectedImage.value = XFile("");
-        messageListModel = UserMessageListModel.fromJson(value.body);
-        messageList.value = messageListModel.data?.messages ?? [];
+
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

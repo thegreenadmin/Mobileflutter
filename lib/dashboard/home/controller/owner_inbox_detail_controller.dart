@@ -168,6 +168,7 @@ class OwnerInboxDetailController extends GetxController {
 
   ///Send message by owner api
   Future apiSendMessage() async {
+    isLoading.value = true;
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}");
     Map<String, String> headers = {
@@ -203,7 +204,7 @@ class OwnerInboxDetailController extends GetxController {
         Message msg = Message();
         msg.message = messageTextController.text;
         msg.messageHeadId = messageList.first.messageHeadId;
-        msg.senderType = "store";
+        msg.senderType = StringConstants.storeText.toLowerCase();
         msg.isCurrentMessage = true;
         msg.isStoreRead = true;
         msg.isUserRead = false;
@@ -214,7 +215,7 @@ class OwnerInboxDetailController extends GetxController {
             userSelectedImageDynamicLinkFromServer.value ?? "";
         msg.image?.orignalUrl =
             userSelectedImageOriginalLinkFromServer.value ?? "";
-        messageList.insert(0, msg);
+        messageTextController.text != "" ? messageList.insert(0, msg) : null;
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
