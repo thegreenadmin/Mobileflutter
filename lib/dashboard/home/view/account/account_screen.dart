@@ -73,11 +73,13 @@ class _AccountScreenState extends State<AccountScreen> {
       authorized = message;
     });
     if (authenticated) {
-      SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
+      //  SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
+      authenticatedBiometric.value = true;
       BioMetricAuthentication.isBioMetricAuthenticated.value = true;
       accountController.isScreenLockNotify.value = true;
     } else {
-      SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
+      // SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
+      authenticatedBiometric.value = false;
       BioMetricAuthentication.isBioMetricAuthenticated.value = false;
       accountController.isScreenLockNotify.value = false;
     }
@@ -536,9 +538,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                       .isScreenLockNotify.value) {
                                     _authenticateWithBiometrics();
                                   } else {
-                                    SharedPreferenceStorage.setData(
-                                        StringConstants.authenticatedText,
-                                        false);
+                                    authenticatedBiometric.value = false;
+                                    // SharedPreferenceStorage.setData(
+                                    //     StringConstants.authenticatedText,
+                                    //     false);
                                     BioMetricAuthentication
                                         .isBioMetricAuthenticated.value = false;
                                   }
