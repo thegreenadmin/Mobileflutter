@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -135,6 +136,17 @@ class CommonWidgets {
                 //     .withOpacity(0.4),
               ),
     );
+  }
+
+  static Widget loadingIndicator() {
+    return const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Center(
+          child: CupertinoActivityIndicator(
+            radius: 15,
+            color: AppColors.primary,
+          ),
+        ));
   }
 
   static Widget circleCachedNetworkImage(String imgUrl,

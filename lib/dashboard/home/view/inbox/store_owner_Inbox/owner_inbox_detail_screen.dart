@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -187,7 +189,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isNotEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
                   debugPrint("C1 *****");
                 } else if (ownerInboxDetailController
@@ -206,7 +208,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
                   debugPrint("C3 *****");
                 } else if (ownerInboxDetailController
@@ -215,7 +217,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isNotEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
                   debugPrint("C4 *****");
                 }
@@ -239,30 +241,31 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
         StringConstants.userText.toLowerCase()) {
       return Padding(
           padding:
-              const EdgeInsets.only(left: 12, right: 24, top: 0, bottom: 0),
-          child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 10, left: 12, right: 12),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
-                              color: AppColors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const CircleAvatar(
-                                radius: 25.0,
-                                backgroundImage: AssetImage(
-                                  ImageConstants.userAccount,
-                                ))),
-                        width10SizedBox,
-                        Flexible(
-                          child: Container(
+              const EdgeInsets.only(top: 10, bottom: 10, left: 24, right: 60),
+          child: Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          color: AppColors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const CircleAvatar(
+                            radius: 25.0,
+                            backgroundImage: AssetImage(
+                              ImageConstants.userAccount,
+                            ))),
+                    width10SizedBox,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
                             decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -355,32 +358,32 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                               color: AppColors.white,
                                               fontWeight: FontWeight.w400,
                                             ))),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                      Utility.parseDateTime(
-                                        DateTime.parse(
-                                          messageList[index]
-                                              .createdAt
-                                              .toString(),
-                                        ),
-                                        secFormat: '',
-                                      ).toString(),
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w400,
-                                      )),
-                                )
                               ],
                             ),
                           ),
-                        ),
-                      ]))));
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                                Utility.parseDateTime(
+                                  DateTime.parse(
+                                    messageList[index].createdAt.toString(),
+                                  ),
+                                  secFormat: '',
+                                ).toString(),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                  ])));
     } else {
       return Padding(
           padding:
-              const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 12),
+              const EdgeInsets.only(top: 10, bottom: 10, left: 55, right: 12),
           child: Align(
             alignment: Alignment.topRight,
             child: Column(
@@ -412,6 +415,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               messageList[index].image?.dynamicUrl == "" ||
                                       messageList[index].image?.dynamicUrl ==
@@ -466,13 +470,15 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                     ),
                               height10SizedBox,
                               Text(messageList[index].message ?? "",
+                                  overflow: TextOverflow.visible,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
                                   )),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
+                              height8SizedBox,
+                              /* Align(
+                                alignment: Alignment.bottomRight,
                                 child: Text(
                                     Utility.parseDateTime(
                                       DateTime.parse(
@@ -485,13 +491,28 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                       color: AppColors.blacklight,
                                       fontWeight: FontWeight.w400,
                                     )),
-                              ),
+                              ),*/
                             ],
                           ),
                         ),
                       ),
                     ),
                   ],
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                      Utility.parseDateTime(
+                        DateTime.parse(
+                          messageList[index].createdAt.toString(),
+                        ),
+                        secFormat: '',
+                      ).toString(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.blacklight,
+                        fontWeight: FontWeight.w400,
+                      )),
                 ),
                 height5SizedBox
                 // messageController.messageList[index].file == null ||
@@ -697,6 +718,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                           : ListView.builder(
                               shrinkWrap: true,
                               reverse: true,
+                              primary: false,
                               controller:
                                   ownerInboxDetailController.scrollController,
                               padding: const EdgeInsets.only(bottom: 10),
@@ -704,12 +726,32 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                   ownerInboxDetailController.messageList.isEmpty
                                       ? 1
                                       : ownerInboxDetailController
-                                          .messageList.length,
+                                              .messageList.length +
+                                          (ownerInboxDetailController
+                                                  .isLoading.value
+                                              ? 1
+                                              : 0),
                               itemBuilder: (context, index) {
-                                return _buildMessage(
-                                  ownerInboxDetailController.messageList,
-                                  index,
-                                );
+                                if (index <
+                                    ownerInboxDetailController
+                                        .messageList.length) {
+                                  return _buildMessage(
+                                    ownerInboxDetailController.messageList,
+                                    index,
+                                  );
+                                } else if (ownerInboxDetailController
+                                    .isLoading.value) {
+                                  Timer(const Duration(milliseconds: 10), () {
+                                    ownerInboxDetailController.scrollController
+                                        .jumpTo(ownerInboxDetailController
+                                            .scrollController
+                                            .position
+                                            .maxScrollExtent);
+                                  });
+                                  return CommonWidgets.loadingIndicator();
+                                } else {
+                                  return const SizedBox();
+                                }
                               }),
                     )),
                 _buildMessageComposer(),

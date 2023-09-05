@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -185,7 +187,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isNotEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
                   debugPrint("C1 *****");
                 } else if (userInboxDetailController
@@ -204,7 +206,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
                   debugPrint("C3 *****");
                 } else if (userInboxDetailController
@@ -213,7 +215,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                         .userSelectedImageOriginalLinkFromServer
                         .value
                         .isNotEmpty) {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
                   debugPrint("C4 *****");
                 }
@@ -237,54 +239,50 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
         StringConstants.storeText.toLowerCase()) {
       return Padding(
           padding:
-              const EdgeInsets.only(left: 12, right: 24, top: 0, bottom: 0),
-          child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 10, left: 12, right: 12),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        messageList[index].icon!.dynamicUrl == null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  color: AppColors.grey,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const CircleAvatar(
-                                    radius: 25.0,
-                                    backgroundImage:
-                                        AssetImage(ImageConstants.userAccount)))
-                            : Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(60.0),
-                                  ),
-                                  child: CommonWidgets.cachedNetworkImage(
-                                    messageList[index]
-                                        .icon!
-                                        .dynamicUrl
-                                        .toString(),
-                                    width: WidgetConstants.screenHeight * 0.06,
-                                    height: WidgetConstants.screenHeight * 0.06,
-                                    placeholder: (context, url) => SizedBox(
-                                        height:
-                                            WidgetConstants.screenHeight * 0.05,
-                                        child: const Center(
-                                            child:
-                                                CircularProgressIndicator())),
-                                  ),
-                                ),
+              const EdgeInsets.only(top: 10, bottom: 10, left: 24, right: 60),
+          child: Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    messageList[index].icon!.dynamicUrl == null
+                        ? Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              color: AppColors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const CircleAvatar(
+                                radius: 25.0,
+                                backgroundImage:
+                                    AssetImage(ImageConstants.userAccount)))
+                        : Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(60.0),
                               ),
-                        width10SizedBox,
-                        Flexible(
-                          child: Container(
+                              child: CommonWidgets.cachedNetworkImage(
+                                messageList[index].icon!.dynamicUrl.toString(),
+                                width: WidgetConstants.screenHeight * 0.06,
+                                height: WidgetConstants.screenHeight * 0.06,
+                                placeholder: (context, url) => SizedBox(
+                                    height: WidgetConstants.screenHeight * 0.05,
+                                    child: const Center(
+                                        child: CircularProgressIndicator())),
+                              ),
+                            ),
+                          ),
+                    width10SizedBox,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
                             decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -377,32 +375,32 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                               color: AppColors.white,
                                               fontWeight: FontWeight.w400,
                                             ))),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                      Utility.parseDateTime(
-                                        DateTime.parse(
-                                          messageList[index]
-                                              .createdAt
-                                              .toString(),
-                                        ),
-                                        secFormat: '',
-                                      ).toString(),
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w400,
-                                      )),
-                                )
                               ],
                             ),
                           ),
-                        ),
-                      ]))));
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                                Utility.parseDateTime(
+                                  DateTime.parse(
+                                    messageList[index].createdAt.toString(),
+                                  ),
+                                  secFormat: '',
+                                ).toString(),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                  ])));
     } else {
       return Padding(
           padding:
-              const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 12),
+              const EdgeInsets.only(top: 10, bottom: 10, left: 55, right: 12),
           child: Align(
             alignment: Alignment.topRight,
             child: Column(
@@ -490,21 +488,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
                                   )),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: Text(
-                                    Utility.parseDateTime(
-                                      DateTime.parse(
-                                        messageList[index].createdAt.toString(),
-                                      ),
-                                      secFormat: '',
-                                    ).toString(),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: AppColors.blacklight,
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                              ),
                             ],
                           ),
                         ),
@@ -512,7 +495,23 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                     ),
                   ],
                 ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                      Utility.parseDateTime(
+                        DateTime.parse(
+                          messageList[index].createdAt.toString(),
+                        ),
+                        secFormat: '',
+                      ).toString(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.blacklight,
+                        fontWeight: FontWeight.w400,
+                      )),
+                ),
                 height5SizedBox
+
                 // messageController.messageList[index].file == null ||
                 //         messageController.messageList[index].file.isEmpty
                 //     ? Container()
@@ -714,19 +713,42 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
                           : ListView.builder(
                               shrinkWrap: true,
                               reverse: true,
+                              primary: false,
                               controller:
                                   userInboxDetailController.scrollController,
                               padding: const EdgeInsets.only(bottom: 10),
-                              itemCount:
-                                  userInboxDetailController.messageList.isEmpty
-                                      ? 1
-                                      : userInboxDetailController
-                                          .messageList.length,
+                              // itemCount: searchStoreUserController
+                              //     .storeAddresses.length +
+                              //     (searchStoreUserController.isLoading.value ? 1 : 0),
+                              itemCount: userInboxDetailController
+                                      .messageList.isEmpty
+                                  ? 1
+                                  : userInboxDetailController
+                                          .messageList.length +
+                                      (userInboxDetailController.isLoading.value
+                                          ? 1
+                                          : 0),
                               itemBuilder: (context, index) {
-                                return _buildMessage(
-                                  userInboxDetailController.messageList,
-                                  index,
-                                );
+                                if (index <
+                                    userInboxDetailController
+                                        .messageList.length) {
+                                  return _buildMessage(
+                                    userInboxDetailController.messageList,
+                                    index,
+                                  );
+                                } else if (userInboxDetailController
+                                    .isLoading.value) {
+                                  Timer(const Duration(milliseconds: 10), () {
+                                    userInboxDetailController.scrollController
+                                        .jumpTo(userInboxDetailController
+                                            .scrollController
+                                            .position
+                                            .maxScrollExtent);
+                                  });
+                                  return CommonWidgets.loadingIndicator();
+                                } else {
+                                  return const SizedBox();
+                                }
                               }),
                     )),
                 _buildMessageComposer(),

@@ -26,7 +26,8 @@ class OwnerInboxDetailController extends GetxController {
   RxInt pageId = 0.obs;
   OwnerMessageListModel messageListModel = OwnerMessageListModel();
   RxList<Message> messageList = <Message>[].obs;
-
+  RxInt totalCount = 0.obs;
+  RxInt page = 1.obs;
   Rx<XFile> userSelectedImage = XFile("").obs;
   RxString userSelectedImageOriginalLinkFromServer = "".obs;
   RxString userSelectedImageDynamicLinkFromServer = "".obs;
@@ -52,6 +53,21 @@ class OwnerInboxDetailController extends GetxController {
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     await apiGetMessagesList();
+    if (roleApp.value == Role.customerRoleText) {
+      setupScrollController();
+    }
+  }
+
+  setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (messageList.length < totalCount.value) {
+          page.value++;
+          apiGetMessagesList();
+        }
+      }
+    });
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -131,8 +147,12 @@ class OwnerInboxDetailController extends GetxController {
   ///Get Messages List Api
   Future apiGetMessagesList() async {
     isLoading.value = true;
+    if (page.value == 1) {
+      messageList.clear();
+    }
+    messageListModel = OwnerMessageListModel();
     debugPrint(
-        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}");
+        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -142,7 +162,7 @@ class OwnerInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}&store_id=${storeId.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -151,7 +171,16 @@ class OwnerInboxDetailController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageListModel = OwnerMessageListModel.fromJson(value.body);
-        messageList.value = messageListModel.data?.messages ?? [];
+        List<Message>? messageNewList = [];
+        messageNewList = messageListModel.data?.messages ?? [];
+        if (messageNewList.isNotEmpty) {
+          if (page.value == 1) {
+            messageList.value = [];
+          }
+          messageList.addAll(messageNewList);
+        }
+        messageList.toSet().toList();
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

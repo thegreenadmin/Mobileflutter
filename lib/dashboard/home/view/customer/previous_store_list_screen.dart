@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
@@ -399,7 +398,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                                 searchStoreUserController
                                     .scrollController.position.maxScrollExtent);
                           });
-                          return _loadingIndicator();
+                          return CommonWidgets.loadingIndicator();
                         } else {
                           return const SizedBox();
                         }
@@ -409,16 +408,5 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
         ]),
       ),
     );
-  }
-
-  Widget _loadingIndicator() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CupertinoActivityIndicator(
-            radius: 15,
-            color: Theme.of(context).primaryColor,
-          ),
-        ));
   }
 }

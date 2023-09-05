@@ -20,8 +20,8 @@ class UserInboxDetailController extends GetxController {
   RxString storeName = "".obs;
   RxString messageHeadId = "".obs;
   RxInt pageId = 0.obs;
-
-  UserMessageListModel messageListModel = UserMessageListModel();
+  RxInt page = 1.obs;
+  late UserMessageListModel messageListModel = UserMessageListModel();
   RxList<Messages> messageList = <Messages>[].obs;
   RxList<Messages> pastMessagesList = <Messages>[].obs;
   RxString? role = "".obs;
@@ -30,16 +30,31 @@ class UserInboxDetailController extends GetxController {
   Rx<XFile> userSelectedImage = XFile("").obs;
   RxString userSelectedImageOriginalLinkFromServer = "".obs;
   RxString userSelectedImageDynamicLinkFromServer = "".obs;
-
+  RxInt totalCount = 0.obs;
   @override
   void onInit() {
     super.onInit();
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
-
+    page.value = 1;
     apiGetMessagesList();
     role?.value = roleApp.value;
+    if (roleApp.value == Role.customerRoleText) {
+      setupScrollController();
+    }
+  }
+
+  setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (messageList.length < totalCount.value) {
+          page.value++;
+          apiGetMessagesList();
+        }
+      }
+    });
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -118,19 +133,24 @@ class UserInboxDetailController extends GetxController {
 
   ///Get Messages List Api
   Future apiGetMessagesList() async {
+    if (page.value == 1) {
+      messageList.clear();
+    }
+    messageListModel = UserMessageListModel();
     isLoading.value = true;
     debugPrint(
-        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}");
+        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
+
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=1&page_size=10&message_head_id=${messageHeadId.value}",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -139,7 +159,17 @@ class UserInboxDetailController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageListModel = UserMessageListModel.fromJson(value.body);
-        messageList.value = messageListModel.data?.messages ?? [];
+        totalCount.value = messageListModel.data?.totalCount ?? 0;
+        List<Messages>? messageNewList = [];
+        messageNewList = messageListModel.data?.messages ?? [];
+        if (messageNewList.isNotEmpty) {
+          if (page.value == 1) {
+            messageList.value = [];
+          }
+          messageList.addAll(messageNewList);
+        }
+        messageList.toSet().toList();
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -166,8 +196,7 @@ class UserInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "message_head_id": messageHeadId.value,
-      "message": messageTextController.text.trim() == null ||
-              messageTextController.text.trim().isEmpty
+      "message": messageTextController.text.trim().isEmpty
           ? ""
           : messageTextController.text.trim(),
       "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
@@ -197,8 +226,8 @@ class UserInboxDetailController extends GetxController {
         msg.createdAt = DateTime.now().toUtc().toString();
         msg.updatedAt = DateTime.now().toUtc().toString();
         Images? image = Images();
-        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value ?? "";
-        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value ?? "";
+        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value;
+        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value;
         msg.image = image;
         messageTextController.text != "" ||
                 userSelectedImageDynamicLinkFromServer.value != ""

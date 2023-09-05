@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
@@ -707,7 +706,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         ordersController.scrollController
                                             .position.maxScrollExtent);
                                   });
-                                  return _loadingIndicator();
+                                  return CommonWidgets.loadingIndicator();
                                 } else {
                                   return const SizedBox();
                                 }
@@ -1099,7 +1098,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         ordersController.scrollController
                                             .position.maxScrollExtent);
                                   });
-                                  return _loadingIndicator();
+                                  return CommonWidgets.loadingIndicator();
                                 } else {
                                   return const SizedBox();
                                 }
@@ -1108,16 +1107,5 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ],
           )),
     );
-  }
-
-  Widget _loadingIndicator() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: CupertinoActivityIndicator(
-            radius: 15,
-            color: Theme.of(context).primaryColor,
-          ),
-        ));
   }
 }
