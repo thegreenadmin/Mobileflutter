@@ -354,6 +354,8 @@ class StringConstants {
   //O
   static String okText = "Ok";
   static String oKText = "OK";
+  static String offerIsForText = "Offer is for";
+  static String offerTypeText = "Offer Type";
   static String orderIDText = "Order ID";
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
@@ -440,6 +442,7 @@ class StringConstants {
   static String plan180Text = "plan180";
   static String plan365Text = "plan365";
   static String planText = "Plan";
+  static String productPriceText = " Product price";
 
   //Q
   static String quantityUnitText = "Quantity Unit";
