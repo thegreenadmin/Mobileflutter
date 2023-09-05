@@ -21,17 +21,26 @@ class _SplashScreenState extends State<SplashScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
+  bool authh = false;
 
   startTime() async {
-    BioMetricAuthentication.isBioMetricAuthenticated.value =
-        await SharedPreferenceStorage.getData(
-                    StringConstants.authenticatedText.toLowerCase()) !=
-                null
-            ? SharedPreferenceStorage.getData(
-                StringConstants.authenticatedText.toLowerCase()) as bool
-            : false;
+    // Future.delayed(const Duration(seconds: 1)).then((value) async {
+    authh = await SharedPreferenceStorage.getData(
+            StringConstants.authenticatedText) ??
+        false;
+    debugPrint("BIOMETRIC AUTHENTICATION 123******* ${authh}");
+    authh != null && authh != false ? authh : false;
+    BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
+    // BioMetricAuthentication.isBioMetricAuthenticated
+    //     .value = await SharedPreferenceStorage.getData(
+    //             StringConstants.authenticatedText) !=
+    //         null
+    //     ? SharedPreferenceStorage.getData(StringConstants.authenticatedText)
+    //         as bool
+    //     : false;
     debugPrint(
         "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
+    // });
     var duration = const Duration(seconds: 2);
     return Timer(
         duration,
@@ -57,43 +66,86 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _authenticateWithBiometrics() async {
     bool authenticated = false;
     try {
+      // setState(() {
       isAuthenticating = true;
       authorized = 'Authenticating';
-      Future.delayed(const Duration(seconds: 2)).then((value) async {
-        authenticated = await auth.authenticate(
-          localizedReason: 'Scan your fingerprint to authenticate',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-          ),
-        );
-      });
-
+      // });
+      authenticated = await auth.authenticate(
+        localizedReason: 'Scan your fingerprint to authenticate',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      // setState(() {
       isAuthenticating = false;
       authorized = 'Authenticating';
+      // });
     } on PlatformException catch (e) {
       debugPrint(e.toString());
       setState(() {
         isAuthenticating = false;
         authorized = 'Error - ${e.message}';
       });
-
       return;
     }
     if (!mounted) {
       return;
     }
-    final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    authorized = message;
 
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    //setState(() {
+    authorized = message;
+    //});
     if (authenticated) {
       SharedPreferenceStorage.setData(
-          StringConstants.authenticatedText.toLowerCase(), authenticated);
+          StringConstants.authenticatedText, authenticated);
       await navigationPage();
     } else {
       _authenticateWithBiometrics();
     }
   }
+
+  // Future<void> _authenticateWithBiometrics() async {
+  //   bool authenticated = false;
+  //   try {
+  //     isAuthenticating = true;
+  //     authorized = 'Authenticating';
+  //     Future.delayed(const Duration(seconds: 2)).then((value) async {
+  //       authenticated = await auth.authenticate(
+  //         localizedReason: 'Scan your fingerprint to authenticate',
+  //         options: const AuthenticationOptions(
+  //           stickyAuth: true,
+  //           biometricOnly: true,
+  //         ),
+  //       );
+  //     });
+  //    // isAuthenticating = false;
+  //    // authorized = 'Authenticating';
+  //   } on PlatformException catch (e) {
+  //     debugPrint(e.toString());
+  //     setState(() {
+  //       isAuthenticating = false;
+  //       authorized = 'Error - ${e.message}';
+  //     });
+
+  //     return;
+  //   }
+  //   if (!mounted) {
+  //     return;
+  //   }
+  //   final String message = authenticated ? 'Authorized' : 'Not Authorized';
+  //   authorized = message;
+
+  //   if (authenticated) {
+  //     print("HELLO *****" + authenticated.toString());
+  //     SharedPreferenceStorage.setData(
+  //         StringConstants.authenticatedText, authenticated);
+  //     await navigationPage();
+  //   } else {
+  //     _authenticateWithBiometrics();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -42,7 +42,6 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
-
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -161,9 +160,9 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                         width: 200,
                                         child: Obx(() => Row(
                                               children: [
-                                                const Text(
-                                                  "Product price: ",
-                                                  style: TextStyle(
+                                                Text(
+                                                  "${StringConstants.productPriceText}: ",
+                                                  style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight:
@@ -185,9 +184,9 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                         width: 200,
                                         child: Obx(() => Row(
                                               children: [
-                                                const Text(
-                                                  "Offer price: ",
-                                                  style: TextStyle(
+                                                Text(
+                                                  "${StringConstants.offerPriceText}: ",
+                                                  style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight:
@@ -209,9 +208,9 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                           width: 200,
                                           child: Obx(() => Row(
                                                 children: [
-                                                  const Text(
-                                                    "Offer type: ",
-                                                    style: TextStyle(
+                                                  Text(
+                                                    "${StringConstants.offerTypeText}: ",
+                                                    style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppColors.black,
                                                         fontWeight:
@@ -237,9 +236,9 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                         width: 200,
                                         child: Obx(() => Row(
                                               children: [
-                                                const Text(
-                                                  "Offer is for: ",
-                                                  style: TextStyle(
+                                                Text(
+                                                  "${StringConstants.offerIsForText}: ",
+                                                  style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight:
@@ -268,9 +267,9 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
                                         width: 250,
                                         child: Obx(() => Row(
                                               children: [
-                                                const Text(
-                                                  "Offer name: ",
-                                                  style: TextStyle(
+                                                Text(
+                                                  "${StringConstants.offerNameText}: ",
+                                                  style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight:

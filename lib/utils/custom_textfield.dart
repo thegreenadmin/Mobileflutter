@@ -1,0 +1,180 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:thegreenmall/utils/utils.dart';
+
+class CustomInputField extends StatefulWidget {
+  final AutovalidateMode? autovalidateMode;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
+  final TextCapitalization? textCapitalization;
+  final TextInputType? textInputType;
+  final String? hintText;
+  final bool? autofocus;
+  final String? labelText;
+  final TextInputType? keyboardType;
+  final bool? enabled;
+  final Color? fillColor;
+  final double? borderRadius;
+  final double? enableBorderRadius;
+  final double? focusedBorderRadius;
+  final double? disabledBorderRadius;
+  final int? maxLines;
+  final int? maxLength;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String?>? onChanged;
+  final ValueChanged<String?>? onSave;
+  final VoidCallback? onTap;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final bool? obscureText;
+  final EdgeInsetsGeometry? contentPadding;
+  final String? initialvalue;
+  final bool? readOnly;
+  final Color? borderColor;
+  final Color? enableBorderColor;
+  final Color? focusedBorderColor;
+  final Color? disabledBorderColor;
+  final TextStyle? style;
+  final TextStyle? labelStyle;
+  final TextStyle? hintStyle;
+  final TextAlign? textAlign;
+  final InputDecoration? decoration;
+  const CustomInputField(
+      {Key? key,
+      this.autovalidateMode,
+      this.inputFormatters,
+      this.textCapitalization,
+      this.fillColor,
+      this.keyboardType,
+      this.controller,
+      this.enabled,
+      this.maxLines,
+      this.maxLength,
+      this.validator,
+      this.onTap,
+      this.onSave,
+      this.hintText,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.obscureText,
+      this.contentPadding,
+      this.initialvalue,
+      this.onChanged,
+      this.readOnly,
+      this.borderRadius,
+      this.borderColor,
+      this.style,
+      this.decoration,
+      this.textAlign,
+      this.labelText,
+      this.autofocus,
+      this.textInputType,
+      this.labelStyle,
+      this.hintStyle,
+      this.enableBorderColor,
+      this.focusedBorderColor,
+      this.disabledBorderColor,
+      this.enableBorderRadius,
+      this.focusedBorderRadius,
+      this.disabledBorderRadius})
+      : super(key: key);
+
+  @override
+  CustomInputFieldState createState() => CustomInputFieldState();
+}
+
+class CustomInputFieldState extends State<CustomInputField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        inputFormatters: widget.inputFormatters,
+        readOnly: widget.readOnly ?? false,
+        textAlign: widget.textAlign ?? TextAlign.start,
+        style: widget.style ??
+            const TextStyle(
+              color: AppColors.black,
+              fontSize: 18,
+            ),
+        initialValue: widget.initialvalue,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType ?? TextInputType.text,
+        textInputAction: TextInputAction.done,
+        textCapitalization:
+            widget.textCapitalization ?? TextCapitalization.none,
+        enabled: widget.enabled ?? true,
+        maxLines: widget.maxLines ?? 1,
+        maxLength: widget.maxLength,
+        validator: widget.validator,
+        obscureText: widget.obscureText ?? false,
+        onTap: widget.onTap,
+        onChanged: widget.onChanged,
+        onSaved: widget.onSave,
+        cursorColor: AppColors.primary,
+        autofocus: widget.autofocus ?? false,
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          labelStyle: widget.style ??
+              const TextStyle(
+                color: AppColors.black,
+                fontSize: 18,
+              ),
+          filled: true,
+          fillColor: widget.fillColor,
+          counterText: '',
+          errorStyle: TextStyle(color: Colors.red[400]),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
+              borderSide: BorderSide(
+                  width: 1.5,
+                  color: widget.borderColor ?? AppColors.transparent)),
+          focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
+              borderSide: BorderSide(
+                  width: 1.5,
+                  color: widget.borderColor ?? AppColors.transparent)),
+          hintText: widget.hintText ?? "",
+          hintStyle: widget.style ??
+              const TextStyle(
+                color: AppColors.black,
+                fontSize: 18,
+              ),
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: widget.suffixIcon,
+          contentPadding: widget.contentPadding ??
+              EdgeInsets.only(
+                  left: 20,
+                  top: WidgetConstants.screenHeight * 0.038,
+                  bottom: WidgetConstants.screenWidth * 0.038,
+                  right: 15),
+          isDense: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
+            borderSide: BorderSide(
+              color: widget.borderColor ?? AppColors.transparent,
+              width: 1.5,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
+              borderSide: BorderSide(
+                  width: 1.5,
+                  color: widget.enableBorderColor ?? AppColors.transparent)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
+              borderSide: BorderSide(
+                  width: 1.5,
+                  color: widget.focusedBorderColor ?? AppColors.transparent)),
+          disabledBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
+              borderSide: BorderSide(
+                  width: 1.5,
+                  color: widget.disabledBorderColor ?? AppColors.transparent)),
+          // prefixIconConstraints:
+          //     const BoxConstraints(minWidth: 30, maxHeight: 100),
+        ));
+  }
+}

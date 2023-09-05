@@ -7,6 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
+import 'package:thegreenmall/utils/custom_textfield.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -78,6 +79,51 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height25SizedBox,
+                    // CustomInputField(
+                    //   inputFormatters: <TextInputFormatter>[
+                    //     LengthLimitingTextInputFormatter(40),
+                    //   ],
+                    //   borderColor: AppColors.primary,
+                    //   borderRadius: 5,
+                    //   enableBorderColor: AppColors.grey,
+                    //   enableBorderRadius: 5,
+                    //   disabledBorderColor: AppColors.primary,
+                    //   disabledBorderRadius: 5,
+                    //   focusedBorderColor: AppColors.primary,
+                    //   focusedBorderRadius: 5,
+                    //   keyboardType: TextInputType.text,
+                    //   autofocus: false,
+                    //   prefixIcon: Image.asset(
+                    //     ImageConstants.profile,
+                    //     scale: 2.8,
+                    //   ),
+                    //   fillColor: AppColors.white,
+                    //   controller: signupController.firstNameTextController,
+                    //   hintText: StringConstants.firstNameText,
+                    //   hintStyle: const TextStyle(color: AppColors.grey),
+                    //   labelText: StringConstants.firstNameText,
+                    //   labelStyle: TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400,
+                    //       color: AppColors.blacklight,
+                    //       decoration: TextDecoration.none),
+                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //   onChanged: (value) {
+                    //     signupController.firstName.value = value!;
+                    //   },
+                    //   textCapitalization: TextCapitalization.words,
+                    //   style: const TextStyle(
+                    //       color: AppColors.black,
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400),
+                    //   validator: (value) {
+                    //     if (value == null || value.trim().isEmpty) {
+                    //       return AlertStringConstants.pleaseEnterFirstNameText;
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    // height25SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (value) {

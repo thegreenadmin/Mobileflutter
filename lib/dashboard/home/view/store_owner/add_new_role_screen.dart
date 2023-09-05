@@ -86,9 +86,9 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),

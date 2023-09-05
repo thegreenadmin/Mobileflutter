@@ -394,8 +394,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           children: [
                                             Obx(() => Text(
                                                   manageStoreController
-                                                          .categoriesList[
-                                                              index]
+                                                          .categoriesList[index]
                                                           .categoryName ??
                                                       "",
                                                   style: const TextStyle(
@@ -415,8 +414,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                       : "${manageStoreController.categoriesList[index].totalProducts} Product",
                                                   style: TextStyle(
                                                       fontSize: 14.0,
-                                                      color: AppColors
-                                                          .blacklight,
+                                                      color:
+                                                          AppColors.blacklight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 )),
@@ -428,13 +427,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                       children: [
                                         InkWell(
                                           onTap: () {
-                                            manageStoreController.categoryId.value =
-                                                manageStoreController
-                                                        .categoriesList[index]
-                                                        .categoryId ??
-                                                    "";
+                                            manageStoreController.categoryId
+                                                .value = manageStoreController
+                                                    .categoriesList[index]
+                                                    .categoryId ??
+                                                "";
                                             Get.parameters["storeId"] =
-                                                manageStoreController.storeId.value;
+                                                manageStoreController
+                                                    .storeId.value;
                                             Get.parameters["categoryId"] =
                                                 manageStoreController
                                                         .categoriesList[index]
@@ -450,7 +450,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                                 true ||
                                                         element.storeId ==
                                                                 manageStoreController
-                                                                    .storeId.value
+                                                                    .storeId
+                                                                    .value
                                                                     .toString() &&
                                                             element.controllers!.any((ele) =>
                                                                 ele.controllerKey ==
@@ -458,8 +459,9 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                                     .editProductCategories
                                                                     .statusName))
                                                 ? Get.to(() => const EditCategoryScreen(), id: pageIdApp.value, arguments: {
-                                                    "storeId": manageStoreController
-                                                        .storeId.value,
+                                                    "storeId":
+                                                        manageStoreController
+                                                            .storeId.value,
                                                     "categoryId":
                                                         manageStoreController
                                                                 .categoriesList[
@@ -474,7 +476,8 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                                 : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.only(left: 4),
+                                            padding:
+                                                const EdgeInsets.only(left: 4),
                                             child: Image.asset(
                                               ImageConstants.circleedit,
                                               scale: 3,
@@ -487,18 +490,19 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                           onPressed: () {
                                             manageStoreController.categoryName
                                                 .value = manageStoreController
-                                                .categoriesList[index]
-                                                .categoryName ??
+                                                    .categoriesList[index]
+                                                    .categoryName ??
                                                 "";
-                                            manageStoreController.categoryId.value =
-                                                manageStoreController
+                                            manageStoreController.categoryId
+                                                .value = manageStoreController
                                                     .categoriesList[index]
                                                     .categoryId ??
-                                                    "";
+                                                "";
                                             manageStoreController
                                                 .apiGetStoreProducts();
 
-                                            Get.to(() => const ProductListScreen(),
+                                            Get.to(
+                                                () => const ProductListScreen(),
                                                 id: pageIdApp.value);
                                           },
                                           icon: Icon(
@@ -509,7 +513,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                                         ),
                                       ],
                                     ),
-
                                   ],
                                 ),
                               ]),

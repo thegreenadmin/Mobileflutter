@@ -76,7 +76,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(
-                      () => manageStoreController.imageUrlList!.isEmpty ||
+                      () => manageStoreController.imageUrlList.isEmpty ||
                               manageStoreController.imageUrlList.every(
                                   (element) => element.status == "deleted")
                           ? height0SizedBox
@@ -92,7 +92,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                     ),
                     Obx(
-                      () => manageStoreController.imageUrlList!.isEmpty ||
+                      () => manageStoreController.imageUrlList.isEmpty ||
                               manageStoreController.imageUrlList.every(
                                   (element) => element.status == "deleted")
                           ? height0SizedBox
@@ -169,7 +169,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                     height15SizedBox,
                     Obx(
-                      () => manageStoreController.imageUrlList!.isEmpty ||
+                      () => manageStoreController.imageUrlList.isEmpty ||
                               manageStoreController.imageUrlList.every(
                                   (element) => element.status == "deleted")
                           ? height0SizedBox
@@ -184,7 +184,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             ),
                     ),
                     Obx(
-                      () => manageStoreController.imageUrlList!.isEmpty ||
+                      () => manageStoreController.imageUrlList.isEmpty ||
                               manageStoreController.imageUrlList.every(
                                   (element) => element.status == "deleted")
                           ? Row(
@@ -274,9 +274,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -351,9 +351,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -488,9 +488,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -648,9 +648,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -1105,9 +1105,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -1462,9 +1462,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
+                                    TextSpan(
+                                      text: StringConstants.starText,
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -1561,9 +1561,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
+                                    TextSpan(
+                                      text: StringConstants.starText,
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -1664,9 +1664,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400)),
-                                          const TextSpan(
-                                            text: "*",
-                                            style: TextStyle(
+                                          TextSpan(
+                                            text: StringConstants.starText,
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 color: AppColors.red,
                                                 fontWeight: FontWeight.bold),
@@ -1791,9 +1791,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
-                        print(
-                            "manageStoreController.isLoading.value:---------");
-                        print(manageStoreController.isLoading.value);
+                        debugPrint(
+                            manageStoreController.isLoading.value.toString());
                         if (manageStoreController.isLoading.value == false) {
                           manageStoreController.selectedCategories.clear();
                           for (int i = 0;

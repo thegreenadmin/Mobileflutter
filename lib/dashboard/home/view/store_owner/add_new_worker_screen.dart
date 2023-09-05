@@ -119,14 +119,6 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                               child: Center(
                                                   child:
                                                       CircularProgressIndicator())),
-                                      // placeholder: (context, url) => SizedBox(
-                                      //     width:
-                                      //     WidgetConstants.screenWidth * 0.85,
-                                      //     height:
-                                      //     WidgetConstants.screenHeight * 0.2,
-                                      //     child: const Center(
-                                      //         child:
-                                      //         CircularProgressIndicator())),
                                     ),
                                   )),
                             ),
@@ -166,9 +158,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -243,9 +235,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -320,9 +312,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -439,9 +431,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -483,9 +475,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
+                                    TextSpan(
+                                      text: StringConstants.starText,
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -605,9 +597,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
-                                    const TextSpan(
-                                      text: "*",
-                                      style: TextStyle(
+                                    TextSpan(
+                                      text: StringConstants.starText,
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -732,9 +724,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          const TextSpan(
-                            text: "*",
-                            style: TextStyle(
+                          TextSpan(
+                            text: StringConstants.starText,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
@@ -819,9 +811,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400)),
-                                      const TextSpan(
-                                        text: "*",
-                                        style: TextStyle(
+                                      TextSpan(
+                                        text: StringConstants.starText,
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             color: AppColors.red,
                                             fontWeight: FontWeight.bold),

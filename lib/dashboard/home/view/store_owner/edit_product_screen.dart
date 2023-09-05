@@ -279,9 +279,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),
@@ -356,9 +356,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),
@@ -473,9 +473,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),
@@ -642,9 +642,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),
@@ -1076,9 +1076,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                            const TextSpan(
-                              text: "*",
-                              style: TextStyle(
+                            TextSpan(
+                              text: StringConstants.starText,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.bold),
@@ -1444,9 +1444,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400)),
-                                      const TextSpan(
-                                        text: "*",
-                                        style: TextStyle(
+                                      TextSpan(
+                                        text: StringConstants.starText,
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             color: AppColors.red,
                                             fontWeight: FontWeight.bold),
@@ -1541,9 +1541,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400)),
-                                      const TextSpan(
-                                        text: "*",
-                                        style: TextStyle(
+                                      TextSpan(
+                                        text: StringConstants.starText,
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             color: AppColors.red,
                                             fontWeight: FontWeight.bold),
@@ -1669,9 +1669,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w400)),
-                                              const TextSpan(
-                                                text: "*",
-                                                style: TextStyle(
+                                              TextSpan(
+                                                text: StringConstants.starText,
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     color: AppColors.red,
                                                     fontWeight:
