@@ -413,8 +413,8 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              messageList[index].image!.dynamicUrl == "" ||
-                                      messageList[index].image!.dynamicUrl ==
+                              messageList[index].image?.dynamicUrl == "" ||
+                                      messageList[index].image?.dynamicUrl ==
                                           null
                                   ? height0SizedBox
                                   : InkWell(

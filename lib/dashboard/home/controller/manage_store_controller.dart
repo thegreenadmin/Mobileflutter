@@ -179,7 +179,7 @@ class ManageStoreController extends GetxController {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectCategoriesText);
         } else {
-        apiCreateProduct();
+          apiCreateProduct();
         }
       } catch (_) {}
     } else {

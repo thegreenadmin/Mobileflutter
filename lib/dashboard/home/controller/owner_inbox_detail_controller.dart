@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as m_dio;
 import 'package:flutter/material.dart';
@@ -147,7 +148,7 @@ class OwnerInboxDetailController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MESSAGE LIST RESPONSE *******${value!.body}");
+      log("MESSAGE LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageListModel = OwnerMessageListModel.fromJson(value.body);
@@ -192,20 +193,32 @@ class OwnerInboxDetailController extends GetxController {
             body,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
+        userSelectedImage.value = XFile("");
+        Message msg = Message();
+        msg.message = messageTextController.text;
+        msg.messageHeadId = messageList.first.messageHeadId;
+        msg.senderType = "store";
+        msg.isCurrentMessage = true;
+        msg.isStoreRead = true;
+        msg.isUserRead = false;
+        msg.status = messageList.first.status;
+        msg.createdAt = DateTime.now().toUtc().toString();
+        msg.updatedAt = DateTime.now().toUtc().toString();
+        msg.image?.dynamicUrl =
+            userSelectedImageDynamicLinkFromServer.value ?? "";
+        msg.image?.orignalUrl =
+            userSelectedImageOriginalLinkFromServer.value ?? "";
+        messageList.insert(0, msg);
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
-        userSelectedImage.value = XFile("");
-        messageListModel = OwnerMessageListModel.fromJson(value.body);
-        messageList.value = messageListModel.data?.messages ?? [];
         update();
-        await apiGetMessagesList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
