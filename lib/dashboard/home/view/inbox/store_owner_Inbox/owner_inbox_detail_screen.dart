@@ -422,9 +422,10 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                         await Get.to(
                                             ImagePreviewScreen(
                                               image: messageList[index]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
+                                                      .image
+                                                      ?.dynamicUrl
+                                                      .toString() ??
+                                                  "",
                                             ),
                                             id: pageIdApp.value);
                                       },
@@ -439,9 +440,10 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                           child:
                                               CommonWidgets.cachedNetworkImage(
                                             messageList[index]
-                                                .image!
-                                                .dynamicUrl
-                                                .toString(),
+                                                    .image
+                                                    ?.dynamicUrl
+                                                    .toString() ??
+                                                "",
                                             width: WidgetConstants.screenWidth *
                                                 0.4,
                                             height:
@@ -712,7 +714,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                     )),
                 _buildMessageComposer(),
                 GetBuilder<OwnerInboxDetailController>(
-                    builder: (inboxdetailController) => inboxdetailController
+                    builder: (inboxDetailController) => inboxDetailController
                             .userSelectedImageDynamicLinkFromServer.isNotEmpty
                         ? buildPhotoLibraryGridView()
                         : Container()),

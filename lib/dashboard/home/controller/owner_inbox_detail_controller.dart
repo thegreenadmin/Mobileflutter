@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
-import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -200,7 +199,8 @@ class OwnerInboxDetailController extends GetxController {
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        userSelectedImage.value = XFile("");
+        debugPrint(
+            "MESSAGE SEND userSelectedImageDynamicLinkFromServer *******${userSelectedImageDynamicLinkFromServer.value}");
         Message msg = Message();
         msg.message = messageTextController.text;
         msg.messageHeadId = messageList.first.messageHeadId;
@@ -211,14 +211,19 @@ class OwnerInboxDetailController extends GetxController {
         msg.status = messageList.first.status;
         msg.createdAt = DateTime.now().toUtc().toString();
         msg.updatedAt = DateTime.now().toUtc().toString();
-        msg.image?.dynamicUrl =
-            userSelectedImageDynamicLinkFromServer.value ?? "";
-        msg.image?.orignalUrl =
-            userSelectedImageOriginalLinkFromServer.value ?? "";
-        messageTextController.text != "" ? messageList.insert(0, msg) : null;
+        Images? image = Images();
+        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value ?? "";
+        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value ?? "";
+        msg.image = image;
+        messageTextController.text != "" ||
+                userSelectedImageDynamicLinkFromServer.value != ""
+            ? messageList.insert(0, msg)
+            : null;
+
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
+        userSelectedImage.value = XFile("");
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

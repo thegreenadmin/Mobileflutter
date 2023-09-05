@@ -196,11 +196,14 @@ class UserInboxDetailController extends GetxController {
         msg.status = messageList.first.status;
         msg.createdAt = DateTime.now().toUtc().toString();
         msg.updatedAt = DateTime.now().toUtc().toString();
-        msg.image?.dynamicUrl =
-            userSelectedImageDynamicLinkFromServer.value ?? "";
-        msg.image?.orignalUrl =
-            userSelectedImageOriginalLinkFromServer.value ?? "";
-        messageTextController.text != "" ? messageList.insert(0, msg) : null;
+        Images? image = Images();
+        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value ?? "";
+        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value ?? "";
+        msg.image = image;
+        messageTextController.text != "" ||
+                userSelectedImageDynamicLinkFromServer.value != ""
+            ? messageList.insert(0, msg)
+            : null;
         messageTextController.clear();
         userSelectedImageOriginalLinkFromServer.value = "";
         userSelectedImageDynamicLinkFromServer.value = "";
