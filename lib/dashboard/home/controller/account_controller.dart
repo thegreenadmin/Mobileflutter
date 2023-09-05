@@ -146,10 +146,10 @@ class AccountController extends GetxController {
         await apiGetNotificationStatus(true);
       }
     }
-
-    isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
-        ? isScreenLockNotify.value = true
-        : isScreenLockNotify.value = false;
+    isScreenLockNotify.value = authenticatedBiometric.value;
+    // isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
+    //     ? isScreenLockNotify.value = true
+    //     : isScreenLockNotify.value = false;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {

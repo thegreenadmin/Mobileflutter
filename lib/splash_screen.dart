@@ -25,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTime() async {
     // Future.delayed(const Duration(seconds: 1)).then((value) async {
-    // authh = await SharedPreferenceStorage.getData(
-    //         StringConstants.authenticatedText) ??
-    //     false;
-    authh = authenticatedBiometric.value;
+    authh = await SharedPreferenceStorage.getData(
+            StringConstants.authenticatedText) ??
+        false;
+    authenticatedBiometric.value = authh;
     debugPrint("BIOMETRIC AUTHENTICATION 123******* ${authh}");
     authh != null && authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
@@ -65,29 +65,32 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _authenticateWithBiometrics() async {
+    print("_authenticateWithBiometrics:***** called");
     bool authenticated = false;
     try {
       // setState(() {
       isAuthenticating = true;
       authorized = 'Authenticating';
       // });
-      authenticated = await auth.authenticate(
+
+      authenticatedBiometric.value = await auth.authenticate(
         localizedReason: 'Scan your fingerprint to authenticate',
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: true,
         ),
       );
+
       // setState(() {
       isAuthenticating = false;
       authorized = 'Authenticating';
       // });
     } on PlatformException catch (e) {
       debugPrint(e.toString());
-      setState(() {
-        isAuthenticating = false;
-        authorized = 'Error - ${e.message}';
-      });
+      // setState(() {
+      isAuthenticating = false;
+      authorized = 'Error - ${e.message}';
+      //});
       return;
     }
     if (!mounted) {
@@ -98,12 +101,17 @@ class _SplashScreenState extends State<SplashScreen> {
     //setState(() {
     authorized = message;
     //});
-    if (authenticated) {
-      // SharedPreferenceStorage.setData(
-      //     StringConstants.authenticatedText, authenticated);
-      authenticatedBiometric.value = authenticated;
+    print("authenticated:***************************************");
+    print(authenticated);
+    print(message);
+    if (authenticatedBiometric.value) {
+      print("authenticated:***00000000000*********");
+      SharedPreferenceStorage.setData(
+          StringConstants.authenticatedText, authenticated);
+
       await navigationPage();
     } else {
+      print("no authenticated:***0111111111111 *******");
       _authenticateWithBiometrics();
     }
   }

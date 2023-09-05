@@ -45,7 +45,7 @@ class _AccountScreenState extends State<AccountScreen> {
         isAuthenticating = true;
         authorized = 'Authenticating';
       });
-      authenticated = await auth.authenticate(
+      authenticatedBiometric.value = await auth.authenticate(
         localizedReason: 'Scan your fingerprint to authenticate',
         options: const AuthenticationOptions(
           stickyAuth: true,
@@ -72,13 +72,12 @@ class _AccountScreenState extends State<AccountScreen> {
     setState(() {
       authorized = message;
     });
-    if (authenticated) {
-      //  SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
-      authenticatedBiometric.value = true;
+    if (authenticatedBiometric.value) {
+      SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
       BioMetricAuthentication.isBioMetricAuthenticated.value = true;
       accountController.isScreenLockNotify.value = true;
     } else {
-      // SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
+      SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
       authenticatedBiometric.value = false;
       BioMetricAuthentication.isBioMetricAuthenticated.value = false;
       accountController.isScreenLockNotify.value = false;
