@@ -355,6 +355,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         ],
                       ),
                     ),
+
+
+
+
+                    
                     height4SizedBox,
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -7,6 +7,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
+import 'package:thegreenmall/utils/custom_textfield.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -78,258 +79,154 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                     height25SizedBox,
-                    // CustomInputField(
-                    //   inputFormatters: <TextInputFormatter>[
-                    //     LengthLimitingTextInputFormatter(40),
-                    //   ],
-                    //   borderColor: AppColors.primary,
-                    //   borderRadius: 5,
-                    //   enableBorderColor: AppColors.grey,
-                    //   enableBorderRadius: 5,
-                    //   disabledBorderColor: AppColors.primary,
-                    //   disabledBorderRadius: 5,
-                    //   focusedBorderColor: AppColors.primary,
-                    //   focusedBorderRadius: 5,
-                    //   keyboardType: TextInputType.text,
-                    //   autofocus: false,
-                    //   prefixIcon: Image.asset(
-                    //     ImageConstants.profile,
-                    //     scale: 2.8,
-                    //   ),
-                    //   fillColor: AppColors.white,
-                    //   controller: signupController.firstNameTextController,
-                    //   hintText: StringConstants.firstNameText,
-                    //   hintStyle: const TextStyle(color: AppColors.grey),
-                    //   labelText: StringConstants.firstNameText,
-                    //   labelStyle: TextStyle(
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w400,
-                    //       color: AppColors.blacklight,
-                    //       decoration: TextDecoration.none),
-                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //   onChanged: (value) {
-                    //     signupController.firstName.value = value!;
-                    //   },
-                    //   textCapitalization: TextCapitalization.words,
-                    //   style: const TextStyle(
-                    //       color: AppColors.black,
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w400),
-                    //   validator: (value) {
-                    //     if (value == null || value.trim().isEmpty) {
-                    //       return AlertStringConstants.pleaseEnterFirstNameText;
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
-                    // height25SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          signupController.firstName.value = value;
-                        },
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        textCapitalization: TextCapitalization.words,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(40),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: signupController.firstNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterFirstNameText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          isDense: true,
-                          prefixIcon: Image.asset(
-                            ImageConstants.profile,
-                            scale: 2.8,
-                          ),
-                          hintText: StringConstants.firstNameText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
-                          labelText: StringConstants.firstNameText,
-                          labelStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blacklight,
-                              decoration: TextDecoration.none),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(40),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      prefixIcon: Image.asset(
+                        ImageConstants.profile,
+                        scale: 2.8,
+                      ),
+                      fillColor: AppColors.white,
+                      controller: signupController.firstNameTextController,
+                      hintText: StringConstants.firstNameText,
+                      hintStyle: const TextStyle(
+                        color: AppColors.grey,
+                      ),
+                      labelText: StringConstants.firstNameText,
+                      labelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.blacklight,
+                          decoration: TextDecoration.none),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        signupController.firstName.value = value!;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterFirstNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height15SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          signupController.lastName.value = value;
-                        },
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(40),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: signupController.lastNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLastNameText;
-                          } else if (value.length < 2) {
-                            return AlertStringConstants
-                                .lastNameMustContainsText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          prefixIcon: Image.asset(
-                            ImageConstants.profile,
-                            scale: 2.8,
-                          ),
-                          hintText: StringConstants.lastNameText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
-                          labelText: StringConstants.lastNameText,
-                          labelStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blacklight,
-                              decoration: TextDecoration.none),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(40),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      prefixIcon: Image.asset(
+                        ImageConstants.profile,
+                        scale: 2.8,
+                      ),
+                      fillColor: AppColors.white,
+                      controller: signupController.lastNameTextController,
+                      hintText: StringConstants.lastNameText,
+                      hintStyle: const TextStyle(
+                        color: AppColors.grey,
+                      ),
+                      labelText: StringConstants.lastNameText,
+                      labelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.blacklight,
+                          decoration: TextDecoration.none),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        signupController.lastName.value = value!;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterLastNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height15SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          signupController.email.value = value;
-                        },
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        controller: signupController.emailTextController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterEmailText;
-                          } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          prefixIcon: Image.asset(
-                            ImageConstants.email,
-                            scale: 3,
-                          ),
-                          hintText: StringConstants.emailText,
-                          hintStyle: const TextStyle(color: AppColors.grey),
-                          labelText: StringConstants.emailText,
-                          labelStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blacklight,
-                              decoration: TextDecoration.none),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      prefixIcon: Image.asset(
+                        ImageConstants.email,
+                        scale: 2.8,
+                      ),
+                      fillColor: AppColors.white,
+                      controller: signupController.emailTextController,
+                      hintText: StringConstants.emailText,
+                      hintStyle: const TextStyle(
+                        color: AppColors.grey,
+                      ),
+                      labelText: StringConstants.emailText,
+                      labelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.blacklight,
+                          decoration: TextDecoration.none),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        signupController.email.value = value!;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterEmailText;
+                        } else if (!GetUtils.isEmail(value.trim())) {
+                          return AlertStringConstants.pleaseEnterValidEmailText;
+                        }
+                        return null;
+                      },
+                    ),
                     height15SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -352,8 +249,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
-                        hintStyle: const TextStyle(
-                            color: AppColors.black, fontSize: 15),
+                        hintStyle: TextStyle(
+                            color: AppColors.blacklight, fontSize: 15),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
@@ -395,7 +292,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     height8SizedBox,
-                    TextFormField(
+                    CustomInputField(
                       onTap: () async {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
@@ -434,66 +331,152 @@ class _SignupScreenState extends State<SignupScreen> {
                           signupController.dateTextController.clear();
                         }
                       },
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      prefixIcon: Image.asset(
+                        ImageConstants.calendar,
+                        scale: 2.8,
+                      ),
+                      fillColor: AppColors.white,
+                      controller: signupController.dateTextController,
+                      hintText: StringConstants.ageText,
+                      hintStyle: const TextStyle(
+                        color: AppColors.grey,
+                      ),
+                      labelText: StringConstants.dobText,
+                      labelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.blacklight,
+                          decoration: TextDecoration.none),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        signupController.email.value = value!;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
                       validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants.pleaseSelectDateText;
                         }
                         return null;
                       },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      textInputAction: TextInputAction.done,
-                      enabled: true,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                      controller: signupController.dateTextController,
-                      decoration: InputDecoration(
-                        labelText: StringConstants.dobText,
-                        labelStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.blacklight,
-                            decoration: TextDecoration.none),
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        hintText: StringConstants.ageText,
-                        hintStyle: const TextStyle(color: AppColors.primary),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                        prefixIcon: Image.asset(
-                          ImageConstants.calendar,
-                          scale: 2.8,
-                        ),
-                      ),
                     ),
+                    // TextFormField(
+                    //   onTap: () async {
+                    //     DateTime date = DateTime.now();
+                    //     FocusScope.of(context).requestFocus(FocusNode());
+                    //     date = (await showDatePicker(
+                    //       helpText: StringConstants.selectDateText,
+                    //       builder: (BuildContext context, Widget? child) {
+                    //         return Theme(
+                    //           data: ThemeData.light().copyWith(
+                    //             colorScheme: const ColorScheme.light(
+                    //                 primary: AppColors.primary),
+                    //             buttonTheme: const ButtonThemeData(
+                    //                 textTheme: ButtonTextTheme.primary),
+                    //           ),
+                    //           child: child!,
+                    //         );
+                    //       },
+                    //       context: context,
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime.utc(1200, 1, 1),
+                    //       lastDate: DateTime.now(),
+                    //     ))!;
+
+                    //     final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                    //     formattedDate = formatter.format(date);
+                    //     signupController.dateTextController.text =
+                    //         formattedDate!;
+                    //     signupController.dateOfEvent.value =
+                    //         date.toIso8601String();
+
+                    //     signupController.isAdultCheck(
+                    //         signupController.dateTextController.text);
+                    //     bool result = signupController.isAdultCheck(
+                    //         signupController.dateTextController.text);
+                    //     if (!result) {
+                    //       signupController.ageAlertDailogue(Get.context);
+                    //       signupController.dateTextController.clear();
+                    //     }
+                    //   },
+                    //   validator: (value) {
+                    //     if (value!.trim().isEmpty) {
+                    //       return AlertStringConstants.pleaseSelectDateText;
+                    //     }
+                    //     return null;
+                    //   },
+                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //   textInputAction: TextInputAction.done,
+                    //   enabled: true,
+                    //   style: const TextStyle(
+                    //       color: AppColors.black,
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400),
+                    //   controller: signupController.dateTextController,
+                    //   decoration: InputDecoration(
+                    //     labelText: StringConstants.dobText,
+                    //     labelStyle: TextStyle(
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w400,
+                    //         color: AppColors.blacklight,
+                    //         decoration: TextDecoration.none),
+                    //     fillColor: Colors.white,
+                    //     contentPadding: const EdgeInsets.only(
+                    //         left: 10, right: 10, top: 5, bottom: 5),
+                    //     hintText: StringConstants.ageText,
+                    //     hintStyle: const TextStyle(color: AppColors.primary),
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //       borderSide: const BorderSide(
+                    //         color: AppColors.primary,
+                    //         width: 1.0,
+                    //       ),
+                    //     ),
+                    //     errorBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //       borderSide: const BorderSide(
+                    //         color: AppColors.red,
+                    //         width: 1.0,
+                    //       ),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //       borderSide: const BorderSide(
+                    //         color: AppColors.primary,
+                    //         width: 1.0,
+                    //       ),
+                    //     ),
+                    //     disabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //       borderSide: const BorderSide(
+                    //         color: AppColors.grey,
+                    //         width: 1.0,
+                    //       ),
+                    //     ),
+                    //     prefixIcon: Image.asset(
+                    //       ImageConstants.calendar,
+                    //       scale: 2.8,
+                    //     ),
+                    //   ),
+                    // ),
                     height20SizedBox,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

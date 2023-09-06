@@ -18,6 +18,7 @@ class CustomInputField extends StatefulWidget {
   final double? enableBorderRadius;
   final double? focusedBorderRadius;
   final double? disabledBorderRadius;
+  final double? errorBorderRadius;
   final int? maxLines;
   final int? maxLength;
   final FormFieldValidator<String>? validator;
@@ -34,6 +35,7 @@ class CustomInputField extends StatefulWidget {
   final Color? enableBorderColor;
   final Color? focusedBorderColor;
   final Color? disabledBorderColor;
+  final Color? errorBorderColor;
   final TextStyle? style;
   final TextStyle? labelStyle;
   final TextStyle? hintStyle;
@@ -76,7 +78,9 @@ class CustomInputField extends StatefulWidget {
       this.disabledBorderColor,
       this.enableBorderRadius,
       this.focusedBorderRadius,
-      this.disabledBorderRadius})
+      this.disabledBorderRadius,
+      this.errorBorderRadius,
+      this.errorBorderColor})
       : super(key: key);
 
   @override
@@ -114,31 +118,28 @@ class CustomInputFieldState extends State<CustomInputField> {
         autofocus: widget.autofocus ?? false,
         decoration: InputDecoration(
           labelText: widget.labelText,
-          labelStyle: widget.style ??
-              const TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-              ),
+          labelStyle: TextStyle(
+            color: AppColors.blacklight,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
           filled: true,
           fillColor: widget.fillColor,
-          counterText: '',
+          //counterText: '',
           errorStyle: TextStyle(color: Colors.red[400]),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
+              borderRadius:
+                  BorderRadius.circular(widget.errorBorderRadius ?? 0.0),
               borderSide: BorderSide(
-                  width: 1.5,
-                  color: widget.borderColor ?? AppColors.transparent)),
+                  width: 1,
+                  color: widget.errorBorderColor ?? AppColors.transparent)),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
               borderSide: BorderSide(
-                  width: 1.5,
+                  width: 1,
                   color: widget.borderColor ?? AppColors.transparent)),
           hintText: widget.hintText ?? "",
-          hintStyle: widget.style ??
-              const TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-              ),
+          hintStyle: const TextStyle(color: AppColors.grey),
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,
           contentPadding: widget.contentPadding ??
@@ -152,26 +153,26 @@ class CustomInputFieldState extends State<CustomInputField> {
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
             borderSide: BorderSide(
               color: widget.borderColor ?? AppColors.transparent,
-              width: 1.5,
+              width: 1.0,
             ),
           ),
           enabledBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
               borderSide: BorderSide(
-                  width: 1.5,
+                  width: 1.0,
                   color: widget.enableBorderColor ?? AppColors.transparent)),
           focusedBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
               borderSide: BorderSide(
-                  width: 1.5,
+                  width: 1.0,
                   color: widget.focusedBorderColor ?? AppColors.transparent)),
           disabledBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
               borderSide: BorderSide(
-                  width: 1.5,
+                  width: 1.0,
                   color: widget.disabledBorderColor ?? AppColors.transparent)),
           // prefixIconConstraints:
           //     const BoxConstraints(minWidth: 30, maxHeight: 100),
