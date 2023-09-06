@@ -198,6 +198,32 @@ class OwnerInboxDetailController extends GetxController {
   Future apiSendMessage() async {
     isLoading.value = true;
     debugPrint(
+        "MESSAGE SEND userSelectedImageDynamicLinkFromServer *******${userSelectedImageDynamicLinkFromServer.value}");
+    var msgText = messageTextController.text;
+    var selectedImageOriginalLink =
+        userSelectedImageOriginalLinkFromServer.value;
+    var selectedImageDynamicLink = userSelectedImageDynamicLinkFromServer.value;
+    Message msg = Message();
+    msg.message = msgText;
+    msg.messageHeadId = messageList.first.messageHeadId;
+    msg.senderType = StringConstants.storeText.toLowerCase();
+    msg.isCurrentMessage = true;
+    msg.isStoreRead = true;
+    msg.isUserRead = false;
+    msg.status = messageList.first.status;
+    msg.createdAt = DateTime.now().toUtc().toString();
+    msg.updatedAt = DateTime.now().toUtc().toString();
+    Images? image = Images();
+    image.dynamicUrl = selectedImageDynamicLink ?? "";
+    image.orignalUrl = selectedImageOriginalLink ?? "";
+    msg.image = image;
+    msgText != "" || userSelectedImageDynamicLinkFromServer.value != ""
+        ? messageList.insert(0, msg)
+        : null;
+    messageTextController.clear();
+    userSelectedImageOriginalLinkFromServer.value = "";
+    userSelectedImageDynamicLinkFromServer.value = "";
+    debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageSend}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -207,13 +233,11 @@ class OwnerInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "message_head_id": messageHeadId.value,
-      "message": messageTextController.text.trim() == null ||
-              messageTextController.text.trim().isEmpty
+      "message": msgText.trim() == null || msgText.trim().isEmpty
           ? ""
-          : messageTextController.text.trim(),
-      "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
-          ? null
-          : userSelectedImageOriginalLinkFromServer.value,
+          : msgText.trim(),
+      "image_url":
+          selectedImageOriginalLink.isEmpty ? null : selectedImageOriginalLink,
       "store_id": storeId.value
     };
     debugPrint("MESSAGE SEND BODY ********** $body");
@@ -228,30 +252,6 @@ class OwnerInboxDetailController extends GetxController {
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        debugPrint(
-            "MESSAGE SEND userSelectedImageDynamicLinkFromServer *******${userSelectedImageDynamicLinkFromServer.value}");
-        Message msg = Message();
-        msg.message = messageTextController.text;
-        msg.messageHeadId = messageList.first.messageHeadId;
-        msg.senderType = StringConstants.storeText.toLowerCase();
-        msg.isCurrentMessage = true;
-        msg.isStoreRead = true;
-        msg.isUserRead = false;
-        msg.status = messageList.first.status;
-        msg.createdAt = DateTime.now().toUtc().toString();
-        msg.updatedAt = DateTime.now().toUtc().toString();
-        Images? image = Images();
-        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value ?? "";
-        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value ?? "";
-        msg.image = image;
-        messageTextController.text != "" ||
-                userSelectedImageDynamicLinkFromServer.value != ""
-            ? messageList.insert(0, msg)
-            : null;
-
-        messageTextController.clear();
-        userSelectedImageOriginalLinkFromServer.value = "";
-        userSelectedImageDynamicLinkFromServer.value = "";
         userSelectedImage.value = XFile("");
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
