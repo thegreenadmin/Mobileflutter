@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class CustomInputField extends StatefulWidget {
+  final bool? isBorderOutline;
   final AutovalidateMode? autovalidateMode;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
@@ -80,7 +81,8 @@ class CustomInputField extends StatefulWidget {
       this.focusedBorderRadius,
       this.disabledBorderRadius,
       this.errorBorderRadius,
-      this.errorBorderColor})
+      this.errorBorderColor,
+      this.isBorderOutline})
       : super(key: key);
 
   @override
@@ -139,7 +141,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                   width: 1,
                   color: widget.borderColor ?? AppColors.transparent)),
           hintText: widget.hintText ?? "",
-          hintStyle: const TextStyle(color: AppColors.grey),
+          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
           prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,
           contentPadding: widget.contentPadding ??
@@ -149,31 +151,67 @@ class CustomInputFieldState extends State<CustomInputField> {
                   bottom: WidgetConstants.screenWidth * 0.038,
                   right: 15),
           isDense: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
-            borderSide: BorderSide(
-              color: widget.borderColor ?? AppColors.transparent,
-              width: 1.0,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
-              borderSide: BorderSide(
-                  width: 1.0,
-                  color: widget.enableBorderColor ?? AppColors.transparent)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
-              borderSide: BorderSide(
-                  width: 1.0,
-                  color: widget.focusedBorderColor ?? AppColors.transparent)),
-          disabledBorder: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
-              borderSide: BorderSide(
-                  width: 1.0,
-                  color: widget.disabledBorderColor ?? AppColors.transparent)),
+          border: widget.isBorderOutline == true
+              ? OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? AppColors.transparent,
+                    width: 1.0,
+                  ),
+                )
+              : UnderlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? AppColors.transparent,
+                    width: 1.0,
+                  ),
+                ),
+          enabledBorder: widget.isBorderOutline == true
+              ? OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color: widget.enableBorderColor ?? AppColors.transparent))
+              : UnderlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color:
+                          widget.enableBorderColor ?? AppColors.transparent)),
+          focusedBorder: widget.isBorderOutline == true
+              ? OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color:
+                          widget.focusedBorderColor ?? AppColors.transparent))
+              : UnderlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color:
+                          widget.enableBorderColor ?? AppColors.transparent)),
+          disabledBorder: widget.isBorderOutline == true
+              ? OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color:
+                          widget.disabledBorderColor ?? AppColors.transparent))
+              : UnderlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
+                  borderSide: BorderSide(
+                      width: 1.0,
+                      color:
+                          widget.disabledBorderColor ?? AppColors.transparent)),
           // prefixIconConstraints:
           //     const BoxConstraints(minWidth: 30, maxHeight: 100),
         ));

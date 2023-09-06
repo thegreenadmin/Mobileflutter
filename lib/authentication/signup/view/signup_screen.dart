@@ -80,6 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height25SizedBox,
                     CustomInputField(
+                      isBorderOutline: true,
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(40),
                       ],
@@ -129,6 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height15SizedBox,
                     CustomInputField(
+                      isBorderOutline: true,
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(40),
                       ],
@@ -178,6 +180,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height15SizedBox,
                     CustomInputField(
+                      isBorderOutline: true,
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100),
                       ],
@@ -191,7 +194,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       focusedBorderRadius: 5,
                       errorBorderColor: AppColors.red,
                       errorBorderRadius: 5,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.emailAddress,
                       autofocus: false,
                       prefixIcon: Image.asset(
                         ImageConstants.email,
@@ -293,6 +296,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height8SizedBox,
                     CustomInputField(
+                      isBorderOutline: true,
                       onTap: () async {
                         DateTime date = DateTime.now();
                         FocusScope.of(context).requestFocus(FocusNode());
