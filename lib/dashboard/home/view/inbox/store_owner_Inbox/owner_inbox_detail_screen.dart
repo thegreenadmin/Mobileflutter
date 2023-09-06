@@ -197,7 +197,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                   Fluttertoast.showToast(
                       msg: AlertStringConstants.pleaseWriteSomethingText,
                       toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
+                      gravity: ToastGravity.BOTTOM,
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);

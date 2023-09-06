@@ -185,6 +185,30 @@ class UserInboxDetailController extends GetxController {
   ///Send message by user api
   Future apiSendMessage() async {
     isLoading.value = true;
+    var msgText = messageTextController.text;
+    var selectedImageOriginalLink =
+        userSelectedImageOriginalLinkFromServer.value;
+    var selectedImageDynamicLink = userSelectedImageDynamicLinkFromServer.value;
+    Messages msg = Messages();
+    msg.message = msgText;
+    msg.messageHeadId = messageList.first.messageHeadId;
+    msg.senderType = StringConstants.userText.toLowerCase();
+    msg.isCurrentMessage = true;
+    msg.isStoreRead = false;
+    msg.isUserRead = true;
+    msg.status = messageList.first.status;
+    msg.createdAt = DateTime.now().toUtc().toString();
+    msg.updatedAt = DateTime.now().toUtc().toString();
+    Images? image = Images();
+    image.dynamicUrl = selectedImageDynamicLink ?? "";
+    image.orignalUrl = selectedImageOriginalLink ?? "";
+    msg.image = image;
+    msgText != "" || userSelectedImageDynamicLinkFromServer.value != ""
+        ? messageList.insert(0, msg)
+        : null;
+    messageTextController.clear();
+    userSelectedImageOriginalLinkFromServer.value = "";
+    userSelectedImageDynamicLinkFromServer.value = "";
     debugPrint(
         "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
 
@@ -196,12 +220,9 @@ class UserInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "message_head_id": messageHeadId.value,
-      "message": messageTextController.text.trim().isEmpty
-          ? ""
-          : messageTextController.text.trim(),
-      "image_url": userSelectedImageOriginalLinkFromServer.value.isEmpty
-          ? null
-          : userSelectedImageOriginalLinkFromServer.value
+      "message": msgText.trim().isEmpty ? "" : msgText.trim(),
+      "image_url":
+          selectedImageOriginalLink.isEmpty ? null : selectedImageOriginalLink
     };
     debugPrint("MESSAGE SEND BODY ********** $body");
     UserProvider()
@@ -215,29 +236,7 @@ class UserInboxDetailController extends GetxController {
       debugPrint("MESSAGE SEND RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
-        Messages msg = Messages();
-        msg.message = messageTextController.text;
-        msg.messageHeadId = messageList.first.messageHeadId;
-        msg.senderType = StringConstants.userText.toLowerCase();
-        msg.isCurrentMessage = true;
-        msg.isStoreRead = true;
-        msg.isUserRead = false;
-        msg.status = messageList.first.status;
-        msg.createdAt = DateTime.now().toUtc().toString();
-        msg.updatedAt = DateTime.now().toUtc().toString();
-        Images? image = Images();
-        image.dynamicUrl = userSelectedImageDynamicLinkFromServer.value;
-        image.orignalUrl = userSelectedImageOriginalLinkFromServer.value;
-        msg.image = image;
-        messageTextController.text != "" ||
-                userSelectedImageDynamicLinkFromServer.value != ""
-            ? messageList.insert(0, msg)
-            : null;
-        messageTextController.clear();
-        userSelectedImageOriginalLinkFromServer.value = "";
-        userSelectedImageDynamicLinkFromServer.value = "";
         userSelectedImage.value = XFile("");
-
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
