@@ -83,8 +83,7 @@ getNotificationOpenedApp() {
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
-  debugPrint(
-      "firebaseMessagingBackgroundHandler data 12345---${message!.data}");
+  debugPrint("firebaseMessagingBackgroundHandler data---${message!.data}");
   // getNotification();
   //await Firebase.initializeApp();
   selectNotification(NotificationResponse(

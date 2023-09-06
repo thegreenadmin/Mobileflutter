@@ -7,7 +7,6 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
-import 'package:thegreenmall/utils/custom_textfield.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {

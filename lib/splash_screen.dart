@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,17 +18,16 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final LocalAuthentication auth = LocalAuthentication();
+
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
   bool authh = false;
 
   startTime() async {
-    // Future.delayed(const Duration(seconds: 1)).then((value) async {
     authh = await SharedPreferenceStorage.getData(
             StringConstants.authenticatedText) ??
         false;
     authenticatedBiometric.value = authh;
-    debugPrint("BIOMETRIC AUTHENTICATION 123******* ${authh}");
     authh != null && authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
     // BioMetricAuthentication.isBioMetricAuthenticated
@@ -41,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
     //     : false;
     debugPrint(
         "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
-    // });
     var duration = const Duration(seconds: 2);
     return Timer(
         duration,
@@ -68,50 +65,33 @@ class _SplashScreenState extends State<SplashScreen> {
     print("_authenticateWithBiometrics:***** called");
     bool authenticated = false;
     try {
-      // setState(() {
       isAuthenticating = true;
       authorized = 'Authenticating';
-      // });
-
       authenticatedBiometric.value = await auth.authenticate(
-        localizedReason: 'Scan your fingerprint to authenticate',
+        localizedReason: StringConstants.scanYourFingerPrintText,
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: true,
         ),
       );
-
-      // setState(() {
       isAuthenticating = false;
       authorized = 'Authenticating';
-      // });
     } on PlatformException catch (e) {
       debugPrint(e.toString());
-      // setState(() {
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
-      //});
       return;
     }
     if (!mounted) {
       return;
     }
-
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    //setState(() {
     authorized = message;
-    //});
-    print("authenticated:***************************************");
-    print(authenticated);
-    print(message);
     if (authenticatedBiometric.value) {
-      print("authenticated:***00000000000*********");
       SharedPreferenceStorage.setData(
           StringConstants.authenticatedText, authenticated);
-
       await navigationPage();
     } else {
-      print("no authenticated:***0111111111111 *******");
       _authenticateWithBiometrics();
     }
   }

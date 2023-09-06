@@ -110,15 +110,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: StringConstants.theGreenMallTitleText,
+      title: StringConstants.theGreenMallTitleText, // The Green Mall
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Inter",
+        fontFamily: StringConstants.interFamilyText, //Inter Font Family,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: Routers.route,
       initialRoute: '/splashView',
-      // home: const BottomNavigation(),
     );
   }
 }

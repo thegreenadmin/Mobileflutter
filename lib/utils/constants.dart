@@ -260,8 +260,10 @@ class StringConstants {
   static String highToLowText = "High to low";
   static String halfYearlyText = "Half Yearly";
   static String haveIssueText = "Have issue/question?";
+  static String hiText = "Hi, ";
 
   //I
+  static String interFamilyText = "Inter";
   static String inboxText = "Inbox";
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
@@ -482,6 +484,8 @@ class StringConstants {
   static String returnDaysText = "Return days";
 
   //S
+  static String scanYourFingerPrintText =
+      'Scan your fingerprint to authenticate';
   static String starText = "*";
   static String signUpText = "Sign up";
   static String saturdayText = "Saturday";

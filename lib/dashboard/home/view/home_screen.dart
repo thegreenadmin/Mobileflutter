@@ -55,24 +55,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(() => Text(
-                                  "Hi, ${firstName.value} ${lastName.value}",
+                                  "${StringConstants.hiText}${firstName.value} ${lastName.value}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 )),
-                            const Text.rich(
+                            Text.rich(
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Welcome to ',
-                                    style: TextStyle(
+                                    text: StringConstants.welcomeToText,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18,
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: 'T',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: 'he',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: ' G',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: 'reen',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: ' M',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColors.black,
                                     ),
                                   ),
-                                  TextSpan(
+                                  const TextSpan(
                                     text: 'all',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -910,18 +910,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Get.parameters["productId"] = homeController
                                         .ownerFeatureProductList[index]
                                         .productId;
-                                    Get.parameters["categoryName"] =homeController
-                                        .ownerFeatureProductList[index]
-                                        .productCategories!.isNotEmpty && homeController
-                                        .ownerFeatureProductList[index]
-                                        .productCategories!=null?
-                                        homeController
+                                    Get.parameters[
+                                        "categoryName"] = homeController
+                                                .ownerFeatureProductList[index]
+                                                .productCategories!
+                                                .isNotEmpty &&
+                                            homeController
+                                                    .ownerFeatureProductList[
+                                                        index]
+                                                    .productCategories !=
+                                                null
+                                        ? homeController
                                                 .ownerFeatureProductList[index]
                                                 .productCategories
                                                 ?.first
                                                 .category
                                                 ?.categoryName ??
-                                            "":"";
+                                            ""
+                                        : "";
                                     hasStoreAccess.value && permissionStoreList.isEmpty ||
                                             permissionStoreList.any((element) =>
                                                 element.storeId ==

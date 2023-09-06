@@ -53,7 +53,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                               children: [
                                 Obx(
                                   () => Text(
-                                    'Hi, ${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}',
+                                    "${StringConstants.hiText}${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}",
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: AppColors.black,
