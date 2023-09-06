@@ -41,27 +41,27 @@ class _AccountScreenState extends State<AccountScreen> {
   Future<void> _authenticateWithBiometrics() async {
     bool authenticated = false;
     try {
-      setState(() {
-        isAuthenticating = true;
-        authorized = 'Authenticating';
-      });
+      isAuthenticating = true;
+      authorized = 'Authenticating';
+
       authenticatedBiometric.value = await auth.authenticate(
         localizedReason: 'Scan your fingerprint to authenticate',
         options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: true,
-        ),
+            stickyAuth: true, biometricOnly: true, useErrorDialogs: true),
       );
-      setState(() {
-        isAuthenticating = false;
-        authorized = 'Authenticating';
-      });
+
+      isAuthenticating = false;
+      authorized = 'Authenticating';
     } on PlatformException catch (e) {
+      debugPrint("PlatformException:************** ${e.toString()}");
       debugPrint(e.toString());
-      setState(() {
-        isAuthenticating = false;
-        authorized = 'Error - ${e.message}';
-      });
+      isAuthenticating = false;
+      authorized = 'Error - ${e.message}';
+      SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
+      authenticatedBiometric.value = false;
+      BioMetricAuthentication.isBioMetricAuthenticated.value = false;
+      accountController.isScreenLockNotify.value = false;
+
       return;
     }
     if (!mounted) {
@@ -69,9 +69,9 @@ class _AccountScreenState extends State<AccountScreen> {
     }
 
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    setState(() {
-      authorized = message;
-    });
+    // setState(() {
+    authorized = message;
+    // });
     if (authenticatedBiometric.value) {
       SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
       BioMetricAuthentication.isBioMetricAuthenticated.value = true;
@@ -538,9 +538,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                     _authenticateWithBiometrics();
                                   } else {
                                     authenticatedBiometric.value = false;
-                                    // SharedPreferenceStorage.setData(
-                                    //     StringConstants.authenticatedText,
-                                    //     false);
+                                    SharedPreferenceStorage.setData(
+                                        StringConstants.authenticatedText,
+                                        false);
                                     BioMetricAuthentication
                                         .isBioMetricAuthenticated.value = false;
                                   }
