@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -28,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
             StringConstants.authenticatedText) ??
         false;
     authenticatedBiometric.value = authh;
-    authh != null && authh != false ? authh : false;
+    authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
     // BioMetricAuthentication.isBioMetricAuthenticated
     //     .value = await SharedPreferenceStorage.getData(
@@ -62,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    print("_authenticateWithBiometrics:***** called");
+    debugPrint("_authenticateWithBiometrics:***** called");
     bool authenticated = false;
     try {
       isAuthenticating = true;
@@ -78,14 +80,24 @@ class _SplashScreenState extends State<SplashScreen> {
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
       debugPrint(e.toString());
+      debugPrint(e.message);
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
+      if (Platform.isAndroid) {
+        if (e.code == "LockedOut" || e.code == "NotAvailable") {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
+      } else {
+        debugPrint("Platform.ios");
+      }
+
       return;
     }
     if (!mounted) {
       return;
     }
-    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    final String message =
+        authenticatedBiometric.value ? 'Authorized' : 'Not Authorized';
     authorized = message;
     if (authenticatedBiometric.value) {
       SharedPreferenceStorage.setData(
