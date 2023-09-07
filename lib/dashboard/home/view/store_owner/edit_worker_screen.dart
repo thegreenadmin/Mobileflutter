@@ -174,64 +174,93 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.newline,
-                        keyboardType: TextInputType.multiline,
-                        autofocus: false,
-                        maxLines: null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        readOnly: true,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewWorkerController.employeeNameTextController,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterStoreNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    //EMPLOYEE NAME FIELD
+                    CustomInputField(
+                      textInputAction: TextInputAction.next,
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      fillColor: AppColors.transparent,
+                      controller:
+                          addNewWorkerController.employeeNameTextController,
+                      hintText: StringConstants.enterNameText,
+                      hintStyle:
+                          const TextStyle(color: AppColors.grey, fontSize: 14),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants
+                              .pleaseEnterEmployeeNameText;
+                        }
+                        return null;
+                      },
+                    ),
+                    // TextFormField(
+                    //     textInputAction: TextInputAction.newline,
+                    //     keyboardType: TextInputType.multiline,
+                    //     autofocus: false,
+                    //     maxLines: null,
+                    //     autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //     readOnly: true,
+                    //     inputFormatters: <TextInputFormatter>[
+                    //       LengthLimitingTextInputFormatter(100),
+                    //     ],
+                    //     style: const TextStyle(
+                    //         color: AppColors.black,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w500),
+                    //     controller:
+                    //         addNewWorkerController.employeeNameTextController,
+                    //     validator: (value) {
+                    //       if (value!.trim().isEmpty) {
+                    //         return AlertStringConstants
+                    //             .pleaseEnterStoreNameText;
+                    //       }
+                    //       return null;
+                    //     },
+                    //     textCapitalization: TextCapitalization.words,
+                    //     decoration: InputDecoration(
+                    //       hintText: StringConstants.enterNameText,
+                    //       hintStyle: const TextStyle(
+                    //           color: AppColors.grey, fontSize: 14),
+                    //       fillColor: Colors.white,
+                    //       border: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       errorBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.grey,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //     )),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -253,63 +282,37 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        readOnly: true,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewWorkerController.emailTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterEmailText;
-                          } else if (!GetUtils.isEmail(value.trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidEmailText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterEmailIdText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+//WORKER EMAIL FIELD
+
+                    CustomInputField(
+                      textInputAction: TextInputAction.next,
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      fillColor: AppColors.transparent,
+                      controller: addNewWorkerController.emailTextController,
+                      hintText: StringConstants.enterEmailIdText,
+                      hintStyle:
+                          const TextStyle(color: AppColors.grey, fontSize: 14),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterEmailText;
+                        } else if (!GetUtils.isEmail(value.trim())) {
+                          return AlertStringConstants.pleaseEnterValidEmailText;
+                        }
+                        return null;
+                      },
+                    ),
+
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -372,62 +375,87 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addNewWorkerController
-                            .shortDescriptionTextController,
-                        keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return AlertStringConstants
-                        //         .pleaseEnterShortDescriptionText;
-                        //   }
-                        //   return null;
-                        // },
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.addDescriptionText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      maxLines: null,
+                      textInputAction: TextInputAction.next,
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(200),
+                      ],
+                      keyboardType: TextInputType.multiline,
+                      autofocus: false,
+                      fillColor: AppColors.transparent,
+                      controller:
+                          addNewWorkerController.shortDescriptionTextController,
+                      hintText: StringConstants.addDescriptionText,
+                      hintStyle:
+                          const TextStyle(color: AppColors.grey, fontSize: 14),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    // TextFormField(
+                    //     autovalidateMode: AutovalidateMode.onUserInteraction,
+                    //     textInputAction: TextInputAction.next,
+                    //     autofocus: false,
+                    //     inputFormatters: <TextInputFormatter>[
+                    //       LengthLimitingTextInputFormatter(100),
+                    //     ],
+                    //     style: const TextStyle(
+                    //         color: AppColors.black,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w500),
+                    //     controller: addNewWorkerController
+                    //         .shortDescriptionTextController,
+                    //     keyboardType: TextInputType.text,
+                    //     // validator: (value) {
+                    //     //   if (value!.trim().isEmpty) {
+                    //     //     return AlertStringConstants
+                    //     //         .pleaseEnterShortDescriptionText;
+                    //     //   }
+                    //     //   return null;
+                    //     // },
+                    //     textCapitalization: TextCapitalization.sentences,
+                    //     decoration: InputDecoration(
+                    //       hintText: StringConstants.addDescriptionText,
+                    //       hintStyle: const TextStyle(
+                    //           color: AppColors.grey, fontSize: 14),
+                    //       fillColor: Colors.white,
+                    //       border: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       errorBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.primary,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5.0),
+                    //         borderSide: const BorderSide(
+                    //           color: AppColors.grey,
+                    //           width: 1.0,
+                    //         ),
+                    //       ),
+                    //     )),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -493,93 +521,155 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 ),
                               ),
                               height4SizedBox,
-                              TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.digitsOnly,
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: addNewWorkerController
-                                      .startTimeTextController,
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .startTimeAlertText;
-                                    }
-                                    return null;
-                                  },
-                                  onTap: () async {
-                                    TimeOfDay? date = TimeOfDay.now();
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    date = (await showTimePicker(
-                                      initialEntryMode:
-                                          TimePickerEntryMode.input,
-                                      helpText: StringConstants.selectTimeText,
-                                      initialTime: TimeOfDay.now(),
-                                      context: context,
-                                      builder: (context, child) {
-                                        return Theme(
-                                          data: ThemeData.light().copyWith(
-                                            colorScheme:
-                                                const ColorScheme.light(
-                                                    primary: AppColors.primary),
-                                            buttonTheme: const ButtonThemeData(
-                                                textTheme:
-                                                    ButtonTextTheme.primary),
-                                          ),
-                                          child: child!,
-                                        );
-                                      },
-                                    ));
+                              //START TIME FIELD
+                              CustomInputField(
+                                textInputAction: TextInputAction.next,
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(25),
+                                ],
+                                keyboardType: TextInputType.text,
+                                autofocus: false,
+                                fillColor: AppColors.transparent,
+                                controller: addNewWorkerController
+                                    .startTimeTextController,
+                                hintText: StringConstants.startTimeText,
+                                hintStyle: const TextStyle(
+                                    color: AppColors.grey, fontSize: 14),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textCapitalization: TextCapitalization.words,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseSelectOpeningTimeText;
+                                  } else if (value.trim() ==
+                                      addNewWorkerController
+                                          .endTimeTextController.text) {
+                                    return AlertStringConstants
+                                        .startTimeAlertText;
+                                  }
+                                  return null;
+                                },
+                                onTap: () async {
+                                  TimeOfDay? date = TimeOfDay.now();
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  date = (await showTimePicker(
+                                    initialEntryMode: TimePickerEntryMode.input,
+                                    helpText: StringConstants.selectTimeText,
+                                    initialTime: TimeOfDay.now(),
+                                    context: context,
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: const ColorScheme.light(
+                                              primary: AppColors.primary),
+                                          buttonTheme: const ButtonThemeData(
+                                              textTheme:
+                                                  ButtonTextTheme.primary),
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                  ));
 
-                                    addNewWorkerController
-                                            .startTimeTextController.text =
-                                        date?.format(context).toString() ?? "";
-                                  },
-                                  decoration: InputDecoration(
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.startTimeText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  )),
+                                  addNewWorkerController
+                                          .startTimeTextController.text =
+                                      date?.format(context).toString() ?? "";
+                                },
+                              ),
+                              // TextFormField(
+                              //     autovalidateMode:
+                              //         AutovalidateMode.onUserInteraction,
+                              //     textInputAction: TextInputAction.next,
+                              //     autofocus: false,
+                              //     inputFormatters: <TextInputFormatter>[
+                              //       LengthLimitingTextInputFormatter(100),
+                              //       FilteringTextInputFormatter.digitsOnly,
+                              //     ],
+                              //     style: const TextStyle(
+                              //         color: AppColors.black,
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.w500),
+                              //     controller: addNewWorkerController
+                              //         .startTimeTextController,
+                              //     keyboardType: TextInputType.phone,
+                              //     validator: (value) {
+                              //       if (value!.trim().isEmpty) {
+                              //         return AlertStringConstants
+                              //             .startTimeAlertText;
+                              //       }
+                              //       return null;
+                              //     },
+                              //     onTap: () async {
+                              //       TimeOfDay? date = TimeOfDay.now();
+                              //       FocusScope.of(context)
+                              //           .requestFocus(FocusNode());
+                              //       date = (await showTimePicker(
+                              //         initialEntryMode:
+                              //             TimePickerEntryMode.input,
+                              //         helpText: StringConstants.selectTimeText,
+                              //         initialTime: TimeOfDay.now(),
+                              //         context: context,
+                              //         builder: (context, child) {
+                              //           return Theme(
+                              //             data: ThemeData.light().copyWith(
+                              //               colorScheme:
+                              //                   const ColorScheme.light(
+                              //                       primary: AppColors.primary),
+                              //               buttonTheme: const ButtonThemeData(
+                              //                   textTheme:
+                              //                       ButtonTextTheme.primary),
+                              //             ),
+                              //             child: child!,
+                              //           );
+                              //         },
+                              //       ));
+
+                              //       addNewWorkerController
+                              //               .startTimeTextController.text =
+                              //           date?.format(context).toString() ?? "";
+                              //     },
+                              //     decoration: InputDecoration(
+                              //       errorMaxLines: 3,
+                              //       hintText: StringConstants.startTimeText,
+                              //       hintStyle: const TextStyle(
+                              //           color: AppColors.grey, fontSize: 14),
+                              //       fillColor: Colors.white,
+                              //       border: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       errorBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       focusedBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       enabledBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.grey,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //     )),
                             ],
                           ),
                         ),
@@ -610,92 +700,162 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                                 ),
                               ),
                               height4SizedBox,
-                              TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.digitsOnly,
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: addNewWorkerController
-                                      .endTimeTextController,
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .endTimeAlertText;
-                                    }
-                                    return null;
-                                  },
-                                  onTap: () async {
-                                    TimeOfDay? date = TimeOfDay.now();
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    date = (await showTimePicker(
-                                      initialEntryMode:
-                                          TimePickerEntryMode.input,
-                                      helpText: StringConstants.selectTimeText,
-                                      initialTime: TimeOfDay.now(),
-                                      context: context,
-                                      builder: (context, child) {
-                                        return Theme(
-                                          data: ThemeData.light().copyWith(
-                                            colorScheme:
-                                                const ColorScheme.light(
-                                                    primary: AppColors.primary),
-                                            buttonTheme: const ButtonThemeData(
-                                                textTheme:
-                                                    ButtonTextTheme.primary),
-                                          ),
-                                          child: child!,
-                                        );
-                                      },
-                                    ));
-                                    addNewWorkerController
-                                            .endTimeTextController.text =
-                                        date?.format(context).toString() ?? "";
-                                  },
-                                  decoration: InputDecoration(
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.endTimeText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  )),
+                              CustomInputField(
+                                textInputAction: TextInputAction.next,
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(25),
+                                ],
+                                keyboardType: TextInputType.text,
+                                autofocus: false,
+                                fillColor: AppColors.transparent,
+                                controller: addNewWorkerController
+                                    .endTimeTextController,
+                                hintText: StringConstants.startTimeText,
+                                hintStyle: const TextStyle(
+                                    color: AppColors.grey, fontSize: 14),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textCapitalization: TextCapitalization.words,
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseSelectClosingTimeText;
+                                  } else if (value.trim() ==
+                                      addNewWorkerController
+                                          .startTimeTextController.text) {
+                                    return AlertStringConstants
+                                        .endTimeAlertText;
+                                  }
+                                  return null;
+                                },
+                                onTap: () async {
+                                  TimeOfDay date = TimeOfDay.now();
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  date = (await showTimePicker(
+                                    initialEntryMode: TimePickerEntryMode.input,
+                                    helpText: StringConstants.selectTimeText,
+                                    initialTime: TimeOfDay.now(),
+                                    context: context,
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: ThemeData.light().copyWith(
+                                          colorScheme: const ColorScheme.light(
+                                              primary: AppColors.primary),
+                                          buttonTheme: const ButtonThemeData(
+                                              textTheme:
+                                                  ButtonTextTheme.primary),
+                                        ),
+                                        child: child!,
+                                      );
+                                    },
+                                  ))!;
+
+                                  /* final startDT = DateTime(9, 9, 9, date.hour, date.minute);
+                                    final endDT = DateTime(9, 9, 9, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).hour, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).minute);
+                                    print(startDT);
+                                    print(endDT);
+                                    if (startDT.isBefore(endDT)) {
+                                      Utility.showToast("Please select time before ${addNewWorkerController.storeClosingTime.toString()}");
+                                    } else {
+                                      addNewWorkerController.endTimeTextController
+                                          .text = date.format(context).toString();
+                                    }*/
+                                  addNewWorkerController.endTimeTextController
+                                      .text = date.format(context).toString();
+                                },
+                              ),
+                              // TextFormField(
+                              //     autovalidateMode:
+                              //         AutovalidateMode.onUserInteraction,
+                              //     textInputAction: TextInputAction.next,
+                              //     autofocus: false,
+                              //     inputFormatters: <TextInputFormatter>[
+                              //       LengthLimitingTextInputFormatter(100),
+                              //       FilteringTextInputFormatter.digitsOnly,
+                              //     ],
+                              //     style: const TextStyle(
+                              //         color: AppColors.black,
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.w500),
+                              //     controller: addNewWorkerController
+                              //         .endTimeTextController,
+                              //     keyboardType: TextInputType.phone,
+                              //     validator: (value) {
+                              //       if (value!.trim().isEmpty) {
+                              //         return AlertStringConstants
+                              //             .endTimeAlertText;
+                              //       }
+                              //       return null;
+                              //     },
+                              //     onTap: () async {
+                              //       TimeOfDay? date = TimeOfDay.now();
+                              //       FocusScope.of(context)
+                              //           .requestFocus(FocusNode());
+                              //       date = (await showTimePicker(
+                              //         initialEntryMode:
+                              //             TimePickerEntryMode.input,
+                              //         helpText: StringConstants.selectTimeText,
+                              //         initialTime: TimeOfDay.now(),
+                              //         context: context,
+                              //         builder: (context, child) {
+                              //           return Theme(
+                              //             data: ThemeData.light().copyWith(
+                              //               colorScheme:
+                              //                   const ColorScheme.light(
+                              //                       primary: AppColors.primary),
+                              //               buttonTheme: const ButtonThemeData(
+                              //                   textTheme:
+                              //                       ButtonTextTheme.primary),
+                              //             ),
+                              //             child: child!,
+                              //           );
+                              //         },
+                              //       ));
+                              //       addNewWorkerController
+                              //               .endTimeTextController.text =
+                              //           date?.format(context).toString() ?? "";
+                              //     },
+                              //     decoration: InputDecoration(
+                              //       errorMaxLines: 3,
+                              //       hintText: StringConstants.endTimeText,
+                              //       hintStyle: const TextStyle(
+                              //           color: AppColors.grey, fontSize: 14),
+                              //       fillColor: Colors.white,
+                              //       border: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       errorBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       focusedBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.primary,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //       enabledBorder: UnderlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(5.0),
+                              //         borderSide: const BorderSide(
+                              //           color: AppColors.grey,
+                              //           width: 1.0,
+                              //         ),
+                              //       ),
+                              //     )),
                             ],
                           ),
                         )

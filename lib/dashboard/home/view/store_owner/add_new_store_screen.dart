@@ -1705,7 +1705,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     CustomInputField(
                       maxLines: null,
                       onTap: () {
-                        addNewStoreController.isTermsSelected.value = true;
+                        addNewStoreController.isTermsSelected.value = false;
                         addNewStoreController.filePicker();
                       },
                       textInputAction: TextInputAction.next,
