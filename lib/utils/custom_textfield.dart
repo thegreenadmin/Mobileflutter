@@ -21,6 +21,7 @@ class CustomInputField extends StatefulWidget {
   final double? focusedBorderRadius;
   final double? disabledBorderRadius;
   final double? errorBorderRadius;
+  final int? minLines;
   final int? maxLines;
   final int? maxLength;
   final FormFieldValidator<String>? validator;
@@ -84,7 +85,7 @@ class CustomInputField extends StatefulWidget {
       this.errorBorderRadius,
       this.errorBorderColor,
       this.isBorderOutline,
-      this.textInputAction})
+      this.textInputAction, this.minLines})
       : super(key: key);
 
   @override
@@ -98,7 +99,7 @@ class CustomInputFieldState extends State<CustomInputField> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         inputFormatters: widget.inputFormatters ??
             <TextInputFormatter>[
-              LengthLimitingTextInputFormatter(40),
+              LengthLimitingTextInputFormatter(200),
             ],
         readOnly: widget.readOnly ?? false,
         textAlign: widget.textAlign ?? TextAlign.start,
@@ -114,6 +115,7 @@ class CustomInputFieldState extends State<CustomInputField> {
         textCapitalization:
             widget.textCapitalization ?? TextCapitalization.none,
         enabled: widget.enabled ?? true,
+        minLines:widget.minLines??1,
         maxLines: widget.maxLines ?? 1,
         maxLength: widget.maxLength,
         validator: widget.validator,
@@ -134,6 +136,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           filled: true,
           fillColor: widget.fillColor ?? AppColors.white,
           errorStyle: const TextStyle(color: AppColors.red),
+          errorMaxLines: 4,
           errorBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:

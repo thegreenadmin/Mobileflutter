@@ -14,5 +14,6 @@ export 'server_communicator.dart';
 export 'shared_prefrences.dart';
 export 'sizedbox_constants.dart';
 export 'stripe_payment.dart';
+export 'custom_textfield.dart';
 export 'tool_tip.dart';
 export 'utility.dart';
