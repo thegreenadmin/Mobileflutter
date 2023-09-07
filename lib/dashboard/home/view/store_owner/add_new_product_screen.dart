@@ -285,62 +285,26 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(25),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.productNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterProductNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterProductNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      textInputAction: TextInputAction.next,
+                      controller:
+                          manageStoreController.productNameTextController,
+                      hintText: StringConstants.enterProductNameText,
+                      textCapitalization: TextCapitalization.words,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants
+                              .pleaseEnterProductNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -573,69 +537,33 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       width15SizedBox,
                       Flexible(
                         flex: 5,
-                        child: TextFormField(
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
-                            ],
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                manageStoreController.quantityTextController,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterQuantityText;
-                              } else if (value == ".") {
-                                return AlertStringConstants.invalidInputText;
-                              } else if (double.parse(value) == 0.0) {
-                                return AlertStringConstants.invalidQuantityText;
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: StringConstants.enterQuantityText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        child: CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^(\d+)?\.?\d{0,2}'))
+                          ],
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          autofocus: false,
+                          textInputAction: TextInputAction.next,
+                          controller:
+                              manageStoreController.quantityTextController,
+                          hintText: StringConstants.enterQuantityText,
+                          textCapitalization: TextCapitalization.words,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterQuantityText;
+                            } else if (value == ".") {
+                              return AlertStringConstants.invalidInputText;
+                            } else if (double.parse(value) == 0.0) {
+                              return AlertStringConstants.invalidQuantityText;
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ]),
                     height20SizedBox,
@@ -659,67 +587,32 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^(\d+)?\.?\d{0,2}'))
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.pricePerUnitTextController,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterPriceText;
-                          } else if (value == ".") {
-                            return AlertStringConstants.invalidInputText;
-                          } else if (double.parse(value) == 0.0) {
-                            return AlertStringConstants.invalidAmountText;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterPriceText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^(\d+)?\.?\d{0,2}'))
+                      ],
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      autofocus: false,
+                      textInputAction: TextInputAction.next,
+                      controller:
+                          manageStoreController.pricePerUnitTextController,
+                      hintText: StringConstants.enterPriceText,
+                      textCapitalization: TextCapitalization.words,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterPriceText;
+                        } else if (value == ".") {
+                          return AlertStringConstants.invalidInputText;
+                        } else if (double.parse(value) == 0.0) {
+                          return AlertStringConstants.invalidAmountText;
+                        }
+                        return null;
+                      },
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -734,56 +627,20 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: manageStoreController
-                            .shortDescriptionTextController,
-                        textInputAction: TextInputAction.newline,
-                        keyboardType: TextInputType.multiline,
-                        autofocus: false,
-                        maxLines: null,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.shortDescriptionText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      textInputAction: TextInputAction.newline,
+                      keyboardType: TextInputType.multiline,
+                      autofocus: false,
+                      maxLines: null,
+                      controller:
+                          manageStoreController.shortDescriptionTextController,
+                      hintText: StringConstants.shortDescriptionText,
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -798,64 +655,20 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        textInputAction: TextInputAction.newline,
-                        keyboardType: TextInputType.multiline,
-                        autofocus: false,
-                        maxLines: null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: manageStoreController
-                            .contentsAndStrainsTextController,
-
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return AlertStringConstants
-                        //         .pleaseEnterContentAndStrainText;
-                        //   }
-                        //   return null;
-                        // },
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.contentsAndStrainsText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      textInputAction: TextInputAction.newline,
+                      keyboardType: TextInputType.multiline,
+                      autofocus: false,
+                      maxLines: null,
+                      controller: manageStoreController
+                          .contentsAndStrainsTextController,
+                      hintText: StringConstants.contentsAndStrainsText,
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -878,68 +691,22 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: [
-                          FilteringTextInputFormatter(RegExp(r"\s"),
-                              allow: false),
-                          LengthLimitingTextInputFormatter(25),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            manageStoreController.additionalLinkTextController,
-                        keyboardType: TextInputType.emailAddress,
-                        /*validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants.pleaseEnterLinkText;
-                          } else if (!GetUtils.isURL(manageStoreController
-                              .additionalLinkTextController.text
-                              .trim())) {
-                            return AlertStringConstants
-                                .pleaseEnterValidLinkText;
-                          }
-                          return null;
-                        },*/
-                        decoration: InputDecoration(
-                          hintText:
-                              StringConstants.additionalLinksToResearchText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter(RegExp(r"\s"),
+                            allow: false),
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      maxLines: null,
+                      controller:
+                          manageStoreController.additionalLinkTextController,
+                      hintText: StringConstants.additionalLinksToResearchText,
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -1028,70 +795,22 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child: TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller: manageStoreController
-                                  .discountOrOfferTextController,
-                              /*validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterAmountText;
-                                } else if (value == ".") {
-                                  return AlertStringConstants.invalidInputText;
-                                } else if (double.parse(value) == 0.0) {
-                                  return AlertStringConstants.invalidAmountText;
-                                }
-                                return null;
-                              },*/
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              decoration: InputDecoration(
-                                hintText: StringConstants.enterValueText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
+                          child: CustomInputField(
+                            isBorderOutline: false,
+                            inputFormatters: <TextInputFormatter>[
+                              LengthLimitingTextInputFormatter(100),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
+                            ],
+                            textInputAction: TextInputAction.next,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            autofocus: false,
+                            maxLines: null,
+                            controller: manageStoreController
+                                .discountOrOfferTextController,
+                            hintText: StringConstants.enterValueText,
+                          ),
                         ),
                       ],
                     ),
@@ -1205,69 +924,22 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   ],
                                 ),
                               ),
-                              TextFormField(
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: true),
-                                inputFormatters: [
+                              CustomInputField(
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
                                   LengthLimitingTextInputFormatter(100),
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ],
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
                                 textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
                                 autofocus: false,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                maxLines: null,
                                 controller:
                                     manageStoreController.lengthTextController,
-                                // validator: (value) {
-                                // if (value!.trim().isEmpty) {
-                                //   return AlertStringConstants
-                                //       .pleaseEnterLengthText;
-                                // } else if (double.parse(value) == 0.0) {
-                                //   return AlertStringConstants
-                                //       .invalidInputText;
-                                // }
-                                // return null;
-                                //  },
-                                decoration: InputDecoration(
-                                  hintText: StringConstants.lengthText,
-                                  hintStyle: const TextStyle(
-                                      color: AppColors.grey, fontSize: 14),
-                                  fillColor: Colors.white,
-                                  border: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.grey,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
+                                hintText: StringConstants.lengthText,
                               ),
                             ],
                           ),
@@ -1291,69 +963,23 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   ],
                                 ),
                               ),
-                              TextFormField(
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: true),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .breadthTextController,
-                                  // validator: (value) {
-                                  //   if (value!.trim().isEmpty) {
-                                  //     return AlertStringConstants
-                                  //         .pleaseEnterBreadthText;
-                                  //   } else if (double.parse(value) == 0.0) {
-                                  //     return AlertStringConstants
-                                  //         .invalidInputText;
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants.breadthText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  )),
+                              CustomInputField(
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                ],
+                                textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                autofocus: false,
+                                maxLines: null,
+                                controller:
+                                    manageStoreController.breadthTextController,
+                                hintText: StringConstants.breadthText,
+                              ),
                             ],
                           ),
                         ),
@@ -1380,69 +1006,23 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   ],
                                 ),
                               ),
-                              TextFormField(
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: true),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .heightTextController,
-                                  // validator: (value) {
-                                  //   if (value!.trim().isEmpty) {
-                                  //     return AlertStringConstants
-                                  //         .pleaseEnterHeightText;
-                                  //   } else if (double.parse(value) == 0.0) {
-                                  //     return AlertStringConstants
-                                  //         .invalidInputText;
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants.heightText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  )),
+                              CustomInputField(
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                ],
+                                textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                autofocus: false,
+                                maxLines: null,
+                                controller:
+                                    manageStoreController.heightTextController,
+                                hintText: StringConstants.heightText,
+                              ),
                             ],
                           ),
                         ),
@@ -1472,72 +1052,36 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                   ],
                                 ),
                               ),
-                              TextFormField(
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          decimal: true),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  textInputAction: TextInputAction.next,
-                                  autofocus: false,
-                                  inputFormatters: <TextInputFormatter>[
-                                    LengthLimitingTextInputFormatter(100),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
-                                  ],
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  controller: manageStoreController
-                                      .weightTextController,
-                                  validator: (value) {
-                                    if (value!.trim().isEmpty) {
-                                      return AlertStringConstants
-                                          .pleaseEnterWeightText;
-                                    } else if (value == ".") {
-                                      return AlertStringConstants
-                                          .invalidInputText;
-                                    } else if (double.parse(value) == 0.0) {
-                                      return AlertStringConstants
-                                          .invalidInputText;
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: StringConstants.weightText,
-                                    hintStyle: const TextStyle(
-                                        color: AppColors.grey, fontSize: 14),
-                                    fillColor: Colors.white,
-                                    border: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.grey,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  )),
+                              CustomInputField(
+                                isBorderOutline: false,
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(100),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                ],
+                                textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                autofocus: false,
+                                maxLines: null,
+                                controller:
+                                    manageStoreController.weightTextController,
+                                hintText: StringConstants.weightText,
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return AlertStringConstants
+                                        .pleaseEnterWeightText;
+                                  } else if (value == ".") {
+                                    return AlertStringConstants
+                                        .invalidInputText;
+                                  } else if (double.parse(value) == 0.0) {
+                                    return AlertStringConstants
+                                        .invalidInputText;
+                                  }
+                                  return null;
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -1674,73 +1218,31 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                         ],
                                       ),
                                     ),
-                                    TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        textInputAction: TextInputAction.next,
-                                        autofocus: false,
-                                        inputFormatters: <TextInputFormatter>[
-                                          LengthLimitingTextInputFormatter(100),
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                        ],
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                        controller: manageStoreController
-                                            .daysTextController,
-                                        keyboardType: TextInputType.number,
-                                        validator: (value) {
-                                          if (value!.trim().isEmpty) {
-                                            return AlertStringConstants
-                                                .pleaseEnterValidDaysText;
-                                          } else if (value.trim() == "0" ||
-                                              value.trim() == "00") {
-                                            return AlertStringConstants
-                                                .invalidInputText;
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          hintText: StringConstants.daysText,
-                                          hintStyle: const TextStyle(
-                                              color: AppColors.grey,
-                                              fontSize: 14),
-                                          fillColor: Colors.white,
-                                          border: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          errorBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.primary,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.grey,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                        )),
+                                    CustomInputField(
+                                      isBorderOutline: false,
+                                      inputFormatters: <TextInputFormatter>[
+                                        LengthLimitingTextInputFormatter(100),
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.number,
+                                      autofocus: false,
+                                      maxLines: null,
+                                      controller: manageStoreController
+                                          .daysTextController,
+                                      hintText: StringConstants.daysText,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterValidDaysText;
+                                        } else if (value.trim() == "0" ||
+                                            value.trim() == "00") {
+                                          return AlertStringConstants
+                                              .invalidInputText;
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ],
                                 ),
                               )

@@ -211,62 +211,25 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                         ],
                       ),
                     ),
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewCategoryController.categoryNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterCategoryNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterCategoryNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      controller:
+                          addNewCategoryController.categoryNameTextController,
+                      hintText: StringConstants.enterCategoryNameText,
+                      textCapitalization: TextCapitalization.words,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants
+                              .pleaseEnterCategoryNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height50SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(

@@ -188,61 +188,26 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         ],
                       ),
                     ),
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addOffersController.offerNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterOfferNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterOfferNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      keyboardType: TextInputType.text,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      textInputAction: TextInputAction.next,
+                      autofocus: false,
+                      maxLines: null,
+                      errorMaxLines: 3,
+                      hintText: StringConstants.enterValueText,
+                      textCapitalization: TextCapitalization.words,
+                      controller: addOffersController.offerNameTextController,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterOfferNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height20SizedBox,
 
                     Text.rich(
@@ -667,67 +632,31 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                         width15SizedBox,
                         Flexible(
                           flex: 5,
-                          child: TextFormField(
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller: addOffersController
-                                  .discountOrOfferTextController,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterValueText;
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                errorMaxLines: 3,
-                                hintText: StringConstants.enterValueText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
+                          child: CustomInputField(
+                            isBorderOutline: false,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(100),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
+                            ],
+                            textInputAction: TextInputAction.next,
+                            autofocus: false,
+                            maxLines: null,
+                            errorMaxLines: 3,
+                            hintText: StringConstants.enterValueText,
+                            textCapitalization: TextCapitalization.words,
+                            controller: addOffersController
+                                .discountOrOfferTextController,
+                            validator: (value) {
+                              if (value!.trim().isEmpty) {
+                                return AlertStringConstants
+                                    .pleaseEnterValueText;
+                              }
+                              return null;
+                            },
+                          ),
                         ),
                       ],
                     ),

@@ -22,6 +22,7 @@ class CustomInputField extends StatefulWidget {
   final double? disabledBorderRadius;
   final double? errorBorderRadius;
   final int? maxLines;
+  final int? errorMaxLines;
   final int? maxLength;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String?>? onChanged;
@@ -53,6 +54,7 @@ class CustomInputField extends StatefulWidget {
       this.controller,
       this.enabled,
       this.maxLines,
+      this.errorMaxLines,
       this.maxLength,
       this.validator,
       this.onTap,
@@ -134,6 +136,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           filled: true,
           fillColor: widget.fillColor ?? AppColors.white,
           errorStyle: const TextStyle(color: AppColors.red),
+          errorMaxLines: widget.errorMaxLines ?? 0,
           errorBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
@@ -158,7 +161,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                       BorderRadius.circular(widget.borderRadius ?? 0.0),
                   borderSide: BorderSide(
                       width: 1,
-                      color: widget.borderColor ?? AppColors.transparent)),
+                      color: widget.borderColor ?? AppColors.primary)),
           hintText: widget.hintText ?? "",
           hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
           prefixIcon: widget.prefixIcon,
@@ -213,8 +216,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                       BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
                   borderSide: BorderSide(
                       width: 1.0,
-                      color:
-                          widget.focusedBorderColor ?? AppColors.transparent)),
+                      color: widget.focusedBorderColor ?? AppColors.primary)),
           disabledBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
@@ -228,7 +230,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                       BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
                   borderSide: BorderSide(
                     width: 1.0,
-                    color: widget.disabledBorderColor ?? AppColors.transparent,
+                    color: widget.disabledBorderColor ?? AppColors.primary,
                   )),
         ));
   }

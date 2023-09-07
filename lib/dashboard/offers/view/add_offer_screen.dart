@@ -197,61 +197,26 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         ],
                       ),
                     ),
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(100),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller: addOffersController.offerNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterOfferNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          hintText: StringConstants.enterOfferNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(100),
+                      ],
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      maxLines: null,
+                      errorMaxLines: 3,
+                      controller: addOffersController.offerNameTextController,
+                      hintText: StringConstants.enterOfferNameText,
+                      textCapitalization: TextCapitalization.words,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterOfferNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height20SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -644,12 +609,9 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                         ),
                         width15SizedBox,
                         Flexible(
-                          flex: 5,
-                          child: TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
+                            flex: 5,
+                            child: CustomInputField(
+                              isBorderOutline: false,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -658,10 +620,12 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                              textInputAction: TextInputAction.next,
+                              autofocus: false,
+                              maxLines: null,
+                              errorMaxLines: 3,
+                              hintText: StringConstants.enterValueText,
+                              textCapitalization: TextCapitalization.words,
                               controller: addOffersController
                                   .discountOrOfferTextController,
                               validator: (value) {
@@ -673,42 +637,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                                 }
                                 return null;
                               },
-                              decoration: InputDecoration(
-                                errorMaxLines: 3,
-                                hintText: StringConstants.enterValueText,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
-                        ),
+                            )),
                       ],
                     ),
                     height35SizedBox,

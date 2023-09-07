@@ -113,63 +113,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           ),
                         ),
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.firstNameTextController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterFirstNameText;
-                              }
-                              return null;
-                            },
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.firstNameText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.firstNameText,
+                          textCapitalization: TextCapitalization.words,
+                          controller: accountController.firstNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterFirstNameText;
+                            }
+                            return null;
+                          },
+                        ),
                         height20SizedBox,
                         Text.rich(
                           TextSpan(
@@ -192,63 +156,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         ),
 
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.lastNameTextController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterLastNameText;
-                              }
-                              return null;
-                            },
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.lastNameText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.lastNameText,
+                          textCapitalization: TextCapitalization.words,
+                          controller: accountController.lastNameTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterLastNameText;
+                            }
+                            return null;
+                          },
+                        ),
                         height20SizedBox,
                         Text(
                           StringConstants.nickNameText,
@@ -258,56 +186,20 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               fontWeight: FontWeight.w400),
                         ),
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.nickNameTextController,
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.nickNameText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.nickNameText,
+                          textCapitalization: TextCapitalization.words,
+                          controller: accountController.nickNameTextController,
+                          keyboardType: TextInputType.text,
+                        ),
                         height20SizedBox,
                         Text(
                           StringConstants.addressText,
@@ -338,7 +230,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         ),
 
                         height4SizedBox,
-                        InkWell(
+                        CustomInputField(
                           onTap: () async {
                             Prediction? p = await PlacesAutocomplete.show(
                                 offset: 0,
@@ -388,32 +280,32 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                             /// ADDRESSES BY GEOCODING COZ Geocodr2 RETURNS
                             /// subAdministrativeArea INSTEAD OF CITY
 /*
-                            List<geocodingPack.Location> locations =
-                                await geocodingPack.locationFromAddress(
-                                    p?.description.toString() ?? "");
+                          List<geocodingPack.Location> locations =
+                              await geocodingPack.locationFromAddress(
+                                  p?.description.toString() ?? "");
 
-                            List<geocodingPack.Placemark> placeMark =
-                                await geocodingPack.placemarkFromCoordinates(
-                                    locations.first.latitude,
-                                    locations.first.longitude);
-                            String address =
-                                "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
+                          List<geocodingPack.Placemark> placeMark =
+                              await geocodingPack.placemarkFromCoordinates(
+                                  locations.first.latitude,
+                                  locations.first.longitude);
+                          String address =
+                              "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
 
-                            debugPrint("ADDRESSES---->$address");
+                          debugPrint("ADDRESSES---->$address");
 
-                            if (placeMark.isNotEmpty) {
-                              accountController.townOrCityTextController.text =
-                                  placeMark.first.locality ?? "";
+                          if (placeMark.isNotEmpty) {
+                            accountController.townOrCityTextController.text =
+                                placeMark.first.locality ?? "";
 
-                              accountController.countryTextController.text =
-                                  placeMark.first.country ?? "";
+                            accountController.countryTextController.text =
+                                placeMark.first.country ?? "";
 
-                              accountController.postalCodeTextController.text =
-                                  placeMark.first.postalCode ?? "";
+                            accountController.postalCodeTextController.text =
+                                placeMark.first.postalCode ?? "";
 
-                              // accountController.stateTextController.text =
-                              //     placeMark.first.administrativeArea ?? "";
-                            }*/
+                            // accountController.stateTextController.text =
+                            //     placeMark.first.administrativeArea ?? "";
+                          }*/
 
                             /// state BY Geocodr2  COZ GEOCODING RETURNS abbreviation
                             /// of administrativeArea instead of full name
@@ -429,64 +321,26 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               //     addresses.state;
                             }
                           },
-                          child: TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              enabled: false,
-                              minLines: 1,
-                              maxLines: 5,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(500),
-                              ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              controller:
-                                  accountController.addressLine1TextController,
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value!.trim().isEmpty) {
-                                  return AlertStringConstants
-                                      .pleaseEnterAddressText;
-                                }
-                                return null;
-                              },
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                hintText: StringConstants.addressLine1Text,
-                                hintStyle: const TextStyle(
-                                    color: AppColors.grey, fontSize: 14),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: 5,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.addressLine1Text,
+                          textCapitalization: TextCapitalization.words,
+                          controller:
+                              accountController.addressLine1TextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterAddressText;
+                            }
+                            return null;
+                          },
                         ),
                         height20SizedBox,
                         Text(
@@ -497,55 +351,21 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                               fontWeight: FontWeight.w400),
                         ),
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(500),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.addressLine2TextController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.addressLine2Text,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.addressLine2Text,
+                          textCapitalization: TextCapitalization.words,
+                          controller:
+                              accountController.addressLine2TextController,
+                          keyboardType: TextInputType.text,
+                        ),
                         height20SizedBox,
                         Text.rich(
                           TextSpan(
@@ -569,63 +389,28 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         ),
 
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(500),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.townOrCityTextController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterTownOrCityText;
-                              }
-                              return null;
-                            },
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.townOrCityText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.townOrCityText,
+                          textCapitalization: TextCapitalization.words,
+                          controller:
+                              accountController.townOrCityTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterTownOrCityText;
+                            }
+                            return null;
+                          },
+                        ),
                         height20SizedBox,
                         Text.rich(
                           TextSpan(
@@ -649,63 +434,29 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         ),
 
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller:
-                                accountController.postalCodeTextController,
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterZipCodeText;
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: StringConstants.zipCodeText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(100),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.zipCodeText,
+                          textCapitalization: TextCapitalization.words,
+                          controller:
+                              accountController.postalCodeTextController,
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterZipCodeText;
+                            }
+                            return null;
+                          },
+                        ),
                         height20SizedBox,
                         Text.rich(
                           TextSpan(
@@ -729,62 +480,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         ),
 
                         height4SizedBox,
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(500),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller: accountController.countryTextController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterCountryText;
-                              }
-                              return null;
-                            },
-                            textCapitalization: TextCapitalization.words,
-                            decoration: InputDecoration(
-                              hintText: StringConstants.countryText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.countryText,
+                          textCapitalization: TextCapitalization.words,
+                          controller: accountController.countryTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants
+                                  .pleaseEnterCountryText;
+                            }
+                            return null;
+                          },
+                        ),
                         // Obx(() => DropdownButtonFormField<CountriesList>(
                         //       isExpanded: true,
                         //       value: accountController.countriesList.isEmpty
@@ -919,61 +635,27 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                         //         print(accountController.stateId.value);
                         //       },
                         //     )),
-                        TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            autofocus: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(500),
-                            ],
-                            style: const TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            controller: accountController.stateTextController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterStateText;
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: StringConstants.stateText,
-                              hintStyle: const TextStyle(
-                                  color: AppColors.grey, fontSize: 14),
-                              fillColor: Colors.white,
-                              border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            )),
+
+                        CustomInputField(
+                          isBorderOutline: false,
+                          inputFormatters: <TextInputFormatter>[
+                            LengthLimitingTextInputFormatter(500),
+                          ],
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          maxLines: null,
+                          errorMaxLines: 3,
+                          hintText: StringConstants.stateText,
+                          textCapitalization: TextCapitalization.words,
+                          controller: accountController.stateTextController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.trim().isEmpty) {
+                              return AlertStringConstants.pleaseEnterStateText;
+                            }
+                            return null;
+                          },
+                        ),
                         height15SizedBox,
                         Text(
                           StringConstants.collectTheIdentityInfoText,

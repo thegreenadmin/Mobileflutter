@@ -86,7 +86,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
-                             TextSpan(
+                            TextSpan(
                               text: StringConstants.starText,
                               style: const TextStyle(
                                   fontSize: 16,
@@ -97,62 +97,26 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                         ),
                       ),
                       height4SizedBox,
-                      TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          textInputAction: TextInputAction.next,
-                          autofocus: false,
-                          inputFormatters: <TextInputFormatter>[
-                            LengthLimitingTextInputFormatter(200),
-                          ],
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                          controller:
-                              addNewRoleController.roleNameTextController,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return AlertStringConstants.pleaseEnterRoleText;
-                            }
-                            return null;
-                          },
-                          textCapitalization: TextCapitalization.words,
-                          decoration: InputDecoration(
-                            errorMaxLines: 3,
-                            hintText: StringConstants.enterRoleText,
-                            hintStyle: const TextStyle(
-                                color: AppColors.grey, fontSize: 14),
-                            fillColor: Colors.white,
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                          )),
+                      CustomInputField(
+                        isBorderOutline: false,
+                        inputFormatters: <TextInputFormatter>[
+                          LengthLimitingTextInputFormatter(200),
+                        ],
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        autofocus: false,
+                        maxLines: null,
+                        errorMaxLines: 3,
+                        controller: addNewRoleController.roleNameTextController,
+                        hintText: StringConstants.enterRoleText,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return AlertStringConstants.pleaseEnterRoleText;
+                          }
+                          return null;
+                        },
+                      ),
                       height20SizedBox,
                       Text(
                         StringConstants.permissionsText,
