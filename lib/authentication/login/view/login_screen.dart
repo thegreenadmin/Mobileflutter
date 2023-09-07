@@ -73,12 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         height30SizedBox,
                         IntlPhoneField(
                           initialCountryCode: StringConstants.usText,
-                          // countries:loginController.countryCodes,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: loginController.phoneTextController,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
+                          enabled: true,
                           keyboardType: TextInputType.phone,
                           style: const TextStyle(
                               color: AppColors.black,

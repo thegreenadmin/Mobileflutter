@@ -84,43 +84,18 @@ class _SignupScreenState extends State<SignupScreen> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(40),
                       ],
-                      borderColor: AppColors.primary,
-                      borderRadius: 5,
-                      enableBorderColor: AppColors.grey,
-                      enableBorderRadius: 5,
-                      disabledBorderColor: AppColors.primary,
-                      disabledBorderRadius: 5,
-                      focusedBorderColor: AppColors.primary,
-                      focusedBorderRadius: 5,
-                      errorBorderColor: AppColors.red,
-                      errorBorderRadius: 5,
-                      keyboardType: TextInputType.text,
                       autofocus: false,
                       prefixIcon: Image.asset(
                         ImageConstants.profile,
                         scale: 2.8,
                       ),
-                      fillColor: AppColors.white,
                       controller: signupController.firstNameTextController,
                       hintText: StringConstants.firstNameText,
-                      hintStyle: const TextStyle(
-                        color: AppColors.grey,
-                      ),
                       labelText: StringConstants.firstNameText,
-                      labelStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blacklight,
-                          decoration: TextDecoration.none),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         signupController.firstName.value = value!;
                       },
                       textCapitalization: TextCapitalization.words,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return AlertStringConstants.pleaseEnterFirstNameText;
@@ -134,43 +109,19 @@ class _SignupScreenState extends State<SignupScreen> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(40),
                       ],
-                      borderColor: AppColors.primary,
-                      borderRadius: 5,
-                      enableBorderColor: AppColors.grey,
-                      enableBorderRadius: 5,
-                      disabledBorderColor: AppColors.primary,
-                      disabledBorderRadius: 5,
-                      focusedBorderColor: AppColors.primary,
-                      focusedBorderRadius: 5,
-                      errorBorderColor: AppColors.red,
-                      errorBorderRadius: 5,
-                      keyboardType: TextInputType.text,
                       autofocus: false,
                       prefixIcon: Image.asset(
                         ImageConstants.profile,
                         scale: 2.8,
                       ),
-                      fillColor: AppColors.white,
                       controller: signupController.lastNameTextController,
                       hintText: StringConstants.lastNameText,
-                      hintStyle: const TextStyle(
-                        color: AppColors.grey,
-                      ),
                       labelText: StringConstants.lastNameText,
-                      labelStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blacklight,
-                          decoration: TextDecoration.none),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         signupController.lastName.value = value!;
                       },
                       textCapitalization: TextCapitalization.words,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return AlertStringConstants.pleaseEnterLastNameText;
@@ -184,43 +135,20 @@ class _SignupScreenState extends State<SignupScreen> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100),
                       ],
-                      borderColor: AppColors.primary,
-                      borderRadius: 5,
-                      enableBorderColor: AppColors.grey,
-                      enableBorderRadius: 5,
-                      disabledBorderColor: AppColors.primary,
-                      disabledBorderRadius: 5,
-                      focusedBorderColor: AppColors.primary,
-                      focusedBorderRadius: 5,
-                      errorBorderColor: AppColors.red,
-                      errorBorderRadius: 5,
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
                       prefixIcon: Image.asset(
                         ImageConstants.email,
                         scale: 2.8,
                       ),
-                      fillColor: AppColors.white,
                       controller: signupController.emailTextController,
                       hintText: StringConstants.emailText,
-                      hintStyle: const TextStyle(
-                        color: AppColors.grey,
-                      ),
                       labelText: StringConstants.emailText,
-                      labelStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blacklight,
-                          decoration: TextDecoration.none),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         signupController.email.value = value!;
                       },
                       textCapitalization: TextCapitalization.words,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
                       validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants.pleaseEnterEmailText;
@@ -232,6 +160,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     height15SizedBox,
                     IntlPhoneField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.toString().isEmpty) {
+                          return AlertStringConstants.pleaseEnterPhoneText;
+                        }
+                        return null;
+                      },
                       initialCountryCode: 'US',
                       controller: signupController.phoneNumberTextController,
                       inputFormatters: [
@@ -338,43 +273,19 @@ class _SignupScreenState extends State<SignupScreen> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100),
                       ],
-                      borderColor: AppColors.primary,
-                      borderRadius: 5,
-                      enableBorderColor: AppColors.grey,
-                      enableBorderRadius: 5,
-                      disabledBorderColor: AppColors.primary,
-                      disabledBorderRadius: 5,
-                      focusedBorderColor: AppColors.primary,
-                      focusedBorderRadius: 5,
-                      errorBorderColor: AppColors.red,
-                      errorBorderRadius: 5,
                       keyboardType: TextInputType.text,
                       autofocus: false,
                       prefixIcon: Image.asset(
                         ImageConstants.calendar,
                         scale: 2.8,
                       ),
-                      fillColor: AppColors.white,
                       controller: signupController.dateTextController,
                       hintText: StringConstants.ageText,
-                      hintStyle: const TextStyle(
-                        color: AppColors.grey,
-                      ),
                       labelText: StringConstants.dobText,
-                      labelStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blacklight,
-                          decoration: TextDecoration.none),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         signupController.email.value = value!;
                       },
                       textCapitalization: TextCapitalization.words,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
                       validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants.pleaseSelectDateText;
@@ -566,6 +477,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
+                          debugPrint(
+                              signupController.phoneNumberTextController.text);
                           signupController.validateAndSubmit(
                               isFromOwner: widget.isFromOwner);
                         },

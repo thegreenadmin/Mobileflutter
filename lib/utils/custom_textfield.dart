@@ -94,14 +94,17 @@ class CustomInputFieldState extends State<CustomInputField> {
   Widget build(BuildContext context) {
     return TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        inputFormatters: widget.inputFormatters,
+        inputFormatters: widget.inputFormatters ??
+            <TextInputFormatter>[
+              LengthLimitingTextInputFormatter(40),
+            ],
         readOnly: widget.readOnly ?? false,
         textAlign: widget.textAlign ?? TextAlign.start,
         style: widget.style ??
             const TextStyle(
-              color: AppColors.black,
-              fontSize: 18,
-            ),
+                color: AppColors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
         initialValue: widget.initialvalue,
         controller: widget.controller,
         keyboardType: widget.keyboardType ?? TextInputType.text,
@@ -120,26 +123,26 @@ class CustomInputFieldState extends State<CustomInputField> {
         autofocus: widget.autofocus ?? false,
         decoration: InputDecoration(
           labelText: widget.labelText,
-          labelStyle: TextStyle(
-            color: AppColors.blacklight,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
+          labelStyle: widget.labelStyle ??
+              TextStyle(
+                color: AppColors.blacklight,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
           filled: true,
-          fillColor: widget.fillColor,
-          //counterText: '',
+          fillColor: widget.fillColor ?? AppColors.white,
           errorStyle: TextStyle(color: Colors.red[400]),
           errorBorder: OutlineInputBorder(
               borderRadius:
-                  BorderRadius.circular(widget.errorBorderRadius ?? 0.0),
+                  BorderRadius.circular(widget.errorBorderRadius ?? 5.0),
               borderSide: BorderSide(
-                  width: 1,
-                  color: widget.errorBorderColor ?? AppColors.transparent)),
+                  width: 1, color: widget.errorBorderColor ?? AppColors.red)),
           focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0.0),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 5.0),
               borderSide: BorderSide(
-                  width: 1,
-                  color: widget.borderColor ?? AppColors.transparent)),
+                width: 1,
+                color: widget.borderColor ?? AppColors.red,
+              )),
           hintText: widget.hintText ?? "",
           hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
           prefixIcon: widget.prefixIcon,
@@ -154,9 +157,9 @@ class CustomInputFieldState extends State<CustomInputField> {
           border: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.borderRadius ?? 0.0),
+                      BorderRadius.circular(widget.borderRadius ?? 5.0),
                   borderSide: BorderSide(
-                    color: widget.borderColor ?? AppColors.transparent,
+                    color: widget.borderColor ?? AppColors.primary,
                     width: 1.0,
                   ),
                 )
@@ -164,56 +167,53 @@ class CustomInputFieldState extends State<CustomInputField> {
                   borderRadius:
                       BorderRadius.circular(widget.borderRadius ?? 0.0),
                   borderSide: BorderSide(
-                    color: widget.borderColor ?? AppColors.transparent,
+                    color: widget.borderColor ?? AppColors.primary,
                     width: 1.0,
                   ),
                 ),
           enabledBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
+                      BorderRadius.circular(widget.enableBorderRadius ?? 5.0),
                   borderSide: BorderSide(
                       width: 1.0,
-                      color: widget.enableBorderColor ?? AppColors.transparent))
+                      color: widget.enableBorderColor ?? AppColors.grey))
               : UnderlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
                   borderSide: BorderSide(
                       width: 1.0,
-                      color:
-                          widget.enableBorderColor ?? AppColors.transparent)),
+                      color: widget.enableBorderColor ?? AppColors.grey)),
           focusedBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.focusedBorderRadius ?? 0.0),
+                      BorderRadius.circular(widget.focusedBorderRadius ?? 5.0),
                   borderSide: BorderSide(
-                      width: 1.0,
-                      color:
-                          widget.focusedBorderColor ?? AppColors.transparent))
+                    width: 1.0,
+                    color: widget.focusedBorderColor ?? AppColors.primary,
+                  ))
               : UnderlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(widget.enableBorderRadius ?? 0.0),
                   borderSide: BorderSide(
-                      width: 1.0,
-                      color:
-                          widget.enableBorderColor ?? AppColors.transparent)),
+                    width: 1.0,
+                    color: widget.enableBorderColor ?? AppColors.primary,
+                  )),
           disabledBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
+                      BorderRadius.circular(widget.disabledBorderRadius ?? 5.0),
                   borderSide: BorderSide(
-                      width: 1.0,
-                      color:
-                          widget.disabledBorderColor ?? AppColors.transparent))
+                    width: 1.0,
+                    color: widget.disabledBorderColor ?? AppColors.primary,
+                  ))
               : UnderlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
                   borderSide: BorderSide(
-                      width: 1.0,
-                      color:
-                          widget.disabledBorderColor ?? AppColors.transparent)),
-          // prefixIconConstraints:
-          //     const BoxConstraints(minWidth: 30, maxHeight: 100),
+                    width: 1.0,
+                    color: widget.disabledBorderColor ?? AppColors.primary,
+                  )),
         ));
   }
 }

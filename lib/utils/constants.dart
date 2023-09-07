@@ -739,6 +739,7 @@ class AlertStringConstants {
   static String pleaseEnterPhoneText = "Please enter phone number";
   static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
+  static String pleaseEnterValidPhoneText = "Please enter valid Phone number";
   static String pleaseEnterGenderText = "Please enter gender";
   static String pleaseEnterAgeText = "Please enter age";
   static String pleaseEnterAddressText = "Please enter address";
