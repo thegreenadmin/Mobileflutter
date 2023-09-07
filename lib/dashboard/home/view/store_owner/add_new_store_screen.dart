@@ -356,99 +356,43 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         ],
                       ),
                     ),
-                    // CustomInputField(
-                    //   isBorderOutline: false,
-                    //   inputFormatters: <TextInputFormatter>[
-                    //     LengthLimitingTextInputFormatter(25),
-                    //   ],
-                    //   borderColor: AppColors.primary,
-                    //   borderRadius: 5,
-                    //   enableBorderColor: AppColors.grey,
-                    //   enableBorderRadius: 5,
-                    //   disabledBorderColor: AppColors.primary,
-                    //   disabledBorderRadius: 5,
-                    //   focusedBorderColor: AppColors.primary,
-                    //   focusedBorderRadius: 5,
-                    //   errorBorderColor: AppColors.red,
-                    //   errorBorderRadius: 5,
-                    //   keyboardType: TextInputType.text,
-                    //   autofocus: false,
-                    //   fillColor: AppColors.transparent,
-                    //   controller: addNewStoreController.storeNameTextController,
-                    //   hintText: StringConstants.storeNameText,
-                    //   hintStyle:
-                    //       const TextStyle(color: AppColors.grey, fontSize: 14),
-                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //   textCapitalization: TextCapitalization.words,
-                    //   style: const TextStyle(
-                    //       color: AppColors.black,
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w400),
-                    //   validator: (value) {
-                    //     if (value!.trim().isEmpty) {
-                    //       return AlertStringConstants.pleaseEnterStoreNameText;
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
                     height4SizedBox,
-                    TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        inputFormatters: <TextInputFormatter>[
-                          LengthLimitingTextInputFormatter(25),
-                        ],
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        controller:
-                            addNewStoreController.storeNameTextController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return AlertStringConstants
-                                .pleaseEnterStoreNameText;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          hintText: StringConstants.storeNameText,
-                          hintStyle: const TextStyle(
-                              color: AppColors.grey, fontSize: 14),
-                          fillColor: Colors.white,
-                          border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.0,
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        )),
+                    CustomInputField(
+                      textInputAction: TextInputAction.next,
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      fillColor: AppColors.transparent,
+                      controller: addNewStoreController.storeNameTextController,
+                      hintText: StringConstants.storeNameText,
+                      hintStyle:
+                          const TextStyle(color: AppColors.grey, fontSize: 14),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterStoreNameText;
+                        }
+                        return null;
+                      },
+                    ),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -469,8 +413,43 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         ],
                       ),
                     ),
-
                     height4SizedBox,
+                    CustomInputField(
+                      textInputAction: TextInputAction.next,
+                      isBorderOutline: false,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(25),
+                      ],
+                      borderColor: AppColors.primary,
+                      borderRadius: 5,
+                      enableBorderColor: AppColors.grey,
+                      enableBorderRadius: 5,
+                      disabledBorderColor: AppColors.primary,
+                      disabledBorderRadius: 5,
+                      focusedBorderColor: AppColors.primary,
+                      focusedBorderRadius: 5,
+                      errorBorderColor: AppColors.red,
+                      errorBorderRadius: 5,
+                      keyboardType: TextInputType.text,
+                      autofocus: false,
+                      fillColor: AppColors.transparent,
+                      controller: addNewStoreController.einTextController,
+                      hintText: StringConstants.storeNameText,
+                      hintStyle:
+                          const TextStyle(color: AppColors.grey, fontSize: 14),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      textCapitalization: TextCapitalization.words,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return AlertStringConstants.pleaseEnterEinText;
+                        }
+                        return null;
+                      },
+                    ),
                     TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
