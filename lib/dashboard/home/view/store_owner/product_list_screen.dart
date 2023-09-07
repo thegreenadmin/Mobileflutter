@@ -367,6 +367,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                   children: [
                                                     Text(
                                                       "${StringConstants.unitPriceText}: ",
+                                                      overflow: TextOverflow.visible,
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:
@@ -382,6 +383,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                               null
                                                           ? ""
                                                           : "\$${manageStoreController.storeProductList[index].productPrice.toStringAsFixed(2)}",
+                                                      overflow: TextOverflow.visible,
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:
@@ -391,14 +393,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     )
                                                   ],
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10),
-                                                  child: Image.asset(
-                                                    ImageConstants.circleedit,
-                                                    scale: 2.8,
-                                                  ),
+                                                Image.asset(
+                                                  ImageConstants.circleedit,
+                                                  scale: 2.8,
                                                 ),
                                               ],
                                             )
