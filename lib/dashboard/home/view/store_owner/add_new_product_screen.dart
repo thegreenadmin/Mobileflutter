@@ -635,7 +635,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       textInputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline,
                       autofocus: false,
-                      maxLines: null,
                       controller:
                           manageStoreController.shortDescriptionTextController,
                       hintText: StringConstants.shortDescriptionText,
@@ -663,7 +662,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       textInputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline,
                       autofocus: false,
-                      maxLines: null,
                       controller: manageStoreController
                           .contentsAndStrainsTextController,
                       hintText: StringConstants.contentsAndStrainsText,
@@ -701,7 +699,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.text,
                       autofocus: false,
-                      maxLines: null,
                       controller:
                           manageStoreController.additionalLinkTextController,
                       hintText: StringConstants.additionalLinksToResearchText,
@@ -806,7 +803,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             keyboardType: const TextInputType.numberWithOptions(
                                 decimal: true),
                             autofocus: false,
-                            maxLines: null,
                             controller: manageStoreController
                                 .discountOrOfferTextController,
                             hintText: StringConstants.enterValueText,
@@ -936,7 +932,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 autofocus: false,
-                                maxLines: null,
                                 controller:
                                     manageStoreController.lengthTextController,
                                 hintText: StringConstants.lengthText,
@@ -975,7 +970,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 autofocus: false,
-                                maxLines: null,
                                 controller:
                                     manageStoreController.breadthTextController,
                                 hintText: StringConstants.breadthText,
@@ -1018,7 +1012,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 autofocus: false,
-                                maxLines: null,
                                 controller:
                                     manageStoreController.heightTextController,
                                 hintText: StringConstants.heightText,
@@ -1064,7 +1057,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 autofocus: false,
-                                maxLines: null,
                                 controller:
                                     manageStoreController.weightTextController,
                                 hintText: StringConstants.weightText,
@@ -1227,7 +1219,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                       textInputAction: TextInputAction.next,
                                       keyboardType: TextInputType.number,
                                       autofocus: false,
-                                      maxLines: null,
                                       controller: manageStoreController
                                           .daysTextController,
                                       hintText: StringConstants.daysText,
@@ -1243,6 +1234,73 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                         return null;
                                       },
                                     ),
+                                    TextFormField(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        textInputAction: TextInputAction.next,
+                                        autofocus: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          LengthLimitingTextInputFormatter(100),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        controller: manageStoreController
+                                            .daysTextController,
+                                        keyboardType: TextInputType.number,
+                                        validator: (value) {
+                                          if (value!.trim().isEmpty) {
+                                            return AlertStringConstants
+                                                .pleaseEnterValidDaysText;
+                                          } else if (value.trim() == "0" ||
+                                              value.trim() == "00") {
+                                            return AlertStringConstants
+                                                .invalidInputText;
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: StringConstants.daysText,
+                                          hintStyle: const TextStyle(
+                                              color: AppColors.grey,
+                                              fontSize: 14),
+                                          fillColor: Colors.white,
+                                          border: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          errorBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.grey,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                        )),
                                   ],
                                 ),
                               )
