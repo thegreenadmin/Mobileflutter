@@ -132,29 +132,27 @@ class CustomInputFieldState extends State<CustomInputField> {
                 fontWeight: FontWeight.w400,
               ),
           filled: true,
-          fillColor: widget.fillColor,
-          //counterText: '',
+          fillColor: widget.fillColor ?? AppColors.white,
           errorStyle: const TextStyle(color: AppColors.red),
           errorBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.errorBorderRadius ?? 0.0),
+                      BorderRadius.circular(widget.errorBorderRadius ?? 5.0),
                   borderSide: BorderSide(
                       width: 1,
-                      color: widget.errorBorderColor ?? AppColors.transparent))
+                      color: widget.errorBorderColor ?? AppColors.red))
               : UnderlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(widget.errorBorderRadius ?? 0.0),
                   borderSide: BorderSide(
                       width: 1,
-                      color: widget.errorBorderColor ?? AppColors.transparent)),
+                      color: widget.errorBorderColor ?? AppColors.red)),
           focusedErrorBorder: widget.isBorderOutline == true
               ? OutlineInputBorder(
                   borderRadius:
-                      BorderRadius.circular(widget.borderRadius ?? 0.0),
+                      BorderRadius.circular(widget.borderRadius ?? 5.0),
                   borderSide: BorderSide(
-                      width: 1,
-                      color: widget.borderColor ?? AppColors.transparent))
+                      width: 1, color: widget.borderColor ?? AppColors.primary))
               : UnderlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(widget.borderRadius ?? 0.0),
@@ -230,7 +228,7 @@ class CustomInputFieldState extends State<CustomInputField> {
                       BorderRadius.circular(widget.disabledBorderRadius ?? 0.0),
                   borderSide: BorderSide(
                     width: 1.0,
-                    color: widget.disabledBorderColor ?? AppColors.primary,
+                    color: widget.disabledBorderColor ?? AppColors.transparent,
                   )),
         ));
   }
