@@ -327,6 +327,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                           ],
                           textInputAction: TextInputAction.next,
                           autofocus: false,
+                          readOnly: true,
                           maxLines: 5,
                           errorMaxLines: 3,
                           hintText: StringConstants.addressLine1Text,

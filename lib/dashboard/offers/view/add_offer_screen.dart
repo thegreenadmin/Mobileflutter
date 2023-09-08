@@ -539,6 +539,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                     ),
                     height4SizedBox,
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Flexible(
                           flex: 5,

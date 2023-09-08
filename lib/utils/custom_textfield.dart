@@ -161,7 +161,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           contentPadding: widget.contentPadding ??
               EdgeInsets.only(
                   left: 0,
-                  top: WidgetConstants.screenHeight * 0.034,
+                  top: WidgetConstants.screenHeight * 0.022,
                   bottom: WidgetConstants.screenWidth * 0.034,
                   right: 0),
           isDense: true,

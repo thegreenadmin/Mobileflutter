@@ -264,7 +264,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               controller:
@@ -296,7 +296,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               controller:
@@ -321,7 +321,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               controller: addCardController.cityTextController,
@@ -351,7 +351,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               labelText: StringConstants.zipCodeText,
@@ -383,7 +383,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               labelText: StringConstants.stateText,
@@ -415,7 +415,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                               maxLines: 5,
                               contentPadding: EdgeInsets.only(
                                   left: 12,
-                                  top: WidgetConstants.screenHeight * 0.034,
+                                  top: WidgetConstants.screenHeight * 0.022,
                                   bottom: WidgetConstants.screenWidth * 0.034,
                                   right: 0),
                               labelText: StringConstants.countryText,
