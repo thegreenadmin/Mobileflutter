@@ -953,8 +953,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                     //           debugPrint(addNewStoreController.stateId.value);
                     //         },
                     //       )),
+
                     //STATE FIELD
-                    //
                     CustomInputField(
                       textInputAction: TextInputAction.next,
                       isBorderOutline: false,
@@ -1264,16 +1264,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           FilteringTextInputFormatter
                                               .digitsOnly,
                                         ],
-                                        borderColor: AppColors.primary,
-                                        borderRadius: 5,
-                                        enableBorderColor: AppColors.grey,
-                                        enableBorderRadius: 5,
-                                        disabledBorderColor: AppColors.primary,
-                                        disabledBorderRadius: 5,
-                                        focusedBorderColor: AppColors.primary,
-                                        focusedBorderRadius: 5,
-                                        errorBorderColor: AppColors.red,
-                                        errorBorderRadius: 5,
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         autofocus: false,
@@ -1390,16 +1380,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                           FilteringTextInputFormatter
                                               .digitsOnly,
                                         ],
-                                        borderColor: AppColors.primary,
-                                        borderRadius: 5,
-                                        enableBorderColor: AppColors.grey,
-                                        enableBorderRadius: 5,
-                                        disabledBorderColor: AppColors.primary,
-                                        disabledBorderRadius: 5,
-                                        focusedBorderColor: AppColors.primary,
-                                        focusedBorderRadius: 5,
-                                        errorBorderColor: AppColors.red,
-                                        errorBorderRadius: 5,
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         autofocus: false,
@@ -1616,70 +1596,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           },
                           icon: const Icon(Icons.attach_file_rounded)),
                     ),
-                    // TextFormField(
-                    //     onTap: () {
-                    //       addNewStoreController.isTermsSelected.value = true;
-                    //       addNewStoreController.filePicker();
-                    //     },
-                    //     maxLines: null,
-                    //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     style: const TextStyle(
-                    //         color: AppColors.primary,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w500),
-                    //     controller: addNewStoreController.termsTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value!.trim().isEmpty) {
-                    //         return AlertStringConstants
-                    //             .pleaseEnterStoreTermsText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     textCapitalization: TextCapitalization.words,
-                    //     decoration: InputDecoration(
-                    //       suffixIcon: IconButton(
-                    //           onPressed: () {
-                    //             addNewStoreController.isTermsSelected.value =
-                    //                 true;
-                    //             addNewStoreController.filePicker();
-                    //           },
-                    //           icon: const Icon(Icons.attach_file_rounded)),
-                    //       hintText: StringConstants.uploadStoreTermsAsPdfText,
-                    //       hintStyle: const TextStyle(
-                    //           color: AppColors.grey, fontSize: 14),
-                    //       fillColor: Colors.white,
-                    //       border: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height15SizedBox,
                     Text.rich(
                       TextSpan(
@@ -1739,70 +1655,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           },
                           icon: const Icon(Icons.attach_file_rounded)),
                     ),
-                    // TextFormField(
-                    //     onTap: () {
-                    //       addNewStoreController.isTermsSelected.value = false;
-                    //       addNewStoreController.filePicker();
-                    //     },
-                    //     maxLines: null,
-                    //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //     textInputAction: TextInputAction.next,
-                    //     autofocus: false,
-                    //     style: const TextStyle(
-                    //         color: AppColors.primary,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w500),
-                    //     controller: addNewStoreController.privacyTextController,
-                    //     keyboardType: TextInputType.text,
-                    //     validator: (value) {
-                    //       if (value!.trim().isEmpty) {
-                    //         return AlertStringConstants
-                    //             .pleaseEnterStorePrivacyText;
-                    //       }
-                    //       return null;
-                    //     },
-                    //     textCapitalization: TextCapitalization.words,
-                    //     decoration: InputDecoration(
-                    //       suffixIcon: IconButton(
-                    //           onPressed: () {
-                    //             addNewStoreController.isTermsSelected.value =
-                    //                 false;
-                    //             addNewStoreController.filePicker();
-                    //           },
-                    //           icon: const Icon(Icons.attach_file_rounded)),
-                    //       hintText: StringConstants.uploadStorePolicyAsPdfText,
-                    //       hintStyle: const TextStyle(
-                    //           color: AppColors.grey, fontSize: 14),
-                    //       fillColor: Colors.white,
-                    //       border: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       errorBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       focusedBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.primary,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //       enabledBorder: UnderlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5.0),
-                    //         borderSide: const BorderSide(
-                    //           color: AppColors.grey,
-                    //           width: 1.0,
-                    //         ),
-                    //       ),
-                    //     )),
                     height40SizedBox,
                     CustomButton(
                       gradient: const LinearGradient(
