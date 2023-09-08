@@ -216,7 +216,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(100),
                       ],
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       autofocus: false,
                       controller:
                           addNewCategoryController.categoryNameTextController,

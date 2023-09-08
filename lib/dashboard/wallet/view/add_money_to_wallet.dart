@@ -167,71 +167,34 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                         fontWeight: FontWeight.w400),
                   ),
                   height12SizedBox,
-                  TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        addCardController.paymentItems.clear();
-                        addCardController.paymentItems.add(PaymentItem(
-                          label: StringConstants.totalText,
-                          amount: value,
-                          status: PaymentItemStatus.unknown,
-                        ));
-                      },
-                      textInputAction: TextInputAction.next,
-                      autofocus: false,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: <TextInputFormatter>[
-                        LengthLimitingTextInputFormatter(100),
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^(\d+)?\.?\d{0,2}'))
-                      ],
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                      controller: addCardController.amountTextController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return AlertStringConstants.pleaseEnterAmountText;
-                        }
-                        return null;
-                      },
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        hintText: StringConstants.amountText,
-                        hintStyle: const TextStyle(color: AppColors.grey),
-                        fillColor: Colors.white,
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
-                            width: 1.0,
-                          ),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: const BorderSide(
-                            color: AppColors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                      )),
+                  CustomInputField(
+                    isBorderOutline: false,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: <TextInputFormatter>[
+                      LengthLimitingTextInputFormatter(100),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^(\d+)?\.?\d{0,2}'))
+                    ],
+                    autofocus: false,
+                    hintText: StringConstants.amountText,
+                    textCapitalization: TextCapitalization.words,
+                    controller: addCardController.amountTextController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return AlertStringConstants.pleaseEnterAmountText;
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      addCardController.paymentItems.clear();
+                      addCardController.paymentItems.add(PaymentItem(
+                        label: StringConstants.totalText,
+                        amount: value ?? "",
+                        status: PaymentItemStatus.unknown,
+                      ));
+                    },
+                  ),
                   height20SizedBox,
                   Text(
                     StringConstants.paymentText,
@@ -615,7 +578,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       top: 8.0),
                                                               child:
                                                                   Image.asset(

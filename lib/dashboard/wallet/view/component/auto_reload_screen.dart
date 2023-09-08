@@ -63,7 +63,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                         splashColor: Colors.transparent,
                         onTap: () {
                           Get.back(id: pageIdApp.value);
-
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -201,11 +200,8 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                     Obx(
                       () => walletController.autoChargeType.value ==
                               StringConstants.thresholdText.toLowerCase()
-                          ? TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
+                          ? CustomInputField(
+                              isBorderOutline: false,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -214,10 +210,9 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              autofocus: false,
+                              hintText: "eg \$10.00",
+                              textCapitalization: TextCapitalization.words,
                               controller:
                                   walletController.chargeAmountTextController,
                               validator: (value) {
@@ -230,47 +225,9 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 }
                                 return null;
                               },
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                hintText: "eg \$10",
-                                hintStyle:
-                                    const TextStyle(color: AppColors.grey),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ))
-                          : TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              autofocus: false,
+                            )
+                          : CustomInputField(
+                              isBorderOutline: false,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -279,10 +236,9 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              autofocus: false,
+                              hintText: "eg \$10.00",
+                              textCapitalization: TextCapitalization.words,
                               controller: walletController
                                   .periodChargeAmountTextController,
                               validator: (value) {
@@ -294,42 +250,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                 }
                                 return null;
                               },
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                hintText: "eg \$10.00",
-                                hintStyle:
-                                    const TextStyle(color: AppColors.grey),
-                                fillColor: Colors.white,
-                                border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              )),
+                            ),
                     ),
                     height20SizedBox,
                     Obx(
@@ -346,74 +267,29 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 height4SizedBox,
-                                TextFormField(
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                            decimal: true),
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
-                                    ],
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                    controller: walletController
-                                        .thresholdAmountTextController,
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterAmountText;
-                                      }
-                                      return null;
-                                    },
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      hintText: "eg \$10.00",
-                                      hintStyle: const TextStyle(
-                                          color: AppColors.grey),
-                                      fillColor: Colors.white,
-                                      border: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
-                                          color: AppColors.primary,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      errorBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
-                                          color: AppColors.primary,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
-                                          color: AppColors.primary,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
-                                          color: AppColors.grey,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                    )),
+                                CustomInputField(
+                                  isBorderOutline: false,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  inputFormatters: <TextInputFormatter>[
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                  ],
+                                  autofocus: false,
+                                  hintText: "eg \$10.00",
+                                  textCapitalization: TextCapitalization.words,
+                                  controller: walletController
+                                      .thresholdAmountTextController,
+                                  validator: (value) {
+                                    if (value == null || value.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseEnterAmountText;
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ],
                             )
                           : Column(

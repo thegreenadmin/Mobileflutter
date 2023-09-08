@@ -27,8 +27,9 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
   @override
   void initState() {
     super.initState();
-    border = const OutlineInputBorder(
-      borderSide: BorderSide(
+    border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5.0),
+      borderSide: const BorderSide(
         color: AppColors.primary,
         width: 1.0,
       ),
@@ -135,14 +136,18 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         labelText: StringConstants.cardNumberText, // 'Number',
                         hintText:
                             StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
-                        hintStyle: TextStyle(color: AppColors.blacklight),
-                        labelStyle: const TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(
+                            color: AppColors.black, fontSize: 16),
+                        hintStyle: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
                         focusedBorder: border,
                         enabledBorder: border,
                       ),
                       expiryDateDecoration: InputDecoration(
-                        hintStyle: TextStyle(color: AppColors.blacklight),
-                        labelStyle: const TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(
+                            color: AppColors.black, fontSize: 16),
+                        hintStyle: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
                         focusedBorder: border,
                         enabledBorder: border,
                         labelText:
@@ -150,16 +155,20 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                         hintText: StringConstants.x2Text, //'XX/XX',
                       ),
                       cvvCodeDecoration: InputDecoration(
-                        hintStyle: TextStyle(color: AppColors.blacklight),
-                        labelStyle: const TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(
+                            color: AppColors.black, fontSize: 16),
+                        hintStyle: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
                         focusedBorder: border,
                         enabledBorder: border,
                         labelText: StringConstants.cvvText, //'CVV',
                         hintText: StringConstants.x1Text, //'XXX',
                       ),
                       cardHolderDecoration: InputDecoration(
-                        hintStyle: TextStyle(color: AppColors.blacklight),
-                        labelStyle: const TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(
+                            color: AppColors.black, fontSize: 16),
+                        hintStyle: const TextStyle(
+                            color: AppColors.grey, fontSize: 14),
                         focusedBorder: border,
                         enabledBorder: border,
                         hintText: StringConstants.enterNameText,
@@ -185,417 +194,249 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                                   fontWeight: FontWeight.w600),
                             ),
                             height20SizedBox,
-                            TextFormField(
-                                onTap: () async {
-                                  Prediction? p = await PlacesAutocomplete.show(
-                                      offset: 0,
-                                      radius: 1000,
-                                      types: [],
-                                      strictbounds: false,
-                                      context: context,
-                                      apiKey: addCardController.kGoogleApiKey,
-                                      mode: Mode.overlay,
-                                      language: "en",
-                                      components: []);
-                                  if (p?.description != null) {
-                                    int idx = p?.description?.indexOf(",") ?? 0;
-                                    List parts = [
-                                      p?.description?.substring(0, idx).trim(),
-                                      p?.description?.substring(idx + 1).trim()
-                                    ];
-                                    addCardController.addressLine1TextController
-                                        .text = parts[0].toString();
-                                  }
 
-                                  ///ADDRESSES BY GoogleMapsGeocoding
+                            CustomInputField(
+                              onTap: () async {
+                                Prediction? p = await PlacesAutocomplete.show(
+                                    offset: 0,
+                                    radius: 1000,
+                                    types: [],
+                                    strictbounds: false,
+                                    context: context,
+                                    apiKey: addCardController.kGoogleApiKey,
+                                    mode: Mode.overlay,
+                                    language: "en",
+                                    components: []);
+                                if (p?.description != null) {
+                                  int idx = p?.description?.indexOf(",") ?? 0;
+                                  List parts = [
+                                    p?.description?.substring(0, idx).trim(),
+                                    p?.description?.substring(idx + 1).trim()
+                                  ];
+                                  addCardController.addressLine1TextController
+                                      .text = parts[0].toString();
+                                }
 
-                                  final geocoding = GoogleMapsGeocoding(
-                                      apiKey: addCardController.kGoogleApiKey);
+                                ///ADDRESSES BY GoogleMapsGeocoding
 
-                                  GeocodingResponse response =
-                                      await geocoding.searchByAddress(
-                                          p?.description.toString() ?? "");
+                                final geocoding = GoogleMapsGeocoding(
+                                    apiKey: addCardController.kGoogleApiKey);
 
-                                  final result = response.results.isNotEmpty
-                                      ? response.results.first
-                                      : null;
+                                GeocodingResponse response =
+                                    await geocoding.searchByAddress(
+                                        p?.description.toString() ?? "");
 
-                                  if (result != null) {
-                                    addCardController.cityTextController.text =
-                                        Utility.extractLocality(
-                                            result, "locality");
+                                final result = response.results.isNotEmpty
+                                    ? response.results.first
+                                    : null;
 
-                                    addCardController.selectedCountry.value =
-                                        Utility.extractLocality(
-                                            result, "country",
-                                            isShortName: true);
-                                    addCardController
-                                            .countryTextController.text =
-                                        Utility.extractLocality(
-                                            result, "country");
-                                    addCardController
-                                            .zipCodeTextController.text =
-                                        Utility.extractLocality(
-                                            result, "postal_code");
-                                    addCardController.stateTextController.text =
-                                        Utility.extractLocality(result,
-                                            "administrative_area_level_1");
+                                if (result != null) {
+                                  addCardController.cityTextController.text =
+                                      Utility.extractLocality(
+                                          result, "locality");
 
-                                    addCardController.lng = response
-                                        .results.first.geometry.location.lng;
-                                    addCardController.lat = response
-                                        .results.first.geometry.location.lat;
-                                  }
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                minLines: 1,
-                                maxLines: 5,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller: addCardController
-                                    .addressLine1TextController,
-                                keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterAddressText;
-                                  }
-                                  return null;
-                                },
-                                readOnly: true,
-                                textCapitalization: TextCapitalization.words,
-                                decoration: InputDecoration(
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  labelText: StringConstants.addressLine1Text,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  hintText: StringConstants.addressLine1Text,
-                                  hintStyle: const TextStyle(
-                                      color: AppColors.grey, fontSize: 14),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.grey,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                                  addCardController.selectedCountry.value =
+                                      Utility.extractLocality(result, "country",
+                                          isShortName: true);
+                                  addCardController.countryTextController.text =
+                                      Utility.extractLocality(
+                                          result, "country");
+                                  addCardController.zipCodeTextController.text =
+                                      Utility.extractLocality(
+                                          result, "postal_code");
+                                  addCardController.stateTextController.text =
+                                      Utility.extractLocality(result,
+                                          "administrative_area_level_1");
+
+                                  addCardController.lng = response
+                                      .results.first.geometry.location.lng;
+                                  addCardController.lat = response
+                                      .results.first.geometry.location.lat;
+                                }
+                              },
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              keyboardType: TextInputType.text,
+                              autofocus: false,
+                              readOnly: true,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              controller:
+                                  addCardController.addressLine1TextController,
+                              labelText: StringConstants.addressLine1Text,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.addressLine1Text,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              textCapitalization: TextCapitalization.words,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterAddressText;
+                                }
+                                return null;
+                              },
+                            ),
                             height20SizedBox,
-                            TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller: addCardController
-                                    .addressLine2TextController,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: StringConstants.addressLine2Text,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                            CustomInputField(
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              keyboardType: TextInputType.text,
+                              autofocus: false,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              controller:
+                                  addCardController.addressLine2TextController,
+                              labelText: StringConstants.addressLine2Text,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.addressLine2Text,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              textCapitalization: TextCapitalization.words,
+                            ),
                             height20SizedBox,
-                            TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.cityTextController,
-                                keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterTownOrCityText;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: StringConstants.cityText,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                            CustomInputField(
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              keyboardType: TextInputType.text,
+                              autofocus: false,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              controller: addCardController.cityTextController,
+                              labelText: StringConstants.cityText,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.cityText,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              textCapitalization: TextCapitalization.words,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterTownOrCityText;
+                                }
+                                return null;
+                              },
+                            ),
                             height20SizedBox,
-                            TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.zipCodeTextController,
-                                keyboardType: TextInputType.number,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterZipCodeText;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: StringConstants.zipCodeText,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                            CustomInputField(
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              autofocus: false,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              labelText: StringConstants.zipCodeText,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.zipCodeText,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              controller:
+                                  addCardController.zipCodeTextController,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterZipCodeText;
+                                }
+                                return null;
+                              },
+                            ),
 
                             height20SizedBox,
-                            TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.stateTextController,
-                                keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterStateText;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: StringConstants.stateText,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                            CustomInputField(
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              autofocus: false,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              labelText: StringConstants.stateText,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.stateText,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              textCapitalization: TextCapitalization.words,
+                              controller: addCardController.stateTextController,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterStateText;
+                                }
+                                return null;
+                              },
+                            ),
 
                             height20SizedBox,
-                            TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textInputAction: TextInputAction.next,
-                                autofocus: false,
-                                inputFormatters: <TextInputFormatter>[
-                                  LengthLimitingTextInputFormatter(500),
-                                ],
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                controller:
-                                    addCardController.countryTextController,
-                                keyboardType: TextInputType.text,
-                                validator: (value) {
-                                  if (value!.trim().isEmpty) {
-                                    return AlertStringConstants
-                                        .pleaseEnterCountryText;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: StringConstants.countryText,
-                                  labelStyle: const TextStyle(
-                                      color: AppColors.black, fontSize: 16),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(2.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                )),
+                            CustomInputField(
+                              isBorderOutline: true,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(500),
+                              ],
+                              autofocus: false,
+                              maxLines: 5,
+                              contentPadding: EdgeInsets.only(
+                                  left: 12,
+                                  top: WidgetConstants.screenHeight * 0.034,
+                                  bottom: WidgetConstants.screenWidth * 0.034,
+                                  right: 0),
+                              labelText: StringConstants.countryText,
+                              labelStyle: const TextStyle(
+                                  color: AppColors.black, fontSize: 16),
+                              hintText: StringConstants.countryText,
+                              hintStyle: const TextStyle(
+                                  color: AppColors.grey, fontSize: 14),
+                              enableBorderColor: AppColors.primary,
+                              textCapitalization: TextCapitalization.words,
+                              controller:
+                                  addCardController.countryTextController,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterCountryText;
+                                }
+                                return null;
+                              },
+                            ),
 
                             /*Obx(
                               () => DropdownButtonFormField<String>(
