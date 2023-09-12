@@ -176,9 +176,11 @@ class ManageStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (selectedCategories.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectCategoriesText);
         } else {
+          isLoading.value = true;
           apiCreateProduct();
         }
       } catch (_) {}
@@ -242,8 +244,10 @@ class ManageStoreController extends GetxController {
         var data = selectedCategories
             .where((element) => element["status"] == 'active');
         if (data.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage("Please select categories");
         } else {
+          isLoading.value = true;
           apiUpdateStoreProductDetail();
         }
       } catch (_) {}

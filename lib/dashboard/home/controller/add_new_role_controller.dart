@@ -85,9 +85,11 @@ class AddNewRoleController extends GetxController {
     if (validateAndSave()) {
       try {
         if (controllerIdsList.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(strings
               .AlertStringConstants.pleaseSelectAtleastOnePermissionText);
         } else {
+          isLoading.value = true;
           await apiCreateRole();
         }
       } catch (_) {}

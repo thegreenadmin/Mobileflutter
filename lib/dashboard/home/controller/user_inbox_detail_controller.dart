@@ -119,8 +119,8 @@ class UserInboxDetailController extends GetxController {
       } else {}
     } catch (e) {
       debugPrint(e.toString());
-      if (e is mdio.DioError) {
-        if (e.type == mdio.DioErrorType.badResponse) {
+      if (e is mdio.DioException) {
+        if (e.type == mdio.DioExceptionType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
           final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
@@ -200,8 +200,8 @@ class UserInboxDetailController extends GetxController {
     msg.createdAt = DateTime.now().toUtc().toString();
     msg.updatedAt = DateTime.now().toUtc().toString();
     Images? image = Images();
-    image.dynamicUrl = selectedImageDynamicLink ?? "";
-    image.orignalUrl = selectedImageOriginalLink ?? "";
+    image.dynamicUrl = selectedImageDynamicLink;
+    image.orignalUrl = selectedImageOriginalLink;
     msg.image = image;
     msgText != "" || userSelectedImageDynamicLinkFromServer.value != ""
         ? messageList.insert(0, msg)

@@ -75,9 +75,11 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSave()) {
       try {
         if (categoryImageDynamicLinkFromServer.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
+          isLoading.value = true;
           await apiAddCategory();
         }
       } catch (_) {}
@@ -101,9 +103,11 @@ class AddNewCategoryController extends GetxController {
     if (validateAndSaveUpdate()) {
       try {
         if (categoryImageDynamicLinkFromServer.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
+          isLoading.value = true;
           await apiUpdateCategory();
         }
       } catch (_) {}
