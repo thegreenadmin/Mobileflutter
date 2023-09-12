@@ -32,7 +32,7 @@ class UserInboxController extends GetxController {
   }
 
   ///Get Inbox message heads List Api
-  Future apiGetInboxList() async {
+  Future apiGetInboxList({isShowLoading = true}) async {
     isLoading.value = true;
 
     RxString url = "".obs;
@@ -43,9 +43,7 @@ class UserInboxController extends GetxController {
       url.value =
           "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10";
     }
-
-    debugPrint("GET OWNER INBOX URL**********${url.value}");
-
+    debugPrint("GET USER INBOX URL**********${url.value}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -57,7 +55,7 @@ class UserInboxController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
             headers,
-            showLoading: true)
+            showLoading: isShowLoading)
         .then((value) async {
       isLoading.value = false;
       log("GET INBOX RESPONSE *******${jsonEncode(value!.body)}");

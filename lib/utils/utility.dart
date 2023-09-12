@@ -154,7 +154,8 @@ class Utility {
       String? okay,
       Color? color,
       void Function()? okayTap,
-      void Function()? cancelTap}) {
+      void Function()? cancelTap,
+    }) {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -196,7 +197,7 @@ class Utility {
             InkWell(
               onTap: () {
                 okayTap ?? Get.back();
-                // okayTap ?? Navigator.pop(_);
+                // isLoadingValue ? true : false;
               },
               child: Container(
                 height: 50.0,

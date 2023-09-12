@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -61,7 +60,6 @@ class _AccountScreenState extends State<AccountScreen> {
       authenticatedBiometric.value = false;
       BioMetricAuthentication.isBioMetricAuthenticated.value = false;
       accountController.isScreenLockNotify.value = false;
-
       return;
     }
     if (!mounted) {
