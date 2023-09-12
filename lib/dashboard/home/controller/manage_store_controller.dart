@@ -175,7 +175,7 @@ class ManageStoreController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        if (selectedCategories.isEmpty) {
+        if (categoryId.value == "") {
           isLoading.value = false;
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectCategoriesText);
@@ -559,6 +559,12 @@ class ManageStoreController extends GetxController {
               dynamicImageUrl: image["image"]["dynamic_url"],
               order: image["order"],
               status: image["status"]));
+        }
+        List<ProductImagesList> imagesList2 = [];
+        for (var img in imageUrlList) {
+          if (img.status != 'deleted') {
+            imagesList2.add(img);
+          }
         }
         inputData.productImages = imageUrlList;
         discountOrOfferTextController.text =
