@@ -182,10 +182,13 @@ class AddNewStoreController extends GetxController {
     if (validateAndSave()) {
       try {
         if (storeLogoDynamicLinkFromServer.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectLogoText);
         } else if (storeImageDynamicLinkFromServer.isEmpty) {
+          isLoading.value = false;
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
+          isLoading.value = true;
           apiCreateStore();
         }
       } catch (_) {}

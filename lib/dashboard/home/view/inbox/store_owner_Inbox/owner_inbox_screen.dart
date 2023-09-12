@@ -353,7 +353,8 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                               //             const OwnerInboxDetailScreen()));
 
                                               Get.to(
-                                                  const OwnerInboxDetailScreen(),
+                                                  () =>
+                                                      const OwnerInboxDetailScreen(),
                                                   id: pageIdApp.value,
                                                   arguments: {
                                                     "storeName":

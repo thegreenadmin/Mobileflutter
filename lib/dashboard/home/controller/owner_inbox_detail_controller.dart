@@ -35,7 +35,6 @@ class OwnerInboxDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     getPage();
   }
 
@@ -52,6 +51,7 @@ class OwnerInboxDetailController extends GetxController {
     storeId.value = Get.parameters["storeId"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
+    page.value = 1;
     await apiGetMessagesList();
     if (roleApp.value == Role.customerRoleText) {
       setupScrollController();
@@ -132,8 +132,8 @@ class OwnerInboxDetailController extends GetxController {
       } else {}
     } catch (e) {
       debugPrint(e.toString());
-      if (e is m_dio.DioError) {
-        if (e.type == m_dio.DioErrorType.badResponse) {
+      if (e is m_dio.DioException) {
+        if (e.type == m_dio.DioExceptionType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
           final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
@@ -214,8 +214,8 @@ class OwnerInboxDetailController extends GetxController {
     msg.createdAt = DateTime.now().toUtc().toString();
     msg.updatedAt = DateTime.now().toUtc().toString();
     Images? image = Images();
-    image.dynamicUrl = selectedImageDynamicLink ?? "";
-    image.orignalUrl = selectedImageOriginalLink ?? "";
+    image.dynamicUrl = selectedImageDynamicLink;
+    image.orignalUrl = selectedImageOriginalLink;
     msg.image = image;
     msgText != "" || userSelectedImageDynamicLinkFromServer.value != ""
         ? messageList.insert(0, msg)
@@ -233,9 +233,7 @@ class OwnerInboxDetailController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "message_head_id": messageHeadId.value,
-      "message": msgText.trim() == null || msgText.trim().isEmpty
-          ? ""
-          : msgText.trim(),
+      "message": msgText.trim().isEmpty ? "" : msgText.trim(),
       "image_url":
           selectedImageOriginalLink.isEmpty ? null : selectedImageOriginalLink,
       "store_id": storeId.value

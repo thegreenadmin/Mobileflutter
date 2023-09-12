@@ -415,7 +415,8 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               //       const UserInboxDetailScreen(),
                                               // ));
                                               Get.to(
-                                                  const UserInboxDetailScreen(),
+                                                  () =>
+                                                      const UserInboxDetailScreen(),
                                                   id: pageIdApp.value,
                                                   arguments: {
                                                     "storeName":
