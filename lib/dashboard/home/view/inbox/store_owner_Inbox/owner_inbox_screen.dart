@@ -345,15 +345,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context).push(
-                                              //     MaterialPageRoute(
-                                              //         builder: (_) =>
-                                              //             const OwnerInboxDetailScreen()));
-
-                                              Get.to(
-                                                  () =>
+                                              Get.to(() =>
                                                       const OwnerInboxDetailScreen(),
                                                   id: pageIdApp.value,
                                                   arguments: {
@@ -377,7 +369,12 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                                     index]
                                                                 .messageHeadId ??
                                                             ""
-                                                  });
+                                                  })!
+                                                  .then((value) {
+                                                ownerInboxController
+                                                    .apiGetInboxList(
+                                                        showLoading: false);
+                                              });
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

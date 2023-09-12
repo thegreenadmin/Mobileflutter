@@ -414,8 +414,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                               //   builder: (_) =>
                                               //       const UserInboxDetailScreen(),
                                               // ));
-                                              Get.to(
-                                                  () =>
+                                              Get.to(() =>
                                                       const UserInboxDetailScreen(),
                                                   id: pageIdApp.value,
                                                   arguments: {
@@ -439,7 +438,10 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
                                                                     index]
                                                                 .messageHeadId ??
                                                             ""
-                                                  });
+                                                  })!
+                                                  .then((value) =>
+                                                      userInboxController
+                                                          .apiGetInboxList(isShowLoading: false));
                                             },
                                             constraints: const BoxConstraints(),
                                             padding: const EdgeInsets.fromLTRB(

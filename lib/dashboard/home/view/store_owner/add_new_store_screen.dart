@@ -192,11 +192,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                                             child:
                                                                 CircularProgressIndicator())),
                                                   ),
-                                                  /*Image.network(
-                                                      addNewStoreController
-                                                          .storeLogoDynamicLinkFromServer
-                                                          .value,
-                                                      fit: BoxFit.cover)*/
                                                 ]),
                                           ),
                                         ),
@@ -700,7 +695,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
 
                             addNewStoreController.zipCodeTextController.text =
                                 placeMark.first.postalCode ?? "";
-
+ 
                             // addNewStoreController.stateTextController.text =
                             //     placeMark.first.administrativeArea ?? "";
                           }
@@ -900,60 +895,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       ),
                     ),
                     height4SizedBox,
-                    // Obx(() => addNewStoreController.statesList.isEmpty
-                    //     ? height0SizedBox
-                    //     : DropdownButtonFormField<StatesList>(
-                    //         isExpanded: true,
-                    //         value: addNewStoreController.statesList.last,
-                    //         decoration: InputDecoration(
-                    //           enabledBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.grey,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           border: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           focusedBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           errorBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           hintText: StringConstants.organisationTypeText,
-                    //           errorStyle: const TextStyle(color: Colors.yellow),
-                    //         ),
-                    //         items: addNewStoreController.statesList
-                    //             .map<DropdownMenuItem<StatesList>>(
-                    //                 (StatesList value) {
-                    //           return DropdownMenuItem<StatesList>(
-                    //             value: value,
-                    //             child: Text(value.stateName.toString()),
-                    //           );
-                    //         }).toList(),
-                    //         onChanged: (StatesList? newValue) {
-                    //           addNewStoreController.stateDropdownValue.value =
-                    //               newValue!.stateName.toString();
-                    //           addNewStoreController.stateId.value =
-                    //               newValue.stateId.toString();
-                    //           debugPrint(addNewStoreController.stateId.value);
-                    //         },
-                    //       )),
-
                     //STATE FIELD
                     CustomInputField(
                       textInputAction: TextInputAction.next,
@@ -1027,59 +968,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         return null;
                       },
                     ),
-                    // Obx(() => addNewStoreController.countriesList.isEmpty
-                    //     ? height0SizedBox
-                    //     : DropdownButtonFormField<CountriesList>(
-                    //         isExpanded: true,
-                    //         value: addNewStoreController.countriesList.last,
-                    //         decoration: InputDecoration(
-                    //           enabledBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.grey,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           border: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           focusedBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           errorBorder: UnderlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(5.0),
-                    //             borderSide: const BorderSide(
-                    //               color: AppColors.primary,
-                    //               width: 1.0,
-                    //             ),
-                    //           ),
-                    //           hintText: StringConstants.organisationTypeText,
-                    //           errorStyle: const TextStyle(color: Colors.yellow),
-                    //         ),
-                    //         items: addNewStoreController.countriesList
-                    //             .map<DropdownMenuItem<CountriesList>>(
-                    //                 (CountriesList value) {
-                    //           return DropdownMenuItem<CountriesList>(
-                    //             value: value,
-                    //             child: Text(value.countryName.toString()),
-                    //           );
-                    //         }).toList(),
-                    //         onChanged: (CountriesList? newValue) {
-                    //           addNewStoreController.countryDropdownValue.value =
-                    //               newValue!.countryName.toString();
-                    //           addNewStoreController.countryId!.value =
-                    //               newValue.countryId.toString();
-                    //           addNewStoreController.apiGetStates();
-                    //         },
-                    //       )),
+
                     height20SizedBox,
                     Text(
                       StringConstants.storeTimingText,
@@ -1663,6 +1552,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
+                        print(addNewStoreController.isLoading.value);
                         if (addNewStoreController.isLoading.value != true) {
                           addNewStoreController.isLoading.value = true;
                           addNewStoreController.validateAndSubmit();

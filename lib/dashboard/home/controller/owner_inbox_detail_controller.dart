@@ -45,7 +45,6 @@ class OwnerInboxDetailController extends GetxController {
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";

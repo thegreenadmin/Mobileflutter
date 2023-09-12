@@ -650,8 +650,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back(id: pageIdApp.value);
-
+                                  Get.back(id: pageIdApp.value, result: true);
                                   // Get.back();
                                 },
                                 icon: const Icon(

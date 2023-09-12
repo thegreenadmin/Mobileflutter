@@ -44,8 +44,8 @@ class OwnerInboxController extends GetxController {
   }
 
   ///Get Inbox message heads List Api
-  Future apiGetInboxList() async {
-    isLoading.value = true;
+  Future apiGetInboxList({showLoading = true}) async {
+    //isLoading.value = true;
     RxString url = "".obs;
     if (showPreviousMessages.value) {
       url.value =
@@ -64,9 +64,9 @@ class OwnerInboxController extends GetxController {
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(url.value, headers, showLoading: true)
+        .getWithHeadersApi(url.value, headers, showLoading: showLoading)
         .then((value) async {
-      isLoading.value = false;
+      //isLoading.value = false;
       log("GET OWNER INBOX RESPONSE *******${jsonEncode(value!.body)}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
