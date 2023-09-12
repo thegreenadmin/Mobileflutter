@@ -345,10 +345,11 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
-                                              Get.to(() =>
-                                                      const OwnerInboxDetailScreen(),
-                                                  id: pageIdApp.value,
-                                                  arguments: {
+                                              Get.to(
+                                                      () =>
+                                                          const OwnerInboxDetailScreen(),
+                                                      id: pageIdApp.value,
+                                                      arguments: {
                                                     "storeName":
                                                         ownerInboxController
                                                                 .inboxList[
