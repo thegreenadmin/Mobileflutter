@@ -345,13 +345,6 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
-                                              // SharedPreferenceStorage.setData(
-                                              //     "context", context);
-                                              // Navigator.of(context).push(
-                                              //     MaterialPageRoute(
-                                              //         builder: (_) =>
-                                              //             const OwnerInboxDetailScreen()));
-
                                               Get.to(
                                                       () =>
                                                           const OwnerInboxDetailScreen(),

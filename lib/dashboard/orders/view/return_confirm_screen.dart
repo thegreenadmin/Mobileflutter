@@ -37,7 +37,6 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
-
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
