@@ -149,8 +149,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                                 InkWell(
                                                   onTap: () {
                                                     manageStoreController
-                                                        .imageUrlList[index]
-                                                        .status = "deleted";
+                                                        .imageUrlList
+                                                        .removeAt(index);
                                                     setState(() {});
                                                   },
                                                   child: const Padding(
