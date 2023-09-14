@@ -12,6 +12,9 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
+import '../../offers/controller/offers_controller.dart';
+import '../../offers/view/offer_products_screen.dart';
+
 class StoreHomeMainController extends GetxController {
   Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
   late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
@@ -33,6 +36,11 @@ class StoreHomeMainController extends GetxController {
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
   Rx<UserAddresses> selectedUserAddress = UserAddresses().obs;
+
+  final OffersController offersController = Get.put(OffersController());
+  UserFeaturedProductModel userFeaturedProductModel =
+      UserFeaturedProductModel();
+  RxList<DataList> featuredUserProductList = <DataList>[].obs;
 
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<PreviousOrdersProducts> previousOrderList =
@@ -64,6 +72,7 @@ class StoreHomeMainController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool showLoading = true.obs;
   RxBool isPlaceOrder = true.obs;
+  RxBool isFromOptions = false.obs;
   RxString storeId = "".obs;
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
@@ -88,6 +97,9 @@ class StoreHomeMainController extends GetxController {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
+      isFromOptions.value =
+          Get.parameters["isFromOptions"] == "true" ? true : false;
+
       if (roleApp.value == Role.customerRoleText) {
         getCurrentLocation();
         apiGetUserDetailsApi();
@@ -112,6 +124,13 @@ class StoreHomeMainController extends GetxController {
           showLoading.value = false;
           onIndexChange(0);
         }
+        if (isFromOptions.value) {
+          selectedIndex.value = 3;
+          lastSelectedIndex.value = 3;
+          showLoading.value = false;
+          onIndexChange(3);
+        }
+
         apiGetUserWalletBalance();
       }
     });
@@ -942,7 +961,7 @@ class StoreHomeMainController extends GetxController {
   ) {
     showDialog(
       context: ctx,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
@@ -998,6 +1017,7 @@ class StoreHomeMainController extends GetxController {
                     child: Center(
                       child: Text(
                         StringConstants.continueShoppingText,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
@@ -1025,6 +1045,7 @@ class StoreHomeMainController extends GetxController {
                     child: Center(
                       child: Text(
                         StringConstants.goToCartText,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
@@ -1672,6 +1693,61 @@ class StoreHomeMainController extends GetxController {
         }
         SharedPreferenceStorage.clearData();
         await Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  ///Api Get offers products
+  Future apiGetOffersProducts(
+      {String storeId = "", String offerId = ""}) async {
+    featuredUserProductList.clear();
+    isLoading.value = true;
+    debugPrint("GET OFFERS PRODUCT URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    Map data = {
+      "q": "",
+      "store_id": storeId,
+      "page": 1,
+      "page_size": 1000,
+      "order_by": "product_id",
+      "order_type": "DESC",
+      "category_id": null,
+      "is_favourite_products": null,
+      "is_previous_products": null,
+      "offer_id": offerId,
+      "filters": []
+    };
+    debugPrint("TOKEN ********** $headers");
+    debugPrint("GET OFFERS PRODUCT BODY ********** ${data.toString()}");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().storeFeatureProductList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("GET OFFERS PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        userFeaturedProductModel =
+            UserFeaturedProductModel.fromJson(value?.body);
+        featuredUserProductList.value =
+            userFeaturedProductModel.data!.products!;
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

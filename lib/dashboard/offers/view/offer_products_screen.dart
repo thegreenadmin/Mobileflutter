@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -66,126 +67,157 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
           child: ListView.builder(
               itemCount: offersController.featuredUserProductList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                    elevation: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 4,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Container(
-                                  width: 80,
-                                  height: 90,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          color: AppColors.primary, width: 0)),
-                                  child: CommonWidgets.cachedNetworkImage(
-                                    offersController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages ==
-                                                null ||
-                                            offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .isEmpty ||
-                                            offersController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productImages![0]
-                                                    .image!
-                                                    .dynamicUrl ==
-                                                null ||
-                                            offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .isEmpty
-                                        ? ""
-                                        : offersController
-                                                .featuredUserProductList[index]
-                                                .productImages!
-                                                .first
-                                                .image!
-                                                .dynamicUrl ??
-                                            "",
-                                    fit: BoxFit.cover,
-                                  )),
+                return InkWell(
+                  onTap: () {
+                    Get.parameters["isFromHome"] = "true";
+                    Get.parameters["isFromFav"] = "false";
+                    Get.parameters["isFromMenu"] = "false";
+                    Get.parameters["productId"] = offersController
+                            .featuredUserProductList[index].productId ??
+                        "";
+                    Get.parameters["storeId"] = offersController
+                            .featuredUserProductList[index].storeId ??
+                        "";
+
+                    Get.to(() => const AddToOrderScreen(),
+                        id: pageIdApp.value,
+                        arguments: {
+                          "isFromHome": true,
+                          "productId": offersController
+                                  .featuredUserProductList[index].productId ??
+                              "",
+                          "storeId": offersController
+                                  .featuredUserProductList[index].storeId ??
+                              "",
+                        });
+                  },
+                  child: Card(
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 4,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Container(
+                                    width: 80,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        border: Border.all(
+                                            color: AppColors.primary,
+                                            width: 0)),
+                                    child: CommonWidgets.cachedNetworkImage(
+                                      offersController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productImages ==
+                                                  null ||
+                                              offersController
+                                                  .featuredUserProductList[
+                                                      index]
+                                                  .productImages!
+                                                  .isEmpty ||
+                                              offersController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl ==
+                                                  null ||
+                                              offersController
+                                                  .featuredUserProductList[
+                                                      index]
+                                                  .productImages!
+                                                  .isEmpty
+                                          ? ""
+                                          : offersController
+                                                  .featuredUserProductList[
+                                                      index]
+                                                  .productImages!
+                                                  .first
+                                                  .image!
+                                                  .dynamicUrl ??
+                                              "",
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
                             ),
-                          ),
-                          width20SizedBox,
-                          Flexible(
-                            flex: 6,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${StringConstants.productNameText}: ${offersController.featuredUserProductList[index].productName}",
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                  offersController
-                                          .featuredUserProductList[index]
-                                          .description!
-                                          .isEmpty
-                                      ? height0SizedBox
-                                      : Text(
-                                          "${StringConstants.descriptionText}: ${offersController.featuredUserProductList[index].description}",
+                            width20SizedBox,
+                            Flexible(
+                              flex: 6,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${StringConstants.productNameText}: ${offersController.featuredUserProductList[index].productName}",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 18),
+                                    ),
+                                    offersController
+                                            .featuredUserProductList[index]
+                                            .description!
+                                            .isEmpty
+                                        ? height0SizedBox
+                                        : Text(
+                                            "${StringConstants.descriptionText}: ${offersController.featuredUserProductList[index].description}",
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15),
+                                          ),
+                                    Text(
+                                      "${StringConstants.discountValueText}: " +
+                                          offersController
+                                              .featuredUserProductList[index]
+                                              .discountValue
+                                              .toStringAsFixed(2),
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    ),
+                                    Text(
+                                      "${StringConstants.offerPriceText}: \$" +
+                                          offersController
+                                              .featuredUserProductList[index]
+                                              .offerPrice
+                                              .toStringAsFixed(2),
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    ),
+                                    Text(
+                                      "${StringConstants.discountTypeText}: ${offersController.featuredUserProductList[index].discountType}",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${StringConstants.featuredProductText}: ",
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 15),
                                         ),
-                                  Text(
-                                    "${StringConstants.discountValueText}: " +
-                                        offersController
-                                            .featuredUserProductList[index]
-                                            .discountValue
-                                            .toStringAsFixed(2),
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                  Text(
-                                    "${StringConstants.offerPriceText}: \$" +
-                                        offersController
-                                            .featuredUserProductList[index]
-                                            .offerPrice
-                                            .toStringAsFixed(2),
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                  Text(
-                                    "${StringConstants.discountTypeText}: ${offersController.featuredUserProductList[index].discountType}",
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${StringConstants.featuredProductText}: ",
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 15),
-                                      ),
-                                      Text(
-                                        offersController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .isFeaturedProduct ==
-                                                true
-                                            ? "Yes"
-                                            : "No",
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
-                    ));
+                                        Text(
+                                          offersController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .isFeaturedProduct ==
+                                                  true
+                                              ? "Yes"
+                                              : "No",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      )),
+                );
               }),
         ),
       ),

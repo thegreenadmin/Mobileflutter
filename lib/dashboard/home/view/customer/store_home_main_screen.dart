@@ -154,7 +154,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child:  Center(
+                child: Center(
                   child: Text(
                     StringConstants.haveIssueText,
                     style: const TextStyle(

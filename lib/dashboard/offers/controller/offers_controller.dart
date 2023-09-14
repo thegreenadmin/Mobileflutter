@@ -57,7 +57,6 @@ class OffersController extends GetxController {
         }
         isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
-
         getData();
       }
     });

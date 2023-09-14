@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
+import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class StoreHomeScreen extends StatefulWidget {
@@ -107,23 +108,45 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                   .image
                                                   ?.dynamicUrl !=
                                               ""
-                                      ? SizedBox(
-                                          height: 200,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              60,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: CommonWidgets
-                                                .cachedNetworkImage(
-                                                    storeHomeMainController
+                                      ? InkWell(
+                                          onTap: () async {
+                                            storeHomeMainController
+                                                .offersController
+                                                .apiGetOffersProducts(
+                                                    offerId:
+                                                        storeHomeMainController
                                                             .offersList[index]
-                                                            .image
-                                                            ?.dynamicUrl ??
-                                                        "",
-                                                    fit: BoxFit.cover),
+                                                            .offerId
+                                                            .toString(),
+                                                    storeId:
+                                                        storeHomeMainController
+                                                            .offersList[index]
+                                                            .storeId
+                                                            .toString());
+
+                                            await Get.to(
+                                              () => const OfferProductScreen(),
+                                              id: pageIdApp.value,
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            height: 200,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                60,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: CommonWidgets
+                                                  .cachedNetworkImage(
+                                                      storeHomeMainController
+                                                              .offersList[index]
+                                                              .image
+                                                              ?.dynamicUrl ??
+                                                          "",
+                                                      fit: BoxFit.cover),
+                                            ),
                                           ),
                                         )
                                       : Image.asset(

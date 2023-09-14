@@ -319,7 +319,7 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
@@ -370,7 +370,7 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      log("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);

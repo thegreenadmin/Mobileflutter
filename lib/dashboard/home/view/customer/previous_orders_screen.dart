@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class PreviousOrdersScreen extends StatefulWidget {
@@ -75,7 +76,32 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                           ),
                           itemBuilder: (BuildContext context, int i) {
                             return InkWell(
-                              onTap: () async {},
+                              onTap: () async {
+                                Get.parameters["isFromHome"] = "false";
+                                Get.parameters["isFromFav"] = "false";
+                                Get.parameters["isFromMenu"] = "false";
+                                Get.parameters["isFromOptions"] = "true";
+                                Get.parameters["productId"] =
+                                    storeHomeMainController
+                                            .previousOrderList[i].productId ??
+                                        "";
+                                Get.parameters["storeId"] =
+                                    storeHomeMainController
+                                            .previousOrderList[i].storeId ??
+                                        "";
+
+                                Get.to(() => const AddToOrderScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {
+                                      "isFromHome": true,
+                                      "productId": storeHomeMainController
+                                              .previousOrderList[i].productId ??
+                                          "",
+                                      "storeId": storeHomeMainController
+                                              .previousOrderList[i].storeId ??
+                                          "",
+                                    });
+                              },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

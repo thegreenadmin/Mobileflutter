@@ -362,7 +362,7 @@ class StringConstants {
   static String ownAStoreText = "Own a Store?";
   static String orderHereText = "Order Here";
   static String offersText = "Offers";
-  static String offerPriceText = " offerPriceText";
+  static String offerPriceText = "Offer Price";
   static String otherDetailsText = "Other Details";
   static String ordersText = "Orders";
   static String orderStatusText = "Order Status";

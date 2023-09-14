@@ -42,7 +42,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           Get.parameters["isFromMenu"] == "true" ? true : false;
       storeHomeMainController.isFromFav.value =
           Get.parameters["isFromFav"] == "true" ? true : false;
-
+      storeHomeMainController.isFromOptions.value =
+          Get.parameters["isFromOptions"] == "true" ? true : false;
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
@@ -61,6 +62,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.lastSelectedIndex.value = 0;
         storeHomeMainController.showLoading.value = false;
         storeHomeMainController.onIndexChange(0);
+      }
+      if (storeHomeMainController.isFromOptions.value) {
+        storeHomeMainController.selectedIndex.value = 3;
+        storeHomeMainController.lastSelectedIndex.value = 3;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(3);
       }
       storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
