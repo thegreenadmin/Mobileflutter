@@ -141,7 +141,7 @@ class UserInboxDetailController extends GetxController {
     messageListModel = UserMessageListModel();
     isLoading.value = true;
     debugPrint(
-        "MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}");
+        "USER MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

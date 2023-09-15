@@ -8,6 +8,8 @@ import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dar
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import '../../orders/controller/orders_home_main_controller.dart';
+
 class NotificationListScreen extends StatefulWidget {
   const NotificationListScreen({super.key});
 
@@ -125,36 +127,35 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 notificationListController
                                         .notificationList[index].orderId ??
                                     "";
+                            Get.parameters["orderId"] =
+                                notificationListController
+                                        .notificationList[index].orderId ??
+                                    "";
 
                             Get.parameters["isFromNotification"] = "true";
 
+                            notificationListController
+                                            .notificationList[index].orderId !=
+                                        null &&
+                                    notificationListController
+                                        .notificationList[index]
+                                        .isNotificationForStore!
+                                ? Get.put(OrdersHomeMainController()).onInit()
+                                : null;
                             notificationListController
                                         .notificationList[index].orderId !=
                                     null
                                 ? notificationListController
                                         .notificationList[index]
                                         .isNotificationForStore!
-                                    ? Get.to(() => const OrdersHomeMainScreen(),
+                                    ? Get.to(
+                                        () => const OrdersHomeMainScreen(),
                                         id: pageIdApp.value,
-                                        arguments: {
-                                            "isFromNotification": true,
-                                            "storeId":
-                                                notificationListController
-                                                        .notificationList[index]
-                                                        .storeId ??
-                                                    ""
-                                          })
+                                      )
                                     : Get.to(
                                         () => const OrderConfirmationScreen(),
                                         id: pageIdApp.value,
-                                        arguments: {
-                                            "isFromNotification": true,
-                                            "storeId":
-                                                notificationListController
-                                                        .notificationList[index]
-                                                        .storeId ??
-                                                    ""
-                                          })
+                                      )
                                 : notificationListController
                                             .notificationList[index].offerId !=
                                         null
@@ -169,7 +170,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                             null
                                         ? roleApp.value == Role.customerRoleText
                                             ? Get.to(
-                                                const OwnerInboxDetailScreen(),
+                                                () =>
+                                                    const UserInboxDetailScreen(),
                                                 id: pageIdApp.value,
                                                 arguments: {
                                                     "storeId":
@@ -190,7 +192,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                                             .messageHeadId,
                                                   })
                                             : Get.to(
-                                                const UserInboxDetailScreen(),
+                                                () =>
+                                                    const OwnerInboxDetailScreen(),
                                                 id: pageIdApp.value,
                                                 arguments: {
                                                     "storeId":

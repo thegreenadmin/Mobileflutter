@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
@@ -60,7 +62,7 @@ class NotificationListController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET NOTIFICATION LIST RESPONSE *******${value!.body}");
+      log("GET NOTIFICATION LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         notificationListModel = NotificationListModel.fromJson(value.body);
