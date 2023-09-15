@@ -68,7 +68,8 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio:
-                                (WidgetConstants.screenWidth + 200) /
+                                (WidgetConstants.screenHeight * 0.47 +
+                                        WidgetConstants.screenHeight * 0.22) /
                                     WidgetConstants.screenHeight,
                             mainAxisSpacing: 0.0,
                             crossAxisSpacing: 10.0,
@@ -184,18 +185,25 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                               fontWeight: FontWeight.w600),
                                         ),
                                         height4SizedBox,
-                                        Text(
-                                          storeHomeMainController
-                                                  .previousOrderList[i]
-                                                  .description ??
-                                              "",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              overflow: TextOverflow.visible,
-                                              color: AppColors.blacklight,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
+                                        storeHomeMainController
+                                                .previousOrderList[i]
+                                                .description!
+                                                .isEmpty
+                                            ? height0SizedBox
+                                            : Text(
+                                                storeHomeMainController
+                                                        .previousOrderList[i]
+                                                        .description ??
+                                                    "",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    overflow:
+                                                        TextOverflow.visible,
+                                                    color: AppColors.blacklight,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
                                         height4SizedBox,
                                         Text(
                                           "${StringConstants.unitPriceText}: "

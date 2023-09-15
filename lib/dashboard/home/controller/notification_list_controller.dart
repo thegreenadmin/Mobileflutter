@@ -66,7 +66,6 @@ class NotificationListController extends GetxController {
         notificationListModel = NotificationListModel.fromJson(value.body);
         notificationList.value =
             notificationListModel.data?.notifications ?? [];
-
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
