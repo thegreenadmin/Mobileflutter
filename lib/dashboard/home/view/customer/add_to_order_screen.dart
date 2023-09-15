@@ -422,35 +422,24 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               : const StoreMenuScreen())
                       : storeHomeMainController.selectedIndex.value == 2
                           ? Expanded(
-                              child:
-                                  storeHomeMainController.isFromFav.value == true
-                                      ? stackData()
-                                      : const StoreFavouriteScreen())
+                              child: storeHomeMainController.isFromFav.value == true
+                                  ? stackData()
+                                  : const StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
-                              ? storeHomeMainController.popUpIndex.value == 0
-                                  ? const Expanded(
-                                      child: PreviousOrdersScreen())
-                                  : storeHomeMainController.popUpIndex.value ==
-                                          2
-                                      ? Expanded(
-                                          child: PdfViewScreen(
-                                              isShowPrivacy: true,
-                                              url: storeHomeMainController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data!
-                                                  .store!
-                                                  .storePages!
-                                                  .first
-                                                  .storePageContent!
-                                                  .dynamicUrl
-                                                  .toString()))
-                                      : storeHomeMainController
-                                                  .popUpIndex.value ==
-                                              3
+                              ? Expanded(
+                                  child: storeHomeMainController.isFromOptions.value == true
+                                      ? stackData()
+                                      : const StoreHomeScreen())
+                              : storeHomeMainController.selectedIndex.value == 3
+                                  ? storeHomeMainController.popUpIndex.value ==
+                                          0
+                                      ? const Expanded(
+                                          child: PreviousOrdersScreen())
+                                      : storeHomeMainController.popUpIndex.value ==
+                                              2
                                           ? Expanded(
                                               child: PdfViewScreen(
-                                                  isShowPrivacy: false,
+                                                  isShowPrivacy: true,
                                                   url: storeHomeMainController
                                                       .storeDetailsResponse
                                                       .value
@@ -461,12 +450,19 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                       .storePageContent!
                                                       .dynamicUrl
                                                       .toString()))
-                                          : storeHomeMainController.lastSelectedIndex.value == 1
-                                              ? Expanded(child: storeHomeMainController.isFromMenu.value == true ? stackData() : const StoreMenuScreen())
-                                              : storeHomeMainController.lastSelectedIndex.value == 2
-                                                  ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
-                                                  : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
-                              : const Expanded(child: StoreHomeScreen())
+                                          : storeHomeMainController
+                                                      .popUpIndex.value ==
+                                                  3
+                                              ? Expanded(
+                                                  child: PdfViewScreen(
+                                                      isShowPrivacy: false,
+                                                      url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
+                                              : storeHomeMainController.lastSelectedIndex.value == 1
+                                                  ? Expanded(child: storeHomeMainController.isFromMenu.value == true ? stackData() : const StoreMenuScreen())
+                                                  : storeHomeMainController.lastSelectedIndex.value == 2
+                                                      ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
+                                                      : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
+                                  : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));

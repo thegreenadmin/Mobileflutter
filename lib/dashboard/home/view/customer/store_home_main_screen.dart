@@ -91,7 +91,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             height10SizedBox,
             Text(
               storeHomeMainController
-                      .storeDetailsResponse.value.data!.store!.storeName ??
+                      .storeDetailsResponse.value.data?.store?.storeName ??
                   "",
               style: const TextStyle(
                   color: AppColors.black,
@@ -111,7 +111,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
             SelectableText(
               storeHomeMainController
-                      .storeDetailsResponse.value.data!.store!.storePhone ??
+                      .storeDetailsResponse.value.data?.store?.storePhone ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,
@@ -132,7 +132,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
             SelectableText(
               storeHomeMainController
-                      .storeDetailsResponse.value.data!.store!.storeEmail ??
+                      .storeDetailsResponse.value.data?.store?.storeEmail ??
                   "",
               style: TextStyle(
                   color: AppColors.blacklight,

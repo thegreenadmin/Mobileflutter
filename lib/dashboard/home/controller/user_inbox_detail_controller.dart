@@ -38,6 +38,8 @@ class UserInboxDetailController extends GetxController {
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     page.value = 1;
+
+    print("message header id--->" + messageHeadId.value.toString());
     apiGetMessagesList();
     role?.value = roleApp.value;
     if (roleApp.value == Role.customerRoleText) {
@@ -191,12 +193,14 @@ class UserInboxDetailController extends GetxController {
     var selectedImageDynamicLink = userSelectedImageDynamicLinkFromServer.value;
     Messages msg = Messages();
     msg.message = msgText;
-    msg.messageHeadId = messageList.first.messageHeadId;
+    msg.messageHeadId = messageList.isEmpty
+        ? messageHeadId.value
+        : messageList.first.messageHeadId;
     msg.senderType = StringConstants.userText.toLowerCase();
     msg.isCurrentMessage = true;
     msg.isStoreRead = false;
     msg.isUserRead = true;
-    msg.status = messageList.first.status;
+    msg.status = messageList.isEmpty ? "" : messageList.first.status;
     msg.createdAt = DateTime.now().toUtc().toString();
     msg.updatedAt = DateTime.now().toUtc().toString();
     Images? image = Images();

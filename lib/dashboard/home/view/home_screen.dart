@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 4, top: 50),
+              padding: const EdgeInsets.only(left: 10.0, right: 4, top: 50),
               child: Column(
                 children: [
                   Row(
@@ -67,15 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: StringConstants.welcomeToText,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
                                   const TextSpan(
-                                    text: 'T',
+                                    text: ' T',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: 'he',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: ' G',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: 'reen',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: ' M',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: 'all',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .cartCount.value !=
                                             0,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(6.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Stack(
                                               children: [
                                                 CircleAvatar(
-                                                  radius: 22.0,
+                                                  radius: 20.0,
                                                   backgroundColor: Colors.white,
                                                   child: Image.asset(
                                                       ImageConstants.cart,
@@ -800,6 +800,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Get.parameters["isFromHome"] = "false";
                                     Get.parameters["isFromFav"] = "false";
                                     Get.parameters["isFromMenu"] = "true";
+                                    Get.parameters["isFromOptions"] = "false";
                                     Get.parameters["productId"] = homeController
                                             .featuredUserProductList[index]
                                             .productId ??

@@ -269,6 +269,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                     Get.parameters['isFromFav'] = "false";
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["isFromMenu"] = "false";
+                                    Get.parameters["isFromOptions"] = "false";
                                     Get.to(() => const AddToOrderScreen(),
                                         id: pageIdApp.value);
                                   },

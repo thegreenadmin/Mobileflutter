@@ -95,7 +95,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     //     .cartItems!
                                     //     .isNotEmpty,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
+                                      padding: const EdgeInsets.all(6.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                 child: Stack(
                                                   children: [
                                                     CircleAvatar(
-                                                      radius: 22.0,
+                                                      radius: 20.0,
                                                       backgroundColor:
                                                           Colors.white,
                                                       child: Image.asset(

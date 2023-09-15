@@ -104,7 +104,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                               widget.showActiveCart == true &&
                               widget.cartCount != 0,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(6.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -130,7 +130,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                                       child: Stack(
                                         children: [
                                           CircleAvatar(
-                                            radius: 22.0,
+                                            radius: 20.0,
                                             backgroundColor: Colors.white,
                                             child: Image.asset(
                                                 ImageConstants.cart,

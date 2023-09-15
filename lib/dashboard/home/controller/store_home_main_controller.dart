@@ -1682,7 +1682,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("PREVIOUS ORDERS BODY *******${value?.body}");
+      debugPrint("PREVIOUS ORDERS RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         previousOrdersModel = PreviousOrdersModel.fromJson(value?.body);

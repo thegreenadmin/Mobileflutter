@@ -129,7 +129,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                 //     .cartItems!
                                 //     .isNotEmpty,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(6.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -151,7 +151,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                             child: Stack(
                                               children: [
                                                 CircleAvatar(
-                                                  radius: 22.0,
+                                                  radius: 20.0,
                                                   backgroundColor: Colors.white,
                                                   child: Image.asset(
                                                       ImageConstants.cart,

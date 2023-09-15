@@ -72,6 +72,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                     Get.parameters["isFromHome"] = "true";
                     Get.parameters["isFromFav"] = "false";
                     Get.parameters["isFromMenu"] = "false";
+                    Get.parameters["isFromOptions"] = "false";
                     Get.parameters["productId"] = offersController
                             .featuredUserProductList[index].productId ??
                         "";

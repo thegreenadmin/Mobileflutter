@@ -21,7 +21,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             child: Obx(
@@ -124,7 +124,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                             assetImg: ImageConstants.nopicfound,
                                           ),
                                         ),
-                                        width10SizedBox,
+                                        width8SizedBox,
                                         SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
