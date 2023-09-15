@@ -555,6 +555,7 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
+                              errorMaxLines: 4,
                               enabledBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 borderSide: const BorderSide(
@@ -579,8 +580,8 @@ class _AddOfferScreenState extends State<AddOfferScreen> {
                               errorBorder: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
+                                  color: AppColors.red,
+                                  width: 2.0,
                                 ),
                               ),
                             ),

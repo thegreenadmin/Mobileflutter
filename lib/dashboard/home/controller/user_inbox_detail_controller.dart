@@ -148,7 +148,6 @@ class UserInboxDetailController extends GetxController {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
