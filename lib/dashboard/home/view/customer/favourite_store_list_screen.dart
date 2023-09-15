@@ -66,6 +66,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                   searchStoreUserController
                                           .favouriteStore[index].storeId ??
                                       "";
+                              Get.parameters["isFromMenu"] = "false";
+                              Get.parameters['isFromFav'] = "false";
+                              Get.parameters["isFromHome"] = "true";
+                              Get.parameters["isFromOptions"] = "false";
                               await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
                             },

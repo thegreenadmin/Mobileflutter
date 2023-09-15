@@ -75,6 +75,10 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                           .store
                                           ?.storeId ??
                                       "";
+                              Get.parameters["isFromMenu"] = "false";
+                              Get.parameters['isFromFav'] = "false";
+                              Get.parameters["isFromHome"] = "true";
+                              Get.parameters["isFromOptions"] = "false";
                               await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
                             },

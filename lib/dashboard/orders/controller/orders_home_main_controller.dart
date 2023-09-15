@@ -41,6 +41,8 @@ class OrdersHomeMainController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      debugPrint(
+          "OrdersHomeMainController orderId ======onInit =======${Get.parameters["orderId"]} ${Get.parameters["storeId"]} ${Get.parameters["isFromNotification"]}");
       if (Get.parameters["isController"] != "no") {
         // selectedIndex.value = 0;
         isFromNotification.value =

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+
 import '../view/component/order_status_enum.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
@@ -616,6 +617,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             Get.parameters["isFromMenu"] = "true";
                             Get.parameters["isFromHome"] = "false";
                             Get.parameters["isFromFav"] = "false";
+                            Get.parameters["isFromOptions"] = "false";
                             Get.to(() => const StoreHomeMainScreen(),
                                 id: pageIdApp.value);
                           },

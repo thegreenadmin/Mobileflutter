@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
-import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -131,9 +131,12 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 notificationListController
                                         .notificationList[index].orderId ??
                                     "";
-
+                            Get.parameters["isController"] = "yes";
                             Get.parameters["isFromNotification"] = "true";
-
+                            notificationListController.notificationList[index]
+                                    .isNotificationForStore!
+                                ? roleApp.value = Role.storeOwnerRoleText
+                                : roleApp.value = Role.customerRoleText;
                             notificationListController
                                             .notificationList[index].orderId !=
                                         null &&
@@ -142,6 +145,10 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         .isNotificationForStore!
                                 ? Get.put(OrdersHomeMainController()).onInit()
                                 : null;
+                            Get.parameters["isFromMenu"] = "false";
+                            Get.parameters['isFromFav'] = "false";
+                            Get.parameters["isFromHome"] = "true";
+                            Get.parameters["isFromOptions"] = "false";
                             notificationListController
                                         .notificationList[index].orderId !=
                                     null
@@ -159,7 +166,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                 : notificationListController
                                             .notificationList[index].offerId !=
                                         null
-                                    ? Get.to(() => const OffersScreen(),
+                                    ? Get.to(() => const StoreHomeMainScreen(),
                                         id: pageIdApp.value,
                                         arguments: {
                                             "isFromNotification": true,
