@@ -13,7 +13,6 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 import '../../offers/controller/offers_controller.dart';
-import '../../offers/view/offer_products_screen.dart';
 
 class StoreHomeMainController extends GetxController {
   Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
@@ -1270,6 +1269,7 @@ class StoreHomeMainController extends GetxController {
       String orderBy = "1",
       String orderType = "1",
       String categoryId = "0"}) async {
+    featureProductList.clear();
     isLoading.value = true;
     debugPrint("FeatureProductList URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
