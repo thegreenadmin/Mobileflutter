@@ -116,6 +116,8 @@ class _MyAppState extends State<MyApp> {
         fontFamily: StringConstants.interFamilyText, //Inter Font Family,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      // theme: ThemeData(primarySwatch: Colors.blue),
+      // darkTheme: ThemeData.dark().copyWith(primaryColor: Colors.red),
       getPages: Routers.route,
       initialRoute: '/splashView',
     );

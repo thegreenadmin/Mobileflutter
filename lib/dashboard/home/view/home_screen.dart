@@ -442,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ImageConstants.union,
                                 scale: 2.4,
                               )),
-                          width10SizedBox,
+                          width6SizedBox,
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
@@ -481,7 +481,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Container(
             height: WidgetConstants.screenHeight * 0.84,
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Obx(() => roleApp.value == Role.customerRoleText

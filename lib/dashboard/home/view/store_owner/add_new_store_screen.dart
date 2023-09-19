@@ -269,7 +269,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
-                                      width: WidgetConstants.screenWidth * 0.85,
+                                      width: WidgetConstants.screenWidth * 0.80,
                                       padding: const EdgeInsets.only(
                                           top: 35, bottom: 35),
                                       color: AppColors.primarylight,
@@ -306,7 +306,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                     dashPattern: const [4, 4],
                                     child: Container(
                                         width:
-                                            WidgetConstants.screenWidth * 0.85,
+                                            WidgetConstants.screenWidth * 0.80,
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,

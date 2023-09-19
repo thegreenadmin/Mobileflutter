@@ -130,7 +130,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                     ),
                     child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, bottom: 10),
+                            left: 20.0, right: 8, bottom: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,

@@ -44,11 +44,12 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(150.0),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              padding: const EdgeInsets.only(
+                  left: 18.0, right: 20, top: 50, bottom: 10),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +70,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                         ),
                         width10SizedBox,
                         Text(
-                          StringConstants.walletText,
+                          StringConstants.manageWalletText,
                           style: const TextStyle(
                               fontSize: 22,
                               color: AppColors.black,

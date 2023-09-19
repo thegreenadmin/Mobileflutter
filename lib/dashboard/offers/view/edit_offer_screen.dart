@@ -617,7 +617,7 @@ class _EditOfferScreenState extends State<EditOfferScreen> {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(
-                                        value,
+                                        value.toTitleCase(),
                                         style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,

@@ -1270,6 +1270,7 @@ class StoreHomeMainController extends GetxController {
       String orderBy = "1",
       String orderType = "1",
       String categoryId = "0"}) async {
+    featureProductList.clear();
     isLoading.value = true;
     debugPrint("FeatureProductList URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");

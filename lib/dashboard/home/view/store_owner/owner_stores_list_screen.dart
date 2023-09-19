@@ -24,7 +24,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 40),
+              padding: const EdgeInsets.only(left: 18.0, right: 20, top: 40),
               child: Column(
                 children: [
                   Row(
@@ -57,7 +57,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: AppColors.black,
-                                        fontWeight: FontWeight.w400),
+                                        fontWeight: FontWeight.w600),
                                   ),
                                 ),
                                 Text(

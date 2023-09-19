@@ -305,7 +305,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                     dashPattern: const [4, 4],
                                     child: Container(
                                         width:
-                                            WidgetConstants.screenWidth * 0.85,
+                                            WidgetConstants.screenWidth * 0.80,
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
                                         color: AppColors.primarylight,

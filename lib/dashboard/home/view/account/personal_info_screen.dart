@@ -29,7 +29,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               color: AppColors.primarylight,
               child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                      const EdgeInsets.only(left: 18.0, right: 20, top: 50),
                   child: Column(
                     children: [
                       Row(
