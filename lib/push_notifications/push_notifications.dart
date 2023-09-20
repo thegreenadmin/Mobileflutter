@@ -100,6 +100,7 @@ Future<RemoteMessage?> checkForInitialFirebaseMessage() async {
 }
 
 void selectNotification(NotificationResponse notificationResponse) async {
+  Get.parameters["isController"] = "yes";
   debugPrint("payload 2---------->${notificationResponse.payload}");
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));

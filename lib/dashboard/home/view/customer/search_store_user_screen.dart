@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui' as ui;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,7 +98,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: AppColors.black,
-                                        fontWeight: FontWeight.w400),
+                                        fontWeight: FontWeight.w600),
                                   ),
                                 ),
                                 Text(

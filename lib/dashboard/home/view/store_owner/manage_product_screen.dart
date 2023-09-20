@@ -172,7 +172,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                   )),
             )),
         body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
           child: Column(children: [
             Center(child: _horizontalTab()),
             height25SizedBox,
@@ -180,12 +180,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  StringConstants.viewAndUpdateItemsText,
-                  style: const TextStyle(
-                      fontSize: 16.0,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600),
+                Flexible(
+                  child: Text(
+                    StringConstants.viewAndUpdateItemsText,
+                    style: const TextStyle(
+                        fontSize: 16.0,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
                 InkWell(
                     highlightColor: Colors.transparent,
@@ -233,7 +235,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> {
                         const Icon(
                           Icons.add,
                           color: AppColors.primary,
-                          size: 18.0,
+                          size: 16.0,
                         ),
                         width2SizedBox,
                         Text(

@@ -316,6 +316,7 @@ class StringConstants {
   static String masterCardText = "MasterCard";
   static String membershipIdText = "Membership Id";
   static String membershipTransactionText = "Membership Transaction";
+  static String manageWalletText = "Manage Wallet";
 
   //N
   static String novText = "November";

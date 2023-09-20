@@ -175,7 +175,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                               .discountValue
                                               .toStringAsFixed(2),
                                       style: const TextStyle(
-                                          color: Colors.black, fontSize: 15),
+                                          color: Colors.black, fontSize: 14),
                                     ),
                                     Text(
                                       "${StringConstants.offerPriceText}: \$" +
@@ -184,12 +184,13 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                               .offerPrice
                                               .toStringAsFixed(2),
                                       style: const TextStyle(
-                                          color: Colors.black, fontSize: 15),
+                                          color: Colors.black, fontSize: 14),
                                     ),
                                     Text(
-                                      "${StringConstants.discountTypeText}: ${offersController.featuredUserProductList[index].discountType}",
+                                      "${StringConstants.discountTypeText}: ${offersController.featuredUserProductList[index].discountType}"
+                                          .toTitleCase(),
                                       style: const TextStyle(
-                                          color: Colors.black, fontSize: 15),
+                                          color: Colors.black, fontSize: 14),
                                     ),
                                     Row(
                                       children: [
@@ -197,7 +198,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                           "${StringConstants.featuredProductText}: ",
                                           style: const TextStyle(
                                               color: Colors.black,
-                                              fontSize: 15),
+                                              fontSize: 14),
                                         ),
                                         Text(
                                           offersController
@@ -209,7 +210,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                               : "No",
                                           style: const TextStyle(
                                               color: Colors.black,
-                                              fontSize: 15),
+                                              fontSize: 14),
                                         ),
                                       ],
                                     ),

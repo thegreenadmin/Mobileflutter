@@ -20,25 +20,22 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
-          elevation: 0,
           backgroundColor: AppColors.white,
+          elevation: 0,
           titleSpacing: 0,
           automaticallyImplyLeading: false,
-          leading: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: OutlinedButton(
-              onPressed: () {
-                Get.back();
-              },
-              style: OutlinedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.zero,
-                side: BorderSide(width: 0.0, color: AppColors.blacklight),
-                shape: const CircleBorder(),
-              ),
+          leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Container(
+              margin: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
               child: const Icon(
                 Icons.chevron_left,
-                color: AppColors.black,
+                color: AppColors.primary,
               ),
             ),
           ),
@@ -91,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             prefixIcon: Image.asset(ImageConstants.calling),
                             alignLabelWithHint: true,
                             hintText: StringConstants.mobileText,
-                            hintStyle: const TextStyle(
-                                color: AppColors.black, fontSize: 15),
+                            hintStyle: const TextStyle(fontSize: 15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
                               borderSide: const BorderSide(

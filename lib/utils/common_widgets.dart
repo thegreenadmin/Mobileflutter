@@ -6,6 +6,12 @@ import 'package:get/get.dart';
 import 'app_colors.dart';
 import 'image_constants.dart';
 
+class CommonTheme {
+  getColors() {
+    return !Get.isDarkMode ? AppColors.white : AppColors.black;
+  }
+}
+
 class CommonWidgets {
   //Bold
   // static Widget txtViewBold(

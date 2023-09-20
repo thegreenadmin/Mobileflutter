@@ -32,6 +32,7 @@ class OffersController extends GetxController {
 
   late GetUserOfferListModel getUserOffersListModel = GetUserOfferListModel();
   RxList<UserOfferStores> getUserOfferList = <UserOfferStores>[].obs;
+
   late DeleteOfferRequestModel deleteOfferRequestModel =
       DeleteOfferRequestModel();
 
@@ -42,10 +43,16 @@ class OffersController extends GetxController {
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
   RxList<DataList> featuredUserProductList = <DataList>[].obs;
-
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   RxBool isFromNotification = false.obs;
+  RxInt totalCount = 0.obs;
+  RxInt page = 1.obs;
+  ScrollController scrollController = ScrollController();
+
+  RxInt totalCountCustomer = 0.obs;
+  RxInt pageCustomer = 1.obs;
+  ScrollController scrollController1 = ScrollController();
 
   @override
   void onInit() {
@@ -75,6 +82,7 @@ class OffersController extends GetxController {
       getCurrentLocation();
     } else {
       apiGetOwnerOffersList();
+      setupScrollController();
     }
   }
 
@@ -84,10 +92,39 @@ class OffersController extends GetxController {
     lng = currentLocation.longitude;
     debugPrint("CURRENT roleVal************${role.value} ${pageId.value}");
     apiGetUserOffersList();
+    setupScrollController1();
+  }
+
+  setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (getOwnerOfferList.length < totalCount.value) {
+          page.value++;
+          apiGetOwnerOffersList();
+        }
+      }
+    });
+  }
+
+  setupScrollController1() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (getUserOfferList.length < totalCountCustomer.value) {
+          pageCustomer.value++;
+          apiGetUserOffersList();
+        }
+      }
+    });
   }
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+    if (page.value == 1) {
+      getOwnerOfferList.clear();
+    }
+    getOwnerOffersListModel = GetOwnerOffersListModel();
     isLoading!.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
@@ -99,8 +136,8 @@ class OffersController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     Map body = {
       "store_id": null,
-      "page": 1,
-      "page_size": 10,
+      "page": page.value,
+      "page_size": 3,
       "order_by": "offer_id",
       "order_type": "DESC",
       "filters": []
@@ -117,8 +154,21 @@ class OffersController extends GetxController {
       debugPrint("OWNER OFFERS LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        // getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
+        // getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
+
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
-        getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
+        totalCount.value = getOwnerOffersListModel.data?.totalCount ?? 0;
+        List<OffersList>? offerListNewList = [];
+        offerListNewList = getOwnerOffersListModel.data?.offers ?? [];
+        if (offerListNewList.isNotEmpty) {
+          if (page.value == 1) {
+            getOwnerOfferList.value = [];
+          }
+          getOwnerOfferList.addAll(offerListNewList);
+        }
+        getOwnerOfferList.toSet().toList();
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -133,9 +183,13 @@ class OffersController extends GetxController {
 
   ///Get Offers List Api [USER]
   Future apiGetUserOffersList() async {
+    if (pageCustomer.value == 1) {
+      getUserOfferList.clear();
+    }
+    getUserOffersListModel = GetUserOfferListModel();
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=$pageCustomer&page_size=20",
     );
 
     Map<String, String> headers = {
@@ -154,8 +208,20 @@ class OffersController extends GetxController {
       debugPrint("USER OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        // getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
+        // getUserOfferList.value = getUserOffersListModel.data!.stores!;
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
-        getUserOfferList.value = getUserOffersListModel.data!.stores!;
+        totalCountCustomer.value = getUserOffersListModel.data?.totalCount ?? 0;
+        List<UserOfferStores>? offerUserNewList = [];
+        offerUserNewList = getUserOffersListModel.data?.stores ?? [];
+        if (offerUserNewList.isNotEmpty) {
+          if (page.value == 1) {
+            getUserOfferList.value = [];
+          }
+          getUserOfferList.addAll(offerUserNewList);
+        }
+        getUserOfferList.toSet().toList();
+        update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();

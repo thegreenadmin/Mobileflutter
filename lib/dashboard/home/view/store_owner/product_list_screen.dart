@@ -72,18 +72,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "${StringConstants.viewText} ${StringConstants.productText}s",
-                  style: const TextStyle(
-                      fontSize: 18.0,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600),
+                Flexible(
+                  child: Text(
+                    "${StringConstants.viewText} ${StringConstants.productText}s",
+                    style: const TextStyle(
+                        fontSize: 18.0,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
                 InkWell(
                     highlightColor: Colors.transparent,
@@ -264,7 +266,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     color: AppColors.white,
                                                     width: 1)),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(8),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                               child: CommonWidgets
                                                   .cachedNetworkImage(
                                                 manageStoreController
@@ -280,7 +283,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         manageStoreController
                                                                 .storeProductList[
                                                                     index]
-                                                                .productImages![0]
+                                                                .productImages![
+                                                                    0]
                                                                 .image!
                                                                 .dynamicUrl ==
                                                             null ||
@@ -298,9 +302,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                         .toString(),
                                                 fit: BoxFit.fill,
                                                 height: 100.0,
-                                                width:
-                                                    WidgetConstants.screenWidth *
-                                                        0.3,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.3,
                                               ),
                                             )),
                                       ),
@@ -367,7 +371,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                   children: [
                                                     Text(
                                                       "${StringConstants.unitPriceText}: ",
-                                                      overflow: TextOverflow.visible,
+                                                      overflow:
+                                                          TextOverflow.visible,
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:
@@ -383,7 +388,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                               null
                                                           ? ""
                                                           : "\$${manageStoreController.storeProductList[index].productPrice.toStringAsFixed(2)}",
-                                                      overflow: TextOverflow.visible,
+                                                      overflow:
+                                                          TextOverflow.visible,
                                                       style: const TextStyle(
                                                           fontSize: 16.0,
                                                           color:
