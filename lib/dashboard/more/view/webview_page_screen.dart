@@ -63,7 +63,9 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> {
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back(id: pageIdApp.value);
+                                  pageIdApp.value == 0
+                                      ? Get.back()
+                                      : Get.back(id: pageIdApp.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,

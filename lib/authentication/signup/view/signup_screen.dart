@@ -431,13 +431,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Get.to(WebviewPageScreen(
-                                          isFrom: "terms",
-                                          url: Uri.parse(ServerCommunicator()
-                                                      .baseUrlWithoutApi +
-                                                  ServerCommunicator()
-                                                      .pagePolicy)
-                                              .toString()));
+                                      Get.to(
+                                        () => WebviewPageScreen(
+                                            isFrom: "terms",
+                                            url: Uri.parse(ServerCommunicator()
+                                                        .baseUrlWithoutApi +
+                                                    ServerCommunicator()
+                                                        .pagePolicy)
+                                                .toString()),
+                                      );
                                     },
                                   text: StringConstants.termsAndConditionsText,
                                   style: const TextStyle(
@@ -449,13 +451,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Get.to(WebviewPageScreen(
-                                          isFrom: StringConstants.privacyText,
-                                          url: Uri.parse(ServerCommunicator()
-                                                      .baseUrlWithoutApi +
-                                                  ServerCommunicator()
-                                                      .pagePolicy)
-                                              .toString()));
+                                      Get.to(
+                                        () => WebviewPageScreen(
+                                            isFrom: StringConstants.privacyText,
+                                            url: Uri.parse(ServerCommunicator()
+                                                        .baseUrlWithoutApi +
+                                                    ServerCommunicator()
+                                                        .pagePolicy)
+                                                .toString()),
+                                      );
                                     },
                                   text: StringConstants.privacyPolicyText,
                                   style: const TextStyle(

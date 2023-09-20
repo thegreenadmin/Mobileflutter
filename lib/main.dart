@@ -10,6 +10,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import 'utils/themes.dart';
+
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,9 +118,9 @@ class _MyAppState extends State<MyApp> {
         fontFamily: StringConstants.interFamilyText, //Inter Font Family,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // theme: ThemeData(primarySwatch: Colors.blue),
-      // darkTheme: ThemeData.dark().copyWith(primaryColor: Colors.red),
-      getPages: Routers.route,
+      // theme: Themes.light,
+      // darkTheme: Themes.dark,
+      getPages: Routers.route, themeMode: ThemeMode.system,
       initialRoute: '/splashView',
     );
   }
