@@ -1313,7 +1313,7 @@ class StoreHomeMainController extends GetxController {
             showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
-      log("Feature ProductList Store *******${value?.body}");
+      debugPrint("Feature ProductList Store *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         featureProductListResponse =
