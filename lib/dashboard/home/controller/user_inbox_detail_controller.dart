@@ -174,6 +174,7 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -244,6 +245,7 @@ class UserInboxDetailController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

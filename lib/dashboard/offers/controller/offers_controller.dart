@@ -147,16 +147,13 @@ class OffersController extends GetxController {
             body,
             ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
             headers,
-            showLoading: true)
+            showLoading: page.value == 1)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
       debugPrint("OWNER OFFERS LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        // getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
-        // getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
-
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         totalCount.value = getOwnerOffersListModel.data?.totalCount ?? 0;
         List<OffersList>? offerListNewList = [];
@@ -172,6 +169,7 @@ class OffersController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -189,7 +187,7 @@ class OffersController extends GetxController {
     getUserOffersListModel = GetUserOfferListModel();
     isLoading!.value = true;
     debugPrint(
-      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=$pageCustomer&page_size=20",
+      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=$pageCustomer&page_size=3",
     );
 
     Map<String, String> headers = {
@@ -202,14 +200,12 @@ class OffersController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
             headers,
-            showLoading: true)
+            showLoading: pageCustomer.value == 1)
         .then((value) async {
       isLoading!.value = false;
       debugPrint("USER OFFERS LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        // getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
-        // getUserOfferList.value = getUserOffersListModel.data!.stores!;
         getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
         totalCountCustomer.value = getUserOffersListModel.data?.totalCount ?? 0;
         List<UserOfferStores>? offerUserNewList = [];
@@ -225,6 +221,7 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -269,6 +266,7 @@ class OffersController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -322,6 +320,8 @@ class OffersController extends GetxController {
             userFeaturedProductModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {

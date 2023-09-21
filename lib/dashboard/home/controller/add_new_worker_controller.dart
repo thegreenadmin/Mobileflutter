@@ -192,6 +192,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message'] ?? "");
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         Utility.showAlertMessage(value?.body['message'] ?? "");
@@ -321,6 +322,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -361,6 +363,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
@@ -545,6 +548,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -580,6 +584,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -615,6 +620,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -697,6 +703,7 @@ class AddNewWorkerController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {

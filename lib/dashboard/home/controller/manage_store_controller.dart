@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -334,6 +333,7 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -371,6 +371,7 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -459,6 +460,7 @@ class ManageStoreController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -508,6 +510,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -637,6 +640,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -761,6 +765,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -801,6 +806,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {
@@ -840,6 +846,7 @@ class ManageStoreController extends GetxController {
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value.body['message'] != null) {

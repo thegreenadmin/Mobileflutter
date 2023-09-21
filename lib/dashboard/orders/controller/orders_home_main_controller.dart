@@ -12,11 +12,14 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 class OrdersHomeMainController extends GetxController {
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
+  RxBool preventCall = false.obs;
   RxString? firstName = "".obs;
   RxString? role = "".obs;
   RxString? lastName = "".obs;
   RxInt selectedIndex = 0.obs;
   RxInt pageId = 0.obs;
+  RxInt totalCount = 0.obs;
+  RxInt page = 1.obs;
   RxString storeId = "".obs;
   RxString orderStatusId = "".obs;
   RxString orderId = "".obs;
@@ -65,9 +68,25 @@ class OrdersHomeMainController extends GetxController {
         }
 
         apiGetStoreDetails();
+        setupScrollController();
         role!.value = Role.storeOwnerRoleText;
         apiGetOwnerOrderHistory();
         getPage();
+      }
+    });
+  }
+
+  final scrollController = ScrollController();
+  setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        getOwnerOrderHistoryModel = GetOwnerOrderHistoryModel();
+        if (ownerOrderHistoryList!.length < totalCount.value) {
+          page.value++;
+          apiGetOwnerOrderHistory().then((_) => preventCall.value = false);
+          preventCall.value = true;
+        }
       }
     });
   }
@@ -92,6 +111,7 @@ class OrdersHomeMainController extends GetxController {
   }
 
   void onIndexChange(int i) async {
+    page.value = 1;
     selectedIndex.value = i;
     switch (i) {
       case 0: //Active Orders
@@ -121,6 +141,7 @@ class OrdersHomeMainController extends GetxController {
       default:
         {
           debugPrint(selectedIndex.value.toString());
+          await apiGetOwnerOrderHistory();
         }
         break;
     }
@@ -158,6 +179,7 @@ class OrdersHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -173,6 +195,9 @@ class OrdersHomeMainController extends GetxController {
       String endDateOfMonth = "",
       orderStatus = Map<String, String>}) async {
     isLoading.value = true;
+    if (page.value == 1) {
+      ownerOrderHistoryList!.value = [];
+    }
     debugPrint(
         "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
 
@@ -184,8 +209,8 @@ class OrdersHomeMainController extends GetxController {
 
     Map body = {
       "store_id": storeId.value,
-      "page": 1,
-      "page_size": 1000,
+      "page": page.value,
+      "page_size": 5,
       "order_by": "order_id",
       "order_type": "DESC",
       "from_date": null,
@@ -201,18 +226,18 @@ class OrdersHomeMainController extends GetxController {
               ? [
                   {
                     "order_status_name": OrderStatusEnum.inTransit.statusName
-                  }, //"shipped"
+                  }, // inTransit
                   {
                     "order_status_name":
                         OrderStatusEnum.readyForPickup.statusName
-                  }, //ready pickup
+                  }, // ready pickup
                 ]
               : selectedIndex.value == 3
                   ? [
                       {
                         "order_status_name":
                             OrderStatusEnum.completed.statusName
-                      }, //"shipped"
+                      }, // completed
                       {
                         "order_status_name":
                             OrderStatusEnum.cancelled.statusName
@@ -247,7 +272,7 @@ class OrdersHomeMainController extends GetxController {
             body,
             ServerCommunicator().baseUrl + ServerCommunicator().storeOrderList,
             headers,
-            showLoading: true)
+            showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
       debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
@@ -255,7 +280,17 @@ class OrdersHomeMainController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
             GetOwnerOrderHistoryModel.fromJson(value.body);
-        ownerOrderHistoryList!.value = getOwnerOrderHistoryModel.data!.orders!;
+        totalCount.value = getOwnerOrderHistoryModel.data!.totalCount!;
+        List<Orders>? orders = [];
+        orders = getOwnerOrderHistoryModel.data!.orders ?? [];
+        if (orders.isNotEmpty) {
+          if (page.value == 1) {
+            ownerOrderHistoryList!.value = [];
+          }
+          ownerOrderHistoryList!.addAll(orders);
+        }
+        ownerOrderHistoryList!.toSet().toList();
+
         update();
       } else {
         if (value.body['message'] != null) {
@@ -340,6 +375,7 @@ class OrdersHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {

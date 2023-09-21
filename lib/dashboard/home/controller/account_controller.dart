@@ -147,9 +147,6 @@ class AccountController extends GetxController {
       }
     }
     isScreenLockNotify.value = authenticatedBiometric.value;
-    // isOwner.value = BioMetricAuthentication.isBioMetricAuthenticated.value
-    //     ? isScreenLockNotify.value = true
-    //     : isScreenLockNotify.value = false;
   }
 
   Future<void> showSelectionDialog(BuildContext context) {
@@ -501,8 +498,7 @@ class AccountController extends GetxController {
         // await apiGetCountries();
       } else if (value.body["status"] == 401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
       }
@@ -545,8 +541,7 @@ class AccountController extends GetxController {
         apiGetStates();
       } else if (value.body["status"] == ApiConstants.statusCode403) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -592,8 +587,7 @@ class AccountController extends GetxController {
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -666,8 +660,7 @@ class AccountController extends GetxController {
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -706,8 +699,7 @@ class AccountController extends GetxController {
         Utility.showToast(value.body['message']);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {
@@ -799,8 +791,7 @@ class AccountController extends GetxController {
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen(), id: pageIdApp.value);
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -853,8 +844,7 @@ class AccountController extends GetxController {
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -889,8 +879,7 @@ class AccountController extends GetxController {
         Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {
@@ -926,8 +915,7 @@ class AccountController extends GetxController {
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -976,8 +964,7 @@ class AccountController extends GetxController {
         noOfDaysTextController.clear();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
         noOfDaysTextController.clear();
@@ -1017,8 +1004,7 @@ class AccountController extends GetxController {
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
-        await Get.offAll(const StartJourneyScreen());
+        clearData();
       } else {
         if (value.body['message'] != null) {
           Utility.showAlertMessage(value.body['message']);
@@ -1049,13 +1035,11 @@ class AccountController extends GetxController {
       debugPrint("DELETE USER RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        clearData();
-        await Get.offAll(const StartJourneyScreen());
         Utility.showToast(value.body['message']);
+        clearData();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         clearData();
-        await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {
@@ -1083,13 +1067,11 @@ class AccountController extends GetxController {
       debugPrint("LOGGED OUT RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
-        clearData();
-        await Get.offAll(const StartJourneyScreen());
         Utility.showToast(value.body['message']);
+        clearData();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         clearData();
-        await Get.offAll(const StartJourneyScreen());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
       } else {
         if (value.body['message'] != null) {

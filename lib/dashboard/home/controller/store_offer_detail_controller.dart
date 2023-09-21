@@ -75,6 +75,7 @@ class StoreOfferDetailController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {

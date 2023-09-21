@@ -18,6 +18,7 @@ SizedBox height45SizedBox = const SizedBox(height: 45);
 SizedBox height50SizedBox = const SizedBox(height: 50);
 SizedBox height55SizedBox = const SizedBox(height: 55);
 SizedBox height60SizedBox = const SizedBox(height: 60);
+SizedBox height70SizedBox = const SizedBox(height: 70);
 SizedBox height80SizedBox = const SizedBox(height: 80);
 SizedBox height90SizedBox = const SizedBox(height: 90);
 SizedBox height100SizedBox = const SizedBox(height: 100);

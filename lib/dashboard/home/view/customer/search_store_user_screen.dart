@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -119,14 +120,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                 visible:
                                     searchStoreUserController.cartCount.value !=
                                         0,
-                                //      ||
-                                // storeHomeMainController
-                                //     .productDetailResponse
-                                //     .value
-                                //     .data!
-                                //     .product!
-                                //     .cartItems!
-                                //     .isNotEmpty,
                                 child: Padding(
                                   padding: const EdgeInsets.all(6.0),
                                   child: Row(
@@ -281,9 +274,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           GoogleMapsGeocoding(apiKey: kGoogleApiKey);
                       GeocodingResponse response = await geocoding
                           .searchByAddress(p?.description.toString() ?? "");
-                      // log("GeocodingResponse web services:------------");
-                      // log(jsonEncode(response.results));
-
                       final result = response.results.isNotEmpty
                           ? response.results.first
                           : null;
@@ -300,41 +290,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         updateMap(response.results.first.geometry.location.lat,
                             response.results.first.geometry.location.lng);
                       }
-
-                      /*  List<geocoding.Location> locations = await geocoding
-                          .locationFromAddress(p?.description.toString() ?? "");
-
-                      List<geocoding.Placemark> placeMark =
-                          await geocoding.placemarkFromCoordinates(
-                              locations.first.latitude,
-                              locations.first.longitude);
-                      String address =
-                          "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
-
-                      debugPrint("ADDRESSES---->$address");
-
-                      if(placeMark.isNotEmpty){
-                        searchStoreUserController.city.value =
-                            placeMark.first.locality!;
-                      searchStoreUserController.state.value =
-                            placeMark.first.administrativeArea!;
-                      searchStoreUserController.country.value =
-                            placeMark.first.country!;
-                      searchStoreUserController.zipCodeTextController.text =
-                            placeMark.first.postalCode??"";
-                      }
-                      if(locations.isNotEmpty){
-                        updateMap(locations.first.latitude, locations.first.longitude);
-                      }*/
-
-                      ///--------------------------------
-                      /* GeoData addresses = await Geocoder2.getDataFromAddress(
-                          address: p?.description.toString() ?? "",
-                          googleMapApiKey: kGoogleApiKey);
-                      searchStoreUserController.zipCodeTextController.text =
-                          addresses.postalCode;
-
-                      updateMap(addresses.latitude, addresses.longitude);*/
                     },
                     controller: searchStoreUserController.searchController,
                     style: const TextStyle(
@@ -412,9 +367,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 searchStoreUserController.favouriteStore.clear();
                 searchStoreUserController.page.value = 1;
                 searchStoreUserController.type.value = i;
+                searchStoreUserController.totalCount.value = 0;
                 Get.parameters["isFromHome"] = "true";
                 Get.parameters["isFromFav"] = "false";
                 Get.parameters["isFromMenu"] = "false";
+                Get.parameters["isFromOptions"] = "false";
                 if (i == 0 &&
                     searchStoreUserController.isClicked.value == false) {
                   await searchStoreUserController.apiGetNearByStores();
@@ -477,10 +434,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
-    // WidgetsBinding.instance.addPostFrameCallback((_)async{
     await searchStoreUserController.apiGetNearByStores(isSearch: true);
     updateMarker(lat, lng);
-    // });
   }
 
   void updateMarker(latitude, longitude) async {
@@ -518,24 +473,3 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         .asUint8List();
   }
 }
-
-// Prediction? p = await PlacesAutocomplete.show(
-//                       offset: 0,
-//                       radius: 1000,
-//                       types: [],
-//                       strictbounds: false,
-//                       context: context,
-//                       apiKey: accountController.kGoogleApiKey,
-//                       mode: Mode.overlay,
-//                       language: "en",
-//                       components: []);
-//                   int idx = p!.description!.indexOf(",");
-//                   List parts = [
-//                     p.description!.substring(0, idx).trim(),
-//                     p.description!.substring(idx + 1).trim()
-//                   ];
-//                   accountController.addressLine1TextController.text =
-//                       parts[0].toString();
-//                   GeoData addresses = await Geocoder2.getDataFromAddress(
-//                       address: p.description.toString(),
-//                       googleMapApiKey: accountController.kGoogleApiKey);

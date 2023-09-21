@@ -88,7 +88,6 @@ class ContactUsController extends GetxController {
         subjectTextController.clear();
         messageTextController.clear();
         Get.back(id: pageIdApp.value);
-        // Navigator.of(ctx).pop();
       } else if (value.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value.body['message']);
       } else {

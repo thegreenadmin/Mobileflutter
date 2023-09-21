@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
@@ -17,7 +19,6 @@ class OrdersHomeMainScreen extends StatefulWidget {
 class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
-
 
   Padding horizontalTabs() {
     return Padding(
@@ -315,339 +316,363 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                         separatorBuilder: (BuildContext context, int index) {
                           return height10SizedBox;
                         },
+                        controller: ordersHomeMainController.scrollController,
                         itemCount: ordersHomeMainController
-                            .ownerOrderHistoryList!.length,
+                                .ownerOrderHistoryList!.length +
+                            (ordersHomeMainController.isLoading.value ? 1 : 0),
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              ordersHomeMainController.storeId.value =
-                                  ordersHomeMainController
-                                          .ownerOrderHistoryList?[index]
-                                          .storeId ??
-                                      "";
-
-                              ordersHomeMainController.orderId.value =
-                                  ordersHomeMainController
-                                          .ownerOrderHistoryList?[index]
-                                          .orderId ??
-                                      "";
-
-                              Get.parameters["storeId"] =
-                                  ordersHomeMainController
-                                          .ownerOrderHistoryList![index]
-                                          .storeId ??
-                                      "";
-
-                              Get.parameters["orderId"] =
-                                  ordersHomeMainController
-                                          .ownerOrderHistoryList![index]
-                                          .orderId ??
-                                      "";
-                              ordersHomeMainController.onInit();
-
+                          if (index <
                               ordersHomeMainController
-                                          .ownerOrderHistoryList![index]
-                                          .orderHistories!
-                                          .first
-                                          .orderStatus!
-                                          .orderStatusName ==
-                                      OrderStatusEnum.returnRequest.statusName
-                                  ? hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                          permissionStoreList.any((element) =>
-                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
-                                                  element.isStoreOwner ==
-                                                      true ||
-                                              element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
-                                                  element.controllers!.any((ele) =>
-                                                      ele.controllerKey ==
-                                                      PermissionKey
-                                                          .manageReturnRequests
-                                                          .statusName))
-                                      ? Get.to(() => const MarkReturnOrderScreen(),
-                                              id: pageIdApp.value)!
-                                          .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
-                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
-                                  /*: ordersHomeMainController
-                                  .ownerOrderHistoryList![index]
-                                  .orderHistories!
-                                  .first
-                                  .orderStatus!
-                                  .orderStatusName == //"12"
-                                  OrderStatus
-                                      .returnConfirmed
-                                      .statusName
-                                  ? Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const ReturnConfirmOrderScreen(),
-                              ))*/
-                                  /*: ordersHomeMainController
-                                              .ownerOrderHistoryList![index]
-                                              .orderHistories!
-                                              .first
-                                              .orderStatus!
-                                              .orderStatusName == //7
-                                          OrderStatusEnum.cancelled.statusName
-                                      ? null*/
-                                  : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value)?.then((value) {
-                                      ordersHomeMainController.onIndexChange(
-                                          ordersHomeMainController
-                                              .selectedIndex.value);
-                                    });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  )),
-                              child: Column(children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      flex: 2,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: AppColors.white,
-                                                width: 1)),
-                                        child: const CircleAvatar(
-                                          radius: 30.0,
-                                          backgroundImage: AssetImage(
-                                            ImageConstants.userAccount,
+                                  .ownerOrderHistoryList!.length) {
+                            return InkWell(
+                              onTap: () {
+                                ordersHomeMainController.storeId.value =
+                                    ordersHomeMainController
+                                            .ownerOrderHistoryList?[index]
+                                            .storeId ??
+                                        "";
+
+                                ordersHomeMainController.orderId.value =
+                                    ordersHomeMainController
+                                            .ownerOrderHistoryList?[index]
+                                            .orderId ??
+                                        "";
+
+                                Get.parameters["storeId"] =
+                                    ordersHomeMainController
+                                            .ownerOrderHistoryList![index]
+                                            .storeId ??
+                                        "";
+
+                                Get.parameters["orderId"] =
+                                    ordersHomeMainController
+                                            .ownerOrderHistoryList![index]
+                                            .orderId ??
+                                        "";
+                                ordersHomeMainController.onInit();
+
+                                ordersHomeMainController
+                                            .ownerOrderHistoryList![index]
+                                            .orderHistories!
+                                            .first
+                                            .orderStatus!
+                                            .orderStatusName ==
+                                        OrderStatusEnum.returnRequest.statusName
+                                    ? hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                            permissionStoreList.any((element) =>
+                                                element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
+                                                    element.isStoreOwner ==
+                                                        true ||
+                                                element.storeId == ordersHomeMainController.ownerOrderHistoryList![index].storeId &&
+                                                    element.controllers!.any((ele) =>
+                                                        ele.controllerKey ==
+                                                        PermissionKey
+                                                            .manageReturnRequests
+                                                            .statusName))
+                                        ? Get.to(
+                                                () => const MarkReturnOrderScreen(),
+                                                id: pageIdApp.value)!
+                                            .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
+                                        : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
+                                    /*: ordersHomeMainController
+                                                        .ownerOrderHistoryList![index]
+                                                        .orderHistories!
+                                                        .first
+                                                        .orderStatus!
+                                                        .orderStatusName == //"12"
+                                                        OrderStatus
+                                                            .returnConfirmed
+                                                            .statusName
+                                                        ? Navigator.of(context).push(MaterialPageRoute(
+                                                      builder: (_) => const ReturnConfirmOrderScreen(),
+                                                    ))*/
+                                    /*: ordersHomeMainController
+                                                                    .ownerOrderHistoryList![index]
+                                                                    .orderHistories!
+                                                                    .first
+                                                                    .orderStatus!
+                                                                    .orderStatusName == //7
+                                                                OrderStatusEnum.cancelled.statusName
+                                                            ? null*/
+                                    : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value)?.then((value) {
+                                        ordersHomeMainController.onIndexChange(
+                                            ordersHomeMainController
+                                                .selectedIndex.value);
+                                      });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: const BoxDecoration(
+                                    color: AppColors.greylight,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    )),
+                                child: Column(children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        flex: 2,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: AppColors.white,
+                                                  width: 1)),
+                                          child: const CircleAvatar(
+                                            radius: 30.0,
+                                            backgroundImage: AssetImage(
+                                              ImageConstants.userAccount,
+                                            ),
+                                            backgroundColor: Colors.transparent,
                                           ),
-                                          backgroundColor: Colors.transparent,
                                         ),
                                       ),
-                                    ),
-                                    width10SizedBox,
-                                    Flexible(
-                                      flex: 8,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  ordersHomeMainController
-                                                          .ownerOrderHistoryList![
-                                                              index]
-                                                          .customerName
-                                                          ?.toTitleCase() ??
-                                                      "",
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 16)),
-                                            ],
-                                          ),
-                                          height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "${StringConstants.orderedDateText}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
-                                              Text(
-                                                  Utility.parseDateTime(
-                                                    DateTime.parse(
-                                                        ordersHomeMainController
+                                      width10SizedBox,
+                                      Flexible(
+                                        flex: 8,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    ordersHomeMainController
                                                             .ownerOrderHistoryList![
                                                                 index]
-                                                            .orderDate
-                                                            .toString()),
-                                                    secFormat: '',
-                                                  ).toString(),
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14))
-                                            ],
-                                          ),
-                                          height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                    "${StringConstants.estimatedDeliveryDateText}: ",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                            .customerName
+                                                            ?.toTitleCase() ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 16)),
+                                              ],
+                                            ),
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "${StringConstants.orderedDateText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
                                                             .blacklight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
-                                              ),
-                                              Text(
-                                                  Utility.parseDateTime(
-                                                    DateTime.parse(
-                                                        ordersHomeMainController
-                                                            .ownerOrderHistoryList![
-                                                                index]
-                                                            .estimateDeliveryDate
-                                                            .toString()),
-                                                    secFormat: '',
-                                                  ).toString(),
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14))
-                                            ],
-                                          ),
-                                          height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "${StringConstants.orderType}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
-                                              Text(
-                                                  ordersHomeMainController
-                                                              .ownerOrderHistoryList?[
+                                                Text(
+                                                    Utility.parseDateTime(
+                                                      DateTime.parse(
+                                                          ordersHomeMainController
+                                                              .ownerOrderHistoryList![
                                                                   index]
-                                                              .deliveryServiceId
-                                                              .toString() ==
-                                                          "1"
-                                                      ? StringConstants
-                                                          .inStoreText
-                                                      : ordersHomeMainController
-                                                                  .ownerOrderHistoryList?[
-                                                                      index]
-                                                                  .deliveryServiceId
-                                                                  .toString() ==
-                                                              "2"
-                                                          ? StringConstants
-                                                              .deliveryText
-                                                          : StringConstants
-                                                              .curbSideText,
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14))
-                                            ],
-                                          ),
-                                          height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "${StringConstants.statusText}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
-                                              Text(
-                                                  ordersHomeMainController
-                                                          .ownerOrderHistoryList?[
-                                                              index]
-                                                          .orderHistories
-                                                          ?.first
-                                                          .orderStatus
-                                                          ?.orderStatusName
-                                                          ?.toTitleCase() ??
-                                                      "",
-                                                  style: const TextStyle(
-                                                      color: AppColors.green,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14))
-                                            ],
-                                          ),
-                                          /* height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "${StringConstants.pickUpDateText}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                      Utility.parseDateTime(
-                                                        DateTime.parse(
-                                                            ordersHomeMainController
-                                                                .ownerOrderHistoryList![
-                                                                    index]
-                                                                .orderDate
-                                                                .toString()),
-                                                        secFormat: '',
-                                                      ).toString(),
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
+                                                              .orderDate
+                                                              .toString()),
+                                                      secFormat: '',
+                                                    ).toString(),
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                      "${StringConstants.estimatedDeliveryDateText}: ",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .blacklight,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           fontSize: 14)),
-                                                  Icon(
-                                                    Icons.chevron_right,
-                                                    color: AppColors.blacklight,
-                                                    size: 22.0,
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),*/
-                                          height5SizedBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "${StringConstants.orderAmountText}: ",
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14)),
-                                              Text(
-                                                  "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 14))
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ]),
-                            ),
-                          );
+                                                ),
+                                                Text(
+                                                    Utility.parseDateTime(
+                                                      DateTime.parse(
+                                                          ordersHomeMainController
+                                                              .ownerOrderHistoryList![
+                                                                  index]
+                                                              .estimateDeliveryDate
+                                                              .toString()),
+                                                      secFormat: '',
+                                                    ).toString(),
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "${StringConstants.orderType}: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                                Text(
+                                                    ordersHomeMainController
+                                                                .ownerOrderHistoryList?[
+                                                                    index]
+                                                                .deliveryServiceId
+                                                                .toString() ==
+                                                            "1"
+                                                        ? StringConstants
+                                                            .inStoreText
+                                                        : ordersHomeMainController
+                                                                    .ownerOrderHistoryList?[
+                                                                        index]
+                                                                    .deliveryServiceId
+                                                                    .toString() ==
+                                                                "2"
+                                                            ? StringConstants
+                                                                .deliveryText
+                                                            : StringConstants
+                                                                .curbSideText,
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "${StringConstants.statusText}: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                                Text(
+                                                    ordersHomeMainController
+                                                            .ownerOrderHistoryList?[
+                                                                index]
+                                                            .orderHistories
+                                                            ?.first
+                                                            .orderStatus
+                                                            ?.orderStatusName
+                                                            ?.toTitleCase() ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        color: AppColors.green,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
+                                            /* height5SizedBox,
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        "${StringConstants.pickUpDateText}: ",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                AppColors.blacklight,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            fontSize: 14)),
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                            Utility.parseDateTime(
+                                                                              DateTime.parse(
+                                                                                  ordersHomeMainController
+                                                                                      .ownerOrderHistoryList![
+                                                                                          index]
+                                                                                      .orderDate
+                                                                                      .toString()),
+                                                                              secFormat: '',
+                                                                            ).toString(),
+                                                                            style: const TextStyle(
+                                                                                color:
+                                                                                    AppColors.black,
+                                                                                fontWeight:
+                                                                                    FontWeight.w600,
+                                                                                fontSize: 14)),
+                                                                        Icon(
+                                                                          Icons.chevron_right,
+                                                                          color: AppColors.blacklight,
+                                                                          size: 22.0,
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),*/
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "${StringConstants.orderAmountText}: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                                Text(
+                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ]),
+                              ),
+                            );
+                          } else if (ordersHomeMainController.isLoading.value) {
+                            Timer(const Duration(milliseconds: 10), () {
+                              ordersHomeMainController.scrollController.jumpTo(
+                                  ordersHomeMainController.scrollController
+                                      .position.maxScrollExtent);
+                            });
+
+                            return CommonWidgets.loadingIndicator();
+                          } else {
+                            return const SizedBox();
+                          }
                         })))
           ],
         ),

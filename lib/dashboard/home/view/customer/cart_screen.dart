@@ -381,6 +381,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         height10SizedBox,
                         Obx(() => GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: storeHomeMainController
                                       .storeDetailsResponse
                                       .value
@@ -923,7 +924,16 @@ class _CartScreenState extends State<CartScreen> {
                                 )),
                           ),
                         ),
-                        height50SizedBox,
+                        Obx(
+                          () => storeHomeMainController
+                                          .cartData.value.cartTotalPrice !=
+                                      null &&
+                                  storeHomeMainController.walletBalance.value <
+                                      storeHomeMainController
+                                          .cartData.value.cartTotalPrice!
+                              ? height80SizedBox
+                              : height50SizedBox,
+                        ),
                         height40SizedBox,
                       ]),
                 ),

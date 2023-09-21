@@ -1,6 +1,8 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constants.dart';
+
 class SharedPreferenceStorage {
   static final storage = GetStorage();
 
@@ -24,7 +26,7 @@ class SharedPreferenceStorage {
     return storage.read(key);
   }
 
-  static Future<int?> getInt(String key) async{
+  static Future<int?> getInt(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);
     // final GetStorage storage = GetStorage();
@@ -43,8 +45,19 @@ class SharedPreferenceStorage {
     // return storage.read(key);
   }
 
-  static void clearData() async{
+  static void clearData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
+    SharedPreferenceStorage.removeData(StringConstants.firstNameText);
+    SharedPreferenceStorage.removeData(StringConstants.lastNameText);
+    SharedPreferenceStorage.removeData(StringConstants.emailText);
+    SharedPreferenceStorage.removeData(StringConstants.authenticatedText);
+    SharedPreferenceStorage.removeData(StringConstants.currentUserIdText);
+    SharedPreferenceStorage.removeData(Role.role);
+    SharedPreferenceStorage.removeData(StringConstants.lastNameSmallText);
+    SharedPreferenceStorage.removeData(StringConstants.emailText.toLowerCase());
+    SharedPreferenceStorage.removeData(StringConstants.tokenText);
+    SharedPreferenceStorage.removeData(StringConstants.contextText);
     await prefs.clear();
     // final GetStorage storage = GetStorage();
     // storage.erase();
