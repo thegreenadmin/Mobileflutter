@@ -1027,16 +1027,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           ),
                                           Visibility(
                                             visible:
-                                                // ordersController
-                                                //             .orderItems[i]
-                                                //             .product!
-                                                //             .productReviews ==
-                                                //         null &&
-                                                //     ordersController
-                                                //         .orderItems[i]
-                                                //         .product!
-                                                //         .productReviews!
-                                                //         .isEmpty &&
+                                                    ordersController
+                                                        .orderItems[i]
+                                                        .product!
+                                                        .productReviews!
+                                                        .isEmpty &&
                                                     ordersController.activeStep.value ==
                                                         3 &&
                                                     ordersController

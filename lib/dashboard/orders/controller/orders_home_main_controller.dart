@@ -421,8 +421,8 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
-
         update();
       } else {
         if (value.body['message'] != null) {
@@ -475,8 +475,9 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
+        await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
-
         update();
       } else {
         if (value?.body['message'] != null) {
@@ -518,8 +519,9 @@ class OrdersHomeMainController extends GetxController {
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        page.value == 1;
+        await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
-
         update();
       } else {
         if (value.body['message'] != null) {
@@ -571,6 +573,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
         Get.back(id: pageIdApp.value);
 
         update();
@@ -625,6 +628,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
@@ -682,6 +686,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
@@ -739,6 +744,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
@@ -796,6 +802,7 @@ class OrdersHomeMainController extends GetxController {
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
+        page.value == 1;
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
