@@ -30,6 +30,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+
       if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
@@ -37,42 +38,44 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.productId.value =
           Get.parameters["productId"] ?? "";
       storeHomeMainController.isFromHome.value =
-          Get.parameters["isFromHome"] == "true" ? true : false;
+          Get.parameters["isFromHome"] == "true";
       storeHomeMainController.isFromMenu.value =
-          Get.parameters["isFromMenu"] == "true" ? true : false;
+          Get.parameters["isFromMenu"] == "true";
       storeHomeMainController.isFromFav.value =
-          Get.parameters["isFromFav"] == "true" ? true : false;
+          Get.parameters["isFromFav"] == "true";
       storeHomeMainController.isFromOptions.value =
-          Get.parameters["isFromOptions"] == "true" ? true : false;
+          Get.parameters["isFromOptions"] == "true";
       storeHomeMainController.apiGetUserDetailsApi();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.lastSelectedIndex.value = 1;
-        storeHomeMainController.onIndexChange(1);
+        storeHomeMainController.showLoading.value = false;
+        // storeHomeMainController.onIndexChange(1);
       }
       if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
         storeHomeMainController.lastSelectedIndex.value = 2;
         storeHomeMainController.showLoading.value = false;
-        storeHomeMainController.onIndexChange(2);
+        // storeHomeMainController.onIndexChange(2);
       }
 
       if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.lastSelectedIndex.value = 0;
         storeHomeMainController.showLoading.value = false;
-        storeHomeMainController.onIndexChange(0);
+        // storeHomeMainController.onIndexChange(0);
       }
       if (storeHomeMainController.isFromOptions.value) {
         storeHomeMainController.selectedIndex.value = 3;
         storeHomeMainController.lastSelectedIndex.value = 3;
         storeHomeMainController.showLoading.value = false;
-        storeHomeMainController.onIndexChange(3);
+        // storeHomeMainController.onIndexChange(3);
       }
-      storeHomeMainController.apiGetCartListApi();
-      storeHomeMainController.apiGetShopProductDetailApi();
-      storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiActiveCartApi();
+
+      // storeHomeMainController.apiGetCartListApi();
+      // storeHomeMainController.apiGetShopProductDetailApi();
+      // storeHomeMainController.apiGetUserWalletBalance();
+      // storeHomeMainController.apiActiveCartApi();
     });
   }
 

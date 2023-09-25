@@ -523,7 +523,8 @@ class StoreHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -565,7 +566,8 @@ class StoreHomeMainController extends GetxController {
         await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();  Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -604,7 +606,8 @@ class StoreHomeMainController extends GetxController {
         categoriesList.value = categoriesListResponse.data?.categories ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();  Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -644,7 +647,8 @@ class StoreHomeMainController extends GetxController {
         getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -722,7 +726,8 @@ class StoreHomeMainController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -801,7 +806,8 @@ class StoreHomeMainController extends GetxController {
 
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         isPlaceOrder.value = true;
@@ -853,11 +859,13 @@ class StoreHomeMainController extends GetxController {
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        itemsCount.value = 1;
         addToCartDialog(context);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message'] != null) {
@@ -901,7 +909,8 @@ class StoreHomeMainController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData(); Get.parameters.clear();
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
@@ -1248,8 +1257,8 @@ class StoreHomeMainController extends GetxController {
             productDetailResponse.value.data?.product?.isFavouriteProduct ??
                 false;
         if (productDetailResponse.value.data!.product!.cartItems!.isNotEmpty) {
-          itemsCount.value = productDetailResponse
-              .value.data!.product!.cartItems!.first.itemsCount!;
+          // itemsCount.value = productDetailResponse
+          //     .value.data!.product!.cartItems!.first.itemsCount!;
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

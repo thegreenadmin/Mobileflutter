@@ -786,7 +786,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         children: [
                                           Text(
                                             ordersController.orderItems[i]
-                                                    .product?.productName ??
+                                                    .product?.productName?.toCapitalized() ??
                                                 "",
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -1027,16 +1027,16 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                           ),
                                           Visibility(
                                             visible:
-                                                ordersController
-                                                            .orderItems[i]
-                                                            .product!
-                                                            .productReviews ==
-                                                        null &&
-                                                    ordersController
-                                                        .orderItems[i]
-                                                        .product!
-                                                        .productReviews!
-                                                        .isEmpty &&
+                                                // ordersController
+                                                //             .orderItems[i]
+                                                //             .product!
+                                                //             .productReviews ==
+                                                //         null &&
+                                                //     ordersController
+                                                //         .orderItems[i]
+                                                //         .product!
+                                                //         .productReviews!
+                                                //         .isEmpty &&
                                                     ordersController.activeStep.value ==
                                                         3 &&
                                                     ordersController
@@ -1287,7 +1287,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           ?.productReviews
                                                           ?.first
                                                           .review
-                                                          .toString() ??
+                                                          ?.toCapitalized() ??
                                                       ""
                                                   : "",
                                               style: TextStyle(

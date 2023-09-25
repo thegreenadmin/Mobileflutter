@@ -782,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? homeController.featuredUserProductList.isEmpty
                         ? height0SizedBox
                         : SizedBox(
-                            height: WidgetConstants.screenHeight * 0.26,
+                            height: WidgetConstants.screenHeight * 0.266,
                             width: WidgetConstants.screenWidth,
                             child: ListView.separated(
                               separatorBuilder:

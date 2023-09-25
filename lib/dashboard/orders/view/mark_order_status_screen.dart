@@ -569,6 +569,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                       .dynamicUrl
                                                       .toString(),
                                               height: 70.0,
+                                              width: 70.0,
                                               fit: BoxFit.fill,
                                             ),
                                           ),

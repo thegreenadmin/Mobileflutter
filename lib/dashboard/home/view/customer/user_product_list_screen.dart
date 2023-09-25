@@ -497,9 +497,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                   storeHomeMainController
                                       .featureProductList[i].productId
                                       .toString();
-                              storeHomeMainController
-                                  .apiGetShopProductDetailApi();
-                              await storeHomeMainController.apiGetCartListApi();
 
                               Get.parameters['isFromFav'] = "false";
                               Get.parameters["isFromHome"] = "false";

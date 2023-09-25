@@ -188,48 +188,42 @@ class _OffersScreenState extends State<OffersScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              width: 270,
-                                              child: Text(
-                                                offersController
-                                                        .getUserOfferList[index]
-                                                        .storeName ??
-                                                    "",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: AppColors.black,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
+                                            Text(
+                                              offersController
+                                                      .getUserOfferList[index]
+                                                      .storeName ??
+                                                  "",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: AppColors.black,
+                                                  fontWeight:
+                                                      FontWeight.w600),
                                             ),
                                             height8SizedBox,
-                                            SizedBox(
-                                              width: 270,
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    ImageConstants.loc,
-                                                    scale: 3,
-                                                  ),
-                                                  width6SizedBox,
-                                                  Text(
-                                                    offersController
-                                                            .getUserOfferList[
-                                                                index]
-                                                            .storeAddresses![0]
-                                                            .city ??
-                                                        "",
-                                                    overflow: TextOverflow.fade,
-                                                    style: TextStyle(
-                                                        fontSize: 14.0,
-                                                        color: AppColors
-                                                            .blacklight,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ],
-                                              ),
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  ImageConstants.loc,
+                                                  scale: 3,
+                                                ),
+                                                width6SizedBox,
+                                                Text(
+                                                  offersController
+                                                          .getUserOfferList[
+                                                              index]
+                                                          .storeAddresses![0]
+                                                          .city ??
+                                                      "",
+                                                  overflow: TextOverflow.fade,
+                                                  style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      color: AppColors
+                                                          .blacklight,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -408,8 +402,6 @@ class _OffersScreenState extends State<OffersScreen> {
                               return height8SizedBox;
                             },
                             shrinkWrap: true,
-                            // itemCount:
-                            //     offersController.getOwnerOfferList.length,
                             controller: offersController.scrollController,
                             itemCount: offersController
                                     .getOwnerOfferList.isEmpty
@@ -526,61 +518,55 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      SizedBox(
-                                                        width: 200,
-                                                        child: Text(
-                                                          offersController
-                                                                  .getOwnerOfferList[
-                                                                      index]
-                                                                  .store!
-                                                                  .storeName ??
-                                                              "",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          maxLines: 2,
-                                                          style: const TextStyle(
-                                                              fontSize: 16.0,
-                                                              color: AppColors
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
+                                                      Text(
+                                                        offersController
+                                                                .getOwnerOfferList[
+                                                                    index]
+                                                                .store!
+                                                                .storeName ??
+                                                            "",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 2,
+                                                        style: const TextStyle(
+                                                            fontSize: 16.0,
+                                                            color: AppColors
+                                                                .black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
                                                       height8SizedBox,
-                                                      SizedBox(
-                                                        width: 200,
-                                                        child: Row(
-                                                          children: [
-                                                            Image.asset(
-                                                              ImageConstants
-                                                                  .loc,
-                                                              scale: 3,
-                                                            ),
-                                                            width6SizedBox,
-                                                            Text(
-                                                              offersController
-                                                                      .getOwnerOfferList[
-                                                                          index]
-                                                                      .store!
-                                                                      .storeAddresses![
-                                                                          0]
-                                                                      .city ??
-                                                                  "",
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .fade,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  color: AppColors
-                                                                      .blacklight,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                      Row(
+                                                        children: [
+                                                          Image.asset(
+                                                            ImageConstants
+                                                                .loc,
+                                                            scale: 3,
+                                                          ),
+                                                          width6SizedBox,
+                                                          Text(
+                                                            offersController
+                                                                    .getOwnerOfferList[
+                                                                        index]
+                                                                    .store!
+                                                                    .storeAddresses![
+                                                                        0]
+                                                                    .city ??
+                                                                "",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    14.0,
+                                                                color: AppColors
+                                                                    .blacklight,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
