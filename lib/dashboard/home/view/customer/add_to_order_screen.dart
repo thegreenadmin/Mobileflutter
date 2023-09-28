@@ -30,7 +30,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
       if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
@@ -1238,13 +1237,22 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               true
                           ? "Yes"
                           : "No"),
-                  height20SizedBox,
-                  _buildRowOtherDetail(
-                      title: StringConstants.returnDaysText,
-                      textData: storeHomeMainController.productDetailResponse
+                  Visibility(visible: storeHomeMainController.productDetailResponse
+                      .value.data?.product?.isProductReturnable ==
+                      true,
+                  child: Column(
+                    children: [
+                      height20SizedBox,
+                      _buildRowOtherDetail(
+                          title: StringConstants.returnDaysText,
+                          textData: storeHomeMainController.productDetailResponse
                               .value.data?.product?.returnDaysCount
                               .toString() ??
-                          "0"),
+                              "0"),
+                    ],
+                  ),
+                  ),
+
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
@@ -1389,7 +1397,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           ),
                                           width8SizedBox,
                                           Text(
-                                            DateFormat('MM-dd-yyyy').format(
+                                            DateFormat('MM/dd/yyyy').format(
                                                 DateTime.parse(
                                                     storeHomeMainController
                                                         .productDetailResponse

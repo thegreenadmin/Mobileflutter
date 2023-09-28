@@ -17,7 +17,6 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    storeHomeMainController.featureProductList.clear();
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),

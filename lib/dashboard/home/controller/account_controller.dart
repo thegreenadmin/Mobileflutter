@@ -1082,17 +1082,6 @@ class AccountController extends GetxController {
   }
 
   clearData() async {
-    SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
-    SharedPreferenceStorage.removeData(StringConstants.firstNameText);
-    SharedPreferenceStorage.removeData(StringConstants.lastNameText);
-    SharedPreferenceStorage.removeData(StringConstants.emailText);
-    SharedPreferenceStorage.removeData(StringConstants.authenticatedText);
-    SharedPreferenceStorage.removeData(StringConstants.currentUserIdText);
-    SharedPreferenceStorage.removeData(Role.role);
-    SharedPreferenceStorage.removeData(StringConstants.lastNameSmallText);
-    SharedPreferenceStorage.removeData(StringConstants.emailText.toLowerCase());
-    SharedPreferenceStorage.removeData(StringConstants.tokenText);
-    SharedPreferenceStorage.removeData(StringConstants.contextText);
     SharedPreferenceStorage.clearData();
     Get.parameters.clear();
     await Get.offAll(const StartJourneyScreen());

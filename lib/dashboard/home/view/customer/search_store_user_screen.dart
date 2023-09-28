@@ -51,6 +51,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         initialIndex: searchStoreUserController.initialIndex.value,
         length: 3,
         vsync: this);
+
     updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
   }
@@ -434,6 +435,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
+    Get.back();
     await searchStoreUserController.apiGetNearByStores(isSearch: true);
     updateMarker(lat, lng);
   }
@@ -455,6 +457,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   late GlobalConfigs secureData;
 
   void updateCurrentLocation() async {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Get.dialog(
+          const Center(
+              child: CircularProgressIndicator(color: AppColors.primary)),
+          barrierDismissible: false);
+    });
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];

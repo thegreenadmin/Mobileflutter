@@ -24,13 +24,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Obx(() => ordersHomeMainController
-                            .storeDetailsResponse.value.data !=
+            Obx(() => /*ordersHomeMainController
+                            .storeDetailsResponse.value.data ==
                         null &&
                     ordersHomeMainController
-                            .storeDetailsResponse.value.data!.store !=
+                            .storeDetailsResponse.value.data!.store ==
                         null
-                ? Container(
+                ? height0SizedBox
+            :*/Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff7c94b6),
                       image: DecorationImage(
@@ -38,7 +39,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                         colorFilter: const ColorFilter.mode(
                             Colors.black45, BlendMode.darken),
                         image: ordersHomeMainController.storeDetailsResponse
-                                        .value.data!.store!.image!.dynamicUrl ==
+                                        .value.data?.store?.image?.dynamicUrl ==
                                     null ||
                                 ordersHomeMainController
                                     .storeDetailsResponse
@@ -96,10 +97,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                     ordersHomeMainController
                                             .storeDetailsResponse
                                             .value
-                                            .data!
-                                            .store!
-                                            .logo!
-                                            .dynamicUrl ??
+                                            .data?.store?.logo?.dynamicUrl ??
                                         "",
                                     fit: BoxFit.contain,
                                     radius: 28.0,
@@ -114,9 +112,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       ordersHomeMainController
                                               .storeDetailsResponse
                                               .value
-                                              .data!
-                                              .store!
-                                              .storeName ??
+                                              .data?.store?.storeName ??
                                           "",
                                       style: const TextStyle(
                                           color: AppColors.white,
@@ -139,10 +135,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                               ordersHomeMainController
                                                       .storeDetailsResponse
                                                       .value
-                                                      .data!
-                                                      .store!
-                                                      .storeAddresses!
-                                                      .first
+                                                      .data?.store?.storeAddresses?.first
                                                       .addressLine1 ??
                                                   "",
                                               style: const TextStyle(
@@ -163,6 +156,9 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         children: [
                                           Text(
                                               ordersHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!=null && ordersHomeMainController
                                                       .storeDetailsResponse
                                                       .value
                                                       .data!
@@ -200,7 +196,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                           ],
                         )),
                   )
-                : height0SizedBox)
+                )
           ],
         ),
       ),

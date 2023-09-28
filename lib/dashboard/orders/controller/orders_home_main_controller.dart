@@ -26,7 +26,7 @@ class OrdersHomeMainController extends GetxController {
   RxString customerName = "".obs;
   RxString orderDate = "".obs;
   RxString orderAmount = "".obs;
-  RxString storeCount = "".obs;
+  RxString storeCount = "0".obs;
   RxBool isFromNotification = false.obs;
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse =
