@@ -68,8 +68,6 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                             searchStoreUserController.previousStore.length) {
                           return InkWell(
                             onTap: () async {
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
                               Get.parameters["storeId"] =
                                   searchStoreUserController
                                           .previousStore[index].storeId ??
@@ -80,10 +78,6 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
                               Get.parameters["isFromOptions"] = "false";
                               await Get.to(() => const StoreHomeMainScreen(),
                                   id: pageIdApp.value);
-
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (_) => const StoreHomeMainScreen(),
-                              // ));
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 6),

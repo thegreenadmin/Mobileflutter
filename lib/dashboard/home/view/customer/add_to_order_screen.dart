@@ -30,51 +30,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
-        storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
-        storeHomeMainController.getCurrentLocation();
-      }
-      storeHomeMainController.productId.value =
-          Get.parameters["productId"] ?? "";
-      storeHomeMainController.isFromHome.value =
-          Get.parameters["isFromHome"] == "true";
-      storeHomeMainController.isFromMenu.value =
-          Get.parameters["isFromMenu"] == "true";
-      storeHomeMainController.isFromFav.value =
-          Get.parameters["isFromFav"] == "true";
-      storeHomeMainController.isFromOptions.value =
-          Get.parameters["isFromOptions"] == "true";
-      storeHomeMainController.apiGetUserDetailsApi();
-      if (storeHomeMainController.isFromMenu.value) {
-        storeHomeMainController.selectedIndex.value = 1;
-        storeHomeMainController.lastSelectedIndex.value = 1;
-        storeHomeMainController.showLoading.value = false;
-        // storeHomeMainController.onIndexChange(1);
-      }
-      if (storeHomeMainController.isFromFav.value) {
-        storeHomeMainController.selectedIndex.value = 2;
-        storeHomeMainController.lastSelectedIndex.value = 2;
-        storeHomeMainController.showLoading.value = false;
-        // storeHomeMainController.onIndexChange(2);
-      }
-
-      if (storeHomeMainController.isFromHome.value) {
-        storeHomeMainController.selectedIndex.value = 0;
-        storeHomeMainController.lastSelectedIndex.value = 0;
-        storeHomeMainController.showLoading.value = false;
-        // storeHomeMainController.onIndexChange(0);
-      }
-      if (storeHomeMainController.isFromOptions.value) {
-        storeHomeMainController.selectedIndex.value = 3;
-        storeHomeMainController.lastSelectedIndex.value = 3;
-        storeHomeMainController.showLoading.value = false;
-        // storeHomeMainController.onIndexChange(3);
-      }
-
-      // storeHomeMainController.apiGetCartListApi();
-      // storeHomeMainController.apiGetShopProductDetailApi();
-      // storeHomeMainController.apiGetUserWalletBalance();
-      // storeHomeMainController.apiActiveCartApi();
+      storeHomeMainController.onInit();
+      storeHomeMainController.apiGetCartListApi();
+      storeHomeMainController.apiGetShopProductDetailApi();
+      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -316,18 +275,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           value: StringConstants.previousOrdersText,
           child: Column(
             children: [
-              SizedBox(
-                width: 120,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.previousText,
-                      style: const TextStyle(
-                          color: AppColors.black, fontFamily: "", fontSize: 14),
-                    ),
-                  ],
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.previousText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
               ),
             ],
           ),
@@ -338,18 +294,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.contactText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.contactText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
             contactAlertDialog(ctx);
@@ -358,18 +311,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.storePolicyText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.storePolicyText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);
@@ -378,18 +328,15 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
-          child: SizedBox(
-            width: 136,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.termsAndConditionsText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);

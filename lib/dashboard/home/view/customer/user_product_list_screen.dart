@@ -27,7 +27,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
     StringConstants.optionsText,
   ].obs;
 
-  void contactAlertDailogue(
+  void contactAlertDialog(
     context,
   ) {
     showDialog(
@@ -260,18 +260,15 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           value: StringConstants.previousOrdersText,
           child: Column(
             children: [
-              SizedBox(
-                width: 120,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.previousOrdersText,
-                      style: const TextStyle(
-                          color: AppColors.black, fontFamily: "", fontSize: 14),
-                    ),
-                  ],
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.previousOrdersText,
+                    style: const TextStyle(
+                        color: AppColors.black, fontFamily: "", fontSize: 14),
+                  ),
+                ],
               ),
             ],
           ),
@@ -282,38 +279,32 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
       } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.contactText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.contactText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
-            contactAlertDailogue(ctx);
+            contactAlertDialog(ctx);
           },
         );
       } else if (index == 2) {
         return PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.storePolicyText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.storePolicyText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);
@@ -322,18 +313,15 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
       } else {
         return PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
-          child: SizedBox(
-            width: 136,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringConstants.termsAndConditionsText,
+                style: const TextStyle(
+                    color: AppColors.black, fontFamily: "", fontSize: 14),
+              ),
+            ],
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);
@@ -688,7 +676,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   }
 
   List<PopupMenuEntry<String>>? productFilterCreateOptionsPopUpList(
-      BuildContext contx) {
+      BuildContext cont) {
     return List.generate(2, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(

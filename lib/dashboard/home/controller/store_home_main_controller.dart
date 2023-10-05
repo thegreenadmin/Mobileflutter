@@ -129,7 +129,6 @@ class StoreHomeMainController extends GetxController {
           showLoading.value = false;
           onIndexChange(3);
         }
-
         apiGetUserWalletBalance();
       }
     });
