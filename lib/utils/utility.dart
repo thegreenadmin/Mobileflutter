@@ -116,6 +116,7 @@ class Utility {
                       ),
                     ),
                   ),
+                  width8SizedBox,
                   InkWell(
                     onTap: () {
                       okayTap!() ?? Get.back();

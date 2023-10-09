@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
@@ -34,9 +37,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        int id = bottomNavigationPageController.selectedIndex.toInt();
-        Get.back(id: id);
-        return false;
+        Utility.showConfirmAlertMessage("Click OK to exit the app.",
+            description: "Click OK to exit the app.", okay: "OK", okayTap: () {
+          Get.back();
+          if (Platform.isAndroid) {
+            SystemNavigator.pop();
+          } else if (Platform.isIOS) {
+            exit(0);
+          }
+          return Future.value(true);
+        });
+        return Future.value(true);
       },
       child: Obx(
         () => Scaffold(
