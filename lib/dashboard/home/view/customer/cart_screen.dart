@@ -30,33 +30,9 @@ class _CartScreenState extends State<CartScreen> {
                 ? ""
                 : Get.parameters["productId"] ?? "";
       }
-
-      storeHomeMainController.isFromHome.value =
-          Get.parameters["isFromHome"] == "true" ? true : false;
-      storeHomeMainController.isFromMenu.value =
-          Get.parameters["isFromMenu"] == "true" ? true : false;
-      storeHomeMainController.isFromFav.value =
-          Get.parameters["isFromFav"] == "true" ? true : false;
-
       storeHomeMainController.apiGetUserDetailsApi();
-      if (storeHomeMainController.isFromMenu.value) {
-        storeHomeMainController.selectedIndex.value = 1;
-      }
-      if (storeHomeMainController.isFromFav.value) {
-        storeHomeMainController.selectedIndex.value = 2;
-      }
-
-      if (storeHomeMainController.isFromHome.value) {
-        storeHomeMainController.selectedIndex.value = 0;
-        storeHomeMainController.apiGetCartListApi();
-        storeHomeMainController.apiGetShopProductDetailApi();
-      } else {
-        if (storeHomeMainController.isFromMenu.value) {
-          storeHomeMainController.selectedIndex.value = 1;
-        } else if (storeHomeMainController.isFromFav.value) {
-          storeHomeMainController.selectedIndex.value = 2;
-        }
-      }
+      storeHomeMainController.showLoading.value = false;
+      storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetUserWalletBalance();
       storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiActiveCartApi();
@@ -467,7 +443,8 @@ class _CartScreenState extends State<CartScreen> {
                                         await storeHomeMainController
                                             .apiGetUserWalletBalance();
                                         await storeHomeMainController
-                                            .apiGetCartListApi();
+                                            .apiGetCartListApi(
+                                                isShowLoading: true);
                                       },
                                       height: 40,
                                       text: storeHomeMainController

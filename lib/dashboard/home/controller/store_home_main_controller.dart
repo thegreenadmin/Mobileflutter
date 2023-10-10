@@ -658,7 +658,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   ///Get Cart List Api
-  Future apiGetCartListApi() async {
+  Future apiGetCartListApi({bool isShowLoading = false}) async {
     isLoading.value = true;
 
     debugPrint(
@@ -682,7 +682,7 @@ class StoreHomeMainController extends GetxController {
                     ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
                     : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
-            showLoading: false)
+            showLoading: isShowLoading)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET CART LIST RESPONSE 123*******${value?.body}");
