@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -429,8 +430,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                       ),
                       Obx(
-                        () => accountController.roleId?.value.toString() ==
-                                Role.customerRoleText
+                        () => roleApp.value == Role.customerRoleText
                             ? height0SizedBox
                             : const Divider(
                                 height: 40,
@@ -438,8 +438,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                       ),
                       Obx(
-                        () => accountController.roleId?.value.toString() ==
-                                Role.customerRoleText
+                        () => roleApp.value == Role.customerRoleText
                             ? height0SizedBox
                             : InkWell(
                                 highlightColor: Colors.transparent,
@@ -574,8 +573,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Obx(
-                            () => accountController.roleId?.value.toString() ==
-                                    Role.customerRoleText
+                            () => roleApp.value == Role.customerRoleText
                                 ? FlutterSwitch(
                                     height: 28,
                                     width: 50,
@@ -595,20 +593,23 @@ class _AccountScreenState extends State<AccountScreen> {
                                       accountController
                                           .isUserInboxMessagesNotify
                                           .value = val;
-                                      if (accountController
-                                          .isUserInboxMessagesNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "message");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "message");
-                                      }
+
+                                      // if (accountController
+                                      //     .isUserInboxMessagesNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isUserInboxMessagesNotify
+                                                  .value,
+                                              isOwner: false,
+                                              notificationType: "message");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: false,
+                                      //           notificationType: "message");
+                                      // }
                                     },
                                   )
                                 : FlutterSwitch(
@@ -631,20 +632,22 @@ class _AccountScreenState extends State<AccountScreen> {
                                           .isOwnerInboxMessagesNotify
                                           .value = val;
 
-                                      if (accountController
-                                          .isOwnerInboxMessagesNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "message");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "message");
-                                      }
+                                      // if (accountController
+                                      //     .isOwnerInboxMessagesNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isOwnerInboxMessagesNotify
+                                                  .value,
+                                              isOwner: true,
+                                              notificationType: "message");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: true,
+                                      //           notificationType: "message");
+                                      // }
                                     },
                                   ),
                           ),
@@ -667,8 +670,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Obx(
-                            () => accountController.roleId?.value.toString() ==
-                                    Role.customerRoleText
+                            () => roleApp.value == Role.customerRoleText
                                 ? FlutterSwitch(
                                     height: 28,
                                     width: 50,
@@ -687,20 +689,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                     onToggle: (val) {
                                       accountController
                                           .isUserTippingNotify.value = val;
-                                      if (accountController
-                                          .isUserTippingNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "order");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "order");
-                                      }
+                                      // if (accountController
+                                      //     .isUserTippingNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isUserTippingNotify.value,
+                                              isOwner: false,
+                                              notificationType: "order");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: false,
+                                      //           notificationType: "order");
+                                      // }
                                     },
                                   )
                                 : FlutterSwitch(
@@ -722,20 +725,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                       accountController
                                           .isOwnerTippingNotify.value = val;
 
-                                      if (accountController
-                                          .isOwnerTippingNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "order");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "order");
-                                      }
+                                      // if (accountController
+                                      //     .isOwnerTippingNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isOwnerTippingNotify.value,
+                                              isOwner: true,
+                                              notificationType: "order");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: true,
+                                      //           notificationType: "order");
+                                      // }
                                     },
                                   ),
                           )
@@ -758,8 +762,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           Obx(
-                            () => accountController.roleId?.value.toString() ==
-                                    Role.customerRoleText
+                            () => roleApp.value == Role.customerRoleText
                                 ? FlutterSwitch(
                                     height: 28,
                                     width: 50,
@@ -779,20 +782,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                       accountController
                                           .isUserOfferNotify.value = val;
 
-                                      if (accountController
-                                          .isUserOfferNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: false,
-                                                notificationType: "offer");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: false,
-                                                notificationType: "offer");
-                                      }
+                                      // if (accountController
+                                      //     .isUserOfferNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isUserOfferNotify.value,
+                                              isOwner: false,
+                                              notificationType: "offer");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: false,
+                                      //           notificationType: "offer");
+                                      // }
                                     },
                                   )
                                 : FlutterSwitch(
@@ -814,20 +818,21 @@ class _AccountScreenState extends State<AccountScreen> {
                                       accountController
                                           .isOwnerOfferNotify.value = val;
 
-                                      if (accountController
-                                          .isOwnerOfferNotify.value) {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: true,
-                                                isOwner: true,
-                                                notificationType: "offer");
-                                      } else {
-                                        accountController
-                                            .apiUpdateNotificationStatus(
-                                                isEnabled: false,
-                                                isOwner: true,
-                                                notificationType: "offer");
-                                      }
+                                      // if (accountController
+                                      //     .isOwnerOfferNotify.value) {
+                                      accountController
+                                          .apiUpdateNotificationStatus(
+                                              isEnabled: accountController
+                                                  .isOwnerOfferNotify.value,
+                                              isOwner: true,
+                                              notificationType: "offer");
+                                      // } else {
+                                      //   accountController
+                                      //       .apiUpdateNotificationStatus(
+                                      //           isEnabled: false,
+                                      //           isOwner: true,
+                                      //           notificationType: "offer");
+                                      // }
                                     },
                                   ),
                           ),

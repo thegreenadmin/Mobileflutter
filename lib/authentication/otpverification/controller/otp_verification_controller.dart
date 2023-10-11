@@ -23,6 +23,7 @@ class OtpVerificationController extends GetxController {
   RxString phoneNumber = "".obs;
   RxString countryCode = "".obs;
   RxBool isLoading = false.obs;
+  RxBool isSignUp = false.obs;
   RxBool isAutoReload = false.obs;
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
@@ -33,7 +34,7 @@ class OtpVerificationController extends GetxController {
     super.onInit();
     phoneNumber.value = Get.arguments["phoneNumber"] ?? "";
     countryCode.value = Get.arguments["countryCode"] ?? "";
-    // getFcmToken();
+    isSignUp.value = Get.arguments["signUp"] ?? false;
   }
 
   getFcmToken() async {
@@ -101,18 +102,19 @@ class OtpVerificationController extends GetxController {
         SharedPreferenceStorage.setData("token", value.body['data']['token']);
         hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
-          forFirstTimeOwner.value = true;
+          forFirstTimeOwner.value = isSignUp.value;
+          forFirstTimeCustomer.value = false;
           SharedPreferenceStorage.setData(Role.role, Role.storeOwnerRoleText);
           roleApp.value = Role.storeOwnerRoleText;
         } else {
-          forFirstTimeCustomer.value = true;
+          forFirstTimeCustomer.value = isSignUp.value;
+          forFirstTimeOwner.value = false;
           SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
           roleApp.value = Role.customerRoleText;
         }
-        // apiGetPermissions();
         Get.offAll(() => const BottomNavigation());
       } else if (value.body["status"] == ApiConstants.statusCode409) {
-        //Email must be unique & user already exists
+        // Email must be unique & user already exists
         Utility.showAlertMessage(value.body['message']);
       } else {
         if (value.body['message'] != null) {

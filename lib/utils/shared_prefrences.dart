@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
+import 'global_share_data.dart';
 
 class SharedPreferenceStorage {
   static final storage = GetStorage();
@@ -47,6 +48,8 @@ class SharedPreferenceStorage {
 
   static void clearData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    forFirstTimeCustomer.value = false;
+    forFirstTimeOwner.value = false;
     SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
     SharedPreferenceStorage.removeData(StringConstants.firstNameText);
     SharedPreferenceStorage.removeData(StringConstants.lastNameText);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart' as mdio;
 import 'package:flutter/material.dart';
@@ -26,12 +27,12 @@ class AccountController extends GetxController {
   TextEditingController countryTextController = TextEditingController();
   TextEditingController noOfDaysTextController = TextEditingController();
   RxBool isScreenLockNotify = false.obs;
-  RxBool isUserInboxMessagesNotify = true.obs;
-  RxBool isOwnerInboxMessagesNotify = true.obs;
-  RxBool isUserTippingNotify = true.obs;
-  RxBool isOwnerTippingNotify = true.obs;
-  RxBool isOwnerOfferNotify = true.obs;
-  RxBool isUserOfferNotify = true.obs;
+  RxBool isUserInboxMessagesNotify = false.obs;
+  RxBool isOwnerInboxMessagesNotify = false.obs;
+  RxBool isUserTippingNotify = false.obs;
+  RxBool isOwnerTippingNotify = false.obs;
+  RxBool isOwnerOfferNotify = false.obs;
+  RxBool isUserOfferNotify = false.obs;
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
@@ -117,15 +118,14 @@ class AccountController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    role?.value = roleApp.value;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     var val = await SharedPreferenceStorage.getData(
         StringConstants.authenticatedText.toLowerCase());
     BioMetricAuthentication.isBioMetricAuthenticated.value = val ?? false;
-    roleId?.value = await SharedPreferenceStorage.getData(Role.role);
-    if (roleId?.value == Role.customerRoleText) {
+
+    if (roleApp.value == Role.customerRoleText) {
       await apiGetNotificationStatus(false);
       if (forFirstTimeCustomer.value) {
         await apiUpdateNotificationStatus(
@@ -136,6 +136,7 @@ class AccountController extends GetxController {
             isEnabled: true, isOwner: false, notificationType: "offer");
       }
     } else {
+      await apiGetNotificationStatus(true);
       if (forFirstTimeOwner.value) {
         await apiUpdateNotificationStatus(
             isEnabled: true, isOwner: true, notificationType: "message");
@@ -143,7 +144,6 @@ class AccountController extends GetxController {
             isEnabled: true, isOwner: true, notificationType: "order");
         await apiUpdateNotificationStatus(
             isEnabled: true, isOwner: true, notificationType: "offer");
-        await apiGetNotificationStatus(true);
       }
     }
     isScreenLockNotify.value = authenticatedBiometric.value;
@@ -744,7 +744,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == true) {
+              if (notificationStatusList[i].isEnabled == false) {
                 isOwnerTippingNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserTippingNotify.value =
@@ -761,7 +761,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == true) {
+              if (notificationStatusList[i].isEnabled == false) {
                 isOwnerOfferNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserOfferNotify.value =
@@ -778,7 +778,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == true) {
+              if (notificationStatusList[i].isEnabled == false) {
                 isOwnerInboxMessagesNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserInboxMessagesNotify.value =
@@ -827,19 +827,18 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE NOTIFICATION STATUS RESPONSE *******${value!.body}");
+      log("UPDATE NOTIFICATION STATUS RESPONSE $notificationType *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
+        debugPrint("UPDATE NOTIFICATION offer **0***** $notificationType}");
+        if (forFirstTimeOwner.value && notificationType == "offer") {
+          debugPrint("UPDATE NOTIFICATION offer ******* offer}");
+          forFirstTimeOwner.value = false;
+        }
         if (roleApp.value == Role.customerRoleText) {
           await apiGetNotificationStatus(false);
-          if (notificationType == "offer") {
-            forFirstTimeCustomer.value = false;
-          }
         } else {
-          if (notificationType == "offer") {
-            forFirstTimeOwner.value = false;
-          }
           await apiGetNotificationStatus(true);
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {

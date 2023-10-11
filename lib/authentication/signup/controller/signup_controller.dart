@@ -3,13 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/app_colors.dart';
-import 'package:thegreenmall/utils/constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/sizedbox_constants.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/utils/utils.dart';
 
 class SignupController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -235,8 +229,10 @@ class SignupController extends GetxController {
         Utility.showToast(value.body['message']);
         Get.to(() => const OtpVerificationScreen(), arguments: {
           "phoneNumber": phoneNumber.value.trim(),
-          "countryCode": countryCode.value.trim()
+          "countryCode": countryCode.value.trim(),
+          "signUp": true
         });
+
         firstNameTextController.clear();
         lastNameTextController.clear();
         emailTextController.clear();
