@@ -167,6 +167,8 @@ class StoreHomeMainController extends GetxController {
 
   void popUpMenuChange(int i) async {
     popUpIndex.value = i;
+    Get.parameters["isFromOptions"] = "false";
+    isFromOptions.value = false;
     if (i == 0) {
       apiGetPreviousOrders();
     } else if (i == 1) {

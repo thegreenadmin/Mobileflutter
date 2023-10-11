@@ -30,9 +30,50 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      storeHomeMainController.onInit();
+      if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
+        storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+        storeHomeMainController.getCurrentLocation();
+      }
+      storeHomeMainController.productId.value =
+          Get.parameters["productId"] ?? "";
+      storeHomeMainController.isFromHome.value =
+          Get.parameters["isFromHome"] == "true";
+      storeHomeMainController.isFromMenu.value =
+          Get.parameters["isFromMenu"] == "true";
+      storeHomeMainController.isFromFav.value =
+          Get.parameters["isFromFav"] == "true";
+      storeHomeMainController.isFromOptions.value =
+          Get.parameters["isFromOptions"] == "true";
+      storeHomeMainController.apiGetUserDetailsApi();
+      if (storeHomeMainController.isFromMenu.value) {
+        storeHomeMainController.selectedIndex.value = 1;
+        storeHomeMainController.lastSelectedIndex.value = 1;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(1);
+      }
+      if (storeHomeMainController.isFromFav.value) {
+        storeHomeMainController.selectedIndex.value = 2;
+        storeHomeMainController.lastSelectedIndex.value = 2;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(2);
+      }
+
+      if (storeHomeMainController.isFromHome.value) {
+        storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.lastSelectedIndex.value = 0;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(0);
+      }
+      if (storeHomeMainController.isFromOptions.value) {
+        storeHomeMainController.selectedIndex.value = 3;
+        storeHomeMainController.lastSelectedIndex.value = 3;
+        storeHomeMainController.showLoading.value = false;
+        storeHomeMainController.onIndexChange(3);
+      }
+
       storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
+      storeHomeMainController.apiGetUserWalletBalance();
       storeHomeMainController.apiActiveCartApi();
     });
   }
@@ -279,7 +320,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    StringConstants.previousText,
+                    StringConstants.previousOrdersText,
                     style: const TextStyle(
                         color: AppColors.black, fontFamily: "", fontSize: 14),
                   ),
@@ -375,14 +416,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ? stackData()
                                   : const StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
-                              ? Expanded(
-                                  child: storeHomeMainController.isFromOptions.value == true
-                                      ? stackData()
-                                      : const StoreHomeScreen())
-                              : storeHomeMainController.selectedIndex.value == 3
-                                  ? storeHomeMainController.popUpIndex.value ==
-                                          0
-                                      ? const Expanded(
+                                  ?  storeHomeMainController.popUpIndex.value == 0
+                                      ? storeHomeMainController.isFromOptions.value == true
+                  ? Expanded(child:  stackData()) : const Expanded(
                                           child: PreviousOrdersScreen())
                                       : storeHomeMainController.popUpIndex.value ==
                                               2
@@ -1184,22 +1220,26 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               true
                           ? "Yes"
                           : "No"),
-                  Visibility(visible: storeHomeMainController.productDetailResponse
-                      .value.data?.product?.isProductReturnable ==
-                      true,
-                  child: Column(
-                    children: [
-                      height20SizedBox,
-                      _buildRowOtherDetail(
-                          title: StringConstants.returnDaysText,
-                          textData: storeHomeMainController.productDetailResponse
-                              .value.data?.product?.returnDaysCount
-                              .toString() ??
-                              "0"),
-                    ],
+                  Visibility(
+                    visible: storeHomeMainController.productDetailResponse.value
+                            .data?.product?.isProductReturnable ==
+                        true,
+                    child: Column(
+                      children: [
+                        height20SizedBox,
+                        _buildRowOtherDetail(
+                            title: StringConstants.returnDaysText,
+                            textData: storeHomeMainController
+                                    .productDetailResponse
+                                    .value
+                                    .data
+                                    ?.product
+                                    ?.returnDaysCount
+                                    .toString() ??
+                                "0"),
+                      ],
+                    ),
                   ),
-                  ),
-
                   height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
@@ -1409,6 +1449,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               colors: [AppColors.primary, AppColors.primary],
             ),
             onTap: () {
+              Get.parameters['isFromAddProduct'] = "yes";
               if (int.parse(storeHomeMainController.storeIdValue.toString()) ==
                   0) {
                 if (storeHomeMainController.itemsCount.value != 0) {

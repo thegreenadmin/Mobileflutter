@@ -30,6 +30,10 @@ class _CartScreenState extends State<CartScreen> {
                 ? ""
                 : Get.parameters["productId"] ?? "";
       }
+      if (Get.parameters['isFromAddProduct'] == 'yes') {
+        storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.lastSelectedIndex.value = 0;
+      }
       storeHomeMainController.apiGetUserDetailsApi();
       storeHomeMainController.showLoading.value = false;
       storeHomeMainController.apiGetCartListApi();
@@ -61,9 +65,19 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
+                                    if (Get.parameters['isFromAddProduct'] ==
+                                            'yes' &&
+                                        Get.parameters["isFromHome"] ==
+                                            "true") {
+                                      Get.back(id: pageIdApp.value);
+                                      Get.back(id: pageIdApp.value);
+                                      Get.parameters['isFromAddProduct'] = 'no';
+                                    } else {
+                                      Get.back(id: pageIdApp.value);
+                                    }
+
                                     storeHomeMainController.itemsCount.value =
                                         1;
-                                    Get.back(id: pageIdApp.value);
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -1007,6 +1021,7 @@ class _CartScreenState extends State<CartScreen> {
                                       : [AppColors.primary, AppColors.primary],
                                 ),
                                 onTap: () async {
+                                  Get.parameters['isFromAddProduct'] = 'no';
                                   if (storeHomeMainController
                                           .storeDeliveryServiceId.value !=
                                       "0") {
