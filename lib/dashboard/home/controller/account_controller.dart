@@ -744,7 +744,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == false) {
+              if (notificationStatusList[i].isEnabled == true) {
                 isOwnerTippingNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserTippingNotify.value =
@@ -761,7 +761,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == false) {
+              if (notificationStatusList[i].isEnabled == true) {
                 isOwnerOfferNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserOfferNotify.value =
@@ -778,7 +778,7 @@ class AccountController extends GetxController {
                     notificationStatusList[i].isEnabled != true;
               }
             } else {
-              if (notificationStatusList[i].isEnabled == false) {
+              if (notificationStatusList[i].isEnabled == true) {
                 isOwnerInboxMessagesNotify.value =
                     notificationStatusList[i].isEnabled != true;
                 isUserInboxMessagesNotify.value =
@@ -832,14 +832,17 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value.body['message']);
         debugPrint("UPDATE NOTIFICATION offer **0***** $notificationType}");
-        if (forFirstTimeOwner.value && notificationType == "offer") {
-          debugPrint("UPDATE NOTIFICATION offer ******* offer}");
-          forFirstTimeOwner.value = false;
-        }
+
         if (roleApp.value == Role.customerRoleText) {
           await apiGetNotificationStatus(false);
+          if (forFirstTimeCustomer.value && notificationType == "offer") {
+            forFirstTimeCustomer.value = false;
+          }
         } else {
           await apiGetNotificationStatus(true);
+          if (forFirstTimeOwner.value && notificationType == "offer") {
+            forFirstTimeOwner.value = false;
+          }
         }
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
