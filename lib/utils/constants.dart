@@ -763,6 +763,7 @@ class AlertStringConstants {
   static String pleaseEnterPostalCodeText = "Please enter postal code";
   static String pleaseEnterCategoryNameText = "Please enter category name";
   static String pleaseEnterRoleText = "Please enter role";
+
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
   static String pleaseEnterTermsAndConditions =
@@ -825,7 +826,9 @@ class AlertStringConstants {
   static String pleaseSelectAccountHolderTypeText =
       "Please select account holder type";
   static String pleaseWriteSomethingText = "Please write something";
-
+  //O
+  static String orderNotDeliverable =
+      "Order is not deliverable, please change delivery method.";
   //R
 
   static String returnOrderAlertText =

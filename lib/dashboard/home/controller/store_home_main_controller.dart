@@ -665,6 +665,8 @@ class StoreHomeMainController extends GetxController {
 
     debugPrint(
         "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
+    debugPrint(
+        "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -687,19 +689,14 @@ class StoreHomeMainController extends GetxController {
             showLoading: isShowLoading)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CART LIST RESPONSE 123*******${value?.body}");
-      debugPrint(
-          "GET CART LIST URL 1*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}");
-      debugPrint(
-          "GET CART LIST URL 2*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}");
-      debugPrint(
-          "GET CART LIST URL 3*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}");
-
+      log("GET CART LIST RESPONSE 123*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
+        log("cartDeliveryServiceCharge *******${cartData.value.cartDeliveryServiceCharge}");
+
         if (cartListResponse.data?.cartTotalPrice is int ||
             cartListResponse.data?.cartTotalPrice is String) {
           cartTotalPrice.value = double.parse(
@@ -713,6 +710,9 @@ class StoreHomeMainController extends GetxController {
             "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
         debugPrint("CART isFromHome.value ${isFromHome.value}");
         cartData.value = cartListResponse.data ?? CartListData();
+        if (cartData.value.isOrderDeliverable == false) {
+          Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);
+        }
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
             isFromHome.value == true) {
@@ -1041,7 +1041,6 @@ class StoreHomeMainController extends GetxController {
                 InkWell(
                   onTap: () async {
                     Get.back();
-                    apiGetCartListApi();
                     apiGetUserWalletBalance();
                     Get.to(() => const CartScreen(), id: pageIdApp.value);
                   },
@@ -1143,7 +1142,7 @@ class StoreHomeMainController extends GetxController {
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
         if (storeId.value != "") {
-          apiGetCartListApi();
+          apiGetCartListApi(isShowLoading: true);
           apiActiveCartApi();
         }
         update();

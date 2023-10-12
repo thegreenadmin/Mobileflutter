@@ -36,10 +36,7 @@ class _CartScreenState extends State<CartScreen> {
       }
       storeHomeMainController.apiGetUserDetailsApi();
       storeHomeMainController.showLoading.value = false;
-      storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiGetCartListApi();
-      storeHomeMainController.apiActiveCartApi();
     });
   }
 
@@ -456,9 +453,9 @@ class _CartScreenState extends State<CartScreen> {
 
                                         await storeHomeMainController
                                             .apiGetUserWalletBalance();
-                                        await storeHomeMainController
-                                            .apiGetCartListApi(
-                                                isShowLoading: true);
+                                        // await storeHomeMainController
+                                        //     .apiGetCartListApi(
+                                        //         isShowLoading: true);
                                       },
                                       height: 40,
                                       text: storeHomeMainController

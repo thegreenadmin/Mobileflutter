@@ -62,8 +62,6 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       }
 
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiGetCartListApi();
-      storeHomeMainController.apiActiveCartApi();
     });
   }
 

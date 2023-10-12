@@ -71,10 +71,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.onIndexChange(3);
       }
 
-      storeHomeMainController.apiGetCartListApi();
       storeHomeMainController.apiGetShopProductDetailApi();
       storeHomeMainController.apiGetUserWalletBalance();
-      storeHomeMainController.apiActiveCartApi();
     });
   }
 

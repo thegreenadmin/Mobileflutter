@@ -113,8 +113,6 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                                 onTap: () async {
                                                   storeHomeMainController
                                                       .apiGetUserWalletBalance();
-                                                  storeHomeMainController
-                                                      .apiGetCartListApi();
                                                   await Get.to(
                                                           const CartScreen(),
                                                           id: pageIdApp.value)
