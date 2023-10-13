@@ -363,7 +363,7 @@ class AddNewRoleController extends GetxController {
     }
     if (isEmptyList) {
       Utility.showAlertMessage(
-          AlertStringConstants.pleaseSelectOnePermissiontText);
+          AlertStringConstants.pleaseSelectOnePermissionText);
       return;
     }
     Map data = {
