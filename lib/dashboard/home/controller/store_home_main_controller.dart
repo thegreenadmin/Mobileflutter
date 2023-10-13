@@ -148,7 +148,7 @@ class StoreHomeMainController extends GetxController {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
 
-    popUpIndex.value = 1;
+    // popUpIndex.value = 1;
     if (i == 0) {
       await apiGetStoreOffersApi();
       await apiFeatureProductListApi(isFeaturedProduct: true);
