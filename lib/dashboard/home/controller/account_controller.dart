@@ -127,24 +127,24 @@ class AccountController extends GetxController {
 
     if (roleApp.value == Role.customerRoleText) {
       await apiGetNotificationStatus(false);
-      if (forFirstTimeCustomer.value) {
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: false, notificationType: "message");
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: false, notificationType: "order");
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: false, notificationType: "offer");
-      }
+      // if (forFirstTimeCustomer.value) {
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: false, notificationType: "message");
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: false, notificationType: "order");
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: false, notificationType: "offer");
+      // }
     } else {
       await apiGetNotificationStatus(true);
-      if (forFirstTimeOwner.value) {
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: true, notificationType: "message");
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: true, notificationType: "order");
-        await apiUpdateNotificationStatus(
-            isEnabled: true, isOwner: true, notificationType: "offer");
-      }
+      // if (forFirstTimeOwner.value) {
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: true, notificationType: "message");
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: true, notificationType: "order");
+      //   await apiUpdateNotificationStatus(
+      //       isEnabled: true, isOwner: true, notificationType: "offer");
+      // }
     }
     isScreenLockNotify.value = authenticatedBiometric.value;
   }

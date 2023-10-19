@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
         storeHomeMainController.lastSelectedIndex.value = 0;
       }
       storeHomeMainController.apiGetUserDetailsApi();
-      storeHomeMainController.showLoading.value = false;
+      storeHomeMainController.showLoading.value = true;
       storeHomeMainController.apiGetUserWalletBalance();
     });
   }

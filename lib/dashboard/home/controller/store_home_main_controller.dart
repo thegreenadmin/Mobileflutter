@@ -148,7 +148,7 @@ class StoreHomeMainController extends GetxController {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
 
-    popUpIndex.value = 1;
+    // popUpIndex.value = 1;
     if (i == 0) {
       await apiGetStoreOffersApi();
       await apiFeatureProductListApi(isFeaturedProduct: true);
@@ -1175,9 +1175,10 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
             headers,
-            showLoading: false)
+            showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
+      showLoading.value = false;
       debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {

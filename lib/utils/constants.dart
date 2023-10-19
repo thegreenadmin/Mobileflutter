@@ -819,7 +819,7 @@ class AlertStringConstants {
   static String pleaseSelectStateText = "Please select state";
   static String pleaseEnterValueText = "Please enter value";
   static String pleaseEnterDaysText = "Please enter days";
-  static String pleaseSelectOnePermissiontText = "Please select one permission";
+  static String pleaseSelectOnePermissionText = "Please select one permission";
   static String pleaseSelectAutoReloadText = "Please select auto-reload type";
   static String pleaseSelectDayText = "Please select day";
   static String pleaseAddCardText = "Please add card";

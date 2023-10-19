@@ -438,7 +438,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                       ),
                       Obx(
-                        () => roleApp.value == Role.customerRoleText
+                        () => roleApp.value == Role.storeOwnerRoleText
                             ? height0SizedBox
                             : InkWell(
                                 highlightColor: Colors.transparent,
@@ -843,10 +843,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primarylight,
-                            AppColors.primarylight
-                          ],
+                          colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () async {
                           Utility.showConfirmAlertMessage(
@@ -857,12 +854,12 @@ class _AccountScreenState extends State<AccountScreen> {
                           });
                         },
                         height: 50,
-                        textColor: AppColors.primary,
+                        textColor: AppColors.white,
                         text: StringConstants.logoutText,
                         borderRadius: 12,
                         fontWeight: FontWeight.w600,
                       ),
-                      height12SizedBox,
+                      height20SizedBox,
                       CustomButton(
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
