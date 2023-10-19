@@ -1175,9 +1175,10 @@ class StoreHomeMainController extends GetxController {
         .getWithHeadersApi(
             "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
             headers,
-            showLoading: false)
+            showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
+      showLoading.value = false;
       debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
