@@ -51,6 +51,7 @@ class _AccountScreenState extends State<AccountScreen> {
       );
 
       isAuthenticating = false;
+      authenticated = authenticatedBiometric.value;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
       debugPrint("PlatformException:************** ${e.toString()}");
@@ -68,9 +69,9 @@ class _AccountScreenState extends State<AccountScreen> {
     }
 
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    // setState(() {
+
     authorized = message;
-    // });
+
     if (authenticatedBiometric.value) {
       SharedPreferenceStorage.setData(StringConstants.authenticatedText, true);
       BioMetricAuthentication.isBioMetricAuthenticated.value = true;
@@ -438,7 +439,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                       ),
                       Obx(
-                        () => roleApp.value == Role.storeOwnerRoleText
+                        () => roleApp.value == Role.customerRoleText
                             ? height0SizedBox
                             : InkWell(
                                 highlightColor: Colors.transparent,
@@ -838,7 +839,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                         ],
                       ),
-                      height25SizedBox,
+                      height30SizedBox,
                       CustomButton(
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
@@ -859,7 +860,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         borderRadius: 12,
                         fontWeight: FontWeight.w600,
                       ),
-                      height20SizedBox,
+                      height30SizedBox,
                       CustomButton(
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,

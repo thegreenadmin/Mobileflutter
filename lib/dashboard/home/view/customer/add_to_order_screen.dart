@@ -155,30 +155,36 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   fontWeight: FontWeight.w400),
               textAlign: TextAlign.start,
             ),
-            height15SizedBox,
-            InkWell(
-              onTap: () {
-                Get.back();
-                storeHomeMainController.apiContactStore();
-              },
-              child: Container(
-                height: 50.0,
-                width: 200.0,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: Center(
-                  child: Text(
-                    StringConstants.haveIssueText,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0,
-                        color: Colors.white),
+            Obx(()=>storeHomeMainController.isVerifiedStore.value?Column(
+              children: [
+                height15SizedBox,
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                    storeHomeMainController.apiContactStore();
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 200.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.haveIssueText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              ],
+            ):height0SizedBox,),
+
+
             height15SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -410,19 +416,37 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               : const StoreMenuScreen())
                       : storeHomeMainController.selectedIndex.value == 2
                           ? Expanded(
-                              child: storeHomeMainController.isFromFav.value == true
+                              child: storeHomeMainController.isFromFav.value ==
+                                      true
                                   ? stackData()
                                   : const StoreFavouriteScreen())
                           : storeHomeMainController.selectedIndex.value == 3
-                                  ?  storeHomeMainController.popUpIndex.value == 0
-                                      ? storeHomeMainController.isFromOptions.value == true
-                  ? Expanded(child:  stackData()) : const Expanded(
+                              ? storeHomeMainController.popUpIndex.value == 0
+                                  ? storeHomeMainController.isFromOptions.value ==
+                                          true
+                                      ? Expanded(child: stackData())
+                                      : const Expanded(
                                           child: PreviousOrdersScreen())
+                                  : storeHomeMainController.popUpIndex.value ==
+                                          2
+                                      ? Expanded(
+                                          child: PdfViewScreen(
+                                              isShowPrivacy: true,
+                                              url: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data!
+                                                  .store!
+                                                  .storePages!
+                                                  .first
+                                                  .storePageContent!
+                                                  .dynamicUrl
+                                                  .toString()))
                                       : storeHomeMainController.popUpIndex.value ==
-                                              2
+                                              3
                                           ? Expanded(
                                               child: PdfViewScreen(
-                                                  isShowPrivacy: true,
+                                                  isShowPrivacy: false,
                                                   url: storeHomeMainController
                                                       .storeDetailsResponse
                                                       .value
@@ -433,19 +457,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                                       .storePageContent!
                                                       .dynamicUrl
                                                       .toString()))
-                                          : storeHomeMainController
-                                                      .popUpIndex.value ==
-                                                  3
-                                              ? Expanded(
-                                                  child: PdfViewScreen(
-                                                      isShowPrivacy: false,
-                                                      url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
-                                              : storeHomeMainController.lastSelectedIndex.value == 1
-                                                  ? Expanded(child: storeHomeMainController.isFromMenu.value == true ? stackData() : const StoreMenuScreen())
-                                                  : storeHomeMainController.lastSelectedIndex.value == 2
-                                                      ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
-                                                      : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
-                                  : const Expanded(child: StoreHomeScreen())
+                                          : storeHomeMainController.lastSelectedIndex.value == 1
+                                              ? Expanded(child: storeHomeMainController.isFromMenu.value == true ? stackData() : const StoreMenuScreen())
+                                              : storeHomeMainController.lastSelectedIndex.value == 2
+                                                  ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
+                                                  : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
+                              : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));
@@ -1436,49 +1453,55 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 20,
-          left: 20,
-          right: 20,
-          child: CustomButton(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.primary, AppColors.primary],
-            ),
-            onTap: () {
-              Get.parameters['isFromAddProduct'] = "yes";
-              if (int.parse(storeHomeMainController.storeIdValue.toString()) ==
-                  0) {
-                if (storeHomeMainController.itemsCount.value != 0) {
-                  storeHomeMainController.apiAddToCart(context);
-                } else {
-                  Utility.showAlertMessage(
-                      AlertStringConstants.pleaseAddAtLeastOneItemText);
-                }
-              } else {
-                if ((int.parse(
-                        storeHomeMainController.storeIdValue.toString()) !=
-                    int.parse(storeHomeMainController.storeId.toString()))) {
-                  storeHomeMainController.discardCartItems(context);
-                } else {
-                  if (storeHomeMainController.itemsCount.value != 0) {
-                    storeHomeMainController.apiAddToCart(context);
-                  } else {
-                    Utility.showAlertMessage(
-                        AlertStringConstants.pleaseAddAtLeastOneItemText);
-                  }
-                }
-              }
-            },
-            height: 50,
-            text: StringConstants.addToOrderText,
-            borderRadius: 12,
-            fontWeight: FontWeight.w500,
-            iconL: false,
-            fontSize: 16,
-          ),
-        )
+        Obx(() => storeHomeMainController.isVerifiedStore.value
+            ? Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: CustomButton(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.primary, AppColors.primary],
+                  ),
+                  onTap: () {
+                    if (storeHomeMainController.isVerifiedStore.value) {
+                      Get.parameters['isFromAddProduct'] = "yes";
+                      if (int.parse(storeHomeMainController.storeIdValue
+                              .toString()) ==
+                          0) {
+                        if (storeHomeMainController.itemsCount.value != 0) {
+                          storeHomeMainController.apiAddToCart(context);
+                        } else {
+                          Utility.showAlertMessage(
+                              AlertStringConstants.pleaseAddAtLeastOneItemText);
+                        }
+                      } else {
+                        if ((int.parse(storeHomeMainController.storeIdValue
+                                .toString()) !=
+                            int.parse(
+                                storeHomeMainController.storeId.toString()))) {
+                          storeHomeMainController.discardCartItems(context);
+                        } else {
+                          if (storeHomeMainController.itemsCount.value != 0) {
+                            storeHomeMainController.apiAddToCart(context);
+                          } else {
+                            Utility.showAlertMessage(AlertStringConstants
+                                .pleaseAddAtLeastOneItemText);
+                          }
+                        }
+                      }
+                    }
+                  },
+                  height: 50,
+                  text: StringConstants.addToOrderText,
+                  borderRadius: 12,
+                  fontWeight: FontWeight.w500,
+                  iconL: false,
+                  fontSize: 16,
+                ),
+              )
+            : height0SizedBox)
       ],
     );
   }
