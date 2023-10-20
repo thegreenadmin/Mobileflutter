@@ -101,29 +101,37 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                   fontWeight: FontWeight.w400),
               textAlign: TextAlign.start,
             ),
-            height15SizedBox,
-            InkWell(
-              onTap: () {
-                Get.back();
-                storeHomeMainController.apiContactStore();
-              },
-              child: Container(
-                height: 50.0,
-                width: 200.0,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: Center(
-                  child: Text(
-                    StringConstants.haveIssueText,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
+            Obx(
+              () => storeHomeMainController.isVerifiedStore.value
+                  ? Column(
+                      children: [
+                        height15SizedBox,
+                        InkWell(
+                          onTap: () {
+                            Get.back();
+                            storeHomeMainController.apiContactStore();
+                          },
+                          child: Container(
+                            height: 50.0,
+                            width: 200.0,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                StringConstants.haveIssueText,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.0,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : height0SizedBox,
             ),
             height15SizedBox,
             Row(

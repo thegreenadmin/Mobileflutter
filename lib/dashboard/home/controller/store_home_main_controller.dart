@@ -61,6 +61,7 @@ class StoreHomeMainController extends GetxController {
   RxBool isFromFav = false.obs;
   RxBool isFromMenu = false.obs;
   RxBool isFavouriteStore = false.obs;
+  RxBool isVerifiedStore = false.obs;
   RxBool isDeleteCartItem = false.obs;
   RxBool isFavouriteProduct = false.obs;
   RxString orderStatus = "".obs;
@@ -1179,7 +1180,7 @@ class StoreHomeMainController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       showLoading.value = false;
-      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
+      log("STORE DETAILS RESPONSE*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
@@ -1192,6 +1193,7 @@ class StoreHomeMainController extends GetxController {
 
         debugPrint(
             "isFavouriteStore before *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
+        isVerifiedStore.value = storeDetailsResponse.value.data?.store?.isVerified ?? false;
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
 
