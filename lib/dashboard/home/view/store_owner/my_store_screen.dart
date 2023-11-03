@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -86,72 +87,79 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                                   ),
                                 ],
                               )
-                        : ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return width8SizedBox;
-                            },
+                        : ScrollLoopAutoScroll(
                             scrollDirection: Axis.horizontal,
-                            itemCount:
-                                ownerStoresController.getOwnerOfferList.length,
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Stack(
-                                alignment: Alignment.bottomCenter,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: CommonWidgets.cachedNetworkImage(
-                                      ownerStoresController
-                                              .getOwnerOfferList[index]
-                                              .image
-                                              ?.dynamicUrl ??
-                                          "",
-                                      fit: BoxFit.cover,
-                                      height:
-                                          WidgetConstants.screenHeight * 0.3,
-                                      width: WidgetConstants.screenWidth * 0.87,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 55,
-                                    child: Card(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      )),
-                                      color: Colors.white,
-                                      elevation: 2.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12,
-                                            bottom: 10,
-                                            top: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              ownerStoresController
-                                                      .getOwnerOfferList[index]
-                                                      .offerName ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
+                            child: ListView.separated(
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return width8SizedBox;
+                                },
+                                scrollDirection: Axis.horizontal,
+                                itemCount: ownerStoresController
+                                    .getOwnerOfferList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: CommonWidgets.cachedNetworkImage(
+                                          ownerStoresController
+                                                  .getOwnerOfferList[index]
+                                                  .image
+                                                  ?.dynamicUrl ??
+                                              "",
+                                          fit: BoxFit.cover,
+                                          height: WidgetConstants.screenHeight *
+                                              0.3,
+                                          width: WidgetConstants.screenWidth *
+                                              0.87,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
+                                      SizedBox(
+                                        height: 55,
+                                        child: Card(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          )),
+                                          color: Colors.white,
+                                          elevation: 2.0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 12.0,
+                                                right: 12,
+                                                bottom: 10,
+                                                top: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  ownerStoresController
+                                                          .getOwnerOfferList[
+                                                              index]
+                                                          .offerName ??
+                                                      "",
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ),
                   )),
               height20SizedBox,
               Obx(
@@ -171,137 +179,144 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                     ? height0SizedBox
                     : SizedBox(
                         height: WidgetConstants.screenHeight * 0.3,
-                        child: ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) {
-                            return width8SizedBox;
-                          },
-                          shrinkWrap: true,
+                        child: ScrollLoopAutoScroll(
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              ownerStoresController.storeProductList.length,
-                          itemBuilder: (BuildContext context, int i) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  Get.parameters["isFromHome"] = "true";
-                                  Get.parameters["storeId"] =
-                                      ownerStoresController
-                                          .storeProductList[i].storeId;
-                                  Get.parameters["productId"] =
-                                      ownerStoresController
-                                          .storeProductList[i].productId;
-                                  Get.parameters["categoryName"] =
-                                      ownerStoresController
+                          child: ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return width8SizedBox;
+                            },
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                ownerStoresController.storeProductList.length,
+                            itemBuilder: (BuildContext context, int i) =>
+                                Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () {
+                                    Get.parameters["isFromHome"] = "true";
+                                    Get.parameters["storeId"] =
+                                        ownerStoresController
+                                            .storeProductList[i].storeId;
+                                    Get.parameters["productId"] =
+                                        ownerStoresController
+                                            .storeProductList[i].productId;
+                                    Get.parameters["categoryName"] =
+                                        ownerStoresController
+                                                .storeProductList[i]
+                                                .productCategories
+                                                ?.first
+                                                .category
+                                                ?.categoryName ??
+                                            "";
+                                    hasStoreAccess.value &&
+                                                permissionStoreList.isEmpty ||
+                                            permissionStoreList.any((element) =>
+                                                element.storeId == ownerStoresController.storeProductList[i].storeId && element.isStoreOwner == true ||
+                                                element.storeId == ownerStoresController.storeProductList[i].storeId &&
+                                                    element.controllers!.any(
+                                                        (ele) =>
+                                                            ele.controllerKey ==
+                                                            PermissionKey
+                                                                .editProduct
+                                                                .statusName))
+                                        ? Get.to(() => const EditProductScreen(),
+                                                id: pageIdApp.value,
+                                                arguments: {
+                                                "isFromHome": true,
+                                                'storeId': ownerStoresController
+                                                    .storeProductList[i].storeId
+                                              })!
+                                            .then((value) => ownerStoresController.apiGetFeaturedProducts())
+                                        : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: CommonWidgets.cachedNetworkImage(
+                                      ownerStoresController.storeProductList[i]
+                                                      .productImages ==
+                                                  null ||
+                                              ownerStoresController
+                                                  .storeProductList[i]
+                                                  .productImages!
+                                                  .isEmpty ||
+                                              ownerStoresController
+                                                      .storeProductList[i]
+                                                      .productImages![0]
+                                                      .image!
+                                                      .dynamicUrl ==
+                                                  null ||
+                                              ownerStoresController
+                                                  .storeProductList[i]
+                                                  .productImages!
+                                                  .isEmpty
+                                          ? ""
+                                          : ownerStoresController
                                               .storeProductList[i]
-                                              .productCategories
-                                              ?.first
-                                              .category
-                                              ?.categoryName ??
-                                          "";
-                                  hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                          permissionStoreList.any((element) =>
-                                              element.storeId == ownerStoresController.storeProductList[i].storeId && element.isStoreOwner == true ||
-                                              element.storeId ==
-                                                      ownerStoresController
-                                                          .storeProductList[i]
-                                                          .storeId &&
-                                                  element.controllers!.any((ele) =>
-                                                      ele.controllerKey ==
-                                                      PermissionKey.editProduct
-                                                          .statusName))
-                                      ? Get.to(() => const EditProductScreen(),
-                                              id: pageIdApp.value,
-                                              arguments: {
-                                              "isFromHome": true,
-                                              'storeId': ownerStoresController
-                                                  .storeProductList[i].storeId
-                                            })!
-                                          .then((value) => ownerStoresController.apiGetFeaturedProducts())
-                                      : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: CommonWidgets.cachedNetworkImage(
-                                    ownerStoresController.storeProductList[i]
-                                                    .productImages ==
-                                                null ||
-                                            ownerStoresController
-                                                .storeProductList[i]
-                                                .productImages!
-                                                .isEmpty ||
-                                            ownerStoresController
-                                                    .storeProductList[i]
-                                                    .productImages![0]
-                                                    .image!
-                                                    .dynamicUrl ==
-                                                null ||
-                                            ownerStoresController
-                                                .storeProductList[i]
-                                                .productImages!
-                                                .isEmpty
-                                        ? ""
-                                        : ownerStoresController
-                                            .storeProductList[i]
-                                            .productImages![0]
-                                            .image!
-                                            .dynamicUrl
-                                            .toString(),
-                                    fit: BoxFit.fill,
-                                    height: WidgetConstants.screenHeight * 0.18,
-                                    width: WidgetConstants.screenWidth * 0.35,
+                                              .productImages![0]
+                                              .image!
+                                              .dynamicUrl
+                                              .toString(),
+                                      fit: BoxFit.fill,
+                                      height:
+                                          WidgetConstants.screenHeight * 0.18,
+                                      width: WidgetConstants.screenWidth * 0.35,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              height8SizedBox,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ownerStoresController
-                                            .storeProductList[i].productName ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  ownerStoresController.storeProductList[i]
-                                          .description!.isEmpty
-                                      ? height0SizedBox
-                                      : height4SizedBox,
-                                  ownerStoresController.storeProductList[i]
-                                          .description!.isEmpty
-                                      ? height0SizedBox
-                                      : SizedBox(
-                                          width: 130,
-                                          child: Text(
-                                            ownerStoresController
-                                                    .storeProductList[i]
-                                                    .description ??
-                                                "",
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: AppColors.blacklight,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
+                                height8SizedBox,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ownerStoresController.storeProductList[i]
+                                              .productName ??
+                                          "",
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    ownerStoresController.storeProductList[i]
+                                            .description!.isEmpty
+                                        ? height0SizedBox
+                                        : height4SizedBox,
+                                    ownerStoresController.storeProductList[i]
+                                            .description!.isEmpty
+                                        ? height0SizedBox
+                                        : SizedBox(
+                                            width: 130,
+                                            child: Text(
+                                              ownerStoresController
+                                                      .storeProductList[i]
+                                                      .description ??
+                                                  "",
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: AppColors.blacklight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                           ),
-                                        ),
-                                  ownerStoresController.storeProductList[i]
-                                          .description!.isEmpty
-                                      ? height0SizedBox
-                                      : height4SizedBox,
-                                  Text(
-                                    "\$${ownerStoresController.storeProductList[i].productPrice!.toStringAsFixed(2)}",
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    ownerStoresController.storeProductList[i]
+                                            .description!.isEmpty
+                                        ? height0SizedBox
+                                        : height4SizedBox,
+                                    Text(
+                                      "\$${ownerStoresController.storeProductList[i].productPrice!.toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

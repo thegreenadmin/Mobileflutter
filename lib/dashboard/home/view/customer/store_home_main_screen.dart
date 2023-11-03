@@ -247,51 +247,54 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                     : AppColors.blacklight,
                               ),
                             )
-                          : PopupMenuButton(
-                              onOpened: () async {
-                                storeHomeMainController.selectedIndex.value = 3;
-                                await storeHomeMainController
-                                    .apiGetPreviousOrders();
-                              },
-                              offset: const Offset(0, 25),
-                              shape: const TooltipShape(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onSelected: (String value) async {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                              },
-                              itemBuilder: (context) =>
-                                  createOptionsPopUpList(context)!,
-                              child: Row(children: [
-                                Text(
-                                  horizontalTabList[i],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
+                          : Obx(() {
+                              return PopupMenuButton(
+                                onOpened: () async {
+                                  storeHomeMainController.selectedIndex.value =
+                                      3;
+                                  await storeHomeMainController
+                                      .apiGetPreviousOrders();
+                                },
+                                offset: const Offset(0, 25),
+                                shape: const TooltipShape(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onSelected: (String value) async {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                },
+                                itemBuilder: (context) =>
+                                    createOptionsPopUpList(context)!,
+                                child: Row(children: [
+                                  Text(
+                                    horizontalTabList[i],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: storeHomeMainController
+                                                  .selectedIndex.value ==
+                                              i
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: storeHomeMainController
+                                                  .selectedIndex.value ==
+                                              i
+                                          ? AppColors.primary
+                                          : AppColors.blacklight,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_drop_down,
                                     color: storeHomeMainController
                                                 .selectedIndex.value ==
                                             i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_drop_down,
-                                  color: storeHomeMainController
-                                              .selectedIndex.value ==
-                                          i
-                                      ? AppColors.primary
-                                      : AppColors.blacklight,
-                                  size: 24,
-                                )
-                              ]),
-                            )
+                                    size: 24,
+                                  )
+                                ]),
+                              );
+                            })
                     ],
                   ));
             }),
@@ -300,7 +303,25 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    return List.generate(4, (index) {
+    if (storeHomeMainController
+        .storeDetailsResponse.value.data!.store!.storePages!
+        .any((element) =>
+            element.storePageType == "privacy" &&
+            element.storePageContent?.dynamicUrl != null &&
+            storeHomeMainController.listIndex.value < 4)) {
+      storeHomeMainController.listIndex.value =
+          storeHomeMainController.listIndex.value + 1;
+    }
+    if (storeHomeMainController
+        .storeDetailsResponse.value.data!.store!.storePages!
+        .any((element) =>
+            element.storePageType == "terms" &&
+            element.storePageContent?.dynamicUrl != null &&
+            storeHomeMainController.listIndex.value < 4)) {
+      storeHomeMainController.listIndex.value =
+          storeHomeMainController.listIndex.value + 1;
+    }
+    return List.generate(storeHomeMainController.listIndex.value, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
           value: StringConstants.previousOrdersText,
@@ -346,45 +367,71 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           },
         );
       } else if (index == 2) {
-        return PopupMenuItem<String>(
-          value: StringConstants.storePolicyText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.storePolicyText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
+        return storeHomeMainController
+                .storeDetailsResponse.value.data!.store!.storePages!
+                .any((element) =>
+                    element.storePageType == "privacy" &&
+                    element.storePageContent?.dynamicUrl != null)
+            ? PopupMenuItem<String>(
+                value: StringConstants.storePolicyText,
+                child: SizedBox(
+                  width: 100,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.storePolicyText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          onTap: () {
-            storeHomeMainController.popUpMenuChange(index);
-          },
-        );
+                onTap: () {
+                  storeHomeMainController.popUpMenuChange(index);
+                },
+              )
+            : PopupMenuItem<String>(
+                value: StringConstants.storePolicyText,
+                child: const SizedBox(
+                  width: 100,
+                ),
+              );
       } else {
-        return PopupMenuItem<String>(
-          value: StringConstants.termsAndConditionsText,
-          child: SizedBox(
-            width: 136,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
-                      color: AppColors.black, fontFamily: "", fontSize: 14),
+        return storeHomeMainController
+                .storeDetailsResponse.value.data!.store!.storePages!
+                .any((element) =>
+                    element.storePageType == "terms" &&
+                    element.storePageContent?.dynamicUrl != null)
+            ? PopupMenuItem<String>(
+                value: StringConstants.termsAndConditionsText,
+                child: SizedBox(
+                  width: 136,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.termsAndConditionsText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          onTap: () {
-            storeHomeMainController.popUpMenuChange(index);
-          },
-        );
+                onTap: () {
+                  storeHomeMainController.popUpMenuChange(index);
+                },
+              )
+            : PopupMenuItem<String>(
+                value: StringConstants.storePolicyText,
+                child: const SizedBox(
+                  width: 100,
+                ),
+              );
       }
     });
   }
@@ -415,10 +462,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                       child: PreviousOrdersScreen())
                                   : storeHomeMainController.popUpIndex.value ==
                                           2
-                                      ? Expanded(
-                                          child: PdfViewScreen(
-                                              isShowPrivacy: true,
-                                              url: storeHomeMainController
+                                      ? storeHomeMainController
                                                   .storeDetailsResponse
                                                   .value
                                                   .data!
@@ -426,13 +470,13 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                   .storePages!
                                                   .first
                                                   .storePageContent!
-                                                  .dynamicUrl
-                                                  .toString()))
-                                      : storeHomeMainController.popUpIndex.value ==
-                                              3
-                                          ? Expanded(
+                                                  .dynamicUrl ==
+                                              null
+                                          ? const Expanded(
+                                              child: StoreHomeScreen())
+                                          : Expanded(
                                               child: PdfViewScreen(
-                                                  isShowPrivacy: false,
+                                                  isShowPrivacy: true,
                                                   url: storeHomeMainController
                                                       .storeDetailsResponse
                                                       .value
@@ -443,16 +487,27 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                       .storePageContent!
                                                       .dynamicUrl
                                                       .toString()))
-                                          : storeHomeMainController
-                                                      .lastSelectedIndex
-                                                      .value ==
-                                                  1
+                                      : storeHomeMainController.popUpIndex.value ==
+                                              3
+                                          ? storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storePages!
+                                                      .first
+                                                      .storePageContent!
+                                                      .dynamicUrl ==
+                                                  null
                                               ? const Expanded(
-                                                  child: StoreMenuScreen())
-                                              : storeHomeMainController
-                                                          .lastSelectedIndex
-                                                          .value ==
-                                                      2
+                                                  child: StoreHomeScreen())
+                                              : Expanded(
+                                                  child: PdfViewScreen(
+                                                      isShowPrivacy: false,
+                                                      url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
+                                          : storeHomeMainController.lastSelectedIndex.value == 1
+                                              ? const Expanded(child: StoreMenuScreen())
+                                              : storeHomeMainController.lastSelectedIndex.value == 2
                                                   ? const Expanded(child: StoreFavouriteScreen())
                                                   : const Expanded(child: StoreHomeScreen())
                               : const Expanded(child: StoreHomeScreen())

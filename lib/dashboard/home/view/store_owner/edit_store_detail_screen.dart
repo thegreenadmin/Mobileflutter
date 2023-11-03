@@ -1756,13 +1756,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          TextSpan(
+                          /* TextSpan(
                             text: StringConstants.starText,
                             style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -1791,12 +1791,12 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           color: AppColors.primary,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
-                      validator: (value) {
+                      /* validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants.pleaseEnterStoreTermsText;
                         }
                         return null;
-                      },
+                      },*/
                       suffixIcon: IconButton(
                           onPressed: () {
                             ownerStoreController.isTermsSelected.value = true;
@@ -1815,13 +1815,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                          TextSpan(
+                          /* TextSpan(
                             text: StringConstants.starText,
                             style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -1851,13 +1851,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                           color: AppColors.primary,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
-                      validator: (value) {
+                      /*validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants
                               .pleaseEnterStorePrivacyText;
                         }
                         return null;
-                      },
+                      },*/
                       suffixIcon: IconButton(
                           onPressed: () {
                             ownerStoreController.isTermsSelected.value = false;

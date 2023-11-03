@@ -314,21 +314,42 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
-    return List.generate(4, (index) {
+    if (storeHomeMainController
+        .storeDetailsResponse.value.data!.store!.storePages!
+        .any((element) =>
+    element.storePageType == "privacy" &&
+        element.storePageContent?.dynamicUrl != null &&
+        storeHomeMainController.listIndex.value < 4)) {
+      storeHomeMainController.listIndex.value =
+          storeHomeMainController.listIndex.value + 1;
+    }
+    if (storeHomeMainController
+        .storeDetailsResponse.value.data!.store!.storePages!
+        .any((element) =>
+    element.storePageType == "terms" &&
+        element.storePageContent?.dynamicUrl != null &&
+        storeHomeMainController.listIndex.value < 4)) {
+      storeHomeMainController.listIndex.value =
+          storeHomeMainController.listIndex.value + 1;
+    }
+    return List.generate(storeHomeMainController.listIndex.value, (index) {
       if (index == 0) {
         return PopupMenuItem<String>(
           value: StringConstants.previousOrdersText,
           child: Column(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    StringConstants.previousOrdersText,
-                    style: const TextStyle(
-                        color: AppColors.black, fontFamily: "", fontSize: 14),
-                  ),
-                ],
+              SizedBox(
+                width: 120,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      StringConstants.previousOrdersText,
+                      style: const TextStyle(
+                          color: AppColors.black, fontFamily: "", fontSize: 14),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -339,53 +360,88 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       } else if (index == 1) {
         return PopupMenuItem<String>(
           value: StringConstants.contactText,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                StringConstants.contactText,
-                style: const TextStyle(
-                    color: AppColors.black, fontFamily: "", fontSize: 14),
-              ),
-            ],
+          child: SizedBox(
+            width: 100,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.contactText,
+                  style: const TextStyle(
+                      color: AppColors.black, fontFamily: "", fontSize: 14),
+                ),
+              ],
+            ),
           ),
           onTap: () {
             contactAlertDialog(ctx);
           },
         );
       } else if (index == 2) {
-        return PopupMenuItem<String>(
+        return storeHomeMainController
+            .storeDetailsResponse.value.data!.store!.storePages!
+            .any((element) =>
+        element.storePageType == "privacy" &&
+            element.storePageContent?.dynamicUrl != null)
+            ? PopupMenuItem<String>(
           value: StringConstants.storePolicyText,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                StringConstants.storePolicyText,
-                style: const TextStyle(
-                    color: AppColors.black, fontFamily: "", fontSize: 14),
-              ),
-            ],
+          child: SizedBox(
+            width: 100,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.storePolicyText,
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontFamily: "",
+                      fontSize: 14),
+                ),
+              ],
+            ),
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);
           },
+        )
+            : PopupMenuItem<String>(
+          value: StringConstants.storePolicyText,
+          child: const SizedBox(
+            width: 100,
+          ),
         );
       } else {
-        return PopupMenuItem<String>(
+        return storeHomeMainController
+            .storeDetailsResponse.value.data!.store!.storePages!
+            .any((element) =>
+        element.storePageType == "terms" &&
+            element.storePageContent?.dynamicUrl != null)
+            ? PopupMenuItem<String>(
           value: StringConstants.termsAndConditionsText,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                StringConstants.termsAndConditionsText,
-                style: const TextStyle(
-                    color: AppColors.black, fontFamily: "", fontSize: 14),
-              ),
-            ],
+          child: SizedBox(
+            width: 136,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringConstants.termsAndConditionsText,
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontFamily: "",
+                      fontSize: 14),
+                ),
+              ],
+            ),
           ),
           onTap: () {
             storeHomeMainController.popUpMenuChange(index);
           },
+        )
+            : PopupMenuItem<String>(
+          value: StringConstants.storePolicyText,
+          child: const SizedBox(
+            width: 100,
+          ),
         );
       }
     });

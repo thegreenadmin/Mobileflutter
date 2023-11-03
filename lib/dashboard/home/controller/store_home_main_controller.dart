@@ -44,6 +44,7 @@ class StoreHomeMainController extends GetxController {
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<PreviousOrdersProducts> previousOrderList =
       <PreviousOrdersProducts>[].obs;
+  RxInt listIndex = 2.obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
   RxInt lastSelectedIndex = 0.obs;
@@ -179,9 +180,11 @@ class StoreHomeMainController extends GetxController {
             categoryId: Get.parameters["categoryId"] ?? "0");
       }
     } else if (i == 2) {
-      if (storeDetailsResponse.value.data!.store!.storePages!.isEmpty) {
+      if (storeDetailsResponse.value.data!.store!.storePages!
+          .any((element) => element.storePageType != "privacy")) {
         Utility.showToast(StringConstants.noPrivacyFoundText);
       } else {
+        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
         if (storeDetailsResponse
                     .value.data!.store!.storePages![0].storePageType ==
                 "privacy" ||
@@ -190,9 +193,11 @@ class StoreHomeMainController extends GetxController {
                 "privacy") {}
       }
     } else if (i == 3) {
-      if (storeDetailsResponse.value.data!.store!.storePages!.isEmpty) {
+      if (storeDetailsResponse.value.data!.store!.storePages!
+          .any((element) => element.storePageType != "terms")) {
         Utility.showToast(StringConstants.noTermsFoundText);
       } else {
+        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
         if (storeDetailsResponse
                     .value.data!.store!.storePages![0].storePageType ==
                 "terms" ||
@@ -1193,9 +1198,12 @@ class StoreHomeMainController extends GetxController {
 
         debugPrint(
             "isFavouriteStore before *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        isVerifiedStore.value = storeDetailsResponse.value.data?.store?.isVerified ?? false;
+        isVerifiedStore.value =
+            storeDetailsResponse.value.data?.store?.isVerified ?? false;
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
+
+        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
 
         debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
