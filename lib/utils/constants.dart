@@ -560,6 +560,7 @@ class StringConstants {
   static String termsOfServiceText = "Terms of service";
   static String tokenText = "token";
   static String tillText = "till";
+  static String totalOrderAmount = "Total Order Amount";
   static String thursdayText = "Thursday";
   static String tuesdayText = "Tuesday";
   static String termsAndConditions1Text =

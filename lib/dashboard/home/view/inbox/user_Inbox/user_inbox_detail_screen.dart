@@ -241,162 +241,163 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
           padding:
               const EdgeInsets.only(top: 10, bottom: 10, left: 24, right: 60),
           child: Align(
-              alignment: Alignment.topLeft,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    messageList[index].icon!.dynamicUrl == null
-                        ? Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
-                              color: AppColors.grey,
-                              shape: BoxShape.circle,
+            alignment: Alignment.topLeft,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  messageList[index].icon!.dynamicUrl == null
+                      ? Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: AppColors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const CircleAvatar(
+                              radius: 25.0,
+                              backgroundImage:
+                                  AssetImage(ImageConstants.userAccount)))
+                      : Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(60.0),
                             ),
-                            child: const CircleAvatar(
-                                radius: 25.0,
-                                backgroundImage:
-                                    AssetImage(ImageConstants.userAccount)))
-                        : Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(60.0),
-                              ),
-                              child: CommonWidgets.cachedNetworkImage(
-                                messageList[index].icon!.dynamicUrl.toString(),
-                                width: WidgetConstants.screenHeight * 0.06,
-                                height: WidgetConstants.screenHeight * 0.06,
-                                placeholder: (context, url) => SizedBox(
-                                    height: WidgetConstants.screenHeight * 0.05,
-                                    child: const Center(
-                                        child: CircularProgressIndicator())),
-                              ),
+                            child: CommonWidgets.cachedNetworkImage(
+                              messageList[index].icon!.dynamicUrl.toString(),
+                              width: WidgetConstants.screenHeight * 0.06,
+                              height: WidgetConstants.screenHeight * 0.06,
+                              placeholder: (context, url) => SizedBox(
+                                  height: WidgetConstants.screenHeight * 0.05,
+                                  child: const Center(
+                                      child: CircularProgressIndicator())),
                             ),
                           ),
-                    width10SizedBox,
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey[100]!.withOpacity(0.2),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(0, 3),
-                                  )
-                                ],
-                                color: AppColors.primary,
-                                border: Border.all(
-                                    color: AppColors.white, width: 1),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                )),
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                messageList[index].image!.dynamicUrl == "" ||
-                                        messageList[index].image!.dynamicUrl ==
-                                            null
-                                    ? height0SizedBox
-                                    : InkWell(
-                                        onTap: () {
-                                          Get.to(
-                                              ImagePreviewScreen(
-                                                image: messageList[index]
-                                                    .image!
-                                                    .dynamicUrl
-                                                    .toString(),
-                                              ),
-                                              id: pageIdApp.value);
-                                        },
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10.0),
-                                            ),
-                                            child: CommonWidgets
-                                                .cachedNetworkImage(
-                                              messageList[index]
+                        ),
+                  width10SizedBox,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey[100]!.withOpacity(0.2),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                )
+                              ],
+                              color: AppColors.primary,
+                              border:
+                                  Border.all(color: AppColors.white, width: 1),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              )),
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              messageList[index].image!.dynamicUrl == "" ||
+                                      messageList[index].image!.dynamicUrl ==
+                                          null
+                                  ? height0SizedBox
+                                  : InkWell(
+                                      onTap: () {
+                                        Get.to(
+                                            ImagePreviewScreen(
+                                              image: messageList[index]
                                                   .image!
                                                   .dynamicUrl
                                                   .toString(),
-                                              height:
-                                                  WidgetConstants.screenHeight *
-                                                      0.25,
-                                              width:
-                                                  WidgetConstants.screenWidth *
-                                                      0.4,
-                                              placeholder: (context, url) =>
-                                                  SizedBox(
-                                                      height: WidgetConstants
-                                                              .screenHeight *
-                                                          0.25,
-                                                      width: WidgetConstants
-                                                              .screenWidth *
-                                                          0.4,
-                                                      child: const Center(
-                                                          child:
-                                                              CircularProgressIndicator())),
                                             ),
+                                            id: pageIdApp.value);
+                                      },
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          child:
+                                              CommonWidgets.cachedNetworkImage(
+                                            messageList[index]
+                                                .image!
+                                                .dynamicUrl
+                                                .toString(),
+                                            height:
+                                                WidgetConstants.screenHeight *
+                                                    0.25,
+                                            width: WidgetConstants.screenWidth *
+                                                0.4,
+                                            placeholder: (context, url) => SizedBox(
+                                                height: WidgetConstants
+                                                        .screenHeight *
+                                                    0.25,
+                                                width: WidgetConstants
+                                                        .screenWidth *
+                                                    0.4,
+                                                child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator())),
                                           ),
                                         ),
                                       ),
-                                messageList[index].image!.dynamicUrl == "" ||
-                                        messageList[index].image!.dynamicUrl ==
-                                            null
-                                    ? height0SizedBox
-                                    : height15SizedBox,
-                                InkWell(
-                                    onLongPress: () {
-                                      Clipboard.setData(ClipboardData(
-                                          text: messageList[index].message ??
-                                              ""));
-                                      Utility.showTopMessage(
-                                          StringConstants.messageText,
-                                          StringConstants
-                                              .copiedToClipBoardText);
-                                    },
-                                    child:
-                                        Text(messageList[index].message ?? "",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: AppColors.white,
-                                              fontWeight: FontWeight.w400,
-                                            ))),
-                              ],
-                            ),
+                                    ),
+                              messageList[index].image!.dynamicUrl == "" ||
+                                      messageList[index].image!.dynamicUrl ==
+                                          null
+                                  ? height0SizedBox
+                                  : height15SizedBox,
+                              InkWell(
+                                  onLongPress: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text:
+                                            messageList[index].message ?? ""));
+                                    Utility.showTopMessage(
+                                        StringConstants.messageText,
+                                        StringConstants.copiedToClipBoardText);
+                                  },
+                                  child: Text(messageList[index].message ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w400,
+                                      ))),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                                Utility.parseDateTime(
-                                  DateTime.parse(
-                                    messageList[index].createdAt.toString(),
-                                  ),
-                                  secFormat: '',
-                                ).toString(),
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400,
-                                )),
-                          )
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Row(
+                            children: [
+                              //Text(messageList[index].),
+                              Text(
+                                  Utility.parseDateTime(
+                                    DateTime.parse(
+                                      messageList[index].createdAt.toString(),
+                                    ),
+                                    secFormat: '',
+                                  ).toString(),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ])));
+                  ),
+                ]),
+          ));
     } else {
       return Padding(
           padding:

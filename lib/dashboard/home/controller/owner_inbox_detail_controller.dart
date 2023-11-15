@@ -166,7 +166,7 @@ class OwnerInboxDetailController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("MESSAGE LIST RESPONSE *******${value!.body}");
+      print("MESSAGE LIST RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode200 ||
           value.body["status"] == ApiConstants.statusCode201) {
         messageListModel = OwnerMessageListModel.fromJson(value.body);

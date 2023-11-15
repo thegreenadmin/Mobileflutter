@@ -109,7 +109,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                       fit: BoxFit.cover,
                       colorFilter: const ColorFilter.mode(
                           Colors.black45, BlendMode.darken),
-                      image: ordersHomeMainController.storeDetailsResponse.value.data?.store?.image?.dynamicUrl ==
+                      image: ordersHomeMainController.storeDetailsResponse.value
+                                      .data?.store?.image?.dynamicUrl ==
                                   null ||
                               ordersHomeMainController.storeDetailsResponse
                                   .value.data!.store!.image!.dynamicUrl!.isEmpty
@@ -168,7 +169,10 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   ordersHomeMainController
                                           .storeDetailsResponse
                                           .value
-                                          .data?.store?.logo?.dynamicUrl ??
+                                          .data
+                                          ?.store
+                                          ?.logo
+                                          ?.dynamicUrl ??
                                       "",
                                   fit: BoxFit.contain,
                                   radius: 28.0,
@@ -183,7 +187,9 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     ordersHomeMainController
                                             .storeDetailsResponse
                                             .value
-                                            .data?.store?.storeName ??
+                                            .data
+                                            ?.store
+                                            ?.storeName ??
                                         "",
                                     style: const TextStyle(
                                         color: AppColors.white,
@@ -206,7 +212,10 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                             ordersHomeMainController
                                                     .storeDetailsResponse
                                                     .value
-                                                    .data?.store?.storeAddresses?.first
+                                                    .data
+                                                    ?.store
+                                                    ?.storeAddresses
+                                                    ?.first
                                                     .addressLine1 ??
                                                 "",
                                             style: const TextStyle(
@@ -225,15 +234,17 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       children: [
                                         Text(
                                             ordersHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!=null && ordersHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!
-                                                    .store!
-                                                    .storeTimings!
-                                                    .isNotEmpty
+                                                            .storeDetailsResponse
+                                                            .value
+                                                            .data !=
+                                                        null &&
+                                                    ordersHomeMainController
+                                                        .storeDetailsResponse
+                                                        .value
+                                                        .data!
+                                                        .store!
+                                                        .storeTimings!
+                                                        .isNotEmpty
                                                 ? ordersHomeMainController
                                                             .storeDetailsResponse
                                                             .value
@@ -640,6 +651,29 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                         fontSize: 14))
                                               ],
                                             ),
+                                            // height5SizedBox,
+                                            // Row(
+                                            //   mainAxisAlignment:
+                                            //       MainAxisAlignment
+                                            //           .spaceBetween,
+                                            //   children: [
+                                            //     Text(
+                                            //         "${StringConstants.totalOrderAmount}: ",
+                                            //         style: TextStyle(
+                                            //             color: AppColors
+                                            //                 .blacklight,
+                                            //             fontWeight:
+                                            //                 FontWeight.w600,
+                                            //             fontSize: 14)),
+                                            //     Text(
+                                            //         "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                            //         style: const TextStyle(
+                                            //             color: AppColors.black,
+                                            //             fontWeight:
+                                            //                 FontWeight.w600,
+                                            //             fontSize: 14))
+                                            //   ],
+                                            // ),
                                           ],
                                         ),
                                       )

@@ -224,7 +224,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> {
                       textInputAction: TextInputAction.next,
                       isBorderOutline: false,
                       inputFormatters: <TextInputFormatter>[
-                        LengthLimitingTextInputFormatter(25),
+                        LengthLimitingTextInputFormatter(100),
                       ],
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
