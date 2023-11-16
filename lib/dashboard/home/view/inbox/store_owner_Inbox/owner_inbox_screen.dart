@@ -345,6 +345,9 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
                                                           .inboxList[index]
                                                           .messageHeadId ??
                                                       "";
+                                              Get.parameters["customerName"] =
+                                                  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}" ??
+                                                      "";
                                               Get.to(
                                                       () =>
                                                           const OwnerInboxDetailScreen(),

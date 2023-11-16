@@ -23,6 +23,7 @@ class OwnerInboxDetailController extends GetxController {
   RxString? role = "".obs;
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
+  RxString? customerName = "".obs;
   RxInt pageId = 0.obs;
   OwnerMessageListModel messageListModel = OwnerMessageListModel();
   RxList<Message> messageList = <Message>[].obs;
@@ -48,6 +49,7 @@ class OwnerInboxDetailController extends GetxController {
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeId.value = Get.parameters["storeId"] ?? "";
+    customerName?.value = Get.parameters["customerName"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
     messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     page.value = 1;
@@ -166,10 +168,10 @@ class OwnerInboxDetailController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      print("MESSAGE LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        messageListModel = OwnerMessageListModel.fromJson(value.body);
+      log("MESSAGE LIST RESPONSE *******${jsonEncode(value?.body)}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        messageListModel = OwnerMessageListModel.fromJson(value?.body);
         List<Message>? messageNewList = [];
         messageNewList = messageListModel.data?.messages ?? [];
         if (messageNewList.isNotEmpty) {
@@ -180,15 +182,15 @@ class OwnerInboxDetailController extends GetxController {
         }
         messageList.toSet().toList();
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

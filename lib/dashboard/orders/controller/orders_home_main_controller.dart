@@ -275,7 +275,7 @@ class OrdersHomeMainController extends GetxController {
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
+      log("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =

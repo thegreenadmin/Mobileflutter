@@ -363,18 +363,34 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                                Utility.parseDateTime(
-                                  DateTime.parse(
-                                    messageList[index].createdAt.toString(),
-                                  ),
-                                  secFormat: '',
-                                ).toString(),
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400,
-                                )),
+                            child: Row(
+                              children: [
+                                Text(
+                                    ownerInboxDetailController
+                                                .customerName?.value !=
+                                            ""
+                                        ? "Name:- ${ownerInboxDetailController.customerName?.value}"
+                                        : "",
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400,
+                                    )),
+                                width8SizedBox,
+                                Text(
+                                    Utility.parseDateTime(
+                                      DateTime.parse(
+                                        messageList[index].createdAt.toString(),
+                                      ),
+                                      secFormat: '',
+                                    ).toString(),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400,
+                                    )),
+                              ],
+                            ),
                           )
                         ],
                       ),
