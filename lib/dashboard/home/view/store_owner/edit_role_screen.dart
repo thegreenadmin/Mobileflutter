@@ -98,6 +98,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                       ),
                       height4SizedBox,
                       CustomInputField(
+                        enabled: addNewRoleController.isEnabled.value,
                         isBorderOutline: false,
                         inputFormatters: <TextInputFormatter>[
                           LengthLimitingTextInputFormatter(200),
@@ -107,12 +108,39 @@ class _EditRoleScreenState extends State<EditRoleScreen> {
                         autofocus: false,
                         maxLines: null,
                         errorMaxLines: 3,
+                        disabledBorderColor: AppColors.grey,
                         controller: addNewRoleController.roleNameTextController,
                         hintText: StringConstants.enterRoleText,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
+                          print("Hi checkingg ${value!.trim()}");
+                          if (value.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterRoleText;
+                          } else if (value.trim() == "Store Worker" ||
+                              value.trim() == "store Worker" ||
+                              value.trim() == "Store worker" ||
+                              value.trim() == "store worker" ||
+                              value.trim() == "StoreWorker" ||
+                              value.trim() == "storeWorker" ||
+                              value.trim() == "Storeworker" ||
+                              value.trim() == "storeworker" ||
+                              value.trim() == "STOREWORKER" ||
+                              value.trim() == "STORE WORKER" ||
+                              value.trim() == "Worker" ||
+                              value.trim() == "worker" ||
+                              value.trim() == "Manager" ||
+                              value.trim() == "manager" ||
+                              value.trim() == "Store Manager" ||
+                              value.trim() == "store Manager" ||
+                              value.trim() == "Store manager" ||
+                              value.trim() == "StoreManager" ||
+                              value.trim() == "Storemanager" ||
+                              value.trim() == "storeManager" ||
+                              value.trim() == "Storemanager" ||
+                              value.trim() == "STOREMANAGER" ||
+                              value.trim() == "STORE MANAGER") {
+                            return value.trim() +
+                                AlertStringConstants.thisRoleisNotAvialbleText;
                           }
                           return null;
                         },

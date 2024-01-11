@@ -42,10 +42,6 @@ Future<void> main() async {
       onDidReceiveBackgroundNotificationResponse: selectNotification,
       onDidReceiveNotificationResponse: selectNotification);
 
-  flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onDidReceiveBackgroundNotificationResponse: selectNotification,
-      onDidReceiveNotificationResponse: selectNotification);
-
   getNotificationOpenedApp();
   getNotification();
 

@@ -429,59 +429,42 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
-                () => InkWell(
-                    onTap: () async {
-                      roleApp.value == Role.customerRoleText
-                          ? Get.to(
-                              () => const AddCardScreen(),
-                              id: pageIdApp.value,
-                            )!
-                              .then(
-                                  (value) => walletController.apiGetCardList())
-                          : Get.to(
-                              () => const CreateOwnerBankAccount(),
-                              id: pageIdApp.value,
-                            )!
-                              .then((value) =>
-                                  walletController.apiGetBankAccountList());
-                    },
-                    child: roleApp.value == Role.customerRoleText
-                        ? Row(children: [
-                            Image.asset(ImageConstants.addcard, scale: 3.2),
-                            width15SizedBox,
-                            Text(
-                              StringConstants.addCardPaymentMethodsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ])
-                        :
-                        //  walletController.capability.value == "active" &&
-                        //         walletController.payouts.value == true
-                        //     ? height0SizedBox
-                        //  Row(
-                        //     children: [
-                        //       Image.asset(
-                        //         ImageConstants.addBank,
-                        //         scale: 20,
-                        //         color: AppColors.blacklight,
-                        //       ),
-                        //       width15SizedBox,
-                        //       Text(
-                        //         StringConstants
-                        //             .addBankAccountDebitMethodsText,
-                        //         style: const TextStyle(
-                        //             color: AppColors.black,
-                        //             fontSize: 16,
-                        //             fontWeight: FontWeight.w500),
-                        //       ),
-                        //     ],
-                        //   )
-                        // :
-
-                        InkWell(
+                () => Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => const AddCardScreen(),
+                          id: pageIdApp.value,
+                        )!
+                            .then((value) => walletController.apiGetCardList());
+                      },
+                      child: Row(children: [
+                        Image.asset(ImageConstants.addcard, scale: 3.9),
+                        width15SizedBox,
+                        Text(
+                          StringConstants.addCardPaymentMethodsText,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ]),
+                    ),
+                    Obx(() => roleApp.value == Role.customerRoleText
+                        ? height0SizedBox
+                        : height10SizedBox),
+                    Obx(
+                      () => roleApp.value == Role.customerRoleText
+                          ? height0SizedBox
+                          : const Divider(
+                              color: AppColors.grey,
+                              height: 25,
+                            ),
+                    ),
+                    roleApp.value == Role.customerRoleText
+                        ? height0SizedBox
+                        : InkWell(
                             onTap: () {
                               Get.to(
                                 () => WebviewPageScreen(
@@ -495,19 +478,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 walletController.apiGetAccountDetails();
                                 walletController.apiGetBankAccountList();
                               });
-                              // SharedPreferenceStorage.setData(
-                              //     "context", context);
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(
-                              //         builder: (_) => WebviewPageScreen(
-                              //             isFrom: "connectAccount",
-                              //             url: Uri.parse(walletController
-                              //                     .accountLink.value)
-                              //                 .toString())))
-                              //     .then((value) {
-                              //  walletController.apiGetAccountDetails();
-                              //                               walletController.apiGetBankAccountList();
-                              // });
                             },
                             child: Row(
                               children: [
@@ -526,7 +496,9 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> {
                                 ),
                               ],
                             ),
-                          )),
+                          )
+                  ],
+                ),
               ),
             ),
             Obx(

@@ -77,6 +77,7 @@ class Orders {
   String? createdAt;
   String? updatedAt;
   String? orderId;
+  List<OrderTransactions>? orderTransactions;
   Store? store;
   DeliveryService? deliveryService;
   List<OrderHistories>? orderHistories;
@@ -102,6 +103,7 @@ class Orders {
       this.createdAt,
       this.updatedAt,
       this.orderId,
+      this.orderTransactions,
       this.store,
       this.deliveryService,
       this.orderHistories,
@@ -127,6 +129,12 @@ class Orders {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderId = json['order_id'];
+    if (json['order_transactions'] != null) {
+      orderTransactions = <OrderTransactions>[];
+      json['order_transactions'].forEach((v) {
+        orderTransactions!.add(new OrderTransactions.fromJson(v));
+      });
+    }
     store = json['store'] != null ? Store.fromJson(json['store']) : null;
     deliveryService = json['delivery_service'] != null
         ? DeliveryService.fromJson(json['delivery_service'])
@@ -171,6 +179,10 @@ class Orders {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['order_id'] = orderId;
+    if (this.orderTransactions != null) {
+      data['order_transactions'] =
+          this.orderTransactions!.map((v) => v.toJson()).toList();
+    }
     if (store != null) {
       data['store'] = store!.toJson();
     }
@@ -188,6 +200,67 @@ class Orders {
       data['order_delivery_addresses'] =
           orderDeliveryAddresses!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class OrderTransactions {
+  String? transactionId;
+  String? orderId;
+  String? orderTransactionType;
+  String? storeServiceChargeType;
+  dynamic storeServiceChargeValue;
+  dynamic storeTotalServiceCharged;
+  String? orderServiceChargeType;
+  int? orderServiceChargeValue;
+  dynamic orderTotalServiceCharged;
+  dynamic storeReceivedAmount;
+  dynamic totalAmount;
+  String? orderTransactionId;
+
+  OrderTransactions(
+      {this.transactionId,
+      this.orderId,
+      this.orderTransactionType,
+      this.storeServiceChargeType,
+      this.storeServiceChargeValue,
+      this.storeTotalServiceCharged,
+      this.orderServiceChargeType,
+      this.orderServiceChargeValue,
+      this.orderTotalServiceCharged,
+      this.storeReceivedAmount,
+      this.totalAmount,
+      this.orderTransactionId});
+
+  OrderTransactions.fromJson(Map<String, dynamic> json) {
+    transactionId = json['transaction_id'];
+    orderId = json['order_id'];
+    orderTransactionType = json['order_transaction_type'];
+    storeServiceChargeType = json['store_service_charge_type'];
+    storeServiceChargeValue = json['store_service_charge_value'];
+    storeTotalServiceCharged = json['store_total_service_charged'];
+    orderServiceChargeType = json['order_service_charge_type'];
+    orderServiceChargeValue = json['order_service_charge_value'];
+    orderTotalServiceCharged = json['order_total_service_charged'];
+    storeReceivedAmount = json['store_received_amount'];
+    totalAmount = json['total_amount'];
+    orderTransactionId = json['order_transaction_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transaction_id'] = this.transactionId;
+    data['order_id'] = this.orderId;
+    data['order_transaction_type'] = this.orderTransactionType;
+    data['store_service_charge_type'] = this.storeServiceChargeType;
+    data['store_service_charge_value'] = this.storeServiceChargeValue;
+    data['store_total_service_charged'] = this.storeTotalServiceCharged;
+    data['order_service_charge_type'] = this.orderServiceChargeType;
+    data['order_service_charge_value'] = this.orderServiceChargeValue;
+    data['order_total_service_charged'] = this.orderTotalServiceCharged;
+    data['store_received_amount'] = this.storeReceivedAmount;
+    data['total_amount'] = this.totalAmount;
+    data['order_transaction_id'] = this.orderTransactionId;
     return data;
   }
 }

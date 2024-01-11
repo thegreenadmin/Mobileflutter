@@ -4,12 +4,15 @@ import 'dart:developer';
 import 'package:dio/dio.dart' as mdio;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/dashboard/home/model/unclaimed_stores_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -36,7 +39,7 @@ class OwnerStoresController extends GetxController {
       TextEditingController();
   TextEditingController storePrivacyTextController = TextEditingController();
   TextEditingController storeTermsTextController = TextEditingController();
-
+  TextEditingController einNumberTextController = TextEditingController();
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
 
@@ -49,6 +52,7 @@ class OwnerStoresController extends GetxController {
   RxBool is247Time = false.obs;
   RxBool isEnabled = false.obs;
   RxBool isStoreLogoSelected = false.obs;
+  RxBool loadingData = false.obs;
 
   RxString? firstName = "".obs;
   RxString? role = "".obs;
@@ -86,6 +90,9 @@ class OwnerStoresController extends GetxController {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
+
+  late UnclaimedStoresModel unclaimedStoresModel = UnclaimedStoresModel();
+  RxList<UnclaimedStoreList> unclaimedStoreList = <UnclaimedStoreList>[].obs;
 
   late DeliveryServicesResponse deliveryServicesResponse =
       DeliveryServicesResponse();
@@ -166,10 +173,12 @@ class OwnerStoresController extends GetxController {
       await apiGetParticularStore();
     }
     getApiData();
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-    isDataComing.value = false;
+    await Utility.fetchCurrentLocation().then((currentLocation) async {
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+      isDataComing.value = false;
+      await apiGetUnClaimStoreList();
+    });
   }
 
   getApiData() async {
@@ -513,6 +522,50 @@ class OwnerStoresController extends GetxController {
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
+        Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
+  }
+
+  ///Get Unclaimed Store List Api
+  Future apiGetUnClaimStoreList() async {
+    loadingData.value = true;
+
+    debugPrint(
+        "GET UNCLAIMED STORE URL**********${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=500}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            '${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=500',
+            headers,
+            showLoading: true)
+        .then((value) async {
+      loadingData.value = false;
+      debugPrint("GET UNCLAIMED STORE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        // getStoreListModel = GetStoreListModel.fromJson(value.body);
+        // storeList.clear();
+        // storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        // Get.parameters["storeCount"] = storeList.length.toString();
+        unclaimedStoresModel = UnclaimedStoresModel.fromJson(value.body);
+        unclaimedStoreList.clear();
+        unclaimedStoreList.addAll(unclaimedStoresModel.data?.storeAddresses
+            as Iterable<UnclaimedStoreList>);
+        // Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
         SharedPreferenceStorage.clearData();
@@ -1010,5 +1063,178 @@ class OwnerStoresController extends GetxController {
         }
       }
     });
+  }
+
+  ///Alert
+  void enterEinNumberAlert(context, String storeId) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            height10SizedBox,
+            Text(
+              StringConstants.enterEinNumberText,
+              style: const TextStyle(
+                  color: AppColors.primarydark,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.start,
+            ),
+            height15SizedBox,
+            Form(
+              key: formKey,
+              child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.next,
+                  autofocus: false,
+                  textCapitalization: TextCapitalization.words,
+                  inputFormatters: <TextInputFormatter>[
+                    LengthLimitingTextInputFormatter(40),
+                  ],
+                  validator: (v) {
+                    if (v!.isEmpty) {
+                      return AlertStringConstants.pleaseEnterEinText;
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                  controller: einNumberTextController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: StringConstants.enterEinNumberText,
+                    hintStyle: const TextStyle(color: AppColors.grey),
+                    fillColor: Colors.white,
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.0,
+                      ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(
+                        color: AppColors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                  )),
+            ),
+            height25SizedBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    apiClaimStore(storeId: storeId);
+                  },
+                  child: Container(
+                    height: 50.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        StringConstants.okayText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+  }
+
+// Api to claim Store
+  apiClaimStore({
+    String storeId = "",
+  }) async {
+    if (einNumberTextController.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+          msg: AlertStringConstants.pleaseEnterEinText,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: AppColors.primary,
+          textColor: AppColors.white,
+          fontSize: 14.0);
+    } else {
+      Get.back();
+      debugPrint("CLAIM STORE API URL **********"
+          "${ServerCommunicator().baseUrl}${ServerCommunicator().claimStoreRequest}");
+
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        StringConstants.authorizationText:
+            "${StringConstants.bearerText} ${authToken.value}",
+      };
+      Map data = {
+        "store_id": int.parse(storeId),
+        "store_ein": einNumberTextController.text.trim()
+      };
+      debugPrint("CLAIM STORE BODY **********"
+          "$data");
+      debugPrint("TOKEN ********** $headers");
+      UserProvider()
+          .postWithHeadersApi(
+              data,
+              ServerCommunicator().baseUrl +
+                  ServerCommunicator().claimStoreRequest,
+              headers,
+              showLoading: false)
+          .then((value) async {
+        isLoading.value = false;
+        debugPrint("CLAIM STORE API BODY *******${value?.body}");
+        if (value?.body["status"] == ApiConstants.statusCode201 ||
+            value?.body["status"] == ApiConstants.statusCode200) {
+          Utility.showToast(value?.body['message']);
+          einNumberTextController.clear();
+        } else if (value?.body["status"] == ApiConstants.statusCode401) {
+          Utility.showAlertMessage(value?.body['message']);
+          SharedPreferenceStorage.clearData();
+          Get.parameters.clear();
+          Get.offAll(const StartJourneyScreen());
+        } else if (value?.body["status"] == ApiConstants.statusCode409) {
+          Utility.showAlertMessage(value?.body['message']);
+          einNumberTextController.clear();
+        } else {
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
+          }
+        }
+      });
+    }
   }
 }

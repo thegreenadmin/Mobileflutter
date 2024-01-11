@@ -66,6 +66,8 @@ class Transactions {
   OrderTransaction? orderTransaction;
   OrderItemRefundTransaction? orderItemRefundTransaction;
   StorePayout? storePayout;
+  MembershipClass? membership;
+  TransactionClass? transaction;
 
   Transactions(
       {this.storeId,
@@ -80,7 +82,9 @@ class Transactions {
       this.store,
       this.orderTransaction,
       this.orderItemRefundTransaction,
-      this.storePayout});
+      this.storePayout,
+      this.membership,
+      this.transaction});
 
   Transactions.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
@@ -102,6 +106,12 @@ class Transactions {
         : null;
     storePayout = json['store_payout'] != null
         ? StorePayout.fromJson(json['store_payout'])
+        : null;
+    membership = json['membership'] != null
+        ? MembershipClass.fromJson(json['membership'])
+        : null;
+    transaction = json['transaction'] != null
+        ? TransactionClass.fromJson(json['transaction'])
         : null;
   }
 
@@ -128,6 +138,12 @@ class Transactions {
     }
     if (storePayout != null) {
       data['store_payout'] = storePayout!.toJson();
+    }
+    if (membership != null) {
+      data['membership'] = membership!.toJson();
+    }
+    if (transaction != null) {
+      data['transaction'] = transaction!.toJson();
     }
     return data;
   }
@@ -392,6 +408,122 @@ class StorePayout {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['store_payout_id'] = storePayoutId;
+    return data;
+  }
+}
+
+class MembershipClass {
+  String? userId;
+  String? membershipPlanId;
+  String? transactionId;
+  String? storeId;
+  int? membershipCharge;
+  int? duration;
+  String? expiredAt;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? membershipId;
+  MembershipPlan? membershipPlan;
+
+  MembershipClass(
+      {this.userId,
+      this.membershipPlanId,
+      this.transactionId,
+      this.storeId,
+      this.membershipCharge,
+      this.duration,
+      this.expiredAt,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.membershipId,
+      this.membershipPlan});
+
+  MembershipClass.fromJson(Map<String, dynamic> json) {
+    userId = json['user_id'];
+    membershipPlanId = json['membership_plan_id'];
+    transactionId = json['transaction_id'];
+    storeId = json['store_id'];
+    membershipCharge = json['membership_charge'];
+    duration = json['duration'];
+    expiredAt = json['expiredAt'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    membershipId = json['membership_id'];
+    membershipPlan = json['membership_plan'] != null
+        ? MembershipPlan.fromJson(json['membership_plan'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = userId;
+    data['membership_plan_id'] = membershipPlanId;
+    data['transaction_id'] = transactionId;
+    data['store_id'] = storeId;
+    data['membership_charge'] = membershipCharge;
+    data['duration'] = duration;
+    data['expiredAt'] = expiredAt;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['membership_id'] = membershipId;
+    if (membershipPlan != null) {
+      data['membership_plan'] = membershipPlan!.toJson();
+    }
+    return data;
+  }
+}
+
+class TransactionClass {
+  String? paymentServiceId;
+  String? stripePaymentIntentTransactionId;
+  dynamic stripePayoutTransactionId;
+  String? transactionType;
+  int? transactionAmount;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? transactionId;
+
+  TransactionClass(
+      {this.paymentServiceId,
+      this.stripePaymentIntentTransactionId,
+      this.stripePayoutTransactionId,
+      this.transactionType,
+      this.transactionAmount,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.transactionId});
+
+  TransactionClass.fromJson(Map<String, dynamic> json) {
+    paymentServiceId = json['payment_service_id'];
+    stripePaymentIntentTransactionId =
+        json['stripe_payment_intent_transaction_id'];
+    stripePayoutTransactionId = json['stripe_payout_transaction_id'];
+    transactionType = json['transaction_type'];
+    transactionAmount = json['transaction_amount'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    transactionId = json['transaction_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['payment_service_id'] = paymentServiceId;
+    data['stripe_payment_intent_transaction_id'] =
+        stripePaymentIntentTransactionId;
+    data['stripe_payout_transaction_id'] = stripePayoutTransactionId;
+    data['transaction_type'] = transactionType;
+    data['transaction_amount'] = transactionAmount;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['transaction_id'] = transactionId;
     return data;
   }
 }

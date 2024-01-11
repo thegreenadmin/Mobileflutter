@@ -69,15 +69,15 @@ class ActiveMembershipData {
   factory ActiveMembershipData.fromJson(Map<String, dynamic> json) =>
       ActiveMembershipData(
         totalCount: json["total_count"],
-        memberships: json["memberships"] == null
+        memberships: json["membersips"] == null
             ? []
             : List<ActiveMemberships>.from(
-                json["memberships"]!.map((x) => ActiveMemberships.fromJson(x))),
+                json["membersips"]!.map((x) => ActiveMemberships.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "total_count": totalCount,
-        "memberships": memberships == null
+        "membersips": memberships == null
             ? []
             : List<dynamic>.from(memberships!.map((x) => x.toJson())),
       };
@@ -95,6 +95,7 @@ class ActiveMemberships {
   DateTime? updatedAt;
   String? membershipId;
   MembershipPlan? membershipPlan;
+  MembershipStore? membershipStore;
 
   ActiveMemberships({
     this.userId,
@@ -108,6 +109,7 @@ class ActiveMemberships {
     this.updatedAt,
     this.membershipId,
     this.membershipPlan,
+    this.membershipStore,
   });
 
   ActiveMemberships copyWith({
@@ -122,6 +124,7 @@ class ActiveMemberships {
     DateTime? updatedAt,
     String? membershipId,
     MembershipPlan? membershipPlan,
+    MembershipStore? membershipStore,
   }) =>
       ActiveMemberships(
         userId: userId ?? this.userId,
@@ -135,6 +138,7 @@ class ActiveMemberships {
         updatedAt: updatedAt ?? this.updatedAt,
         membershipId: membershipId ?? this.membershipId,
         membershipPlan: membershipPlan ?? this.membershipPlan,
+        membershipStore: membershipStore ?? this.membershipStore,
       );
 
   factory ActiveMemberships.fromJson(Map<String, dynamic> json) =>
@@ -157,7 +161,12 @@ class ActiveMemberships {
         membershipId: json["membership_id"],
         membershipPlan: json["membership_plan"] == null
             ? null
-            : MembershipPlan.fromJson(json["membership_plan"]),
+            : MembershipPlan.fromJson(
+                json["membership_plan"],
+              ),
+        membershipStore: json["store"] == null
+            ? null
+            : MembershipStore.fromJson(json["store"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -172,6 +181,7 @@ class ActiveMemberships {
         "updatedAt": updatedAt?.toIso8601String(),
         "membership_id": membershipId,
         "membership_plan": membershipPlan?.toJson(),
+        "store": membershipStore?.toJson(),
       };
 }
 
@@ -267,3 +277,163 @@ class MembershipPlan {
         "membership_plan_id": membershipPlanId,
       };
 }
+
+class MembershipStore {
+  int? storeBalance;
+  int? taxValue;
+  dynamic dynamicLink;
+  String? storeName;
+  String? storeEin;
+  String? storeNickName;
+  String? storeEmail;
+  String? storePhone;
+  String? storePhoneCode;
+  bool? isVerified;
+  String? verifiedBy;
+  bool? isEnabled;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? storeId;
+  //Image? imageBanner;
+  //Image? logo;
+
+  MembershipStore({
+    this.storeBalance,
+    this.taxValue,
+    this.dynamicLink,
+    this.storeName,
+    this.storeEin,
+    this.storeNickName,
+    this.storeEmail,
+    this.storePhone,
+    this.storePhoneCode,
+    this.isVerified,
+    this.verifiedBy,
+    this.isEnabled,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.storeId,
+    // this.imageBanner,
+    //this.logo,
+  });
+
+  MembershipStore copyWith({
+    int? storeBalance,
+    int? taxValue,
+    dynamic dynamicLink,
+    String? storeName,
+    String? storeEin,
+    String? storeNickName,
+    String? storeEmail,
+    String? storePhone,
+    String? storePhoneCode,
+    bool? isVerified,
+    String? verifiedBy,
+    bool? isEnabled,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? storeId,
+    // Image? imageBanner,
+    // Image? logo,
+  }) =>
+      MembershipStore(
+        storeBalance: storeBalance ?? this.storeBalance,
+        taxValue: taxValue ?? this.taxValue,
+        dynamicLink: dynamicLink ?? this.dynamicLink,
+        storeName: storeName ?? this.storeName,
+        storeEin: storeEin ?? this.storeEin,
+        storeNickName: storeNickName ?? this.storeNickName,
+        storeEmail: storeEmail ?? this.storeEmail,
+        storePhone: storePhone ?? this.storePhone,
+        storePhoneCode: storePhoneCode ?? this.storePhoneCode,
+        isVerified: isVerified ?? this.isVerified,
+        verifiedBy: verifiedBy ?? this.verifiedBy,
+        isEnabled: isEnabled ?? this.isEnabled,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        storeId: storeId ?? this.storeId,
+        //imageBanner: imageBanner ?? this.imageBanner,
+        //logo: logo ?? this.logo,
+      );
+
+  factory MembershipStore.fromJson(Map<String, dynamic> json) =>
+      MembershipStore(
+        storeBalance: json["store_balance"],
+        taxValue: json["tax_value"],
+        dynamicLink: json["dynamic_link"],
+        storeName: json["store_name"],
+        storeEin: json["store_ein"],
+        storeNickName: json["store_nick_name"],
+        storeEmail: json["store_email"],
+        storePhone: json["store_phone"],
+        storePhoneCode: json["store_phone_code"],
+        isVerified: json["is_verified"],
+        verifiedBy: json["verified_by"],
+        isEnabled: json["is_enabled"],
+        status: json["status"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        storeId: json["store_id"],
+        // imageBanner:
+        // json["image"] == null ? null : Image.fromJson(json["image"]),
+        // logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "store_balance": storeBalance,
+        "tax_value": taxValue,
+        "dynamic_link": dynamicLink,
+        "store_name": storeName,
+        "store_ein": storeEin,
+        "store_nick_name": storeNickName,
+        "store_email": storeEmail,
+        "store_phone": storePhone,
+        "store_phone_code": storePhoneCode,
+        "is_verified": isVerified,
+        "verified_by": verifiedBy,
+        "is_enabled": isEnabled,
+        "status": status,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "store_id": storeId,
+        //"image": imageBanner?.toJson(),
+        //"logo": logo?.toJson(),
+      };
+}
+
+// class Image {
+//   String? orignalUrl;
+//   String? dynamicUrl;
+
+//   Image({
+//     this.orignalUrl,
+//     this.dynamicUrl,
+//   });
+
+//   Image copyWith({
+//     String? orignalUrl,
+//     String? dynamicUrl,
+//   }) =>
+//       Image(
+//         orignalUrl: orignalUrl ?? this.orignalUrl,
+//         dynamicUrl: dynamicUrl ?? this.dynamicUrl,
+//       );
+
+//   factory Image.fromJson(Map<String, dynamic> json) => Image(
+//         orignalUrl: json["orignal_url"],
+//         dynamicUrl: json["dynamic_url"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "orignal_url": orignalUrl,
+//         "dynamic_url": dynamicUrl,
+//       };
+// }

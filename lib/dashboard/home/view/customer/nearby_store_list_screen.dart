@@ -376,57 +376,57 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                   }),
                                             ),
                                             width10SizedBox,
-                                            searchStoreUserController
-                                                            .storeAddresses[
-                                                                index]
-                                                            .store!
-                                                            .isVerified ==
-                                                        false &&
-                                                    hasStoreAccess.value
-                                                ? RawMaterialButton(
-                                                    elevation: 0,
-                                                    onPressed: () {
-                                                      searchStoreUserController
-                                                          .enterEinNumberAlert(
-                                                              context,
-                                                              searchStoreUserController
-                                                                  .storeAddresses[
-                                                                      index]
-                                                                  .store!
-                                                                  .storeId
-                                                                  .toString());
-                                                    },
-                                                    constraints:
-                                                        const BoxConstraints(),
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(
-                                                        8.0, 8.0, 8.0, 8.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      side: const BorderSide(
-                                                          width: 1.0,
-                                                          color: AppColors
-                                                              .primary),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              28.0),
-                                                    ),
-                                                    fillColor:
-                                                        AppColors.primary,
-                                                    child: Text(
-                                                      StringConstants
-                                                          .claimStoreText,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14.0,
-                                                          color: hasStoreAccess
-                                                                  .value
-                                                              ? AppColors.white
-                                                              : AppColors.grey),
-                                                    ),
-                                                  )
-                                                : height0SizedBox
+                                            // searchStoreUserController
+                                            //                 .storeAddresses[
+                                            //                     index]
+                                            //                 .store!
+                                            //                 .isVerified ==
+                                            //             false &&
+                                            //         hasStoreAccess.value
+                                            //     ? RawMaterialButton(
+                                            //         elevation: 0,
+                                            //         onPressed: () {
+                                            //           searchStoreUserController
+                                            //               .enterEinNumberAlert(
+                                            //                   context,
+                                            //                   searchStoreUserController
+                                            //                       .storeAddresses[
+                                            //                           index]
+                                            //                       .store!
+                                            //                       .storeId
+                                            //                       .toString());
+                                            //         },
+                                            //         constraints:
+                                            //             const BoxConstraints(),
+                                            //         padding: const EdgeInsets
+                                            //             .fromLTRB(
+                                            //             8.0, 8.0, 8.0, 8.0),
+                                            //         shape:
+                                            //             RoundedRectangleBorder(
+                                            //           side: const BorderSide(
+                                            //               width: 1.0,
+                                            //               color: AppColors
+                                            //                   .primary),
+                                            //           borderRadius:
+                                            //               BorderRadius.circular(
+                                            //                   28.0),
+                                            //         ),
+                                            //         fillColor:
+                                            //             AppColors.primary,
+                                            //         child: Text(
+                                            //           StringConstants
+                                            //               .claimStoreText,
+                                            //           style: TextStyle(
+                                            //               fontWeight:
+                                            //                   FontWeight.w500,
+                                            //               fontSize: 14.0,
+                                            //               color: hasStoreAccess
+                                            //                       .value
+                                            //                   ? AppColors.white
+                                            //                   : AppColors.grey),
+                                            //         ),
+                                            //       )
+                                            //     : height0SizedBox
                                           ],
                                         ),
                                       ),

@@ -68,7 +68,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
           Obx(
             () => Container(
               height: WidgetConstants.screenHeight,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: accountController.activeMembershipList.isEmpty
                   ? accountController.isLoading.value == true
                       ? height0SizedBox
@@ -94,6 +94,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                           ],
                         )
                   : ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 80),
                       separatorBuilder: (BuildContext context, int index) {
                         return height15SizedBox;
                       },
@@ -155,12 +156,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                           .screenWidth *
                                                       0.7,
                                                   child: Text(
-                                                    accountController
-                                                        .activeMembershipList[
-                                                            index]
-                                                        .membershipPlan!
-                                                        .planDescription
-                                                        .toString(),
+                                                    "${accountController.activeMembershipList[index].membershipPlan!.planDescription} ",
                                                     maxLines: 5,
                                                     style: const TextStyle(
                                                         color: AppColors.black,
@@ -183,6 +179,34 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
                                                     ),
                                                     Text(
                                                       "\$${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height10SizedBox,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "${StringConstants.storeText}: ",
+                                                      style: const TextStyle(
+                                                          color:
+                                                              AppColors.black,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Text(
+                                                      accountController
+                                                          .activeMembershipList[
+                                                              index]
+                                                          .membershipStore!
+                                                          .storeName!
+                                                          .toCapitalized(),
                                                       style: const TextStyle(
                                                           color:
                                                               AppColors.black,

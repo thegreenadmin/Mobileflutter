@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
-import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_owner.dart';
 import 'package:thegreenmall/dashboard/wallet/view/manage_wallet_screen.dart';
 import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -18,7 +19,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   final WalletController walletController = Get.put(WalletController());
   var roleVal = "";
-
+  String storeName = "";
   /*@override
   initState() {
     super.initState();
@@ -252,17 +253,10 @@ class _WalletScreenState extends State<WalletScreen> {
                               height12SizedBox,
                               InkWell(
                                 onTap: () {
-                                  /* SharedPreferenceStorage.setData(
-                                      "context", context);
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                        builder: (_) =>
-                                            const AddMoneyToWallet(),
-                                      ))*/
                                   debugPrint(
                                       "AddMoneyToWallet .pageId.value :------ ${walletController.pageId.value}");
                                   Get.to(
-                                    () => const AddMoneyToWallet(),
+                                    () => const AddMoneyToWalletUser(),
                                     id: pageIdApp.value,
                                   )!
                                       .then((value) => walletController
@@ -293,13 +287,27 @@ class _WalletScreenState extends State<WalletScreen> {
                                           fontSize: 26,
                                           fontWeight: FontWeight.w500),
                                     ),
-                              height8SizedBox,
+                              height4SizedBox,
                               Text(
                                 StringConstants.totalBalanceText,
                                 style: const TextStyle(
                                     color: AppColors.black, fontSize: 18),
                               ),
-                              height12SizedBox,
+                              height10SizedBox,
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    () => AddMoneyToWalletOwner(),
+                                    id: pageIdApp.value,
+                                  )!
+                                      .then((value) => walletController
+                                          .apiGetOwnerWalletBalance());
+                                },
+                                child: Image.asset(
+                                  ImageConstants.addMoney,
+                                  scale: 3.5,
+                                ),
+                              ),
                             ],
                           ))
                   ],
@@ -316,10 +324,6 @@ class _WalletScreenState extends State<WalletScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
-                      /*SharedPreferenceStorage.setData("context", context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const ManageWalletScreen(),
-                      ));*/
                       debugPrint(
                           "ManageWalletScreen .pageId.value :------ ${walletController.pageId.value}");
 

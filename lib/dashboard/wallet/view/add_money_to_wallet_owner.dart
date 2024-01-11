@@ -1,29 +1,29 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pay/pay.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
-
 import 'payment_configurations.dart' as payment_configurations;
 
-class AddMoneyToWallet extends StatefulWidget {
-  const AddMoneyToWallet({
-    Key? key,
-  }) : super(key: key);
+class AddMoneyToWalletOwner extends StatefulWidget {
+  AddMoneyToWalletOwner({
+    super.key,
+  });
+
   @override
   State<StatefulWidget> createState() {
-    return AddMoneyToWalletState();
+    return AddMoneyToWalletOwnerState();
   }
 }
 
-class AddMoneyToWalletState extends State<AddMoneyToWallet> {
+class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> {
   final AddCardController addCardController = Get.put(AddCardController());
-
+  final WalletController walletController = Get.put(WalletController());
   late Pay _payClient;
   bool _hasApplePay = false;
   bool _hasGooglePay = false;
@@ -133,9 +133,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                             ),
                           ),
                           width10SizedBox,
-                          Text(
-                            StringConstants.addMoneyToMyWalletText,
-                            style: const TextStyle(
+                          const Text(
+                            "Add money to store wallet",
+                            style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
@@ -151,7 +151,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
         ),
         body: SingleChildScrollView(
           child: Form(
-            key: addCardController.formKey1,
+            key: addCardController.formKey3,
             child: Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: Column(
@@ -179,7 +179,7 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     autofocus: false,
                     hintText: StringConstants.amountText,
                     textCapitalization: TextCapitalization.words,
-                    controller: addCardController.amountTextController,
+                    controller: addCardController.ownerAmountTextController,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return AlertStringConstants.pleaseEnterAmountText;
@@ -670,7 +670,9 @@ class AddMoneyToWalletState extends State<AddMoneyToWallet> {
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      addCardController.validateAndSubmitFunction(context);
+                      addCardController.validateAndSubmitFunctionOwner(context,
+                          ownerStoreId:
+                              walletController.ownerSelectedStore.value);
                     },
                     height: 50,
                     text: StringConstants.addText,

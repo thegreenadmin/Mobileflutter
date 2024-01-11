@@ -1437,7 +1437,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
-                         /* TextSpan(
+                          /* TextSpan(
                             text: StringConstants.starText,
                             style: const TextStyle(
                                 fontSize: 16,
@@ -1472,7 +1472,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                           color: AppColors.primary,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
-                     /* validator: (value) {
+                      /* validator: (value) {
                         if (value!.trim().isEmpty) {
                           return AlertStringConstants.pleaseEnterStoreTermsText;
                         }

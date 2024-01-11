@@ -651,29 +651,29 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                         fontSize: 14))
                                               ],
                                             ),
-                                            // height5SizedBox,
-                                            // Row(
-                                            //   mainAxisAlignment:
-                                            //       MainAxisAlignment
-                                            //           .spaceBetween,
-                                            //   children: [
-                                            //     Text(
-                                            //         "${StringConstants.totalOrderAmount}: ",
-                                            //         style: TextStyle(
-                                            //             color: AppColors
-                                            //                 .blacklight,
-                                            //             fontWeight:
-                                            //                 FontWeight.w600,
-                                            //             fontSize: 14)),
-                                            //     Text(
-                                            //         "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
-                                            //         style: const TextStyle(
-                                            //             color: AppColors.black,
-                                            //             fontWeight:
-                                            //                 FontWeight.w600,
-                                            //             fontSize: 14))
-                                            //   ],
-                                            // ),
+                                            height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    "${StringConstants.totalOrderAmount}: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                                Text(
+                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2)}",
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ),
                                           ],
                                         ),
                                       )

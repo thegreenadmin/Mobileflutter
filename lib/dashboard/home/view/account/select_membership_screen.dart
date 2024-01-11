@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -114,8 +115,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                         .selectedMembershipPlanId.value =
                                     accountController.membershipList[index]
                                         .membershipPlanId!;
-                                debugPrint(accountController
-                                    .selectedMembershipPlanId.value);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(
@@ -393,26 +392,28 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                             AppColors.primary
                                           ],
                                         ),
-                                        onTap: () async {
-                                          Utility.showConfirmAlertMessage(
-                                              AlertStringConstants
-                                                  .areYouSurePlanText,
-                                              cancelText:
-                                                  StringConstants.noText,
-                                              okay: StringConstants.yesText,
-                                              okayTap: () {
-                                            accountController
-                                                .apiCreateMembershipPlan(
-                                                    index: index,
-                                                    membershipPlanId:
-                                                        accountController
-                                                            .membershipList[
-                                                                index]
-                                                            .membershipPlanId!,
-                                                    planDays: accountController
-                                                        .membershipList[index]
-                                                        .selectedPlan!);
-                                          });
+                                        onTap: () {
+                                          if (accountController
+                                              .membershipList[index]
+                                              .selectedPlan!
+                                              .isEmpty) {
+                                            Fluttertoast.showToast(
+                                                msg: "Please select plan first",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.TOP,
+                                                backgroundColor:
+                                                    AppColors.primary,
+                                                textColor: AppColors.white,
+                                                fontSize: 14.0);
+                                          } else {
+                                            showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MyAlertDialog(index);
+                                              },
+                                            );
+                                          }
                                         },
                                         height: 50,
                                         width: 170,
@@ -431,6 +432,142 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                           }),
                     ),
             ])),
+      ),
+    );
+  }
+
+  RxInt selectIndex = 1.obs;
+}
+
+class MyAlertDialog extends StatefulWidget {
+  int activemenbershipIndex;
+
+  MyAlertDialog(
+    this.activemenbershipIndex, {
+    Key? key,
+  }) : super(key: key);
+  @override
+  _MyAlertDialogState createState() => _MyAlertDialogState();
+}
+
+class _MyAlertDialogState extends State<MyAlertDialog> {
+  final AccountController accountController = Get.put(AccountController());
+  RxInt selectIndex = (-1).obs;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select store for which you want to buy this plan.'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 300.0,
+            width: 300.0,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: accountController.storeList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      selectIndex.value = index;
+                      accountController.selectedStoreId!.value =
+                          accountController.storeList[index].storeId.toString();
+
+                      print(accountController.storeList[index].storeId);
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          top: 15.0, bottom: 15.0, left: 10.0),
+                      color: selectIndex.value == index
+                          ? AppColors.primary
+                          : AppColors.primarylight,
+                      child: Text(
+                        accountController.storeList[index].storeName ?? "",
+                        style: TextStyle(
+                          color: selectIndex.value != index
+                              ? AppColors.primary
+                              : AppColors.primarylight,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          height15SizedBox,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CustomButton(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.primary, AppColors.primary],
+                ),
+                onTap: () {
+                  accountController.selectedStoreId!.value = "";
+                  Get.back();
+                },
+                height: 50,
+                width: 120,
+                fontSize: 16,
+                textColor: AppColors.white,
+                text: StringConstants.cancelText,
+                borderRadius: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              width5SizedBox,
+              CustomButton(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.primary, AppColors.primary],
+                ),
+                onTap: () {
+                  if (accountController.selectedStoreId!.value.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Please select store first",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: AppColors.primary,
+                        textColor: AppColors.white,
+                        fontSize: 14.0);
+                  } else {
+                    Utility.showConfirmAlertMessage(
+                        AlertStringConstants.areYouSurePlanText,
+                        cancelText: StringConstants.noText,
+                        okay: StringConstants.yesText, okayTap: () {
+                      Get.back();
+                      accountController.apiCreateMembershipPlan(
+                          index: widget.activemenbershipIndex,
+                          membershipPlanId: accountController
+                              .membershipList[widget.activemenbershipIndex]
+                              .membershipPlanId!,
+                          planDays: accountController
+                              .membershipList[widget.activemenbershipIndex]
+                              .selectedPlan!);
+                    });
+                  }
+                },
+                height: 50,
+                width: 120,
+                fontSize: 16,
+                textColor: AppColors.white,
+                text: StringConstants.yesText,
+                borderRadius: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

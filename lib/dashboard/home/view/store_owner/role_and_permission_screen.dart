@@ -222,13 +222,21 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
                                         // addNewRoleController.apiDeleteRole();
                                       },
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Image.asset(
-                                          ImageConstants.deleteicon,
-                                          scale: 2.8,
-                                        ),
-                                      ),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: addNewRoleController
+                                                          .storeRoleList[index]
+                                                          .roleName ==
+                                                      "Store Manager" ||
+                                                  addNewRoleController
+                                                          .storeRoleList[index]
+                                                          .roleName ==
+                                                      "Store Worker"
+                                              ? height0SizedBox
+                                              : Image.asset(
+                                                  ImageConstants.deleteicon,
+                                                  scale: 2.8,
+                                                )),
                                     ),
                                     width12SizedBox,
                                     InkWell(

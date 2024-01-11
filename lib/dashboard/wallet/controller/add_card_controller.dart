@@ -62,8 +62,9 @@ class AddCardController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> formKey1 = GlobalKey<FormState>();
   final GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
   TextEditingController amountTextController = TextEditingController();
+  TextEditingController ownerAmountTextController = TextEditingController();
   TextEditingController payoutAmountTextController = TextEditingController();
   TextEditingController addressLine1TextController = TextEditingController();
   TextEditingController addressLine2TextController = TextEditingController();
@@ -212,6 +213,36 @@ class AddCardController extends GetxController {
       return true;
     } else {
       return false;
+    }
+  }
+
+  bool validateAndSave3() {
+    final form = formKey3.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Fields Validation Method
+  validateAndSubmitFunctionOwner(BuildContext context,
+      {bool isFromPayout = false, String ownerStoreId = ""}) {
+    if (validateAndSave3()) {
+      try {
+        if (selectPaymentType.isEmpty) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectPaymentTypeText);
+        } else if (selectPaymentType.value == "Cards" &&
+            userStripeCardId!.value.isEmpty) {
+          Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+        } else {
+          apiAddMoneyToOwnerWallet(ownerStoreId: ownerStoreId);
+        }
+      } catch (_) {}
+    } else {
+      autoValidate.value = true;
     }
   }
 
@@ -595,6 +626,56 @@ class AddCardController extends GetxController {
         .then((value) {
       if (value != null) {
         debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
+          Get.back(id: pageIdApp.value);
+
+          userStripeCardId!.value = "";
+          amountTextController.clear();
+          selectPaymentType.value = "";
+          selectPaymentType.value.isEmpty;
+          userStripeCardId!.value.isEmpty;
+          paymentType!.value = "";
+          paymentType!.value.isEmpty;
+
+          update();
+          Utility.showToast(value.body['message']);
+        } else if (value.statusCode == ApiConstants.statusCode401) {
+          Utility.showAlertMessage(value.body['message']);
+        } else {
+          if (value.body['message'] != null) {
+            Utility.showAlertMessage(value.body['message']);
+          }
+        }
+      }
+    });
+  }
+
+  apiAddMoneyToOwnerWallet({String ownerStoreId = ""}) {
+    debugPrint(
+        "ADD MONEY TO OWNER WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().ownerWalletRechargeStripe}");
+    Map body = {
+      "store_id": int.parse(ownerStoreId),
+      "user_stripe_card_id": userStripeCardId!.value,
+      "amount": ownerAmountTextController.text.trim()
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("ADD MONEY TO OWNER WALLET  BODY *******$body");
+    debugPrint("ADD MONEY TO OWNER WALLET  HEADERS *******$headers");
+    UserProvider()
+        .postWithHeadersApi(
+            body,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().ownerWalletRechargeStripe,
+            headers,
+            showLoading: true)
+        .then((value) {
+      if (value != null) {
+        debugPrint("ADD MONEY TO OWNER WALLET RESPONSE *******${value.body}");
         if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Get.back(id: pageIdApp.value);

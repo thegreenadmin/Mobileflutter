@@ -55,6 +55,7 @@ class AccountController extends GetxController {
   RxString postalCode = "".obs;
   RxString country = "".obs;
   RxString state = "".obs;
+  RxString? selectedStoreId = "".obs;
   int? selectedIndex;
   RxInt pageId = 0.obs;
   RxString selectedMembershipPlanId = "".obs;
@@ -68,6 +69,9 @@ class AccountController extends GetxController {
   RxString stateId = "".obs;
   RxInt countryIndex = 0.obs;
   RxInt stateIndex = 0.obs;
+
+  late GetStoreListModel getStoreListModel = GetStoreListModel();
+  RxList<Stores> storeList = <Stores>[].obs;
 
   late GetCountriesModel getCountriesModel = GetCountriesModel();
   RxList<CountriesList> countriesList = <CountriesList>[].obs;
@@ -494,6 +498,7 @@ class AccountController extends GetxController {
         // await apiGetCountries();
         await apiGetMembershipList();
         await apiGetActiveMembershipList();
+        await apiGetAllStoreList();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         // await apiGetCountries();
       } else if (value.body["status"] == 401) {
@@ -501,6 +506,45 @@ class AccountController extends GetxController {
         clearData();
       } else {
         Utility.showAlertMessage(value.body['message'].toString());
+      }
+    });
+  }
+
+  ///Get Store List Api
+  Future apiGetAllStoreList() async {
+    isLoading.value = true;
+    debugPrint(
+        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            headers,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      log("GET STORE RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode200 ||
+          value.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value.body);
+        storeList.clear();
+        storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        // Get.parameters["storeCount"] = storeList.length.toString();
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value.body['message']);
+        SharedPreferenceStorage.clearData();
+        Get.parameters.clear();
+        Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value.body['message'] != null) {
+          Utility.showAlertMessage(value.body['message']);
+        }
       }
     });
   }
@@ -940,6 +984,7 @@ class AccountController extends GetxController {
           "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
+      "store_id": selectedStoreId!.value,
       "membership_plan_id": membershipPlanId,
       "plan_days": planDays == "plan30"
           ? "30"
@@ -960,6 +1005,7 @@ class AccountController extends GetxController {
       debugPrint("CREATE MEMBERSHIP RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
+        selectedStoreId!.value = "";
         Utility.showToast(value.body['message']);
         Get.back(id: pageIdApp.value);
 
@@ -992,7 +1038,7 @@ class AccountController extends GetxController {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=100&order_by=membership_id&order_type=DESC",
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=1000&order_by=membership_id&order_type=DESC",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1003,6 +1049,7 @@ class AccountController extends GetxController {
             ActiveMembershipPlanModel.fromJson(value.body);
         activeMembershipList.value =
             activeMembershipPlanModel.data!.memberships!;
+
         update();
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);

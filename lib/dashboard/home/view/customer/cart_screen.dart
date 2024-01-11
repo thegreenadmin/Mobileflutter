@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
-import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet.dart';
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class CartScreen extends StatefulWidget {
@@ -979,7 +979,7 @@ class _CartScreenState extends State<CartScreen> {
                                     )),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(() => const AddMoneyToWallet(),
+                                    Get.to(() => const AddMoneyToWalletUser(),
                                             id: pageIdApp.value)
                                         ?.then((value) {
                                       storeHomeMainController
@@ -1067,7 +1067,7 @@ class _CartScreenState extends State<CartScreen> {
                                           okay: StringConstants.addFundsText,
                                           okayTap: () async {
                                         Get.back();
-                                        await Get.to(()=>const AddMoneyToWallet(),
+                                        await Get.to(()=>const AddMoneyToWalletUser(),
                                                 id: pageIdApp.value)
                                             ?.then((value) {
                                           storeHomeMainController

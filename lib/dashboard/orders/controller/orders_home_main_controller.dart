@@ -275,7 +275,7 @@ class OrdersHomeMainController extends GetxController {
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
-      log("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
+      print("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
       if (value.body["status"] == ApiConstants.statusCode201 ||
           value.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
@@ -283,6 +283,7 @@ class OrdersHomeMainController extends GetxController {
         totalCount.value = getOwnerOrderHistoryModel.data!.totalCount!;
         List<Orders>? orders = [];
         orders = getOwnerOrderHistoryModel.data!.orders ?? [];
+
         if (orders.isNotEmpty) {
           if (page.value == 1) {
             ownerOrderHistoryList!.value = [];

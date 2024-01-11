@@ -176,6 +176,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
                     height4SizedBox,
                     //EMPLOYEE NAME FIELD
                     CustomInputField(
+                      disabledBorderColor: AppColors.grey,
+                      enabled: false,
                       textInputAction: TextInputAction.next,
                       isBorderOutline: false,
                       inputFormatters: <TextInputFormatter>[
@@ -285,6 +287,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> {
 //WORKER EMAIL FIELD
 
                     CustomInputField(
+                      disabledBorderColor: AppColors.grey,
+                      enabled: false,
                       textInputAction: TextInputAction.next,
                       isBorderOutline: false,
                       inputFormatters: <TextInputFormatter>[

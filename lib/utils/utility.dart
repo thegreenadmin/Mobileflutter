@@ -149,14 +149,15 @@ class Utility {
     );
   }
 
-  static void showAlertMessage(description,
-      {String? title,
-      String? cancelText,
-      String? okay,
-      Color? color,
-      void Function()? okayTap,
-      void Function()? cancelTap,
-    }) {
+  static void showAlertMessage(
+    description, {
+    String? title,
+    String? cancelText,
+    String? okay,
+    Color? color,
+    void Function()? okayTap,
+    void Function()? cancelTap,
+  }) {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,

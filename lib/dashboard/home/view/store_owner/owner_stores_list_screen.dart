@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/add_new_store_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/store_owner/claim_store_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -118,7 +119,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                                 ],
                               )
                         : ListView.separated(
-                            padding: const EdgeInsets.only(bottom: 60),
+                            padding: const EdgeInsets.only(bottom: 100),
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return height12SizedBox;
@@ -413,34 +414,66 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
           ),
           Positioned(
             bottom: 20,
-            left: 110,
-            right: 110,
-            child: CustomButton(
-              border: Border.all(
-                color: AppColors.primary,
-              ),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.white, AppColors.white],
-              ),
-              onTap: () {
-                // SharedPreferenceStorage.setData("context", context);
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(
-                //       builder: (_) => const AddNewStoreScreen(),
-                //     ))
-                Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
-                    .then((value) => ownerStoresController.apiGetStoreList());
-              },
-              height: 50,
-              text: StringConstants.addANewStoreText,
-              textColor: AppColors.primary,
-              borderRadius: 14,
-              fontWeight: FontWeight.w600,
-              iconL: false,
-              iconR: false,
-              fontSize: 16,
+            left: 60,
+            right: 60,
+            child: Column(
+              children: [
+                CustomButton(
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.white, AppColors.white],
+                  ),
+                  onTap: () {
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context)
+                    //     .push(MaterialPageRoute(
+                    //       builder: (_) => const AddNewStoreScreen(),
+                    //     ))
+                    Get.to(() => const AddNewStoreScreen(),
+                            id: pageIdApp.value)!
+                        .then(
+                            (value) => ownerStoresController.apiGetStoreList());
+                  },
+                  height: 50,
+                  text: StringConstants.addANewStoreText,
+                  textColor: AppColors.primary,
+                  borderRadius: 14,
+                  fontWeight: FontWeight.w600,
+                  iconL: false,
+                  iconR: false,
+                  fontSize: 16,
+                ),
+                height10SizedBox,
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const ClaimStoreScreen(), id: pageIdApp.value);
+                  },
+                  child: const Text.rich(
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: "Check if your store already exists. ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 13)),
+                        TextSpan(
+                          text: "Click Here.",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: AppColors.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

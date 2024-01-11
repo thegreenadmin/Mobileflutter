@@ -80,6 +80,7 @@ class ServerCommunicator {
   String orderList = 'order/list';
   String orderDetail = 'order/details';
   String ownersStoreList = 'store/list/owners';
+  String ownerWalletRechargeStripe = 'store/stripe/recharge';
 
 //P
   String productDetails = 'store/product/details';
@@ -102,6 +103,7 @@ class ServerCommunicator {
 //S
   String states = 'utils/states';
   String storeList = 'store/list';
+
   String storePermissionsList = 'store/permissions';
 
   String storeDetails = 'store/details';
@@ -164,6 +166,7 @@ class ServerCommunicator {
 
 //T
 //U
+  String unclaimedStoreList = 'store/unclaimed';
   String userDetail = 'user/details';
   String updateUser = 'user/details/update';
   String userStore = 'store/list';

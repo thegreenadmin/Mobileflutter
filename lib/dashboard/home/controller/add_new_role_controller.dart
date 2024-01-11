@@ -24,6 +24,7 @@ class AddNewRoleController extends GetxController {
   RxInt pageId = 0.obs;
   RxBool checkBoxValue = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isEnabled = false.obs;
 
   RxBool autoValidate = false.obs;
   RxBool autoValidateUpdate = false.obs;
@@ -52,7 +53,9 @@ class AddNewRoleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getPage();
+    });
   }
 
   getPage() async {
@@ -293,6 +296,7 @@ class AddNewRoleController extends GetxController {
   ///Get Store Role Detail
   Future apiGetStoreRoleDetail() async {
     isLoading.value = true;
+    isEnabled = false.obs;
     debugPrint(
         "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
 
@@ -313,6 +317,9 @@ class AddNewRoleController extends GetxController {
           value.body["status"] == ApiConstants.statusCode200) {
         getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
+        isEnabled.value =
+            getStoreDetailModel.data!.role!.roleName! != "Store Worker" &&
+                getStoreDetailModel.data!.role!.roleName! != "Store Manager";
         roleNameTextController.text = getStoreDetailModel.data!.role!.roleName!;
         permissionListMerged.clear();
         for (int i = 0; i < controllerList.length; i++) {

@@ -49,8 +49,8 @@
 	<string>The app needs location access to get your nearby stores in current location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The app needs location access to get your nearby stores in current location.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>The app needs location access to get your nearby stores in current location.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The app needs location access to get your nearby stores in current location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The app needs permission for image selection</string>
 	<key>NSPhotoLibraryUsageDescription</key>

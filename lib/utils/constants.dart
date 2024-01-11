@@ -42,6 +42,7 @@ class StringConstants {
   static String addNewCategoriesText = "Add New Categories";
   static String addCategoryText = "Add Category";
   static String addMoneyToMyWalletText = "Add money to my wallet";
+  static String addMoneyToStoreWalletText = "Add money to store wallet";
   static String alertText = "Alert";
   static String addNewRoleText = "Add New Role";
   static String amountText = "Amount";
@@ -100,6 +101,7 @@ class StringConstants {
   //C
   static String customerInStoreForPickupText =
       "Customer is in the store for pickup";
+
   static String connectAccountText = "Connect Account";
   static String confirmSelectionText = "Confirm Selection";
   static String cardNumberText = "Card Number";
@@ -295,6 +297,7 @@ class StringConstants {
 
   //M
   static String mondayText = "Monday";
+
   static String messageText = "Message";
   static String moreText = "More";
   static String manageText = "Manage";
@@ -764,7 +767,8 @@ class AlertStringConstants {
   static String pleaseEnterPostalCodeText = "Please enter postal code";
   static String pleaseEnterCategoryNameText = "Please enter category name";
   static String pleaseEnterRoleText = "Please enter role";
-
+  static String thisRoleisNotAvialbleText =
+      " role is not available. Please try with different one.";
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
   static String pleaseEnterTermsAndConditions =

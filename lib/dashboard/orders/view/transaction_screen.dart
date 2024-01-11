@@ -805,8 +805,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                         null
                                                                     ? StringConstants
                                                                         .orderIDText
-                                                                    : StringConstants
-                                                                        .transactionIdText,
+                                                                    : transactionController.ownerOrderTransactionList![index].membership !=
+                                                                            null
+                                                                        ? StringConstants
+                                                                            .membershipIdText
+                                                                        : StringConstants
+                                                                            .transactionIdText,
                                                                 style: TextStyle(
                                                                     color: AppColors
                                                                         .blacklight,
@@ -831,7 +835,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       : transactionController.ownerOrderTransactionList![index].storePayout !=
                                                                               null
                                                                           ? ': #${transactionController.ownerOrderTransactionList![index].storePayout!.transactionId}'
-                                                                          : "",
+                                                                          : transactionController.ownerOrderTransactionList![index].membership != null
+                                                                              ? ': #${transactionController.ownerOrderTransactionList![index].membership!.membershipId}'
+                                                                              : transactionController.ownerOrderTransactionList![index].transaction != null
+                                                                                  ? ': #${transactionController.ownerOrderTransactionList![index].transaction!.transactionId}'
+                                                                                  : "",
                                                               style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
@@ -859,7 +867,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       .toString()),
                                                                   secFormat: '',
                                                                 ).toString()
-                                                              : transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction !=
+                                                              : transactionController
+                                                                          .ownerOrderTransactionList![
+                                                                              index]
+                                                                          .orderItemRefundTransaction !=
                                                                       null
                                                                   ? Utility
                                                                       .parseDateTime(
@@ -888,7 +899,26 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                               '',
                                                                         )
                                                                           .toString()
-                                                                      : "",
+                                                                      : transactionController
+                                                                                  .ownerOrderTransactionList![
+                                                                                      index]
+                                                                                  .membership !=
+                                                                              null
+                                                                          ? Utility
+                                                                                  .parseDateTime(
+                                                                              DateTime.parse(transactionController.ownerOrderTransactionList![index].membership!.createdAt.toString()),
+                                                                              secFormat: '',
+                                                                            )
+                                                                              .toString()
+                                                                          : transactionController.ownerOrderTransactionList![index].transaction !=
+                                                                                  null
+                                                                              ? Utility
+                                                                                      .parseDateTime(
+                                                                                  DateTime.parse(transactionController.ownerOrderTransactionList![index].transaction!.createdAt.toString()),
+                                                                                  secFormat: '',
+                                                                                )
+                                                                                  .toString()
+                                                                              : "",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,
@@ -939,11 +969,18 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                     ? "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalTransactionAmount!.toStringAsFixed(2)}"
                                                                     : "\$${transactionController.ownerOrderTransactionList![index].storePayout?.totalReversedAmount!.toStringAsFixed(2)}"
                                                                 : transactionController
-                                                                            .ownerOrderTransactionList![index]
+                                                                            .ownerOrderTransactionList![
+                                                                                index]
                                                                             .orderItemRefundTransaction !=
                                                                         null
                                                                     ? "\$${transactionController.ownerOrderTransactionList![index].orderItemRefundTransaction?.transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                    : "",
+                                                                    : transactionController.ownerOrderTransactionList![index].membership !=
+                                                                            null
+                                                                        ? "\$${transactionController.ownerOrderTransactionList![index].membership!.membershipCharge!.toStringAsFixed(2)}"
+                                                                        : transactionController.ownerOrderTransactionList![index].transaction !=
+                                                                                null
+                                                                            ? "\$${transactionController.ownerOrderTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
+                                                                            : "",
                                                         style: const TextStyle(
                                                             color: AppColors
                                                                 .primary,
@@ -979,20 +1016,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                       .orderTransaction!
                                                                       .orderTransactionType ==
                                                                   "order cancel"
-                                                              ? Text(
-                                                                  StringConstants
-                                                                      .debitText)
-                                                              : Text(
-                                                                  StringConstants
-                                                                      .creditText)
+                                                              ? Text(StringConstants
+                                                                  .debitText)
+                                                              : Text(StringConstants
+                                                                  .creditText)
                                                           : transactionController
                                                                       .ownerOrderTransactionList![
                                                                           index]
                                                                       .orderItemRefundTransaction !=
                                                                   null
-                                                              ? Text(
-                                                                  StringConstants
-                                                                      .debitText)
+                                                              ? Text(StringConstants
+                                                                  .debitText)
                                                               : transactionController
                                                                           .ownerOrderTransactionList![
                                                                               index]
@@ -1004,8 +1038,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                           .debitText)
                                                                       : Text(StringConstants
                                                                           .creditText)
-                                                                  : const Text(
-                                                                      ""),
+                                                                  : transactionController.ownerOrderTransactionList![index].membership !=
+                                                                          null
+                                                                      ? Text(StringConstants.debitText)
+                                                                      : transactionController.ownerOrderTransactionList![index].transaction != null
+                                                                          ? Text(transactionController.ownerOrderTransactionList![index].transaction!.transactionType!.toCapitalized())
+                                                                          : const Text(""),
                                                     ],
                                                   ),
                                                 ],
