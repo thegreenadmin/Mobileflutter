@@ -99,7 +99,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(180.0),
+        preferredSize:  Size.fromHeight(WidgetConstants.screenHeight*0.25),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [

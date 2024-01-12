@@ -77,7 +77,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> {
                           scale: 4,
                         )
                       ]),
-                  height20SizedBox,
+                  height15SizedBox,
                 ],
               )),
         ),

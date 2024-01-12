@@ -53,8 +53,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: ordersHomeMainController
-                                              .selectedIndex.value ==
-                                          i
+                                              .selectedIndex.value == i
                                       ? FontWeight.w500
                                       : FontWeight.w400,
                                   color: ordersHomeMainController
@@ -64,7 +63,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                       : AppColors.blacklight,
                                 ),
                               ),
-                              height10SizedBox,
+                              height8SizedBox,
                               Container(
                                 color: ordersHomeMainController
                                             .selectedIndex.value ==

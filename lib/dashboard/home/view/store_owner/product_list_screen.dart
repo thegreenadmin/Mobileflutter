@@ -20,7 +20,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(85.0),
+        preferredSize:  Size.fromHeight(WidgetConstants.screenHeight*0.125),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
