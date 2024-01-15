@@ -781,7 +781,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? homeController.featuredUserProductList.isEmpty
                         ? height0SizedBox
                         : SizedBox(
-                            height: WidgetConstants.screenHeight * 0.266,
+                            height: WidgetConstants.screenHeight * 0.30,
                             width: WidgetConstants.screenWidth,
                             child: ScrollLoopAutoScroll(
                               scrollDirection: Axis.horizontal,
@@ -796,105 +796,112 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount:
                                     homeController.featuredUserProductList.length,
                                 itemBuilder: (BuildContext context, int index) =>
-                                    InkWell(
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                  onTap: () {
-                                    if (homeController.isLoading?.value ==
-                                        false) {
-                                      Get.parameters["isFromHome"] = "false";
-                                      Get.parameters["isFromFav"] = "false";
-                                      Get.parameters["isFromMenu"] = "true";
-                                      Get.parameters["isFromOptions"] = "false";
-                                      Get.parameters["productId"] = homeController
-                                              .featuredUserProductList[index]
-                                              .productId ??
-                                          "";
-                                      Get.parameters["storeId"] = homeController
-                                              .featuredUserProductList[index]
-                                              .storeId ??
-                                          "";
-
-                                      Get.to(() => const AddToOrderScreen(),
-                                          id: pageIdApp.value,
-                                          arguments: {
-                                            "isFromHome": true,
-                                            "productId": homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .productId ??
-                                                "",
-                                            "storeId": homeController
-                                                    .featuredUserProductList[
-                                                        index]
-                                                    .storeId ??
-                                                "",
-                                          });
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        child: CommonWidgets.cachedNetworkImage(
-                                          homeController
-                                                          .featuredUserProductList[
-                                                              index]
-                                                          .productImages ==
-                                                      null ||
-                                                  homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty ||
-                                                  homeController
-                                                          .featuredUserProductList[
-                                                              index]
-                                                          .productImages![0]
-                                                          .image!
-                                                          .dynamicUrl ==
-                                                      null ||
-                                                  homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty
-                                              ? ""
-                                              : homeController
-                                                  .featuredUserProductList[index]
-                                                  .productImages![0]
-                                                  .image!
-                                                  .dynamicUrl
-                                                  .toString(),
-                                          height:
-                                              WidgetConstants.screenHeight * 0.22,
-                                          width:
-                                              WidgetConstants.screenWidth * 0.4,
-                                        ),
-                                      ),
-                                      height8SizedBox,
-                                      Text(
-                                        homeController
+                                    SizedBox(
+                                      width:
+                                      WidgetConstants.screenWidth * 0.4,
+                                      child: InkWell(
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        onTap: () {
+                                      if (homeController.isLoading?.value ==
+                                          false) {
+                                        Get.parameters["isFromHome"] = "false";
+                                        Get.parameters["isFromFav"] = "false";
+                                        Get.parameters["isFromMenu"] = "true";
+                                        Get.parameters["isFromOptions"] = "false";
+                                        Get.parameters["productId"] = homeController
                                                 .featuredUserProductList[index]
-                                                .productName ??
-                                            "",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                                .productId ??
+                                            "";
+                                        Get.parameters["storeId"] = homeController
+                                                .featuredUserProductList[index]
+                                                .storeId ??
+                                            "";
+
+                                        Get.to(() => const AddToOrderScreen(),
+                                            id: pageIdApp.value,
+                                            arguments: {
+                                              "isFromHome": true,
+                                              "productId": homeController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .productId ??
+                                                  "",
+                                              "storeId": homeController
+                                                      .featuredUserProductList[
+                                                          index]
+                                                      .storeId ??
+                                                  "",
+                                            });
+                                      }
+                                      },
+                                        child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: CommonWidgets.cachedNetworkImage(
+                                            homeController
+                                                            .featuredUserProductList[
+                                                                index]
+                                                            .productImages ==
+                                                        null ||
+                                                    homeController
+                                                        .featuredUserProductList[
+                                                            index]
+                                                        .productImages!
+                                                        .isEmpty ||
+                                                    homeController
+                                                            .featuredUserProductList[
+                                                                index]
+                                                            .productImages![0]
+                                                            .image!
+                                                            .dynamicUrl ==
+                                                        null ||
+                                                    homeController
+                                                        .featuredUserProductList[
+                                                            index]
+                                                        .productImages!
+                                                        .isEmpty
+                                                ? ""
+                                                : homeController
+                                                    .featuredUserProductList[index]
+                                                    .productImages![0]
+                                                    .image!
+                                                    .dynamicUrl
+                                                    .toString(),
+                                            height:
+                                                WidgetConstants.screenHeight * 0.22,
+                                            width:
+                                                WidgetConstants.screenWidth * 0.4,
+                                          ),
+                                        ),
+                                        height8SizedBox,
+                                        Flexible(
+                                          child: Text(
+                                            homeController
+                                                    .featuredUserProductList[index]
+                                                    .productName ??
+                                                "",
+                                            overflow: TextOverflow.visible,
+                                            style: const TextStyle(
+                                                color: AppColors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                                                        ),
+                                                                      ),
+                                    ),
                               ),
                             ),
                           )
                     : homeController.ownerFeatureProductList.isEmpty
                         ? height0SizedBox
                         : SizedBox(
-                            height: WidgetConstants.screenHeight * 0.28,
+                            height: WidgetConstants.screenHeight * 0.30,
                             width: WidgetConstants.screenWidth,
                             child: ScrollLoopAutoScroll(
                               scrollDirection: Axis.horizontal,
@@ -909,116 +916,121 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount:
                                     homeController.ownerFeatureProductList.length,
                                 itemBuilder: (BuildContext context, int index) =>
-                                    InkWell(
-                                  onTap: () {
-                                    if (homeController.isLoading?.value ==
-                                        false) {
-                                      Get.parameters["isFromHome"] = "true";
-                                      Get.parameters["storeId"] = homeController
-                                          .ownerFeatureProductList[index].storeId;
-                                      Get.parameters["productId"] = homeController
-                                          .ownerFeatureProductList[index]
-                                          .productId;
-                                      Get.parameters[
-                                          "categoryName"] = homeController
-                                                  .ownerFeatureProductList[index]
-                                                  .productCategories!
-                                                  .isNotEmpty &&
-                                              homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productCategories !=
-                                                  null
-                                          ? homeController
-                                                  .ownerFeatureProductList[index]
-                                                  .productCategories
-                                                  ?.first
-                                                  .category
-                                                  ?.categoryName ??
-                                              ""
-                                          : "";
-                                      hasStoreAccess.value && permissionStoreList.isEmpty ||
-                                              permissionStoreList.any((element) =>
-                                                  element.storeId ==
-                                                          homeController
-                                                              .ownerFeatureProductList[
-                                                                  index]
-                                                              .storeId &&
-                                                      element.isStoreOwner ==
-                                                          true ||
-                                                  element.storeId ==
-                                                          homeController
-                                                              .ownerFeatureProductList[
-                                                                  index]
-                                                              .storeId &&
-                                                      element.controllers!.any(
-                                                          (ele) =>
-                                                              ele.controllerKey ==
-                                                              PermissionKey.editProduct.statusName))
-                                          ? Get.to(() => const EditProductScreen(), id: pageIdApp.value, arguments: {
-                                              "isFromHome": true,
-                                              'storeId': homeController
-                                                  .ownerFeatureProductList[index]
-                                                  .storeId
-                                            })!
-                                              .then((value) => homeController.apiGetOwnerFeaturedProducts())
-                                          : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        child: CommonWidgets.cachedNetworkImage(
-                                          assetImg: ImageConstants.defaultProduct,
-                                          homeController
-                                                          .ownerFeatureProductList[
-                                                              index]
-                                                          .productImages ==
-                                                      null ||
-                                                  homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productImages!
-                                                      .isEmpty ||
-                                                  homeController
-                                                          .ownerFeatureProductList[
-                                                              index]
-                                                          .productImages![0]
-                                                          .image!
-                                                          .dynamicUrl ==
-                                                      null
-                                              ? ""
-                                              : homeController
-                                                      .ownerFeatureProductList[
-                                                          index]
-                                                      .productImages?[0]
-                                                      .image
-                                                      ?.dynamicUrl
-                                                      .toString() ??
-                                                  "",
-                                          width:
-                                              WidgetConstants.screenWidth * 0.4,
-                                          height:
-                                              WidgetConstants.screenHeight * 0.22,
+                                    SizedBox(
+                                      width:
+                                      WidgetConstants.screenWidth * 0.4,
+                                      child: InkWell(
+                                        onTap: () {
+                                      if (homeController.isLoading?.value ==
+                                          false) {
+                                        Get.parameters["isFromHome"] = "true";
+                                        Get.parameters["storeId"] = homeController
+                                            .ownerFeatureProductList[index].storeId;
+                                        Get.parameters["productId"] = homeController
+                                            .ownerFeatureProductList[index]
+                                            .productId;
+                                        Get.parameters[
+                                            "categoryName"] = homeController
+                                                    .ownerFeatureProductList[index]
+                                                    .productCategories!
+                                                    .isNotEmpty &&
+                                                homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .productCategories !=
+                                                    null
+                                            ? homeController
+                                                    .ownerFeatureProductList[index]
+                                                    .productCategories
+                                                    ?.first
+                                                    .category
+                                                    ?.categoryName ??
+                                                ""
+                                            : "";
+                                        hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                                permissionStoreList.any((element) =>
+                                                    element.storeId ==
+                                                            homeController
+                                                                .ownerFeatureProductList[
+                                                                    index]
+                                                                .storeId &&
+                                                        element.isStoreOwner ==
+                                                            true ||
+                                                    element.storeId ==
+                                                            homeController
+                                                                .ownerFeatureProductList[
+                                                                    index]
+                                                                .storeId &&
+                                                        element.controllers!.any(
+                                                            (ele) =>
+                                                                ele.controllerKey ==
+                                                                PermissionKey.editProduct.statusName))
+                                            ? Get.to(() => const EditProductScreen(), id: pageIdApp.value, arguments: {
+                                                "isFromHome": true,
+                                                'storeId': homeController
+                                                    .ownerFeatureProductList[index]
+                                                    .storeId
+                                              })!
+                                                .then((value) => homeController.apiGetOwnerFeaturedProducts())
+                                            : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                                      }
+                                      },
+                                        child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: CommonWidgets.cachedNetworkImage(
+                                            assetImg: ImageConstants.defaultProduct,
+                                            homeController
+                                                            .ownerFeatureProductList[
+                                                                index]
+                                                            .productImages ==
+                                                        null ||
+                                                    homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .productImages!
+                                                        .isEmpty ||
+                                                    homeController
+                                                            .ownerFeatureProductList[
+                                                                index]
+                                                            .productImages![0]
+                                                            .image!
+                                                            .dynamicUrl ==
+                                                        null
+                                                ? ""
+                                                : homeController
+                                                        .ownerFeatureProductList[
+                                                            index]
+                                                        .productImages?[0]
+                                                        .image
+                                                        ?.dynamicUrl
+                                                        .toString() ??
+                                                    "",
+                                            width:
+                                                WidgetConstants.screenWidth * 0.4,
+                                            height:
+                                                WidgetConstants.screenHeight * 0.22,
+                                          ),
                                         ),
-                                      ),
-                                      height8SizedBox,
-                                      Text(
-                                        homeController
-                                                .ownerFeatureProductList[index]
+                                        height8SizedBox,
+                                        Flexible(
+                                          child: Text(
+                                            homeController.ownerFeatureProductList[index]
                                                 .productName ??
-                                            "",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                                "",
+                                            overflow: TextOverflow.visible,
+                                            style: const TextStyle(
+                                                color: AppColors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                        ),),
+                                    ),
                               ),
                             ),
                           ),
