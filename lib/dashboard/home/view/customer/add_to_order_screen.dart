@@ -220,8 +220,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     );
   }
 
-  Padding horizontalTabs() {
-    return Padding(
+  Padding horizontalTabs() => Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 5),
       child: SizedBox(
         height: 18,
@@ -250,13 +249,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: storeHomeMainController
-                                            .selectedIndex.value ==
-                                        i
+                                            .selectedIndex.value == i
                                     ? FontWeight.w600
                                     : FontWeight.w400,
                                 color: storeHomeMainController
-                                            .selectedIndex.value ==
-                                        i
+                                            .selectedIndex.value == i
                                     ? AppColors.primary
                                     : AppColors.blacklight,
                               ),
@@ -284,13 +281,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? FontWeight.w600
                                         : FontWeight.w400,
                                     color: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                                .selectedIndex.value == i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
                                   ),
@@ -298,8 +293,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                 Icon(
                                   Icons.arrow_drop_down,
                                   color: storeHomeMainController
-                                              .selectedIndex.value ==
-                                          i
+                                              .selectedIndex.value == i
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   size: 24,
@@ -311,7 +305,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
             }),
       ),
     );
-  }
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
     if (storeHomeMainController

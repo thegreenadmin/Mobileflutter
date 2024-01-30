@@ -842,34 +842,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ClipRRect(
                                           borderRadius: BorderRadius.circular(8.0),
                                           child: CommonWidgets.cachedNetworkImage(
-                                            homeController
-                                                            .featuredUserProductList[
-                                                                index]
+                                            homeController.featuredUserProductList[index]
                                                             .productImages ==
                                                         null ||
                                                     homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages!
-                                                        .isEmpty ||
-                                                    homeController
-                                                            .featuredUserProductList[
-                                                                index]
+                                                        .featuredUserProductList[index]
+                                                        .productImages!.isEmpty ||
+                                                    homeController.featuredUserProductList[index]
                                                             .productImages![0]
-                                                            .image!
-                                                            .dynamicUrl ==
+                                                            .image!.dynamicUrl ==
                                                         null ||
-                                                    homeController
-                                                        .featuredUserProductList[
-                                                            index]
-                                                        .productImages!
-                                                        .isEmpty
+                                                    homeController.featuredUserProductList[index]
+                                                        .productImages!.isEmpty
                                                 ? ""
-                                                : homeController
-                                                    .featuredUserProductList[index]
-                                                    .productImages![0]
-                                                    .image!
-                                                    .dynamicUrl
+                                                : homeController.featuredUserProductList[index]
+                                                    .productImages![0].image!.dynamicUrl
                                                     .toString(),
                                             height:
                                                 WidgetConstants.screenHeight * 0.22,

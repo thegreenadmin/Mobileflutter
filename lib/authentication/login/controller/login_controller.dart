@@ -21,11 +21,6 @@ class LoginController extends GetxController {
   RxBool autoValidate = false.obs;
   RxList<String> countryCodes = <String>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // getCountryCodes();
-  }
 
   getCountryCodes() {
     for (var element in countriesList) {

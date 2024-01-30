@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
 class AddMoneyToWalletOwner extends StatefulWidget {
-  AddMoneyToWalletOwner({
+  const AddMoneyToWalletOwner({
     super.key,
   });
 
@@ -83,7 +83,6 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> {
     } catch (e) {
       debugPrint("APPLE PAYMENT error *************${e.toString()}");
       Utility.showAlertMessage(e.toString());
-      //An error has occured
     }
   }
 
@@ -95,7 +94,6 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> {
           paymentResult['paymentMethodData']['tokenizationData']['token'];
       final tokenJson = Map.castFrom(json.decode(token));
       debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
-      //var tokenId = tokenJson['id'];
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
       debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
@@ -109,38 +107,43 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100.0),
+          preferredSize:  Size.fromHeight(WidgetConstants.screenWidth * 2.1),
           child: Container(
             color: AppColors.primarylight,
             child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                padding: const EdgeInsets.only(left: 5.0, right: 20, top: 50,bottom: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              Get.back(id: pageIdApp.value);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                              size: 24.0,
-                            ),
-                          ),
-                          width10SizedBox,
-                          const Text(
-                            "Add money to store wallet",
-                            style: TextStyle(
-                                fontSize: 20,
+                      Expanded(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                Get.back(id: pageIdApp.value);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
                                 color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
+                                size: 24.0,
+                              ),
+                            ),
+                            width10SizedBox,
+                            const Flexible(
+                              child: Text(
+                                "Add money to store wallet",
+                                overflow: TextOverflow.visible,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Image.asset(
                         ImageConstants.homeMall,

@@ -35,8 +35,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (v) async {
         Utility.showConfirmAlertMessage("Click OK to exit the app.",
             description: "Click OK to exit the app.", okay: "OK", okayTap: () {
           Get.back();
@@ -114,8 +114,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                              .selectedIndex.value ==
-                                          0
+                                              .selectedIndex.value == 0
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
