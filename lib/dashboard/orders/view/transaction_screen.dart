@@ -133,7 +133,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: SizedBox(
-        height: 30,
+        height: WidgetConstants.screenHeight * 0.07,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
@@ -172,7 +172,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           height10SizedBox,
                           transactionController.selectedIndex.value == i
                               ? Container(
-                                  width: 65,
+                                  width: WidgetConstants.screenWidth * 0.2,
                                   height: 1,
                                   color: AppColors.primary,
                                 )

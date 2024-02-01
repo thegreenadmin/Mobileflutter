@@ -785,6 +785,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: WidgetConstants.screenWidth,
                             child: ScrollLoopAutoScroll(
                               scrollDirection: Axis.horizontal,
+                              delay: const Duration(seconds: 1),
+                              duration: const Duration(seconds: 300),
+                              enableScrollInput : true,
+                              delayAfterScrollInput : const Duration(seconds: 1),
                               child: ListView.separated(
                                 physics: const NeverScrollableScrollPhysics(),
                                 separatorBuilder:
@@ -892,8 +896,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: WidgetConstants.screenWidth,
                             child: ScrollLoopAutoScroll(
                               scrollDirection: Axis.horizontal,
+                              delay: const Duration(seconds: 1),
+                              duration: const Duration(seconds: 300),
+                              enableScrollInput : true,
+                              delayAfterScrollInput : const Duration(seconds: 1),
                               child: ListView.separated(
-                                // controller: scrollController,
                                 separatorBuilder:
                                     (BuildContext context, int index) {
                                   return width12SizedBox;

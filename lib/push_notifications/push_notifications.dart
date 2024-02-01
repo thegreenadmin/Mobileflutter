@@ -48,7 +48,6 @@ getNotification() {
   FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
     RemoteNotification? notification = message!.notification;
     debugPrint("notification data---------------${message.data}");
-    //AndroidNotification android = message.notification.android?.;
     if (notification != null) {
       if (Platform.isAndroid) {
         flutterLocalNotificationsPlugin.show(
@@ -83,13 +82,13 @@ getNotificationOpenedApp() {
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
-  debugPrint("firebaseMessagingBackgroundHandler data---${message!.data}");
+
   // getNotification();
   //await Firebase.initializeApp();
   selectNotification(NotificationResponse(
     notificationResponseType:
         NotificationResponseType.selectedNotificationAction,
-    payload: json.encode(message.data),
+    payload: json.encode(message?.data),
   ));
 }
 
@@ -104,7 +103,6 @@ void selectNotification(NotificationResponse notificationResponse) async {
   debugPrint("payload 2---------->${notificationResponse.payload}");
   RealTimeNotification notificationData = RealTimeNotification.fromJson(
       json.decode(notificationResponse.payload.toString()));
-  // SharedPreferenceStorage.setData("context", Get.context!);
 
   //******************  ORDER ********************
 

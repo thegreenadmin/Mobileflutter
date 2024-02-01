@@ -1281,8 +1281,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                                           .product
                                                           ?.productReviews
                                                           ?.first
-                                                          .review
-                                                          ?.toCapitalized() ??
+                                                          .review ??
                                                       ""
                                                   : "",
                                               style: TextStyle(
