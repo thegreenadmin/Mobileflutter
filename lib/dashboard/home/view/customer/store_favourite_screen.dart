@@ -83,6 +83,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
                           Get.parameters["isFromOptions"] = "false";
+                          // Get.parameters["isAddToOrderScreen"] = "true";
                           await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value)
                               ?.then((value) => {

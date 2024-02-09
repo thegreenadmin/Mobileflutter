@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
@@ -447,6 +448,7 @@ class AddCardController extends GetxController {
 
   ///Create Stripe Token
   Future<void> apiCreateStripeToken(context) async {
+
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
@@ -479,11 +481,14 @@ class AddCardController extends GetxController {
       if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
+        debugPrint("Check user Response:--------");
+        await apiUpdateUserDetail();
         await apiCreateCard();
         str = "";
         parts = [];
         month = "";
         year = "";
+
       } else if (response.statusCode == 402) {
         Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidCardText);
       } else {
@@ -492,6 +497,64 @@ class AddCardController extends GetxController {
     } catch (error) {
       debugPrint(error.toString());
     }
+  }
+
+
+  ///Update User Detail Api
+  Future apiUpdateUserDetail() async {
+    debugPrint(
+        "UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+    Map data = {
+      "user": {
+        "first_name": getUserDetailModel.data?.user?.firstName??"",
+        "last_name": getUserDetailModel.data?.user?.lastName??"",
+        "nick_name": getUserDetailModel.data?.user?.nickName??"",
+      },
+      "address": {
+        "user_address_id":
+        getUserDetailModel.data?.user?.userAddresses != null &&
+            getUserDetailModel.data!.user!.userAddresses!.isNotEmpty
+            ? getUserDetailModel
+            .data?.user?.userAddresses?.first.userAddressId ??
+            0
+            : null,
+        "state": stateTextController.text.trim(),
+        "country": countryTextController.text.trim(),
+        "address_name": "home",
+        "address_line_1":addressLine1TextController.text.trim(),
+        "address_line_2": addressLine2TextController.text.trim(),
+        "city": cityTextController.text.trim(),
+        "postal_code": zipCodeTextController.text.trim()
+      }
+    };
+    debugPrint("UPDATE USER DETAIL BODY**********$data");
+    UserProvider()
+        .putWithHeadersApi(
+        data,
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}",
+        headers,
+        showLoading: true)
+        .then((value) async {
+      debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
+      if (value.body["status"] == ApiConstants.statusCode201 ||
+          value.body["status"] == ApiConstants.statusCode200) {
+        debugPrint("UPDATE USER DETAIL SUCCESS *******${value.body['message']}");
+        // Utility.showToast(value.body['message']);
+      } else if (value.body["status"] == ApiConstants.statusCode401) {
+        debugPrint("UPDATE USER DETAIL ERROR *******${value.body['message']}");
+      } else {
+        if (value.body['message'] != null) {
+          debugPrint("UPDATE USER DETAIL ERROR *******${value.body['message']}");
+          // Utility.showAlertMessage(value.body['message']);
+        }
+      }
+    });
   }
 
   ///Api Create Card
@@ -559,8 +622,9 @@ class AddCardController extends GetxController {
   ///Get Card List Api
   Future apiGetCardList() async {
     userStripeCardId?.value = "";
-    cardList.clear();
-    isLoading.value = true;
+    if(cardList.isNotEmpty){cardList.clear();}
+
+    // isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}");
 
@@ -703,7 +767,7 @@ class AddCardController extends GetxController {
 
   ///Get Card List Api
   Future apiGetUserWalletBalance() async {
-    isLoading.value = true;
+    // isLoading.value = true;
     debugPrint("GET USER WALLET BALANCE URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
 
@@ -1016,14 +1080,20 @@ class AddCardController extends GetxController {
       "amount": double.parse(amountTextController.text) * 100
     };
     if (amountTextController.text.split(".").length == 1) {
-      print(int.parse(amountTextController.text.split(".")[0]) * 100);
+      if (kDebugMode) {
+        print(int.parse(amountTextController.text.split(".")[0]) * 100);
+      }
     } else {
       if (amountTextController.text.split(".")[1].length == 1) {
-        print(int.parse(amountTextController.text.split(".")[0]) * 100 +
+        if (kDebugMode) {
+          print(int.parse(amountTextController.text.split(".")[0]) * 100 +
             int.parse("${amountTextController.text.split(".")[1]}0"));
+        }
       } else {
-        print(int.parse(amountTextController.text.split(".")[0]) * 100 +
+        if (kDebugMode) {
+          print(int.parse(amountTextController.text.split(".")[0]) * 100 +
             int.parse(amountTextController.text.split(".")[1]));
+        }
       }
     }
     Map<String, String> headers = {

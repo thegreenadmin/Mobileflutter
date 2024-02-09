@@ -45,18 +45,25 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
-        storeHomeMainController.apiGetShopProductDetailApi();
+        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
       } else if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
         storeHomeMainController.apiFeatureProductListApi(
             isFeaturedProduct: true);
-        storeHomeMainController.apiGetShopProductDetailApi();
+        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
       } else if (storeHomeMainController.isFromHome.value) {
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetStoreOffersApi();
         storeHomeMainController.apiFeatureProductListApi(
             isFeaturedProduct: true);
-        storeHomeMainController.apiGetShopProductDetailApi();
+        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
+
       } else {
         storeHomeMainController.onIndexChange(0);
       }

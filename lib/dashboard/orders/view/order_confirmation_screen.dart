@@ -618,6 +618,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             Get.parameters["isFromHome"] = "false";
                             Get.parameters["isFromFav"] = "false";
                             Get.parameters["isFromOptions"] = "false";
+                            // Get.parameters["isAddToOrderScreen"]=="false";
                             Get.to(() => const StoreHomeMainScreen(),
                                 id: pageIdApp.value);
                           },

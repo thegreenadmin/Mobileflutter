@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 RxString roleApp = "".obs;
 RxBool authenticatedBiometric = false.obs;
+RxBool isFirstHomeClick = false.obs;
 RxString firstName = "".obs;
 RxString lastName = "".obs;
 RxString authToken = "".obs;

@@ -71,7 +71,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.onIndexChange(3);
       }
 
-      storeHomeMainController.apiGetShopProductDetailApi();
+      if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+        storeHomeMainController.apiGetShopProductDetailApi();
+      }
       storeHomeMainController.apiGetUserWalletBalance();
     });
   }

@@ -11,6 +11,7 @@ import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import "package:google_maps_webservice/geocoding.dart";
 import "package:google_maps_webservice/places.dart";
+import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/favourite_store_list_screen.dart';
@@ -29,6 +30,10 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+  late final permission.Permission _permission;
+
+
+  permission.PermissionStatus _permissionStatus = permission.PermissionStatus.denied;
 
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
@@ -54,8 +59,27 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
     updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
+    _listenForPermissionStatus();
+  }
+  void _listenForPermissionStatus() async {
+
+    var status = await permission.Permission.location.status;
+    // final status = await _permission.status;
+    setState(() => _permissionStatus = status);
   }
 
+  String getPermissionText() {
+    switch (_permissionStatus) {
+      case permission.PermissionStatus.denied:
+        return "Location permission denied";
+      case permission.PermissionStatus.granted:
+        return "";
+      case permission.PermissionStatus.limited:
+        return "";
+      default:
+        return "";
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +225,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         )
                       ]),
                   height20SizedBox,
+                  Text(
+                    getPermissionText(),
+                    style:  TextStyle(fontSize: getPermissionText()!=""? 14:2,color: AppColors.red),
+                  ),
                 ],
               )),
         ),

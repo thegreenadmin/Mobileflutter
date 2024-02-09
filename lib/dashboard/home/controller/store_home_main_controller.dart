@@ -149,6 +149,17 @@ class StoreHomeMainController extends GetxController {
   void onIndexChange(int i) async {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
+    // if(Get.parameters["isAddToOrderScreen"]=="true"){
+    //   Get.parameters["isAddToOrderScreen"]=="false";
+    //   if(i==0){
+    //   Get.back(id: pageIdApp.value);
+    //   }
+    //   else  if(i==1){
+    //     Get.back(id: pageIdApp.value);
+    //   Get.back(id: pageIdApp.value);
+    //   }
+    //
+    // }
 
     // popUpIndex.value = 1;
     if (i == 0) {
@@ -729,6 +740,7 @@ class StoreHomeMainController extends GetxController {
             isFromHome.value == false) {
           Get.parameters["storeId"] = storeId.value;
           isDeleteCartItem.value = false;
+          // Get.parameters["isAddToOrderScreen"]=="false";
           await Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -1020,7 +1032,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     Get.parameters["storeId"] = storeId.value;
-
+                    // Get.parameters["isAddToOrderScreen"]=="false";
                     await Get.to(() => const StoreHomeMainScreen(),
                         id: pageIdApp.value);
                   },

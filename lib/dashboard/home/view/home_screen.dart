@@ -545,6 +545,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     "isFromOptions"] = "false";
                                                 Get.parameters["storeId"] =
                                                     item.storeId ?? "";
+                                                // Get.parameters["isAddToOrderScreen"]=="false";
                                                 await Get.to(
                                                     () =>
                                                         const StoreHomeMainScreen(),
@@ -821,7 +822,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .featuredUserProductList[index]
                                                 .storeId ??
                                             "";
-
                                         Get.to(() => const AddToOrderScreen(),
                                             id: pageIdApp.value,
                                             arguments: {

@@ -85,6 +85,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                               storeHomeMainController
                                       .categoriesList[index].categoryId ??
                                   '';
+                          // Get.parameters["isAddToOrderScreen"]=="false";
                           await Get.to(() => const UserProductListScreen(),
                               id: pageIdApp.value);
                         },
