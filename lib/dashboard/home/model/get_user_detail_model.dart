@@ -51,6 +51,7 @@ class UserDetailData {
 
 class User {
   String? userId;
+  String? uuId;
   String? firstName;
   String? lastName;
   String? nickName;
@@ -60,7 +61,7 @@ class User {
   List<UserAddresses>? userAddresses;
 
   User(
-      {this.userId,
+      {this.userId,this.uuId,
       this.firstName,
       this.lastName,
       this.nickName,
@@ -71,6 +72,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
+    uuId = json['uuid'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     nickName = json['nick_name'];
@@ -88,6 +90,7 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['user_id'] = userId;
+    data['uuid'] = uuId;
     data['first_name'] = firstName;
     data['last_name'] = lastName;
     data['nick_name'] = nickName;

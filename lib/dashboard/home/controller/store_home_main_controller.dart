@@ -47,6 +47,7 @@ class StoreHomeMainController extends GetxController {
   RxInt listIndex = 2.obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
+  RxInt invokedIndex = 0.obs;
   RxInt lastSelectedIndex = 0.obs;
   RxInt popUpIndex = 1.obs;
   RxInt activeStep = 0.obs;
@@ -149,19 +150,11 @@ class StoreHomeMainController extends GetxController {
   void onIndexChange(int i) async {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
-    // if(Get.parameters["isAddToOrderScreen"]=="true"){
-    //   Get.parameters["isAddToOrderScreen"]=="false";
-    //   if(i==0){
-    //   Get.back(id: pageIdApp.value);
-    //   }
-    //   else  if(i==1){
-    //     Get.back(id: pageIdApp.value);
-    //   Get.back(id: pageIdApp.value);
-    //   }
-    //
-    // }
+    if (invokedIndex.value > 0) {
+        invokedIndex.value=0;
+        // invokedIndex.value--;
+    }
 
-    // popUpIndex.value = 1;
     if (i == 0) {
       await apiGetStoreOffersApi();
       await apiFeatureProductListApi(isFeaturedProduct: true);
@@ -450,7 +443,7 @@ class StoreHomeMainController extends GetxController {
                     ),
                   ),
                 ),
-                height40SizedBox,
+                width20SizedBox,
                 InkWell(
                   onTap: () {
                     if (itemsCount.value != 0) {
@@ -865,6 +858,7 @@ class StoreHomeMainController extends GetxController {
     };
 
     debugPrint("TOKEN ********** $headers");
+    debugPrint("data ********** $data");
     UserProvider()
         .postWithHeadersApi(
             data,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
@@ -27,6 +28,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _current = 0;
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
+
   final CarouselController _controller = CarouselController();
   final HomeController homeController = Get.put(HomeController());
   Future<void> _pullRefresh() async {
@@ -822,7 +826,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .featuredUserProductList[index]
                                                 .storeId ??
                                             "";
-                                        Get.to(() => const AddToOrderScreen(),
+                                        // storeHomeMainController.invokedIndex.value=2;
+                                        Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value,);
+                                      /*  Get.to(() => const AddToOrderScreen(),
                                             id: pageIdApp.value,
                                             arguments: {
                                               "isFromHome": true,
@@ -836,7 +842,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           index]
                                                       .storeId ??
                                                   "",
-                                            });
+                                            });*/
                                       }
                                       },
                                         child: Column(

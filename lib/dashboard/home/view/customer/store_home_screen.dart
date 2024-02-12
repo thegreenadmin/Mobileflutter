@@ -128,12 +128,12 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                                                     index]
                                                                 .storeId
                                                                 .toString());
-
-                                                await Get.to(
+                                                storeHomeMainController.invokedIndex.value=2;
+                                                /*await Get.to(
                                                   () =>
                                                       const OfferProductScreen(),
                                                   id: pageIdApp.value,
-                                                );
+                                                );*/
                                               },
                                               child: SizedBox(
                                                 height: 200,
@@ -284,9 +284,9 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                       Get.parameters["isFromHome"] = "true";
                                       Get.parameters["isFromMenu"] = "false";
                                       Get.parameters["isFromOptions"] = "false";
-                                      // Get.parameters["isAddToOrderScreen"] = "true";
-                                      Get.to(() => const AddToOrderScreen(),
-                                          id: pageIdApp.value);
+                                      storeHomeMainController.invokedIndex.value++;
+                                      /*Get.to(() => const AddToOrderScreen(),
+                                          id: pageIdApp.value);*/
                                     },
                                     child: Container(
                                       decoration: const BoxDecoration(
@@ -324,7 +324,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                               fit: BoxFit.fill,
                                               height:
                                                   WidgetConstants.screenHeight *
-                                                      0.22,
+                                                      0.20,
                                               width:
                                                   WidgetConstants.screenWidth *
                                                       0.4,

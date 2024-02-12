@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
+import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class StoreHomeMainScreen extends StatefulWidget {
@@ -45,6 +48,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
+        storeHomeMainController.invokedIndex.value = 2;
         if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
           storeHomeMainController.apiGetShopProductDetailApi();
         }
@@ -457,12 +461,27 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               const Divider(
                 thickness: 1,
               ),
-              storeHomeMainController.selectedIndex.value == 0
+              storeHomeMainController.selectedIndex.value == 0 && storeHomeMainController.invokedIndex.value == 0
                   ? const Expanded(child: StoreHomeScreen())
-                  : storeHomeMainController.selectedIndex.value == 1
+                  : storeHomeMainController.selectedIndex.value == 0 && (storeHomeMainController.invokedIndex.value == 1 || storeHomeMainController.invokedIndex.value == 3)
+                  ? const Expanded(child: AddToOrderScreen())
+                  :storeHomeMainController.selectedIndex.value == 0 && storeHomeMainController.invokedIndex.value == 2
+                  ? const Expanded(child: OfferProductScreen(isFromStore:true))
+                  :
+
+
+              storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 0
                       ? const Expanded(child: StoreMenuScreen())
-                      : storeHomeMainController.selectedIndex.value == 2
+                  : storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 1
+                  ? const Expanded(child: UserProductListScreen())
+                  : storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 2
+                  ? const Expanded(child: AddToOrderScreen())
+                  :
+                       storeHomeMainController.selectedIndex.value == 2 && storeHomeMainController.invokedIndex.value == 0
                           ? const Expanded(child: StoreFavouriteScreen())
+
+                           : storeHomeMainController.selectedIndex.value == 2 && storeHomeMainController.invokedIndex.value == 1
+                           ? const Expanded(child: AddToOrderScreen())
                           : storeHomeMainController.selectedIndex.value == 3
                               ? storeHomeMainController.popUpIndex.value == 0
                                   ? const Expanded(

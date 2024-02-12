@@ -63,6 +63,7 @@ class AccountController extends GetxController {
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
   RxString? userId = "".obs;
+  RxString? uuId = "".obs;
   RxString? role = "".obs;
 
   RxString stateDropdownValue = "".obs;
@@ -456,6 +457,7 @@ class AccountController extends GetxController {
           value.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value.body);
         userId!.value = getUserDetailModel.data!.user!.userId ?? "";
+        uuId!.value = getUserDetailModel.data!.user!.uuId ?? "";
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";

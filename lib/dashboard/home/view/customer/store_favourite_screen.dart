@@ -83,13 +83,14 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
                           Get.parameters["isFromOptions"] = "false";
+                          storeHomeMainController.invokedIndex.value++;
                           // Get.parameters["isAddToOrderScreen"] = "true";
-                          await Get.to(() => const AddToOrderScreen(),
+                          /*await Get.to(() => const AddToOrderScreen(),
                                   id: pageIdApp.value)
                               ?.then((value) => {
                                     storeHomeMainController
                                         .apiFeatureProductListApi()
-                                  });
+                                  });*/
                         },
                         child: Card(
                           shape: BeveledRectangleBorder(

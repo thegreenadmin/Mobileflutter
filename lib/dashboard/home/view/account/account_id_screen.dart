@@ -83,24 +83,35 @@ class _AccountIdScreenState extends State<AccountIdScreen> {
                           scale: 3,
                         ),
                         width15SizedBox,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Obx(() => Text(
-                                  "${accountController.firstName!.value} ${accountController.lastName!.value}",
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                            Obx(() => Text(
-                                  "${StringConstants.accountIdText}: #${accountController.userId!.value}",
-                                  style: TextStyle(
-                                      color: AppColors.blacklight,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ))
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(() => Text(
+                                    "${accountController.firstName!.value} ${accountController.lastName!.value}",
+                                    style: const TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                          Text(
+                                    "${StringConstants.accountIdText}:",
+                                    overflow: TextOverflow.visible,
+                                    style: TextStyle(
+                                        color: AppColors.blacklight,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                              Obx(() => Text(
+                                    "#${accountController.uuId!.value}",
+                                    overflow: TextOverflow.visible,
+                                    style: TextStyle(
+                                        color: AppColors.blacklight,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ))
+                            ],
+                          ),
                         )
                       ],
                     ),

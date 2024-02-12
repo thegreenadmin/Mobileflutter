@@ -90,8 +90,9 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                     storeHomeMainController
                                             .previousOrderList[i].storeId ??
                                         "";
+                                storeHomeMainController.invokedIndex.value++;
                                 // Get.parameters["isAddToOrderScreen"] = "true";
-                                Get.to(() => const AddToOrderScreen(),
+                               /* Get.to(() => const AddToOrderScreen(),
                                     id: pageIdApp.value,
                                     arguments: {
                                       "isFromHome": true,
@@ -101,7 +102,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                       "storeId": storeHomeMainController
                                               .previousOrderList[i].storeId ??
                                           "",
-                                    });
+                                    });*/
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

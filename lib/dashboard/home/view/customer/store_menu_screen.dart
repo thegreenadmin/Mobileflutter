@@ -85,9 +85,10 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                               storeHomeMainController
                                       .categoriesList[index].categoryId ??
                                   '';
+                          storeHomeMainController.invokedIndex.value++;
                           // Get.parameters["isAddToOrderScreen"]=="false";
-                          await Get.to(() => const UserProductListScreen(),
-                              id: pageIdApp.value);
+                         /* await Get.to(() => const UserProductListScreen(),
+                              id: pageIdApp.value);*/
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),

@@ -45,7 +45,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       storeHomeMainController.isFromOptions.value =
           Get.parameters["isFromOptions"] == "true";
       storeHomeMainController.apiGetUserDetailsApi();
-      if (storeHomeMainController.isFromMenu.value) {
+      /*if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.lastSelectedIndex.value = 1;
         storeHomeMainController.showLoading.value = false;
@@ -69,7 +69,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.lastSelectedIndex.value = 3;
         storeHomeMainController.showLoading.value = false;
         storeHomeMainController.onIndexChange(3);
-      }
+      }*/
 
       if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
         storeHomeMainController.apiGetShopProductDetailApi();
@@ -444,18 +444,20 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
-            child: const UserStoreOrderAppBar()),
+    return stackData();
+   /* return Scaffold(
+        // appBar: PreferredSize(
+        //     preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
+        //     child: const UserStoreOrderAppBar()),
         body: Obx(
           () => Column(
             children: [
-              horizontalTabs(),
-              const Divider(
-                thickness: 1,
-              ),
-              storeHomeMainController.selectedIndex.value == 0
+              // horizontalTabs(),
+              // const Divider(
+              //   thickness: 1,
+              // ),
+              stackData(),
+             *//* storeHomeMainController.selectedIndex.value == 0
                   ? Expanded(
                       child: storeHomeMainController.isFromHome.value == true
                           ? stackData()
@@ -513,10 +515,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               : storeHomeMainController.lastSelectedIndex.value == 2
                                                   ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
                                                   : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
-                              : const Expanded(child: StoreHomeScreen())
+                              : const Expanded(child: StoreHomeScreen())*//*
             ],
           ),
-        ));
+        ));*/
   }
 
   Widget stackData() {

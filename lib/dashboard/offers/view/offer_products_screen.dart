@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class OfferProductScreen extends StatefulWidget {
-  const OfferProductScreen({super.key});
+  final bool isFromStore;
+  const OfferProductScreen({super.key,  this.isFromStore=false});
 
   @override
   State<OfferProductScreen> createState() => _OfferProductScreenState();
@@ -13,11 +16,12 @@ class OfferProductScreen extends StatefulWidget {
 
 class _OfferProductScreenState extends State<OfferProductScreen> {
   final OffersController offersController = Get.put(OffersController());
+  final StoreHomeMainController storeHomeMainController = Get.put(StoreHomeMainController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: !widget.isFromStore? PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
             color: AppColors.primarylight,
@@ -60,7 +64,8 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                         ]),
                   ],
                 )),
-          )),
+          )) : const PreferredSize(
+    preferredSize: Size.fromHeight(80.0),child: SizedBox()),
       body: Obx(
         () => Container(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
@@ -79,8 +84,9 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                     Get.parameters["storeId"] = offersController
                             .featuredUserProductList[index].storeId ??
                         "";
-
-                    Get.to(() => const AddToOrderScreen(),
+                    storeHomeMainController.invokedIndex.value=3;
+                    Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value,);
+                   /* Get.to(() => const AddToOrderScreen(),
                         id: pageIdApp.value,
                         arguments: {
                           "isFromHome": true,
@@ -90,7 +96,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                           "storeId": offersController
                                   .featuredUserProductList[index].storeId ??
                               "",
-                        });
+                        });*/
                   },
                   child: Card(
                       elevation: 1,
