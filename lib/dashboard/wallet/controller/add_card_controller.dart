@@ -1075,19 +1075,27 @@ class AddCardController extends GetxController {
   Future apiPaymentIntent(String type) async {
     debugPrint(
         "PAYMENT INTENT URL *******${ServerCommunicator().baseUrl + ServerCommunicator().paymentIntent}");
+
+    debugPrint(
+        "PAYMENT INTENT Body *******${double.parse(amountTextController.text) * 100}");
     Map body = {
       "payment_service_name": type,
       "amount": double.parse(amountTextController.text) * 100
     };
+
     if (amountTextController.text.split(".").length == 1) {
       if (kDebugMode) {
         print(int.parse(amountTextController.text.split(".")[0]) * 100);
       }
     } else {
       if (amountTextController.text.split(".")[1].length == 1) {
+        debugPrint(
+            "PAYMENT INTENT URL *******${int.parse(amountTextController.text.split(".")[0]) * 100 +
+                int.parse("${amountTextController.text.split(".")[1]}0")}");
+        debugPrint((int.parse(amountTextController.text.split(".")[0]) * 100 +
+            int.parse("${amountTextController.text.split(".")[1]}0")) as String?);
         if (kDebugMode) {
-          print(int.parse(amountTextController.text.split(".")[0]) * 100 +
-            int.parse("${amountTextController.text.split(".")[1]}0"));
+
         }
       } else {
         if (kDebugMode) {
