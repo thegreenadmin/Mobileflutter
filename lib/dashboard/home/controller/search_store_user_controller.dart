@@ -418,10 +418,10 @@ class SearchStoreUserController extends GetxController {
       "page_size": 5,
       "longitude": zipCodeTextController.text != "" && isFilter ? null : lng,
       "latitude": zipCodeTextController.text != "" && isFilter ? null : lat,
-      "city": city.value,
-      "place_id": placeId.value,
-      "state": state.value,
-      "country": country.value,
+      "city": isFilter?"":city.value,
+      "place_id":isFilter?"":placeId.value,
+      "state": isFilter?"":state.value,
+      "country": isFilter?"":country.value,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
@@ -442,7 +442,7 @@ class SearchStoreUserController extends GetxController {
           : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
-      "delivery_services": deliveryServicesList
+      "delivery_services": isFilter?[]:deliveryServicesList
     };
 
     debugPrint("TOKEN ********** $headers");

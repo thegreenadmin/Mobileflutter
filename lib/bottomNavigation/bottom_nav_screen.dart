@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offers_screen.dart';
@@ -23,15 +24,37 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationState extends State<BottomNavigation> with WidgetsBindingObserver {
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
+ final AccountController accountController =
+      Get.put(AccountController());
 
   @override
   void initState() {
     Get.parameters["isController"] = "no";
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached ) {
+      debugPrint('App is about to be suspended or terminated. Logging out...');
+      accountController.apiLogOutUser();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

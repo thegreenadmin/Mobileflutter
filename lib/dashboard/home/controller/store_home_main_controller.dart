@@ -39,7 +39,7 @@ class StoreHomeMainController extends GetxController {
   final OffersController offersController = Get.put(OffersController());
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
-  RxList<DataList> featuredUserProductList = <DataList>[].obs;
+  RxList<ProductsList> featuredUserProductList = <ProductsList>[].obs;
 
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<PreviousOrdersProducts> previousOrderList =
@@ -1087,6 +1087,7 @@ class StoreHomeMainController extends GetxController {
 
   ///Get Store Offers Api
   Future apiGetStoreOffersApi() async {
+    offersList.clear();
     isLoading.value = true;
     debugPrint("Store Offers URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}");

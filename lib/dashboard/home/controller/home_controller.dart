@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   //Get.find<SearchStoreUserController>().onInit();
 
   late GetUserOfferModel userOffersModel = GetUserOfferModel();
-  RxList<UserOffers> userOfferList = <UserOffers>[].obs;
+  RxList<OffersList> userOfferList = <OffersList>[].obs;
 
   late OwnerFeaturedProductModel ownerFeaturedProductModel =
       OwnerFeaturedProductModel();
@@ -32,7 +32,7 @@ class HomeController extends GetxController {
 
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
-  RxList<UserOffers> userCarouselImgList = <UserOffers>[].obs;
+  RxList<OffersList> userCarouselImgList = <OffersList>[].obs;
   RxList<String> ownerCarouselImgList = <String>[].obs;
 
   RxString? role = "".obs;
@@ -43,7 +43,7 @@ class HomeController extends GetxController {
 
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
-  RxList<DataList> featuredUserProductList = <DataList>[].obs;
+  RxList<ProductsList> featuredUserProductList = <ProductsList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   final SearchStoreUserController searchStoreUserController =

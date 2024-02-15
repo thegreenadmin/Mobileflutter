@@ -27,16 +27,16 @@ class GetUserOfferModel {
 
 class GetUserOfferData {
   dynamic totalCount;
-  List<UserOffers>? offers;
+  List<OffersList>? offers;
 
   GetUserOfferData({this.totalCount, this.offers});
 
   GetUserOfferData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['offers'] != null) {
-      offers = <UserOffers>[];
+      offers = <OffersList>[];
       json['offers'].forEach((v) {
-        offers!.add(UserOffers.fromJson(v));
+        offers!.add(OffersList.fromJson(v));
       });
     }
   }
@@ -51,7 +51,7 @@ class GetUserOfferData {
   }
 }
 
-class UserOffers {
+class OffersList {
   Images? image;
   String? offerId;
   String? storeId;
@@ -64,8 +64,9 @@ class UserOffers {
   String? status;
   String? createdAt;
   String? updatedAt;
+  Store? store;
 
-  UserOffers(
+  OffersList(
       {this.image,
       this.offerId,
       this.storeId,
@@ -77,9 +78,9 @@ class UserOffers {
       this.expiredAt,
       this.status,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt, this.store});
 
-  UserOffers.fromJson(Map<String, dynamic> json) {
+  OffersList.fromJson(Map<String, dynamic> json) {
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     storeId = json['store_id'];
@@ -92,6 +93,7 @@ class UserOffers {
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -110,6 +112,9 @@ class UserOffers {
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    if (store != null) {
+      data['store'] = store!.toJson();
+    }
     return data;
   }
 }

@@ -28,16 +28,16 @@ class UserFeaturedProductModel {
 
 class UserFeaturedProductData {
   dynamic totalCount;
-  List<DataList>? products;
+  List<ProductsList>? products;
 
   UserFeaturedProductData({this.totalCount, this.products});
 
   UserFeaturedProductData.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['products'] != null) {
-      products = <DataList>[];
+      products = <ProductsList>[];
       json['products'].forEach((v) {
-        products!.add(DataList.fromJson(v));
+        products!.add(ProductsList.fromJson(v));
       });
     }
   }
@@ -52,7 +52,7 @@ class UserFeaturedProductData {
   }
 }
 
-class DataList {
+class ProductsList {
   String? productId;
   bool? isFavouriteProduct;
   String? storeId;
@@ -81,7 +81,9 @@ class DataList {
   dynamic offerPrice;
   Offer? offer;
 
-  DataList(
+
+
+  ProductsList(
       {this.productId,
       this.isFavouriteProduct,
       this.storeId,
@@ -110,7 +112,7 @@ class DataList {
       this.offerPrice,
       this.offer});
 
-  DataList.fromJson(Map<String, dynamic> json) {
+  ProductsList.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     isFavouriteProduct = json['is_favourite_product'];
     storeId = json['store_id'];

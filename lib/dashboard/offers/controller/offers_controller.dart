@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
+import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -42,7 +43,7 @@ class OffersController extends GetxController {
 
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
-  RxList<DataList> featuredUserProductList = <DataList>[].obs;
+  RxList<ProductsList> featuredUserProductList = <ProductsList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   RxBool isFromNotification = false.obs;

@@ -20,9 +20,9 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Expanded(
+      body: Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Obx(
             () => searchStoreUserController.storeAddresses.isEmpty
                 ? searchStoreUserController.isDataLoading.value == true

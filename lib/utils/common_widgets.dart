@@ -219,4 +219,6 @@ class CommonWidgets {
           color: color ?? AppColors.primary,
         ));
   }
+
+
 }

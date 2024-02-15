@@ -1,3 +1,5 @@
+import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
+
 import 'offers_model.dart';
 
 class GetOwnerOffersListModel {
@@ -51,55 +53,3 @@ class GetOwnerOffersData {
   }
 }
 
-class OffersList {
-  Image? image;
-  String? offerId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? offerType;
-  dynamic offerValue;
-  bool? isExpired;
-  String? expiredAt;
-  Store? store;
-
-  OffersList(
-      {this.image,
-      this.offerId,
-      this.isOfferForStore,
-      this.offerName,
-      this.offerType,
-      this.offerValue,
-      this.isExpired,
-      this.expiredAt,
-      this.store});
-
-  OffersList.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? Image.fromJson(json['image']) : null;
-    offerId = json['offer_id'];
-    isOfferForStore = json['is_offer_for_store'];
-    offerName = json['offer_name'];
-    offerType = json['offer_type'];
-    offerValue = json['offer_value'];
-    isExpired = json['is_expired'];
-    expiredAt = json['expiredAt'];
-    store = json['store'] != null ? Store.fromJson(json['store']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (image != null) {
-      data['image'] = image!.toJson();
-    }
-    data['offer_id'] = offerId;
-    data['is_offer_for_store'] = isOfferForStore;
-    data['offer_name'] = offerName;
-    data['offer_type'] = offerType;
-    data['offer_value'] = offerValue;
-    data['is_expired'] = isExpired;
-    data['expiredAt'] = expiredAt;
-    if (store != null) {
-      data['store'] = store!.toJson();
-    }
-    return data;
-  }
-}
