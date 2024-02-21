@@ -25,7 +25,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(70.0),
+            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.112),
             child: Container(
               color: AppColors.primarylight,
               child: Padding(

@@ -196,16 +196,16 @@ class SignupController extends GetxController {
             ServerCommunicator().baseUrl + ServerCommunicator().createUser,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE USER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("CREATE USER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         await apiGenerateOtp();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -222,11 +222,11 @@ class SignupController extends GetxController {
             ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
             showLoading: false)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("LOGIN RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         phoneNumberTextController.clear();
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
         Get.to(() => const OtpVerificationScreen(), arguments: {
           "phoneNumber": phoneNumber.value.trim(),
           "countryCode": countryCode.value.trim(),
@@ -240,15 +240,15 @@ class SignupController extends GetxController {
         isTermsAccepted.value = false;
         isFromOwner.value = false;
         phoneNumberTextController.clear();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //User not exist
-        Utility.showAlertMessage(value.body['message']);
-      } else if (value.body["status"] == ApiConstants.statusCode400) {
+        Utility.showAlertMessage(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

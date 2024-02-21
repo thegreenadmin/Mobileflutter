@@ -141,19 +141,19 @@ class AddNewRoleController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE ROLE  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getRoleListModel = GetRoleListModel.fromJson(value.body);
+      debugPrint("GET STORE ROLE  RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getRoleListModel = GetRoleListModel.fromJson(value?.body);
         storeRoleList.value = getRoleListModel.data!.storeRoles!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -189,20 +189,20 @@ class AddNewRoleController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CREATE ROLE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("CREATE ROLE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
 
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -227,23 +227,23 @@ class AddNewRoleController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE CONTROLLER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStoreControllerModel = GetStoreControllerModel.fromJson(value.body);
+      debugPrint("GET STORE CONTROLLER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreControllerModel = GetStoreControllerModel.fromJson(value?.body);
         moduleList.value = getStoreControllerModel.data!.modules!;
         for (int i = 0; i < moduleList.length; i++) {
           controllerList
               .addAll(moduleList[i].controllers as Iterable<Controllers>);
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -271,23 +271,23 @@ class AddNewRoleController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE CATEGORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetStoreRole();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetStoreRole();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -312,10 +312,10 @@ class AddNewRoleController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET ROLE DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStoreDetailModel = GetStoreDetailModel.fromJson(value.body);
+      debugPrint("GET ROLE DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreDetailModel = GetStoreDetailModel.fromJson(value?.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
         isEnabled.value =
             getStoreDetailModel.data!.role!.roleName! != "Store Worker" &&
@@ -340,14 +340,14 @@ class AddNewRoleController extends GetxController {
             permissionListMerged.add(permissionList[indexIs]);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -396,20 +396,20 @@ class AddNewRoleController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("EDIT ROLE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("EDIT ROLE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
 
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

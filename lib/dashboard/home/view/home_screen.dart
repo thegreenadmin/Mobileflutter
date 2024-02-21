@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,22 +52,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
+  void clearConnectionPool() {
+    HttpClient().close(force: true);
+  }
+/*
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached ) {
-
-      // Perform logout actions here
-      print('App is about to be suspended or terminated. Logging out...');
+    if (state == AppLifecycleState.paused  ) {
+      debugPrint('App is about to be suspended or terminated. Logging out...');
       accountController.apiLogOutUser();
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      clearConnectionPool();
+     *//* WidgetsBinding.instance!.addPostFrameCallback((_) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      });
-
-      // Perform logout actions like clearing authentication tokens or credentials
+      });*//*
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -593,8 +595,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       "true";
                       Get.parameters[
                       "isFromOptions"] = "false";
+
                       Get.parameters["storeId"] =
                           item.storeId ?? "";
+                      storeHomeMainController.invokedIndex.value = 3;
                       // Get.parameters["isAddToOrderScreen"]=="false";
                       await Get.to(
                               () =>
@@ -772,7 +776,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                          Get.parameters["storeId"] = featuredProductList[index]
                              .storeId ??
                              "";
-                         // storeHomeMainController.invokedIndex.value=2;
+                         storeHomeMainController.invokedIndex.value=2;
                          Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value,);
                          /*  Get.to(() => const AddToOrderScreen(),
                                             id: pageIdApp.value,

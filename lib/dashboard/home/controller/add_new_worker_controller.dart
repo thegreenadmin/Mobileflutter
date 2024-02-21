@@ -311,22 +311,22 @@ class AddNewWorkerController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("EDIT WORKER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("EDIT WORKER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         resetForm();
         await apiGetWorkerList();
 
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -355,22 +355,22 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE WORKER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE WORKER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value?.body['message']);
         await apiGetWorkerList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetWorkerList();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -540,19 +540,19 @@ class AddNewWorkerController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET USER STORE LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getUserStoreListModel = GetUserStoreListModel.fromJson(value.body);
+      debugPrint("GET USER STORE LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getUserStoreListModel = GetUserStoreListModel.fromJson(value?.body);
         getUserStoreList.value = getUserStoreListModel.data!.stores!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

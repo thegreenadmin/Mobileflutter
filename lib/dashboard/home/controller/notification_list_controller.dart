@@ -62,21 +62,21 @@ class NotificationListController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("GET NOTIFICATION LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        notificationListModel = NotificationListModel.fromJson(value.body);
+      log("GET NOTIFICATION LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        notificationListModel = NotificationListModel.fromJson(value?.body);
         notificationList.value =
             notificationListModel.data?.notifications ?? [];
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

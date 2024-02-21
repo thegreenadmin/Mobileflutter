@@ -113,13 +113,13 @@ class TransactionDetailController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER ORDER HISTORY URL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("USER ORDER HISTORY URL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -146,38 +146,38 @@ class TransactionDetailController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OWNER TRANSACTION DETAIL  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        if (value.body["data"]["transaction"]['order_transaction'] != null) {
-          customerName!.value = value.body["data"]["transaction"]
+      debugPrint("OWNER TRANSACTION DETAIL  RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        if (value?.body["data"]["transaction"]['order_transaction'] != null) {
+          customerName!.value = value?.body["data"]["transaction"]
               ['order_transaction']['order']["customer_name"];
-          orderId!.value = value.body["data"]["transaction"]
+          orderId!.value = value?.body["data"]["transaction"]
               ['order_transaction']['order_id'];
-          orderAmount!.value = value.body["data"]["transaction"]
+          orderAmount!.value = value?.body["data"]["transaction"]
                   ['order_transaction']['transaction']['transaction_amount']
               .toStringAsFixed(2);
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
-                value.body["data"]["transaction"]['createdAt'].toString()),
+                value?.body["data"]["transaction"]['createdAt'].toString()??""),
             secFormat: '',
           ).toString();
-        } else if (value.body["data"]["transaction"]['transaction'] != null) {
-          orderId!.value = value.body["data"]["transaction"]
+        } else if (value?.body["data"]["transaction"]['transaction'] != null) {
+          orderId!.value = value?.body["data"]["transaction"]
               ['order_transaction']['order_id'];
-          orderAmount!.value = value.body["data"]["transaction"]
+          orderAmount!.value = value?.body["data"]["transaction"]
                   ['order_transaction']['transaction']['transaction_amount']
               .toStringAsFixed(2);
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
-                value.body["data"]["transaction"]['createdAt'].toString()),
+                value?.body["data"]["transaction"]['createdAt'].toString()??""),
             secFormat: '',
           ).toString();
         }
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

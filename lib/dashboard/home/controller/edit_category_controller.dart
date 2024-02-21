@@ -216,10 +216,10 @@ class EditNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("GET CATEGORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
@@ -227,8 +227,8 @@ class EditNewCategoryController extends GetxController {
 
         Get.back(id: pageIdApp.value);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -249,25 +249,25 @@ class EditNewCategoryController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("GET CATEGORY DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
-            value.body["data"]['category']['category_name'] ?? "";
+            value?.body["data"]['category']['category_name'] ?? "";
         categoryImageDynamicLinkFromServer.value =
-            value.body["data"]['category']['image']['dynamic_url'] ?? "";
+            value?.body["data"]['category']['image']['dynamic_url'] ?? "";
         categoryImageOriginalLinkFromServer.value =
-            value.body["data"]['category']['image']['orignal_url'] ?? "";
+            value?.body["data"]['category']['image']['orignal_url'] ?? "";
         isFeaturedCategory.value =
-            value.body["data"]['category']['is_featured_category'] ?? false;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+            value?.body["data"]['category']['is_featured_category'] ?? false;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -300,25 +300,25 @@ class EditNewCategoryController extends GetxController {
             showLoading: true)
         .then((value) async {
       (value);
-      debugPrint("UPDATE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("UPDATE CATEGORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
 
         Get.back(id: pageIdApp.value);
 
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen(),
             id: int.parse(
                 SharedPreferenceStorage.getData("pageId").toString()));
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

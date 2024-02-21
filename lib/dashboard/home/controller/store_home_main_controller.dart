@@ -96,11 +96,9 @@ class StoreHomeMainController extends GetxController {
       productId.value = Get.parameters["productId"] ?? "";
       categoryName.value = Get.parameters["categoryName"] ?? "";
       categoryId.value = Get.parameters["categoryId"] ?? "";
-      isFromHome.value = Get.parameters["isFromHome"] == "true" ? true : false;
-      isFromFav.value = Get.parameters["isFromFav"] == "true" ? true : false;
-      isFromMenu.value = Get.parameters["isFromMenu"] == "true" ? true : false;
-      isFromOptions.value =
-          Get.parameters["isFromOptions"] == "true" ? true : false;
+      isFromHome.value = Get.parameters["isFromHome"] == "true" ;
+      isFromFav.value = Get.parameters["isFromFav"] == "true" ;
+      isFromMenu.value = Get.parameters["isFromMenu"] == "true" ;
 
       if (roleApp.value == Role.customerRoleText) {
         getCurrentLocation();
@@ -111,31 +109,43 @@ class StoreHomeMainController extends GetxController {
 
         if (isFromMenu.value) {
           selectedIndex.value = 1;
+          invokedIndex.value = 2;
           lastSelectedIndex.value = 1;
-          onIndexChange(1);
+
+
+          // onIndexChange(1);
         }
         if (isFromFav.value) {
           selectedIndex.value = 2;
           lastSelectedIndex.value = 2;
           showLoading.value = false;
-          onIndexChange(2);
+          apiFeatureProductListApi(
+              isFeaturedProduct: true);
+
+          // onIndexChange(2);
         }
         if (isFromHome.value) {
           selectedIndex.value = 0;
           lastSelectedIndex.value = 0;
           showLoading.value = false;
-          onIndexChange(0);
+          invokedIndex.value = 0;
+          apiGetStoreOffersApi();
+          apiFeatureProductListApi(
+              isFeaturedProduct: true);
+          // onIndexChange(0);
         }
         if (isFromOptions.value) {
           selectedIndex.value = 3;
           lastSelectedIndex.value = 3;
           showLoading.value = false;
-          onIndexChange(3);
+          // onIndexChange(3);
         }
         apiGetUserWalletBalance();
       }
     });
   }
+
+
 
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
@@ -569,10 +579,10 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Get.back(id: pageIdApp.value);
-        Get.parameters["storeName"] = value!.body["data"]["store_name"] ?? "";
-        Get.parameters["storeId"] = value.body["data"]["store_id"] ?? "";
+        Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
+        Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =
-            value.body["data"]["message_head_id"] ?? "";
+            value?.body["data"]["message_head_id"] ?? "";
         // SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -802,6 +812,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
         Get.parameters["isHome"] = "true";
+        isInsufficientBalance!.value = false;
 
         Get.to(() => const OrderConfirmationScreen(),
             id: pageIdApp.value,
@@ -812,7 +823,6 @@ class StoreHomeMainController extends GetxController {
               "isFromNotification": false
             });
         update();
-        isInsufficientBalance!.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isPlaceOrder.value = true;
 
@@ -1145,13 +1155,13 @@ class StoreHomeMainController extends GetxController {
       debugPrint("USER WALLET BALANCE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        if (value!.body["data"]["balance"] is int ||
-            value.body["data"]["balance"] is String) {
+        if (value?.body["data"]["balance"] is int ||
+            value?.body["data"]["balance"] is String) {
           walletBalance.value =
-              double.parse(value.body["data"]["balance"].toString());
+              double.parse(value?.body["data"]["balance"].toString()??"");
           debugPrint("USER WALLET BALANCE 1*******${walletBalance.value}");
-        } else if (value.body["data"]["balance"] is double) {
-          walletBalance.value = value.body["data"]["balance"] ?? 0.0;
+        } else if (value?.body["data"]["balance"] is double) {
+          walletBalance.value = value?.body["data"]["balance"] ?? 0.0;
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
         if (storeId.value != "") {

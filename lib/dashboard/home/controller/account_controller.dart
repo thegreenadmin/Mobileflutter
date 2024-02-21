@@ -452,10 +452,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getUserDetailModel = GetUserDetailModel.fromJson(value.body);
+      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userId!.value = getUserDetailModel.data!.user!.userId ?? "";
         uuId!.value = getUserDetailModel.data!.user!.uuId ?? "";
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
@@ -501,13 +501,13 @@ class AccountController extends GetxController {
         await apiGetMembershipList();
         await apiGetActiveMembershipList();
         await apiGetAllStoreList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
         // await apiGetCountries();
-      } else if (value.body["status"] == 401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == 401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        Utility.showAlertMessage(value.body['message'].toString());
+        Utility.showAlertMessage(value?.body['message'].toString());
       }
     });
   }
@@ -531,21 +531,21 @@ class AccountController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetStoreListModel.fromJson(value.body);
+      log("GET STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         // Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -567,10 +567,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getCountriesModel = GetCountriesModel.fromJson(value.body);
+      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.clear();
         countriesList.addAll(
             getCountriesModel.data!.countries as Iterable<CountriesList>);
@@ -585,12 +585,12 @@ class AccountController extends GetxController {
           }
         }
         apiGetStates();
-      } else if (value.body["status"] == ApiConstants.statusCode403) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -613,10 +613,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStateModel = GetStatesModel.fromJson(value.body);
+      debugPrint("GET STATES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
 
@@ -631,12 +631,12 @@ class AccountController extends GetxController {
           stateIndex.value = 0;
           stateId.value = statesList[0].stateId.toString();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -683,10 +683,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE USER DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();
@@ -704,12 +704,12 @@ class AccountController extends GetxController {
 
           await apiGetUserDetailApi();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -739,17 +739,17 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("ID PROOF DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      debugPrint("ID PROOF DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -772,10 +772,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET NOTIFICATION STATUS RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        notificationStatusModel = NotificationStatusModel.fromJson(value.body);
+      debugPrint("GET NOTIFICATION STATUS RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        notificationStatusModel = NotificationStatusModel.fromJson(value?.body);
 
         notificationStatusList.value =
             notificationStatusModel.data!.notificationSettings!;
@@ -835,12 +835,12 @@ class AccountController extends GetxController {
         }
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -873,10 +873,10 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      log("UPDATE NOTIFICATION STATUS RESPONSE $notificationType *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      log("UPDATE NOTIFICATION STATUS RESPONSE $notificationType *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         debugPrint("UPDATE NOTIFICATION offer **0***** $notificationType}");
 
         if (roleApp.value == Role.customerRoleText) {
@@ -890,12 +890,12 @@ class AccountController extends GetxController {
             forFirstTimeOwner.value = false;
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -920,18 +920,18 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE USER ACCESS RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("CREATE USER ACCESS RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         Get.until((route) => route.isFirst, id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -955,18 +955,18 @@ class AccountController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET MEMBERSHIP LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        membershipPlanModel = MembershipPlanModel.fromJson(value.body);
+      debugPrint("GET MEMBERSHIP LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        membershipPlanModel = MembershipPlanModel.fromJson(value?.body);
         membershipList.value = membershipPlanModel.data!.membershipPlans!;
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1004,23 +1004,23 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE MEMBERSHIP RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("CREATE MEMBERSHIP RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         selectedStoreId!.value = "";
-        Utility.showToast(value.body['message']);
+        Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
 
         noOfDaysTextController.clear();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         noOfDaysTextController.clear();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1044,21 +1044,21 @@ class AccountController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET ACTIVE MEMBERSHIP LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("GET ACTIVE MEMBERSHIP LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         activeMembershipPlanModel =
-            ActiveMembershipPlanModel.fromJson(value.body);
+            ActiveMembershipPlanModel.fromJson(value?.body);
         activeMembershipList.value =
             activeMembershipPlanModel.data!.memberships!;
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1083,18 +1083,18 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("DELETE USER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE USER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1115,18 +1115,18 @@ class AccountController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

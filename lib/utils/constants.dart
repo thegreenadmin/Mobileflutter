@@ -323,6 +323,7 @@ class StringConstants {
 
   //N
   static String novText = "November";
+  static String notNowText = "Not now";
   static String noMemberText = "No Member";
   static String nearbyText = "Nearby";
   static String nearYouText = " near you";
@@ -491,6 +492,7 @@ class StringConstants {
   static String scanYourFingerPrintText =
       'Scan your fingerprint to authenticate';
   static String starText = "*";
+  static String settingsText = "Settings";
   static String signUpText = "Sign up";
   static String saturdayText = "Saturday";
   static String sundayText = "Sunday";
@@ -674,6 +676,7 @@ class BottomNavStringConstants {
 //Alert Messages
 class AlertStringConstants {
   //A
+  static String alertText = "Alert!";
   static String areYouSureText = "Are you sure, you want to delete this item?";
   static String areYouSureCompleteText =
       "Are you sure, you want to mark this as complete?";
@@ -843,6 +846,8 @@ class AlertStringConstants {
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
+  static String locationAlertText = "The Green Mall does not have access to your location. To enable access, tap Settings > Location";
+  static String locationAndroidAlertText = "The Green Mall does not have access to your location. To enable access, tap Settings > Permission > Location";
 }
 
 //Roles in app

@@ -12,7 +12,6 @@ import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart'
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/wallet_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
-
 import '../dashboard/orders/view/order_store_list_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -36,22 +35,26 @@ class _BottomNavigationState extends State<BottomNavigation> with WidgetsBinding
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
-
+  late HttpClient client;
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+  void clearConnectionPool() {
+    HttpClient().close(force: true);
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached ) {
+    if (state == AppLifecycleState.paused  ) {
       debugPrint('App is about to be suspended or terminated. Logging out...');
-      accountController.apiLogOutUser();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      // accountController.apiLogOutUser();
+      // clearConnectionPool();
+      /*WidgetsBinding.instance.addPostFrameCallback((_) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      });
+      });*/
     }
   }
 

@@ -224,10 +224,10 @@ class AddOffersController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("ADD OFFER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("ADD OFFER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         radioValue.value = "";
         offerNameTextController.clear();
         storeIdValue.value = "";
@@ -235,14 +235,14 @@ class AddOffersController extends GetxController {
         offerImageDynamicLinkFromServer.value = "";
         discountOrOfferTextController.clear();
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -267,10 +267,10 @@ class AddOffersController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetStoreListModel.fromJson(value.body);
+      debugPrint("GET STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
@@ -280,14 +280,14 @@ class AddOffersController extends GetxController {
             apiGetStoreProducts();
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -323,22 +323,22 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreProductList = GetStoreNonOfferProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
         if (isFrom.value == StringConstants.editOfferText) {
           apiGetOffersDetail();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -375,10 +375,10 @@ class AddOffersController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStoreProductList = GetStoreNonOfferProductList.fromJson(value.body);
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreProductList = GetStoreNonOfferProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
         if (isFrom.value == StringConstants.editOfferText) {
           productMergedList.clear();
@@ -416,14 +416,14 @@ class AddOffersController extends GetxController {
             Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
           }
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -445,10 +445,10 @@ class AddOffersController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      log("GET OFFER DETAIL RESPONSE *******${jsonEncode(value!.body)}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getOfferDetailModel = GetOfferDetailModel.fromJson(value.body);
+      log("GET OFFER DETAIL RESPONSE *******${jsonEncode(value?.body)}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getOfferDetailModel = GetOfferDetailModel.fromJson(value?.body);
         offerNameTextController.text = getOfferDetailModel.data!.offerName!;
         discountOrOfferTextController.text =
             getOfferDetailModel.data!.offerValue!.toString();
@@ -485,14 +485,14 @@ class AddOffersController extends GetxController {
         storeName.value = getOfferDetailModel.data!.store!.storeName!;
 
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -524,21 +524,21 @@ class AddOffersController extends GetxController {
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE OFFER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("UPDATE OFFER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         radioValue.value = "";
 
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

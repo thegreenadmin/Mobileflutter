@@ -2,6 +2,7 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -614,11 +615,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           onTap: () async {
                             Get.parameters["storeId"] =
                                 ordersController.storeId.value;
-                            Get.parameters["isFromMenu"] = "true";
-                            Get.parameters["isFromHome"] = "false";
+                            Get.parameters["isFromMenu"] = "false";
+                            Get.parameters["isFromHome"] = "true";
                             Get.parameters["isFromFav"] = "false";
                             Get.parameters["isFromOptions"] = "false";
                             // Get.parameters["isAddToOrderScreen"]=="false";
+                            Get.put(StoreHomeMainController()).onInit();
                             Get.to(() => const StoreHomeMainScreen(),
                                 id: pageIdApp.value);
                           },

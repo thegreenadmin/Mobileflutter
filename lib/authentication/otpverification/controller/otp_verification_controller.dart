@@ -91,16 +91,16 @@ class OtpVerificationController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OTP VERIFY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("OTP VERIFY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.removeData("token");
         SharedPreferenceStorage.setData("pageId", 0);
-        authToken.value = value.body['data']['token'];
-        SharedPreferenceStorage.setData("token", value.body['data']['token']);
-        hasStoreAccess.value = value.body['data']['has_store_access'] ?? false;
+        authToken.value = value?.body['data']['token'];
+        SharedPreferenceStorage.setData("token", value?.body['data']['token']);
+        hasStoreAccess.value = value?.body['data']['has_store_access'] ?? false;
         if (hasStoreAccess.value) {
           forFirstTimeOwner.value = isSignUp.value;
           forFirstTimeCustomer.value = isSignUp.value;
@@ -113,12 +113,12 @@ class OtpVerificationController extends GetxController {
           roleApp.value = Role.customerRoleText;
         }
         Get.offAll(() => const BottomNavigation());
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
         // Email must be unique & user already exists
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

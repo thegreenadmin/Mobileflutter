@@ -30,18 +30,18 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.optionsText,
   ].obs;
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       storeHomeMainController.productId.value =
           Get.parameters["productId"] ?? "";
       storeHomeMainController.isFromHome.value =
-          Get.parameters["isFromHome"] == "true" ? true : false;
+          Get.parameters["isFromHome"] == "true";
       storeHomeMainController.isFromFav.value =
-          Get.parameters["isFromFav"] == "true" ? true : false;
+          Get.parameters["isFromFav"] == "true";
       storeHomeMainController.isFromMenu.value =
-          Get.parameters["isFromMenu"] == "true" ? true : false;
+          Get.parameters["isFromMenu"] == "true";
       storeHomeMainController.apiGetUserDetailsApi();
       storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
 
@@ -60,6 +60,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           storeHomeMainController.apiGetShopProductDetailApi();
         }
       } else if (storeHomeMainController.isFromHome.value) {
+        storeHomeMainController.invokedIndex.value = 0;
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetStoreOffersApi();
         storeHomeMainController.apiFeatureProductListApi(
@@ -74,7 +75,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
 
       storeHomeMainController.apiGetUserWalletBalance();
     });
-  }
+  }*/
 
   void contactAlertDialog(
     context,

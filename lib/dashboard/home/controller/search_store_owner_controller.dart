@@ -420,19 +420,19 @@ class OwnerStoresController extends GetxController {
       isLoading.value = false;
       debugPrint("GET FEATURED PRODUCTS LIST TOKEN *******$headers");
       debugPrint("GET FEATURED PRODUCTS LIST BODY *******$body");
-      debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreProductList = GetStoreProductList.fromJson(value.body);
+      debugPrint("GET FEATURED PRODUCTS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreProductList = GetStoreProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -515,21 +515,21 @@ class OwnerStoresController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("GET STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetStoreListModel.fromJson(value.body);
+      log("GET STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -554,26 +554,26 @@ class OwnerStoresController extends GetxController {
             showLoading: true)
         .then((value) async {
       loadingData.value = false;
-      debugPrint("GET UNCLAIMED STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        // getStoreListModel = GetStoreListModel.fromJson(value.body);
+      debugPrint("GET UNCLAIMED STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        // getStoreListModel = GetStoreListModel.fromJson(value?.body);
         // storeList.clear();
         // storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         // Get.parameters["storeCount"] = storeList.length.toString();
-        unclaimedStoresModel = UnclaimedStoresModel.fromJson(value.body);
+        unclaimedStoresModel = UnclaimedStoresModel.fromJson(value?.body);
         unclaimedStoreList.clear();
         unclaimedStoreList.addAll(unclaimedStoresModel.data?.storeAddresses
             as Iterable<UnclaimedStoreList>);
         // Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -597,24 +597,24 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET DELIVERY LIST  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("GET DELIVERY LIST  RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         deliveryServicesResponse =
-            DeliveryServicesResponse.fromJson(value.body);
+            DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
         if (storeId.value.isNotEmpty && storeId.value != "") {
           await apiGetParticularStore();
         }
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -957,10 +957,10 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getCountriesModel = GetCountriesModel.fromJson(value.body);
+      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.clear();
         countriesList.addAll(
             getCountriesModel.data!.countries as Iterable<CountriesList>);
@@ -976,8 +976,8 @@ class OwnerStoresController extends GetxController {
         }
         apiGetState();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -999,10 +999,10 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STATES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStateModel = GetStatesModel.fromJson(value.body);
+      debugPrint("GET STATES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
         if (stateId.value.isNotEmpty) {
@@ -1017,8 +1017,8 @@ class OwnerStoresController extends GetxController {
           stateId.value = statesList[0].stateId.toString();
         }
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1044,22 +1044,22 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE STORE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE STORE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetStoreList();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetStoreList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

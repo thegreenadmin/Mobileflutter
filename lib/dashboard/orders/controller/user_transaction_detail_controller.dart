@@ -73,40 +73,40 @@ class UserTransactionDetailController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER TRANSACTION DETAIL  RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        if (value.body["data"]["transaction"]['transaction'] != null) {
-          orderId!.value = value.body["data"]["transaction"]['transaction_id'];
-          orderAmount!.value = value.body["data"]["transaction"]['net_balance']
+      debugPrint("USER TRANSACTION DETAIL  RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        if (value?.body["data"]["transaction"]['transaction'] != null) {
+          orderId!.value = value?.body["data"]["transaction"]['transaction_id'];
+          orderAmount!.value = value?.body["data"]["transaction"]['net_balance']
               .toStringAsFixed(2);
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
-                value.body["data"]["transaction"]['createdAt'].toString()),
+                value?.body["data"]["transaction"]['createdAt'].toString()??""),
             secFormat: '',
           ).toString();
-        } else if (value.body["data"]["transaction"]['order_transaction'] !=
+        } else if (value?.body["data"]["transaction"]['order_transaction'] !=
             null) {
-          orderId!.value = value.body["data"]["transaction"]
+          orderId!.value = value?.body["data"]["transaction"]
                   ["order_transaction"]['order_id']
-              .toString();
-          orderAmount!.value = value.body["data"]["transaction"]
+              .toString()??"";
+          orderAmount!.value = value?.body["data"]["transaction"]
                   ["order_transaction"]['transaction']['transaction_amount']
               .toStringAsFixed(2);
           storeName!.value =
-              value.body["data"]["transaction"]["store"]['store_name'] ?? "";
-          storeImage!.value = value.body["data"]["transaction"]["store"]['logo']
+              value?.body["data"]["transaction"]["store"]['store_name'] ?? "";
+          storeImage!.value = value?.body["data"]["transaction"]["store"]['logo']
                   ['dynamic_url'] ??
               "";
           orderDate!.value = Utility.parseDateTime(
             DateTime.parse(
-                value.body["data"]["transaction"]['createdAt'].toString()),
+                value?.body["data"]["transaction"]['createdAt'].toString()??""),
             secFormat: '',
           ).toString();
         }
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

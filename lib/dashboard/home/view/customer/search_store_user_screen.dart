@@ -20,7 +20,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_scre
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class SearchStoreUserScreen extends StatefulWidget {
+class SearchStoreUserScreen extends StatefulWidget  {
   const SearchStoreUserScreen({Key? key}) : super(key: key);
 
   @override
@@ -28,29 +28,27 @@ class SearchStoreUserScreen extends StatefulWidget {
 }
 
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   TabController? _tabController;
-  late final permission.Permission _permission;
 
-
-  permission.PermissionStatus _permissionStatus = permission.PermissionStatus.denied;
 
   final SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
+  Get.put(SearchStoreUserController());
 
-  var kGoogleApiKey = "";
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-  final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    // zoom: 14.4746,
-    zoom: 50.4746,
-  );
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  // var kGoogleApiKey = ""; //TickerProviderStateMixin //SingleTickerProviderStateMixin
+  // final Completer<GoogleMapController> _controller =
+  // Completer<GoogleMapController>();
+  // final CameraPosition _kGooglePlex = const CameraPosition(
+  //   target: LatLng(37.42796133580664, -122.085749655962),
+  //   // zoom: 14.4746,
+  //   zoom: 50.4746,
+  // );
+  // Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     searchStoreUserController.searchController.clear();
     _tabController = TabController(
         initialIndex: searchStoreUserController.initialIndex.value,
@@ -59,32 +57,28 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
     updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
-    _listenForPermissionStatus();
-  }
-  void _listenForPermissionStatus() async {
-
-    var status = await permission.Permission.location.status;
-    // final status = await _permission.status;
-    setState(() => _permissionStatus = status);
   }
 
-  String getPermissionText() {
-    switch (_permissionStatus) {
-      case permission.PermissionStatus.denied:
-        return "Location permission denied";
-      case permission.PermissionStatus.granted:
-        return "";
-      case permission.PermissionStatus.limited:
-        return "";
-      default:
-        return "";
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      debugPrint(
+          "App resumed");
+      await permission.Permission.location.request();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.158),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.115),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
@@ -119,13 +113,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Obx(
-                                  () => Text(
-                                    'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                      () =>
+                                      Text(
+                                        'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                 ),
                                 Text(
                                   StringConstants.searchForStoreText,
@@ -141,81 +136,83 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         Row(
                           children: [
                             Obx(
-                              () => Visibility(
-                                visible:
+                                  () =>
+                                  Visibility(
+                                    visible:
                                     searchStoreUserController.cartCount.value !=
                                         0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Row(
-                                    mainAxisAlignment:
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Row(
+                                        mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
                                         children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              await Get.to(
-                                                      () => const CartScreen(),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  await Get.to(
+                                                          () => const CartScreen(),
                                                       id: pageIdApp.value)
-                                                  ?.then((value) =>
+                                                      ?.then((value) =>
                                                       searchStoreUserController
                                                           .apiActiveCartApi());
-                                              Get.parameters["storeId"] =
-                                                  searchStoreUserController
-                                                      .storeIdValue.value;
-                                            },
-                                            child: Stack(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 20.0,
-                                                  backgroundColor: Colors.white,
-                                                  child: Image.asset(
-                                                      ImageConstants.cart,
-                                                      height: 16),
-                                                ),
-                                                Positioned(
-                                                  right: 0,
-                                                  top: 0,
-                                                  child: Container(
-                                                      padding:
+                                                  Get.parameters["storeId"] =
+                                                      searchStoreUserController
+                                                          .storeIdValue.value;
+                                                },
+                                                child: Stack(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 20.0,
+                                                      backgroundColor: Colors.white,
+                                                      child: Image.asset(
+                                                          ImageConstants.cart,
+                                                          height: 16),
+                                                    ),
+                                                    Positioned(
+                                                      right: 0,
+                                                      top: 0,
+                                                      child: Container(
+                                                          padding:
                                                           const EdgeInsets.all(
                                                               1.5),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.red,
-                                                        borderRadius:
+                                                          decoration: BoxDecoration(
+                                                            color: AppColors.red,
+                                                            borderRadius:
                                                             BorderRadius
                                                                 .circular(8.5),
-                                                      ),
-                                                      constraints:
-                                                          const BoxConstraints(
-                                                        minWidth: 15,
-                                                        minHeight: 15,
-                                                      ),
-                                                      child: Obx(
-                                                        () => Text(
-                                                          searchStoreUserController
-                                                              .cartItems.length
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 10,
                                                           ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      )),
-                                                )
-                                              ],
-                                            ),
+                                                          constraints:
+                                                          const BoxConstraints(
+                                                            minWidth: 15,
+                                                            minHeight: 15,
+                                                          ),
+                                                          child: Obx(
+                                                                () =>
+                                                                Text(
+                                                                  searchStoreUserController
+                                                                      .cartItems.length
+                                                                      .toString(),
+                                                                  style:
+                                                                  const TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 10,
+                                                                  ),
+                                                                  textAlign:
+                                                                  TextAlign.center,
+                                                                ),
+                                                          )),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
                             ),
                             Image.asset(
                               ImageConstants.homeMall,
@@ -224,11 +221,16 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           ],
                         )
                       ]),
-                  height20SizedBox,
-                  Text(
-                    getPermissionText(),
-                    style:  TextStyle(fontSize: getPermissionText()!=""? 14:2,color: AppColors.red),
-                  ),
+                  height8SizedBox,
+                  // Obx(() {
+                  //   return Visibility(
+                  //     visible: searchStoreUserController.getPermissionText() != "",
+                  //     child: Text(
+                  //       searchStoreUserController.getPermissionText(),
+                  //       style: const TextStyle(fontSize: 14, color: AppColors.red),
+                  //     ),
+                  //   );
+                  // }),
                 ],
               )),
         ),
@@ -255,10 +257,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           mapType: MapType.normal,
                           zoomControlsEnabled: true,
                           minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                          initialCameraPosition: _kGooglePlex,
-                          markers: Set<Marker>.of(markers.values),
+                          initialCameraPosition: searchStoreUserController.kGooglePlex,
+                          markers: Set<Marker>.of(searchStoreUserController.markers.value.values),
                           onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
+                            searchStoreUserController.controller.complete(controller);
                           },
                         )),
                     Positioned(
@@ -289,7 +291,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           types: [],
                           strictbounds: false,
                           context: context,
-                          apiKey: kGoogleApiKey,
+                          apiKey: searchStoreUserController.kGoogleApiKey,
                           mode: Mode.overlay,
                           language: "en",
                           components: []);
@@ -300,7 +302,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
                       final geocoding =
-                          GoogleMapsGeocoding(apiKey: kGoogleApiKey);
+                      GoogleMapsGeocoding(apiKey: searchStoreUserController.kGoogleApiKey);
                       GeocodingResponse response = await geocoding
                           .searchByAddress(p?.description.toString() ?? "");
                       final result = response.results.isNotEmpty
@@ -387,7 +389,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               labelColor: AppColors.primary,
               indicatorColor: AppColors.primary,
               unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.w400),
+              const TextStyle(fontWeight: FontWeight.w400),
               labelStyle: const TextStyle(fontWeight: FontWeight.w600),
               isScrollable: false,
               onTap: (i) async {
@@ -458,7 +460,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         target: LatLng(lat, lng),
         tilt: 0.0,
         zoom: 14.15);
-    final GoogleMapController controller = await _controller.future;
+    final GoogleMapController controller = await searchStoreUserController.controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
@@ -471,14 +473,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   void updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
     final Uint8List markerIcon =
-        await getBytesFromAsset(ImageConstants.marker, 60);
+    await getBytesFromAsset(ImageConstants.marker, 60);
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.fromBytes(markerIcon),
       position: LatLng(latitude, longitude),
     );
     setState(() {
-      markers[markerId] = marker;
+      searchStoreUserController.markers[markerId] = marker;
     });
   }
 
@@ -492,8 +494,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     //       barrierDismissible: false);
     // });
     secureData =
-        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    searchStoreUserController.kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     Position currentLocation = await Utility.fetchCurrentLocation();
 
     updateMap(currentLocation.latitude, currentLocation.longitude);

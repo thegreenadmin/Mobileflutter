@@ -77,10 +77,10 @@ class BottomNavController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint(
-          "GET BottomNav STORE LIST RESPONSE ******* ${pageIdApp.value} ${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetStoreListModel.fromJson(value.body);
+          "GET BottomNav STORE LIST RESPONSE ******* ${pageIdApp.value} ${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         if (storeList.length == 1) {
@@ -88,14 +88,14 @@ class BottomNavController extends GetxController {
           Get.parameters["storeCount"] = storeList.length.toString();
         }
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -117,16 +117,16 @@ class BottomNavController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getPermissionsModel = GetPermissionsModel.fromJson(value.body);
+      debugPrint("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
         permissionStoreList.value = getPermissionsModel.data!.stores!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

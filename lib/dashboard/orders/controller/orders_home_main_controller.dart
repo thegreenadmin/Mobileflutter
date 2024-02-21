@@ -275,11 +275,11 @@ class OrdersHomeMainController extends GetxController {
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
-      print("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      print("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
-            GetOwnerOrderHistoryModel.fromJson(value.body);
+            GetOwnerOrderHistoryModel.fromJson(value?.body);
         totalCount.value = getOwnerOrderHistoryModel.data!.totalCount!;
         List<Orders>? orders = [];
         orders = getOwnerOrderHistoryModel.data!.orders ?? [];
@@ -294,8 +294,8 @@ class OrdersHomeMainController extends GetxController {
 
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -418,16 +418,16 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -516,17 +516,17 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER REJECT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER REJECT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         page.value == 1;
         await apiGetOwnerOrderHistory();
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -567,10 +567,10 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CANCEL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER CANCEL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
@@ -579,8 +579,8 @@ class OrdersHomeMainController extends GetxController {
 
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -622,10 +622,10 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
@@ -634,8 +634,8 @@ class OrdersHomeMainController extends GetxController {
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -680,10 +680,10 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER SHIPPED RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER SHIPPED RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
@@ -692,8 +692,8 @@ class OrdersHomeMainController extends GetxController {
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -738,10 +738,10 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER PICKUP RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER PICKUP RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
@@ -750,8 +750,8 @@ class OrdersHomeMainController extends GetxController {
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -796,10 +796,10 @@ class OrdersHomeMainController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
           element.isSelected = false;
         }
@@ -808,8 +808,8 @@ class OrdersHomeMainController extends GetxController {
         Get.back(id: pageIdApp.value);
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

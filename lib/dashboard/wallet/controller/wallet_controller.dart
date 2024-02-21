@@ -345,19 +345,19 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        countryListModel = CountryListModel.fromJson(value.body);
+      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        countryListModel = CountryListModel.fromJson(value?.body);
         countryList.value = countryListModel.data!.countries!;
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -383,10 +383,10 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isStoresLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${jsonEncode(value!.body)}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        getStoreListModel = GetOwnerStoresResponse.fromJson(value.body);
+      debugPrint("GET STORE RESPONSE *******${jsonEncode(value?.body)}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        getStoreListModel = GetOwnerStoresResponse.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data as Iterable<Datum>);
         Get.parameters["storeCount"] = storeList.length.toString();
@@ -401,14 +401,14 @@ class WalletController extends GetxController {
           }
         }
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -470,17 +470,17 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       if (value != null) {
-        debugPrint("CREATE CARD  RESPONSE *******${value.body}");
-        if (value.body['success'] == true ||
-            value.body['status'] == ApiConstants.statusCode201 ||
-            value.body['status'] == ApiConstants.statusCode200) {
-          Utility.showToast(value.body['message']);
+        debugPrint("CREATE CARD  RESPONSE *******${value?.body}");
+        if (value?.body['success'] == true ||
+            value?.body['status'] == ApiConstants.statusCode201 ||
+            value?.body['status'] == ApiConstants.statusCode200) {
+          Utility.showToast(value?.body['message']);
           Get.back(id: pageIdApp.value);
           await apiGetCardList();
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         } else {
-          Utility.showAlertMessage(value.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -505,23 +505,23 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CARD LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        cardListModel = CardListModel.fromJson(value.body);
+      debugPrint("GET CARD LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        cardListModel = CardListModel.fromJson(value?.body);
         cardList.value = cardListModel.data?.cards ?? [];
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (!value.body['message']
+        if (value?.body['message']
             .toString()
             .toLowerCase()
-            .contains("stripe")) {
-          Utility.showAlertMessage(value.body['message']);
+            .contains("stripe")!=true) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -554,9 +554,9 @@ class WalletController extends GetxController {
         .then((value) async {
       if (value != null) {
         isLoading.value = false;
-        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
-        if (value.body['status'] == ApiConstants.statusCode201 ||
-            value.body['status'] == ApiConstants.statusCode200) {
+        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value?.body}");
+        if (value?.body['status'] == ApiConstants.statusCode201 ||
+            value?.body['status'] == ApiConstants.statusCode200) {
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
@@ -565,11 +565,11 @@ class WalletController extends GetxController {
           Future.delayed(const Duration(seconds: 1), () {
             Get.back(id: pageIdApp.value);
           });
-          Utility.showToast(value.body['message']);
+          Utility.showToast(value?.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         } else {
-          Utility.showAlertMessage(value.body['message']);
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -636,22 +636,22 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("DELETE CARD RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE CARD RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetCardList();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetCardList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -688,12 +688,12 @@ class WalletController extends GetxController {
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        String msg = value!.body["message"].toString().toLowerCase();
+        String msg = value?.body["message"].toString().toLowerCase()??"";
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-          if (value.body['message'] != null) {
-            Utility.showAlertMessage(value.body['message']);
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
           }
         }
       }
@@ -771,10 +771,10 @@ class WalletController extends GetxController {
       isLoading.value = false;
       debugPrint("CREATE OWNER STRIPE BANK ACCOUNT BODY ******* $body");
       debugPrint(
-          "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        Utility.showToast(value.body['message']);
+          "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value?.body['message']);
         selectedCountry.value = "";
         currencyTextController.clear();
         accountHolderNameTextController.clear();
@@ -782,16 +782,16 @@ class WalletController extends GetxController {
         routingTextController.clear();
         accountNumberTextController.clear();
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -816,23 +816,23 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        bankAccountListModel = BankAccountListModel.fromJson(value.body);
+      debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        bankAccountListModel = BankAccountListModel.fromJson(value?.body);
         bankAccountList.value = bankAccountListModel.data?.banks ?? [];
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (!value.body['message']
+        if (value?.body['message']
             .toString()
             .toLowerCase()
-            .contains("stripe")) {
-          Utility.showAlertMessage(value.body['message']);
+            .contains("stripe")!=true) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -858,22 +858,22 @@ class WalletController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE BANK ACCOUNT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE BANK ACCOUNT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetBankAccountList();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetBankAccountList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -918,10 +918,10 @@ class WalletController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("CREATE AUTO RECHARGE BODY ******* $body");
-      debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        Utility.showToast(value.body['message']);
+      debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value?.body['message']);
         routingTextController.clear();
         startDateTextController.clear();
         endDateTextController.clear();
@@ -933,16 +933,16 @@ class WalletController extends GetxController {
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1087,10 +1087,10 @@ class WalletController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
-      debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
-        Utility.showToast(value.body['message']);
+      debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
+        Utility.showToast(value?.body['message']);
         selectedFrequency.value = "";
         thresholdAmountTextController.clear();
         chargeAmountTextController.clear();
@@ -1104,16 +1104,16 @@ class WalletController extends GetxController {
         Get.back(id: pageIdApp.value);
 
         await apiGetAutoRechargeDetail();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1144,22 +1144,22 @@ class WalletController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("DISABLE AUTO CHARGE RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DISABLE AUTO CHARGE RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetAutoRechargeDetail();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetAutoRechargeDetail();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -1185,20 +1185,20 @@ class WalletController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint(
-          "GET STRIPE CONNECTED ACCOUNT DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
+          "GET STRIPE CONNECTED ACCOUNT DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         capability.value =
-            value.body["data"]['account']['capabilities']['transfers'];
-        payouts.value = value.body["data"]['account']['payouts_enabled'];
-        accountLink.value = value.body["data"]['accountLink']['url'];
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+            value?.body["data"]['account']['capabilities']['transfers'];
+        payouts.value = value?.body["data"]['account']['payouts_enabled'];
+        accountLink.value = value?.body["data"]['accountLink']['url'];
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showAlertMessage(value?.body['message']);
       }
     });
   }

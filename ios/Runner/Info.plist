@@ -43,6 +43,8 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>The app needs permission for image selection</string>
+	<key>NSLocationUsageDescription</key>
+	<string>The app needs permission for location</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Permission needed for app authentication</string>
 	<key>NSLocationAlwaysUsageDescription</key>

@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -106,11 +110,49 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
+
+  Rx<permission.PermissionStatus> permissionStatus = permission.PermissionStatus.denied.obs;
+
+
+  final Completer<GoogleMapController> controller =
+  Completer<GoogleMapController>();
+  final CameraPosition kGooglePlex = const CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    // zoom: 14.4746,
+    zoom: 50.4746,
+  );
+  RxMap<MarkerId, Marker> markers = <MarkerId, Marker>{}.obs;
+
   @override
   void onInit() {
     super.onInit();
+    _listenForPermissionStatus();
     getPage();
+
   }
+
+  void _listenForPermissionStatus() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var status = await permission.Permission.location.request();
+      permissionStatus.value = status;
+      if(permissionStatus.value == permission.PermissionStatus.denied || permissionStatus.value == permission.PermissionStatus.permanentlyDenied){
+        Utility.showConfirmAlertMessage(
+            AlertStringConstants.alertText,
+            description:  Platform.isAndroid? AlertStringConstants.locationAndroidAlertText :AlertStringConstants.locationAlertText,
+            okay: StringConstants.settingsText,
+            cancelText:  StringConstants.notNowText,
+            okayTap: () async {
+              await permission.openAppSettings();
+              await permission.Permission.location.request();
+              await getPage();
+              Get.back();
+            }
+        );
+      }
+    });
+
+  }
+
 
   getPage() async {
     firstName?.value =
@@ -252,13 +294,13 @@ class SearchStoreUserController extends GetxController {
       debugPrint("USER WALLET BALANCE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        if (value!.body["data"]["balance"] is int ||
-            value.body["data"]["balance"] is String) {
+        if (value?.body["data"]["balance"] is int ||
+            value?.body["data"]["balance"] is String) {
           walletBalance.value =
-              double.parse(value.body["data"]["balance"].toString());
+              double.parse(value?.body["data"]["balance"].toString()??"");
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
-        } else if (value.body["data"]["balance"] is double) {
-          walletBalance.value = value.body["data"]["balance"];
+        } else if (value?.body["data"]["balance"] is double) {
+          walletBalance.value = value?.body["data"]["balance"];
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

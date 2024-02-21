@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/io_client.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
+import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProvider extends GetConnect {
@@ -41,7 +42,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -50,7 +51,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -59,7 +60,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -106,7 +107,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -115,7 +116,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -124,7 +125,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -166,7 +167,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -175,7 +176,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -184,7 +185,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -237,7 +238,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -246,7 +247,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -255,7 +256,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -307,7 +308,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -316,7 +317,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -325,7 +326,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -376,7 +377,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -385,7 +386,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -394,7 +395,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -446,7 +447,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -455,7 +456,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;
@@ -464,7 +465,7 @@ class UserProvider extends GetConnect {
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
-          title: "Alert!",
+          title:  AlertStringConstants.alertText,
         );
       });
       return null;

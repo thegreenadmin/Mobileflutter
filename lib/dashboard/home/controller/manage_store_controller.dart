@@ -501,20 +501,20 @@ class ManageStoreController extends GetxController {
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getStoreProductList = GetStoreProductList.fromJson(value.body);
+      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getStoreProductList = GetStoreProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -539,13 +539,13 @@ class ManageStoreController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         productNameTextController.text =
-            value.body["data"]['product']["product_name"] ?? "";
+            value?.body["data"]['product']["product_name"] ?? "";
         discountType.value =
-            value.body["data"]['product']["discount_type"] ?? "";
+            value?.body["data"]['product']["discount_type"] ?? "";
         if (discountType.value == "amount") {
           discountValueType.value = "Amount";
         } else {
@@ -553,9 +553,9 @@ class ManageStoreController extends GetxController {
         }
         imageUrlList.clear();
         for (int i = 0;
-            i < value.body["data"]['product']['product_images'].length;
+            i < value?.body["data"]['product']['product_images'].length;
             i++) {
-          var image = value.body["data"]['product']['product_images'][i];
+          var image = value?.body["data"]['product']['product_images'][i];
           imageUrlList.add(ProductImagesList(
               productImageId: image['product_image_id'],
               imageUrl: image["image"]["orignal_url"],
@@ -571,41 +571,41 @@ class ManageStoreController extends GetxController {
         }
         inputData.productImages = imageUrlList;
         discountOrOfferTextController.text =
-            value.body["data"]['product']["discount_value"].toString();
+            value?.body["data"]['product']["discount_value"].toString()??"";
         quantityValue.value =
-            value.body["data"]['product']["quantity_type_id"].toString();
+            value?.body["data"]['product']["quantity_type_id"].toString()??"";
         quantityTextController.text =
-            value.body["data"]['product']["quantity"].toString();
+            value?.body["data"]['product']["quantity"].toString()??"";
 
         pricePerUnitTextController.text =
-            value.body["data"]['product']["product_price"].toString();
+            value?.body["data"]['product']["product_price"].toString()??"";
         shortDescriptionTextController.text =
-            value.body["data"]['product']["description"] ?? "";
-        isFeatured.value = value.body["data"]['product']["is_featured_product"];
+            value?.body["data"]['product']["description"] ?? "";
+        isFeatured.value = value?.body["data"]['product']["is_featured_product"];
         if (isFeatured.value) {
           selectedFeaturedType.value = "Yes";
         } else {
           selectedFeaturedType.value = "No";
         }
         daysTextController.text =
-            value.body["data"]['product']["return_days_count"].toString();
+            value?.body["data"]['product']["return_days_count"].toString()??"";
         isProductReturnable.value =
-            value.body["data"]['product']["is_product_returnable"];
+            value?.body["data"]['product']["is_product_returnable"];
         if (isProductReturnable.value) {
           selectedProductReturnableType.value = "Yes";
         } else {
           selectedProductReturnableType.value = "No";
         }
         lengthTextController.text =
-            value.body["data"]['product']["length"].toString();
+            value?.body["data"]['product']["length"].toString()??"";
         breadthTextController.text =
-            value.body["data"]['product']["width"].toString();
+            value?.body["data"]['product']["width"].toString()??"";
         heightTextController.text =
-            value.body["data"]['product']["height"].toString();
+            value?.body["data"]['product']["height"].toString()??"";
         weightTextController.text =
-            value.body["data"]['product']["weight"].toString();
+            value?.body["data"]['product']["weight"].toString()??"";
         selectedCategories.value =
-            value.body["data"]['product']['product_categories'] ?? [];
+            value?.body["data"]['product']['product_categories'] ?? [];
         debugPrint(
             "selectedCategories Length******${selectedCategories.length}");
         isSelectedCategory.value = false;
@@ -619,9 +619,9 @@ class ManageStoreController extends GetxController {
         }
         isSelectedCategory.value = true;
         productContent.value =
-            value.body["data"]['product']["product_contents"] ?? [];
+            value?.body["data"]['product']["product_contents"] ?? [];
         productLinks.value =
-            value.body["data"]['product']["product_links"] ?? [];
+            value?.body["data"]['product']["product_links"] ?? [];
         if (productContent.isNotEmpty) {
           for (int i = 0; i < productContent.length; i++) {
             contentsAndStrainsTextController.text =
@@ -635,16 +635,16 @@ class ManageStoreController extends GetxController {
             lastProductLink.value = productLinks[i]['link'];
           }
         }
-        isEnabled.value = value.body["data"]['product']["is_enabled"] ?? false;
+        isEnabled.value = value?.body["data"]['product']["is_enabled"] ?? false;
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -751,10 +751,10 @@ class ManageStoreController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
 
         resetForm();
 
@@ -762,15 +762,15 @@ class ManageStoreController extends GetxController {
           Get.delete<ManageStoreController>();
         }
         Get.back(id: pageIdApp.value);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -795,22 +795,22 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE PRODUCT RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE PRODUCT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetStoreProducts();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetStoreProducts();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -835,22 +835,22 @@ class ManageStoreController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE CATEGORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value.body['message']);
+      debugPrint("DELETE CATEGORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
         await apiGetCategoriesList();
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
         await apiGetCategoriesList();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

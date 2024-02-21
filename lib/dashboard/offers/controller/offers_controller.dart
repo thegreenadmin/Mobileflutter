@@ -204,10 +204,10 @@ class OffersController extends GetxController {
             showLoading: pageCustomer.value == 1)
         .then((value) async {
       isLoading!.value = false;
-      debugPrint("USER OFFERS LIST RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getUserOffersListModel = GetUserOfferListModel.fromJson(value.body);
+      debugPrint("USER OFFERS LIST RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getUserOffersListModel = GetUserOfferListModel.fromJson(value?.body);
         totalCountCustomer.value = getUserOffersListModel.data?.totalCount ?? 0;
         List<UserOfferStores>? offerUserNewList = [];
         offerUserNewList = getUserOffersListModel.data?.stores ?? [];
@@ -219,14 +219,14 @@ class OffersController extends GetxController {
         }
         getUserOfferList.toSet().toList();
         update();
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -253,25 +253,25 @@ class OffersController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE OFFER RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode200 ||
-          value.body["status"] == ApiConstants.statusCode201) {
+      debugPrint("DELETE OFFER RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {
         if (role.value == Role.customerRoleText) {
           apiGetUserOffersList();
         } else {
           apiGetOwnerOffersList();
         }
-        Utility.showToast(value.body['message']);
-      } else if (value.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value.body['message']);
-      } else if (value.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value.body['message']);
+        Utility.showToast(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });

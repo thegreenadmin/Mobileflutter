@@ -298,16 +298,16 @@ class TransactionController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER ORDER HISTORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
-        getUserTransactionModel = GetUserTransactionModel.fromJson(value.body);
+      debugPrint("USER ORDER HISTORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getUserTransactionModel = GetUserTransactionModel.fromJson(value?.body);
         userTransactionList!.value =
             getUserTransactionModel.data!.transactions!.cast<Transactionss>();
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
@@ -344,17 +344,17 @@ class TransactionController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value!.body}");
-      if (value.body["status"] == ApiConstants.statusCode201 ||
-          value.body["status"] == ApiConstants.statusCode200) {
+      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerTransactionModel =
-            GetOwnerTransactionModel.fromJson(value.body);
+            GetOwnerTransactionModel.fromJson(value?.body);
         ownerOrderTransactionList!.value =
             getOwnerTransactionModel.data!.transactions!;
         update();
       } else {
-        if (value.body['message'] != null) {
-          Utility.showAlertMessage(value.body['message']);
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
         }
       }
     });
