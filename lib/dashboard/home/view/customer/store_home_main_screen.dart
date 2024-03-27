@@ -30,7 +30,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.optionsText,
   ].obs;
 
-  /*@override
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -75,7 +75,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
 
       storeHomeMainController.apiGetUserWalletBalance();
     });
-  }*/
+  }
 
   void contactAlertDialog(
     context,
@@ -121,8 +121,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
             SelectableText(
               storeHomeMainController
-                      .storeDetailsResponse.value.data?.store?.storePhone ??
-                  "",
+                      .storeDetailsResponse.value.data?.store?.storePhone ?? "",
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,

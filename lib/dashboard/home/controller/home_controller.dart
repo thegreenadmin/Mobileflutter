@@ -52,10 +52,12 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    debugPrint("Home controller====> called");
-    apiGetUserDetail();
-    getPage();
-    getCurrentLocation();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      apiGetUserDetail();
+      getPage();
+      getCurrentLocation();
+    });
   }
 
   getPage() async {

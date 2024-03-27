@@ -126,9 +126,10 @@ class SearchStoreUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _listenForPermissionStatus();
-    getPage();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _listenForPermissionStatus();
+      getPage();
+    });
   }
 
   void _listenForPermissionStatus() async {

@@ -91,6 +91,7 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    debugPrint("StoreHomeMainController - onIt call--====> called 111111111111");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
@@ -99,20 +100,18 @@ class StoreHomeMainController extends GetxController {
       isFromHome.value = Get.parameters["isFromHome"] == "true" ;
       isFromFav.value = Get.parameters["isFromFav"] == "true" ;
       isFromMenu.value = Get.parameters["isFromMenu"] == "true" ;
-
+      // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0") ;
+      debugPrint("StoreHomeMainController - onIt call------------------2222222222");
       if (roleApp.value == Role.customerRoleText) {
         getCurrentLocation();
         apiGetUserDetailsApi();
         if (storeId.value != "" && productId.value != "") {
           apiGetShopProductDetailApi();
         }
-
         if (isFromMenu.value) {
           selectedIndex.value = 1;
           invokedIndex.value = 2;
           lastSelectedIndex.value = 1;
-
-
           // onIndexChange(1);
         }
         if (isFromFav.value) {
@@ -1166,7 +1165,7 @@ class StoreHomeMainController extends GetxController {
         }
         if (storeId.value != "") {
           apiGetCartListApi(isShowLoading: true);
-          apiActiveCartApi();
+          await apiActiveCartApi();
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
