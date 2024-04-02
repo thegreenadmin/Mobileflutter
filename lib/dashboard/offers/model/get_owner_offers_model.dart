@@ -1,7 +1,5 @@
 import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 
-import 'offers_model.dart';
-
 class GetOwnerOffersListModel {
   int? status;
   String? message;
@@ -52,4 +50,3 @@ class GetOwnerOffersData {
     return data;
   }
 }
-

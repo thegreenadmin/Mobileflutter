@@ -6,7 +6,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_screen.dart';
-import 'package:thegreenmall/dashboard/wallet/view/create_owner_bankaccount_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/payout_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 

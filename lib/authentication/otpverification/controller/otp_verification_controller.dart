@@ -59,7 +59,7 @@ class OtpVerificationController extends GetxController {
       try {
         await messaging.getToken().then((value) {
           fcmToken!.value = value ?? "";
-          debugPrint("FCM TOKEN *************$fcmToken");
+
           apiOtpVerify();
         });
       } catch (_) {}

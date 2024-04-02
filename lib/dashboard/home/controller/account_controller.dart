@@ -458,6 +458,8 @@ class AccountController extends GetxController {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userId!.value = getUserDetailModel.data!.user!.userId ?? "";
         uuId!.value = getUserDetailModel.data!.user!.uuId ?? "";
+        debugPrint("ACCOUNT ID ----------${uuId!.value}");
+
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
         lastName!.value = getUserDetailModel.data!.user!.lastName ?? "";

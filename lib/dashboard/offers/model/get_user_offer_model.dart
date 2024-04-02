@@ -56,7 +56,7 @@ class UserOfferStores {
   bool? isVerified;
   bool? isEnabled;
   List<StoreAddresses>? storeAddresses;
-  List<Offers>? offers;
+  List<Offer>? offers;
 
   UserOfferStores(
       {this.logo,
@@ -80,9 +80,9 @@ class UserOfferStores {
       });
     }
     if (json['offers'] != null) {
-      offers = <Offers>[];
+      offers = <Offer>[];
       json['offers'].forEach((v) {
-        offers!.add(Offers.fromJson(v));
+        offers!.add(Offer.fromJson(v));
       });
     }
   }
@@ -102,53 +102,6 @@ class UserOfferStores {
     if (offers != null) {
       data['offers'] = offers!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Offers {
-  Logo? image;
-  String? offerId;
-  bool? isOfferForStore;
-  String? offerName;
-  String? offerType;
-  int? offerValue;
-  bool? isExpired;
-  String? expiredAt;
-
-  Offers(
-      {this.image,
-      this.offerId,
-      this.isOfferForStore,
-      this.offerName,
-      this.offerType,
-      this.offerValue,
-      this.isExpired,
-      this.expiredAt});
-
-  Offers.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? Logo.fromJson(json['image']) : null;
-    offerId = json['offer_id'];
-    isOfferForStore = json['is_offer_for_store'];
-    offerName = json['offer_name'];
-    offerType = json['offer_type'];
-    offerValue = json['offer_value'];
-    isExpired = json['is_expired'];
-    expiredAt = json['expiredAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (image != null) {
-      data['image'] = image!.toJson();
-    }
-    data['offer_id'] = offerId;
-    data['is_offer_for_store'] = isOfferForStore;
-    data['offer_name'] = offerName;
-    data['offer_type'] = offerType;
-    data['offer_value'] = offerValue;
-    data['is_expired'] = isExpired;
-    data['expiredAt'] = expiredAt;
     return data;
   }
 }

@@ -18,7 +18,7 @@ class StoreHomeMainController extends GetxController {
   Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
   late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
   RxList<Offer> offersList = <Offer>[].obs;
-
+  Rx<Offer> offerObj = Offer().obs;
   late StoreCategoriesListResponse categoriesListResponse =
       StoreCategoriesListResponse();
   RxList<Category> categoriesList = <Category>[].obs;
@@ -91,17 +91,19 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    debugPrint("StoreHomeMainController - onIt call--====> called 111111111111");
+    debugPrint(
+        "StoreHomeMainController - onIt call--====> called 111111111111");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
       categoryName.value = Get.parameters["categoryName"] ?? "";
       categoryId.value = Get.parameters["categoryId"] ?? "";
-      isFromHome.value = Get.parameters["isFromHome"] == "true" ;
-      isFromFav.value = Get.parameters["isFromFav"] == "true" ;
-      isFromMenu.value = Get.parameters["isFromMenu"] == "true" ;
+      isFromHome.value = Get.parameters["isFromHome"] == "true";
+      isFromFav.value = Get.parameters["isFromFav"] == "true";
+      isFromMenu.value = Get.parameters["isFromMenu"] == "true";
       // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0") ;
-      debugPrint("StoreHomeMainController - onIt call------------------2222222222");
+      debugPrint(
+          "StoreHomeMainController - onIt call------------------2222222222");
       if (roleApp.value == Role.customerRoleText) {
         getCurrentLocation();
         apiGetUserDetailsApi();
@@ -118,8 +120,7 @@ class StoreHomeMainController extends GetxController {
           selectedIndex.value = 2;
           lastSelectedIndex.value = 2;
           showLoading.value = false;
-          apiFeatureProductListApi(
-              isFeaturedProduct: true);
+          apiFeatureProductListApi(isFeaturedProduct: true);
 
           // onIndexChange(2);
         }
@@ -129,8 +130,7 @@ class StoreHomeMainController extends GetxController {
           showLoading.value = false;
           invokedIndex.value = 0;
           apiGetStoreOffersApi();
-          apiFeatureProductListApi(
-              isFeaturedProduct: true);
+          apiFeatureProductListApi(isFeaturedProduct: true);
           // onIndexChange(0);
         }
         if (isFromOptions.value) {
@@ -143,8 +143,6 @@ class StoreHomeMainController extends GetxController {
       }
     });
   }
-
-
 
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
@@ -160,8 +158,8 @@ class StoreHomeMainController extends GetxController {
     selectedIndex.value = i;
     lastSelectedIndex.value = i;
     if (invokedIndex.value > 0) {
-        invokedIndex.value=0;
-        // invokedIndex.value--;
+      invokedIndex.value = 0;
+      // invokedIndex.value--;
     }
 
     if (i == 0) {
@@ -1157,7 +1155,7 @@ class StoreHomeMainController extends GetxController {
         if (value?.body["data"]["balance"] is int ||
             value?.body["data"]["balance"] is String) {
           walletBalance.value =
-              double.parse(value?.body["data"]["balance"].toString()??"");
+              double.parse(value?.body["data"]["balance"].toString() ?? "");
           debugPrint("USER WALLET BALANCE 1*******${walletBalance.value}");
         } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"] ?? 0.0;

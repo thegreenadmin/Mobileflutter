@@ -470,17 +470,17 @@ class WalletController extends GetxController {
             showLoading: true)
         .then((value) async {
       if (value != null) {
-        debugPrint("CREATE CARD  RESPONSE *******${value?.body}");
-        if (value?.body['success'] == true ||
-            value?.body['status'] == ApiConstants.statusCode201 ||
-            value?.body['status'] == ApiConstants.statusCode200) {
-          Utility.showToast(value?.body['message']);
+        debugPrint("CREATE CARD  RESPONSE *******${value.body}");
+        if (value.body['success'] == true ||
+            value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
+          Utility.showToast(value.body['message']);
           Get.back(id: pageIdApp.value);
           await apiGetCardList();
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -518,9 +518,10 @@ class WalletController extends GetxController {
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message']
-            .toString()
-            .toLowerCase()
-            .contains("stripe")!=true) {
+                .toString()
+                .toLowerCase()
+                .contains("stripe") !=
+            true) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -554,9 +555,9 @@ class WalletController extends GetxController {
         .then((value) async {
       if (value != null) {
         isLoading.value = false;
-        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value?.body}");
-        if (value?.body['status'] == ApiConstants.statusCode201 ||
-            value?.body['status'] == ApiConstants.statusCode200) {
+        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
+        if (value.body['status'] == ApiConstants.statusCode201 ||
+            value.body['status'] == ApiConstants.statusCode200) {
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
@@ -565,11 +566,11 @@ class WalletController extends GetxController {
           Future.delayed(const Duration(seconds: 1), () {
             Get.back(id: pageIdApp.value);
           });
-          Utility.showToast(value?.body['message']);
+          Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         } else {
-          Utility.showAlertMessage(value?.body['message']);
+          Utility.showAlertMessage(value.body['message']);
         }
       }
     });
@@ -688,7 +689,7 @@ class WalletController extends GetxController {
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
-        String msg = value?.body["message"].toString().toLowerCase()??"";
+        String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
@@ -829,9 +830,10 @@ class WalletController extends GetxController {
         Get.offAll(const StartJourneyScreen());
       } else {
         if (value?.body['message']
-            .toString()
-            .toLowerCase()
-            .contains("stripe")!=true) {
+                .toString()
+                .toLowerCase()
+                .contains("stripe") !=
+            true) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }

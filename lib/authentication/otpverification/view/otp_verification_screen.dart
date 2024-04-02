@@ -137,35 +137,36 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           ),
                         ),
                         height5SizedBox,
-                        InkWell(
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          onTap: () {
-                            if (otpVerificationController.isLoading.value ==
-                                false) {
-                              otpVerificationController.isLoading.value = true;
-                              otpVerificationController.validateAndSubmitOtp();
-                            }
-                          },
-                          child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: StringConstants.didNotGetACodeText,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.blacklight)),
-                                  TextSpan(
-                                    text: " ${StringConstants.resendText}",
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.primary),
-                                  ),
-                                ],
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(StringConstants.didNotGetACodeText,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.blacklight)),
+                              width5SizedBox,
+                              InkWell(
+                                onTap: () {
+                                  if (otpVerificationController
+                                          .isLoading.value ==
+                                      false) {
+                                    otpVerificationController.isLoading.value =
+                                        true;
+                                    otpVerificationController
+                                        .validateAndSubmitOtp();
+                                  }
+                                },
+                                child: Text(
+                                  StringConstants.resendText,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primary),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                         height40SizedBox,

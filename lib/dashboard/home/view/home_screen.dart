@@ -33,14 +33,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _current = 0;
   final StoreHomeMainController storeHomeMainController =
-  Get.put(StoreHomeMainController());
-  final AccountController accountController =
-  Get.put(AccountController());
+      Get.put(StoreHomeMainController());
+  final AccountController accountController = Get.put(AccountController());
   final CarouselController _controller = CarouselController();
   final HomeController homeController = Get.put(HomeController());
   Future<void> _pullRefresh() async {
     homeController.onInit();
   }
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   void clearConnectionPool() {
     HttpClient().close(force: true);
   }
@@ -63,9 +64,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       debugPrint('App is about to be suspended or terminated. Logging out...');
       accountController.apiLogOutUser();
       clearConnectionPool();
-     *//* WidgetsBinding.instance!.addPostFrameCallback((_) {
+     */ /* WidgetsBinding.instance!.addPostFrameCallback((_) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      });*//*
+      });*/ /*
     }
   }*/
 
@@ -520,24 +521,36 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Obx(() => roleApp.value == Role.customerRoleText
-                  ? _buildCarouselSlider(offersCarouselList: homeController.userCarouselImgList,featuredProductList: homeController.featuredUserProductList)
-                  : _buildCarouselSlider(offersCarouselList: homeController.getOwnerOfferList,featuredProductList: homeController.ownerFeatureProductList)),
+                  ? _buildCarouselSlider(
+                      offersCarouselList: homeController.userCarouselImgList,
+                      featuredProductList:
+                          homeController.featuredUserProductList)
+                  : _buildCarouselSlider(
+                      offersCarouselList: homeController.getOwnerOfferList,
+                      featuredProductList:
+                          homeController.ownerFeatureProductList)),
               height5SizedBox,
               Obx(
-                () => homeController.featuredUserProductList.isEmpty && homeController.ownerFeatureProductList.isEmpty
-                        ? height0SizedBox : Text(
-                  StringConstants.featuredProductsText,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
+                () => homeController.featuredUserProductList.isEmpty ||
+                        homeController.ownerFeatureProductList.isEmpty
+                    ? height0SizedBox
+                    : Text(
+                        StringConstants.featuredProductsText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      ),
               ),
               height20SizedBox,
               Obx(
                 () => roleApp.value == Role.customerRoleText
-                    ? _buildFeatureProductList(featuredProductList: homeController.featuredUserProductList)
-                    : _buildFeatureProductList(featuredProductList: homeController.ownerFeatureProductList),
+                    ? _buildFeatureProductList(
+                        featuredProductList:
+                            homeController.featuredUserProductList)
+                    : _buildFeatureProductList(
+                        featuredProductList:
+                            homeController.ownerFeatureProductList),
               )
             ]),
           ),
@@ -546,239 +559,207 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
   }
 
-  _buildCarouselSlider({RxList<OffersList>? offersCarouselList,RxList<ProductsList>? featuredProductList})=> Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          offersCarouselList!.isEmpty
-              ? SizedBox(
-            height: offersCarouselList!.isEmpty && featuredProductList!.isEmpty
-                ? WidgetConstants.screenHeight * 0.60
-                : WidgetConstants.screenHeight * 0.30,
-            child: Center(
-              child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment.center,
-                mainAxisAlignment:
-                MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    ImageConstants.greenmall420,
-                  ),
-                  Text(
-                    StringConstants
-                        .welcomeToGreenMallText,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primary),
-                  )
-                ],
-              ),
-            ),
-          )
-              :
-          CarouselSlider(
-            items: offersCarouselList!
-                .take(5)
-                .map((item) => InkWell(
-              onTap: () async {
-                if (homeController
-                    .isLoading?.value ==
-                    false){
-                  if(roleApp.value == Role.customerRoleText){
-                      Get.parameters["isFromMenu"] =
-                      "false";
-                      Get.parameters['isFromFav'] =
-                      "false";
-                      Get.parameters["isFromHome"] =
-                      "true";
-                      Get.parameters[
-                      "isFromOptions"] = "false";
-
-                      Get.parameters["storeId"] =
-                          item.storeId ?? "";
-                      storeHomeMainController.invokedIndex.value = 3;
-                      // Get.parameters["isAddToOrderScreen"]=="false";
-                      await Get.to(
-                              () =>
-                          const StoreHomeMainScreen(),
-                          id: pageIdApp.value);
-
-                  }else{
-
-                      Get.parameters["isFromHome"] =
-                      "false";
-                      Get.parameters["storeId"] =
-                          item.store!.storeId ?? "";
-                      Get.to(
-                              () =>
-                          const ManageStoreMainScreen(),
-                          id: pageIdApp.value,
-                          arguments: {
-                            "isFromHome": true,
-                            "storeId":
-                            item.store?.storeId ??
-                                "",
-                          });
-
-                  }
-                }
-
-
-              },
-              child: Center(
-                  child: ClipRRect(
-                    borderRadius:
-                    BorderRadius.circular(6.0),
-                    child:
-                    Stack(
-                    children: <Widget>[
-                      CommonWidgets
-                          .cachedNetworkImage(
-                          item.image?.dynamicUrl
-                              .toString() ??
-                              "",
-                          assetImg: ImageConstants
-                              .nopicfound,
-                          height: WidgetConstants
-                              .screenHeight *
-                              0.28,
-                          width: WidgetConstants
-                              .screenWidth *
-                              0.85),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                          colors: [
-                            Color.fromARGB(200, 0, 0, 0),
-                            Color.fromARGB(0, 0, 0, 0)
-                          ],
-                           begin: Alignment.bottomCenter,
-                           end: Alignment.topCenter,
-                          ),
-                        ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20.0),
-                      child: Text(
-                         offersCarouselList.where((p0) => item==p0).first.store?.storeName??"",
+  _buildCarouselSlider(
+          {RxList<OffersList>? offersCarouselList,
+          RxList<ProductsList>? featuredProductList}) =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        offersCarouselList!.isEmpty
+            ? SizedBox(
+                height:
+                    offersCarouselList.isEmpty && featuredProductList!.isEmpty
+                        ? WidgetConstants.screenHeight * 0.60
+                        : WidgetConstants.screenHeight * 0.30,
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        ImageConstants.greenmall420,
+                      ),
+                      Text(
+                        StringConstants.welcomeToGreenMallText,
                         style: const TextStyle(
-                          color: Colors.white, fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ),
-                    ),])
-                  )),
-            ))
-                .toList(),
-            carouselController: _controller,
-            options: CarouselOptions(
-                enlargeStrategy:
-                CenterPageEnlargeStrategy.scale,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                viewportFraction: 1.2,
-                enlargeCenterPage: false,
-                autoPlay: true,
-                aspectRatio: 1.5,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                }),
-          ),
-          height5SizedBox,
-          Obx(() => offersCarouselList!.isEmpty
-              ? height0SizedBox
-              : InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: offersCarouselList
-                  .take(5)
-                  .toList()
-                  .asMap()
-                  .entries
-                  .map((entry) {
-                return GestureDetector(
-                  onTap: () {
-                    if (homeController.isLoading?.value ==
-                        false) {
-                      _controller
-                          .animateToPage(entry.key);
-                    }
-                  },
-                  child: Container(
-                    width:
-                    _current == entry.key ? 25 : 10,
-                    height: 5.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
-                        shape: BoxShape.rectangle,
-                        color: _current == entry.key
-                            ? AppColors.primary
-                            : AppColors.grey),
+                            fontSize: 20,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.primary),
+                      )
+                    ],
                   ),
-                );
-              }).toList(),
-            ),
-          ))
-        ]);
+                ),
+              )
+            : CarouselSlider(
+                items: offersCarouselList
+                    .take(5)
+                    .map((item) => InkWell(
+                          onTap: () async {
+                            if (homeController.isLoading?.value == false) {
+                              if (roleApp.value == Role.customerRoleText) {
+                                Get.parameters["isFromMenu"] = "false";
+                                Get.parameters['isFromFav'] = "false";
+                                Get.parameters["isFromHome"] = "true";
+                                Get.parameters["isFromOptions"] = "false";
 
-  _buildFeatureProductList({RxList<ProductsList>? featuredProductList})=> featuredProductList!.isEmpty
-        ? height0SizedBox
-        : SizedBox(
-      height: WidgetConstants.screenHeight * 0.30,
-      width: WidgetConstants.screenWidth,
-      child: ScrollLoopAutoScroll(
-        scrollDirection: Axis.horizontal,
-        delay: const Duration(seconds: 1),
-        duration: const Duration(seconds: 100),
-        enableScrollInput : true,
-        delayAfterScrollInput : const Duration(seconds: 1),
-        child: ListView.separated(
-          physics: const NeverScrollableScrollPhysics(),
-          separatorBuilder:
-              (BuildContext context, int index) {
-            return width12SizedBox;
-          },
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount:
-          featuredProductList.length,
-          itemBuilder: (BuildContext context, int index) =>
-              SizedBox(
-                width:
-                WidgetConstants.screenWidth * 0.4,
-                child: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    if (homeController.isLoading?.value ==
-                    false) {
-                       if(roleApp.value == Role.customerRoleText){
-                         Get.parameters["isFromHome"] = "false";
-                         Get.parameters["isFromFav"] = "false";
-                         Get.parameters["isFromMenu"] = "true";
-                         Get.parameters["isFromOptions"] = "false";
-                         Get.parameters["productId"] = featuredProductList[index]
-                             .productId ??
-                             "";
-                         Get.parameters["storeId"] = featuredProductList[index]
-                             .storeId ??
-                             "";
-                         storeHomeMainController.invokedIndex.value=2;
-                         Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value,);
-                         /*  Get.to(() => const AddToOrderScreen(),
+                                Get.parameters["storeId"] = item.storeId ?? "";
+                                storeHomeMainController.invokedIndex.value = 3;
+                                // Get.parameters["isAddToOrderScreen"]=="false";
+                                await Get.to(() => const StoreHomeMainScreen(),
+                                    id: pageIdApp.value);
+                              } else {
+                                Get.parameters["isFromHome"] = "false";
+                                Get.parameters["storeId"] =
+                                    item.store!.storeId ?? "";
+                                Get.to(() => const ManageStoreMainScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {
+                                      "isFromHome": true,
+                                      "storeId": item.store?.storeId ?? "",
+                                    });
+                              }
+                            }
+                          },
+                          child: Center(
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  child: Stack(children: <Widget>[
+                                    CommonWidgets.cachedNetworkImage(
+                                        item.image?.dynamicUrl.toString() ?? "",
+                                        assetImg: ImageConstants.nopicfound,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.28,
+                                        width:
+                                            WidgetConstants.screenWidth * 0.85),
+                                    Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(200, 0, 0, 0),
+                                              Color.fromARGB(0, 0, 0, 0)
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 20.0),
+                                        child: Text(
+                                          offersCarouselList
+                                                  .where((p0) => item == p0)
+                                                  .first
+                                                  .store
+                                                  ?.storeName ??
+                                              "",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]))),
+                        ))
+                    .toList(),
+                carouselController: _controller,
+                options: CarouselOptions(
+                    enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    viewportFraction: 1.2,
+                    enlargeCenterPage: false,
+                    autoPlay: true,
+                    aspectRatio: 1.5,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    }),
+              ),
+        height5SizedBox,
+        Obx(() => offersCarouselList.isEmpty
+            ? height0SizedBox
+            : InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: offersCarouselList
+                      .take(5)
+                      .toList()
+                      .asMap()
+                      .entries
+                      .map((entry) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (homeController.isLoading?.value == false) {
+                          _controller.animateToPage(entry.key);
+                        }
+                      },
+                      child: Container(
+                        width: _current == entry.key ? 25 : 10,
+                        height: 5.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            shape: BoxShape.rectangle,
+                            color: _current == entry.key
+                                ? AppColors.primary
+                                : AppColors.grey),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ))
+      ]);
+
+  _buildFeatureProductList({RxList<ProductsList>? featuredProductList}) =>
+      featuredProductList!.isEmpty
+          ? height0SizedBox
+          : SizedBox(
+              height: WidgetConstants.screenHeight * 0.30,
+              width: WidgetConstants.screenWidth,
+              child: ScrollLoopAutoScroll(
+                scrollDirection: Axis.horizontal,
+                delay: const Duration(seconds: 1),
+                duration: const Duration(seconds: 100),
+                enableScrollInput: true,
+                delayAfterScrollInput: const Duration(seconds: 1),
+                child: ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return width12SizedBox;
+                  },
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: featuredProductList.length,
+                  itemBuilder: (BuildContext context, int index) => SizedBox(
+                    width: WidgetConstants.screenWidth * 0.4,
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () {
+                        if (homeController.isLoading?.value == false) {
+                          if (roleApp.value == Role.customerRoleText) {
+                            Get.parameters["isFromHome"] = "false";
+                            Get.parameters["isFromFav"] = "false";
+                            Get.parameters["isFromMenu"] = "true";
+                            Get.parameters["isFromOptions"] = "false";
+                            Get.parameters["productId"] =
+                                featuredProductList[index].productId ?? "";
+                            Get.parameters["storeId"] =
+                                featuredProductList[index].storeId ?? "";
+                            storeHomeMainController.invokedIndex.value = 2;
+                            Get.to(
+                              () => const StoreHomeMainScreen(),
+                              id: pageIdApp.value,
+                            );
+                            /*  Get.to(() => const AddToOrderScreen(),
                                             id: pageIdApp.value,
                                             arguments: {
                                               "isFromHome": true,
@@ -793,101 +774,94 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                       .storeId ??
                                                   "",
                                             });*/
-                       }else{
-                         Get.parameters["isFromHome"] = "true";
-                         Get.parameters["storeId"] = featuredProductList[index].storeId;
-                         Get.parameters["productId"] = featuredProductList[index]
-                             .productId;
-                         Get.parameters[
-                         "categoryName"] = featuredProductList[index]
-                             .productCategories!
-                             .isNotEmpty &&
-                             featuredProductList[
-                             index]
-                                 .productCategories !=
-                                 null
-                             ? featuredProductList[index]
-                             .productCategories
-                             ?.first
-                             .category
-                             ?.categoryName ??
-                             ""
-                             : "";
-                         hasStoreAccess.value && permissionStoreList.isEmpty ||
-                             permissionStoreList.any((element) =>
-                             element.storeId ==
-                                 featuredProductList[
-                                 index]
-                                     .storeId &&
-                                 element.isStoreOwner ==
-                                     true ||
-                                 element.storeId ==
-                                     featuredProductList[
-                                     index]
-                                         .storeId &&
-                                     element.controllers!.any(
-                                             (ele) =>
-                                         ele.controllerKey ==
-                                             PermissionKey.editProduct.statusName))
-                             ? Get.to(() => const EditProductScreen(), id: pageIdApp.value, arguments: {
-                           "isFromHome": true,
-                           'storeId': featuredProductList[index]
-                               .storeId
-                         })!
-                             .then((value) => homeController.apiGetOwnerFeaturedProducts())
-                             : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-                       }
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: CommonWidgets.cachedNetworkImage(
-                          featuredProductList[index]
-                              .productImages ==
-                              null ||
-                              featuredProductList[index]
-                                  .productImages!.isEmpty ||
-                              featuredProductList[index]
-                                  .productImages![0]
-                                  .image!.dynamicUrl ==
-                                  null ||
-                              featuredProductList[index]
-                                  .productImages!.isEmpty
-                              ? ""
-                              : featuredProductList[index]
-                              .productImages![0].image!.dynamicUrl
-                              .toString(),
-                          height:
-                          WidgetConstants.screenHeight * 0.22,
-                          width:
-                          WidgetConstants.screenWidth * 0.4,
-                        ),
+                          } else {
+                            Get.parameters["isFromHome"] = "true";
+                            Get.parameters["storeId"] =
+                                featuredProductList[index].storeId;
+                            Get.parameters["productId"] =
+                                featuredProductList[index].productId;
+                            Get.parameters["categoryName"] =
+                                featuredProductList[index]
+                                            .productCategories!
+                                            .isNotEmpty &&
+                                        featuredProductList[index]
+                                                .productCategories !=
+                                            null
+                                    ? featuredProductList[index]
+                                            .productCategories
+                                            ?.first
+                                            .category
+                                            ?.categoryName ??
+                                        ""
+                                    : "";
+                            hasStoreAccess.value &&
+                                        permissionStoreList.isEmpty ||
+                                    permissionStoreList.any((element) =>
+                                        element.storeId == featuredProductList[index].storeId &&
+                                            element.isStoreOwner == true ||
+                                        element.storeId == featuredProductList[index].storeId &&
+                                            element.controllers!.any((ele) =>
+                                                ele.controllerKey ==
+                                                PermissionKey
+                                                    .editProduct.statusName))
+                                ? Get.to(() => const EditProductScreen(),
+                                        id: pageIdApp.value,
+                                        arguments: {
+                                        "isFromHome": true,
+                                        'storeId':
+                                            featuredProductList[index].storeId
+                                      })!
+                                    .then((value) => homeController.apiGetOwnerFeaturedProducts())
+                                : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                          }
+                        }
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: CommonWidgets.cachedNetworkImage(
+                              featuredProductList[index].productImages ==
+                                          null ||
+                                      featuredProductList[index]
+                                          .productImages!
+                                          .isEmpty ||
+                                      featuredProductList[index]
+                                              .productImages![0]
+                                              .image!
+                                              .dynamicUrl ==
+                                          null ||
+                                      featuredProductList[index]
+                                          .productImages!
+                                          .isEmpty
+                                  ? ""
+                                  : featuredProductList[index]
+                                      .productImages![0]
+                                      .image!
+                                      .dynamicUrl
+                                      .toString(),
+                              height: WidgetConstants.screenHeight * 0.22,
+                              width: WidgetConstants.screenWidth * 0.4,
+                            ),
+                          ),
+                          height8SizedBox,
+                          Flexible(
+                            child: Text(
+                              featuredProductList[index].productName ?? "",
+                              overflow: TextOverflow.visible,
+                              style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
                       ),
-                      height8SizedBox,
-                      Flexible(
-                        child: Text(
-                          featuredProductList[index]
-                              .productName ??
-                              "",
-                          overflow: TextOverflow.visible,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-        ),
-      ),
-    );
-
-
-
+            );
 }

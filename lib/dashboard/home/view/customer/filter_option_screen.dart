@@ -521,7 +521,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       searchStoreUserController
                               .closingTimeTextController.text ==
                           "" &&
-                      searchStoreUserController.isOpenNow.value == null &&
                       searchStoreUserController.deliveryServicesList.isEmpty) {
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);

@@ -651,7 +651,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             apiKey: ownerStoreController.kGoogleApiKey);
 
                         GeocodingResponse response = await geocoding
-                            .searchByAddress(p.description.toString() ?? "");
+                            .searchByAddress(p.description.toString());
                         // log("GeocodingResponse web services:------------");
                         // log(jsonEncode(response.results));
 

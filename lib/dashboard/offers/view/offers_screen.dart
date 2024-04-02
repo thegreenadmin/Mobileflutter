@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
@@ -18,7 +19,8 @@ class OffersScreen extends StatefulWidget {
 
 class _OffersScreenState extends State<OffersScreen> {
   OffersController offersController = Get.put(OffersController());
-
+  StoreHomeMainController storeHomeMainController =
+      Get.put(StoreHomeMainController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,8 +199,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                               style: const TextStyle(
                                                   fontSize: 16.0,
                                                   color: AppColors.black,
-                                                  fontWeight:
-                                                      FontWeight.w600),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             height8SizedBox,
                                             Row(
@@ -218,8 +219,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                   overflow: TextOverflow.fade,
                                                   style: TextStyle(
                                                       fontSize: 14.0,
-                                                      color: AppColors
-                                                          .blacklight,
+                                                      color:
+                                                          AppColors.blacklight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
@@ -235,6 +236,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                           WidgetConstants.screenHeight * 0.2,
                                       width: WidgetConstants.screenWidth,
                                       child: ListView.separated(
+                                          controller:
+                                              offersController.scrollController,
                                           separatorBuilder:
                                               (BuildContext context, int i) {
                                             return width8SizedBox;
@@ -251,6 +254,12 @@ class _OffersScreenState extends State<OffersScreen> {
                                               (BuildContext context, int i) =>
                                                   InkWell(
                                                     onTap: () async {
+                                                      storeHomeMainController
+                                                              .offerObj.value =
+                                                          offersController
+                                                              .getUserOfferList[
+                                                                  index]
+                                                              .offers![i];
                                                       await offersController
                                                           .apiGetOffersProducts(
                                                               offerId: offersController
@@ -264,6 +273,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                       index]
                                                                   .storeId
                                                                   .toString());
+
                                                       Get.to(
                                                         () =>
                                                             const OfferProductScreen(),
@@ -530,8 +540,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                         maxLines: 2,
                                                         style: const TextStyle(
                                                             fontSize: 16.0,
-                                                            color: AppColors
-                                                                .black,
+                                                            color:
+                                                                AppColors.black,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w600),
@@ -540,8 +550,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                       Row(
                                                         children: [
                                                           Image.asset(
-                                                            ImageConstants
-                                                                .loc,
+                                                            ImageConstants.loc,
                                                             scale: 3,
                                                           ),
                                                           width6SizedBox,
@@ -558,8 +567,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                 TextOverflow
                                                                     .fade,
                                                             style: TextStyle(
-                                                                fontSize:
-                                                                    14.0,
+                                                                fontSize: 14.0,
                                                                 color: AppColors
                                                                     .blacklight,
                                                                 fontWeight:
@@ -591,14 +599,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                     index]
                                                                 .offerId ??
                                                             "";
-                                                    // SharedPreferenceStorage
-                                                    //     .setData(
-                                                    //         "context", context);
-                                                    // Navigator.of(context)
-                                                    //     .push(MaterialPageRoute(
-                                                    //   builder: (_) =>
-                                                    //       const EditOfferScreen(),
-                                                    // ))
+
                                                     hasStoreAccess.value &&
                                                                 permissionStoreList
                                                                     .isEmpty ||

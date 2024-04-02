@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/add_to_order_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class UserProductListScreen extends StatefulWidget {
@@ -478,7 +472,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  storeHomeMainController.categoryName.value ?? "",
+                  storeHomeMainController.categoryName.value,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -534,10 +528,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           storeHomeMainController.featureProductList.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio:
-                            (WidgetConstants.screenHeight * 0.47 +
-                                    WidgetConstants.screenHeight * 0.22) /
-                                WidgetConstants.screenHeight,
+                        childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
+                                WidgetConstants.screenHeight * 0.22) /
+                            WidgetConstants.screenHeight,
                         mainAxisSpacing: 0.0,
                         crossAxisSpacing: 10.0,
                         crossAxisCount: 2,
@@ -593,8 +586,8 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 ""
                                             : "",
                                         fit: BoxFit.fill,
-                                        height: WidgetConstants.screenHeight *
-                                            0.19,
+                                        height:
+                                            WidgetConstants.screenHeight * 0.19,
                                         width:
                                             WidgetConstants.screenWidth * 0.4,
                                       ),
@@ -675,8 +668,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                 ),
                                 height5SizedBox,
                                 Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       storeHomeMainController
@@ -706,8 +698,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                                 "",
                                             maxLines: 1,
                                             style: TextStyle(
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                                 color: AppColors.blacklight,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400),
@@ -753,8 +744,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     await storeHomeMainController.apiFeatureProductListApi(
-                        categoryId:
-                            storeHomeMainController.categoryId.value ?? "0",
+                        categoryId: storeHomeMainController.categoryId.value,
                         orderBy: "2",
                         orderType: "2");
                     // Navigator.of(contx).pop();
@@ -785,7 +775,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
           child: GestureDetector(
             onTap: () async {
               await storeHomeMainController.apiFeatureProductListApi(
-                categoryId: storeHomeMainController.categoryId.value ?? "0",
+                categoryId: storeHomeMainController.categoryId.value,
                 orderBy: "2",
               );
               // Navigator.of(contx).pop();

@@ -10,8 +10,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-import 'utils/themes.dart';
-
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,11 +77,9 @@ class _MyAppState extends State<MyApp> {
       FirebaseDynamicLinks.instance.onLink.listen(
         (pendingDynamicLinkData) {
           // Set up the `onLink` event listener next as it may be received here
-          if (pendingDynamicLinkData != null) {
-            final Uri deepLink = pendingDynamicLinkData.link;
-            // Example of using the dynamic link to push the user to a different screen
-            Navigator.pushNamed(context, deepLink.path);
-          }
+          final Uri deepLink = pendingDynamicLinkData.link;
+          // Example of using the dynamic link to push the user to a different screen
+          Navigator.pushNamed(context, deepLink.path);
         },
       );
     } on PlatformException {
@@ -91,7 +87,7 @@ class _MyAppState extends State<MyApp> {
     } on FormatException {
 //Pass
     } catch (e) {
-//Pass
+//Pass-++
     }
   }
 

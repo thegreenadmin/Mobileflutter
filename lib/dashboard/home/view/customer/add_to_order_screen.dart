@@ -4,12 +4,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/components/user_store_order_appbar.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/previous_orders_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_favourite_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
-import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -71,7 +65,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.onIndexChange(3);
       }*/
 
-      if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+      if (storeHomeMainController.storeId.value != "" &&
+          storeHomeMainController.productId.value != "") {
         storeHomeMainController.apiGetShopProductDetailApi();
       }
       storeHomeMainController.apiGetUserWalletBalance();
@@ -157,36 +152,38 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   fontWeight: FontWeight.w400),
               textAlign: TextAlign.start,
             ),
-            Obx(()=>storeHomeMainController.isVerifiedStore.value?Column(
-              children: [
-                height15SizedBox,
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                    storeHomeMainController.apiContactStore();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 200.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        StringConstants.haveIssueText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ):height0SizedBox,),
-
-
+            Obx(
+              () => storeHomeMainController.isVerifiedStore.value
+                  ? Column(
+                      children: [
+                        height15SizedBox,
+                        InkWell(
+                          onTap: () {
+                            Get.back();
+                            storeHomeMainController.apiContactStore();
+                          },
+                          child: Container(
+                            height: 50.0,
+                            width: 200.0,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                StringConstants.haveIssueText,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.0,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : height0SizedBox,
+            ),
             height15SizedBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -223,107 +220,114 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   }
 
   Padding horizontalTabs() => Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 5),
-      child: SizedBox(
-        height: 18,
-        width: WidgetConstants.screenWidth,
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) {
-              return width50SizedBox;
-            },
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: horizontalTabList.length,
-            itemBuilder: (_, i) {
-              return InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    storeHomeMainController.onIndexChange(i);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      i != 3
-                          ? Text(
-                              horizontalTabList[i],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: storeHomeMainController
-                                            .selectedIndex.value == i
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                                color: storeHomeMainController
-                                            .selectedIndex.value == i
-                                    ? AppColors.primary
-                                    : AppColors.blacklight,
-                              ),
-                            )
-                          : PopupMenuButton(
-                              onOpened: () async {
-                                storeHomeMainController.selectedIndex.value = 3;
-                                await storeHomeMainController
-                                    .apiGetPreviousOrders();
-                              },
-                              offset: const Offset(0, 25),
-                              shape: const TooltipShape(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onSelected: (String value) async {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                              },
-                              itemBuilder: (context) =>
-                                  createOptionsPopUpList(context)!,
-                              child: Row(children: [
-                                Text(
-                                  horizontalTabList[i],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: storeHomeMainController
-                                                .selectedIndex.value == i
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
-                                    color: storeHomeMainController
-                                                .selectedIndex.value == i
-                                        ? AppColors.primary
-                                        : AppColors.blacklight,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_drop_down,
+        padding:
+            const EdgeInsets.only(left: 10.0, right: 0, top: 10, bottom: 5),
+        child: SizedBox(
+          height: 18,
+          width: WidgetConstants.screenWidth,
+          child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) {
+                return width50SizedBox;
+              },
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: horizontalTabList.length,
+              itemBuilder: (_, i) {
+                return InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      storeHomeMainController.onIndexChange(i);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        i != 3
+                            ? Text(
+                                horizontalTabList[i],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: storeHomeMainController
+                                              .selectedIndex.value ==
+                                          i
+                                      ? FontWeight.w600
+                                      : FontWeight.w400,
                                   color: storeHomeMainController
-                                              .selectedIndex.value == i
+                                              .selectedIndex.value ==
+                                          i
                                       ? AppColors.primary
                                       : AppColors.blacklight,
-                                  size: 24,
-                                )
-                              ]),
-                            )
-                    ],
-                  ));
-            }),
-      ),
-    );
+                                ),
+                              )
+                            : PopupMenuButton(
+                                onOpened: () async {
+                                  storeHomeMainController.selectedIndex.value =
+                                      3;
+                                  await storeHomeMainController
+                                      .apiGetPreviousOrders();
+                                },
+                                offset: const Offset(0, 25),
+                                shape: const TooltipShape(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onSelected: (String value) async {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                },
+                                itemBuilder: (context) =>
+                                    createOptionsPopUpList(context)!,
+                                child: Row(children: [
+                                  Text(
+                                    horizontalTabList[i],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: storeHomeMainController
+                                                  .selectedIndex.value ==
+                                              i
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: storeHomeMainController
+                                                  .selectedIndex.value ==
+                                              i
+                                          ? AppColors.primary
+                                          : AppColors.blacklight,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_drop_down,
+                                    color: storeHomeMainController
+                                                .selectedIndex.value ==
+                                            i
+                                        ? AppColors.primary
+                                        : AppColors.blacklight,
+                                    size: 24,
+                                  )
+                                ]),
+                              )
+                      ],
+                    ));
+              }),
+        ),
+      );
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
     if (storeHomeMainController
         .storeDetailsResponse.value.data!.store!.storePages!
         .any((element) =>
-    element.storePageType == "privacy" &&
-        element.storePageContent?.dynamicUrl != null &&
-        storeHomeMainController.listIndex.value < 4)) {
+            element.storePageType == "privacy" &&
+            element.storePageContent?.dynamicUrl != null &&
+            storeHomeMainController.listIndex.value < 4)) {
       storeHomeMainController.listIndex.value =
           storeHomeMainController.listIndex.value + 1;
     }
     if (storeHomeMainController
         .storeDetailsResponse.value.data!.store!.storePages!
         .any((element) =>
-    element.storePageType == "terms" &&
-        element.storePageContent?.dynamicUrl != null &&
-        storeHomeMainController.listIndex.value < 4)) {
+            element.storePageType == "terms" &&
+            element.storePageContent?.dynamicUrl != null &&
+            storeHomeMainController.listIndex.value < 4)) {
       storeHomeMainController.listIndex.value =
           storeHomeMainController.listIndex.value + 1;
     }
@@ -374,70 +378,70 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         );
       } else if (index == 2) {
         return storeHomeMainController
-            .storeDetailsResponse.value.data!.store!.storePages!
-            .any((element) =>
-        element.storePageType == "privacy" &&
-            element.storePageContent?.dynamicUrl != null)
+                .storeDetailsResponse.value.data!.store!.storePages!
+                .any((element) =>
+                    element.storePageType == "privacy" &&
+                    element.storePageContent?.dynamicUrl != null)
             ? PopupMenuItem<String>(
-          value: StringConstants.storePolicyText,
-          child: SizedBox(
-            width: 100,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.storePolicyText,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontFamily: "",
-                      fontSize: 14),
+                value: StringConstants.storePolicyText,
+                child: SizedBox(
+                  width: 100,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.storePolicyText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          onTap: () {
-            storeHomeMainController.popUpMenuChange(index);
-          },
-        )
+                onTap: () {
+                  storeHomeMainController.popUpMenuChange(index);
+                },
+              )
             : PopupMenuItem<String>(
-          value: StringConstants.storePolicyText,
-          child: const SizedBox(
-            width: 100,
-          ),
-        );
+                value: StringConstants.storePolicyText,
+                child: const SizedBox(
+                  width: 100,
+                ),
+              );
       } else {
         return storeHomeMainController
-            .storeDetailsResponse.value.data!.store!.storePages!
-            .any((element) =>
-        element.storePageType == "terms" &&
-            element.storePageContent?.dynamicUrl != null)
+                .storeDetailsResponse.value.data!.store!.storePages!
+                .any((element) =>
+                    element.storePageType == "terms" &&
+                    element.storePageContent?.dynamicUrl != null)
             ? PopupMenuItem<String>(
-          value: StringConstants.termsAndConditionsText,
-          child: SizedBox(
-            width: 136,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontFamily: "",
-                      fontSize: 14),
+                value: StringConstants.termsAndConditionsText,
+                child: SizedBox(
+                  width: 136,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        StringConstants.termsAndConditionsText,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontFamily: "",
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          onTap: () {
-            storeHomeMainController.popUpMenuChange(index);
-          },
-        )
+                onTap: () {
+                  storeHomeMainController.popUpMenuChange(index);
+                },
+              )
             : PopupMenuItem<String>(
-          value: StringConstants.storePolicyText,
-          child: const SizedBox(
-            width: 100,
-          ),
-        );
+                value: StringConstants.storePolicyText,
+                child: const SizedBox(
+                  width: 100,
+                ),
+              );
       }
     });
   }
@@ -445,7 +449,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return stackData();
-   /* return Scaffold(
+    /* return Scaffold(
         // appBar: PreferredSize(
         //     preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
         //     child: const UserStoreOrderAppBar()),
@@ -457,7 +461,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               //   thickness: 1,
               // ),
               stackData(),
-             *//* storeHomeMainController.selectedIndex.value == 0
+             */ /* storeHomeMainController.selectedIndex.value == 0
                   ? Expanded(
                       child: storeHomeMainController.isFromHome.value == true
                           ? stackData()
@@ -515,7 +519,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                               : storeHomeMainController.lastSelectedIndex.value == 2
                                                   ? Expanded(child: storeHomeMainController.isFromFav.value == true ? stackData() : const StoreFavouriteScreen())
                                                   : Expanded(child: storeHomeMainController.isFromHome.value == true ? stackData() : const StoreHomeScreen())
-                              : const Expanded(child: StoreHomeScreen())*//*
+                              : const Expanded(child: StoreHomeScreen())*/ /*
             ],
           ),
         ));*/

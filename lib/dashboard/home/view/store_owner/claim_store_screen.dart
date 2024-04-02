@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class ClaimStoreScreen extends StatefulWidget {

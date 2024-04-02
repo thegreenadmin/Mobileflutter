@@ -17,8 +17,6 @@ import 'package:thegreenmall/utils/utils.dart';
 
 enum _SupportState {
   unknown,
-  supported,
-  unsupported,
 }
 
 class AccountScreen extends StatefulWidget {

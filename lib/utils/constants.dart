@@ -395,6 +395,7 @@ class StringConstants {
   static String orderTransactionText = "Order Transaction";
   static String offerProductDetailText = "Offer Product Detail";
   static String offerProductsText = "Offer Products";
+  static String offerDetailText = "Offer Detail";
   static String offerIdText = "Offer Id";
   static String orderShippedText = "Shipped";
   static String orderDeliveredText = "Order delivered";
@@ -846,8 +847,10 @@ class AlertStringConstants {
   //S
   static String startTimeAlertText = "Start time can not be as end time";
   static String somethingWentWrongText = "Something went wrong";
-  static String locationAlertText = "The Green Mall does not have access to your location. To enable access, tap Settings > Location";
-  static String locationAndroidAlertText = "The Green Mall does not have access to your location. To enable access, tap Settings > Permission > Location";
+  static String locationAlertText =
+      "The Green Mall does not have access to your location. To enable access, tap Settings > Location";
+  static String locationAndroidAlertText =
+      "The Green Mall does not have access to your location. To enable access, tap Settings > Permission > Location";
 }
 
 //Roles in app

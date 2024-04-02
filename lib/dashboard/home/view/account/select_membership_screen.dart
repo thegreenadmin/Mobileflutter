@@ -440,9 +440,9 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
 }
 
 class MyAlertDialog extends StatefulWidget {
-  int activemenbershipIndex;
+  final int activemenbershipIndex;
 
-  MyAlertDialog(
+  const MyAlertDialog(
     this.activemenbershipIndex, {
     Key? key,
   }) : super(key: key);
@@ -474,8 +474,6 @@ class _MyAlertDialogState extends State<MyAlertDialog> {
                       selectIndex.value = index;
                       accountController.selectedStoreId!.value =
                           accountController.storeList[index].storeId.toString();
-
-                      print(accountController.storeList[index].storeId);
                     });
                   },
                   child: Padding(
