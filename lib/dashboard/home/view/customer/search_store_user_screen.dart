@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter_credit_card/constants.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -76,12 +77,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.115),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.130),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 20, top: 50, bottom: 0),
+                  left: 18.0, right: 18, top: 45, bottom: 0),
               child: Column(
                 children: [
                   Row(
@@ -105,7 +106,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                 size: 24.0,
                               ),
                             ),
-                            width10SizedBox,
+                            width8SizedBox,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +115,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                   () => Text(
                                     'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
                                     style: const TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -122,7 +123,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                 Text(
                                   StringConstants.searchForStoreText,
                                   style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w400),
                                 )
@@ -192,7 +193,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 10,
+                                                            fontSize: 8,
                                                           ),
                                                           textAlign:
                                                               TextAlign.center,
@@ -216,16 +217,18 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           ],
                         )
                       ]),
-                  height8SizedBox,
-                  // Obx(() {
-                  //   return Visibility(
-                  //     visible: searchStoreUserController.getPermissionText() != "",
-                  //     child: Text(
-                  //       searchStoreUserController.getPermissionText(),
-                  //       style: const TextStyle(fontSize: 14, color: AppColors.red),
-                  //     ),
-                  //   );
-                  // }),
+                  height4SizedBox,
+                  Visibility(
+                    visible: true,
+                    child: Obx(() => Text(
+                          searchStoreUserController.miles.value != ""
+                              ? "Nearby stores are shown from ${searchStoreUserController.miles.value} miles radius"
+                              : StringConstants.nearByLabelForMilesText,
+                          style: const TextStyle(
+                              fontSize: 12, color: AppColors.black),
+                        )),
+                  ),
+                  height4SizedBox,
                 ],
               )),
         ),
@@ -257,12 +260,20 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           markers: Set<Marker>.of(
                               searchStoreUserController.markers.values),
                           onMapCreated: (GoogleMapController controller) {
-                            searchStoreUserController.controller
+                            searchStoreUserController.googleMapController =
+                                Completer();
+                            searchStoreUserController.googleMapController
                                 .complete(controller);
+
+                            // if (!searchStoreUserController
+                            //     .googleMapController.isCompleted) {
+                            //   searchStoreUserController.googleMapController
+                            //       .complete(controller);
+                            // }
                           },
                         )),
                     Positioned(
-                        top: 170,
+                        top: WidgetConstants.screenHeight * 0.22,
                         right: 10,
                         child: InkWell(
                           onTap: () async {
@@ -459,7 +470,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         tilt: 0.0,
         zoom: 14.15);
     final GoogleMapController controller =
-        await searchStoreUserController.controller.future;
+        await searchStoreUserController.googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;

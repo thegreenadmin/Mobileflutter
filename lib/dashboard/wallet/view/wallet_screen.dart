@@ -296,8 +296,13 @@ class _WalletScreenState extends State<WalletScreen> {
                               height10SizedBox,
                               InkWell(
                                 onTap: () {
+                                  if (walletController.storeList.isEmpty) {
+                                    Utility.showAlertMessage(
+                                        "Please add a store first");
+                                    return;
+                                  }
                                   Get.to(
-                                    () => AddMoneyToWalletOwner(),
+                                    () => const AddMoneyToWalletOwner(),
                                     id: pageIdApp.value,
                                   )!
                                       .then((value) => walletController
@@ -324,6 +329,11 @@ class _WalletScreenState extends State<WalletScreen> {
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
+                      if (roleApp.value == Role.storeOwnerRoleText &&
+                          walletController.storeList.isEmpty) {
+                        Utility.showAlertMessage("Please add a store first");
+                        return;
+                      }
                       debugPrint(
                           "ManageWalletScreen .pageId.value :------ ${walletController.pageId.value}");
 

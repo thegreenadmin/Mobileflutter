@@ -59,37 +59,36 @@ class StoreAddresses {
       );
 
   factory StoreAddresses.fromJson(Map<String, dynamic> json) => StoreAddresses(
-    storeAddressId: json["store_address_id"],
-    addressName: json["address_name"],
-    longitude: json["longitude"]?.toDouble(),
-    latitude: json["latitude"]?.toDouble(),
-    addressLine1: json["address_line_1"],
-    addressLine2: json["address_line_2"],
-    landmark: json["landmark"],
-    city: json["city"],
-    postalCode: json["postal_code"],
-    distance: json["distance"]?.toDouble(),
-    store:
-    json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
-    state: json["state"] == null ? null : State.fromJson(json["state"]),
-  );
+        storeAddressId: json["store_address_id"],
+        addressName: json["address_name"],
+        longitude: json["longitude"]?.toDouble(),
+        latitude: json["latitude"]?.toDouble(),
+        addressLine1: json["address_line_1"],
+        addressLine2: json["address_line_2"],
+        landmark: json["landmark"],
+        city: json["city"],
+        postalCode: json["postal_code"],
+        distance: json["distance"]?.toDouble(),
+        store:
+            json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
+        state: json["state"] == null ? null : State.fromJson(json["state"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "store_address_id": storeAddressId,
-    "address_name": addressName,
-    "longitude": longitude,
-    "latitude": latitude,
-    "address_line_1": addressLine1,
-    "address_line_2": addressLine2,
-    "landmark": landmark,
-    "city": city,
-    "postal_code": postalCode,
-    "distance": distance,
-    "store": store?.toJson(),
-    "state": state?.toJson(),
-  };
+        "store_address_id": storeAddressId,
+        "address_name": addressName,
+        "longitude": longitude,
+        "latitude": latitude,
+        "address_line_1": addressLine1,
+        "address_line_2": addressLine2,
+        "landmark": landmark,
+        "city": city,
+        "postal_code": postalCode,
+        "distance": distance,
+        "store": store?.toJson(),
+        "state": state?.toJson(),
+      };
 }
-
 
 class State {
   String? stateId;
@@ -253,14 +252,12 @@ class OrderStatus {
       );
 
   factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
-    orderStatusId: json["order_status_id"],
-    orderStatusName: json["order_status_name"],
-  );
+        orderStatusId: json["order_status_id"],
+        orderStatusName: json["order_status_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "order_status_id": orderStatusId,
-    "order_status_name": orderStatusName,
-  };
+        "order_status_id": orderStatusId,
+        "order_status_name": orderStatusName,
+      };
 }
-
-

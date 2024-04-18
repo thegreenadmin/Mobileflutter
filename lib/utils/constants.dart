@@ -357,6 +357,8 @@ class StringConstants {
   static String numberOfDaysText = "Number of days";
   static String noPrivacyFoundText = "No Privacy policy found";
   static String noTermsFoundText = "No Terms of service found";
+  static String nearByLabelForMilesText =
+      "Nearby stores are shown from 50 miles radius";
 
   //O
   static String okText = "Ok";

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_credit_card/credit_card_brand.dart';
+// import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:get/get.dart';
@@ -130,50 +130,55 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> {
                       isExpiryDateVisible: true,
                       cardHolderName: addCardController.cardHolderName.value,
                       expiryDate: addCardController.expiryDate.value,
-                      themeColor: Colors.blue,
-                      textColor: Colors.black,
-                      cardNumberDecoration: InputDecoration(
-                        labelText: StringConstants.cardNumberText, // 'Number',
-                        hintText:
-                            StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
-                        labelStyle: const TextStyle(
-                            color: AppColors.black, fontSize: 16),
-                        hintStyle: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                        focusedBorder: border,
-                        enabledBorder: border,
-                      ),
-                      expiryDateDecoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                            color: AppColors.black, fontSize: 16),
-                        hintStyle: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                        focusedBorder: border,
-                        enabledBorder: border,
-                        labelText:
-                            StringConstants.expiryDateText, //'Expired Date',
-                        hintText: StringConstants.x2Text, //'XX/XX',
-                      ),
-                      cvvCodeDecoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                            color: AppColors.black, fontSize: 16),
-                        hintStyle: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                        focusedBorder: border,
-                        enabledBorder: border,
-                        labelText: StringConstants.cvvText, //'CVV',
-                        hintText: StringConstants.x1Text, //'XXX',
-                      ),
-                      cardHolderDecoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                            color: AppColors.black, fontSize: 16),
-                        hintStyle: const TextStyle(
-                            color: AppColors.grey, fontSize: 14),
-                        focusedBorder: border,
-                        enabledBorder: border,
-                        hintText: StringConstants.enterNameText,
-                        labelText:
-                            StringConstants.cardHolderNameText, //'Card Holder',
+                      // themeColor: Colors.blue,
+                      // textColor: Colors.black,
+                      inputConfiguration: InputConfiguration(
+                        cardNumberDecoration: InputDecoration(
+                          focusColor: Colors.blue,
+
+                          labelText:
+                              StringConstants.cardNumberText, // 'Number',
+                          hintText:
+                              StringConstants.x4Text, //'XXXX XXXX XXXX XXXX',
+                          labelStyle: const TextStyle(
+                              color: AppColors.black, fontSize: 16),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          focusedBorder: border,
+                          enabledBorder: border,
+                        ),
+                        expiryDateDecoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                              color: AppColors.black, fontSize: 16),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          focusedBorder: border,
+                          enabledBorder: border,
+                          labelText:
+                              StringConstants.expiryDateText, //'Expired Date',
+                          hintText: StringConstants.x2Text, //'XX/XX',
+                        ),
+                        cvvCodeDecoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                              color: AppColors.black, fontSize: 16),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          focusedBorder: border,
+                          enabledBorder: border,
+                          labelText: StringConstants.cvvText, //'CVV',
+                          hintText: StringConstants.x1Text, //'XXX',
+                        ),
+                        cardHolderDecoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                              color: AppColors.black, fontSize: 16),
+                          hintStyle: const TextStyle(
+                              color: AppColors.grey, fontSize: 14),
+                          focusedBorder: border,
+                          enabledBorder: border,
+                          hintText: StringConstants.enterNameText,
+                          labelText: StringConstants
+                              .cardHolderNameText, //'Card Holder',
+                        ),
                       ),
                       onCreditCardModelChange:
                           addCardController.onCreditCardModelChange,

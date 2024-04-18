@@ -14,10 +14,6 @@ class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
 
   @override
   State<UserStoreOrderAppBar> createState() => _UserStoreOrderAppBarState();
-
-  // @override
-  // Size get preferredSize =>
-  //     Size.fromHeight(WidgetConstants.screenHeight * 0.25);
 }
 
 class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
@@ -30,6 +26,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
       alignment: Alignment.bottomCenter,
       children: [
         Obx(() => Container(
+              alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
                 image: DecorationImage(
@@ -56,24 +53,22 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                 ),
               ),
               child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 10, bottom: 10),
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15, bottom: 10, top: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
+                            InkWell(
+                              onTap: () {
                                 Get.back(id: pageIdApp.value);
                                 Get.delete<StoreHomeMainController>();
                               },
-                              icon: const Icon(
+                              child: const Icon(
                                 Icons.arrow_back,
                                 color: AppColors.white,
                                 size: 24.0,
@@ -86,14 +81,6 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                     visible: storeHomeMainController
                                             .cartCount.value !=
                                         0,
-                                    //      ||
-                                    // storeHomeMainController
-                                    //     .productDetailResponse
-                                    //     .value
-                                    //     .data!
-                                    //     .product!
-                                    //     .cartItems!
-                                    //     .isNotEmpty,
                                     child: Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Row(
@@ -225,7 +212,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                               ],
                             )
                           ]),
-                      height10SizedBox,
+                      height8SizedBox,
                       Row(
                         children: [
                           Container(
@@ -238,165 +225,168 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         .value.data?.store?.logo?.dynamicUrl ??
                                     "",
                                 fit: BoxFit.contain,
-                                radius: 28.0,
+                                radius: 38.0,
                                 assetImg: ImageConstants.nopicfound,
                                 assetBackgroundColor: Colors.grey.shade50),
                           ),
                           width10SizedBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                storeHomeMainController.storeDetailsResponse
-                                        .value.data?.store?.storeName ??
-                                    "",
-                                style: const TextStyle(
-                                    color: AppColors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              height4SizedBox,
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    ImageConstants.loc,
-                                    color: AppColors.white,
-                                    scale: 2.5,
-                                  ),
-                                  width4SizedBox,
-                                  SizedBox(
-                                    width: WidgetConstants.screenWidth * 0.6,
-                                    child: Text(
-                                        storeHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data
-                                                ?.store
-                                                ?.storeAddresses
-                                                ?.first
-                                                .addressLine1 ??
-                                            "",
-                                        style: const TextStyle(
-                                            overflow: TextOverflow.visible,
-                                            color: AppColors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                  ),
-                                ],
-                              ),
-                              height6SizedBox,
-                              SizedBox(
-                                height: 15,
-                                child: Row(
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  storeHomeMainController.storeDetailsResponse
+                                          .value.data?.store?.storeName ??
+                                      "",
+                                  style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                // height4SizedBox,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        storeHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data !=
-                                                    null &&
-                                                storeHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data!
-                                                    .store!
-                                                    .storeTimings!
-                                                    .isNotEmpty
-                                            ? storeHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data!
-                                                        .store!
-                                                        .storeTimings!
-                                                        .first
-                                                        .is24HoursActive ==
-                                                    false
-                                                ? "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                    "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                : StringConstants.storeHoursText
-                                            : StringConstants.storeHoursText,
-                                        style: const TextStyle(
-                                            overflow: TextOverflow.visible,
-                                            color: AppColors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: Image.asset(
+                                        ImageConstants.loc,
+                                        color: AppColors.white,
+                                        scale: 3.0,
+                                      ),
+                                    ),
+                                    width4SizedBox,
+                                    Expanded(
+                                      child: Text(
+                                          storeHomeMainController
+                                              .storeLocation.value,
+                                          overflow: TextOverflow.visible,
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
                                   ],
                                 ),
-                              ),
-                              height4SizedBox,
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 100,
-                                    height: 15,
-                                    child: ListView.separated(
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
-                                          return width6SizedBox;
-                                        },
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: storeHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data
-                                                ?.store
-                                                ?.storeDeliveryServices
-                                                ?.length ??
-                                            0,
-                                        itemBuilder: (_, i) {
-                                          return CircleAvatar(
-                                            radius: 12.0,
-                                            backgroundColor: AppColors.primary,
-                                            child: storeHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data
-                                                        ?.store
-                                                        ?.storeDeliveryServices?[
-                                                            i]
-                                                        .deliveryServiceId ==
-                                                    "1"
-                                                ? Image.asset(
-                                                    ImageConstants.instore,
-                                                    scale: 4.5,
-                                                    color: Colors.white,
-                                                  )
-                                                : storeHomeMainController
-                                                            .storeDetailsResponse
-                                                            .value
-                                                            .data
-                                                            ?.store
-                                                            ?.storeDeliveryServices?[
-                                                                i]
-                                                            .deliveryServiceId ==
-                                                        "2"
-                                                    ? Image.asset(
-                                                        ImageConstants.delivery,
-                                                        color: Colors.white,
-                                                        scale: 4.5,
-                                                      )
-                                                    : Image.asset(
-                                                        ImageConstants.curb,
-                                                        color: Colors.white,
-                                                        scale: 3.5,
-                                                      ),
-                                          );
-                                        }),
+                                height4SizedBox,
+                                SizedBox(
+                                  height: 15,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                          storeHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data !=
+                                                      null &&
+                                                  storeHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storeTimings!
+                                                      .isNotEmpty
+                                              ? storeHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data!
+                                                          .store!
+                                                          .storeTimings!
+                                                          .first
+                                                          .is24HoursActive ==
+                                                      false
+                                                  ? "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                      "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                  : StringConstants
+                                                      .storeHoursText
+                                              : StringConstants.storeHoursText,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              color: AppColors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
                                   ),
-                                  width2SizedBox,
-                                  InkWell(
-                                    highlightColor: Colors.transparent,
-                                    splashColor: Colors.transparent,
-                                    onTap: () {},
-                                    child: Image.asset(
-                                      ImageConstants.call,
-                                      scale: 2.5,
+                                ),
+                                height4SizedBox,
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 100,
+                                      height: 20,
+                                      child: ListView.separated(
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                  int index) {
+                                            return width6SizedBox;
+                                          },
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: storeHomeMainController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data
+                                                  ?.store
+                                                  ?.storeDeliveryServices
+                                                  ?.length ??
+                                              0,
+                                          itemBuilder: (_, i) {
+                                            return CircleAvatar(
+                                              radius: 18.0,
+                                              backgroundColor:
+                                                  AppColors.primary,
+                                              child: storeHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data
+                                                          ?.store
+                                                          ?.storeDeliveryServices?[
+                                                              i]
+                                                          .deliveryServiceId ==
+                                                      "1"
+                                                  ? Image.asset(
+                                                      ImageConstants.instore,
+                                                      scale: 4.5,
+                                                      color: Colors.white,
+                                                    )
+                                                  : storeHomeMainController
+                                                              .storeDetailsResponse
+                                                              .value
+                                                              .data
+                                                              ?.store
+                                                              ?.storeDeliveryServices?[
+                                                                  i]
+                                                              .deliveryServiceId ==
+                                                          "2"
+                                                      ? Image.asset(
+                                                          ImageConstants
+                                                              .delivery,
+                                                          color: Colors.white,
+                                                          scale: 4.5,
+                                                        )
+                                                      : Image.asset(
+                                                          ImageConstants.curb,
+                                                          color: Colors.white,
+                                                          scale: 3.5,
+                                                        ),
+                                            );
+                                          }),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
+                                    width2SizedBox,
+                                    InkWell(
+                                      highlightColor: Colors.transparent,
+                                      splashColor: Colors.transparent,
+                                      onTap: () {},
+                                      child: Image.asset(
+                                        ImageConstants.call,
+                                        scale: 2.5,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           )
                         ],
                       )

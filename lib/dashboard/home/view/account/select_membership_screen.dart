@@ -392,7 +392,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                             AppColors.primary
                                           ],
                                         ),
-                                        onTap: () {
+                                        onTap: () async {
                                           if (accountController
                                               .membershipList[index]
                                               .selectedPlan!
@@ -406,13 +406,18 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> {
                                                 textColor: AppColors.white,
                                                 fontSize: 14.0);
                                           } else {
-                                            showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return MyAlertDialog(index);
-                                              },
-                                            );
+                                            await accountController
+                                                .apiGetAllStoreList()
+                                                .then((value) {
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return MyAlertDialog(index);
+                                                },
+                                              );
+                                            });
                                           }
                                         },
                                         height: 50,

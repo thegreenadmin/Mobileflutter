@@ -37,6 +37,7 @@ class OrdersController extends GetxController {
   RxString orderType = "".obs;
   RxDouble totalAmount = 0.0.obs;
   RxString orderDate = "".obs;
+  RxString storeLocation = "".obs;
   RxInt page = 1.obs;
   RxInt uerSelectedTab = 0.obs;
   RxInt pageId = 0.obs;
@@ -953,6 +954,9 @@ class OrdersController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
+        storeLocation.value =
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

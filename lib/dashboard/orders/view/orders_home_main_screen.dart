@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
@@ -51,9 +52,10 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                 ordersHomeMainController.horizontalTabList[i],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: ordersHomeMainController
-                                              .selectedIndex.value == i
+                                              .selectedIndex.value ==
+                                          i
                                       ? FontWeight.w500
                                       : FontWeight.w400,
                                   color: ordersHomeMainController
@@ -89,19 +91,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.18),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.20),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Obx(() => /* ordersHomeMainController
-                            .storeDetailsResponse.value.data ==
-                        null &&
-                    ordersHomeMainController
-                            .storeDetailsResponse.value.data!.store ==
-                        null
-                ? height0SizedBox
-                :*/
-                Container(
+            Obx(() => Container(
                   decoration: BoxDecoration(
                     color: const Color(0xff7c94b6),
                     image: DecorationImage(
@@ -124,155 +118,146 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                               .dynamicUrl!),
                     ),
                   ),
-                  child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 8, bottom: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Visibility(
-                                  visible: int.parse(ordersHomeMainController
-                                              .storeCount.value) >
-                                          1 ||
-                                      ordersHomeMainController
-                                          .isFromNotification.value,
-                                  child: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      Get.back(id: pageIdApp.value);
-                                      Get.delete<OrdersHomeMainController>();
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_back,
-                                      color: AppColors.white,
-                                      size: 24.0,
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                          height10SizedBox,
-                          Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10.0, right: 8, bottom: 10, top: 30),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.white, width: 1)),
-                                child: CommonWidgets.circleCachedNetworkImage(
-                                  ordersHomeMainController
-                                          .storeDetailsResponse
-                                          .value
-                                          .data
-                                          ?.store
-                                          ?.logo
-                                          ?.dynamicUrl ??
-                                      "",
-                                  fit: BoxFit.contain,
-                                  radius: 28.0,
-                                  assetImg: ImageConstants.nopicfound,
+                              Visibility(
+                                visible: int.parse(ordersHomeMainController
+                                            .storeCount.value) >
+                                        1 ||
+                                    ordersHomeMainController
+                                        .isFromNotification.value,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    Get.back(id: pageIdApp.value);
+                                    Get.delete<OrdersHomeMainController>();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.white,
+                                    size: 24.0,
+                                  ),
                                 ),
                               ),
-                              width10SizedBox,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ordersHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data
-                                            ?.store
-                                            ?.storeName ??
-                                        "",
-                                    style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  height8SizedBox,
-                                  Row(
-                                    children: [
-                                      Image.asset(
+                            ]),
+                      ),
+                      height8SizedBox,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 8, bottom: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: AppColors.white, width: 1)),
+                              child: CommonWidgets.circleCachedNetworkImage(
+                                ordersHomeMainController.storeDetailsResponse
+                                        .value.data?.store?.logo?.dynamicUrl ??
+                                    "",
+                                fit: BoxFit.contain,
+                                radius: 32.0,
+                                assetImg: ImageConstants.nopicfound,
+                              ),
+                            ),
+                            width10SizedBox,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ordersHomeMainController.storeDetailsResponse
+                                          .value.data?.store?.storeName ??
+                                      "",
+                                  style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: Image.asset(
                                         ImageConstants.loc,
                                         color: AppColors.white,
-                                        scale: 2,
+                                        scale: 3,
                                       ),
-                                      width4SizedBox,
-                                      SizedBox(
-                                        width:
-                                            WidgetConstants.screenWidth * 0.6,
-                                        child: Text(
-                                            ordersHomeMainController
-                                                    .storeDetailsResponse
-                                                    .value
-                                                    .data
-                                                    ?.store
-                                                    ?.storeAddresses
-                                                    ?.first
-                                                    .addressLine1 ??
-                                                "",
-                                            style: const TextStyle(
-                                                overflow: TextOverflow.visible,
-                                                color: AppColors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                      ),
+                                    ),
+                                    width4SizedBox,
+                                    SizedBox(
+                                      width: WidgetConstants.screenWidth * 0.6,
+                                      child: Text(
+                                          ordersHomeMainController
+                                              .storeLocation.value,
+                                          overflow: TextOverflow.visible,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              color: AppColors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                  ],
+                                ),
+                                height4SizedBox,
+                                SizedBox(
+                                  height: 20,
+                                  width: WidgetConstants.screenWidth * 0.7,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                          ordersHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data !=
+                                                      null &&
+                                                  ordersHomeMainController
+                                                      .storeDetailsResponse
+                                                      .value
+                                                      .data!
+                                                      .store!
+                                                      .storeTimings!
+                                                      .isNotEmpty
+                                              ? ordersHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data!
+                                                          .store!
+                                                          .storeTimings!
+                                                          .first
+                                                          .is24HoursActive ==
+                                                      false
+                                                  ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                      "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                  : StringConstants
+                                                      .storeHoursText
+                                              : StringConstants.storeHoursText,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              color: AppColors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400)),
                                     ],
                                   ),
-                                  height8SizedBox,
-                                  SizedBox(
-                                    height: 20,
-                                    width: WidgetConstants.screenWidth * 0.7,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                            ordersHomeMainController
-                                                            .storeDetailsResponse
-                                                            .value
-                                                            .data !=
-                                                        null &&
-                                                    ordersHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data!
-                                                        .store!
-                                                        .storeTimings!
-                                                        .isNotEmpty
-                                                ? ordersHomeMainController
-                                                            .storeDetailsResponse
-                                                            .value
-                                                            .data!
-                                                            .store!
-                                                            .storeTimings!
-                                                            .first
-                                                            .is24HoursActive ==
-                                                        false
-                                                    ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                        "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                    : StringConstants
-                                                        .storeHoursText
-                                                : StringConstants
-                                                    .storeHoursText,
-                                            style: const TextStyle(
-                                                overflow: TextOverflow.visible,
-                                                color: AppColors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      )),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ))
           ],
         ),
@@ -481,40 +466,56 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                                         fontSize: 14))
                                               ],
                                             ),
-                                            height5SizedBox,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                      "${StringConstants.estimatedDeliveryDateText}: ",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blacklight,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 14)),
-                                                ),
-                                                Text(
-                                                    Utility.parseDateTime(
-                                                      DateTime.parse(
-                                                          ordersHomeMainController
-                                                              .ownerOrderHistoryList![
-                                                                  index]
-                                                              .estimateDeliveryDate
-                                                              .toString()),
-                                                      secFormat: '',
-                                                    ).toString(),
-                                                    style: const TextStyle(
-                                                        color: AppColors.black,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 14))
-                                              ],
+                                            Visibility(
+                                              visible: ordersHomeMainController
+                                                      .ownerOrderHistoryList?[
+                                                          index]
+                                                      .deliveryServiceId
+                                                      .toString() ==
+                                                  "2",
+                                              child: Column(
+                                                children: [
+                                                  height5SizedBox,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                            "${StringConstants.estimatedDeliveryDateText}: ",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .blacklight,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 14)),
+                                                      ),
+                                                      Text(
+                                                          Utility.parseDateTime(
+                                                            DateTime.parse(
+                                                                ordersHomeMainController
+                                                                    .ownerOrderHistoryList![
+                                                                        index]
+                                                                    .estimateDeliveryDate
+                                                                    .toString()),
+                                                            secFormat: '',
+                                                          ).toString(),
+                                                          style: const TextStyle(
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 14))
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             height5SizedBox,
                                             Row(

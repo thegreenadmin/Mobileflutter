@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -44,6 +45,8 @@ class StoreHomeMainController extends GetxController {
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<PreviousOrdersProducts> previousOrderList =
       <PreviousOrdersProducts>[].obs;
+
+  RxString storeLocation = "".obs;
   RxInt listIndex = 2.obs;
   RxInt cartCount = 0.obs;
   RxInt selectedIndex = 0.obs;
@@ -83,7 +86,7 @@ class StoreHomeMainController extends GetxController {
   RxString? lastName = "".obs;
   RxDouble cartTotalPrice = 0.0.obs;
 
-  final scrollController = ScrollController();
+  // final scrollController = ScrollController();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
@@ -1200,11 +1203,14 @@ class StoreHomeMainController extends GetxController {
       isLoading.value = false;
       showLoading.value = false;
       log("STORE DETAILS RESPONSE*******${value?.body}");
+      debugPrint(
+          "storeLocation  *******${json.encode(value?.body["data"]["store"]["store_addresses"][0])}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
         storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
-
+        storeLocation.value =
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
         debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
 
         debugPrint(

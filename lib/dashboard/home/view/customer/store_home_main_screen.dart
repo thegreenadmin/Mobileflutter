@@ -48,27 +48,29 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
-        storeHomeMainController.invokedIndex.value = 2;
-        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+        // storeHomeMainController.invokedIndex.value = 2;
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
           storeHomeMainController.apiGetShopProductDetailApi();
         }
       } else if (storeHomeMainController.isFromFav.value) {
         storeHomeMainController.selectedIndex.value = 2;
         storeHomeMainController.apiFeatureProductListApi(
             isFeaturedProduct: true);
-        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
           storeHomeMainController.apiGetShopProductDetailApi();
         }
       } else if (storeHomeMainController.isFromHome.value) {
-        storeHomeMainController.invokedIndex.value = 0;
+        // storeHomeMainController.invokedIndex.value = 0;
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.apiGetStoreOffersApi();
         storeHomeMainController.apiFeatureProductListApi(
             isFeaturedProduct: true);
-        if(storeHomeMainController.storeId.value != "" && storeHomeMainController.productId.value != ""){
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
           storeHomeMainController.apiGetShopProductDetailApi();
         }
-
       } else {
         storeHomeMainController.onIndexChange(0);
       }
@@ -121,7 +123,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
             SelectableText(
               storeHomeMainController
-                      .storeDetailsResponse.value.data?.store?.storePhone ?? "",
+                      .storeDetailsResponse.value.data?.store?.storePhone ??
+                  "",
               style: TextStyle(
                   color: AppColors.blacklight,
                   fontSize: 16,
@@ -461,82 +464,72 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               const Divider(
                 thickness: 1,
               ),
-              storeHomeMainController.selectedIndex.value == 0 && storeHomeMainController.invokedIndex.value == 0
+              storeHomeMainController.selectedIndex.value == 0 &&
+                      storeHomeMainController.invokedIndex.value == 0
                   ? const Expanded(child: StoreHomeScreen())
-                  : storeHomeMainController.selectedIndex.value == 0 && (storeHomeMainController.invokedIndex.value == 1 || storeHomeMainController.invokedIndex.value == 3)
-                  ? const Expanded(child: AddToOrderScreen())
-                  :storeHomeMainController.selectedIndex.value == 0 && storeHomeMainController.invokedIndex.value == 2
-                  ? const Expanded(child: OfferProductScreen(isFromStore:true))
-                  :
-
-
-              storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 0
-                      ? const Expanded(child: StoreMenuScreen())
-                  : storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 1
-                  ? const Expanded(child: UserProductListScreen())
-                  : storeHomeMainController.selectedIndex.value == 1 && storeHomeMainController.invokedIndex.value == 2
-                  ? const Expanded(child: AddToOrderScreen())
-                  :
-                       storeHomeMainController.selectedIndex.value == 2 && storeHomeMainController.invokedIndex.value == 0
-                          ? const Expanded(child: StoreFavouriteScreen())
-
-                           : storeHomeMainController.selectedIndex.value == 2 && storeHomeMainController.invokedIndex.value == 1
-                           ? const Expanded(child: AddToOrderScreen())
-                          : storeHomeMainController.selectedIndex.value == 3
-                              ? storeHomeMainController.popUpIndex.value == 0
+                  : storeHomeMainController.selectedIndex.value == 0 &&
+                          (storeHomeMainController.invokedIndex.value == 1 ||
+                              storeHomeMainController.invokedIndex.value == 3)
+                      ? const Expanded(child: AddToOrderScreen())
+                      : storeHomeMainController.selectedIndex.value == 0 &&
+                              storeHomeMainController.invokedIndex.value == 2
+                          ? const Expanded(
+                              child: OfferProductScreen(isFromStore: true))
+                          : storeHomeMainController.selectedIndex.value == 1 &&
+                                  storeHomeMainController.invokedIndex.value ==
+                                      0
+                              ? const Expanded(child: StoreMenuScreen())
+                              : storeHomeMainController.selectedIndex.value == 1 &&
+                                      storeHomeMainController.invokedIndex.value ==
+                                          1
                                   ? const Expanded(
-                                      child: PreviousOrdersScreen())
-                                  : storeHomeMainController.popUpIndex.value ==
-                                          2
-                                      ? storeHomeMainController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data!
-                                                  .store!
-                                                  .storePages!
-                                                  .first
-                                                  .storePageContent!
-                                                  .dynamicUrl ==
-                                              null
+                                      child: UserProductListScreen())
+                                  : storeHomeMainController.selectedIndex.value == 1 &&
+                                          storeHomeMainController.invokedIndex.value ==
+                                              2
+                                      ? const Expanded(
+                                          child: AddToOrderScreen())
+                                      : storeHomeMainController.selectedIndex.value == 2 &&
+                                              storeHomeMainController.invokedIndex.value ==
+                                                  0
                                           ? const Expanded(
-                                              child: StoreHomeScreen())
-                                          : Expanded(
-                                              child: PdfViewScreen(
-                                                  isShowPrivacy: true,
-                                                  url: storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .storePages!
-                                                      .first
-                                                      .storePageContent!
-                                                      .dynamicUrl
-                                                      .toString()))
-                                      : storeHomeMainController.popUpIndex.value ==
-                                              3
-                                          ? storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .storePages!
-                                                      .first
-                                                      .storePageContent!
-                                                      .dynamicUrl ==
-                                                  null
+                                              child: StoreFavouriteScreen())
+                                          : storeHomeMainController.selectedIndex.value == 2 &&
+                                                  storeHomeMainController.invokedIndex.value ==
+                                                      1
                                               ? const Expanded(
-                                                  child: StoreHomeScreen())
-                                              : Expanded(
-                                                  child: PdfViewScreen(
-                                                      isShowPrivacy: false,
-                                                      url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
-                                          : storeHomeMainController.lastSelectedIndex.value == 1
-                                              ? const Expanded(child: StoreMenuScreen())
-                                              : storeHomeMainController.lastSelectedIndex.value == 2
-                                                  ? const Expanded(child: StoreFavouriteScreen())
+                                                  child: AddToOrderScreen())
+                                              : storeHomeMainController.selectedIndex.value ==
+                                                      3
+                                                  ? storeHomeMainController.popUpIndex.value ==
+                                                          0
+                                                      ? const Expanded(
+                                                          child:
+                                                              PreviousOrdersScreen())
+                                                      : storeHomeMainController.popUpIndex.value ==
+                                                              2
+                                                          ? storeHomeMainController
+                                                                      .storeDetailsResponse
+                                                                      .value
+                                                                      .data!
+                                                                      .store!
+                                                                      .storePages!
+                                                                      .first
+                                                                      .storePageContent!
+                                                                      .dynamicUrl ==
+                                                                  null
+                                                              ? const Expanded(child: StoreHomeScreen())
+                                                              : Expanded(child: PdfViewScreen(isShowPrivacy: true, url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
+                                                          : storeHomeMainController.popUpIndex.value == 3
+                                                              ? storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl == null
+                                                                  ? const Expanded(child: StoreHomeScreen())
+                                                                  : Expanded(child: PdfViewScreen(isShowPrivacy: false, url: storeHomeMainController.storeDetailsResponse.value.data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString()))
+                                                              : storeHomeMainController.lastSelectedIndex.value == 1
+                                                                  ? const Expanded(child: StoreMenuScreen())
+                                                                  : storeHomeMainController.lastSelectedIndex.value == 2
+                                                                      ? const Expanded(child: StoreFavouriteScreen())
+                                                                      : const Expanded(child: StoreHomeScreen())
                                                   : const Expanded(child: StoreHomeScreen())
-                              : const Expanded(child: StoreHomeScreen())
             ],
           ),
         ));

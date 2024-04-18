@@ -142,6 +142,10 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.mileageTextController,
+                  onChanged: (value) {
+                    searchStoreUserController.miles.value =
+                        searchStoreUserController.mileageTextController.text;
+                  },
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: StringConstants.milesText,

@@ -20,183 +20,174 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.18),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.20),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Obx(() => /*ordersHomeMainController
-                            .storeDetailsResponse.value.data ==
-                        null &&
-                    ordersHomeMainController
-                            .storeDetailsResponse.value.data!.store ==
-                        null
-                ? height0SizedBox
-            :*/Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xff7c94b6),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black45, BlendMode.darken),
-                        image: ordersHomeMainController.storeDetailsResponse
-                                        .value.data?.store?.image?.dynamicUrl ==
-                                    null ||
-                                ordersHomeMainController
-                                    .storeDetailsResponse
-                                    .value
-                                    .data!
-                                    .store!
-                                    .image!
-                                    .dynamicUrl!
-                                    .isEmpty
-                            ? const AssetImage(ImageConstants.storeicon)
-                                as ImageProvider
-                            : NetworkImage(ordersHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .image!
-                                .dynamicUrl!),
-                      ),
+            Obx(() => Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xff7c94b6),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black45, BlendMode.darken),
+                      image: ordersHomeMainController.storeDetailsResponse.value
+                                      .data?.store?.image?.dynamicUrl ==
+                                  null ||
+                              ordersHomeMainController.storeDetailsResponse
+                                  .value.data!.store!.image!.dynamicUrl!.isEmpty
+                          ? const AssetImage(ImageConstants.storeicon)
+                              as ImageProvider
+                          : NetworkImage(ordersHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!
+                              .store!
+                              .image!
+                              .dynamicUrl!),
                     ),
-                    child: Padding(
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      Get.back(id: pageIdApp.value);
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_back,
-                                      color: AppColors.white,
-                                      size: 24.0,
-                                    ),
-                                  ),
-                                ]),
-                            height10SizedBox,
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1)),
-                                  child: CommonWidgets.circleCachedNetworkImage(
+                            left: 10.0, right: 8, bottom: 10, top: 30),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: int.parse(ordersHomeMainController
+                                            .storeCount.value) >
+                                        1 ||
                                     ordersHomeMainController
-                                            .storeDetailsResponse
-                                            .value
-                                            .data?.store?.logo?.dynamicUrl ??
-                                        "",
-                                    fit: BoxFit.contain,
-                                    radius: 28.0,
-                                    assetImg: ImageConstants.nopicfound,
+                                        .isFromNotification.value,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    Get.back(id: pageIdApp.value);
+                                    Get.delete<OrdersHomeMainController>();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.white,
+                                    size: 24.0,
                                   ),
                                 ),
-                                width10SizedBox,
-                                Column(
+                              ),
+                            ]),
+                      ),
+                      height8SizedBox,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 8, bottom: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: AppColors.white, width: 1)),
+                              child: CommonWidgets.circleCachedNetworkImage(
+                                ordersHomeMainController.storeDetailsResponse
+                                        .value.data?.store?.logo?.dynamicUrl ??
+                                    "",
+                                fit: BoxFit.contain,
+                                radius: 32.0,
+                                assetImg: ImageConstants.nopicfound,
+                              ),
+                            ),
+                            width10SizedBox,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ordersHomeMainController.storeDetailsResponse
+                                          .value.data?.store?.storeName ??
+                                      "",
+                                  style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      ordersHomeMainController
-                                              .storeDetailsResponse
-                                              .value
-                                              .data?.store?.storeName ??
-                                          "",
-                                      style: const TextStyle(
-                                          color: AppColors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: Image.asset(
+                                        ImageConstants.loc,
+                                        color: AppColors.white,
+                                        scale: 3,
+                                      ),
                                     ),
-                                    height8SizedBox,
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          ImageConstants.loc,
-                                          color: AppColors.white,
-                                          scale: 2,
-                                        ),
-                                        width4SizedBox,
-                                        SizedBox(
-                                          width:
-                                              WidgetConstants.screenWidth * 0.6,
-                                          child: Text(
-                                              ordersHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data?.store?.storeAddresses?.first
-                                                      .addressLine1 ??
-                                                  "",
-                                              style: const TextStyle(
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                  color: AppColors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400)),
-                                        ),
-                                      ],
-                                    ),
-                                    height8SizedBox,
+                                    width4SizedBox,
                                     SizedBox(
-                                      height: 20,
-                                      width: WidgetConstants.screenWidth * 0.7,
-                                      child: Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                              ordersHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!=null && ordersHomeMainController
+                                      width: WidgetConstants.screenWidth * 0.6,
+                                      child: Text(
+                                          ordersHomeMainController
+                                              .storeLocation.value,
+                                          overflow: TextOverflow.visible,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              color: AppColors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                  ],
+                                ),
+                                height4SizedBox,
+                                SizedBox(
+                                  height: 20,
+                                  width: WidgetConstants.screenWidth * 0.7,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                          ordersHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data !=
+                                                      null &&
+                                                  ordersHomeMainController
                                                       .storeDetailsResponse
                                                       .value
                                                       .data!
                                                       .store!
                                                       .storeTimings!
                                                       .isNotEmpty
-                                                  ? ordersHomeMainController
-                                                              .storeDetailsResponse
-                                                              .value
-                                                              .data!
-                                                              .store!
-                                                              .storeTimings!
-                                                              .first
-                                                              .is24HoursActive ==
-                                                          false
-                                                      ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                          "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                      : StringConstants
-                                                          .storeHoursText
+                                              ? ordersHomeMainController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data!
+                                                          .store!
+                                                          .storeTimings!
+                                                          .first
+                                                          .is24HoursActive ==
+                                                      false
+                                                  ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                      "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                                   : StringConstants
-                                                      .storeHoursText,
-                                              style: const TextStyle(
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                  color: AppColors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400)),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
+                                                      .storeHoursText
+                                              : StringConstants.storeHoursText,
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              color: AppColors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
+                                  ),
+                                ),
                               ],
                             )
                           ],
-                        )),
-                  )
-                )
+                        ),
+                      )
+                    ],
+                  ),
+                ))
           ],
         ),
       ),
@@ -579,107 +570,85 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                       ordersHomeMainController
-                                                              .getOrderItems[index]
+                                                              .getOrderItems[
+                                                                  index]
                                                               .product!
                                                               .productName ??
                                                           "",
                                                       style: const TextStyle(
-                                                          color: AppColors.black,
+                                                          color:
+                                                              AppColors.black,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           fontSize: 16)),
                                                   Obx(
-                                                        () => ordersHomeMainController
-                                                        .selectedIndex.value ==
-                                                        3
-                                                        ? height0SizedBox
-                                                        : Flexible(
-                                                      flex: 1,
-                                                      child: SizedBox(
-                                                          height: 20,
-                                                          width: 30,
-                                                          child: Checkbox(
-                                                            side:
-                                                            MaterialStateBorderSide
-                                                                .resolveWith(
-                                                                  (states) => BorderSide(
-                                                                  width: 1.0,
-                                                                  color: AppColors
-                                                                      .primary
-                                                                      .withOpacity(
-                                                                      0.5)),
-                                                            ),
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    6.0)),
-                                                            activeColor:
-                                                            AppColors.primary,
-                                                            value: ordersHomeMainController
-                                                                .getOrderItems[
-                                                            index]
-                                                                .isSelected ??
-                                                                false,
-                                                            onChanged:
-                                                                (bool? value) {
-                                                              if (ordersHomeMainController
-                                                                  .selectedIndex
-                                                                  .value ==
-                                                                  0 &&
-                                                                  ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                      OrderStatusEnum
-                                                                          .receivedOrder
-                                                                          .statusName) {
-                                                                setState(() {
-                                                                  ordersHomeMainController
-                                                                      .getOrderItems
-                                                                      .elementAt(
-                                                                      index)
-                                                                      .isSelected = value;
-                                                                });
-                                                              } else if (ordersHomeMainController.selectedIndex.value == 1 &&
-                                                                  ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                      OrderStatusEnum
-                                                                          .inProgress
-                                                                          .statusName ||
-                                                                  ordersHomeMainController.selectedIndex.value == 1 &&
-                                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                          OrderStatusEnum
-                                                                              .receivedOrder
-                                                                              .statusName) {
-                                                                setState(() {
-                                                                  ordersHomeMainController
-                                                                      .getOrderItems
-                                                                      .elementAt(
-                                                                      index)
-                                                                      .isSelected = value;
-                                                                });
-                                                              } else if (ordersHomeMainController
-                                                                  .selectedIndex
-                                                                  .value ==
-                                                                  2 &&
-                                                                  (ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.inTransit.statusName ||
-                                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                                          OrderStatusEnum.readyForPickup.statusName ||
-                                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.receivedOrder.statusName ||
-                                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.inProgress.statusName)) {
-                                                                setState(() {
-                                                                  ordersHomeMainController
-                                                                      .getOrderItems
-                                                                      .elementAt(
-                                                                      index)
-                                                                      .isSelected = value;
-                                                                });
-                                                              }
-                                                            },
-                                                          )),
-                                                    ),
+                                                    () =>
+                                                        ordersHomeMainController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                3
+                                                            ? height0SizedBox
+                                                            : Flexible(
+                                                                flex: 1,
+                                                                child: SizedBox(
+                                                                    height: 20,
+                                                                    width: 30,
+                                                                    child:
+                                                                        Checkbox(
+                                                                      side: MaterialStateBorderSide
+                                                                          .resolveWith(
+                                                                        (states) => BorderSide(
+                                                                            width:
+                                                                                1.0,
+                                                                            color:
+                                                                                AppColors.primary.withOpacity(0.5)),
+                                                                      ),
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(6.0)),
+                                                                      activeColor:
+                                                                          AppColors
+                                                                              .primary,
+                                                                      value: ordersHomeMainController
+                                                                              .getOrderItems[index]
+                                                                              .isSelected ??
+                                                                          false,
+                                                                      onChanged:
+                                                                          (bool?
+                                                                              value) {
+                                                                        if (ordersHomeMainController.selectedIndex.value ==
+                                                                                0 &&
+                                                                            ordersHomeMainController.getOrderItems[index].orderItemStatus ==
+                                                                                OrderStatusEnum
+                                                                                    .receivedOrder.statusName) {
+                                                                          setState(
+                                                                              () {
+                                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected =
+                                                                                value;
+                                                                          });
+                                                                        } else if (ordersHomeMainController.selectedIndex.value == 1 && ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.inProgress.statusName ||
+                                                                            ordersHomeMainController.selectedIndex.value == 1 &&
+                                                                                ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.receivedOrder.statusName) {
+                                                                          setState(
+                                                                              () {
+                                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected =
+                                                                                value;
+                                                                          });
+                                                                        } else if (ordersHomeMainController.selectedIndex.value == 2 && (ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.inTransit.statusName || ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.readyForPickup.statusName || ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.receivedOrder.statusName || ordersHomeMainController.getOrderItems[index].orderItemStatus == OrderStatusEnum.inProgress.statusName)) {
+                                                                          setState(
+                                                                              () {
+                                                                            ordersHomeMainController.getOrderItems.elementAt(index).isSelected =
+                                                                                value;
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                    )),
+                                                              ),
                                                   ),
                                                 ],
                                               ),
@@ -757,7 +726,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     children: [
                                                       Text(
                                                           "${StringConstants.qtyText}:",
-                                                          overflow: TextOverflow.visible,
+                                                          overflow: TextOverflow
+                                                              .visible,
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,
@@ -772,7 +742,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               .orderItemCount
                                                               .toString()
                                                               .padLeft(2, '0'),
-                                                          overflow: TextOverflow.visible,
+                                                          overflow: TextOverflow
+                                                              .visible,
                                                           style: const TextStyle(
                                                               color: AppColors
                                                                   .black,
@@ -786,7 +757,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                     children: [
                                                       Text(
                                                           "${StringConstants.unitPriceText}: ",
-                                                          overflow: TextOverflow.visible,
+                                                          overflow: TextOverflow
+                                                              .visible,
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blacklight,
@@ -796,7 +768,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                               fontSize: 14)),
                                                       Text(
                                                           "\$${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
-                                                          overflow: TextOverflow.visible,
+                                                          overflow: TextOverflow
+                                                              .visible,
                                                           style: const TextStyle(
                                                               color: AppColors
                                                                   .black,

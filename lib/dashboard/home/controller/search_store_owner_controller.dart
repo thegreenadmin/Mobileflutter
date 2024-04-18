@@ -634,7 +634,7 @@ class OwnerStoresController extends GetxController {
             headers,
             showLoading: false)
         .then((value) async {
-      log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      debugPrint("GET PARTICULAR STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         storeId.value = value?.body["data"]['store']['store_id'] ?? "";

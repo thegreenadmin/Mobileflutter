@@ -26,6 +26,7 @@ class OrdersHomeMainController extends GetxController {
   RxString customerName = "".obs;
   RxString orderDate = "".obs;
   RxString orderAmount = "".obs;
+  RxString storeLocation = "".obs;
   RxString storeCount = "0".obs;
   RxBool isFromNotification = false.obs;
 
@@ -176,6 +177,9 @@ class OrdersHomeMainController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
+        storeLocation.value =
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
+            "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
         SharedPreferenceStorage.clearData();

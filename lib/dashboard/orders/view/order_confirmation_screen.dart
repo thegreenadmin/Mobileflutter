@@ -90,10 +90,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ),
                       child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 20.0, right: 10, bottom: 10),
+                              top: 30, left: 20.0, right: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                   mainAxisAlignment:
@@ -176,177 +176,183 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                               .dynamicUrl ??
                                           "",
                                       fit: BoxFit.contain,
-                                      radius: 28.0,
+                                      radius: 38.0,
                                       assetImg: ImageConstants.nopicfound,
                                     ),
                                   ),
                                   width10SizedBox,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ordersController.storeDetailsResponse
-                                                .value.data!.store!.storeName ??
-                                            "",
-                                        style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      height6SizedBox,
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            ImageConstants.loc,
-                                            color: AppColors.white,
-                                            scale: 2,
-                                          ),
-                                          width4SizedBox,
-                                          SizedBox(
-                                            width: WidgetConstants.screenWidth *
-                                                0.6,
-                                            child: Text(
-                                                ordersController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data!
-                                                        .store!
-                                                        .storeAddresses!
-                                                        .first
-                                                        .addressLine1 ??
-                                                    "",
-                                                style: const TextStyle(
-                                                    overflow:
-                                                        TextOverflow.visible,
-                                                    color: AppColors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                          ),
-                                        ],
-                                      ),
-                                      height6SizedBox,
-                                      SizedBox(
-                                        height: 15,
-                                        child: Row(
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ordersController
+                                                  .storeDetailsResponse
+                                                  .value
+                                                  .data!
+                                                  .store!
+                                                  .storeName ??
+                                              "",
+                                          style: const TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        height6SizedBox,
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                                ordersController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data!
-                                                        .store!
-                                                        .storeTimings!
-                                                        .isNotEmpty
-                                                    ? ordersController
-                                                                .storeDetailsResponse
-                                                                .value
-                                                                .data!
-                                                                .store!
-                                                                .storeTimings!
-                                                                .first
-                                                                .is24HoursActive ==
-                                                            false
-                                                        ? "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                            "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                        : StringConstants
-                                                            .storeHoursText
-                                                    : StringConstants
-                                                        .storeHoursText,
-                                                style: const TextStyle(
-                                                    overflow:
-                                                        TextOverflow.visible,
-                                                    color: AppColors.white,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            width8SizedBox,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 4.0),
+                                              child: Image.asset(
+                                                ImageConstants.loc,
+                                                color: AppColors.white,
+                                                scale: 3.0,
+                                              ),
+                                            ),
+                                            width4SizedBox,
+                                            Expanded(
+                                              child: Text(
+                                                  ordersController
+                                                      .storeLocation.value,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                  softWrap: true,
+                                                  style: const TextStyle(
+                                                      color: AppColors.white,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                            ),
                                           ],
                                         ),
-                                      ),
-                                      height6SizedBox,
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 15,
-                                            width: 100,
-                                            child: ListView.separated(
-                                                separatorBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return width8SizedBox;
-                                                },
-                                                shrinkWrap: true,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: ordersController
-                                                        .storeDetailsResponse
-                                                        .value
-                                                        .data
-                                                        ?.store
-                                                        ?.storeDeliveryServices
-                                                        ?.length ??
-                                                    0,
-                                                itemBuilder: (_, i) {
-                                                  return CircleAvatar(
-                                                    radius: 12.0,
-                                                    backgroundColor:
-                                                        AppColors.primary,
-                                                    child: ordersController
-                                                                .storeDetailsResponse
-                                                                .value
-                                                                .data
-                                                                ?.store
-                                                                ?.storeDeliveryServices?[
-                                                                    i]
-                                                                .deliveryServiceId ==
-                                                            "1"
-                                                        ? Image.asset(
-                                                            ImageConstants
-                                                                .instore,
-                                                            scale: 4.5,
-                                                            color: Colors.white,
-                                                          )
-                                                        : ordersController
-                                                                    .storeDetailsResponse
-                                                                    .value
-                                                                    .data
-                                                                    ?.store
-                                                                    ?.storeDeliveryServices?[
-                                                                        i]
-                                                                    .deliveryServiceId ==
-                                                                "2"
-                                                            ? Image.asset(
-                                                                ImageConstants
-                                                                    .delivery,
-                                                                color: Colors
-                                                                    .white,
-                                                                scale: 4.5,
-                                                              )
-                                                            : Image.asset(
-                                                                ImageConstants
-                                                                    .curb,
-                                                                color: Colors
-                                                                    .white,
-                                                                scale: 3.5,
-                                                              ),
-                                                  );
-                                                }),
+                                        height6SizedBox,
+                                        SizedBox(
+                                          height: 15,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  ordersController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data!
+                                                          .store!
+                                                          .storeTimings!
+                                                          .isNotEmpty
+                                                      ? ordersController
+                                                                  .storeDetailsResponse
+                                                                  .value
+                                                                  .data!
+                                                                  .store!
+                                                                  .storeTimings!
+                                                                  .first
+                                                                  .is24HoursActive ==
+                                                              false
+                                                          ? "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                              "${Utility.formatDateTime(ordersController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                          : StringConstants
+                                                              .storeHoursText
+                                                      : StringConstants
+                                                          .storeHoursText,
+                                                  style: const TextStyle(
+                                                      overflow:
+                                                          TextOverflow.visible,
+                                                      color: AppColors.white,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              width8SizedBox,
+                                            ],
                                           ),
-                                          width6SizedBox,
-                                          InkWell(
-                                            highlightColor: Colors.transparent,
-                                            splashColor: Colors.transparent,
-                                            onTap: () {},
-                                            child: Image.asset(
-                                              ImageConstants.call,
-                                              scale: 2.5,
+                                        ),
+                                        height6SizedBox,
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 20,
+                                              width: 100,
+                                              child: ListView.separated(
+                                                  separatorBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return width8SizedBox;
+                                                  },
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: ordersController
+                                                          .storeDetailsResponse
+                                                          .value
+                                                          .data
+                                                          ?.store
+                                                          ?.storeDeliveryServices
+                                                          ?.length ??
+                                                      0,
+                                                  itemBuilder: (_, i) {
+                                                    return CircleAvatar(
+                                                      radius: 18.0,
+                                                      backgroundColor:
+                                                          AppColors.primary,
+                                                      child: ordersController
+                                                                  .storeDetailsResponse
+                                                                  .value
+                                                                  .data
+                                                                  ?.store
+                                                                  ?.storeDeliveryServices?[
+                                                                      i]
+                                                                  .deliveryServiceId ==
+                                                              "1"
+                                                          ? Image.asset(
+                                                              ImageConstants
+                                                                  .instore,
+                                                              scale: 4.5,
+                                                              color:
+                                                                  Colors.white,
+                                                            )
+                                                          : ordersController
+                                                                      .storeDetailsResponse
+                                                                      .value
+                                                                      .data
+                                                                      ?.store
+                                                                      ?.storeDeliveryServices?[
+                                                                          i]
+                                                                      .deliveryServiceId ==
+                                                                  "2"
+                                                              ? Image.asset(
+                                                                  ImageConstants
+                                                                      .delivery,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  scale: 4.5,
+                                                                )
+                                                              : Image.asset(
+                                                                  ImageConstants
+                                                                      .curb,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  scale: 3.5,
+                                                                ),
+                                                    );
+                                                  }),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                            width6SizedBox,
+                                            InkWell(
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              splashColor: Colors.transparent,
+                                              onTap: () {},
+                                              child: Image.asset(
+                                                ImageConstants.call,
+                                                scale: 2.5,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               )
@@ -516,13 +522,18 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       children: [
                         EasyStepper(
                           activeStep: ordersController.activeStep.value,
-                          lineLength: WidgetConstants.screenWidth * 0.063,
                           stepShape: StepShape.circle,
                           borderThickness: 0,
                           stepRadius: WidgetConstants.screenWidth * 0.075,
-                          // lineColor: AppColors.grey,
-                          activeLineColor: AppColors.grey,
-                          lineType: LineType.normal,
+                          lineStyle: LineStyle(
+                            lineLength: WidgetConstants.screenWidth * 0.063,
+                            lineType: LineType.normal,
+                            activeLineColor: AppColors.grey,
+                            defaultLineColor: AppColors.grey,
+                            // lineThickness: 3,
+                            // lineSpace: 1,
+                            // lineWidth: 10,
+                          ),
                           activeStepBorderType: BorderType.normal,
                           unreachedStepBorderType: BorderType.normal,
                           finishedStepBorderColor: AppColors.white,
@@ -565,7 +576,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                   ),
                 ),
-                Obx(
+                /* Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value ==
                             OrderStatusEnum.inProgress.statusName &&
@@ -593,7 +604,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ],
                     ),
                   ),
-                ),
+                ), */
                 Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value !=
@@ -789,7 +800,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         children: [
                                           Text(
                                             ordersController.orderItems[i]
-                                                    .product?.productName?.toCapitalized() ??
+                                                    .product?.productName
+                                                    ?.toCapitalized() ??
                                                 "",
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -1029,36 +1041,36 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             ),
                                           ),
                                           Visibility(
-                                            visible:
+                                            visible: ordersController
+                                                    .orderItems[i]
+                                                    .product!
+                                                    .productReviews!
+                                                    .isEmpty &&
+                                                ordersController
+                                                        .activeStep.value ==
+                                                    3 &&
+                                                ordersController
+                                                    .orderItems[i]
+                                                    .returnOrderItems!
+                                                    .isEmpty &&
+                                                (ordersController
+                                                            .orderStatusTypeName
+                                                            .value !=
+                                                        OrderStatusEnum
+                                                            .returnRequest
+                                                            .statusName ||
                                                     ordersController
-                                                        .orderItems[i]
-                                                        .product!
-                                                        .productReviews!
-                                                        .isEmpty &&
-                                                    ordersController.activeStep.value ==
-                                                        3 &&
+                                                            .orderStatusTypeName
+                                                            .value !=
+                                                        OrderStatusEnum
+                                                            .returnConfirmed
+                                                            .statusName ||
                                                     ordersController
-                                                        .orderItems[i]
-                                                        .returnOrderItems!
-                                                        .isEmpty &&
-                                                    (ordersController
-                                                                .orderStatusTypeName
-                                                                .value !=
-                                                            OrderStatusEnum
-                                                                .returnRequest
-                                                                .statusName ||
-                                                        ordersController
-                                                                .orderStatusTypeName
-                                                                .value !=
-                                                            OrderStatusEnum
-                                                                .returnConfirmed
-                                                                .statusName ||
-                                                        ordersController
-                                                                .orderStatusTypeName
-                                                                .value !=
-                                                            OrderStatusEnum
-                                                                .returnCancelled
-                                                                .statusName),
+                                                            .orderStatusTypeName
+                                                            .value !=
+                                                        OrderStatusEnum
+                                                            .returnCancelled
+                                                            .statusName),
                                             child: CustomButton(
                                               gradient: const LinearGradient(
                                                 begin: Alignment.topCenter,

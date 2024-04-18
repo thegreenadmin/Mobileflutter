@@ -156,7 +156,7 @@ class BottomNavController extends GetxController {
       } else {
         selectedIndex.value = index;
       }
-      debugPrint("Bottom Nav  pageIdApp:- ${pageIdApp.value}");
+      
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {

@@ -61,6 +61,7 @@ class SearchStoreUserController extends GetxController {
 
   RxInt pageId = 0.obs;
   RxString storeId = "".obs;
+  RxString miles = "".obs;
 
   RxBool isLoading = false.obs;
   RxBool isFavLoading = false.obs;
@@ -110,12 +111,12 @@ class SearchStoreUserController extends GetxController {
     });
   }
 
+  Rx<permission.PermissionStatus> permissionStatus =
+      permission.PermissionStatus.denied.obs;
 
-  Rx<permission.PermissionStatus> permissionStatus = permission.PermissionStatus.denied.obs;
+   Completer<GoogleMapController> googleMapController =
+      Completer<GoogleMapController>();
 
-
-  final Completer<GoogleMapController> controller =
-  Completer<GoogleMapController>();
   final CameraPosition kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     // zoom: 14.4746,
@@ -136,24 +137,23 @@ class SearchStoreUserController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var status = await permission.Permission.location.request();
       permissionStatus.value = status;
-      if(permissionStatus.value == permission.PermissionStatus.denied || permissionStatus.value == permission.PermissionStatus.permanentlyDenied){
-        Utility.showConfirmAlertMessage(
-            AlertStringConstants.alertText,
-            description:  Platform.isAndroid? AlertStringConstants.locationAndroidAlertText :AlertStringConstants.locationAlertText,
+      if (permissionStatus.value == permission.PermissionStatus.denied ||
+          permissionStatus.value ==
+              permission.PermissionStatus.permanentlyDenied) {
+        Utility.showConfirmAlertMessage(AlertStringConstants.alertText,
+            description: Platform.isAndroid
+                ? AlertStringConstants.locationAndroidAlertText
+                : AlertStringConstants.locationAlertText,
             okay: StringConstants.settingsText,
-            cancelText:  StringConstants.notNowText,
-            okayTap: () async {
-              await permission.openAppSettings();
-              await permission.Permission.location.request();
-              await getPage();
-              Get.back();
-            }
-        );
+            cancelText: StringConstants.notNowText, okayTap: () async {
+          await permission.openAppSettings();
+          await permission.Permission.location.request();
+          await getPage();
+          Get.back();
+        });
       }
     });
-
   }
-
 
   getPage() async {
     firstName?.value =
@@ -298,7 +298,7 @@ class SearchStoreUserController extends GetxController {
         if (value?.body["data"]["balance"] is int ||
             value?.body["data"]["balance"] is String) {
           walletBalance.value =
-              double.parse(value?.body["data"]["balance"].toString()??"");
+              double.parse(value?.body["data"]["balance"].toString() ?? "");
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"];
@@ -461,15 +461,15 @@ class SearchStoreUserController extends GetxController {
       "page_size": 5,
       "longitude": zipCodeTextController.text != "" && isFilter ? null : lng,
       "latitude": zipCodeTextController.text != "" && isFilter ? null : lat,
-      "city": isFilter?"":city.value,
-      "place_id":isFilter?"":placeId.value,
-      "state": isFilter?"":state.value,
-      "country": isFilter?"":country.value,
+      "city": isFilter ? "" : city.value,
+      "place_id": isFilter ? "" : placeId.value,
+      "state": isFilter ? "" : state.value,
+      "country": isFilter ? "" : country.value,
       "postal_code":
           zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
           ? int.parse(mileageTextController.text)
-          : 500,
+          : 50,
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"
@@ -485,7 +485,7 @@ class SearchStoreUserController extends GetxController {
           : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
-      "delivery_services": isFilter?[]:deliveryServicesList
+      "delivery_services": isFilter ? [] : deliveryServicesList
     };
 
     debugPrint("TOKEN ********** $headers");

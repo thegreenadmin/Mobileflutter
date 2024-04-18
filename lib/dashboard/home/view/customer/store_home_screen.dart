@@ -117,6 +117,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                 ],
                               )
                         : ScrollLoopAutoScroll(
+                            key: UniqueKey(),
                             scrollDirection: Axis.horizontal,
                             delay: const Duration(seconds: 1),
                             duration: const Duration(seconds: 100),

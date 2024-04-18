@@ -279,8 +279,8 @@ class MembershipPlan {
 }
 
 class MembershipStore {
-  int? storeBalance;
-  int? taxValue;
+  dynamic storeBalance;
+  dynamic taxValue;
   dynamic dynamicLink;
   String? storeName;
   String? storeEin;

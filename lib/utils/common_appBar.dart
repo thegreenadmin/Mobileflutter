@@ -47,7 +47,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return Container(
       color: AppColors.primarylight,
       child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+          padding: EdgeInsets.only(
+              left: 20.0, right: 20, top: WidgetConstants.screenHeight * 0.04),
           child: Column(
             children: [
               Row(

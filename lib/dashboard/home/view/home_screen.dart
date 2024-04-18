@@ -56,19 +56,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void clearConnectionPool() {
     HttpClient().close(force: true);
   }
-/*
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused  ) {
-      debugPrint('App is about to be suspended or terminated. Logging out...');
-      accountController.apiLogOutUser();
-      clearConnectionPool();
-     */ /* WidgetsBinding.instance!.addPostFrameCallback((_) {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      });*/ /*
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 4, top: 50),
+              padding: const EdgeInsets.only(left: 8.0, right: 4, top: 50),
               child: Column(
                 children: [
                   Row(
@@ -93,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             Obx(() => Text(
                                   "${StringConstants.hiText}${firstName.value} ${lastName.value}",
                                   style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 )),
@@ -104,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: StringConstants.welcomeToText,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -112,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: ' T',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -128,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: ' G',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -136,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: 'reen',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -144,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: ' M',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -152,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     text: 'all',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 17,
+                                      fontSize: 16,
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -195,11 +182,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             child: Stack(
                                               children: [
                                                 CircleAvatar(
-                                                  radius: 20.0,
+                                                  radius: 18.0,
                                                   backgroundColor: Colors.white,
                                                   child: Image.asset(
                                                       ImageConstants.cart,
-                                                      height: 16),
+                                                      height: 14),
                                                 ),
                                                 Positioned(
                                                   right: 0,
@@ -229,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 10,
+                                                            fontSize: 8,
                                                           ),
                                                           textAlign:
                                                               TextAlign.center,
@@ -325,7 +312,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               ],
                             ),
                           ),
-                          width10SizedBox,
+                          width8SizedBox,
                           Obx(() => hasStoreAccess.value
                               ? RawMaterialButton(
                                   elevation: 0,
@@ -388,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             scale: 2.2,
                                             color: AppColors.white,
                                           )),
-                                      width5SizedBox,
+                                      width4SizedBox,
                                       Text(
                                         StringConstants.storesText,
                                         style: const TextStyle(
@@ -478,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 ImageConstants.union,
                                 scale: 2.4,
                               )),
-                          width6SizedBox,
+                          width5SizedBox,
                           RawMaterialButton(
                               elevation: 0,
                               onPressed: () {
@@ -602,7 +589,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 Get.parameters["isFromOptions"] = "false";
 
                                 Get.parameters["storeId"] = item.storeId ?? "";
-                                storeHomeMainController.invokedIndex.value = 3;
+                                // storeHomeMainController.invokedIndex.value = 3;
                                 // Get.parameters["isAddToOrderScreen"]=="false";
                                 await Get.to(() => const StoreHomeMainScreen(),
                                     id: pageIdApp.value);
