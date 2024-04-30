@@ -23,8 +23,7 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation>
-    with WidgetsBindingObserver {
+class _BottomNavigationState extends State<BottomNavigation> {
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
   final AccountController accountController = Get.put(AccountController());
@@ -32,16 +31,11 @@ class _BottomNavigationState extends State<BottomNavigation>
   @override
   void initState() {
     Get.parameters["isController"] = "no";
-    WidgetsBinding.instance.addObserver(this);
+
     super.initState();
   }
 
   late HttpClient client;
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
 
   void clearConnectionPool() {
     HttpClient().close(force: true);

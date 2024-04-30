@@ -5,9 +5,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 RemoteMessage? initialRemoteMessage;
@@ -63,14 +66,8 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    // handleDeepLink();
-  }
 
   Future<void> handleDeepLink() async {
     try {
@@ -102,6 +99,69 @@ class _MyAppState extends State<MyApp> {
   // }
 
   @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance!.addObserver(this);
+  }
+
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance!.removeObserver(this);
+  //   super.dispose();
+  // }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     // Perform logout action here
+  //     print('User logged out');
+  //     logout();
+  //   }
+  // }
+
+  Future<void> logout() async {
+    await apiLogOutUser();
+  }
+
+  ///logout user account
+  Future apiLogOutUser() async {
+    debugPrint(
+        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  clearData() async {
+    SharedPreferenceStorage.clearData();
+    Get.parameters.clear();
+    Get.offAll(() => const LoginScreen());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: StringConstants.theGreenMallTitleText, // The Green Mall
@@ -112,6 +172,7 @@ class _MyAppState extends State<MyApp> {
       ),
       // theme: Themes.light,
       // darkTheme: Themes.dark,
+      home: const SplashScreen(),
       getPages: Routers.route, themeMode: ThemeMode.system,
       initialRoute: '/splashView',
     );

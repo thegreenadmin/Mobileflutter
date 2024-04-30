@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
@@ -14,7 +15,6 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
-import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +23,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with WidgetsBindingObserver {
   final LocalAuthentication auth = LocalAuthentication();
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
@@ -55,7 +56,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigationPage() async {
     var role = await SharedPreferenceStorage.getData(Role.role);
-    var token = await SharedPreferenceStorage.getData('token');
+    var token =
+        await SharedPreferenceStorage.getData(StringConstants.tokenText);
     Future.delayed(const Duration(seconds: 3)).then((value) async {
       roleApp.value = role ?? "";
       if (token != null) {
@@ -115,54 +117,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     SystemChannels.lifecycle.setMessageHandler((msg) {
+      print("msg was called $msg");
       if (msg == AppLifecycleState.detached.toString()) {
-        logout();
+        print("msg was called $msg");
+        // Get.to(const LoginScreen());
+        SharedPreferenceStorage.removeData(StringConstants.tokenText);
       }
       return Future.value(null);
     });
+
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
-  }
-
-  Future<void> logout() async {
-    await apiLogOutUser();
-  }
-
-  ///logout user account
-  Future apiLogOutUser() async {
-    debugPrint(
-        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
-            headers,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
-      } else {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
-      }
-    });
-  }
-
-  clearData() async {
-    SharedPreferenceStorage.clearData();
-    Get.parameters.clear();
-    await Get.offAll(const StartJourneyScreen());
   }
 
   @override

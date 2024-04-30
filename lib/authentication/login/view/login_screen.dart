@@ -16,6 +16,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final LoginController loginController = Get.put(LoginController());
 
   @override
+  void initState() {
+    if (authToken.value != "") {
+      loginController.apiLogOutUser();
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.white,

@@ -61,6 +61,7 @@ class SharedPreferenceStorage {
     SharedPreferenceStorage.removeData(StringConstants.emailText.toLowerCase());
     SharedPreferenceStorage.removeData(StringConstants.tokenText);
     SharedPreferenceStorage.removeData(StringConstants.contextText);
+    SharedPreferenceStorage.removeData("wasKilled");
     await prefs.clear();
     // final GetStorage storage = GetStorage();
     // storage.erase();
