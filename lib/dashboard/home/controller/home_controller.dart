@@ -35,8 +35,6 @@ class HomeController extends GetxController {
   RxList<OffersList> userCarouselImgList = <OffersList>[].obs;
   RxList<String> ownerCarouselImgList = <String>[].obs;
 
-  RxString? role = "".obs;
-
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
   RxList<OffersList> getOwnerOfferList = <OffersList>[].obs;
@@ -55,38 +53,20 @@ class HomeController extends GetxController {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       apiGetUserDetail();
-      getPage();
-      getCurrentLocation();
     });
-  }
-
-  getPage() async {
-    firstName.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
-
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
-
-    debugPrint("HomeCController pageId ************${pageId.value} $roleVal");
   }
 
   getCurrentLocation() async {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    role!.value = roleApp.value;
+
     if (roleApp.value == Role.customerRoleText) {
-      role!.value = Role.customerRoleText;
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();
 
       searchStoreUserController.onInit();
     } else {
-      role!.value = Role.storeOwnerRoleText;
       await apiGetOwnerOffersList();
       await apiGetOwnerFeaturedProducts();
     }
@@ -103,9 +83,6 @@ class HomeController extends GetxController {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
-                    /*Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const AccountScreen(),
-                    ));*/
                     Get.back(id: pageIdApp.value);
                     await Get.to(() => const AccountScreen(),
                         id: int.parse(SharedPreferenceStorage.getData("pageId")
@@ -179,8 +156,7 @@ class HomeController extends GetxController {
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
         firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
         lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
-        hasStoreAccess.value =
-            getUserDetailModel.data?.user?.hasStoreAccess ?? false;
+
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
@@ -189,6 +165,7 @@ class HomeController extends GetxController {
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
+        await getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
@@ -201,6 +178,7 @@ class HomeController extends GetxController {
   ///Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
     userCarouselImgList.clear();
+    userOfferList.clear();
     isLoading?.value = true;
     debugPrint(
       "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
@@ -220,7 +198,7 @@ class HomeController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading?.value = false;
-      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}");
+      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}"); 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value?.body);
@@ -308,6 +286,7 @@ class HomeController extends GetxController {
 
   ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
+    featuredUserProductList.clear();
     isLoading?.value = true;
     String url =
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
@@ -364,6 +343,7 @@ class HomeController extends GetxController {
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+    getOwnerOfferList.clear();
     isLoading?.value = true;
     ownerCarouselImgList.clear();
     debugPrint(
@@ -420,6 +400,7 @@ class HomeController extends GetxController {
 
   ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
+    ownerFeatureProductList.clear();
     isLoading?.value = true;
     debugPrint("OWNER FEATURED PRODUCT URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}");

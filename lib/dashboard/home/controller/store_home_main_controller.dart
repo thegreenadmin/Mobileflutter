@@ -45,7 +45,8 @@ class StoreHomeMainController extends GetxController {
   late PreviousOrdersModel previousOrdersModel = PreviousOrdersModel();
   RxList<PreviousOrdersProducts> previousOrderList =
       <PreviousOrdersProducts>[].obs;
-
+  RxInt currentIndex = 0.obs;
+  RxInt currentIndexProducts = 0.obs;
   RxString storeLocation = "".obs;
   RxInt listIndex = 2.obs;
   RxInt cartCount = 0.obs;
@@ -94,8 +95,6 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    debugPrint(
-        "StoreHomeMainController - onIt call--====> called 111111111111");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
@@ -105,8 +104,6 @@ class StoreHomeMainController extends GetxController {
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
       // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0") ;
-      debugPrint(
-          "StoreHomeMainController - onIt call------------------2222222222");
       if (roleApp.value == Role.customerRoleText) {
         getCurrentLocation();
         apiGetUserDetailsApi();

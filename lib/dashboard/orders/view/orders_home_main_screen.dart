@@ -91,7 +91,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.20),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.22),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -124,7 +124,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 10.0, right: 8, bottom: 10, top: 30),
+                            left: 10.0, right: 8, bottom: 8, top: 30),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,

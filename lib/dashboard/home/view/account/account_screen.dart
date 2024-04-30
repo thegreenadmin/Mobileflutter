@@ -90,51 +90,7 @@ class _AccountScreenState extends State<AccountScreen> {
         return false;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(80.0),
-            child: Container(
-              color: AppColors.primarylight,
-              child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                  child: Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  onPressed: () {
-                                    Get.back(id: pageIdApp.value);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back,
-                                    color: AppColors.black,
-                                    size: 24.0,
-                                  ),
-                                ),
-                                width10SizedBox,
-                                Text(
-                                  StringConstants.accountText,
-                                  style: const TextStyle(
-                                      fontSize: 22,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 4,
-                            )
-                          ]),
-                    ],
-                  )),
-            )),
+        appBar: _builAppBar(),
         body: SingleChildScrollView(
           child: SizedBox(
             child: Column(
@@ -202,8 +158,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                   Role.storeOwnerRoleText;
                               roleApp.value = Role.storeOwnerRoleText;
                               Get.find<BottomNavController>().onReady();
-                              // Get.find<BottomNavController>().onReady();
-                              // Get.put(BottomNavController()).onReady();
                               Get.until((route) => route.isFirst,
                                   id: pageIdApp.value);
                             } else {
@@ -888,5 +842,52 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
       ),
     );
+  }
+
+  PreferredSize _builAppBar() {
+    return PreferredSize(
+        preferredSize: const Size.fromHeight(80.0),
+        child: Container(
+          color: AppColors.primarylight,
+          child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
+                                Get.back(id: pageIdApp.value);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: AppColors.black,
+                                size: 24.0,
+                              ),
+                            ),
+                            width10SizedBox,
+                            Text(
+                              StringConstants.accountText,
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        )
+                      ]),
+                ],
+              )),
+        ));
   }
 }

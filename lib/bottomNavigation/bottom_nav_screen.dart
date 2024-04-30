@@ -17,17 +17,17 @@ import '../dashboard/orders/view/order_store_list_screen.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  const BottomNavigation({super.key});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> with WidgetsBindingObserver {
+class _BottomNavigationState extends State<BottomNavigation>
+    with WidgetsBindingObserver {
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
- final AccountController accountController =
-      Get.put(AccountController());
+  final AccountController accountController = Get.put(AccountController());
 
   @override
   void initState() {
@@ -35,29 +35,17 @@ class _BottomNavigationState extends State<BottomNavigation> with WidgetsBinding
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
+
   late HttpClient client;
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   void clearConnectionPool() {
     HttpClient().close(force: true);
   }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused  ) {
-      debugPrint('App is about to be suspended or terminated. Logging out...');
-      // accountController.apiLogOutUser();
-      // clearConnectionPool();
-      /*WidgetsBinding.instance.addPostFrameCallback((_) {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      });*/
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,19 +65,6 @@ class _BottomNavigationState extends State<BottomNavigation> with WidgetsBinding
       },
       child: Obx(
         () => Scaffold(
-          /* extendBody: true,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: AppColors.primary,
-              child: Image.asset(
-                "assets/orders.png",
-                scale: 4,
-              ),
-              onPressed: () {
-                bottomNavigationPageController.onItemTapped(2);
-                // OrdersController controller = Get.find<OrdersController>();
-                // controller.onInit();
-              }),*/
           backgroundColor: AppColors.white,
           bottomNavigationBar: BottomAppBar(
             notchMargin: 5,
@@ -140,7 +115,8 @@ class _BottomNavigationState extends State<BottomNavigation> with WidgetsBinding
                               BottomNavStringConstants.homeText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                              .selectedIndex.value == 0
+                                              .selectedIndex.value ==
+                                          0
                                       ? AppColors.primary
                                       : AppColors.blacklight,
                                   fontWeight: FontWeight.w500,
@@ -299,7 +275,6 @@ class _BottomNavigationState extends State<BottomNavigation> with WidgetsBinding
   }
 }
 
-/// sub navigators.
 class _TabNav extends GetView<BottomNavController> {
   final int navKey;
   final Widget tab;

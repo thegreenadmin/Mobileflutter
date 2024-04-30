@@ -6,13 +6,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
+import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
+import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -20,7 +25,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final LocalAuthentication auth = LocalAuthentication();
-
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
   bool authh = false;
@@ -108,46 +112,58 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  // Future<void> _authenticateWithBiometrics() async {
-  //   bool authenticated = false;
-  //   try {
-  //     isAuthenticating = true;
-  //     authorized = 'Authenticating';
-  //     Future.delayed(const Duration(seconds: 2)).then((value) async {
-  //       authenticated = await auth.authenticate(
-  //         localizedReason: 'Scan your fingerprint to authenticate',
-  //         options: const AuthenticationOptions(
-  //           stickyAuth: true,
-  //           biometricOnly: true,
-  //         ),
-  //       );
-  //     });
-  //    // isAuthenticating = false;
-  //    // authorized = 'Authenticating';
-  //   } on PlatformException catch (e) {
-  //     debugPrint(e.toString());
-  //     setState(() {
-  //       isAuthenticating = false;
-  //       authorized = 'Error - ${e.message}';
-  //     });
+  @override
+  void initState() {
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      if (msg == AppLifecycleState.detached.toString()) {
+        logout();
+      }
+      return Future.value(null);
+    });
+    super.initState();
+  }
 
-  //     return;
-  //   }
-  //   if (!mounted) {
-  //     return;
-  //   }
-  //   final String message = authenticated ? 'Authorized' : 'Not Authorized';
-  //   authorized = message;
+  Future<void> logout() async {
+    await apiLogOutUser();
+  }
 
-  //   if (authenticated) {
-  //     print("HELLO *****" + authenticated.toString());
-  //     SharedPreferenceStorage.setData(
-  //         StringConstants.authenticatedText, authenticated);
-  //     await navigationPage();
-  //   } else {
-  //     _authenticateWithBiometrics();
-  //   }
-  // }
+  ///logout user account
+  Future apiLogOutUser() async {
+    debugPrint(
+        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  clearData() async {
+    SharedPreferenceStorage.clearData();
+    Get.parameters.clear();
+    await Get.offAll(const StartJourneyScreen());
+  }
 
   @override
   Widget build(BuildContext context) {

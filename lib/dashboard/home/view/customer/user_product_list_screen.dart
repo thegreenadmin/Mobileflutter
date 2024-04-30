@@ -14,83 +14,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
 
-  RxList horizontalTabList = [
-    StringConstants.storeText,
-    StringConstants.menuText,
-    StringConstants.favoriteText,
-    StringConstants.optionsText,
-  ].obs;
-
   @override
   Widget build(BuildContext context) {
     return userProductWidget();
-    /*return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
-            child: const UserStoreOrderAppBar()),
-        body: Obx(
-          () => Column(
-            children: [
-              horizontalTabs(),
-              const Divider(
-                thickness: 1,
-              ),
-              storeHomeMainController.selectedIndex.value == 0
-                  ? const Expanded(child: StoreHomeScreen())
-                  : storeHomeMainController.selectedIndex.value == 1
-                      ? userProductWidget()
-                      : storeHomeMainController.selectedIndex.value == 2
-                          ? const Expanded(child: StoreFavouriteScreen())
-                          : storeHomeMainController.selectedIndex.value == 3
-                              ? storeHomeMainController.popUpIndex.value == 0
-                                  ? const Expanded(
-                                      child: PreviousOrdersScreen())
-                                  : storeHomeMainController.popUpIndex.value ==
-                                          2
-                                      ? Expanded(
-                                          child: PdfViewScreen(
-                                              isShowPrivacy: true,
-                                              url: storeHomeMainController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data!
-                                                  .store!
-                                                  .storePages!
-                                                  .first
-                                                  .storePageContent!
-                                                  .dynamicUrl
-                                                  .toString()))
-                                      : storeHomeMainController.popUpIndex.value ==
-                                              3
-                                          ? Expanded(
-                                              child: PdfViewScreen(
-                                                  isShowPrivacy: false,
-                                                  url: storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .storePages!
-                                                      .first
-                                                      .storePageContent!
-                                                      .dynamicUrl
-                                                      .toString()))
-                                          : storeHomeMainController
-                                                      .lastSelectedIndex
-                                                      .value ==
-                                                  1
-                                              ? userProductWidget()
-                                              : storeHomeMainController
-                                                          .lastSelectedIndex
-                                                          .value ==
-                                                      2
-                                                  ? const Expanded(
-                                                      child: StoreFavouriteScreen())
-                                                  : const Expanded(child: StoreHomeScreen())
-                              : const Expanded(child: StoreHomeScreen())
-            ],
-          ),
-        ));*/
   }
 
   Widget userProductWidget() {
@@ -160,9 +86,10 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                           storeHomeMainController.featureProductList.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
-                                WidgetConstants.screenHeight * 0.22) /
-                            WidgetConstants.screenHeight,
+                        childAspectRatio: (WidgetConstants.screenWidth +
+                                WidgetConstants.screenHeight) /
+                            WidgetConstants.screenHeight *
+                            0.45,
                         mainAxisSpacing: 0.0,
                         crossAxisSpacing: 10.0,
                         crossAxisCount: 2,
@@ -180,9 +107,6 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                             Get.parameters['isFromMenu'] = "true";
                             Get.parameters["isFromOptions"] = "false";
                             storeHomeMainController.invokedIndex.value++;
-                            // Get.parameters["isAddToOrderScreen"] = "true";
-                            /*await Get.to(() => const AddToOrderScreen(),
-                                id: pageIdApp.value);*/
                           },
                           child: Card(
                             elevation: 0,

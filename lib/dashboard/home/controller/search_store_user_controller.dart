@@ -114,7 +114,7 @@ class SearchStoreUserController extends GetxController {
   Rx<permission.PermissionStatus> permissionStatus =
       permission.PermissionStatus.denied.obs;
 
-   Completer<GoogleMapController> googleMapController =
+  Completer<GoogleMapController> googleMapController =
       Completer<GoogleMapController>();
 
   final CameraPosition kGooglePlex = const CameraPosition(
@@ -500,7 +500,7 @@ class SearchStoreUserController extends GetxController {
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
-      log("GET NEARBY STORES *******${value?.body}");
+      debugPrint("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isClicked.value = false;

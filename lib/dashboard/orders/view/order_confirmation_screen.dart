@@ -1,5 +1,6 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
@@ -530,9 +531,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                             lineType: LineType.normal,
                             activeLineColor: AppColors.grey,
                             defaultLineColor: AppColors.grey,
-                            // lineThickness: 3,
-                            // lineSpace: 1,
-                            // lineWidth: 10,
                           ),
                           activeStepBorderType: BorderType.normal,
                           unreachedStepBorderType: BorderType.normal,
@@ -548,19 +546,22 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           steps: List<EasyStep>.generate(
                             ordersController.stepInd.length,
                             (index) => EasyStep(
-                              customStep:
-                                  ordersController.stepInd[index].isSelected ==
-                                          true
-                                      ? Image.asset(
-                                          ImageConstants.blueTick,
-                                          scale: 3.5,
-                                        )
-                                      : Image.asset(
-                                          ImageConstants.blackTick,
-                                          scale: 3.5,
-                                        ),
+                              customStep: Center(
+                                child: ordersController
+                                            .stepInd[index].isSelected ==
+                                        true
+                                    ? Image.asset(
+                                        ImageConstants.blueTick,
+                                        scale: 3.5,
+                                      )
+                                    : Image.asset(
+                                        ImageConstants.blackTick,
+                                        scale: 3.5,
+                                      ),
+                              ),
                               customTitle: Text(
                                 ordersController.stepInd[index].name ?? "",
+                                textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     overflow: TextOverflow.visible,
                                     fontWeight: FontWeight.w600,
@@ -576,7 +577,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                     ),
                   ),
                 ),
-                /* Obx(
+                Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value ==
                             OrderStatusEnum.inProgress.statusName &&
@@ -604,7 +605,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       ],
                     ),
                   ),
-                ), */
+                ),
                 Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value !=

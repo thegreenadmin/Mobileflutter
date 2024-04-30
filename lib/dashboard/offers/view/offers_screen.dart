@@ -236,8 +236,6 @@ class _OffersScreenState extends State<OffersScreen> {
                                           WidgetConstants.screenHeight * 0.2,
                                       width: WidgetConstants.screenWidth,
                                       child: ListView.separated(
-                                          controller:
-                                              offersController.scrollController,
                                           separatorBuilder:
                                               (BuildContext context, int i) {
                                             return width8SizedBox;
@@ -260,6 +258,8 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               .getUserOfferList[
                                                                   index]
                                                               .offers![i];
+                                                      print(
+                                                          "offerObj======== ${offersController.getUserOfferList[index].offers![i].offerName}");
                                                       await offersController
                                                           .apiGetOffersProducts(
                                                               offerId: offersController
@@ -372,9 +372,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                 );
                               } else if (offersController.isLoading!.value) {
                                 Timer(const Duration(milliseconds: 10), () {
-                                  offersController.scrollController.jumpTo(
-                                      offersController.scrollController.position
-                                          .maxScrollExtent);
+                                  offersController.scrollController1.jumpTo(
+                                      offersController.scrollController1
+                                          .position.maxScrollExtent);
                                 });
                                 return CommonWidgets.loadingIndicator();
                               } else {

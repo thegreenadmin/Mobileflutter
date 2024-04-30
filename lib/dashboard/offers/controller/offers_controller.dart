@@ -109,9 +109,9 @@ class OffersController extends GetxController {
   }
 
   setupScrollController1() {
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 10) {
+    scrollController1.addListener(() {
+      if (scrollController1.position.pixels >=
+          scrollController1.position.maxScrollExtent - 10) {
         if (getUserOfferList.length < totalCountCustomer.value) {
           pageCustomer.value++;
           apiGetUserOffersList();

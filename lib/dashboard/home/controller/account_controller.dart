@@ -1094,6 +1094,7 @@ class AccountController extends GetxController {
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

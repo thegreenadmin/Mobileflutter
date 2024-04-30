@@ -387,11 +387,14 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                             ),
                           );
                         } else if (searchStoreUserController.isLoading.value) {
-                          Timer(const Duration(milliseconds: 10), () {
-                            searchStoreUserController.scrollController.jumpTo(
-                                searchStoreUserController
-                                    .scrollController.position.maxScrollExtent);
-                          });
+                          if (!searchStoreUserController
+                              .scrollController.hasClients) {
+                            Timer(const Duration(milliseconds: 10), () {
+                              searchStoreUserController.scrollController.jumpTo(
+                                  searchStoreUserController.scrollController
+                                      .position.maxScrollExtent);
+                            });
+                          }
                           return CommonWidgets.loadingIndicator();
                         } else {
                           return const SizedBox();

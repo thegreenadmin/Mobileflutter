@@ -43,8 +43,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                             searchStoreUserController.type.value == 0
                                 ? StringConstants.noNearbyStoreFoundText
                                 : searchStoreUserController.type.value == 1
-                                    ? StringConstants
-                                        .noPreviousStoresFoundText
+                                    ? StringConstants.noPreviousStoresFoundText
                                     : StringConstants
                                         .noFavouriteStoresFoundText,
                             style: const TextStyle(
@@ -55,8 +54,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                     )
               : ListView.builder(
                   controller: searchStoreUserController.scrollController,
-                  itemCount: searchStoreUserController
-                          .storeAddresses.length +
+                  itemCount: searchStoreUserController.storeAddresses.length +
                       (searchStoreUserController.isLoading.value ? 1 : 0),
                   primary: false,
                   shrinkWrap: true,
@@ -82,14 +80,11 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                 Get.parameters['isFromFav'] = "false";
                                 Get.parameters["isFromHome"] = "true";
                                 Get.parameters["isFromOptions"] = "false";
-                                // Get.parameters["isAddToOrderScreen"]=="false";
-                                await Get.to(
-                                    () => const StoreHomeMainScreen(),
+                                await Get.to(() => const StoreHomeMainScreen(),
                                     id: pageIdApp.value);
                               },
                               child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 6),
+                                margin: const EdgeInsets.symmetric(vertical: 6),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 decoration: BoxDecoration(
@@ -148,15 +143,13 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               children: [
                                                 Text(
                                                   searchStoreUserController
-                                                          .storeAddresses[
-                                                              index]
+                                                          .storeAddresses[index]
                                                           .store
                                                           ?.storeName ??
                                                       "",
                                                   style: const TextStyle(
                                                       fontSize: 17.0,
-                                                      color:
-                                                          AppColors.black,
+                                                      color: AppColors.black,
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
@@ -186,14 +179,12 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                                       index]
                                                                   .addressLine1 ??
                                                               "",
-                                                          overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           maxLines: 1,
                                                           softWrap: false,
                                                           style: TextStyle(
-                                                              fontSize:
-                                                                  14.0,
+                                                              fontSize: 14.0,
                                                               color: AppColors
                                                                   .blacklight,
                                                               fontWeight:
@@ -230,8 +221,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                         color: AppColors
                                                             .blacklight,
                                                         fontWeight:
-                                                            FontWeight
-                                                                .w500)),
+                                                            FontWeight.w500)),
                                               ],
                                             ),
                                           )
@@ -247,8 +237,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               ? InkWell(
                                                   onTap: () {
                                                     if (searchStoreUserController
-                                                            .isLoading
-                                                            .value ==
+                                                            .isLoading.value ==
                                                         false) {
                                                       searchStoreUserController
                                                           .apiRemoveFavouriteStore(
@@ -269,8 +258,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                               : InkWell(
                                                   onTap: () {
                                                     if (searchStoreUserController
-                                                            .isLoading
-                                                            .value ==
+                                                            .isLoading.value ==
                                                         false) {
                                                       searchStoreUserController
                                                           .apiCreateFavouriteStore(
@@ -310,12 +298,10 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 return width10SizedBox;
                                               },
                                               shrinkWrap: true,
-                                              scrollDirection:
-                                                  Axis.horizontal,
+                                              scrollDirection: Axis.horizontal,
                                               itemCount:
                                                   searchStoreUserController
-                                                          .storeAddresses[
-                                                              index]
+                                                          .storeAddresses[index]
                                                           .store
                                                           ?.storeDeliveryServices
                                                           ?.length ??
@@ -367,8 +353,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                       style: const TextStyle(
                                                           fontSize: 12.0,
                                                           fontWeight:
-                                                              FontWeight
-                                                                  .w500),
+                                                              FontWeight.w500),
                                                     ),
                                                   ],
                                                 );
@@ -433,11 +418,14 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                               ),
                             );
                     } else if (searchStoreUserController.isLoading.value) {
-                      Timer(const Duration(milliseconds: 10), () {
-                        searchStoreUserController.scrollController.jumpTo(
-                            searchStoreUserController
-                                .scrollController.position.maxScrollExtent);
-                      });
+                      if (!searchStoreUserController
+                          .scrollController.hasClients) {
+                        Timer(const Duration(milliseconds: 10), () {
+                          searchStoreUserController.scrollController.jumpTo(
+                              searchStoreUserController
+                                  .scrollController.position.maxScrollExtent);
+                        });
+                      }
                       return CommonWidgets.loadingIndicator();
                     } else {
                       return const SizedBox();
