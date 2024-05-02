@@ -6,16 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
-import 'package:thegreenmall/provider/user_provider.dart';
-import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
-import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
-import 'package:thegreenmall/utils/utility.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -59,11 +55,17 @@ class _SplashScreenState extends State<SplashScreen>
     var role = await SharedPreferenceStorage.getData(Role.role);
     var token =
         await SharedPreferenceStorage.getData(StringConstants.tokenText);
+    var onboardingCompleted =
+        await SharedPreferenceStorage.getData("onboardingCompleted") ?? "";
     bool wasStoreOwner = await SharedPreferenceStorage.getData("isStoreOwner");
     Future.delayed(const Duration(seconds: 3)).then((value) async {
       roleApp.value = role ?? "";
-      isStoreOwner.value = wasStoreOwner;
-      if (token != null) {
+
+      print("Splash " + onboardingCompleted.toString());
+      if (onboardingCompleted == "yes") {
+        Get.offAll(() => const StartJourneyScreen());
+      } else if (token != null) {
+        isStoreOwner.value = wasStoreOwner;
         authToken.value = token;
         Get.offAll(() => const BottomNavigation());
       } else {
@@ -119,75 +121,12 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
-    SystemChannels.lifecycle.setMessageHandler((msg) {
-      print("msg was called $msg");
-      if (msg == AppLifecycleState.detached.toString()) {
-        SharedPreferenceStorage.removeData("token");
-        logout();
-      }
-      return Future.value(null);
-    });
-
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      // App is detached, log out the user
-      // You can perform any additional cleanup here
-      print('App detached. Logging out user...');
-      apiLogOutUser();
-    }
-  }
-
-  Future<void> logout() async {
-    await apiLogOutUser();
-  }
-
-  ///logout user account
-  Future apiLogOutUser() async {
-    debugPrint(
-        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
-            headers,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
-      } else {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
-      }
-    });
-  }
-
-  clearData() async {
-    SharedPreferenceStorage.clearData();
-    Get.parameters.clear();
-    Get.offAll(() => const LoginScreen());
   }
 
   @override

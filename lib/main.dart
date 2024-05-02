@@ -101,23 +101,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance!.addObserver(this);
+
+    clearData(); // We can call logout api here as well
   }
 
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance!.removeObserver(this);
-  //   super.dispose();
-  // }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.resumed) {
-  //     // Perform logout action here
-  //     print('User logged out');
-  //     logout();
-  //   }
-  // }
+  clearData() async {
+    SharedPreferenceStorage.getData('onboardingCompleted') ?? "";
+    
+    SharedPreferenceStorage.clearData();
+    Get.parameters.clear();
+  }
 
   Future<void> logout() async {
     await apiLogOutUser();
@@ -153,12 +146,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       }
     });
-  }
-
-  clearData() async {
-    SharedPreferenceStorage.clearData();
-    Get.parameters.clear();
-    Get.offAll(() => const LoginScreen());
   }
 
   @override

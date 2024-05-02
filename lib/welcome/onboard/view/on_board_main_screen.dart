@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_four_screen.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_one_screen.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_three_screen.dart';
@@ -50,7 +51,9 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
         elevation: 0,
         actions: <Widget>[
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                await SharedPreferenceStorage.setData(
+                    'onboardingCompleted', "yes");
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (_) => const StartJourneyScreen(),
                 ));
@@ -124,13 +127,23 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                 //This keeps the splash effect within the circle
                 borderRadius: BorderRadius.circular(
                     1000.0), //Something large to ensure a circle
-                onTap: () {
+                onTap: () async {
                   controller.animateToPage(
                     onboardController.page.value + 1,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.ease,
                   );
                   if (onboardController.page.value == 3) {
+                    try {
+                      await SharedPreferenceStorage.setData(
+                          'onboardingCompleted', "yes");
+                      var val = await SharedPreferenceStorage.getData(
+                          'onboardingCompleted');
+                      print("Value in shared preferences: $val");
+                    } catch (error) {
+                      print(
+                          "Error setting value in shared preferences: $error");
+                    }
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (_) => const StartJourneyScreen(),
                     ));
