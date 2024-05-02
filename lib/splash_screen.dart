@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/bottomnavigation/bottom_nav_screen.dart';
@@ -58,8 +59,10 @@ class _SplashScreenState extends State<SplashScreen>
     var role = await SharedPreferenceStorage.getData(Role.role);
     var token =
         await SharedPreferenceStorage.getData(StringConstants.tokenText);
+    bool wasStoreOwner = await SharedPreferenceStorage.getData("isStoreOwner");
     Future.delayed(const Duration(seconds: 3)).then((value) async {
       roleApp.value = role ?? "";
+      isStoreOwner.value = wasStoreOwner;
       if (token != null) {
         authToken.value = token;
         Get.offAll(() => const BottomNavigation());

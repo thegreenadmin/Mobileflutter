@@ -410,7 +410,10 @@ class AddNewStoreController extends GetxController {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("CREATE STORE BODY********** $data");
+    debugPrint(
+        "CREATE STORE openingTimeTextController********** ${openingTimeTextController.text}");
+    debugPrint(
+        "CREATE STORE closingTimeTextController********** ${closingTimeTextController.text}");
     debugPrint(
         "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
     UserProvider()

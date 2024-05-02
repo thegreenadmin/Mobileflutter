@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart'
     as offer;
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';

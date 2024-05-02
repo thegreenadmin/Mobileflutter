@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -658,6 +660,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                         final result = response.results.isNotEmpty
                             ? response.results.first
                             : null;
+
+                        debugPrint(
+                            "ADDRESSES---lat lng ->${jsonEncode(result)}");
+                        debugPrint(
+                            "ADDRESSES---lat  ->${response.results.first.geometry.location.lat}");
+                        debugPrint(
+                            "ADDRESSES--- lng ->${response.results.first.geometry.location.lng}");
+
                         if (result != null) {
                           addNewStoreController.townOrCityTextController.text =
                               Utility.extractLocality(result, "locality");
@@ -1103,49 +1113,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       //OPENING TIME TEXTFORM FIELD
                                       CustomInputField(
                                         onTap: () async {
-                                          if (addNewStoreController
-                                                  .is247Time.value !=
-                                              true) {
-                                            TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
-                                            date = (await showTimePicker(
-                                              initialEntryMode:
-                                                  TimePickerEntryMode.input,
-                                              helpText: StringConstants
-                                                  .selectTimeText,
-                                              initialTime: TimeOfDay.now(),
-                                              context: context,
-                                              builder: (context, child) {
-                                                return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
-                                                    buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
-                                                  ),
-                                                  child: child!,
-                                                );
-                                              },
-                                            ))!;
-                                            addNewStoreController
-                                                    .openingTimeTextController
-                                                    .text =
-                                                date.format(context).toString();
-
-                                            addNewStoreController
-                                                    .openingTime.value =
-                                                "${date.hour}:${date.minute}:00";
-
-                                            debugPrint(
-                                                "${date.hour}:${date.minute}:00");
-                                          }
+                                          await selectTimeAndSetController(
+                                              addNewStoreController
+                                                  .openingTimeTextController,
+                                              addNewStoreController
+                                                  .openingTime);
                                         },
                                         textInputAction: TextInputAction.next,
                                         isBorderOutline: false,
@@ -1221,47 +1193,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                       //CLOSING TIME TEXTFORM FIELD
                                       CustomInputField(
                                         onTap: () async {
-                                          if (addNewStoreController
-                                                  .is247Time.value !=
-                                              true) {
-                                            TimeOfDay date = TimeOfDay.now();
-                                            FocusScope.of(context)
-                                                .requestFocus(FocusNode());
-                                            date = (await showTimePicker(
-                                              initialEntryMode:
-                                                  TimePickerEntryMode.input,
-                                              helpText: StringConstants
-                                                  .selectTimeText,
-                                              initialTime: TimeOfDay.now(),
-                                              context: context,
-                                              builder: (context, child) {
-                                                return Theme(
-                                                  data: ThemeData.light()
-                                                      .copyWith(
-                                                    colorScheme:
-                                                        const ColorScheme.light(
-                                                            primary: AppColors
-                                                                .primary),
-                                                    buttonTheme:
-                                                        const ButtonThemeData(
-                                                            textTheme:
-                                                                ButtonTextTheme
-                                                                    .primary),
-                                                  ),
-                                                  child: child!,
-                                                );
-                                              },
-                                            ))!;
-                                            addNewStoreController
-                                                    .closingTimeTextController
-                                                    .text =
-                                                date.format(context).toString();
-                                            addNewStoreController
-                                                    .closingTime.value =
-                                                "${date.hour}:${date.minute}:00";
-                                            debugPrint(
-                                                "${date.hour}:${date.minute}:00");
-                                          }
+                                          await selectTimeAndSetController(
+                                              addNewStoreController
+                                                  .closingTimeTextController,
+                                              addNewStoreController
+                                                  .closingTime);
                                         },
                                         textInputAction: TextInputAction.next,
                                         isBorderOutline: false,
@@ -1573,5 +1509,51 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> selectTimeAndSetController(
+      TextEditingController controller, RxString timeValue) async {
+    if (addNewStoreController.is247Time.value != true) {
+      TimeOfDay date = TimeOfDay.now();
+      FocusScope.of(context).requestFocus(FocusNode());
+      date = (await showTimePicker(
+        initialEntryMode: TimePickerEntryMode.input,
+        helpText: StringConstants.selectTimeText,
+        initialTime: TimeOfDay.now(),
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: const ColorScheme.light(primary: AppColors.primary),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!,
+          );
+        },
+      ))!;
+      controller.text = date.format(context).toString();
+      timeValue.value = "${date.hour}:${date.minute}:00";
+
+      debugPrint("${date.hour}:${date.minute}:00");
+
+      if (addNewStoreController.weekDaysList.isNotEmpty) {
+        for (int i = 0; i < addNewStoreController.weekDaysList.length; i++) {
+          if (addNewStoreController.weekDaysList[i].isSelected == true) {
+            for (int j = 0;
+                j < addNewStoreController.storeTimmingList.length;
+                j++) {
+              if (timeValue == addNewStoreController.openingTime) {
+                addNewStoreController.storeTimmingList[j]["opening_time"] =
+                    timeValue.value;
+              } else if (timeValue == addNewStoreController.closingTime) {
+                addNewStoreController.storeTimmingList[j]["closing_time"] =
+                    timeValue.value;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
