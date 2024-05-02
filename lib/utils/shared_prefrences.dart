@@ -7,7 +7,7 @@ import 'global_share_data.dart';
 class SharedPreferenceStorage {
   static final storage = GetStorage();
 
-  static void setData(String key, dynamic value) async {
+  static setData(String key, dynamic value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (value is String) {
       await prefs.setString(key, value);
@@ -62,12 +62,12 @@ class SharedPreferenceStorage {
     SharedPreferenceStorage.removeData(StringConstants.tokenText);
     SharedPreferenceStorage.removeData(StringConstants.contextText);
     SharedPreferenceStorage.removeData("wasKilled");
-    await prefs.clear();
+    // await prefs.clear();
     // final GetStorage storage = GetStorage();
     // storage.erase();
   }
 
-  static  removeData(String key) async {
+  static removeData(String key) async {
     // final GetStorage storage = GetStorage();
     // storage.remove(key);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
