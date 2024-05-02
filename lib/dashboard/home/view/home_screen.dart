@@ -57,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     HttpClient().close(force: true);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -100,17 +102,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   Obx _buildFeatureProductText() {
     return Obx(
-              () => homeController.featuredUserProductList.isEmpty ||
-                      homeController.ownerFeatureProductList.isEmpty
-                  ? height0SizedBox
-                  : Text(
-                      StringConstants.featuredProductsText,
-                      style: const TextStyle(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-            );
+      () => homeController.featuredUserProductList.isEmpty ||
+              homeController.ownerFeatureProductList.isEmpty
+          ? height0SizedBox
+          : Text(
+              StringConstants.featuredProductsText,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
+            ),
+    );
   }
 
   PreferredSize _buildAppbar() {
@@ -205,11 +207,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         children: [
                           Obx(
                             () => Visibility(
-                              visible:
-                                  roleApp.value == Role.customerRoleText &&
-                                      homeController.searchStoreUserController
-                                              .cartCount.value !=
-                                          0,
+                              visible: roleApp.value == Role.customerRoleText &&
+                                  homeController.searchStoreUserController
+                                          .cartCount.value !=
+                                      0,
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: Row(
@@ -251,8 +252,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                     decoration: BoxDecoration(
                                                       color: AppColors.red,
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(8.5),
+                                                          BorderRadius.circular(
+                                                              8.5),
                                                     ),
                                                     constraints:
                                                         const BoxConstraints(
@@ -266,8 +267,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                             .cartItems
                                                             .length
                                                             .toString(),
-                                                        style:
-                                                            const TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 8,
                                                         ),
@@ -325,8 +325,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             element.isStoreOwner == true ||
                                             element.controllers!.any((ele) =>
                                                 ele.controllerKey ==
-                                                PermissionKey.manageMessages
-                                                    .statusName))
+                                                PermissionKey
+                                                    .manageMessages.statusName))
                                     ? Get.to(() => const OwnerInboxScreen(),
                                         id: pageIdApp.value)
                                     : Utility.showAlertMessage(
@@ -370,8 +370,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             ? RawMaterialButton(
                                 elevation: 0,
                                 onPressed: () {
-                                  if (roleApp.value ==
-                                      Role.customerRoleText) {
+                                  if (roleApp.value == Role.customerRoleText) {
                                     Get.parameters["firstName"] =
                                         firstName.value.toString();
                                     Get.parameters["lastName"] =
@@ -392,8 +391,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     Get.parameters["isFromHome"] = 'false';
                                     Get.parameters["firstName"] =
                                         firstName.value.toString();
-                                    Get.parameters["lastName"] =
-                                        lastName.value;
+                                    Get.parameters["lastName"] = lastName.value;
                                     Get.parameters['storeId'] = "";
                                     Get.to(
                                       () => const OwnerStoresListScreen(),
@@ -441,8 +439,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             : RawMaterialButton(
                                 elevation: 0,
                                 onPressed: () {
-                                  if (roleApp.value ==
-                                      Role.customerRoleText) {
+                                  if (roleApp.value == Role.customerRoleText) {
                                     Get.to(
                                       () => const SearchStoreUserScreen(),
                                       id: pageIdApp.value,

@@ -67,7 +67,7 @@ class SharedPreferenceStorage {
     // storage.erase();
   }
 
-  static void removeData(String key) async {
+  static  removeData(String key) async {
     // final GetStorage storage = GetStorage();
     // storage.remove(key);
     final SharedPreferences prefs = await SharedPreferences.getInstance();

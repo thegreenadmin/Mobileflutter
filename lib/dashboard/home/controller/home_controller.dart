@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' show Position;
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
@@ -175,6 +176,44 @@ class HomeController extends GetxController {
     });
   }
 
+  ///logout user account
+  Future apiLogOutUser() async {
+    debugPrint(
+        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  clearData() async {
+    SharedPreferenceStorage.clearData();
+    Get.parameters.clear();
+    Get.offAll(() => const LoginScreen());
+  }
+
   ///Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
     userCarouselImgList.clear();
@@ -198,7 +237,7 @@ class HomeController extends GetxController {
             showLoading: false)
         .then((value) async {
       isLoading?.value = false;
-      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}"); 
+      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value?.body);

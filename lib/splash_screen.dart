@@ -119,15 +119,72 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChannels.lifecycle.setMessageHandler((msg) {
       print("msg was called $msg");
       if (msg == AppLifecycleState.detached.toString()) {
-        print("msg was called $msg");
-        // Get.to(const LoginScreen());
-        SharedPreferenceStorage.removeData(StringConstants.tokenText);
+        SharedPreferenceStorage.removeData("token");
+        logout();
       }
       return Future.value(null);
     });
 
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      // App is detached, log out the user
+      // You can perform any additional cleanup here
+      print('App detached. Logging out user...');
+      apiLogOutUser();
+    }
+  }
+
+  Future<void> logout() async {
+    await apiLogOutUser();
+  }
+
+  ///logout user account
+  Future apiLogOutUser() async {
+    debugPrint(
+        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    UserProvider()
+        .getWithHeadersApi(
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            headers,
+            showLoading: true)
+        .then((value) async {
+      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        clearData();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+  clearData() async {
+    SharedPreferenceStorage.clearData();
+    Get.parameters.clear();
+    Get.offAll(() => const LoginScreen());
   }
 
   @override
