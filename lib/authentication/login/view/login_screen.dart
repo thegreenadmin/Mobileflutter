@@ -17,10 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    if (authToken.value != "") {
-      loginController.apiLogOutUser();
-    }
-
     super.initState();
   }
 

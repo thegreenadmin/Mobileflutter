@@ -5,10 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -106,46 +104,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   clearData() async {
-    SharedPreferenceStorage.getData('onboardingCompleted') ?? "";
-    
+    SharedPreferenceStorage.getData('onboardingCompleted');
+
     SharedPreferenceStorage.clearData();
     Get.parameters.clear();
-  }
-
-  Future<void> logout() async {
-    await apiLogOutUser();
-  }
-
-  ///logout user account
-  Future apiLogOutUser() async {
-    debugPrint(
-        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
-            headers,
-            showLoading: true)
-        .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        Utility.showToast(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
-      } else {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
-      }
-    });
   }
 
   @override

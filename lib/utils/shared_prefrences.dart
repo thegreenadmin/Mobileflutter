@@ -50,6 +50,9 @@ class SharedPreferenceStorage {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     forFirstTimeCustomer.value = false;
     forFirstTimeOwner.value = false;
+    authToken.value = "";
+    isStoreOwner.value = false;
+    hasStoreAccess.value = false;
     SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
     SharedPreferenceStorage.removeData(StringConstants.firstNameText);
     SharedPreferenceStorage.removeData(StringConstants.lastNameText);

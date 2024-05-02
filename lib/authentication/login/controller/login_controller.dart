@@ -51,45 +51,7 @@ class LoginController extends GetxController {
       autoValidate.value = true;
     }
   }
- Future apiLogOutUser() async {
-    try {
-      debugPrint(
-          "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-      Map<String, String> headers = {
-        'Content-Type': 'application/json',
-        StringConstants.authorizationText:
-            "${StringConstants.bearerText} ${authToken.value}",
-      };
-      UserProvider()
-          .getWithHeadersApi(
-              "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
-              headers,
-              showLoading: true)
-          .then((value) async {
-        debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-        if (value?.body["status"] == ApiConstants.statusCode201 ||
-            value?.body["status"] == ApiConstants.statusCode200) {
-          Utility.showToast(value?.body['message']);
-          clearData();
-        } else if (value?.body["status"] == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value?.body['message']);
-          clearData();
-        } else if (value?.body["status"] == ApiConstants.statusCode409) {
-        } else {
-          if (value?.body['message'] != null) {
-            Utility.showAlertMessage(value?.body['message']);
-          }
-        }
-      });
-    } catch (e) {
-      debugPrint("LOGGED OUT RESPONSE *******${e?.toString()}");
-    }
-  }
-
-  clearData() async {
-    SharedPreferenceStorage.clearData();
-    Get.parameters.clear();
-  }
+ 
   ///Login Api
   Future apiGenerateOtp() async {
     Map data = {
