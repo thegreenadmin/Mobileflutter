@@ -179,6 +179,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                   .previousOrderList[i]
                                                   .productName ??
                                               "",
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,

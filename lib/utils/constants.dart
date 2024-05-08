@@ -698,9 +698,9 @@ class AlertStringConstants {
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";
   static String cancelOrderAlertText =
-      "Do you really want to cancel ths order?";
+      "Do you really want to cancel this order?";
   static String cancelReturnRequestAlertText =
-      "Do you really want to cancel ths return request?";
+      "Do you really want to cancel this return request?";
 
   //E
   static String endTimeAlertText =

@@ -117,30 +117,35 @@ class OrdersHomeMainController extends GetxController {
     switch (i) {
       case 0: //Active Orders
         {
+          debugPrint("Active Orders========");
           debugPrint(selectedIndex.value.toString());
           await apiGetOwnerOrderHistory();
         }
         break;
       case 1: //In-progress Orders
         {
+          debugPrint("In-progress  Orders========");
           debugPrint(selectedIndex.value.toString());
           await apiGetOwnerOrderHistory();
         }
         break;
       case 2: //Pickup Orders
         {
+          debugPrint("Pickup Orders========");
           debugPrint(selectedIndex.value.toString());
           await apiGetOwnerOrderHistory();
         }
         break;
       case 3: //Completed Orders
         {
+          debugPrint("Completed Orders========");
           debugPrint(selectedIndex.value.toString());
           await apiGetOwnerOrderHistory();
         }
         break;
       default:
         {
+          debugPrint("Active Orders========");
           debugPrint(selectedIndex.value.toString());
           await apiGetOwnerOrderHistory();
         }

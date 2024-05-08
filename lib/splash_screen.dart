@@ -61,7 +61,6 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 3)).then((value) async {
       roleApp.value = role ?? "";
 
-      print("Splash " + onboardingCompleted.toString());
       if (onboardingCompleted == "yes") {
         Get.offAll(() => const StartJourneyScreen());
       } else if (token != null) {

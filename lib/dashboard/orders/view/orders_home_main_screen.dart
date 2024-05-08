@@ -380,6 +380,9 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                             ordersHomeMainController
                                                 .selectedIndex.value);
                                       });
+
+                                debugPrint(
+                                    "selectedIndex================== ${ordersHomeMainController.selectedIndex.value}");
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

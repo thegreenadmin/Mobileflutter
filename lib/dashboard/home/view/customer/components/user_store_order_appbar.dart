@@ -10,7 +10,7 @@ mixin PreferredSizeWidget on Widget {
 }
 
 class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
-  const UserStoreOrderAppBar({Key? key}) : super(key: key);
+  const UserStoreOrderAppBar({super.key});
 
   @override
   State<UserStoreOrderAppBar> createState() => _UserStoreOrderAppBarState();
@@ -313,7 +313,6 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 100,
                                       height: 20,
                                       child: ListView.separated(
                                           separatorBuilder:

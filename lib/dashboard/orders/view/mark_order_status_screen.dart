@@ -69,7 +69,6 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
-                                    Get.delete<OrdersHomeMainController>();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

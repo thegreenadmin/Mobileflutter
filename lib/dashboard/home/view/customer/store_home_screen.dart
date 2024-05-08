@@ -383,6 +383,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     children: [
                       Text(
                         item.productName ?? "",
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             color: AppColors.black,
                             fontSize: 16,

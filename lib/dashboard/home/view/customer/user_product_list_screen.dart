@@ -231,6 +231,7 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                               .featureProductList[i]
                                               .productName ??
                                           "",
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
