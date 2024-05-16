@@ -220,7 +220,7 @@ class HomeController extends GetxController {
     userOfferList.clear();
     isLoading?.value = true;
     debugPrint(
-      "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+      "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=3",
     );
 
     Map<String, String> headers = {
@@ -366,7 +366,7 @@ class HomeController extends GetxController {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
-            userFeaturedProductModel.data!.products!;
+            userFeaturedProductModel.data?.products ??[];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

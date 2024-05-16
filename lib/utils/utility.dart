@@ -70,7 +70,7 @@ class Utility {
                   // scale: 1.5,
                 ),
               ),
-               height12SizedBox,
+              height12SizedBox,
               Text(
                 title,
                 style: const TextStyle(
@@ -79,9 +79,8 @@ class Utility {
                     fontWeight: FontWeight.w600),
                 textAlign: TextAlign.start,
               ),
-
               Visibility(
-                visible: description!="",
+                visible: description != "",
                 child: Column(
                   children: [
                     height15SizedBox,
@@ -280,9 +279,10 @@ class Utility {
       {String firstFormat = 'MMM d, h:mm a',
       secFormat = 'yyyy-MM-dd hh:mm:ss'}) {
     DateTime parseDate = DateFormat(firstFormat).parse(timestamp.toString());
-    var inputDate = DateTime.parse(parseDate.toString());
+    var inputDate = DateTime.parse(parseDate.toString()).toLocal();
     var outputFormat = DateFormat(secFormat);
     var outputDate = outputFormat.format(inputDate);
+
     return outputDate;
   }
 
@@ -295,7 +295,7 @@ class Utility {
     bool serviceEnabled;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    try{
+    try {
       if (!serviceEnabled) {
         return Future.error('Location services are disabled.');
       }
@@ -312,10 +312,9 @@ class Utility {
       }
 
       return await Geolocator.getCurrentPosition();
-    }catch(e){
+    } catch (e) {
       return Future.error(e.toString());
     }
-
   }
 
   static alertDialog(context,

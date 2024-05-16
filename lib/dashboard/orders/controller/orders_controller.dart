@@ -815,7 +815,7 @@ class OrdersController extends GetxController {
                   : []
     };
 
-    log("Order List data ********** ${jsonEncode(data)}");
+    debugPrint("Order List data ********** ${jsonEncode(data)}");
     debugPrint("TOKEN ********** ${jsonEncode(headers)}");
     UserProvider()
         .postWithHeadersApi(
@@ -824,7 +824,7 @@ class OrdersController extends GetxController {
             headers,
             showLoading: page.value == 1)
         .then((value) async {
-      log("Order List *******${page.value}*******${value?.body}");
+      debugPrint("Order List *******${page.value}*******${value?.body}");
       isLoading.value = false;
       isDataLoading.value = false;
 
@@ -1029,7 +1029,7 @@ class OrdersController extends GetxController {
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("ORDER Details*******${value?.body}");
+      debugPrint("ORDER Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse = OrderDetailResponse.fromJson(value?.body);

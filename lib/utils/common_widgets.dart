@@ -106,7 +106,7 @@ class CommonWidgets {
     );
   }
 
-  static Widget cachedNetworkImage(String imgUrl,
+  static Widget cachedNetworkImage(String? imgUrl,
       {BoxFit? fit,
       double? width,
       height,
@@ -116,9 +116,9 @@ class CommonWidgets {
       Widget Function(BuildContext, String)? placeholder,
       Color? color,
       BlendMode? colorBlendMode}) {
-    return CachedNetworkImage(
+    return imgUrl!=null && imgUrl != "" ? CachedNetworkImage(
       filterQuality: FilterQuality.high,
-      imageUrl: imgUrl,
+      imageUrl: imgUrl??"",
       fit: fit ?? BoxFit.fill,
       width: width,
       color: color,
@@ -138,9 +138,13 @@ class CommonWidgets {
                 fit: BoxFit.fill,
                 width: width,
                 height: height,
-                // color: AppColors.grey
-                //     .withOpacity(0.4),
+
               ),
+    ): Image.asset(
+      assetImg,
+      fit: BoxFit.fill,
+      width: width,
+      height: height,
     );
   }
 

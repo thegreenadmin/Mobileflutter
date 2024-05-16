@@ -104,7 +104,7 @@ class StoreHomeMainController extends GetxController {
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
       // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0") ;
-      if (roleApp.value == Role.customerRoleText) {
+
         getCurrentLocation();
         apiGetUserDetailsApi();
         if (storeId.value != "" && productId.value != "") {
@@ -140,7 +140,7 @@ class StoreHomeMainController extends GetxController {
           // onIndexChange(3);
         }
         apiGetUserWalletBalance();
-      }
+
     });
   }
 
@@ -1033,6 +1033,7 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     Get.parameters["storeId"] = storeId.value;
+
                     // Get.parameters["isAddToOrderScreen"]=="false";
                     await Get.to(() => const StoreHomeMainScreen(),
                         id: pageIdApp.value);
@@ -1061,7 +1062,8 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     apiGetUserWalletBalance();
-                    Get.to(() => const CartScreen(), id: pageIdApp.value);
+                    Get.to(() => const CartScreen(),
+                        id: pageIdApp.value)?.then((value) =>  onInit());
                   },
                   child: Container(
                     height: 50.0,
@@ -1087,7 +1089,6 @@ class StoreHomeMainController extends GetxController {
             ),
           ],
         ),
-        actions: const <Widget>[],
       ),
     );
   }
@@ -1353,7 +1354,7 @@ class StoreHomeMainController extends GetxController {
             ServerCommunicator().baseUrl +
                 ServerCommunicator().storeFeatureProductList,
             headers,
-            showLoading: showLoading.value)
+            showLoading: false /*showLoading.value*/)
         .then((value) async {
       isLoading.value = false;
       log("Feature ProductList Store *******${value?.body}");

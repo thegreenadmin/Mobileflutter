@@ -20,6 +20,7 @@ class OrdersHomeMainController extends GetxController {
   RxInt pageId = 0.obs;
   RxInt totalCount = 0.obs;
   RxInt page = 1.obs;
+  RxInt count = 0.obs;
   RxString storeId = "".obs;
   RxString orderStatusId = "".obs;
   RxString orderId = "".obs;
@@ -284,7 +285,8 @@ class OrdersHomeMainController extends GetxController {
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
-      print("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
+
+      log("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
@@ -780,7 +782,13 @@ class OrdersHomeMainController extends GetxController {
     List<dynamic> orderItems = [];
 
     for (var element in getOrderItems) {
+      print("PICKUP --------------------");
+      print(element.isSelected);
+      print(element.orderItemStatus);
+      print("PICKUP -----------ENDDDDDDDD---------");
       if (element.isSelected == true &&
+          element.orderItemStatus == OrderStatusEnum.receivedOrder.statusName ||element.isSelected == true &&
+          element.orderItemStatus == OrderStatusEnum.inProgress.statusName || element.isSelected == true &&
               element.orderItemStatus == OrderStatusEnum.inTransit.statusName ||
           element.isSelected == true &&
               element.orderItemStatus ==

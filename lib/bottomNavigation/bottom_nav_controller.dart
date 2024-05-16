@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
@@ -141,6 +142,7 @@ class BottomNavController extends GetxController {
   ];*/
 
   onItemTapped(int index) async {
+    Get.delete<StoreHomeMainController>();
     if (!isLoading.value) {
       getRole();
       if (roleApp.value == Role.storeOwnerRoleText &&
@@ -156,7 +158,7 @@ class BottomNavController extends GetxController {
       } else {
         selectedIndex.value = index;
       }
-      
+
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {

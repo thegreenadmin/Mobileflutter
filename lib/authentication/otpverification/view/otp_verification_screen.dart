@@ -154,8 +154,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       false) {
                                     otpVerificationController.isLoading.value =
                                         true;
-                                    otpVerificationController
-                                        .validateAndSubmitOtp();
+                                    otpVerificationController.apiResendOtp();
+                                    // otpVerificationController
+                                    //     .validateAndSubmitOtp();
                                   }
                                 },
                                 child: Text(

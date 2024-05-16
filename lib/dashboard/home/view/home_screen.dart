@@ -221,6 +221,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       children: [
                                         InkWell(
                                           onTap: () async {
+
                                             Get.parameters["storeId"] =
                                                 homeController
                                                     .searchStoreUserController

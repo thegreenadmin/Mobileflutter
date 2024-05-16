@@ -258,8 +258,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               .getUserOfferList[
                                                                   index]
                                                               .offers![i];
+
                                                       print(
-                                                          "offerObj======== ${offersController.getUserOfferList[index].offers![i].offerName}");
+                                                          "offerObj======== ${storeHomeMainController.offerObj.value.offerName}");
                                                       await offersController
                                                           .apiGetOffersProducts(
                                                               offerId: offersController
@@ -276,7 +277,12 @@ class _OffersScreenState extends State<OffersScreen> {
 
                                                       Get.to(
                                                         () =>
-                                                            const OfferProductScreen(),
+                                                            OfferProductScreen(
+                                                          offerObj: offersController
+                                                              .getUserOfferList[
+                                                                  index]
+                                                              .offers![i],
+                                                        ),
                                                         id: pageIdApp.value,
                                                       );
                                                     },

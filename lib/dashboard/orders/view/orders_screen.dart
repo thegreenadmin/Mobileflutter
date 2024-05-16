@@ -538,13 +538,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                         child: Text.rich(
                                                           TextSpan(
                                                             children: [
+
                                                               TextSpan(
-                                                                  text: Utility.formatDateTime(
-                                                                      '${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}',
-                                                                      firstFormat:
-                                                                          "yyyy-MM-dd HH:mm:ss",
-                                                                      secFormat:
-                                                                          "dd MMM yyyy"), //"14 Feb",
+                                                                  text:Utility.parseDateTime(
+                                                                  DateTime.parse(ordersController.orderList[i].orderDate
+                                                                      .toString()),
+                                                                  secFormat: '',
+                                                                  ).toString(),
+
                                                                   style: TextStyle(
                                                                       color: AppColors
                                                                           .blacklight,

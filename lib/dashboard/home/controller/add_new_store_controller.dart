@@ -95,7 +95,7 @@ class AddNewStoreController extends GetxController {
     Categories(id: 7, name: StringConstants.sundayText, isSelected: false),
   ].obs;
 
-  RxList<dynamic> storeTimmingList = <dynamic>[].obs;
+  RxList<dynamic> storeTimingList = <dynamic>[].obs;
   RxList<dynamic> deliveryServicesList = <dynamic>[].obs;
 
   dynamic lat = 0.0;
@@ -113,11 +113,11 @@ class AddNewStoreController extends GetxController {
         termsFile.value = XFile(result.files.single.path!);
 
         debugPrint(
-            "TERMS FILEE ***********${termsFile.value.path.split("/").last}");
+            "TERMS FILE ***********${termsFile.value.path.split("/").last}");
         uploadPdfToServer();
       } else {
         privacyFile.value = XFile(result.files.single.path!);
-        debugPrint("PRIVACY FILEE *********** $termsFile");
+        debugPrint("PRIVACY FILE *********** $termsFile");
         uploadPdfToServer();
       }
     } else {}
@@ -391,7 +391,7 @@ class AddNewStoreController extends GetxController {
         "postal_code": zipCodeTextController.text.trim()
       },
       "is_24_hours_active": is247Time.value,
-      "store_timings": is247Time.value == true ? [] : storeTimmingList,
+      "store_timings": is247Time.value == true ? [] : storeTimingList,
       "store_delivery_services": deliveryServicesList,
       "store_pages": [
         {
@@ -461,7 +461,7 @@ class AddNewStoreController extends GetxController {
           element.isSelected = false;
         }
         privacyTextController.clear();
-        storeTimmingList.clear();
+        storeTimingList.clear();
         termsTextController.clear();
         termsOriginalLinkFromServer.value = "";
         privacyOriginalLinkFromServer.value = "";

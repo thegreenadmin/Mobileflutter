@@ -414,7 +414,7 @@ class OwnerStoresController extends GetxController {
             body,
             "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET FEATURED PRODUCTS LIST TOKEN *******$headers");
@@ -550,7 +550,7 @@ class OwnerStoresController extends GetxController {
         .getWithHeadersApi(
             '${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=500',
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       loadingData.value = false;
       debugPrint("GET UNCLAIMED STORE RESPONSE *******${value?.body}");
@@ -664,8 +664,9 @@ class OwnerStoresController extends GetxController {
         storeAddresses.value =
             value?.body["data"]['store']['store_addresses'] ?? [];
         storeLocation.value =
-            "${value?.body["data"]['store']['store_addresses'][0]['address_line_1'] ?? ""},${value?.body["data"]['store']['store_addresses'][0]['city'] ?? ""},"
-            "${value?.body["data"]['store']['store_addresses'][0]['state']['state_name'] ?? ""},${value?.body["data"]['store']['store_addresses'][0]['state']['country']['country_name'] ?? ""}";
+            "${value?.body["data"]['store']['store_addresses'][0]['address_line_1'] ?? ""}, ${value?.body["data"]['store']['store_addresses'][0]['city'] ?? ""}, "
+            "${value?.body["data"]['store']['store_addresses'][0]['state']['state_name'] ?? ""},"
+                " ${value?.body["data"]['store']['store_addresses'][0]['state']['country']['country_name'] ?? ""}";
 
         storeTimings.value =
             value?.body["data"]['store']['store_timings'] ?? [];

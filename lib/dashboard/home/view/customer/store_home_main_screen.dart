@@ -473,8 +473,11 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                       ? const Expanded(child: AddToOrderScreen())
                       : storeHomeMainController.selectedIndex.value == 0 &&
                               storeHomeMainController.invokedIndex.value == 2
-                          ? const Expanded(
-                              child: OfferProductScreen(isFromStore: true))
+                          ? Expanded(
+                              child: OfferProductScreen(
+                              isFromStore: true,
+                              offerObj: storeHomeMainController.offerObj.value,
+                            ))
                           : storeHomeMainController.selectedIndex.value == 1 &&
                                   storeHomeMainController.invokedIndex.value ==
                                       0

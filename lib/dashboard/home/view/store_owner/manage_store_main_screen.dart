@@ -196,7 +196,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> {
                                           child: Text(
                                               ownerStoresController
                                                   .storeLocation.value,
-                                              // maxLines: 1,
+                                              maxLines: 2,
                                               overflow: TextOverflow.visible,
                                               style: const TextStyle(
                                                   color: AppColors.white,

@@ -62,19 +62,20 @@ class _CartScreenState extends State<CartScreen> {
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    if (Get.parameters['isFromAddProduct'] ==
-                                            'yes' &&
-                                        Get.parameters["isFromHome"] ==
-                                            "true") {
-                                      Get.back(id: pageIdApp.value);
-                                      Get.back(id: pageIdApp.value);
-                                      Get.parameters['isFromAddProduct'] = 'no';
-                                    } else {
-                                      Get.back(id: pageIdApp.value);
-                                    }
-
                                     storeHomeMainController.itemsCount.value =
-                                        1;
+                                    1;
+                                    // if (Get.parameters['isFromAddProduct'] ==
+                                    //         'yes' &&
+                                    //     Get.parameters["isFromHome"] ==
+                                    //         "true") {
+                                    //   Get.back(id: pageIdApp.value);
+                                    //   Get.back(id: pageIdApp.value);
+                                    //   Get.parameters['isFromAddProduct'] = 'no';
+                                    // } else {
+                                      Get.back(id: pageIdApp.value);
+                                    // }
+
+
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,

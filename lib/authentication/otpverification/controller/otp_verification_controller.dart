@@ -126,6 +126,38 @@ class OtpVerificationController extends GetxController {
     });
   }
 
+  ///Generate/Resend OTP Api
+  Future apiResendOtp() async {
+    isLoading.value = true;
+    Map data = {
+      "phone": phoneNumber.value.trim(),
+      "phone_code": countryCode.value.trim()
+    };
+    debugPrint("RESEND BODY********** $data");
+    debugPrint(
+        "RESEND OTP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
+    UserProvider()
+        .postApi(data,
+            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
+            showLoading: true)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("RESEND OTP RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        //User not exist
+        Utility.showAlertMessage(value?.body['message']);
+      } else if (value?.body["status"] == ApiConstants.statusCode400) {
+        //Phone Number is not valid
+        Utility.showAlertMessage(value?.body['message']);
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     try {

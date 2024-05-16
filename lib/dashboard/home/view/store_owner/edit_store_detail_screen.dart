@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -626,6 +629,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
 
                     CustomInputField(
                       onTap: () async {
+                        debugPrint(
+                            "ADDRESSES---description----------------->");
                         Prediction? p = await PlacesAutocomplete.show(
                             offset: 0,
                             radius: 1000,
@@ -636,14 +641,17 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             mode: Mode.overlay,
                             language: "en",
                             components: []);
-
-                        int idx = p!.description!.indexOf(",");
-                        List parts = [
-                          p.description!.substring(0, idx).trim(),
-                          p.description!.substring(idx + 1).trim()
-                        ];
-                        ownerStoreController.addressLine1TextController.text =
-                            parts[0].toString();
+                        debugPrint(
+                            "ADDRESSES---description->${p?.description}");
+                        if (p?.description != null) {
+                          int idx = p?.description?.indexOf(",") ?? 0;
+                          List parts = [
+                            p?.description?.substring(0, idx).trim(),
+                            p?.description?.substring(idx + 1).trim()
+                          ];
+                          ownerStoreController.addressLine1TextController
+                              .text = parts[0].toString();
+                        }
 
                         ///ADDRESSES BY GoogleMapsGeocoding
 
@@ -651,13 +659,19 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> {
                             apiKey: ownerStoreController.kGoogleApiKey);
 
                         GeocodingResponse response = await geocoding
-                            .searchByAddress(p.description.toString());
-                        // log("GeocodingResponse web services:------------");
-                        // log(jsonEncode(response.results));
+                            .searchByAddress(p?.description.toString() ?? "");
 
                         final result = response.results.isNotEmpty
                             ? response.results.first
                             : null;
+
+                        debugPrint(
+                            "ADDRESSES---lat lng ->${jsonEncode(result)}");
+                        debugPrint(
+                            "ADDRESSES---lat  ->${response.results.first.geometry.location.lat}");
+                        debugPrint(
+                            "ADDRESSES--- lng ->${response.results.first.geometry.location.lng}");
+
                         if (result != null) {
                           ownerStoreController.townOrCityTextController.text =
                               Utility.extractLocality(result, "locality");

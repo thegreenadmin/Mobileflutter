@@ -1040,7 +1040,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                         .value = value?.toInt() ?? 0;
                                     addNewStoreController.is247Time.value =
                                         true;
-                                    addNewStoreController.storeTimmingList
+                                    addNewStoreController.storeTimingList
                                         .clear();
                                     addNewStoreController
                                         .openingTimeTextController
@@ -1275,7 +1275,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                       () => addNewStoreController.is247Time.value != true
                           ? MultiCustomDropDown(
                               onChanged: (v) {
-                                addNewStoreController.storeTimmingList.clear();
+                                addNewStoreController.storeTimingList.clear();
 
                                 for (int i = 0;
                                     i <
@@ -1285,7 +1285,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
                                   if (addNewStoreController
                                           .weekDaysList[i].isSelected ==
                                       true) {
-                                    addNewStoreController.storeTimmingList.add({
+                                    addNewStoreController.storeTimingList.add({
                                       "is_24_hours_active": false,
                                       "day_of_week": addNewStoreController
                                           .weekDaysList[i].id,
@@ -1541,13 +1541,13 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> {
         for (int i = 0; i < addNewStoreController.weekDaysList.length; i++) {
           if (addNewStoreController.weekDaysList[i].isSelected == true) {
             for (int j = 0;
-                j < addNewStoreController.storeTimmingList.length;
+                j < addNewStoreController.storeTimingList.length;
                 j++) {
               if (timeValue == addNewStoreController.openingTime) {
-                addNewStoreController.storeTimmingList[j]["opening_time"] =
+                addNewStoreController.storeTimingList[j]["opening_time"] =
                     timeValue.value;
               } else if (timeValue == addNewStoreController.closingTime) {
-                addNewStoreController.storeTimmingList[j]["closing_time"] =
+                addNewStoreController.storeTimingList[j]["closing_time"] =
                     timeValue.value;
               }
             }

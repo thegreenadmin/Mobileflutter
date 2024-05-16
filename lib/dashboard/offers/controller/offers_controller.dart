@@ -16,7 +16,7 @@ class OffersController extends GetxController {
   RxString? nickName = "".obs;
   RxString? email = "".obs;
   RxString? phone = "".obs;
-
+  Rx<Offer> offerObj = Offer().obs;
   RxString? storeId = "".obs;
   RxString? offerId = "".obs;
 
