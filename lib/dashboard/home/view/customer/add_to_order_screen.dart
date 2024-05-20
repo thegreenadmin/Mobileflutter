@@ -24,6 +24,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeHomeMainController.showLoading.value = false;
       if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
         storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
         storeHomeMainController.getCurrentLocation();
@@ -38,7 +39,10 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           Get.parameters["isFromFav"] == "true";
       storeHomeMainController.isFromOptions.value =
           Get.parameters["isFromOptions"] == "true";
+
+
       storeHomeMainController.apiGetUserDetailsApi();
+
       /*if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.lastSelectedIndex.value = 1;

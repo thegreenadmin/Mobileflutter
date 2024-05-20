@@ -795,8 +795,8 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
                                                                   .primary)))),
                                               child: Text(
                                                 StringConstants.uploadText,
-                                                style: const TextStyle(
-                                                    color: AppColors.white),
+                                                style:  TextStyle(
+                                                    color: AppColors.blacklight),
                                               ),
                                             ),
                                           )
