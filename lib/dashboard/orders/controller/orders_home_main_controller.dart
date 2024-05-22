@@ -355,9 +355,6 @@ class OrdersHomeMainController extends GetxController {
               getStoreOrderDetailModel.value.data!.order!.orderHistories!;
           getOrderItems.value =
               getStoreOrderDetailModel.value.data!.order!.orderItems!;
-          log("STORE ORDER DETAIL RESPONSE customerName**********"
-              "${customerName.value}*${orderAmount.value}*${orderStatusId.value}*${orderDate.value}");
-
           for (var element in getOrderItems) {
             element.isSelected = selectedIndex.value == 0 &&
                     element.orderItemStatus ==

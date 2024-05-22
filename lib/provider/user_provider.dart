@@ -11,7 +11,7 @@ import 'package:thegreenmall/utils/utility.dart';
 class UserProvider extends GetConnect {
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -24,6 +24,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.get(Uri.parse(url), headers: headers);
       if (showLoading) Get.back();
       Future.delayed(const Duration(milliseconds: 100), () {});
@@ -56,6 +57,7 @@ class UserProvider extends GetConnect {
       });
       return null;
     } catch (e) {
+
       if (showLoading) Get.back();
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
@@ -64,12 +66,15 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
+    } finally {
+      ioClient.close();
+      httpClient.close(force: true);
     }
   }
 
   Future<Response?> postApi(Map data, String url,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -82,6 +87,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.post(Uri.parse(url),
           body: json.encode(data),
           headers: {"Content-Type": "application/json"});
@@ -129,13 +135,16 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
-    }
+    }finally {
+        ioClient.close();
+        httpClient.close(force: true);
+      }
   }
 
   // Signup request
   Future<Response?> putApi(Map data, String url,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -148,6 +157,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.put(Uri.parse(url));
 
       if (showLoading) Get.back();
@@ -189,14 +199,17 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
-    }
+    } finally {
+        ioClient.close();
+        httpClient.close(force: true);
+      }
   }
 
   // Post with header request
   Future<Response?> postWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -209,6 +222,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.post(Uri.parse(url),
           body: jsonEncode(data), headers: headers);
 
@@ -260,14 +274,17 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
-    }
+    } finally {
+        ioClient.close();
+        httpClient.close(force: true);
+      }
   }
 
   // Post with header request
   Future<Response?> putWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -280,6 +297,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
@@ -330,14 +348,17 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
-    }
+    }finally {
+        ioClient.close();
+        httpClient.close(force: true);
+      }
   }
 
   // Post with header request
   Future<Response?> putWithHeadersApi1(
       Map data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -350,6 +371,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
@@ -399,6 +421,9 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
+    } finally {
+      ioClient.close();
+      httpClient.close(force: true);
     }
   }
 
@@ -406,7 +431,7 @@ class UserProvider extends GetConnect {
   Future<Response?> deleteWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    try {
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -419,6 +444,7 @@ class UserProvider extends GetConnect {
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);
+      try {
       final res = await ioClient.delete(Uri.parse(url),
           body: jsonEncode(data), headers: headers);
 
@@ -469,6 +495,9 @@ class UserProvider extends GetConnect {
         );
       });
       return null;
+    } finally {
+      ioClient.close();
+      httpClient.close(force: true);
     }
   }
 

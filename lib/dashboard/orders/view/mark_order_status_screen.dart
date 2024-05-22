@@ -210,9 +210,20 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                       return Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
-                        decoration: const BoxDecoration(
-                            color: AppColors.greylight,
-                            borderRadius: BorderRadius.all(
+                        decoration:  BoxDecoration(
+                            color:( ordersHomeMainController.selectedIndex.value == 1 && ordersHomeMainController
+                                .getOrderItems[
+                            index]
+                                .orderItemStatus.toString().toLowerCase().contains("in") ) && ordersHomeMainController
+                                .getOrderItems.length>1 ||
+                                ( ordersHomeMainController.selectedIndex.value == 2 && ordersHomeMainController
+                                    .getOrderItems[
+                                index]
+                                    .orderItemStatus.toString().toLowerCase().contains("ready") && ordersHomeMainController
+                                    .getOrderItems.length>1)
+
+                                ? AppColors.greenlight.withOpacity(0.2) : AppColors.greylight,
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(10.0),
                             )),
                         child: Column(children: [

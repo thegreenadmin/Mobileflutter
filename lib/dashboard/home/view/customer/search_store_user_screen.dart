@@ -328,7 +328,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             Utility.extractLocality(
                                 result, "administrative_area_level_1");
                         updateMap(response.results.first.geometry.location.lat,
-                            response.results.first.geometry.location.lng);
+                            response.results.first.geometry.location.lng,isSearch: true);
                       }
                     },
                     controller: searchStoreUserController.searchController,
@@ -463,7 +463,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     );
   }
 
-  void updateMap(lat, lng) async {
+  void updateMap(lat, lng, {isSearch = false}) async {
     CameraPosition kLake = CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(lat, lng),
@@ -476,7 +476,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // Get.back();
-    await searchStoreUserController.apiGetNearByStores(isSearch: true);
+
+    await searchStoreUserController.apiGetNearByStores(isSearch: isSearch);
     updateMarker(lat, lng);
   }
 
@@ -497,12 +498,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   late GlobalConfigs secureData;
 
   void updateCurrentLocation() async {
-    // Future.delayed(const Duration(milliseconds: 100), () {
-    //   Get.dialog(
-    //       const Center(
-    //           child: CircularProgressIndicator(color: AppColors.primary)),
-    //       barrierDismissible: false);
-    // });
+
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     searchStoreUserController.kGoogleApiKey =

@@ -461,7 +461,7 @@ class SearchStoreUserController extends GetxController {
       "longitude": zipCodeTextController.text != "" && isFilter ? null : lng,
       "latitude": zipCodeTextController.text != "" && isFilter ? null : lat,
       "city": isFilter ? "" : city.value,
-      "place_id": isFilter ? "" : placeId.value,
+      "place_id": isFilter || !isSearch? "" : placeId.value,
       "state": isFilter ? "" : state.value,
       "country": isFilter ? "" : country.value,
       "postal_code":
