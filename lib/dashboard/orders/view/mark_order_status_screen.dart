@@ -901,8 +901,19 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                       1 ||
                                   ordersHomeMainController
                                       .isFromNotification.value,
-                              child: IconButton(
-                                splashRadius: 45,
+                              child:
+                             /* InkWell(
+                                onTap: () {
+                                  Get.back(id: pageIdApp.value);
+                                },
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.white,
+                                  size: 24.0,
+                                ),
+                              ),*/
+                              IconButton(
+                                splashRadius: 60,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
@@ -943,8 +954,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                             children: [
                               Text(
                                 ordersHomeMainController.storeDetailsResponse
-                                        .value.data?.store?.storeName ??
-                                    "",
+                                        .value.data?.store?.storeName ?? "",
                                 style: const TextStyle(
                                     color: AppColors.white,
                                     fontSize: 18,
