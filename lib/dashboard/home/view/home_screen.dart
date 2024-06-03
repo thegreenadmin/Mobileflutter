@@ -31,11 +31,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+
+  final CarouselController _controllerProducts = CarouselController();
   int _current = 0;
+  final CarouselController _controller = CarouselController();
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
   final AccountController accountController = Get.put(AccountController());
-  final CarouselController _controller = CarouselController();
+
   final HomeController homeController = Get.put(HomeController());
   Future<void> _pullRefresh() async {
     homeController.onInit();
@@ -84,14 +87,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               height5SizedBox,
               _buildFeatureProductText(),
               height20SizedBox,
-              Obx(
-                () => roleApp.value == Role.customerRoleText
-                    ? _buildFeatureProductList(
-                        featuredProductList:
-                            homeController.featuredUserProductList)
-                    : _buildFeatureProductList(
-                        featuredProductList:
-                            homeController.ownerFeatureProductList),
+              Expanded(
+                child: Obx(
+                  () => roleApp.value == Role.customerRoleText
+                      ? _buildProductsCarousel(
+                          featuredProductList:
+                              homeController.featuredUserProductList)
+                      : _buildProductsCarousel(
+                          featuredProductList:
+                              homeController.ownerFeatureProductList),
+                ),
               )
             ]),
           ),
@@ -710,6 +715,135 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ))
       ]);
 
+  CarouselSlider _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
+    return CarouselSlider(
+      items: featuredProductList
+          ?.map(
+            (item) => SizedBox(
+              width: WidgetConstants.screenWidth * 0.4,
+              child: InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  if (homeController.isLoading?.value == false) {
+                    if (roleApp.value == Role.customerRoleText) {
+                      Get.parameters["isFromHome"] = "false";
+                      Get.parameters["isFromFav"] = "false";
+                      Get.parameters["isFromMenu"] = "true";
+                      Get.parameters["isFromOptions"] = "false";
+                      Get.parameters["productId"] =
+                          item.productId ?? "";
+                      Get.parameters["storeId"] =
+                          item.storeId ?? "";
+                      storeHomeMainController.invokedIndex.value = 2;
+                      Get.to(
+                            () => const StoreHomeMainScreen(),
+                        id: pageIdApp.value,
+                      );
+
+                    } else {
+                      Get.parameters["isFromHome"] = "true";
+                      Get.parameters["storeId"] =
+                          item.storeId;
+                      Get.parameters["productId"] =
+                          item.productId;
+                      Get.parameters["categoryName"] =
+                      item
+                          .productCategories!
+                          .isNotEmpty &&
+                          item
+                              .productCategories !=
+                              null
+                          ? item
+                          .productCategories
+                          ?.first
+                          .category
+                          ?.categoryName ??
+                          ""
+                          : "";
+                      hasStoreAccess.value &&
+                          permissionStoreList.isEmpty ||
+                          permissionStoreList.any((element) =>
+                          element.storeId == item.storeId &&
+                              element.isStoreOwner == true ||
+                              element.storeId == item.storeId &&
+                                  element.controllers!.any((ele) =>
+                                  ele.controllerKey ==
+                                      PermissionKey
+                                          .editProduct.statusName))
+                          ? Get.to(() => const EditProductScreen(),
+                          id: pageIdApp.value,
+                          arguments: {
+                            "isFromHome": true,
+                            'storeId':
+                            item.storeId
+                          })!
+                          .then((value) => homeController.apiGetOwnerFeaturedProducts())
+                          : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+                    }
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: CommonWidgets.cachedNetworkImage(
+                        item.productImages ==
+                            null ||
+                            item
+                                .productImages!
+                                .isEmpty ||
+                            item
+                                .productImages![0]
+                                .image!
+                                .dynamicUrl ==
+                                null ||
+                            item
+                                .productImages!
+                                .isEmpty
+                            ? ""
+                            : item
+                            .productImages![0]
+                            .image!
+                            .dynamicUrl
+                            .toString(),
+                        height: WidgetConstants.screenHeight * 0.22,
+                        width: WidgetConstants.screenWidth * 0.4,
+                      ),
+                    ),
+                    height8SizedBox,
+                    Flexible(
+                      child: Text(
+                        item.productName ?? "",
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+      )
+          .toList(),
+      carouselController: _controllerProducts,
+      options: CarouselOptions(
+        autoPlayInterval: const Duration(milliseconds: 100),  // Set the interv                             al to 1 second
+        autoPlayAnimationDuration: const Duration(milliseconds: 550),
+        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+        autoPlayCurve: Curves.easeInOut,
+        viewportFraction: 0.5,
+        enlargeCenterPage: false,
+        autoPlay: true,
+        aspectRatio: 1.5,
+      ),
+    );
+  }
+
   _buildFeatureProductList({RxList<ProductsList>? featuredProductList}) =>
       featuredProductList!.isEmpty
           ? height0SizedBox
@@ -751,21 +885,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               () => const StoreHomeMainScreen(),
                               id: pageIdApp.value,
                             );
-                            /*  Get.to(() => const AddToOrderScreen(),
-                                            id: pageIdApp.value,
-                                            arguments: {
-                                              "isFromHome": true,
-                                              "productId": homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .productId ??
-                                                  "",
-                                              "storeId": homeController
-                                                      .featuredUserProductList[
-                                                          index]
-                                                      .storeId ??
-                                                  "",
-                                            });*/
+
                           } else {
                             Get.parameters["isFromHome"] = "true";
                             Get.parameters["storeId"] =

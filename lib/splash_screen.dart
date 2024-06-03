@@ -124,6 +124,13 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.paused){
+
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+  @override
   void dispose() {
     super.dispose();
   }

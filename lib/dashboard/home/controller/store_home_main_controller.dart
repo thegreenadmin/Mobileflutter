@@ -95,7 +95,7 @@ class StoreHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       storeId.value = Get.parameters["storeId"] ?? "";
       productId.value = Get.parameters["productId"] ?? "";
       categoryName.value = Get.parameters["categoryName"] ?? "";
@@ -103,7 +103,6 @@ class StoreHomeMainController extends GetxController {
       isFromHome.value = Get.parameters["isFromHome"] == "true";
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
-      // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0") ;
 
         getCurrentLocation();
         apiGetUserDetailsApi();
@@ -120,7 +119,7 @@ class StoreHomeMainController extends GetxController {
           selectedIndex.value = 2;
           lastSelectedIndex.value = 2;
           showLoading.value = false;
-          apiFeatureProductListApi(isFeaturedProduct: true);
+           apiFeatureProductListApi(isFeaturedProduct: true);
 
           // onIndexChange(2);
         }
@@ -129,8 +128,8 @@ class StoreHomeMainController extends GetxController {
           lastSelectedIndex.value = 0;
           showLoading.value = false;
           invokedIndex.value = 0;
-          apiGetStoreOffersApi();
-          apiFeatureProductListApi(isFeaturedProduct: true);
+           apiGetStoreOffersApi();
+            apiFeatureProductListApi(isFeaturedProduct: true);
           // onIndexChange(0);
         }
         if (isFromOptions.value) {
@@ -139,7 +138,7 @@ class StoreHomeMainController extends GetxController {
           showLoading.value = false;
           // onIndexChange(3);
         }
-        apiGetUserWalletBalance();
+       apiGetUserWalletBalance();
 
     });
   }
@@ -148,9 +147,9 @@ class StoreHomeMainController extends GetxController {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ***${storeId.value}*********$lat $lng");
+
     if (storeId.value != "") {
-      await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+       apiGetStoreDetailsApi(latitude: lat, longitude: lng);
     }
   }
 
@@ -163,18 +162,18 @@ class StoreHomeMainController extends GetxController {
     }
 
     if (i == 0) {
-      await apiGetStoreOffersApi();
-      await apiFeatureProductListApi(isFeaturedProduct: true);
+       apiGetStoreOffersApi();
+       apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
       if (Get.parameters["categoryId"] != "") {
-        apiFeatureProductListApi(
+          apiFeatureProductListApi(
             categoryId: Get.parameters["categoryId"] ?? "0");
       }
     } else if (i == 2) {
-      await apiFeatureProductListApi(isFavouriteProducts: true);
+       apiFeatureProductListApi(isFavouriteProducts: true);
     } else if (i == 3) {
-      await apiGetPreviousOrders();
+       apiGetPreviousOrders();
     }
   }
 
@@ -185,7 +184,7 @@ class StoreHomeMainController extends GetxController {
     if (i == 0) {
       apiGetPreviousOrders();
     } else if (i == 1) {
-      await apiGetStoreCategoriesApi();
+       apiGetStoreCategoriesApi();
       if (Get.parameters["categoryId"] != "") {
         apiFeatureProductListApi(
             categoryId: Get.parameters["categoryId"] ?? "0");
@@ -195,7 +194,7 @@ class StoreHomeMainController extends GetxController {
           .any((element) => element.storePageType != "privacy")) {
         Utility.showToast(StringConstants.noPrivacyFoundText);
       } else {
-        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
+
         if (storeDetailsResponse
                     .value.data!.store!.storePages![0].storePageType ==
                 "privacy" ||
@@ -208,7 +207,7 @@ class StoreHomeMainController extends GetxController {
           .any((element) => element.storePageType != "terms")) {
         Utility.showToast(StringConstants.noTermsFoundText);
       } else {
-        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
+
         if (storeDetailsResponse
                     .value.data!.store!.storePages![0].storePageType ==
                 "terms" ||
@@ -662,7 +661,6 @@ class StoreHomeMainController extends GetxController {
         if (userAddress.isNotEmpty) {
           selectedUserAddress.value = userAddress.first;
         }
-        getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();

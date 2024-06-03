@@ -529,6 +529,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
+                    searchStoreUserController.placeId.value = "";
                     searchStoreUserController.apiGetNearByStores(
                       isFilter: true,
                     );

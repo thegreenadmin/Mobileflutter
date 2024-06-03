@@ -414,6 +414,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 Get.parameters["isFromOptions"] = "false";
                 if (i == 0 &&
                     searchStoreUserController.isClicked.value == false) {
+                  searchStoreUserController.placeId.value = "";
                   await searchStoreUserController.apiGetNearByStores();
                 } else if (i == 1 &&
                     searchStoreUserController.isClicked.value == false) {
@@ -476,7 +477,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
     // Get.back();
+    if(!isSearch){
+      searchStoreUserController.placeId.value ="";
 
+    }
     await searchStoreUserController.apiGetNearByStores(isSearch: isSearch);
     updateMarker(lat, lng);
   }

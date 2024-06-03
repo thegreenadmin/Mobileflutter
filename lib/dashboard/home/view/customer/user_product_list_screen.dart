@@ -97,6 +97,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                       itemBuilder: (BuildContext context, int i) {
                         return InkWell(
                           onTap: () async {
+                            storeHomeMainController.productId.value = storeHomeMainController
+                                .featureProductList[i].productId
+                                .toString();
                             Get.parameters['productId'] =
                                 storeHomeMainController
                                     .featureProductList[i].productId
@@ -106,6 +109,12 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                             Get.parameters["isFromHome"] = "false";
                             Get.parameters['isFromMenu'] = "true";
                             Get.parameters["isFromOptions"] = "false";
+                            storeHomeMainController.apiGetUserDetailsApi();
+                            if (storeHomeMainController.storeId.value != "" &&
+                                storeHomeMainController.productId.value != "") {
+                              await  storeHomeMainController.apiGetShopProductDetailApi();
+                            }
+                            await storeHomeMainController.apiGetUserWalletBalance();
                             storeHomeMainController.invokedIndex.value++;
                           },
                           child: Card(

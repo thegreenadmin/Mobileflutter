@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
@@ -136,6 +135,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     ordersHomeMainController
                                         .isFromNotification.value,
                                 child: IconButton(
+                                  splashRadius: 100,
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
@@ -145,7 +145,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                   icon: const Icon(
                                     Icons.arrow_back,
                                     color: AppColors.white,
-                                    size: 24.0,
+                                    size: 28.0,
                                   ),
                                 ),
                               ),

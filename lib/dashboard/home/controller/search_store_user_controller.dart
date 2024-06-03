@@ -93,6 +93,7 @@ class SearchStoreUserController extends GetxController {
         if (type.value == 0) {
           if (storeAddresses.length < totalCount.value) {
             page.value++;
+            placeId.value = "";
             apiGetNearByStores();
           }
         } else if (type.value == 1) {
@@ -460,12 +461,12 @@ class SearchStoreUserController extends GetxController {
       "page_size": 5,
       "longitude": zipCodeTextController.text != "" && isFilter ? null : lng,
       "latitude": zipCodeTextController.text != "" && isFilter ? null : lat,
-      "city": isFilter ? "" : city.value,
-      "place_id": isFilter || !isSearch? "" : placeId.value,
-      "state": isFilter ? "" : state.value,
-      "country": isFilter ? "" : country.value,
+      "city": isFilter && !isSearch ? "" : city.value,
+      "place_id": isFilter && !isSearch ? "" : placeId.value,
+      "state": isFilter && !isSearch ? "" : state.value,
+      "country": isFilter && !isSearch ? "" : country.value,
       "postal_code":
-          zipCodeTextController.text != "" ? zipCodeTextController.text : null,
+      !isSearch  && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != ""
           ? int.parse(mileageTextController.text)
           : 50,
@@ -517,9 +518,30 @@ class SearchStoreUserController extends GetxController {
           }
         }
         storeAddresses.toSet().toList();
+        city.value = "";
+        country.value = "";
+        state.value = "";
+        placeId.value = "";
+        lng = "";
+        lat = "";
+        zipCodeTextController.clear();
+
+        openingTimeTextController.clear();
+        closingTimeTextController.clear();
+        mileageTextController.clear();
+        deliveryServicesController.clear();
+        isOpenNow.value = "";
+        deliveryServicesList.clear();
         update();
         if (isFilter) {
+          city.value = "";
+          country.value = "";
+          state.value = "";
+          placeId.value = "";
+          lng = "";
+          lat = "";
           zipCodeTextController.clear();
+
           openingTimeTextController.clear();
           closingTimeTextController.clear();
           mileageTextController.clear();
@@ -534,6 +556,12 @@ class SearchStoreUserController extends GetxController {
           Get.back(id: pageIdApp.value);
         }
         if (isSearch) {
+          city.value = "";
+          country.value = "";
+          state.value = "";
+          placeId.value = "";
+          lng = "";
+          lat = "";
           zipCodeTextController.clear();
           openingTimeTextController.clear();
           closingTimeTextController.clear();
@@ -723,10 +751,12 @@ class SearchStoreUserController extends GetxController {
           debugPrint("Create Favourite Store *******${type.value}");
           storeAddresses.clear();
           page.value = 1;
+          placeId.value = "";
           apiGetNearByStores();
         } else if (type.value == 1) {
           previousStore.clear();
           page.value = 1;
+          placeId.value = "";
           apiGetPreviousStores();
         }
         update();
@@ -780,6 +810,7 @@ class SearchStoreUserController extends GetxController {
         } else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
+          placeId.value = "";
           apiGetNearByStores();
         } else if (type.value == 1) {
           previousStore.clear();

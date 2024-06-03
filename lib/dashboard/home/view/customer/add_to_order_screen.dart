@@ -20,7 +20,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   final CarouselController _controller = CarouselController();
   int _current = 0;
 
-  @override
+/*  @override
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -43,7 +43,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
       storeHomeMainController.apiGetUserDetailsApi();
 
-      /*if (storeHomeMainController.isFromMenu.value) {
+      *//*if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.lastSelectedIndex.value = 1;
         storeHomeMainController.showLoading.value = false;
@@ -67,7 +67,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         storeHomeMainController.lastSelectedIndex.value = 3;
         storeHomeMainController.showLoading.value = false;
         storeHomeMainController.onIndexChange(3);
-      }*/
+      }*//*
 
       if (storeHomeMainController.storeId.value != "" &&
           storeHomeMainController.productId.value != "") {
@@ -75,7 +75,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
       }
       storeHomeMainController.apiGetUserWalletBalance();
     });
-  }
+  }*/
 
  
 

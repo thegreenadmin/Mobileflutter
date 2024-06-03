@@ -1,10 +1,13 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
+import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import '../../model/user_offers_model.dart';
 import 'edit_product_screen.dart';
 
 class MyStoreScreen extends StatefulWidget {
@@ -17,6 +20,9 @@ class MyStoreScreen extends StatefulWidget {
 class _MyStoreScreenState extends State<MyStoreScreen> {
   final OwnerStoresController ownerStoresController =
       Get.put(OwnerStoresController());
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
+  final CarouselController _controllerProducts = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
               height20SizedBox,
               _buildFeatureProductText(),
               height15SizedBox,
-              _buildStoreProductList()
+              _buildProductsCarousel()
             ],
           ),
         ),
@@ -41,13 +47,13 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
 
   SizedBox _buildOfferListCondition() {
     return SizedBox(
-        height: 200,
+        // height: 200,
         child: Obx(
           () => ownerStoresController.getOwnerOfferList.isEmpty
               ? ownerStoresController.isLoading.value == true
                   ? height0SizedBox
                   : _buildNoOfferMethod()
-              : _buildOwnerOfffersList(),
+              : _buildCarouselSlider(),
         ));
   }
 
@@ -65,30 +71,52 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     );
   }
 
-  Obx _buildStoreProductList() {
+   _buildProductsCarousel() {
+    return ownerStoresController.storeProductList.isEmpty  ?
+    height0SizedBox
+        : CarouselSlider(
+
+        items: ownerStoresController.storeProductList
+          .map(
+            (item) =>   _buildStoreProductCard(item),
+      )
+          .toList(),
+      carouselController: _controllerProducts,
+      options: CarouselOptions(
+        autoPlayInterval: const Duration(milliseconds: 100),  // Set the interval to 1 second
+        autoPlayAnimationDuration: const Duration(milliseconds: 750),
+        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+        autoPlayCurve: Curves.easeInOut,
+        viewportFraction: 0.5,
+        enlargeCenterPage: false,
+        autoPlay: true,
+        aspectRatio: 1.5,
+      ),
+    );
+  }
+
+
+ /* Obx _buildStoreProductList() {
     return Obx(
       () => ownerStoresController.storeProductList.isEmpty
           ? height0SizedBox
           : SizedBox(
               height: WidgetConstants.screenHeight * 0.3,
-              child: ScrollLoopAutoScroll(
+              child: ListView.separated(
+                separatorBuilder: (BuildContext context, int index) {
+                  return width8SizedBox;
+                },
+                shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) {
-                    return width8SizedBox;
-                  },
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: ownerStoresController.storeProductList.length,
-                  itemBuilder: (BuildContext context, int i) =>
-                      _buildStoreProductCard(i),
-                ),
+                itemCount: ownerStoresController.storeProductList.length,
+                itemBuilder: (BuildContext context, int i) =>
+                    _buildStoreProductCard(i),
               ),
             ),
     );
-  }
+  }*/
 
-  Column _buildStoreProductCard(int i) {
+  Column _buildStoreProductCard(Products storeProduct) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -96,12 +124,10 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           onTap: () {
             Get.parameters["isFromHome"] = "true";
             Get.parameters["storeId"] =
-                ownerStoresController.storeProductList[i].storeId;
+                storeProduct.storeId;
             Get.parameters["productId"] =
-                ownerStoresController.storeProductList[i].productId;
-            Get.parameters["categoryName"] = ownerStoresController
-                    .storeProductList[i]
-                    .productCategories
+                storeProduct.productId;
+            Get.parameters["categoryName"] = storeProduct.productCategories
                     ?.first
                     .category
                     ?.categoryName ??
@@ -109,12 +135,10 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
             hasStoreAccess.value && permissionStoreList.isEmpty ||
                     permissionStoreList.any((element) =>
                         element.storeId ==
-                                ownerStoresController
-                                    .storeProductList[i].storeId &&
+                            storeProduct.storeId &&
                             element.isStoreOwner == true ||
                         element.storeId ==
-                                ownerStoresController
-                                    .storeProductList[i].storeId &&
+                            storeProduct.storeId &&
                             element.controllers!.any((ele) =>
                                 ele.controllerKey ==
                                 PermissionKey.editProduct.statusName))
@@ -123,7 +147,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                         arguments: {
                         "isFromHome": true,
                         'storeId':
-                            ownerStoresController.storeProductList[i].storeId
+                        storeProduct.storeId
                       })!
                     .then((value) =>
                         ownerStoresController.apiGetFeaturedProducts())
@@ -132,17 +156,13 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: CommonWidgets.cachedNetworkImage(
-              ownerStoresController.storeProductList[i].productImages == null ||
-                      ownerStoresController
-                          .storeProductList[i].productImages!.isEmpty ||
-                      ownerStoresController.storeProductList[i]
-                              .productImages![0].image!.dynamicUrl ==
+              storeProduct.productImages == null ||
+                  storeProduct!.productImages!.isEmpty ||
+    storeProduct!.productImages![0].image!.dynamicUrl ==
                           null ||
-                      ownerStoresController
-                          .storeProductList[i].productImages!.isEmpty
+                  storeProduct!.productImages!.isEmpty
                   ? ""
-                  : ownerStoresController
-                      .storeProductList[i].productImages![0].image!.dynamicUrl
+                  : storeProduct.productImages![0].image!.dynamicUrl
                       .toString(),
               fit: BoxFit.fill,
               height: WidgetConstants.screenHeight * 0.18,
@@ -155,21 +175,21 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ownerStoresController.storeProductList[i].productName ?? "",
+              storeProduct.productName ?? "",
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w600),
             ),
-            ownerStoresController.storeProductList[i].description!.isEmpty
+            storeProduct!.description!.isEmpty
                 ? height0SizedBox
                 : height4SizedBox,
-            ownerStoresController.storeProductList[i].description!.isEmpty
+            storeProduct!.description!.isEmpty
                 ? height0SizedBox
                 : SizedBox(
                     width: 130,
                     child: Text(
-                      ownerStoresController.storeProductList[i].description ??
+                      storeProduct.description ??
                           "",
                       maxLines: 1,
                       style: TextStyle(
@@ -179,11 +199,11 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                           fontWeight: FontWeight.w400),
                     ),
                   ),
-            ownerStoresController.storeProductList[i].description!.isEmpty
+            storeProduct!.description!.isEmpty
                 ? height0SizedBox
                 : height4SizedBox,
             Text(
-              "\$${ownerStoresController.storeProductList[i].productPrice!.toStringAsFixed(2)}",
+              "\$${storeProduct!.productPrice!.toStringAsFixed(2)}",
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
@@ -195,30 +215,109 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     );
   }
 
-  ScrollLoopAutoScroll _buildOwnerOfffersList() {
-    return ScrollLoopAutoScroll(
-      scrollDirection: Axis.horizontal,
-      child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) {
-            return width8SizedBox;
-          },
-          scrollDirection: Axis.horizontal,
-          itemCount: ownerStoresController.getOwnerOfferList.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildOwnerOfferCard(index);
-          }),
-    );
-  }
+       _buildCarouselSlider() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        ownerStoresController.getOwnerOfferList!.isEmpty
+            ? SizedBox(
+          // height: WidgetConstants.screenHeight * 0.80,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  ImageConstants.greenmall420,
+                ),
+                Text(
+                  StringConstants.welcomeToGreenMallText,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primary),
+                )
+              ],
+            ),
+          ),
+        )
+            : CarouselSlider(
+          items:  ownerStoresController.getOwnerOfferList
+              .take(5)
+              .map((item) => _buildOwnerOfferCard(item))
+              .toList(),
+          carouselController: _controller,
+          options: CarouselOptions(
+              enlargeStrategy: CenterPageEnlargeStrategy.scale,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              viewportFraction: 1.2,
+              enlargeCenterPage: false,
+              autoPlay: true,
+              aspectRatio: 1.5,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
+        ),
+        height5SizedBox,
+        Obx(() => ownerStoresController.getOwnerOfferList.isEmpty
+            ? height0SizedBox
+            : InkWell(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: ownerStoresController.getOwnerOfferList
+                .take(5)
+                .toList()
+                .asMap()
+                .entries
+                .map((entry) {
+              return GestureDetector(
+                onTap: () {
+                    _controller.animateToPage(entry.key);
+                },
+                child: Container(
+                  width: _current == entry.key ? 25 : 10,
+                  height: 5.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      shape: BoxShape.rectangle,
+                      color: _current == entry.key
+                          ? AppColors.primary
+                          : AppColors.grey),
+                ),
+              );
+            }).toList(),
+          ),
+        ))
+      ]);
 
-  Stack _buildOwnerOfferCard(int index) {
+
+ /*  _buildOwnerOfffersList() {
+    return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) {
+          return width8SizedBox;
+        },
+        scrollDirection: Axis.horizontal,
+        itemCount: ownerStoresController.getOwnerOfferList.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          return _buildOwnerOfferCard(index);
+        });
+  }*/
+
+  Stack _buildOwnerOfferCard(OffersList item) {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: CommonWidgets.cachedNetworkImage(
-            ownerStoresController.getOwnerOfferList[index].image?.dynamicUrl ??
+            item.image?.dynamicUrl ??
                 "",
             fit: BoxFit.cover,
             height: WidgetConstants.screenHeight * 0.3,
@@ -242,7 +341,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    ownerStoresController.getOwnerOfferList[index].offerName ??
+                    item.offerName ??
                         "",
                     style: const TextStyle(
                         color: AppColors.black,

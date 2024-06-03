@@ -64,7 +64,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
-                              WidgetConstants.screenHeight * 0.25) /
+                              WidgetConstants.screenHeight * 0.22) /
                           WidgetConstants.screenHeight,
                       mainAxisSpacing: 0.0,
                       crossAxisSpacing: 10.0,
@@ -73,7 +73,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                     itemBuilder: (BuildContext context, int i) {
                       return InkWell(
                         onTap: () async {
-                          Get.parameters['productId'] = storeHomeMainController
+                          storeHomeMainController.productId.value = Get.parameters['productId']=  storeHomeMainController
                               .featureProductList[i].productId
                               .toString();
                           storeHomeMainController.apiGetShopProductDetailApi();
@@ -82,6 +82,12 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters["isFromMenu"] = "false";
                           Get.parameters["isFromOptions"] = "false";
+                          await storeHomeMainController.apiGetUserDetailsApi();
+                          if (storeHomeMainController.storeId.value != "" &&
+                              storeHomeMainController.productId.value != "") {
+                            await  storeHomeMainController.apiGetShopProductDetailApi();
+                          }
+                          await storeHomeMainController.apiGetUserWalletBalance();
                           storeHomeMainController.invokedIndex.value++;
                           // Get.parameters["isAddToOrderScreen"] = "true";
                           /*await Get.to(() => const AddToOrderScreen(),
@@ -205,8 +211,9 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                                   .description ??
                                               "",
                                           maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              overflow: TextOverflow.ellipsis,
+
                                               color: AppColors.blacklight,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400),
@@ -218,6 +225,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                   Text(
                                     "${StringConstants.unitPriceText}: "
                                     "\$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,

@@ -11,6 +11,9 @@ import 'package:thegreenmall/utils/utility.dart';
 class UserProvider extends GetConnect {
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async {
+    headers.putIfAbsent('Connection', () => 'keep-alive');
+    headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+
 
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
@@ -27,7 +30,7 @@ class UserProvider extends GetConnect {
       try {
       final res = await ioClient.get(Uri.parse(url), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
@@ -57,7 +60,6 @@ class UserProvider extends GetConnect {
       });
       return null;
     } catch (e) {
-
       if (showLoading) Get.back();
       Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
@@ -92,7 +94,7 @@ class UserProvider extends GetConnect {
           body: json.encode(data),
           headers: {"Content-Type": "application/json"});
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -161,7 +163,7 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url));
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
@@ -209,7 +211,8 @@ class UserProvider extends GetConnect {
   Future<Response?> postWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-
+    headers.putIfAbsent('Connection', () => 'keep-alive');
+    headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -227,7 +230,7 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -284,7 +287,8 @@ class UserProvider extends GetConnect {
   Future<Response?> putWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-
+    headers.putIfAbsent('Connection', () => 'keep-alive');
+    headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -301,7 +305,7 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         if (showLoading) Get.back();
@@ -358,7 +362,8 @@ class UserProvider extends GetConnect {
   Future<Response?> putWithHeadersApi1(
       Map data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-
+    headers.putIfAbsent('Connection', () => 'keep-alive');
+    headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -375,7 +380,7 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -431,7 +436,8 @@ class UserProvider extends GetConnect {
   Future<Response?> deleteWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-
+    headers.putIfAbsent('Connection', () => 'keep-alive');
+    headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
@@ -449,7 +455,7 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {});
+      Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");

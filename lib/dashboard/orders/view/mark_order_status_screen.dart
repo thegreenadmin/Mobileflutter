@@ -857,7 +857,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
 
   PreferredSize buildPreferredSize() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.20),
+      preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.24),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -913,7 +913,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                 ),
                               ),*/
                               IconButton(
-                                splashRadius: 60,
+                                splashRadius: 80,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
@@ -922,7 +922,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                 icon: const Icon(
                                   Icons.arrow_back,
                                   color: AppColors.white,
-                                  size: 24.0,
+                                  size: 28.0,
                                 ),
                               ),
                             ),
@@ -996,8 +996,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                         ordersHomeMainController
                                                         .storeDetailsResponse
                                                         .value
-                                                        .data !=
-                                                    null &&
+                                                        .data != null &&
                                                 ordersHomeMainController
                                                     .storeDetailsResponse
                                                     .value
@@ -1012,17 +1011,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                                         .store!
                                                         .storeTimings!
                                                         .first
-                                                        .is24HoursActive ==
-                                                    false
+                                                        .is24HoursActive == false
                                                 ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                     "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                : StringConstants
-                                                    .storeHoursText
+                                                : StringConstants.storeHoursText
                                             : StringConstants.storeHoursText,
                                         style: const TextStyle(
                                             overflow: TextOverflow.visible,
-                                            color: AppColors.white,
-                                            fontSize: 12,
+                                            color: AppColors.white, fontSize: 12,
                                             fontWeight: FontWeight.w400)),
                                   ],
                                 ),

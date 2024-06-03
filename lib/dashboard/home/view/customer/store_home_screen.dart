@@ -312,6 +312,13 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     Get.parameters["isFromHome"] = "true";
                     Get.parameters["isFromMenu"] = "false";
                     Get.parameters["isFromOptions"] = "false";
+
+                    await   storeHomeMainController.apiGetUserDetailsApi();
+                    if (storeHomeMainController.storeId.value != "" &&
+                        storeHomeMainController.productId.value != "") {
+                      await  storeHomeMainController.apiGetShopProductDetailApi();
+                    }
+                    await storeHomeMainController.apiGetUserWalletBalance();
                     storeHomeMainController.invokedIndex.value++;
                     /*Get.to(() => const AddToOrderScreen(),
                                       id: pageIdApp.value);*/
