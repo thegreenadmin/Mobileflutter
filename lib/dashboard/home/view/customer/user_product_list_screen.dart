@@ -189,10 +189,13 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: storeHomeMainController
                                                     .featureProductList[i]
-                                                    .isFavouriteProduct ==
+                                                    .isFavouriteProduct!.value==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
+                                                  storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct!.value= false;
                                                   if (storeHomeMainController
                                                           .isLoading.value ==
                                                       false) {
@@ -211,6 +214,9 @@ class _UserProductListScreenState extends State<UserProductListScreen> {
                                               )
                                             : InkWell(
                                                 onTap: () {
+                                                  storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct!.value= true;
                                                   if (storeHomeMainController
                                                           .isLoading.value ==
                                                       false) {

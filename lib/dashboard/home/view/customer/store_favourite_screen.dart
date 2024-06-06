@@ -168,18 +168,35 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: storeHomeMainController
-                                                  .featureProductList[i]
-                                                  .isFavouriteProduct ==
-                                              true
-                                          ? Image.asset(
-                                              ImageConstants.liked,
-                                              scale: 3,
-                                            )
+                                          .featureProductList[i]
+                                          .isFavouriteProduct!.value ==
+                                          true
+                                          ? InkWell(
+                                        onTap: () {
+                                          storeHomeMainController
+                                              .featureProductList[i]
+                                              .isFavouriteProduct!.value= false;
+                                          if (storeHomeMainController
+                                              .isLoading.value ==
+                                              false) {
+                                            storeHomeMainController
+                                                .apiRemoveFavouriteProduct(
+                                                storeHomeMainController
+                                                    .featureProductList[
+                                                i]
+                                                    .productId,isFromFavS: true);
+                                          }
+                                        },
+                                        child: Image.asset(
+                                          ImageConstants.liked,
+                                          scale: 3,
+                                        ),
+                                      )
                                           : Image.asset(
-                                              ImageConstants.fav,
-                                              scale: 3,
-                                            ),
-                                    )
+                                            ImageConstants.fav,
+                                            scale: 3,
+                                          ),
+                                    ),
                                   ],
                                 ),
                               ),

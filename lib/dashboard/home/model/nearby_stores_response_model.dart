@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'model.dart';
 
 NearbyStoreListResponse nearbyStoreListResponseFromJson(String str) =>
@@ -111,7 +113,7 @@ class StoreAddress {
   String? city;
   String? postalCode;
   double? distance;
-  NearbyStore? store;
+  StoreDetails? store;
   State? state;
 
   StoreAddress copyWith({
@@ -125,7 +127,7 @@ class StoreAddress {
     String? city,
     String? postalCode,
     double? distance,
-    NearbyStore? store,
+    StoreDetails? store,
     State? state,
   }) =>
       StoreAddress(
@@ -155,7 +157,7 @@ class StoreAddress {
         postalCode: json["postal_code"],
         distance: json["distance"]?.toDouble(),
         store:
-            json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
+            json["store"] == null ? null : StoreDetails.fromJson(json["store"]),
         state: json["state"] == null ? null : State.fromJson(json["state"]),
       );
 
@@ -175,7 +177,7 @@ class StoreAddress {
       };
 }
 
-class NearbyStore {
+/*class NearbyStore {
   NearbyStore({
     this.logo,
     this.image,
@@ -192,7 +194,7 @@ class NearbyStore {
   Images? logo;
   Images? image;
   bool? hasStoreOwner;
-  bool? isFavouriteStore;
+  RxBool? isFavouriteStore;
   String? storeId;
   String? storeName;
   bool? isVerified;
@@ -204,7 +206,7 @@ class NearbyStore {
     Images? logo,
     Images? image,
     bool? hasStoreOwner,
-    bool? isFavouriteStore,
+    RxBool? isFavouriteStore,
     String? storeId,
     String? storeName,
     bool? isVerified,
@@ -230,8 +232,11 @@ class NearbyStore {
         logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
         image: json["image"] == null ? null : Images.fromJson(json["image"]),
         hasStoreOwner: json["has_store_owner"],
-        isFavouriteStore: json["is_favourite_store"],
-        storeId: json["store_id"],
+        // isFavouriteStore: json["is_favourite_store"],
+    isFavouriteStore: json["is_favourite_store"] != null
+        ? RxBool(json["is_favourite_store"]) // Wrap the bool in RxBool
+        : null,
+    storeId: json["store_id"],
         storeName: json["store_name"],
         isVerified: json["is_verified"],
         isEnabled: json["is_enabled"],
@@ -261,7 +266,7 @@ class NearbyStore {
             ? []
             : List<dynamic>.from(storeDeliveryServices!.map((x) => x.toJson())),
       };
-}
+}*/
 
 
 

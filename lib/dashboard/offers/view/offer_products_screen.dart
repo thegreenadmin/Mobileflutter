@@ -161,7 +161,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                               offersController.featuredUserProductList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 Get.parameters["isFromHome"] = "true";
                                 Get.parameters["isFromFav"] = "false";
                                 Get.parameters["isFromMenu"] = "false";
@@ -175,7 +175,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> {
                                         .storeId ??
                                     "";
                                 storeHomeMainController.invokedIndex.value = 3;
-                                Get.to(
+                                await Get.to(
                                   () => const StoreHomeMainScreen(),
                                   id: pageIdApp.value,
                                 );

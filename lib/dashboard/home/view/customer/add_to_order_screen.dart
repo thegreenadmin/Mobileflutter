@@ -224,40 +224,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ],
                                 ),
 
-                          // ClipRRect(
-                          //   borderRadius: BorderRadius.circular(10.0),
-                          //   child: storeHomeMainController.productDetailResponse
-                          //                   .value.data?.product?.productImages ==
-                          //               null ||
-                          //           storeHomeMainController
-                          //               .productDetailResponse
-                          //               .value
-                          //               .data!
-                          //               .product!
-                          //               .productImages!
-                          //               .isEmpty
-                          //       ? Image.asset(
-                          //           ImageConstants.nopicfound,
-                          //           fit: BoxFit.fill,
-                          //           height: 120,
-                          //           width: 120,
-                          //         )
-                          //       : Image.network(
-                          //           storeHomeMainController
-                          //                   .productDetailResponse
-                          //                   .value
-                          //                   .data
-                          //                   ?.product
-                          //                   ?.productImages
-                          //                   ?.first
-                          //                   .image
-                          //                   ?.dynamicUrl
-                          //                   .toString() ??
-                          //               "",
-                          //           fit: BoxFit.fill,
-                          //           height: 120,
-                          //         ),
-                          // ),
+
                         ),
                         width10SizedBox,
                         Flexible(
@@ -290,6 +257,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                           true
                                       ? InkWell(
                                           onTap: () {
+                                            storeHomeMainController
+                                                .isFavouriteProduct.value =
+                                                false;
                                             if (storeHomeMainController
                                                     .isLoading.value ==
                                                 false) {
@@ -310,6 +280,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                         )
                                       : InkWell(
                                           onTap: () {
+                                            storeHomeMainController
+                                                .isFavouriteProduct.value =
+                                            true;
                                             if (storeHomeMainController
                                                     .isLoading.value ==
                                                 false) {

@@ -47,7 +47,6 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
 
   SizedBox _buildOfferListCondition() {
     return SizedBox(
-        // height: 200,
         child: Obx(
           () => ownerStoresController.getOwnerOfferList.isEmpty
               ? ownerStoresController.isLoading.value == true
@@ -75,7 +74,6 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
     return ownerStoresController.storeProductList.isEmpty  ?
     height0SizedBox
         : CarouselSlider(
-
         items: ownerStoresController.storeProductList
           .map(
             (item) =>   _buildStoreProductCard(item),
@@ -83,10 +81,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> {
           .toList(),
       carouselController: _controllerProducts,
       options: CarouselOptions(
-        autoPlayInterval: const Duration(milliseconds: 100),  // Set the interval to 1 second
-        autoPlayAnimationDuration: const Duration(milliseconds: 750),
         enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        autoPlayCurve: Curves.easeInOut,
+        autoPlayCurve: Curves.fastOutSlowIn,
         viewportFraction: 0.5,
         enlargeCenterPage: false,
         autoPlay: true,

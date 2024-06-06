@@ -260,7 +260,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               .offers![i];
 
                                                       print(
-                                                          "offerObj======== ${storeHomeMainController.offerObj.value.offerName}");
+                                                          "offerObj=offerName======= ${storeHomeMainController.offerObj.value.offerName}");
                                                       await offersController
                                                           .apiGetOffersProducts(
                                                               offerId: offersController
@@ -275,7 +275,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                   .storeId
                                                                   .toString());
 
-                                                      Get.to(
+                                                   await  Get.to(
                                                         () =>
                                                             OfferProductScreen(
                                                           offerObj: offersController

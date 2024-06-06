@@ -142,10 +142,13 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
                                     Get.back(id: pageIdApp.value);
                                     Get.delete<OrdersHomeMainController>();
                                   },
-                                  icon: const Icon(
-                                    Icons.arrow_back,
-                                    color: AppColors.white,
-                                    size: 28.0,
+                                  icon: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: AppColors.white,
+                                      size: 24.0,
+                                    ),
                                   ),
                                 ),
                               ),

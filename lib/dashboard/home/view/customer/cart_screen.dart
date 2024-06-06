@@ -7,7 +7,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.
 import 'package:thegreenmall/utils/utils.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({super.key});
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -15,6 +15,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
 
   @override
   initState() {
@@ -105,7 +106,6 @@ class _CartScreenState extends State<CartScreen> {
           children: [
             SingleChildScrollView(
               child: SizedBox(
-                // height: WidgetConstants.screenHeight,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -373,10 +373,8 @@ class _CartScreenState extends State<CartScreen> {
                                       .storeDetailsResponse
                                       .value
                                       .data
-                                      ?.store
-                                      ?.storeDeliveryServices
-                                      ?.length !=
-                                  0
+                                      !.store
+                                      !.storeDeliveryServices!.isNotEmpty
                               ? GridView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: storeHomeMainController

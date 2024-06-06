@@ -28,8 +28,8 @@ class SearchStoreUserController extends GetxController {
   late FavouriteStoreResponse favouriteStoreListResponse =
       FavouriteStoreResponse();
 
-  RxList<FavouriteStore> favouriteStore = <FavouriteStore>[].obs;
-  RxList<PreviousStore> previousStore = <PreviousStore>[].obs;
+  RxList<StoreDetails> favouriteStore = <StoreDetails>[].obs;
+  RxList<StoreDetails> previousStore = <StoreDetails>[].obs;
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
   late CartListResponse cartListResponse = CartListResponse();
@@ -620,7 +620,7 @@ class SearchStoreUserController extends GetxController {
         isClicked.value = false;
         previousStoreListResponse = PreviousStoreResponse.fromJson(value?.body);
         totalCount.value = previousStoreListResponse.data?.totalCount ?? 0;
-        List<PreviousStore>? storeAddressesNewList = [];
+        List<StoreDetails>? storeAddressesNewList = [];
         storeAddressesNewList = previousStoreListResponse.data!.previousStores;
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
@@ -685,7 +685,7 @@ class SearchStoreUserController extends GetxController {
         favouriteStoreListResponse =
             FavouriteStoreResponse.fromJson(value?.body);
         totalCount.value = favouriteStoreListResponse.data?.totalCount ?? 0;
-        List<FavouriteStore>? storeAddressesNewList = [];
+        List<StoreDetails>? storeAddressesNewList = [];
         storeAddressesNewList =
             favouriteStoreListResponse.data!.favouriteStores;
         if (storeAddressesNewList!.isNotEmpty) {
@@ -746,27 +746,32 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores();
-        } else if (type.value == 0) {
-          debugPrint("Create Favourite Store *******${type.value}");
-          debugPrint("Create Favourite Store *******${type.value}");
-          storeAddresses.clear();
-          page.value = 1;
-          placeId.value = "";
-          apiGetNearByStores();
-        } else if (type.value == 1) {
-          previousStore.clear();
-          page.value = 1;
-          placeId.value = "";
-          apiGetPreviousStores();
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        if (type.value == 2) {
+          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+        } else if (type.value == 0) {
+          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= false;
+        } else if (type.value == 1) {
+
+          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+        }
+
         Utility.showAlertMessage(value?.body['message']);
 
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
+        if (type.value == 2) {
+          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+        } else if (type.value == 0) {
+          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= false;
+        } else if (type.value == 1) {
+
+          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -807,7 +812,7 @@ class SearchStoreUserController extends GetxController {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores();
-        } else if (type.value == 0) {
+        } /*else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
           placeId.value = "";
@@ -816,13 +821,30 @@ class SearchStoreUserController extends GetxController {
           previousStore.clear();
           page.value = 1;
           apiGetPreviousStores();
-        }
+        }*/
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        if (type.value == 2) {
+          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+        } else if (type.value == 0) {
+          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= true;
+        } else if (type.value == 1) {
+          previousStore.clear();
+          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+        }
+
         Utility.showAlertMessage(value?.body['message']);
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
+        if (type.value == 2) {
+          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+        } else if (type.value == 0) {
+          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= true;
+        } else if (type.value == 1) {
+          previousStore.clear();
+          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

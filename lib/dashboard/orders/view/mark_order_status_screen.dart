@@ -902,29 +902,21 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
                                   ordersHomeMainController
                                       .isFromNotification.value,
                               child:
-                             /* InkWell(
+                              InkWell(
+                                radius: 50,
                                 onTap: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.white,
-                                  size: 24.0,
-                                ),
-                              ),*/
-                              IconButton(
-                                splashRadius: 80,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back(id: pageIdApp.value);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.white,
-                                  size: 28.0,
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.white,
+                                    size: 24.0,
+                                  ),
                                 ),
                               ),
+
                             ),
                           ]),
                     ),

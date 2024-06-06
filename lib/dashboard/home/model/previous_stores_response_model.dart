@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'model.dart';
 
 PreviousStoreResponse previousStoreResponseFromJson(String str) =>
@@ -52,7 +54,7 @@ class PreviousStoreResponse {
 
 class PreviousStoreData {
   int? totalCount;
-  List<PreviousStore>? previousStores;
+  List<StoreDetails>? previousStores;
 
   PreviousStoreData({
     this.totalCount,
@@ -61,7 +63,7 @@ class PreviousStoreData {
 
   PreviousStoreData copyWith({
     int? totalCount,
-    List<PreviousStore>? previousStores,
+    List<StoreDetails>? previousStores,
   }) =>
       PreviousStoreData(
         totalCount: totalCount ?? this.totalCount,
@@ -73,8 +75,8 @@ class PreviousStoreData {
         totalCount: json["total_count"],
         previousStores: json["previous_stores"] == null
             ? []
-            : List<PreviousStore>.from(
-                json["previous_stores"]!.map((x) => PreviousStore.fromJson(x))),
+            : List<StoreDetails>.from(
+                json["previous_stores"]!.map((x) => StoreDetails.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,7 +87,7 @@ class PreviousStoreData {
       };
 }
 
-class PreviousStore {
+class StoreDetails {
   String? dynamicLink;
   String? storeName;
   String? storeEin;
@@ -105,10 +107,11 @@ class PreviousStore {
   List<PreviousStoreDeliveryService>? storeDeliveryServices;
   Images? logo;
   Images? image;
-  bool? isFavouriteStore;
+  RxBool? isFavouriteStore;
   bool? hasStoreOwner;
 
-  PreviousStore({
+
+  StoreDetails({
     this.dynamicLink,
     this.storeName,
     this.storeEin,
@@ -132,7 +135,7 @@ class PreviousStore {
     this.hasStoreOwner,
   });
 
-  PreviousStore copyWith({
+  StoreDetails copyWith({
     String? dynamicLink,
     String? storeName,
     String? storeEin,
@@ -152,10 +155,10 @@ class PreviousStore {
     List<PreviousStoreDeliveryService>? storeDeliveryServices,
     Images? logo,
     Images? image,
-    bool? isFavouriteStore,
+    RxBool? isFavouriteStore,
     bool? hasStoreOwner,
   }) =>
-      PreviousStore(
+      StoreDetails(
         dynamicLink: dynamicLink ?? this.dynamicLink,
         storeName: storeName ?? this.storeName,
         storeEin: storeEin ?? this.storeEin,
@@ -180,7 +183,7 @@ class PreviousStore {
         hasStoreOwner: hasStoreOwner ?? this.hasStoreOwner,
       );
 
-  factory PreviousStore.fromJson(Map<String, dynamic> json) => PreviousStore(
+  factory StoreDetails.fromJson(Map<String, dynamic> json) => StoreDetails(
         dynamicLink: json["dynamic_link"],
         storeName: json["store_name"],
         storeEin: json["store_ein"],
@@ -214,7 +217,10 @@ class PreviousStore {
                     .map((x) => PreviousStoreDeliveryService.fromJson(x))),
         logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
         image: json["image"] == null ? null : Images.fromJson(json["image"]),
-        isFavouriteStore: json["is_favourite_store"],
+        // isFavouriteStore: json["is_favourite_store"],
+    isFavouriteStore: json["is_favourite_store"] != null
+        ? RxBool(json["is_favourite_store"]) // Wrap the bool in RxBool
+        : null,
         hasStoreOwner: json["has_store_owner"],
       );
 

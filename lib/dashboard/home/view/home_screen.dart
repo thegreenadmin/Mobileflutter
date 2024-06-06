@@ -832,10 +832,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           .toList(),
       carouselController: _controllerProducts,
       options: CarouselOptions(
-        autoPlayInterval: const Duration(milliseconds: 100),  // Set the interv                             al to 1 second
-        autoPlayAnimationDuration: const Duration(milliseconds: 550),
         enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        autoPlayCurve: Curves.easeInOut,
+        autoPlayCurve: Curves.fastOutSlowIn,
         viewportFraction: 0.5,
         enlargeCenterPage: false,
         autoPlay: true,

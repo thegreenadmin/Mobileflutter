@@ -26,7 +26,7 @@ class StoreAddresses {
   String? city;
   String? postalCode;
   dynamic distance;
-  NearbyStore? store;
+  StoreDetails? store;
   State? state;
 
   StoreAddresses copyWith({
@@ -40,7 +40,7 @@ class StoreAddresses {
     String? city,
     String? postalCode,
     dynamic distance,
-    NearbyStore? store,
+    StoreDetails? store,
     State? state,
   }) =>
       StoreAddresses(
@@ -70,7 +70,7 @@ class StoreAddresses {
         postalCode: json["postal_code"],
         distance: json["distance"]?.toDouble(),
         store:
-            json["store"] == null ? null : NearbyStore.fromJson(json["store"]),
+            json["store"] == null ? null : StoreDetails.fromJson(json["store"]),
         state: json["state"] == null ? null : State.fromJson(json["state"]),
       );
 

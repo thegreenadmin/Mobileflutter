@@ -231,11 +231,14 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                         children: [
                                           searchStoreUserController
                                                       .storeAddresses[index]
-                                                      .store
-                                                      ?.isFavouriteStore ==
+                                                      .store!.isFavouriteStore!.value ==
                                                   true
                                               ? InkWell(
                                                   onTap: () {
+                                                    searchStoreUserController
+                                                        .storeAddresses[index]
+                                                        .store!.isFavouriteStore!.value =
+                                                        false;
                                                     if (searchStoreUserController
                                                             .isLoading.value ==
                                                         false) {
@@ -257,6 +260,10 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
                                                 )
                                               : InkWell(
                                                   onTap: () {
+                                                    searchStoreUserController
+                                                        .storeAddresses[index]
+                                                        .store!.isFavouriteStore!.value =
+                                                    true;
                                                     if (searchStoreUserController
                                                             .isLoading.value ==
                                                         false) {

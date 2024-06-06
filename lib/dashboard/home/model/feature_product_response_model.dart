@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'model.dart';
 
 FeatureProductListResponse featureProductListResponseFromJson(String str) =>
@@ -117,7 +119,7 @@ class FeatureProduct {
   });
 
   String? productId;
-  bool? isFavouriteProduct;
+  RxBool? isFavouriteProduct;
   String? storeId;
   dynamic quantity;
   bool? isFeaturedProduct;
@@ -146,7 +148,7 @@ class FeatureProduct {
 
   FeatureProduct copyWith({
     String? productId,
-    bool? isFavouriteProduct,
+    RxBool? isFavouriteProduct,
     String? storeId,
     int? quantity,
     bool? isFeaturedProduct,
@@ -205,8 +207,11 @@ class FeatureProduct {
 
   factory FeatureProduct.fromJson(Map<String, dynamic> json) => FeatureProduct(
         productId: json["product_id"],
-        isFavouriteProduct: json["is_favourite_product"],
-        storeId: json["store_id"],
+        // isFavouriteProduct: json["is_favourite_product"],
+    isFavouriteProduct: json["is_favourite_product"] != null
+        ? RxBool(json["is_favourite_product"]) // Wrap the bool in RxBool
+        : null,
+    storeId: json["store_id"],
         quantity: json["quantity"],
         isFeaturedProduct: json["is_featured_product"],
         productName: json["product_name"],

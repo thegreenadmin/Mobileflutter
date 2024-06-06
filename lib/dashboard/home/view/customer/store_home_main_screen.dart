@@ -278,7 +278,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                 },
                                 itemBuilder: (context) =>
                                     createOptionsPopUpList(context)!,
-                                child: Row(children: [
+                                child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
                                   Text(
                                     horizontalTabList[i],
                                     textAlign: TextAlign.center,
@@ -298,9 +301,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                   ),
                                   Icon(
                                     Icons.arrow_drop_down,
-                                    color: storeHomeMainController
-                                                .selectedIndex.value ==
-                                            i
+                                    color: storeHomeMainController.selectedIndex.value == i
                                         ? AppColors.primary
                                         : AppColors.blacklight,
                                     size: 24,
@@ -484,30 +485,24 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                               : storeHomeMainController.selectedIndex.value == 1 &&
                                       storeHomeMainController.invokedIndex.value ==
                                           1
-                                  ? const Expanded(
-                                      child: UserProductListScreen())
+                                  ? const Expanded(child: UserProductListScreen())
                                   : storeHomeMainController.selectedIndex.value == 1 &&
                                           storeHomeMainController.invokedIndex.value ==
                                               2
-                                      ? const Expanded(
-                                          child: AddToOrderScreen())
+                                      ? const Expanded(child: AddToOrderScreen())
                                       : storeHomeMainController.selectedIndex.value == 2 &&
                                               storeHomeMainController.invokedIndex.value ==
                                                   0
-                                          ? const Expanded(
-                                              child: StoreFavouriteScreen())
+                                          ? const Expanded(child: StoreFavouriteScreen())
                                           : storeHomeMainController.selectedIndex.value == 2 &&
                                                   storeHomeMainController.invokedIndex.value ==
                                                       1
-                                              ? const Expanded(
-                                                  child: AddToOrderScreen())
+                                              ? const Expanded(child: AddToOrderScreen())
                                               : storeHomeMainController.selectedIndex.value ==
                                                       3
                                                   ? storeHomeMainController.popUpIndex.value ==
                                                           0
-                                                      ? const Expanded(
-                                                          child:
-                                                              PreviousOrdersScreen())
+                                                      ? const Expanded(child: PreviousOrdersScreen())
                                                       : storeHomeMainController.popUpIndex.value ==
                                                               2
                                                           ? storeHomeMainController

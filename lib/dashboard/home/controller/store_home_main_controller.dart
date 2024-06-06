@@ -119,8 +119,9 @@ class StoreHomeMainController extends GetxController {
           selectedIndex.value = 2;
           lastSelectedIndex.value = 2;
           showLoading.value = false;
-           apiFeatureProductListApi(isFeaturedProduct: true);
-
+          if(storeId.value != "") {
+            apiFeatureProductListApi(isFavouriteProducts: true);
+          }
           // onIndexChange(2);
         }
         if (isFromHome.value) {
@@ -128,8 +129,12 @@ class StoreHomeMainController extends GetxController {
           lastSelectedIndex.value = 0;
           showLoading.value = false;
           invokedIndex.value = 0;
-           apiGetStoreOffersApi();
+          if(storeId.value != ""){
+            apiGetStoreOffersApi();
             apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+
+
           // onIndexChange(0);
         }
         if (isFromOptions.value) {
@@ -738,8 +743,11 @@ class StoreHomeMainController extends GetxController {
             isFromHome.value == false) {
           Get.parameters["storeId"] = storeId.value;
           isDeleteCartItem.value = false;
-          // Get.parameters["isAddToOrderScreen"]=="false";
-          await Get.to(() => const StoreHomeMainScreen(), id: pageIdApp.value);
+          Get.parameters["isFromMenu"] = "false";
+          Get.parameters['isFromFav'] = "false";
+          Get.parameters["isFromHome"] = "true";
+          Get.parameters["isFromOptions"] = "false";
+          Get.back(id: pageIdApp.value);
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1031,8 +1039,6 @@ class StoreHomeMainController extends GetxController {
                   onTap: () async {
                     Get.back();
                     Get.parameters["storeId"] = storeId.value;
-
-                    // Get.parameters["isAddToOrderScreen"]=="false";
                     await Get.to(() => const StoreHomeMainScreen(),
                         id: pageIdApp.value);
                   },
@@ -1536,6 +1542,7 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isFavouriteStore.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1543,6 +1550,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
+        isFavouriteStore.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1581,13 +1589,17 @@ class StoreHomeMainController extends GetxController {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= true;
         if (value?.body['message'] != null) {
+          isFavouriteStore.value = true;
           Utility.showAlertMessage(value?.body['message']);
         }
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
+        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= true;
+        isFavouriteStore.value = true;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1624,16 +1636,19 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        apiFeatureProductListApi();
-        isFavouriteProduct.value = true;
+
+        // isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isFavouriteProduct.value = false;
+        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
         SharedPreferenceStorage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isFavouriteProduct.value = false;
+        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1642,7 +1657,7 @@ class StoreHomeMainController extends GetxController {
   }
 
   ///Remove Favourite Product Api
-  Future apiRemoveFavouriteProduct(String? id) async {
+  Future apiRemoveFavouriteProduct(String? id,{bool isFromFavS = false}) async {
     isLoading.value = true;
     debugPrint("Remove Favourite Product URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteProduct}");
@@ -1670,10 +1685,10 @@ class StoreHomeMainController extends GetxController {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-
-        apiFeatureProductListApi();
-        isFavouriteProduct.value = false;
+        isFromFavS ? apiFeatureProductListApi(isFavouriteProducts: true) : null;
+        // isFavouriteProduct.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        isFavouriteProduct.value = true;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1681,6 +1696,7 @@ class StoreHomeMainController extends GetxController {
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
+        isFavouriteProduct.value = true;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

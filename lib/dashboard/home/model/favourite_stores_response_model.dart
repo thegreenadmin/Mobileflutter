@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:thegreenmall/dashboard/home/model/previous_stores_response_model.dart';
+
 import '../../common_models/image_model.dart';
 
 FavouriteStoreResponse favouriteStoreResponseFromJson(String str) =>
@@ -52,7 +54,7 @@ class FavouriteStoreResponse {
 
 class FavouriteStoreData {
   int? totalCount;
-  List<FavouriteStore>? favouriteStores;
+  List<StoreDetails>? favouriteStores;
 
   FavouriteStoreData({
     this.totalCount,
@@ -61,7 +63,7 @@ class FavouriteStoreData {
 
   FavouriteStoreData copyWith({
     int? totalCount,
-    List<FavouriteStore>? favouriteStores,
+    List<StoreDetails>? favouriteStores,
   }) =>
       FavouriteStoreData(
         totalCount: totalCount ?? this.totalCount,
@@ -73,8 +75,8 @@ class FavouriteStoreData {
         totalCount: json["total_count"],
         favouriteStores: json["favourite_stores"] == null
             ? []
-            : List<FavouriteStore>.from(json["favourite_stores"]!
-                .map((x) => FavouriteStore.fromJson(x))),
+            : List<StoreDetails>.from(json["favourite_stores"]!
+                .map((x) => StoreDetails.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,7 +87,7 @@ class FavouriteStoreData {
       };
 }
 
-class FavouriteStore {
+/*class FavouriteStore {
   String? dynamicLink;
   String? storeName;
   String? storeEin;
@@ -247,7 +249,7 @@ class FavouriteStore {
         "is_favourite_store": isFavouriteStore,
         "has_store_owner": hasStoreOwner,
       };
-}
+}*/
 
 class FavouriteStoreAddress {
   String? id;

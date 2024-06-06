@@ -15,7 +15,7 @@ String storeDetailsResponseToJson(StoreDetailsResponse data) =>
 class StoreDetailsResponse {
   dynamic status;
   String? message;
-  StoreDetails? data;
+  UserStoreDetails? data;
 
   StoreDetailsResponse({
     this.status,
@@ -26,7 +26,7 @@ class StoreDetailsResponse {
   StoreDetailsResponse copyWith({
     dynamic status,
     String? message,
-    StoreDetails? data,
+    UserStoreDetails? data,
   }) =>
       StoreDetailsResponse(
         status: status ?? this.status,
@@ -38,7 +38,7 @@ class StoreDetailsResponse {
       StoreDetailsResponse(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : StoreDetails.fromJson(json["data"]),
+        data: json["data"] == null ? null : UserStoreDetails.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -48,21 +48,21 @@ class StoreDetailsResponse {
       };
 }
 
-class StoreDetails {
+class UserStoreDetails {
   Store? store;
 
-  StoreDetails({
+  UserStoreDetails({
     this.store,
   });
 
-  StoreDetails copyWith({
+  UserStoreDetails copyWith({
     Store? store,
   }) =>
-      StoreDetails(
+      UserStoreDetails(
         store: store ?? this.store,
       );
 
-  factory StoreDetails.fromJson(Map<String, dynamic> json) => StoreDetails(
+  factory UserStoreDetails.fromJson(Map<String, dynamic> json) => UserStoreDetails(
         store: json["store"] == null ? null : Store.fromJson(json["store"]),
       );
 

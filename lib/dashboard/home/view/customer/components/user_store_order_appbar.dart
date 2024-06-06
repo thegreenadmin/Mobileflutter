@@ -61,17 +61,21 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                     children: [
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InkWell(
+                              radius: 40,
                               onTap: () {
                                 Get.back(id: pageIdApp.value);
                                 Get.delete<StoreHomeMainController>();
                               },
-                              child: const Icon(
-                                Icons.arrow_back,
-                                color: AppColors.white,
-                                size: 24.0,
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.white,
+                                  size: 24.0,
+                                ),
                               ),
                             ),
                             Row(
@@ -171,6 +175,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                         true
                                     ? InkWell(
                                         onTap: () {
+                                          storeHomeMainController
+                                              .isFavouriteStore.value = false;
                                           if (storeHomeMainController
                                                   .isLoading.value ==
                                               false) {
@@ -191,6 +197,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
                                       )
                                     : InkWell(
                                         onTap: () {
+                                          storeHomeMainController
+                                              .isFavouriteStore.value = true;
                                           if (storeHomeMainController
                                                   .isLoading.value ==
                                               false) {

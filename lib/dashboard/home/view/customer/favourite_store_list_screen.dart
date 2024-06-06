@@ -223,10 +223,14 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                       children: [
                                         searchStoreUserController
                                                     .favouriteStore[index]
-                                                    .isFavouriteStore ==
+                                                    .isFavouriteStore!.value ==
                                                 true
                                             ? InkWell(
                                                 onTap: () {
+                                                  searchStoreUserController
+                                                      .favouriteStore[index]
+                                                      .isFavouriteStore!.value =
+                                                      false;
                                                   if (searchStoreUserController
                                                           .isLoading.value ==
                                                       false) {
@@ -245,7 +249,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
                                                 ),
                                               )
                                             : InkWell(
-                                                onTap: () {
+                                                onTap: () {searchStoreUserController
+                                                    .favouriteStore[index]
+                                                    .isFavouriteStore!.value =
+                                                true;
                                                   if (searchStoreUserController
                                                           .isLoading.value ==
                                                       false) {
