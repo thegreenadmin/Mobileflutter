@@ -4,7 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -86,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           homeController.ownerFeatureProductList)),
               height5SizedBox,
               _buildFeatureProductText(),
-              height20SizedBox,
+              height10SizedBox,
               Expanded(
                 child: Obx(
                   () => roleApp.value == Role.customerRoleText
@@ -107,8 +106,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   Obx _buildFeatureProductText() {
     return Obx(
-      () => homeController.featuredUserProductList.isEmpty ||
-              homeController.ownerFeatureProductList.isEmpty
+      () => (roleApp.value == Role.customerRoleText && homeController.featuredUserProductList.isEmpty )||
+             (roleApp.value == Role.storeOwnerRoleText &&  homeController.ownerFeatureProductList.isEmpty)
           ? height0SizedBox
           : Text(
               StringConstants.featuredProductsText,
@@ -837,12 +836,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         viewportFraction: 0.5,
         enlargeCenterPage: false,
         autoPlay: true,
-        aspectRatio: 1.5,
+        aspectRatio: 1.2,
       ),
     );
   }
 
-  _buildFeatureProductList({RxList<ProductsList>? featuredProductList}) =>
+/*  _buildFeatureProductList({RxList<ProductsList>? featuredProductList}) =>
       featuredProductList!.isEmpty
           ? height0SizedBox
           : SizedBox(
@@ -973,5 +972,5 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-            );
+            );*/
 }
