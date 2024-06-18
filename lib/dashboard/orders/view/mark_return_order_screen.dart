@@ -12,7 +12,7 @@ class MarkReturnOrderScreen extends StatefulWidget {
   State<MarkReturnOrderScreen> createState() => _MarkReturnOrderScreenState();
 }
 
-class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> {
+class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
 

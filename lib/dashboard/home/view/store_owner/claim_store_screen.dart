@@ -10,7 +10,7 @@ class ClaimStoreScreen extends StatefulWidget {
   State<ClaimStoreScreen> createState() => _ClaimStoreScreenState();
 }
 
-class _ClaimStoreScreenState extends State<ClaimStoreScreen> {
+class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
       Get.put(OwnerStoresController());
 

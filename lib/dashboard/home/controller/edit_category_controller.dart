@@ -9,7 +9,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class EditNewCategoryController extends GetxController {
+class EditNewCategoryController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
 
@@ -27,9 +27,9 @@ class EditNewCategoryController extends GetxController {
   RxBool isFeaturedTypeSelected = false.obs;
   RxInt pageId = 0.obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
-
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
   void onInit() {
     super.onInit();
@@ -37,10 +37,10 @@ class EditNewCategoryController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -262,7 +262,7 @@ class EditNewCategoryController extends GetxController {
             value?.body["data"]['category']['is_featured_category'] ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
@@ -311,7 +311,7 @@ class EditNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen(),
             id: int.parse(

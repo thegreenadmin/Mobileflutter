@@ -11,7 +11,7 @@ class OwnerInboxScreen extends StatefulWidget {
   State<OwnerInboxScreen> createState() => _OwnerInboxScreenState();
 }
 
-class _OwnerInboxScreenState extends State<OwnerInboxScreen> {
+class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin{
   final OwnerInboxController ownerInboxController =
       Get.put(OwnerInboxController());
 

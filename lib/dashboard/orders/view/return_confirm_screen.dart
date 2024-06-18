@@ -11,7 +11,7 @@ class ReturnConfirmOrderScreen extends StatefulWidget {
       _ReturnConfirmOrderScreenState();
 }
 
-class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> {
+class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
 

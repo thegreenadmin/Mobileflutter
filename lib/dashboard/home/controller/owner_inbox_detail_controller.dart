@@ -11,18 +11,18 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class OwnerInboxDetailController extends GetxController {
+class OwnerInboxDetailController extends GetxController with GlobalVarMixin {
   RxBool isLoading = false.obs;
 
   TextEditingController messageTextController = TextEditingController();
   ScrollController scrollController = ScrollController();
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxString storeId = "".obs;
   RxString storeName = "".obs;
   RxString messageHeadId = "".obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxString? customerName = "".obs;
   RxInt pageId = 0.obs;
   OwnerMessageListModel messageListModel = OwnerMessageListModel();
@@ -34,8 +34,10 @@ class OwnerInboxDetailController extends GetxController {
   RxString userSelectedImageDynamicLinkFromServer = "".obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    role?.value =  await SharedPreferenceStorage.getData(Role.role) ??
+        "";
     getPage();
   }
 
@@ -47,7 +49,7 @@ class OwnerInboxDetailController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleVal;
+    role?.value = roleApp.value;
     storeId.value = Get.parameters["storeId"] ?? "";
     customerName?.value = Get.parameters["customerName"] ?? "";
     storeName.value = Get.parameters["storeName"] ?? "";
@@ -184,7 +186,7 @@ class OwnerInboxDetailController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
@@ -256,7 +258,7 @@ class OwnerInboxDetailController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

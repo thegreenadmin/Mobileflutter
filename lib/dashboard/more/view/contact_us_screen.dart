@@ -11,9 +11,12 @@ class ContactUsScreen extends StatefulWidget {
   State<ContactUsScreen> createState() => _ContactUsScreenState();
 }
 
-class _ContactUsScreenState extends State<ContactUsScreen> {
+class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
   final ContactUsController contactUsController =
       Get.put(ContactUsController());
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

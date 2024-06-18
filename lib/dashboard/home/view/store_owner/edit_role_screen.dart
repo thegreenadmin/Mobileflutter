@@ -11,7 +11,7 @@ class EditRoleScreen extends StatefulWidget {
   State<EditRoleScreen> createState() => _EditRoleScreenState();
 }
 
-class _EditRoleScreenState extends State<EditRoleScreen> {
+class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
 
   @override

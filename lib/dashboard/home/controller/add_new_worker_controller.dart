@@ -13,7 +13,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 
 import '../model/add_worker_request_model.dart' as add_worker;
 
-class AddNewWorkerController extends GetxController {
+class AddNewWorkerController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController employeeNameTextController = TextEditingController();
@@ -39,7 +39,7 @@ class AddNewWorkerController extends GetxController {
     Categories(id: 6, name: StringConstants.saturdayText, isSelected: false),
     Categories(id: 7, name: StringConstants.sundayText, isSelected: false),
   ].obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxBool isLoading = false.obs;
   RxBool autoValidate = false.obs;
   RxBool is247Time = false.obs;
@@ -70,8 +70,8 @@ class AddNewWorkerController extends GetxController {
   RxList<dynamic> storeTimings = <dynamic>[].obs;
   RxList<dynamic> storeDeliveryServices = <dynamic>[].obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -86,10 +86,10 @@ class AddNewWorkerController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -191,7 +191,7 @@ class AddNewWorkerController extends GetxController {
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message'] ?? "");
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -321,7 +321,7 @@ class AddNewWorkerController extends GetxController {
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -362,7 +362,7 @@ class AddNewWorkerController extends GetxController {
         await apiGetWorkerList();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
@@ -547,7 +547,7 @@ class AddNewWorkerController extends GetxController {
         getUserStoreList.value = getUserStoreListModel.data!.stores!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -583,7 +583,7 @@ class AddNewWorkerController extends GetxController {
         workerList.value = workerListResponse.data?.storeUsers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -619,7 +619,7 @@ class AddNewWorkerController extends GetxController {
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -702,7 +702,7 @@ class AddNewWorkerController extends GetxController {
         workingDaysTextController.text = concatenate.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

@@ -13,7 +13,7 @@ class WebviewPageScreen extends StatefulWidget {
   State<WebviewPageScreen> createState() => _WebviewPageScreenState();
 }
 
-class _WebviewPageScreenState extends State<WebviewPageScreen> {
+class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMixin{
   late final WebViewController controller;
   var pageId = 0;
   @override

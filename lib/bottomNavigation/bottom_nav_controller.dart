@@ -17,20 +17,20 @@ import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class BottomNavController extends GetxController {
+class BottomNavController extends GetxController with GlobalVarMixin{
   final selectedIndex = 0.obs;
   final lastSelectedIndex = 0.obs;
   RxBool isLoading = false.obs;
   RxBool hasPermission = false.obs;
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
   void onReady() {
     super.onReady();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (initialRemoteMessage != null) {
-        selectNotification(NotificationResponse(
+        PushNotificationService.handleNotification(NotificationResponse(
           notificationResponseType:
               NotificationResponseType.selectedNotificationAction,
           payload: json.encode(initialRemoteMessage!.data),
@@ -50,7 +50,9 @@ class BottomNavController extends GetxController {
   }
 
   getRole() async {
-    if (roleApp.value == Role.customerRoleText) {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+    roleApp.value = roleData;
+    if (roleData == Role.customerRoleText) {
       storeList.clear();
     } else {
       isLoading.value = true;
@@ -60,6 +62,8 @@ class BottomNavController extends GetxController {
 
   ///Get Store List Api
   apiGetStoreList() async {
+    debugPrint(
+        "authToken from mixin**********${authToken.value}");
     isLoading.value = true;
     debugPrint(
         "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
@@ -91,7 +95,7 @@ class BottomNavController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -133,15 +137,10 @@ class BottomNavController extends GetxController {
     });
   }
 
-  /*List<Widget> tabs = [
-    const HomeScreen(),
-    const WalletScreen(),
-    const OrdersScreen(),
-    const OffersScreen(),
-    const MoreScreen(),
-  ];*/
 
   onItemTapped(int index) async {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+    roleApp.value = roleData;
     Get.delete<StoreHomeMainController>();
     if (!isLoading.value) {
       getRole();

@@ -11,7 +11,7 @@ class UserInboxScreen extends StatefulWidget {
   State<UserInboxScreen> createState() => _UserInboxScreenState();
 }
 
-class _UserInboxScreenState extends State<UserInboxScreen> {
+class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
   final UserInboxController userInboxController =
       Get.put(UserInboxController());
 

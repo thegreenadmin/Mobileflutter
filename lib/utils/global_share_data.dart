@@ -2,6 +2,113 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
+
+mixin GlobalVarMixin {
+  RxString _roleApp = "".obs;
+  RxBool _authenticatedBiometric = false.obs;
+  RxBool _isFirstHomeClick = false.obs;
+  RxBool _wasKilled = false.obs;
+  RxString _firstName = "".obs;
+  RxString _lastName = "".obs;
+  RxString _authToken = "".obs;
+  RxInt _pageIdApp = 0.obs;
+  RxBool _hasStoreAccess = false.obs;
+  RxBool _isStoreOwner = false.obs;
+  RxBool _forFirstTimeCustomer = false.obs;
+  RxBool _forFirstTimeOwner = false.obs;
+
+  /*RxBool get authenticatedBiometric => _authenticatedBiometric;
+
+  set authenticatedBiometric(RxBool value) {
+    _authenticatedBiometric = value;
+  }
+
+
+
+  RxString get roleApp => _roleApp;
+
+  set roleApp(RxString value) {
+    _roleApp = value;
+  }
+
+
+
+  RxBool get isFirstHomeClick => _isFirstHomeClick;
+
+  set isFirstHomeClick(RxBool value) {
+    _isFirstHomeClick = value;
+  }
+
+  RxBool get wasKilled => _wasKilled;
+
+  set wasKilled(RxBool value) {
+    _wasKilled = value;
+  }
+
+  RxString get firstName => _firstName;
+
+  set firstName(RxString value) {
+    _firstName = value;
+  }
+
+  RxString get lastName => _lastName;
+
+  set lastName(RxString value) {
+    _lastName = value;
+  }
+
+  RxString get authToken => _authToken;
+
+  set authToken(RxString value) {
+    _authToken = value;
+  }
+
+  RxInt get pageIdApp => _pageIdApp;
+
+  set pageIdApp(RxInt value) {
+    _pageIdApp = value;
+  }
+
+  RxBool get hasStoreAccess => _hasStoreAccess;
+
+  set hasStoreAccess(RxBool value) {
+    _hasStoreAccess = value;
+  }
+
+  RxBool get isStoreOwner => _isStoreOwner;
+
+  set isStoreOwner(RxBool value) {
+    _isStoreOwner = value;
+  }
+
+  RxBool get forFirstTimeCustomer => _forFirstTimeCustomer;
+
+  set forFirstTimeCustomer(RxBool value) {
+    _forFirstTimeCustomer = value;
+  }
+
+  RxBool get forFirstTimeOwner => _forFirstTimeOwner;
+
+  set forFirstTimeOwner(RxBool value) {
+    _forFirstTimeOwner = value;
+  }*/
+  /*void updateRoleApp(String newValue) {
+    roleApp = newValue; // Update the value
+  }*/
+
+}
+
+class SharedDataController extends GetxController {
+
+
+
+/*var roleApp = ''.obs; // Use .obs to make it observable
+
+  void updateRoleApp(String newValue) {
+    roleApp.value = newValue; // Update the value
+  }*/
+}
+
 RxString roleApp = "".obs;
 RxBool authenticatedBiometric = false.obs;
 RxBool isFirstHomeClick = false.obs;
@@ -16,6 +123,7 @@ RxBool forFirstTimeCustomer = false.obs;
 RxBool forFirstTimeOwner = false.obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
+
 
 enum PermissionKey {
   manageTransaction,

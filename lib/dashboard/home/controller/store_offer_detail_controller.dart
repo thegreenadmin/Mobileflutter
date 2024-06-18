@@ -5,17 +5,17 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class StoreOfferDetailController extends GetxController {
+class StoreOfferDetailController extends GetxController with GlobalVarMixin {
   StoreOfferDetailModel storeOfferDetailModel = StoreOfferDetailModel();
   RxList<StoreOfferProducts> storeOfferDetailList = <StoreOfferProducts>[].obs;
   RxString storeId = "".obs;
   RxString offerId = "".obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
   void onInit() {
     super.onInit();
@@ -74,7 +74,7 @@ class StoreOfferDetailController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {

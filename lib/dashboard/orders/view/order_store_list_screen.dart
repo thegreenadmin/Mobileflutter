@@ -11,7 +11,7 @@ class OrderStoresListScreen extends StatefulWidget {
   State<OrderStoresListScreen> createState() => _OrderStoresListScreenState();
 }
 
-class _OrderStoresListScreenState extends State<OrderStoresListScreen> {
+class _OrderStoresListScreenState extends State<OrderStoresListScreen> with GlobalVarMixin{
   final OrdersController ordersController = Get.put(OrdersController());
 
   @override

@@ -16,7 +16,7 @@ class WalletScreen extends StatefulWidget {
   State<WalletScreen> createState() => _WalletScreenState();
 }
 
-class _WalletScreenState extends State<WalletScreen> {
+class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
   final WalletController walletController = Get.put(WalletController());
   var roleVal = "";
   String storeName = "";

@@ -12,7 +12,7 @@ class UserTransactionDetailScreen extends StatefulWidget {
 }
 
 class _UserTransactionDetailScreenState
-    extends State<UserTransactionDetailScreen> {
+    extends State<UserTransactionDetailScreen> with GlobalVarMixin{
   final UserTransactionDetailController userTransactionDetailController =
       Get.put(UserTransactionDetailController());
 

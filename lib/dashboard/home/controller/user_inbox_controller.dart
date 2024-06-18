@@ -9,7 +9,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class UserInboxController extends GetxController {
+class UserInboxController extends GetxController with GlobalVarMixin{
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
   RxBool isLoading = false.obs;
@@ -21,7 +21,7 @@ class UserInboxController extends GetxController {
   final scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt pageId = 0.obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
   void onInit() {
     super.onInit();
@@ -66,7 +66,7 @@ class UserInboxController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -108,7 +108,7 @@ class UserInboxController extends GetxController {
         await apiGetInboxList();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

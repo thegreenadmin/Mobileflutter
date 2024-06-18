@@ -29,7 +29,7 @@ class SearchStoreUserScreen extends StatefulWidget {
 }
 
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+    with TickerProviderStateMixin, WidgetsBindingObserver, GlobalVarMixin{
   TabController? _tabController;
 
   final SearchStoreUserController searchStoreUserController =

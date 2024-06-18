@@ -12,7 +12,7 @@ class TransactionScreen extends StatefulWidget {
   State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _TransactionScreenState extends State<TransactionScreen> {
+class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMixin{
   final TransactionController transactionController =
       Get.put(TransactionController());
 

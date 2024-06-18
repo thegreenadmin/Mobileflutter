@@ -4,7 +4,7 @@ import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class TransactionController extends GetxController {
+class TransactionController extends GetxController with GlobalVarMixin{
   GetUserTransactionModel getUserTransactionModel = GetUserTransactionModel();
   RxList<Transactionss>? userTransactionList = <Transactionss>[].obs;
 
@@ -15,8 +15,8 @@ class TransactionController extends GetxController {
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxString? storeId = "".obs;
   RxInt selectedIndex = 0.obs;
   RxInt pageId = 0.obs;
@@ -28,10 +28,10 @@ class TransactionController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 

@@ -17,7 +17,7 @@ class NotificationListScreen extends StatefulWidget {
   State<NotificationListScreen> createState() => _NotificationListScreenState();
 }
 
-class _NotificationListScreenState extends State<NotificationListScreen> {
+class _NotificationListScreenState extends State<NotificationListScreen> with GlobalVarMixin{
   final NotificationListController notificationListController =
       Get.put(NotificationListController());
 
@@ -133,10 +133,15 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                     "";
                             Get.parameters["isController"] = "yes";
                             Get.parameters["isFromNotification"] = "true";
+                            // notificationListController.notificationList[index]
+                            //         .isNotificationForStore!
+                            //     ? roleApp.value = Role.storeOwnerRoleText
+                            //     : roleApp.value = Role.customerRoleText;
+
                             notificationListController.notificationList[index]
-                                    .isNotificationForStore!
-                                ? roleApp.value = Role.storeOwnerRoleText
-                                : roleApp.value = Role.customerRoleText;
+                                .isNotificationForStore!
+                                ? roleApp(Role.storeOwnerRoleText)
+                                : roleApp(Role.customerRoleText);
                             notificationListController
                                             .notificationList[index].orderId !=
                                         null &&

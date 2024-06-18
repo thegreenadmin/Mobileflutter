@@ -11,7 +11,7 @@ class CreateOwnerBankAccount extends StatefulWidget {
   State<CreateOwnerBankAccount> createState() => _CreateOwnerBankAccountState();
 }
 
-class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> {
+class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with GlobalVarMixin{
   final WalletController walletController = Get.put(WalletController());
   @override
   Widget build(BuildContext context) {

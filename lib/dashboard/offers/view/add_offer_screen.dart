@@ -12,7 +12,7 @@ class AddOfferScreen extends StatefulWidget {
   State<AddOfferScreen> createState() => _AddOfferScreenState();
 }
 
-class _AddOfferScreenState extends State<AddOfferScreen> {
+class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
 

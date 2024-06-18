@@ -18,7 +18,7 @@ class ManageWalletScreen extends StatefulWidget {
   State<ManageWalletScreen> createState() => _ManageWalletScreenState();
 }
 
-class _ManageWalletScreenState extends State<ManageWalletScreen> {
+class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarMixin{
   final WalletController walletController = Get.put(WalletController());
 
   bottomSheetToAddMoney(context, {isFromEdit = false}) {

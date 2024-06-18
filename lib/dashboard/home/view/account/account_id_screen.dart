@@ -10,7 +10,7 @@ class AccountIdScreen extends StatefulWidget {
   State<AccountIdScreen> createState() => _AccountIdScreenState();
 }
 
-class _AccountIdScreenState extends State<AccountIdScreen> {
+class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
   final AccountController accountController = Get.put(AccountController());
   @override
   Widget build(BuildContext context) {

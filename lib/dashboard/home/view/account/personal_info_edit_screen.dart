@@ -16,7 +16,7 @@ class PersonalInfoEditScreen extends StatefulWidget {
   State<PersonalInfoEditScreen> createState() => _PersonalInfoEditScreenState();
 }
 
-class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> {
+class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with GlobalVarMixin{
   final AccountController accountController = Get.put(AccountController());
 
   @override

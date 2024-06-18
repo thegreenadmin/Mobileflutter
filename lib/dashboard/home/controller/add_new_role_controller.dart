@@ -5,14 +5,14 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/constants.dart' as strings;
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-import '../../../utils/global_share_data.dart';
 
-class AddNewRoleController extends GetxController {
+class AddNewRoleController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
   TextEditingController roleNameTextController = TextEditingController();
@@ -25,7 +25,7 @@ class AddNewRoleController extends GetxController {
   RxBool checkBoxValue = false.obs;
   RxBool isLoading = false.obs;
   RxBool isEnabled = false.obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxBool autoValidate = false.obs;
   RxBool autoValidateUpdate = false.obs;
 
@@ -47,8 +47,8 @@ class AddNewRoleController extends GetxController {
   late CreateRoleRequestModel createRoleRequestModel = CreateRoleRequestModel();
 
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -148,7 +148,7 @@ class AddNewRoleController extends GetxController {
         storeRoleList.value = getRoleListModel.data!.storeRoles!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -197,7 +197,7 @@ class AddNewRoleController extends GetxController {
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -238,7 +238,7 @@ class AddNewRoleController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -281,7 +281,7 @@ class AddNewRoleController extends GetxController {
         await apiGetStoreRole();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
 
         Get.offAll(const StartJourneyScreen());
@@ -342,7 +342,7 @@ class AddNewRoleController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -404,7 +404,7 @@ class AddNewRoleController extends GetxController {
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

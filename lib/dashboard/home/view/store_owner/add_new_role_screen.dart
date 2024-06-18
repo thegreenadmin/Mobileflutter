@@ -11,7 +11,7 @@ class AddNewRoleScreen extends StatefulWidget {
   State<AddNewRoleScreen> createState() => _AddNewRoleScreenState();
 }
 
-class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
+class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin{
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
   final selectedIndexes = <int>[];
   @override

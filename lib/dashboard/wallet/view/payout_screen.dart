@@ -16,7 +16,7 @@ class PayOutScreen extends StatefulWidget {
   }
 }
 
-class PayOutScreenState extends State<PayOutScreen> {
+class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
   final AddCardController addCardController = Get.put(AddCardController());
 
   @override

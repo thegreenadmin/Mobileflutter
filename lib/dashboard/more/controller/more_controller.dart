@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class MoreController extends GetxController {
+class MoreController extends GetxController with GlobalVarMixin{
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
   RxString? nickName = "".obs;

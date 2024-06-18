@@ -16,7 +16,7 @@ class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
   State<UserStoreOrderAppBar> createState() => _UserStoreOrderAppBarState();
 }
 
-class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> {
+class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with GlobalVarMixin{
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
 

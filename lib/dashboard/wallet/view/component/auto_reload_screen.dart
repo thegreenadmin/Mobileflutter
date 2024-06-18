@@ -14,7 +14,7 @@ class AutoReloadScreen extends StatefulWidget {
   State<AutoReloadScreen> createState() => _AutoReloadScreenState();
 }
 
-class _AutoReloadScreenState extends State<AutoReloadScreen> {
+class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin{
   final WalletController walletController = Get.put(WalletController());
   final AddCardController addCardController = Get.put(AddCardController());
 

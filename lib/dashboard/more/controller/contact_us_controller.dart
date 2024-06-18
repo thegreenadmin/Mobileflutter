@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class ContactUsController extends GetxController {
+class ContactUsController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
@@ -13,8 +13,8 @@ class ContactUsController extends GetxController {
   RxBool autoValidate = false.obs;
   RxInt pageId = 0.obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
 
   @override
   void onInit() {
@@ -23,10 +23,10 @@ class ContactUsController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 

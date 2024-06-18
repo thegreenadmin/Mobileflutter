@@ -12,7 +12,7 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
 
@@ -372,9 +372,11 @@ class _CartScreenState extends State<CartScreen> {
                           () => storeHomeMainController
                                       .storeDetailsResponse
                                       .value
-                                      .data
-                                      !.store
-                                      !.storeDeliveryServices!.isNotEmpty
+                                      .data?.store?.storeDeliveryServices !=null
+                          /* && storeHomeMainController
+                              .storeDetailsResponse
+                              .value
+                              .data!.store!.storeDeliveryServices!.isNotEmpty*/
                               ? GridView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: storeHomeMainController
@@ -411,12 +413,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     storeHomeMainController
                                                         .storeDetailsResponse
                                                         .value
-                                                        .data
-                                                        ?.store
-                                                        ?.storeDeliveryServices?[
-                                                            i]
-                                                        .storeDeliveryServiceId
-                                                        .toString()
+                                                        .data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
                                                 ? [
                                                     AppColors.primary,
                                                     AppColors.primary
@@ -444,23 +441,16 @@ class _CartScreenState extends State<CartScreen> {
                                                 storeHomeMainController
                                                     .storeDetailsResponse
                                                     .value
-                                                    .data!
-                                                    .store!
-                                                    .storeDeliveryServices![i]
-                                                    .deliveryServiceId!
-                                                    .toString();
+                                                    .data?.store?.storeDeliveryServices![i]
+                                                    .deliveryServiceId?.toString()??"";
 
                                             storeHomeMainController
                                                     .storeAddressId.value =
                                                 storeHomeMainController
                                                     .storeDetailsResponse
                                                     .value
-                                                    .data!
-                                                    .store!
-                                                    .storeAddresses!
-                                                    .first
-                                                    .storeAddressId
-                                                    .toString();
+                                                    .data?.store?.storeAddresses?.first.storeAddressId
+                                                    .toString()??"";
 
                                             await storeHomeMainController
                                                 .apiGetUserWalletBalance();
@@ -474,8 +464,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       .value
                                                       .data
                                                       ?.store
-                                                      ?.storeDeliveryServices?[
-                                                          i]
+                                                      ?.storeDeliveryServices?[i]
                                                       .deliveryServiceId ==
                                                   "1"
                                               ? StringConstants.inStoreText
@@ -484,8 +473,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           .value
                                                           .data
                                                           ?.store
-                                                          ?.storeDeliveryServices?[
-                                                              i]
+                                                          ?.storeDeliveryServices?[i]
                                                           .deliveryServiceId ==
                                                       "2"
                                                   ? StringConstants.deliveryText
@@ -525,26 +513,15 @@ class _CartScreenState extends State<CartScreen> {
                                                               .storeDeliveryServiceId
                                                               .value ==
                                                           storeHomeMainController
-                                                              .storeDetailsResponse
-                                                              .value
-                                                              .data
-                                                              ?.store
-                                                              ?.storeDeliveryServices?[
-                                                                  i]
-                                                              .storeDeliveryServiceId
+                                                              .storeDetailsResponse.value
+                                                              .data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId
                                                               .toString()
                                                       ? AppColors.white
                                                       : AppColors.primary,
                                                 )
                                               : storeHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeDeliveryServices?[
-                                                              i]
-                                                          .deliveryServiceId ==
-                                                      "2"
+                                                          .storeDetailsResponse.value.data?.store
+                                                          ?.storeDeliveryServices?[i].deliveryServiceId == "2"
                                                   ? Image.asset(
                                                       ImageConstants.delivery,
                                                       scale: 2.5,

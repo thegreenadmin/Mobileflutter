@@ -12,7 +12,7 @@ class PersonalInfoScreen extends StatefulWidget {
   State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
 }
 
-class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarMixin {
   final AccountController accountController = Get.put(AccountController());
 
   @override

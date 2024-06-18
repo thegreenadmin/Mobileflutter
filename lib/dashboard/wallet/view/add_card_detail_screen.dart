@@ -19,7 +19,7 @@ class AddCardDetailScreen extends StatefulWidget {
   }
 }
 
-class AddCardDetailScreenState extends State<AddCardDetailScreen> {
+class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVarMixin{
   final AddCardController addCardController = Get.put(AddCardController());
   OutlineInputBorder? border;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

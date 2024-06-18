@@ -12,20 +12,25 @@ class OwnerTransactionDetailScreen extends StatefulWidget {
 }
 
 class _OwnerTransactionDetailScreenState
-    extends State<OwnerTransactionDetailScreen> {
+    extends State<OwnerTransactionDetailScreen> with GlobalVarMixin{
   final TransactionDetailController transactionDetailController =
       Get.put(TransactionDetailController());
 
   @override
   void initState() {
     super.initState();
-
     transactionDetailController.storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";
     transactionDetailController.storeId!.value =
         Get.parameters['store_id'] ?? "";
     transactionDetailController.isCurrentMonthSelected.value = true;
-    if (SharedPreferenceStorage.getData(Role.role) == Role.customerRoleText) {
+    getRole();
+
+  }
+
+  getRole() async {
+    var role = await SharedPreferenceStorage.getData(Role.role) ??"";
+    if ( role == Role.customerRoleText) {
       transactionDetailController.role!.value = Role.customerRoleText;
       // apiGetUserOrderTransactionHistory();
     } else {

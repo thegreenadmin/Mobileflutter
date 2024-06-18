@@ -16,7 +16,7 @@ class OrdersHomeMainScreen extends StatefulWidget {
   State<OrdersHomeMainScreen> createState() => _OrdersHomeMainScreenState();
 }
 
-class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> {
+class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
 

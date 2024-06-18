@@ -13,7 +13,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class AccountController extends GetxController {
+class AccountController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
@@ -37,7 +37,7 @@ class AccountController extends GetxController {
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
   RxBool isLoading = false.obs;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxBool plan30 = false.obs;
   RxBool plan90 = false.obs;
   RxBool plan180 = false.obs;
@@ -542,7 +542,7 @@ class AccountController extends GetxController {
         // Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -1136,7 +1136,7 @@ class AccountController extends GetxController {
   }
 
   clearData() async {
-    SharedPreferenceStorage.clearData();
+    storage.clearData();
     Get.parameters.clear();
     await Get.offAll(const StartJourneyScreen());
   }

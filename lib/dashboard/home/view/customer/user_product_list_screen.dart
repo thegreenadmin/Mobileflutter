@@ -10,7 +10,7 @@ class UserProductListScreen extends StatefulWidget {
   State<UserProductListScreen> createState() => _UserProductListScreenState();
 }
 
-class _UserProductListScreenState extends State<UserProductListScreen> {
+class _UserProductListScreenState extends State<UserProductListScreen>  with GlobalVarMixin{
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
 

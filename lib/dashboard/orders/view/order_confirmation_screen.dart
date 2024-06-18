@@ -18,7 +18,7 @@ class OrderConfirmationScreen extends StatefulWidget {
       _OrderConfirmationScreenState();
 }
 
-class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
+class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with GlobalVarMixin{
   final OrdersController ordersController = Get.put(OrdersController());
 
   @override

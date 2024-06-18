@@ -12,9 +12,11 @@ class MarkOrderStatusScreen extends StatefulWidget {
   State<MarkOrderStatusScreen> createState() => _MarkOrderStatusScreenState();
 }
 
-class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> {
+class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+
+
 
   @override
   Widget build(BuildContext context) {

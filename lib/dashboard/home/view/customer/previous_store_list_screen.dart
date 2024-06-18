@@ -14,7 +14,7 @@ class PreviousStoreListScreen extends StatefulWidget {
       _PreviousStoreListScreenState();
 }
 
-class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> {
+class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with GlobalVarMixin{
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 

@@ -14,7 +14,7 @@ class FavouriteStoreListScreen extends StatefulWidget {
       _FavouriteStoreListScreenState();
 }
 
-class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> {
+class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> with GlobalVarMixin{
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 

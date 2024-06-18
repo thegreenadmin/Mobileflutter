@@ -9,13 +9,17 @@ import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  PushNotificationService notificationService = PushNotificationService();
+  await initialize();
   await notificationPermission();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -37,9 +41,15 @@ Future<void> main() async {
     android: initializationSettingsAndroid,
     iOS: initializationSettingsIOS,
   );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onDidReceiveBackgroundNotificationResponse: selectNotification,
-      onDidReceiveNotificationResponse: selectNotification);
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveBackgroundNotificationResponse: PushNotificationService.handleNotification,
+    onDidReceiveNotificationResponse: PushNotificationService.handleNotification,
+  );
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //     onDidReceiveBackgroundNotificationResponse: notificationService.selectNotification,
+  //     onDidReceiveNotificationResponse: notificationService.selectNotification);
 
   getNotificationOpenedApp();
   getNotification();
@@ -58,7 +68,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -100,19 +110,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    clearData(); // We can call logout api here as well
+    clearData();
   }
 
   clearData() async {
     SharedPreferenceStorage.getData('onboardingCompleted');
+    SharedPreferenceStorage storage = SharedPreferenceStorage();
 
-    SharedPreferenceStorage.clearData();
+    storage.clearData();
     Get.parameters.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      key: GlobalKey<NavigatorState>(),
       title: StringConstants.theGreenMallTitleText, // The Green Mall
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -15,7 +15,7 @@ class ActiveMembershipScreen extends StatefulWidget {
   }
 }
 
-class ActiveMembershipScreenState extends State<ActiveMembershipScreen> {
+class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with GlobalVarMixin {
   final AccountController accountController = Get.put(AccountController());
 
   @override

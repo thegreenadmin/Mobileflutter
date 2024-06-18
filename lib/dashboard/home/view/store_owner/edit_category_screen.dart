@@ -12,7 +12,7 @@ class EditCategoryScreen extends StatefulWidget {
   State<EditCategoryScreen> createState() => _EditCategoryScreenState();
 }
 
-class _EditCategoryScreenState extends State<EditCategoryScreen> {
+class _EditCategoryScreenState extends State<EditCategoryScreen> with GlobalVarMixin {
   AddNewCategoryController addNewCategoryController =
       Get.put(AddNewCategoryController());
 

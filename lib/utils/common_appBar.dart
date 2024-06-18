@@ -38,7 +38,7 @@ class CommonAppBar extends StatefulWidget with PreferredSizeWidget {
   State<CommonAppBar> createState() => _CommonAppBarState();
 }
 
-class _CommonAppBarState extends State<CommonAppBar> {
+class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
 

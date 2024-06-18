@@ -8,13 +8,13 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class NotificationListController extends GetxController {
+class NotificationListController extends GetxController with GlobalVarMixin {
   RxBool isLoading = false.obs;
   late NotificationListModel notificationListModel = NotificationListModel();
   RxList<Notifications> notificationList = <Notifications>[].obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxInt pageId = 0.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
@@ -25,7 +25,7 @@ class NotificationListController extends GetxController {
 
     getPage();
   }
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   getPage() async {
     firstName?.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
@@ -71,7 +71,7 @@ class NotificationListController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 import 'global_share_data.dart';
 
-class SharedPreferenceStorage {
+class SharedPreferenceStorage with GlobalVarMixin{
   static final storage = GetStorage();
 
   static setData(String key, dynamic value) async {
@@ -46,13 +46,19 @@ class SharedPreferenceStorage {
     // return storage.read(key);
   }
 
-  static void clearData() async {
+   void clearData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    forFirstTimeCustomer.value = false;
-    forFirstTimeOwner.value = false;
-    authToken.value = "";
-    isStoreOwner.value = false;
-    hasStoreAccess.value = false;
+
+    forFirstTimeCustomer(false);
+    // forFirstTimeCustomer.value = false;
+    forFirstTimeOwner(false);
+    // forFirstTimeOwner.value = false;
+    authToken("");
+    // authToken.value = "";
+    // isStoreOwner.value = false;
+    isStoreOwner(false);
+    // hasStoreAccess.value = false;
+    hasStoreAccess(false);
     SharedPreferenceStorage.removeData(StringConstants.firstNameSmallText);
     SharedPreferenceStorage.removeData(StringConstants.firstNameText);
     SharedPreferenceStorage.removeData(StringConstants.lastNameText);

@@ -11,7 +11,7 @@ class ImagePreviewScreen extends StatefulWidget {
   State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();
 }
 
-class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
+class _ImagePreviewScreenState extends State<ImagePreviewScreen> with GlobalVarMixin{
   RxInt pageId = 0.obs;
   @override
   void initState() {

@@ -22,7 +22,7 @@ class AddMoneyToWalletUser extends StatefulWidget {
   }
 }
 
-class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> {
+class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalVarMixin{
   final AddCardController addCardController = Get.put(AddCardController());
 
   late Pay _payClient;

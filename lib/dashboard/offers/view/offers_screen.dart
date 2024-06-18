@@ -17,10 +17,23 @@ class OffersScreen extends StatefulWidget {
   State<OffersScreen> createState() => _OffersScreenState();
 }
 
-class _OffersScreenState extends State<OffersScreen> {
+class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
   OffersController offersController = Get.put(OffersController());
   StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+
+@override
+  void initState() {
+  getRole();
+    super.initState();
+  }
+
+  getRole() async {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+    offersController.role!.value = roleData;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +61,7 @@ class _OffersScreenState extends State<OffersScreen> {
           child: Column(
             children: [
               Obx(
-                () => roleApp.value == Role.customerRoleText
+                () =>offersController.role.value == Role.customerRoleText
                     ? height0SizedBox
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,7 +126,7 @@ class _OffersScreenState extends State<OffersScreen> {
               ),
               height20SizedBox,
               Expanded(
-                child: Obx(() => roleApp.value == Role.customerRoleText
+                child: Obx(() => offersController.role.value == Role.customerRoleText
                     ? offersController.getUserOfferList.isEmpty
                         ? offersController.isLoading!.value == true
                             ? height0SizedBox
@@ -258,9 +271,6 @@ class _OffersScreenState extends State<OffersScreen> {
                                                               .getUserOfferList[
                                                                   index]
                                                               .offers![i];
-
-                                                      print(
-                                                          "offerObj=offerName======= ${storeHomeMainController.offerObj.value.offerName}");
                                                       await offersController
                                                           .apiGetOffersProducts(
                                                               offerId: offersController
@@ -639,7 +649,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                                                     ""
                                                               })!
                                                             .then((value) {
-                                                            roleApp.value ==
+                                                      offersController.role.value ==
                                                                     Role
                                                                         .customerRoleText
                                                                 ? offersController

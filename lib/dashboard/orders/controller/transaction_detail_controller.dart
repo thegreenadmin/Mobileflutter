@@ -4,7 +4,7 @@ import 'package:thegreenmall/dashboard/orders/model/orders_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class TransactionDetailController extends GetxController {
+class TransactionDetailController extends GetxController with GlobalVarMixin{
   GetOwnerTransactionModel getOwnerTransactionModel =
       GetOwnerTransactionModel();
   RxList<Transactions>? ownerOrderTransactionList = <Transactions>[].obs;
@@ -20,8 +20,8 @@ class TransactionDetailController extends GetxController {
   RxString? customerName = "".obs;
   RxString? orderDate = "".obs;
   RxString? orderAmount = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   @override
   void onInit() {
     super.onInit();
@@ -30,10 +30,10 @@ class TransactionDetailController extends GetxController {
   }
 
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 

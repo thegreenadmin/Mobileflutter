@@ -64,15 +64,14 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     ),
               ),
               height20SizedBox,
-              _buildCarouselSlider(
-                  offersCarouselList: storeHomeMainController.offersList),
+              _buildCarouselSlider(offersCarouselList: storeHomeMainController.offersList),
               height20SizedBox,
-              Obx(
-                    () =>
+              GetX<StoreHomeMainController>(
+                builder: (controller) =>
                     Visibility(
                       visible:
-                      storeHomeMainController.featureProductList.isNotEmpty &&
-                          storeHomeMainController.isLoading.value == false,
+                      controller.featureProductList.isNotEmpty &&
+                          controller.isLoading.value == false,
                       child: Text(
                         StringConstants.featuredProductsText,
                         style: const TextStyle(
@@ -91,16 +90,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
     );
   }
 
-  Obx _buildFeatureProducts() {
-    return Obx(
-          () =>
+  GetX _buildFeatureProducts() {
+    return GetX<StoreHomeMainController>(
+      builder: (controller) =>
           Visibility(
-            visible: storeHomeMainController.featureProductList.isNotEmpty &&
-                storeHomeMainController.isLoading.value == false,
+            visible: controller.featureProductList.isNotEmpty,
             child: SizedBox(
               height: 280,
-              child: storeHomeMainController.featureProductList.isEmpty
-                  ? storeHomeMainController.isLoading.value == true
+              child: controller.featureProductList.isEmpty
+                  ? controller.isLoading.value == true
                   ? height0SizedBox
                   : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -124,14 +122,15 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                 ],
               )
                   :
-              _buildProductsCarousel(),
+              _buildProductsCarousel(controller),
             ),
           ),
     );
   }
 
-  CarouselSlider _buildProductsCarousel() {
+  CarouselSlider _buildProductsCarousel(StoreHomeMainController storeHomeMainController) {
     return CarouselSlider(
+      key: UniqueKey(),
       items: storeHomeMainController.featureProductList
           .map(
             (item) =>
@@ -177,10 +176,28 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                             height: WidgetConstants.screenHeight * 0.20,
                             width: WidgetConstants.screenWidth * 0.4,
                           ),
-                          Obx(() {
-                            return Padding(
+                            Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: item.isFavouriteProduct!.value == true
+                              child:
+
+                             InkWell(
+                              onTap: () {
+                                item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
+                                  if (!storeHomeMainController.isLoading.value) {
+                                    if (item.isFavouriteProduct!.value) {
+                                      storeHomeMainController.apiCreateFavouriteProduct(item.productId);
+                                    } else {
+                                      storeHomeMainController.apiRemoveFavouriteProduct(item.productId);
+                                    }
+                                  }
+                                },
+                                child: Image.asset(
+                                  item.isFavouriteProduct!.value
+                                  ? ImageConstants.liked : ImageConstants.fav,
+                                  scale: 3,
+                                ),
+                              )
+                              /*item.isFavouriteProduct!.value == true
                                   ? InkWell(
                                 onTap: () {
                                   item.isFavouriteProduct!.value = false;
@@ -212,9 +229,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                   ImageConstants.fav,
                                   scale: 3,
                                 ),
-                              ),
-                            );
-                          })
+                              ),*/
+                            )
                         ],
                       ),
                     ),
@@ -262,8 +278,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                 ),
               ],
             ),
-      )
-          .toList(),
+      ).toList(),
       carouselController: _controllerProducts,
       options: CarouselOptions(
         enlargeStrategy: CenterPageEnlargeStrategy.scale,

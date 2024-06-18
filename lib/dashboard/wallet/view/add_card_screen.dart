@@ -15,7 +15,7 @@ class AddCardScreen extends StatefulWidget {
   }
 }
 
-class AddCardScreenState extends State<AddCardScreen> {
+class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
   final AddCardController addCardController = Get.put(AddCardController());
 
   @override

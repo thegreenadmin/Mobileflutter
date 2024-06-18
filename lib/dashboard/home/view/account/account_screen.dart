@@ -26,7 +26,7 @@ class AccountScreen extends StatefulWidget {
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
   final AccountController accountController = Get.put(AccountController());
 
   final LocalAuthentication auth = LocalAuthentication();
@@ -156,6 +156,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               Get.parameters["orderId"] = "";
                               Get.parameters[Role.role] =
                                   Role.storeOwnerRoleText;
+
+                              // roleApp(Role.storeOwnerRoleText);
                               roleApp.value = Role.storeOwnerRoleText;
                               Get.find<BottomNavController>().onReady();
                               Get.until((route) => route.isFirst,
@@ -163,6 +165,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             } else {
                               SharedPreferenceStorage.setData(
                                   Role.role, Role.customerRoleText);
+                              // roleApp( Role.customerRoleText);
                               roleApp.value = Role.customerRoleText;
                               accountController.roleId?.value =
                                   Role.customerRoleText;

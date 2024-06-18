@@ -23,7 +23,7 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixin{
   final BottomNavController bottomNavigationPageController =
       Get.put(BottomNavController());
   final AccountController accountController = Get.put(AccountController());

@@ -13,7 +13,7 @@ class NearbyStoreListScreen extends StatefulWidget {
   State<NearbyStoreListScreen> createState() => _NearbyStoreListScreenState();
 }
 
-class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> {
+class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with GlobalVarMixin{
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 

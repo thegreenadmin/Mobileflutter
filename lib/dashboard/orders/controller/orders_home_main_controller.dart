@@ -9,7 +9,9 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class OrdersHomeMainController extends GetxController {
+class OrdersHomeMainController extends GetxController with GlobalVarMixin{
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
+
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
   RxBool preventCall = false.obs;
@@ -45,11 +47,12 @@ class OrdersHomeMainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint(
-          "OrdersHomeMainController orderId ======onInit =======${Get.parameters["orderId"]} ${Get.parameters["storeId"]} ${Get.parameters["isFromNotification"]}");
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+      role!.value = roleData;
+
+
       if (Get.parameters["isController"] != "no") {
-        // selectedIndex.value = 0;
         isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
 
@@ -59,8 +62,7 @@ class OrdersHomeMainController extends GetxController {
         }
         if (Get.parameters["orderId"] != "" &&
             Get.parameters["orderId"] != null) {
-          debugPrint(
-              "OrdersHomeMainController orderId =============${Get.parameters["orderId"]}");
+
           orderId.value = Get.parameters["orderId"] ?? "";
           apiGetStoreOrderDetail();
         }
@@ -188,7 +190,7 @@ class OrdersHomeMainController extends GetxController {
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showToast(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -383,7 +385,7 @@ class OrdersHomeMainController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

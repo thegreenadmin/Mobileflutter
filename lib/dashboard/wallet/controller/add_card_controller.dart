@@ -15,10 +15,13 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class AddCardController extends GetxController {
-  RxString? firstName = "".obs;
+class AddCardController extends GetxController with GlobalVarMixin{
+
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
+
+  // RxString? firstName = "".obs;
   RxString? paymentType = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? lastName = "".obs;
   RxString? nickName = "".obs;
   RxString email = "".obs;
   RxString phone = "".obs;
@@ -113,10 +116,10 @@ class AddCardController extends GetxController {
   }
 
   getApiData() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -185,7 +188,7 @@ class AddCardController extends GetxController {
         }
       } else if (value?.body["status"] == 401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -334,7 +337,7 @@ class AddCardController extends GetxController {
         countryList.value = countryListModel.data!.countries!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -376,7 +379,7 @@ class AddCardController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -433,7 +436,7 @@ class AddCardController extends GetxController {
             apiGetOwnerWalletBalance();
           } else if (value?.body["status"] == ApiConstants.statusCode401) {
             Utility.showAlertMessage(value?.body['message']);
-            SharedPreferenceStorage.clearData();
+            storage.clearData();
             Get.parameters.clear();
             await Get.offAll(const StartJourneyScreen());
           }
@@ -651,7 +654,7 @@ class AddCardController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -794,7 +797,7 @@ class AddCardController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -835,7 +838,7 @@ class AddCardController extends GetxController {
         await apiGetCardList();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -873,7 +876,7 @@ class AddCardController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -928,7 +931,7 @@ class AddCardController extends GetxController {
           Utility.showToast(value.body['message']);
         } else if (value.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value.body['message']);
-          SharedPreferenceStorage.clearData();
+          storage.clearData();
           Get.parameters.clear();
           Get.offAll(const StartJourneyScreen());
         } else if (value.body["status"] == ApiConstants.statusCode409) {
@@ -974,7 +977,7 @@ class AddCardController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -1020,7 +1023,7 @@ class AddCardController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -1065,7 +1068,7 @@ class AddCardController extends GetxController {
         accountLink.value = value.body["data"]['accountLink']['url'];
       } else if (value.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

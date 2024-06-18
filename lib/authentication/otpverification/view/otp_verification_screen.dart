@@ -6,7 +6,7 @@ import 'package:thegreenmall/authentication/otpverification/controller/otp_verif
 import 'package:thegreenmall/utils/utils.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  const OtpVerificationScreen({Key? key}) : super(key: key);
+  const OtpVerificationScreen({super.key});
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();

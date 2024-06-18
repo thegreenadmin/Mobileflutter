@@ -10,9 +10,11 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class OffersController extends GetxController {
+class OffersController extends GetxController with GlobalVarMixin{
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
+
   RxString? nickName = "".obs;
   RxString? email = "".obs;
   RxString? phone = "".obs;
@@ -58,9 +60,11 @@ class OffersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+      role!.value = roleData;
       if (Get.parameters["isController"] != "no") {
-        if (roleApp.value == Role.customerRoleText) {
+        if (role.value == Role.customerRoleText) {
           searchStoreUserController.onInit();
         }
         isFromNotification.value =
@@ -78,7 +82,8 @@ class OffersController extends GetxController {
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
-    role.value = roleApp.value;
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+    role.value = roleData;
     if (role.value == Role.customerRoleText) {
       getCurrentLocation();
     } else {
@@ -91,7 +96,6 @@ class OffersController extends GetxController {
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    debugPrint("CURRENT roleVal************${role.value} ${pageId.value}");
     apiGetUserOffersList();
     setupScrollController1();
   }
@@ -169,7 +173,7 @@ class OffersController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -221,7 +225,7 @@ class OffersController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -256,17 +260,15 @@ class OffersController extends GetxController {
       debugPrint("DELETE OFFER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
-        if (role.value == Role.customerRoleText) {
-          apiGetUserOffersList();
-        } else {
-          apiGetOwnerOffersList();
-        }
+        page.value = 1;
+        apiGetOwnerOffersList();
+
         Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         Utility.showAlertMessage(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -321,7 +323,7 @@ class OffersController extends GetxController {
             userFeaturedProductModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

@@ -18,9 +18,21 @@ class UserInboxDetailScreen extends StatefulWidget {
   UserInboxDetailScreenState createState() => UserInboxDetailScreenState();
 }
 
-class UserInboxDetailScreenState extends State<UserInboxDetailScreen> {
+class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with GlobalVarMixin{
   final UserInboxDetailController userInboxDetailController =
       Get.put(UserInboxDetailController());
+
+
+  @override
+  void initState() {
+    getRole();
+    super.initState();
+  }
+
+  getRole() async {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
+    userInboxDetailController.role?.value  = roleData;
+  }
 
   SizedBox buildPhotoLibraryGridView() {
     return SizedBox(

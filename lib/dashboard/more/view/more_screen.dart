@@ -14,7 +14,7 @@ class MoreScreen extends StatefulWidget {
   State<MoreScreen> createState() => _MoreScreenState();
 }
 
-class _MoreScreenState extends State<MoreScreen> {
+class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
   final MoreController moreController = Get.put(MoreController());
 
   @override

@@ -17,7 +17,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class OwnerStoresController extends GetxController {
+class OwnerStoresController extends GetxController  with GlobalVarMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController storeNameTextController = TextEditingController();
@@ -41,7 +41,7 @@ class OwnerStoresController extends GetxController {
   TextEditingController einNumberTextController = TextEditingController();
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxBool isScreenLockNotify = false.obs;
   RxBool isInboxMessagesNotify = false.obs;
   RxBool isTippingNotify = false.obs;
@@ -370,7 +370,7 @@ class OwnerStoresController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -426,7 +426,7 @@ class OwnerStoresController extends GetxController {
         storeProductList.value = getStoreProductList.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -523,7 +523,7 @@ class OwnerStoresController extends GetxController {
         Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -567,7 +567,7 @@ class OwnerStoresController extends GetxController {
         // Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -608,7 +608,7 @@ class OwnerStoresController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -929,7 +929,7 @@ class OwnerStoresController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -1054,7 +1054,7 @@ class OwnerStoresController extends GetxController {
         await apiGetStoreList();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -1223,7 +1223,7 @@ class OwnerStoresController extends GetxController {
           einNumberTextController.clear();
         } else if (value?.body["status"] == ApiConstants.statusCode401) {
           Utility.showAlertMessage(value?.body['message']);
-          SharedPreferenceStorage.clearData();
+          storage.clearData();
           Get.parameters.clear();
           Get.offAll(const StartJourneyScreen());
         } else if (value?.body["status"] == ApiConstants.statusCode409) {

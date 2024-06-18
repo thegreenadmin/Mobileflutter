@@ -11,7 +11,7 @@ class FilterOptionScreen extends StatefulWidget {
   State<FilterOptionScreen> createState() => _FilterOptionScreenState();
 }
 
-class _FilterOptionScreenState extends State<FilterOptionScreen> {
+class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarMixin{
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 

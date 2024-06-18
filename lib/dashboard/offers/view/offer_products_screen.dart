@@ -21,7 +21,7 @@ class OfferProductScreen extends StatefulWidget {
   State<OfferProductScreen> createState() => _OfferProductScreenState();
 }
 
-class _OfferProductScreenState extends State<OfferProductScreen> {
+class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarMixin{
   final OffersController offersController = Get.put(OffersController());
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());

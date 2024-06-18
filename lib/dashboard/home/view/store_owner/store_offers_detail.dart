@@ -10,7 +10,7 @@ class StoreOfferDetailScreen extends StatefulWidget {
   State<StoreOfferDetailScreen> createState() => _StoreOfferDetailScreenState();
 }
 
-class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> {
+class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> with GlobalVarMixin{
   final StoreOfferDetailController storeOfferDetailController =
       Get.put(StoreOfferDetailController());
 

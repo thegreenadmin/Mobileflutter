@@ -14,7 +14,7 @@ class WorkerListScreen extends StatefulWidget {
   State<WorkerListScreen> createState() => _WorkerListScreenState();
 }
 
-class _WorkerListScreenState extends State<WorkerListScreen> {
+class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin{
   final AddNewWorkerController addNewWorkerController =
       Get.put(AddNewWorkerController());
 

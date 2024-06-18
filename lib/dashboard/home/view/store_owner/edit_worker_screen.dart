@@ -13,7 +13,7 @@ class EditWorkerScreen extends StatefulWidget {
   State<EditWorkerScreen> createState() => _EditWorkerScreenState();
 }
 
-class _EditWorkerScreenState extends State<EditWorkerScreen> {
+class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin{
   final AddNewWorkerController addNewWorkerController =
       Get.put(AddNewWorkerController());
 

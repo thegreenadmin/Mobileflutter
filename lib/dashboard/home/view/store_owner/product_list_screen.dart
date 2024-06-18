@@ -12,7 +12,7 @@ class ProductListScreen extends StatefulWidget {
   State<ProductListScreen> createState() => _ProductListScreenState();
 }
 
-class _ProductListScreenState extends State<ProductListScreen> {
+class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMixin{
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
 

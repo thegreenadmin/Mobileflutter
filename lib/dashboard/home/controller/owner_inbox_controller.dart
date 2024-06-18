@@ -8,7 +8,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class OwnerInboxController extends GetxController {
+class OwnerInboxController extends GetxController with GlobalVarMixin {
   RxBool isNotify = false.obs;
   RxBool isInboxSelected = false.obs;
   RxBool isLoading = false.obs;
@@ -16,8 +16,8 @@ class OwnerInboxController extends GetxController {
   late OwnerInboxModel inboxModel = OwnerInboxModel();
   RxList<MessageHead> inboxList = <MessageHead>[].obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxBool showPreviousMessages = false.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;
@@ -27,12 +27,12 @@ class OwnerInboxController extends GetxController {
     super.onInit();
     getPage();
   }
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -76,7 +76,7 @@ class OwnerInboxController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {
@@ -118,7 +118,7 @@ class OwnerInboxController extends GetxController {
         await apiGetInboxList();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else {

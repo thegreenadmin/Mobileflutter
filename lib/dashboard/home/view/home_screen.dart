@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, GlobalVarMixin {
 
   final CarouselController _controllerProducts = CarouselController();
   int _current = 0;
@@ -320,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       children: [
                         RawMaterialButton(
                           elevation: 0,
-                          onPressed: () {
+                          onPressed: () async {
                             roleApp.value == Role.customerRoleText
                                 ? Get.to(() => const UserInboxScreen(),
                                     id: pageIdApp.value)
@@ -332,7 +332,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                 ele.controllerKey ==
                                                 PermissionKey
                                                     .manageMessages.statusName))
-                                    ? Get.to(() => const OwnerInboxScreen(),
+                                    ? await Get.to(() => const OwnerInboxScreen(),
                                         id: pageIdApp.value)
                                     : Utility.showAlertMessage(
                                         AlertStringConstants
@@ -374,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         Obx(() => hasStoreAccess.value
                             ? RawMaterialButton(
                                 elevation: 0,
-                                onPressed: () {
+                                onPressed: () async {
                                   if (roleApp.value == Role.customerRoleText) {
                                     Get.parameters["firstName"] =
                                         firstName.value.toString();
@@ -384,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     Get.parameters["isFromHome"] = "true";
                                     Get.parameters["isFromFav"] = "false";
                                     Get.parameters["isFromMenu"] = "false";
-                                    Get.to(
+                                    await Get.to(
                                       () => const SearchStoreUserScreen(),
                                       id: pageIdApp.value,
                                       arguments: {
@@ -398,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                         firstName.value.toString();
                                     Get.parameters["lastName"] = lastName.value;
                                     Get.parameters['storeId'] = "";
-                                    Get.to(
+                                    await Get.to(
                                       () => const OwnerStoresListScreen(),
                                       id: pageIdApp.value,
                                       arguments: {
@@ -443,9 +443,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               )
                             : RawMaterialButton(
                                 elevation: 0,
-                                onPressed: () {
+                                onPressed: () async {
                                   if (roleApp.value == Role.customerRoleText) {
-                                    Get.to(
+                                    await Get.to(
                                       () => const SearchStoreUserScreen(),
                                       id: pageIdApp.value,
                                       arguments: {
@@ -494,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       children: [
                         RawMaterialButton(
                             elevation: 0,
-                            onPressed: () {
+                            onPressed: () async {
                               hasStoreAccess.value &&
                                           permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
@@ -503,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                               ele.controllerKey ==
                                               PermissionKey.manageTransaction
                                                   .statusName))
-                                  ? Get.to(() => const TransactionScreen(),
+                                  ?await  Get.to(() => const TransactionScreen(),
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
                                       AlertStringConstants

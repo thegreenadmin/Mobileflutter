@@ -13,7 +13,7 @@ class RoleAndPermissionScreen extends StatefulWidget {
       _RoleAndPermissionScreenState();
 }
 
-class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> {
+class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with GlobalVarMixin{
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
 
   @override

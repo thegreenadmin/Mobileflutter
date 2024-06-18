@@ -14,7 +14,7 @@ class SelectMembershipPlan extends StatefulWidget {
   }
 }
 
-class SelectMembershipPlanState extends State<SelectMembershipPlan> {
+class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalVarMixin{
   final AccountController accountController = Get.put(AccountController());
 
   @override

@@ -20,7 +20,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver , GlobalVarMixin{
   final LocalAuthentication auth = LocalAuthentication();
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
@@ -59,7 +59,9 @@ class _SplashScreenState extends State<SplashScreen>
     bool wasStoreOwner =
         await SharedPreferenceStorage.getData("isStoreOwner") ?? false;
     Future.delayed(const Duration(seconds: 3)).then((value) async {
-      roleApp.value = role ?? "";
+
+      roleApp(role ?? "");
+      // roleApp.value = role ?? "";
 
       if (onboardingCompleted == "yes") {
         Get.offAll(() => const StartJourneyScreen());

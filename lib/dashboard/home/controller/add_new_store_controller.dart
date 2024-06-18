@@ -15,7 +15,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class AddNewStoreController extends GetxController {
+class AddNewStoreController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   TextEditingController storeNameTextController = TextEditingController();
@@ -39,7 +39,7 @@ class AddNewStoreController extends GetxController {
 
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isStoreLogoSelected = false.obs;
@@ -81,8 +81,8 @@ class AddNewStoreController extends GetxController {
   RxString privacyOriginalLinkFromServer = "".obs;
   RxString termsOriginalLinkFromServer = "".obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
   RxList<dynamic> selectedWeekDaysList = [].obs;
 
   RxList<Categories> weekDaysList = [
@@ -154,10 +154,10 @@ class AddNewStoreController extends GetxController {
   }
 
   getGKey() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
 
@@ -474,7 +474,7 @@ class AddNewStoreController extends GetxController {
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -550,7 +550,7 @@ class AddNewStoreController extends GetxController {
           value?.body["status"] == ApiConstants.statusCode200) {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.back(id: pageIdApp.value);
       } else {
@@ -606,7 +606,7 @@ class AddNewStoreController extends GetxController {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -645,7 +645,7 @@ class AddNewStoreController extends GetxController {
         apiGetStates();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -689,7 +689,7 @@ class AddNewStoreController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

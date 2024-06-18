@@ -12,7 +12,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import '../view/store_owner/add_new_product_screen.dart';
 import 'manage_store_controller.dart';
 
-class AddNewCategoryController extends GetxController {
+class AddNewCategoryController extends GetxController  with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
 
@@ -31,9 +31,9 @@ class AddNewCategoryController extends GetxController {
   RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
   RxString? role = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
-
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
   void onInit() {
     super.onInit();
@@ -279,7 +279,7 @@ class AddNewCategoryController extends GetxController {
             value?.body["data"]['category']['is_featured_category'] ?? false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -330,7 +330,7 @@ class AddNewCategoryController extends GetxController {
         categoryImageOriginalLinkFromServer.value = "";
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

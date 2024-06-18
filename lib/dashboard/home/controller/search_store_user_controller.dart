@@ -11,7 +11,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class SearchStoreUserController extends GetxController {
+class SearchStoreUserController extends GetxController with GlobalVarMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController zipCodeTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();
@@ -27,7 +27,7 @@ class SearchStoreUserController extends GetxController {
       PreviousStoreResponse();
   late FavouriteStoreResponse favouriteStoreListResponse =
       FavouriteStoreResponse();
-
+  SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxList<StoreDetails> favouriteStore = <StoreDetails>[].obs;
   RxList<StoreDetails> previousStore = <StoreDetails>[].obs;
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
@@ -213,7 +213,7 @@ class SearchStoreUserController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -262,7 +262,7 @@ class SearchStoreUserController extends GetxController {
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -306,7 +306,7 @@ class SearchStoreUserController extends GetxController {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -572,7 +572,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isClicked.value = false;
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -636,7 +636,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isClicked.value = false;
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -702,7 +702,7 @@ class SearchStoreUserController extends GetxController {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isClicked.value = false;
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -760,7 +760,7 @@ class SearchStoreUserController extends GetxController {
 
         Utility.showAlertMessage(value?.body['message']);
 
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -833,7 +833,7 @@ class SearchStoreUserController extends GetxController {
         }
 
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
@@ -908,7 +908,7 @@ class SearchStoreUserController extends GetxController {
         einNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        SharedPreferenceStorage.clearData();
+        storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {

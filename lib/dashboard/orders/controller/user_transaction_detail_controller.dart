@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class UserTransactionDetailController extends GetxController {
+class UserTransactionDetailController extends GetxController with GlobalVarMixin{
   RxBool isLoading = true.obs;
   RxString? role = "".obs;
   RxString? storeId = "".obs;
@@ -16,8 +16,8 @@ class UserTransactionDetailController extends GetxController {
   RxString? orderAmount = "".obs;
   RxString? storeName = "".obs;
   RxString? storeImage = "".obs;
-  RxString? firstName = "".obs;
-  RxString? lastName = "".obs;
+  // RxString? firstName = "".obs;
+  // RxString? lastName = "".obs;
 
   @override
   void onInit() {
