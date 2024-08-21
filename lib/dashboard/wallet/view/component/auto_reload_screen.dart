@@ -31,7 +31,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Container(
-        height: WidgetConstants.screenHeight * 0.9,
+        height: WidgetConstants.screenHeight * 2.9,
         padding: const EdgeInsets.only(
           left: 20,
           right: 20,
@@ -59,14 +59,13 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                       ),
                     ),
                     InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
+
                         onTap: () {
                           Get.back(id: pageIdApp.value);
                         },
                         child: Image.asset(
                           ImageConstants.cross,
-                          scale: 3,
+                          scale: 4,
                         ))
                   ],
                 ),

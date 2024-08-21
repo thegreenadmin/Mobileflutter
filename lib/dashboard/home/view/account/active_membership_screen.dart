@@ -270,9 +270,15 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const SelectMembershipPlan(),
                 //     ))
-                Get.to(() => const SelectMembershipPlan(), id: pageIdApp.value)!
-                    .then((value) =>
-                        accountController.apiGetActiveMembershipList());
+
+                if(accountController.activeMembershipList.isEmpty && accountController.activeMembershipList.first.expiredAt!.isBefore(DateTime.now()) ){
+                  Get.to(() => const SelectMembershipPlan(), id: pageIdApp.value)!
+                      .then((value) =>
+                      accountController.apiGetActiveMembershipList());
+                }else{
+                  Utility.showAlertMessage("You already have an existing plan.");
+                }
+
               },
               height: 50,
               text: StringConstants.selectMembershipPlanText,

@@ -25,6 +25,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
     return showModalBottomSheet(
         isScrollControlled: true,
         isDismissible: true,
+        useSafeArea: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(25), topLeft: Radius.circular(25))),

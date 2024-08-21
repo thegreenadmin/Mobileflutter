@@ -451,11 +451,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Create Stripe Token
   Future<void> apiCreateStripeToken(context) async {
+
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
     var year = parts[1].trim();
     try {
+      isLoading.value = true;
       var headers = {
         StringConstants.authorizationText: token1,
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -481,6 +483,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
       debugPrint(response.statusCode.toString());
       debugPrint(response.reasonPhrase);
       if (response.statusCode == 200) {
+        isLoading.value = false;
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
         debugPrint("Check user Response:--------");
@@ -490,12 +493,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
         parts = [];
         month = "";
         year = "";
-      } else if (response.statusCode == 402) {
+      } else if (response.statusCode == 402) {isLoading.value = false;
         Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidCardText);
-      } else {
+      } else {isLoading.value = false;
         debugPrint(response.reasonPhrase);
       }
     } catch (error) {
+      isLoading.value = false;
       debugPrint(error.toString());
     }
   }

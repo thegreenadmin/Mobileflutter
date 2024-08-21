@@ -38,33 +38,10 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
     return SizedBox(
         height: 120,
         child:
-            // ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-            //     shrinkWrap: true,
-            //     itemCount: personalChatDetailController.files.isEmpty
-            //         ? 1
-            //         : personalChatDetailController.files.length,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return
+
             Stack(
           alignment: Alignment.topRight,
           children: [
-            // personalChatDetailController.files[index].path
-            //                 .split('.')
-            //                 .last
-            //                 .toString() ==
-            //             "jpg" ||
-            //         personalChatDetailController.files[index].path
-            //                 .split('.')
-            //                 .last
-            //                 .toString() ==
-            //             "png" ||
-            //         personalChatDetailController.files[index].path
-            //                 .split('.')
-            //                 .last
-            //                 .toString() ==
-            //             "jpeg"
-            //     ?
             Container(
               margin: const EdgeInsets.all(10),
               width: 100,
@@ -80,21 +57,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                 ),
               ),
             ),
-            // : Container(
-            //     margin: const EdgeInsets.all(10),
-            //     width: 100,
-            //     height: 110,
-            //     padding: const EdgeInsets.all(8),
-            //     decoration: BoxDecoration(
-            //       border:
-            //           Border.all(color: AppColors.primaryColor, width: 2),
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //     child: Image.asset(
-            //       "assets/file.png",
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -114,7 +76,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
             )
           ],
         )
-        // })
         );
   }
 

@@ -957,7 +957,7 @@ class AccountController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET MEMBERSHIP LIST RESPONSE *******${value?.body}");
+      log("GET MEMBERSHIP LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         membershipPlanModel = MembershipPlanModel.fromJson(value?.body);

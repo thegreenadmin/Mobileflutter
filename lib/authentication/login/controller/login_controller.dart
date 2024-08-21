@@ -3,11 +3,8 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
-import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/countries_list.dart';
-import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
-import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class LoginController extends GetxController {
@@ -45,7 +42,12 @@ class LoginController extends GetxController {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        apiGenerateOtp();
+        if(phoneNumber.value.trim().isEmpty){
+          Utility.showAlertMessage("Please enter mobile number");
+        }else{
+          apiGenerateOtp();
+        }
+
       } catch (_) {}
     } else {
       autoValidate.value = true;

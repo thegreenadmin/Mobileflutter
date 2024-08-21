@@ -617,7 +617,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                         if (addCardController.cardHolderName.isEmpty) {
                           Utility.showAlertMessage(
                               AlertStringConstants.pleaseFillAllDetailsText);
-                        } else if (formKey.currentState!.validate()) {
+                        } else if (formKey.currentState!.validate() && !addCardController.isLoading.value) {
                           // addCardController.apiCreateStripeToken(context);
                           addCardController.validateAndSubmitCard(context);
                         }

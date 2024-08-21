@@ -288,6 +288,9 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                    await  Get.to(
                                                         () =>
                                                             OfferProductScreen(
+                                                              storeId: offersController
+                                                                  .getUserOfferList[
+                                                              index].storeId,
                                                           offerObj: offersController
                                                               .getUserOfferList[
                                                                   index]

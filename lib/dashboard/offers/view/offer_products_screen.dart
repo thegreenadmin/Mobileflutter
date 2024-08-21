@@ -11,10 +11,11 @@ import 'package:thegreenmall/utils/utils.dart';
 class OfferProductScreen extends StatefulWidget {
   final bool isFromStore;
   final offer.Offer? offerObj;
+  final String? storeId;
   const OfferProductScreen({
     super.key,
     this.isFromStore = false,
-    this.offerObj,
+    this.offerObj, this.storeId,
   });
 
   @override
@@ -23,13 +24,9 @@ class OfferProductScreen extends StatefulWidget {
 
 class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarMixin{
   final OffersController offersController = Get.put(OffersController());
-  final StoreHomeMainController storeHomeMainController =
-      Get.put(StoreHomeMainController());
 
   @override
   Widget build(BuildContext context) {
-    // print(
-    // "offerObj====product -----------------==== ${storeHomeMainController.offerObj.value.offerName}");
     return Scaffold(
         appBar: !widget.isFromStore
             ? PreferredSize(
@@ -85,60 +82,78 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Card(
-                    elevation: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                                width: WidgetConstants.screenWidth,
-                                height: WidgetConstants.screenHeight * 0.25,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                        color: AppColors.primary, width: 0)),
-                                child: CommonWidgets.cachedNetworkImage(
-                                  widget.offerObj?.image?.dynamicUrl == null ||
-                                          widget.offerObj!.image!.dynamicUrl!
-                                              .isEmpty
-                                      ? ""
-                                      : widget.offerObj?.image?.dynamicUrl ??
-                                          "",
-                                  fit: BoxFit.fill,
-                                )),
-                          ),
-                          height10SizedBox,
-                          Text(
-                            widget.offerObj?.offerName ?? "",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                fontSize: 16),
-                          ),
-                          height4SizedBox,
-                          Text(
-                            "${StringConstants.offerTypeText}: ${widget.offerObj?.isOfferForStore == true ? "Store" : "Products"}",
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 12),
-                          ),
-                          height4SizedBox,
-                          Text(
-                            widget.offerObj?.offerType != null &&
-                                    widget.offerObj!.offerType
-                                        .toString()
-                                        .contains("per")
-                                ? "${StringConstants.offerPriceText}: ${widget.offerObj?.offerValue}%"
-                                : "${StringConstants.offerPriceText}: \$${widget.offerObj?.offerValue}",
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    )),
+                InkWell(
+                  onTap: () async {
+                    if( !widget.isFromStore){
+                      Get.parameters["isFromHome"] = "true";
+                      Get.parameters["isFromFav"] = "false";
+                      Get.parameters["isFromMenu"] = "false";
+                      Get.parameters["isFromOptions"] = "false";
+
+                      Get.parameters["storeId"] =  widget.storeId ?? "";
+
+                      await Get.to(
+                            () => const StoreHomeMainScreen(),
+                        id: pageIdApp.value,
+                      );
+                    }
+
+                  },
+                  child: Card(
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Container(
+                                  width: WidgetConstants.screenWidth,
+                                  height: WidgetConstants.screenHeight * 0.25,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                          color: AppColors.primary, width: 0)),
+                                  child: CommonWidgets.cachedNetworkImage(
+                                    widget.offerObj?.image?.dynamicUrl == null ||
+                                            widget.offerObj!.image!.dynamicUrl!
+                                                .isEmpty
+                                        ? ""
+                                        : widget.offerObj?.image?.dynamicUrl ??
+                                            "",
+                                    fit: BoxFit.fill,
+                                  )),
+                            ),
+                            height10SizedBox,
+                            Text(
+                              widget.offerObj?.offerName ?? "",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontSize: 16),
+                            ),
+                            height4SizedBox,
+                            Text(
+                              "${StringConstants.offerTypeText}: ${widget.offerObj?.isOfferForStore == true ? "Store" : "Products"}",
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 12),
+                            ),
+                            height4SizedBox,
+                            Text(
+                              widget.offerObj?.offerType != null &&
+                                      widget.offerObj!.offerType
+                                          .toString()
+                                          .contains("per")
+                                  ? "${StringConstants.offerPriceText}: ${widget.offerObj?.offerValue}%"
+                                  : "${StringConstants.offerPriceText}: \$${widget.offerObj?.offerValue}",
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
                 Visibility(
                   visible: widget.offerObj?.isOfferForStore == false,
                   child: Column(
@@ -162,23 +177,23 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () async {
-                                Get.parameters["isFromHome"] = "true";
-                                Get.parameters["isFromFav"] = "false";
-                                Get.parameters["isFromMenu"] = "false";
-                                Get.parameters["isFromOptions"] = "false";
-                                Get.parameters["productId"] = offersController
-                                        .featuredUserProductList[index]
-                                        .productId ??
-                                    "";
-                                Get.parameters["storeId"] = offersController
-                                        .featuredUserProductList[index]
-                                        .storeId ??
-                                    "";
-                                storeHomeMainController.invokedIndex.value = 3;
-                                await Get.to(
-                                  () => const StoreHomeMainScreen(),
-                                  id: pageIdApp.value,
-                                );
+                                // Get.parameters["isFromHome"] = "true";
+                                // Get.parameters["isFromFav"] = "false";
+                                // Get.parameters["isFromMenu"] = "false";
+                                // Get.parameters["isFromOptions"] = "false";
+                                // Get.parameters["productId"] = offersController
+                                //         .featuredUserProductList[index]
+                                //         .productId ??
+                                //     "";
+                                // Get.parameters["storeId"] = offersController
+                                //         .featuredUserProductList[index]
+                                //         .storeId ??
+                                //     "";
+                                // storeHomeMainController.invokedIndex.value = 3;
+                                // await Get.to(
+                                //   () => const StoreHomeMainScreen(),
+                                //   id: pageIdApp.value,
+                                // );
                               },
                               child: Card(
                                   elevation: 1,

@@ -424,6 +424,30 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                   ],
                                           ),
                                           onTap: () async {
+
+                                            print(storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data
+                                                ?.store
+                                                ?.storeDeliveryServices?[i]
+                                                .storeDeliveryServiceId
+                                                .toString());
+
+                                            print(storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data
+                                                ?.store
+                                                ?.storeDeliveryServices?[i]
+                                                .storeDeliveryServiceId
+                                                .toString());
+
+                                            print(storeHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data?.store?.storeDeliveryServices![i]
+                                                .deliveryServiceId?.toString());
                                             storeHomeMainController
                                                 .storeDeliveryServiceId
                                                 .value = storeHomeMainController

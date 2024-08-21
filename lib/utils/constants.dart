@@ -722,7 +722,7 @@ class AlertStringConstants {
   static String noHistoryFoundText = "No History Found";
   static String noDataFoundText = "No Data Found";
   static String notAuthorizedToStoreText =
-      "Sorry, You are not authorized this. Contact your store owner for more info.";
+      "Sorry, You are not authorized. Contact your store owner for more info.";
 
   //O
   static String openingTimeAlertText =

@@ -104,6 +104,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
+      print("from offer screen");
+      print(isFromHome.value);
+      print(storeId.value);
         getCurrentLocation();
         apiGetUserDetailsApi();
         if (storeId.value != "" && productId.value != "") {
@@ -368,8 +371,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 InkWell(
                   onTap: () async {
                     Get.back();
-                    if (isPlaceOrder.value == true) {
-                      await apiPlaceOrder();
+                    if (isPlaceOrder.value == true ) {
+                      if(selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == true){
+                        await apiPlaceOrder();
+                      }else if (selectedDeliveryService.value.toString() != "2"){
+                        await apiPlaceOrder();
+                      }
+
                     }
                   },
                   child: Container(
@@ -730,8 +738,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
         debugPrint("CART isFromHome.value ${isFromHome.value}");
         cartData.value = cartListResponse.data ?? CartListData();
-        if (cartData.value.isOrderDeliverable == false) {
+        if (selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == false) {
           Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);
+          isPlaceOrder.value = false;
         }
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&
@@ -825,16 +834,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
               "isFromTransaction": false,
               "isFromNotification": false
             });
+        selectedDeliveryService.value= "0";
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isPlaceOrder.value = true;
-
+        selectedDeliveryService.value= "0";
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        selectedDeliveryService.value= "0";
         isPlaceOrder.value = true;
         if (value?.body["message"] == "Insufficient balance") {
           isInsufficientBalance!.value = true;
@@ -844,6 +855,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       } else if (value?.body == null) {
+        selectedDeliveryService.value= "0";
         isPlaceOrder.value = true;
         Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
       }
@@ -931,7 +943,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
-        apiGetCartListApi();
+        await apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
@@ -977,7 +989,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
-        apiGetCartListApi();
+        await apiGetCartListApi();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
 
@@ -1039,6 +1051,14 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                   onTap: () async {
                     Get.back();
                     Get.parameters["storeId"] = storeId.value;
+                    selectedIndex.value = 1;
+                    invokedIndex.value = 0;
+                    lastSelectedIndex.value = 1;
+                    await apiGetStoreCategoriesApi();
+                    if (Get.parameters["categoryId"] != "") {
+                      apiFeatureProductListApi(
+                          categoryId: Get.parameters["categoryId"] ?? "0");
+                    }
                     await Get.to(() => const StoreHomeMainScreen(),
                         id: pageIdApp.value);
                   },
@@ -1167,7 +1187,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
         if (storeId.value != "") {
-          apiGetCartListApi(isShowLoading: true);
+          await apiGetCartListApi(isShowLoading: true);
           await apiActiveCartApi();
         }
         update();

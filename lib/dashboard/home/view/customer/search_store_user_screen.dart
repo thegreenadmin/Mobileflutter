@@ -307,6 +307,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       searchStoreUserController.searchController.text =
                           p?.description!.toString() ?? "";
 
+                      print("ADDRESSES BY GEOCODING:-------------------------------------------");
+                      print(p?.description!.toString());
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";

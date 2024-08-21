@@ -506,24 +506,29 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         isClicked.value = false;
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         totalCount.value = nearbyStoreListResponse.data?.totalCount ?? 0;
+        print(totalCount.value);
         List<StoreAddress>? storeAddressesNewList = [];
-        storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses;
+        storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses?.where((s)=> s.store?.isVerified==true).toList();
+        print("storeAddressesNewList?.length");
+        print(nearbyStoreListResponse.data!.storeAddresses?.toString());
+        print(storeAddressesNewList?.length);
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             storeAddresses.value = [];
           }
           storeAddresses.addAll(storeAddressesNewList);
-          for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {}
-          }
         }
         storeAddresses.toSet().toList();
+        print(storeAddresses.length);
+        print(storeAddresses.length);
+        print(storeAddresses.length);
+        print(storeAddresses.length);
+        print(storeAddresses.length);
         city.value = "";
         country.value = "";
         state.value = "";
         placeId.value = "";
-        lng = "";
-        lat = "";
+
         zipCodeTextController.clear();
 
         openingTimeTextController.clear();
@@ -538,8 +543,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           country.value = "";
           state.value = "";
           placeId.value = "";
-          lng = "";
-          lat = "";
+
           zipCodeTextController.clear();
 
           openingTimeTextController.clear();
@@ -560,14 +564,14 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           country.value = "";
           state.value = "";
           placeId.value = "";
-          lng = "";
-          lat = "";
+
           zipCodeTextController.clear();
           openingTimeTextController.clear();
           closingTimeTextController.clear();
           mileageTextController.clear();
           isOpenNow.value = "";
           initialIndex.value = 0;
+
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isClicked.value = false;
@@ -621,15 +625,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         previousStoreListResponse = PreviousStoreResponse.fromJson(value?.body);
         totalCount.value = previousStoreListResponse.data?.totalCount ?? 0;
         List<StoreDetails>? storeAddressesNewList = [];
-        storeAddressesNewList = previousStoreListResponse.data!.previousStores;
+        storeAddressesNewList = previousStoreListResponse.data!.previousStores?.where((s)=> s.isVerified==true).toList();
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             previousStore.value = [];
           }
           previousStore.addAll(storeAddressesNewList);
-          for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {}
-          }
+
         }
         previousStore.toSet().toList();
         update();
@@ -687,7 +689,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         totalCount.value = favouriteStoreListResponse.data?.totalCount ?? 0;
         List<StoreDetails>? storeAddressesNewList = [];
         storeAddressesNewList =
-            favouriteStoreListResponse.data!.favouriteStores;
+            favouriteStoreListResponse.data!.favouriteStores?.where((s)=> s.isVerified==true).toList();
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             favouriteStore.value = [];

@@ -448,6 +448,31 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                       .spaceBetween,
                                               children: [
                                                 Text(
+                                                    "${StringConstants.orderIDText}: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blacklight,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14)),
+                                                Text(
+                                                  "#${ordersHomeMainController
+                                                      .ownerOrderHistoryList![
+                                                  index].orderId.toString()}",
+
+                                                    style: const TextStyle(
+                                                        color: AppColors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 14))
+                                              ],
+                                            ), height5SizedBox,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
                                                     "${StringConstants.orderedDateText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
