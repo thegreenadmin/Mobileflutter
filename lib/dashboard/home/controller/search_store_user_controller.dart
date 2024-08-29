@@ -506,12 +506,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         isClicked.value = false;
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         totalCount.value = nearbyStoreListResponse.data?.totalCount ?? 0;
-        print(totalCount.value);
         List<StoreAddress>? storeAddressesNewList = [];
         storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses?.where((s)=> s.store?.isVerified==true).toList();
-        print("storeAddressesNewList?.length");
-        print(nearbyStoreListResponse.data!.storeAddresses?.toString());
-        print(storeAddressesNewList?.length);
+
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             storeAddresses.value = [];
@@ -519,11 +516,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           storeAddresses.addAll(storeAddressesNewList);
         }
         storeAddresses.toSet().toList();
-        print(storeAddresses.length);
-        print(storeAddresses.length);
-        print(storeAddresses.length);
-        print(storeAddresses.length);
-        print(storeAddresses.length);
         city.value = "";
         country.value = "";
         state.value = "";
@@ -695,9 +687,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
             favouriteStore.value = [];
           }
           favouriteStore.addAll(storeAddressesNewList);
-          for (var element in storeAddresses) {
-            if (element.store?.isFavouriteStore == true) {}
-          }
         }
         favouriteStore.toSet().toList();
         update();
@@ -789,8 +778,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
@@ -826,12 +814,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         }*/
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (type.value == 2) {
-          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value = true;
         } else if (type.value == 0) {
-          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= true;
+          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value = true;
         } else if (type.value == 1) {
           previousStore.clear();
-          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value = true;
         }
 
         Utility.showAlertMessage(value?.body['message']);

@@ -424,30 +424,6 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                   ],
                                           ),
                                           onTap: () async {
-
-                                            print(storeHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data
-                                                ?.store
-                                                ?.storeDeliveryServices?[i]
-                                                .storeDeliveryServiceId
-                                                .toString());
-
-                                            print(storeHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data
-                                                ?.store
-                                                ?.storeDeliveryServices?[i]
-                                                .storeDeliveryServiceId
-                                                .toString());
-
-                                            print(storeHomeMainController
-                                                .storeDetailsResponse
-                                                .value
-                                                .data?.store?.storeDeliveryServices![i]
-                                                .deliveryServiceId?.toString());
                                             storeHomeMainController
                                                 .storeDeliveryServiceId
                                                 .value = storeHomeMainController
@@ -512,7 +488,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                       .data
                                                       ?.store
                                                       ?.storeDeliveryServices?[
-                                                          i]
+                                                  i]
                                                       .storeDeliveryServiceId
                                                       .toString()
                                               ? AppColors.white
@@ -526,41 +502,32 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                       .value
                                                       .data
                                                       ?.store
-                                                      ?.storeDeliveryServices?[
-                                                          i]
-                                                      .deliveryServiceId ==
-                                                  "1"
+                                                      ?.storeDeliveryServices?[i]
+                                                      .deliveryServiceId == "1"
                                               ? Image.asset(
                                                   ImageConstants.instore,
                                                   scale: 2.5,
                                                   color: storeHomeMainController
                                                               .storeDeliveryServiceId
-                                                              .value ==
-                                                          storeHomeMainController
-                                                              .storeDetailsResponse.value
-                                                              .data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId
-                                                              .toString()
+                                                              .value == storeHomeMainController.storeDetailsResponse.value
+                                                              .data?.store?.storeDeliveryServices?[i].storeDeliveryServiceId.toString()
                                                       ? AppColors.white
                                                       : AppColors.primary,
                                                 )
-                                              : storeHomeMainController
-                                                          .storeDetailsResponse.value.data?.store
+                                              : storeHomeMainController.storeDetailsResponse.value.data?.store
                                                           ?.storeDeliveryServices?[i].deliveryServiceId == "2"
                                                   ? Image.asset(
                                                       ImageConstants.delivery,
                                                       scale: 2.5,
                                                       color: storeHomeMainController
                                                                   .storeDeliveryServiceId
-                                                                  .value ==
-                                                              storeHomeMainController
+                                                                  .value == storeHomeMainController
                                                                   .storeDetailsResponse
                                                                   .value
                                                                   .data
                                                                   ?.store
-                                                                  ?.storeDeliveryServices?[
-                                                                      i]
-                                                                  .storeDeliveryServiceId
-                                                                  .toString()
+                                                                  ?.storeDeliveryServices?[i]
+                                                                  .storeDeliveryServiceId.toString()
                                                           ? AppColors.white
                                                           : AppColors.primary,
                                                     )
@@ -569,14 +536,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                       scale: 2.2,
                                                       color: storeHomeMainController
                                                                   .storeDeliveryServiceId
-                                                                  .value ==
-                                                              storeHomeMainController
+                                                                  .value == storeHomeMainController
                                                                   .storeDetailsResponse
                                                                   .value
                                                                   .data
                                                                   ?.store
-                                                                  ?.storeDeliveryServices?[
-                                                                      i]
+                                                                  ?.storeDeliveryServices?[i]
                                                                   .storeDeliveryServiceId
                                                                   .toString()
                                                           ? AppColors.white
@@ -675,7 +640,6 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                               width10SizedBox,
                                               Obx(
                                                 () => Expanded(
-                                                  // width: WidgetConstants.screenWidth *0.47,
                                                   child: Text(
                                                     storeHomeMainController
                                                                     .selectedUserAddress
@@ -720,8 +684,6 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                             flex: 2,
                                             child: InkWell(
                                               onTap: () {
-                                                // SharedPreferenceStorage.setData(
-                                                //     "context", context);
                                                 Get.parameters["isFromCart"] =
                                                     "true";
                                                 storeHomeMainController
@@ -735,13 +697,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                 .city ==
                                                             null
                                                     ?
-                                                    // Navigator.of(context)
-                                                    //     .push(MaterialPageRoute(
-                                                    //       builder: (_) =>
-                                                    //           const PersonalInfoEditScreen(),
-                                                    //     ))
-                                                    Get
-                                                        .to(const PersonalInfoEditScreen(),
+                                                    Get.to(const PersonalInfoEditScreen(),
                                                             id: pageIdApp.value,
                                                             arguments: ({
                                                               "isFromCart": true
@@ -767,7 +723,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                           10.0),
                                                 ),
                                                 child: Center(
-                                                  child: Text(
+                                                    child: Text(
                                                     StringConstants.addText,
                                                     style: const TextStyle(
                                                         fontWeight:
@@ -800,138 +756,19 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                             dashPattern: const [4, 4],
                             child: Obx(() => Container(
                                   padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 10, bottom: 10),
+                                      left: 10, right: 10, top: 10, bottom: 0),
                                   color: AppColors.greylight,
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.subtotalText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartSubTotal?.toStringAsFixed(2) ?? "0"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.discountText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartTotalDiscount?.toStringAsFixed(2) ?? "0.00"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants
-                                                  .deliveryChargeText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.serviceFeesText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartTotalServiceCharged?.toStringAsFixed(2) ?? "0.00"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.taxText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        height10SizedBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              StringConstants.totalText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            Text(
-                                              "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0"}",
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ],
-                                        ),
+                                        buildRow(StringConstants.subtotalText, "\$${storeHomeMainController.cartData.value.cartSubTotal?.toStringAsFixed(2) ?? "0.00"}"),
+                                        buildRow(StringConstants.discountText, "\$${storeHomeMainController.cartData.value.cartTotalDiscount?.toStringAsFixed(2) ?? "0.00"}"),
+                                        buildRow(StringConstants.deliveryChargeText, "\$${storeHomeMainController.cartData.value.cartDeliveryServiceCharge?.toStringAsFixed(2) ?? "0.00"}"),
+                                        buildRow(StringConstants.serviceFeesText, "\$${storeHomeMainController.cartData.value.cartTotalServiceCharged?.toStringAsFixed(2) ?? "0.00"}"),
+                                        buildRow(StringConstants.taxText, "\$${storeHomeMainController.cartData.value.cartTotalTax?.toStringAsFixed(2) ?? "0.00"}"),
+                                        buildRow(StringConstants.totalText, "\$${storeHomeMainController.cartData.value.cartTotalPrice?.toStringAsFixed(2) ?? "0.00"}",
+                                            fontWeight: FontWeight.w600),
                                       ]),
                                 )),
                           ),
@@ -1107,5 +944,31 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                 )),
           ],
         ));
+  }
+
+  Column buildRow(text, des,{FontWeight fontWeight = FontWeight.w500}) {
+    return Column(
+      children: [
+        Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(text,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      des,
+                      style:  TextStyle(
+                          color: AppColors.black,
+                          fontSize: 16,
+                          fontWeight: fontWeight),
+                    ),
+                  ],
+                ), height10SizedBox,
+      ],
+    );
   }
 }

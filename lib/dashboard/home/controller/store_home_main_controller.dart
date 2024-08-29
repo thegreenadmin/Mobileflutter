@@ -92,6 +92,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
   RxList<ProductImage>? productIm = <ProductImage>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -377,7 +378,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                       }else if (selectedDeliveryService.value.toString() != "2"){
                         await apiPlaceOrder();
                       }
-
                     }
                   },
                   child: Container(
@@ -1075,7 +1075,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: 12.0,
                             color: Colors.white),
                       ),
                     ),
@@ -1205,8 +1205,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   ///Get Store Details Api
-  Future apiGetStoreDetailsApi(
-      {dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
+  Future apiGetStoreDetailsApi({dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
     isLoading.value = true;
     debugPrint("STORE DETAIL URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude");

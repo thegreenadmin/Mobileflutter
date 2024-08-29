@@ -230,8 +230,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                     color: AppColors.white, width: 1)),
                             child: CommonWidgets.circleCachedNetworkImage(
                                 storeHomeMainController.storeDetailsResponse
-                                        .value.data?.store?.logo?.dynamicUrl ??
-                                    "",
+                                        .value.data?.store?.logo?.dynamicUrl ?? "",
                                 fit: BoxFit.contain,
                                 radius: 38.0,
                                 assetImg: ImageConstants.nopicfound,
@@ -245,7 +244,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                 Text(
                                   storeHomeMainController.storeDetailsResponse
                                           .value.data?.store?.storeName ??
-                                      "",
+                                      "", maxLines: 1,
                                   style: const TextStyle(
                                       color: AppColors.white,
                                       fontSize: 18,
@@ -270,6 +269,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                               .storeLocation.value,
                                           overflow: TextOverflow.visible,
                                           softWrap: true,
+                                          maxLines: 2,
                                           style: const TextStyle(
                                               color: AppColors.white,
                                               fontSize: 14,
@@ -283,29 +283,16 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                   child: Row(
                                     children: [
                                       Text(
-                                          storeHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data !=
-                                                      null &&
+                                          storeHomeMainController.storeDetailsResponse
+                                                          .value.data != null &&
                                                   storeHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .storeTimings!
-                                                      .isNotEmpty
+                                                      .storeDetailsResponse.value.data!.store!.storeTimings!.isNotEmpty
                                               ? storeHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data!
-                                                          .store!
-                                                          .storeTimings!
-                                                          .first
-                                                          .is24HoursActive ==
-                                                      false
-                                                  ? "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                      "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                          .storeDetailsResponse.value.data!.store!.storeTimings!.first.is24HoursActive == false
+                                                  ? "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0",
+                                              firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                      "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0",
+                                              firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
                                                   : StringConstants
                                                       .storeHoursText
                                               : StringConstants.storeHoursText,
@@ -323,35 +310,20 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                     SizedBox(
                                       height: 20,
                                       child: ListView.separated(
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                  int index) {
+                                          separatorBuilder: (BuildContext context, int index) {
                                             return width6SizedBox;
                                           },
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
                                           itemCount: storeHomeMainController
-                                                  .storeDetailsResponse
-                                                  .value
-                                                  .data
-                                                  ?.store
-                                                  ?.storeDeliveryServices
-                                                  ?.length ??
-                                              0,
+                                                  .storeDetailsResponse.value.data?.store?.storeDeliveryServices?.length ?? 0,
                                           itemBuilder: (_, i) {
                                             return CircleAvatar(
                                               radius: 18.0,
                                               backgroundColor:
                                                   AppColors.primary,
                                               child: storeHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data
-                                                          ?.store
-                                                          ?.storeDeliveryServices?[
-                                                              i]
-                                                          .deliveryServiceId ==
-                                                      "1"
+                                                  .storeDetailsResponse.value.data?.store?.storeDeliveryServices?[i].deliveryServiceId == "1"
                                                   ? Image.asset(
                                                       ImageConstants.instore,
                                                       scale: 4.5,
@@ -362,10 +334,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                                               .value
                                                               .data
                                                               ?.store
-                                                              ?.storeDeliveryServices?[
-                                                                  i]
-                                                              .deliveryServiceId ==
-                                                          "2"
+                                                              ?.storeDeliveryServices?[i]
+                                                              .deliveryServiceId == "2"
                                                       ? Image.asset(
                                                           ImageConstants
                                                               .delivery,

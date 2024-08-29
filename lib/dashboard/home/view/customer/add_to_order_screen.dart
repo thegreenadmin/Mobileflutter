@@ -760,7 +760,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         fontSize: 18,
                         color: AppColors.black),
                   ),
-                  height20SizedBox,
+                  height15SizedBox,
                   _buildRowOtherDetail(
                       title: StringConstants.categoryNameText,
                       textData: storeHomeMainController.productDetailResponse
@@ -784,12 +784,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                                   ?.categoryName ??
                               ""
                           : "NA"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.quantityUnitText,
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.featuredProductText,
                       textData: storeHomeMainController.productDetailResponse
@@ -797,27 +797,27 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               true
                           ? "Yes"
                           : "No"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.lengthText,
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.breadthText,
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.heightText,
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.weightText,
                       textData:
                           "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces"),
-                  height20SizedBox,
+
                   _buildRowOtherDetail(
                       title: StringConstants.returnAvailableText,
                       textData: storeHomeMainController.productDetailResponse
@@ -845,7 +845,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       ],
                     ),
                   ),
-                  height20SizedBox,
                   Text(
                     StringConstants.ratingReviewText,
                     style: const TextStyle(
@@ -1096,27 +1095,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
     );
   }
 
-  Row _buildRowOtherDetail({
+  Column _buildRowOtherDetail({
     String title = "",
     String textData = "",
   }) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Column(
         children: [
-          Text(
-            title,
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                color: AppColors.blacklight),
-          ),
-          Text(
-            textData,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-                color: AppColors.black),
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: AppColors.blacklight),
+              ),
+              Text(
+                textData,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: AppColors.black),
+              ),
+            ],
+          ),height10SizedBox
         ],
       );
 }
