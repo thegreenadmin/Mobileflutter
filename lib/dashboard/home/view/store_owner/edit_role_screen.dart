@@ -152,7 +152,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                             fontSize: 22,
                             color: AppColors.black,
                             fontWeight: FontWeight.w600),
-                      ),
+                      ), height20SizedBox,
                       Expanded(
                           child: Obx(
                         () => addNewRoleController.moduleList.isEmpty
@@ -184,7 +184,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                                   )
                             : ListView.builder(
                                 padding:
-                                    const EdgeInsets.only(bottom: 60, top: 20),
+                                    const EdgeInsets.only(bottom: 60, top: 0),
                                 shrinkWrap: true,
                                 itemCount: addNewRoleController
                                     .permissionListMerged.length,

@@ -98,6 +98,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       storeId.value = Get.parameters["storeId"] ?? "";
+      invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
       productId.value = Get.parameters["productId"] ?? "";
       categoryName.value = Get.parameters["categoryName"] ?? "";
       categoryId.value = Get.parameters["categoryId"] ?? "";
@@ -105,9 +106,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
-      print("from offer screen");
-      print(isFromHome.value);
-      print(storeId.value);
+
         getCurrentLocation();
         apiGetUserDetailsApi();
         if (storeId.value != "" && productId.value != "") {
@@ -1265,7 +1264,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Shop  Product Detail Api
   Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
-    debugPrint("Product Shop Detail  URL**********"
+    debugPrint("Product Shop Detail  URL*****----------*****"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
 
     Map<String, String> headers = {

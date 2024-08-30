@@ -34,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   final CarouselController _controllerProducts = CarouselController();
   int _current = 0;
   final CarouselController _controller = CarouselController();
-  final StoreHomeMainController storeHomeMainController =
-      Get.put(StoreHomeMainController());
+  // final StoreHomeMainController storeHomeMainController =
+  //     Get.put(StoreHomeMainController());
   final AccountController accountController = Get.put(AccountController());
 
   final HomeController homeController = Get.put(HomeController());
@@ -225,18 +225,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                       children: [
                                         InkWell(
                                           onTap: () async {
-
                                             Get.parameters["storeId"] =
                                                 homeController
-                                                    .searchStoreUserController
-                                                    .storeIdValue
-                                                    .value;
+                                                    .searchStoreUserController.storeIdValue.value;
                                             await Get.to(
                                                     () => const CartScreen(),
                                                     id: pageIdApp.value)
                                                 ?.then((value) => homeController
-                                                    .searchStoreUserController
-                                                    .apiActiveCartApi());
+                                                    .searchStoreUserController.apiActiveCartApi());
                                           },
                                           child: Stack(
                                             children: [
@@ -251,9 +247,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                                 right: 0,
                                                 top: 0,
                                                 child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            1.5),
+                                                    padding: const EdgeInsets.all(1.5),
                                                     decoration: BoxDecoration(
                                                       color: AppColors.red,
                                                       borderRadius:
@@ -733,8 +727,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       Get.parameters["productId"] =
                           item.productId ?? "";
                       Get.parameters["storeId"] =
-                          item.storeId ?? "";
-                      storeHomeMainController.invokedIndex.value = 2;
+                          item.storeId ?? ""; Get.parameters["invokedIndex"] =
+                          "2";
+                      // storeHomeMainController.invokedIndex.value = 2;
                       Get.to(
                             () => const StoreHomeMainScreen(),
                         id: pageIdApp.value,

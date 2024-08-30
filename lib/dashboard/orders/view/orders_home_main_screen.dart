@@ -123,7 +123,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 10.0, right: 8, bottom: 8, top: 30),
+                            left: 18.0, right: 18, bottom: 8, top: 35),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +135,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                     ordersHomeMainController
                                         .isFromNotification.value,
                                 child: IconButton(
-                                  splashRadius: 100,
+                                  splashRadius: 40,
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
@@ -147,7 +147,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                     child: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.white,
-                                      size: 24.0,
+                                      size: 26.0,
                                     ),
                                   ),
                                 ),

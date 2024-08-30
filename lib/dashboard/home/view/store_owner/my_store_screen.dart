@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
@@ -86,7 +85,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
         viewportFraction: 0.5,
         enlargeCenterPage: false,
         autoPlay: true,
-        aspectRatio: 1.5,
+        aspectRatio: 1.4,
       ),
     );
   }
@@ -153,10 +152,10 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
             borderRadius: BorderRadius.circular(8.0),
             child: CommonWidgets.cachedNetworkImage(
               storeProduct.productImages == null ||
-                  storeProduct!.productImages!.isEmpty ||
-    storeProduct!.productImages![0].image!.dynamicUrl ==
+                  storeProduct.productImages!.isEmpty ||
+    storeProduct.productImages![0].image!.dynamicUrl ==
                           null ||
-                  storeProduct!.productImages!.isEmpty
+                  storeProduct.productImages!.isEmpty
                   ? ""
                   : storeProduct.productImages![0].image!.dynamicUrl
                       .toString(),
@@ -171,16 +170,16 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              storeProduct.productName ?? "",
+              storeProduct.productName ?? "", maxLines: 1,
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w600),
             ),
-            storeProduct!.description!.isEmpty
+            storeProduct.description!.isEmpty
                 ? height0SizedBox
                 : height4SizedBox,
-            storeProduct!.description!.isEmpty
+            storeProduct.description!.isEmpty
                 ? height0SizedBox
                 : SizedBox(
                     width: 130,
@@ -195,11 +194,11 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                           fontWeight: FontWeight.w400),
                     ),
                   ),
-            storeProduct!.description!.isEmpty
+            storeProduct.description!.isEmpty
                 ? height0SizedBox
                 : height4SizedBox,
             Text(
-              "\$${storeProduct!.productPrice!.toStringAsFixed(2)}",
+              "\$${storeProduct.productPrice!.toStringAsFixed(2)}", maxLines: 1,
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
@@ -213,7 +212,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
 
        _buildCarouselSlider() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        ownerStoresController.getOwnerOfferList!.isEmpty
+        ownerStoresController.getOwnerOfferList.isEmpty
             ? SizedBox(
           // height: WidgetConstants.screenHeight * 0.80,
           child: Center(

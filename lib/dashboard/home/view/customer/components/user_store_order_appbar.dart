@@ -54,7 +54,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
               ),
               child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, bottom: 10, top: 30),
+                      left: 18.0, right: 18, bottom: 10, top: 35),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,21 +63,30 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            InkWell(
-                              radius: 40,
-                              onTap: () {
-                                Get.back(id: pageIdApp.value);
-                                Get.delete<StoreHomeMainController>();
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.white,
-                                  size: 24.0,
-                                ),
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 0.0, right: 20, top: 8, bottom: 8),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      splashRadius: 40,
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        Get.delete<StoreHomeMainController>();
+                                        Get.back(id: pageIdApp.value);
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: AppColors.white,
+                                        size: 26.0,
+                                      ),
+                                    ),
+                                  ]),
                             ),
+
                             Row(
                               children: [
                                 Obx(

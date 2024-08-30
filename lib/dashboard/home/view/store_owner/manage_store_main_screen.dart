@@ -123,12 +123,13 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 10.0, right: 20, top: 30, bottom: 10),
+                            left: 18.0, right: 18, top: 35, bottom: 10),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
+                                splashRadius: 40,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
@@ -138,7 +139,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                 icon: const Icon(
                                   Icons.arrow_back,
                                   color: AppColors.white,
-                                  size: 24.0,
+                                  size: 26.0,
                                 ),
                               ),
                             ]),

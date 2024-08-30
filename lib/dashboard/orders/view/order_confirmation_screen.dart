@@ -91,7 +91,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                       ),
                       child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 30, left: 20.0, right: 10, bottom: 10),
+                              top: 35, left: 20.0, right: 20, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,6 +104,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                     ordersController.isHome.value
                                         ? height0SizedBox
                                         : IconButton(
+                                      splashRadius: 40,
                                             padding: EdgeInsets.zero,
                                             constraints: const BoxConstraints(),
                                             onPressed: () {
@@ -112,7 +113,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                             icon: const Icon(
                                               Icons.arrow_back,
                                               color: AppColors.white,
-                                              size: 24.0,
+                                              size: 26.0,
                                             ),
                                           ),
                                     ordersController.isFavouriteStore.value ==

@@ -149,7 +149,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                             fontSize: 22,
                             color: AppColors.black,
                             fontWeight: FontWeight.w600),
-                      ),
+                      ), height20SizedBox,
                       Expanded(
                           child: Obx(
                         () => addNewRoleController.moduleList.isEmpty
@@ -181,7 +181,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                                   )
                             : ListView.builder(
                                 padding:
-                                    const EdgeInsets.only(bottom: 60, top: 20),
+                                    const EdgeInsets.only(bottom: 60, top: 0),
                                 itemCount:
                                     addNewRoleController.moduleList.length,
                                 shrinkWrap: true,
