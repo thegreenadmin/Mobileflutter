@@ -270,8 +270,10 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                 //     .push(MaterialPageRoute(
                 //       builder: (_) => const SelectMembershipPlan(),
                 //     ))
-
-                if(accountController.activeMembershipList.isEmpty && accountController.activeMembershipList.first.expiredAt!.isBefore(DateTime.now()) ){
+                accountController.apiGetActiveMembershipList();
+                print(accountController.activeMembershipList.length);
+                if(accountController.activeMembershipList.isEmpty || (accountController.activeMembershipList.isNotEmpty &&
+                    accountController.activeMembershipList.first.expiredAt!.isBefore(DateTime.now())) ){
                   Get.to(() => const SelectMembershipPlan(), id: pageIdApp.value)!
                       .then((value) =>
                       accountController.apiGetActiveMembershipList());
