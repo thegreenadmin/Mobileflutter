@@ -108,367 +108,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     () => Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          flex: 4,
-                          child: storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.productImages ==
-                                      null ||
-                                  storeHomeMainController
-                                      .productDetailResponse
-                                      .value
-                                      .data!
-                                      .product!
-                                      .productImages!
-                                      .isEmpty
-                              ? Image.asset(ImageConstants.defaultProduct,
-                                  fit: BoxFit.fill, height: 120, width: 120)
-                              : Column(
-                                  children: [
-                                    CarouselSlider(
-                                      items: storeHomeMainController.productIm!
-                                          .map((item) => InkWell(
-                                                onTap: () {},
-                                                child: Center(
-                                                    child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          6.0),
-                                                  child: CommonWidgets
-                                                      .cachedNetworkImage(
-                                                          item.image?.dynamicUrl
-                                                                  .toString() ??
-                                                              "",
-                                                          height: WidgetConstants
-                                                                  .screenHeight *
-                                                              0.6,
-                                                          width: WidgetConstants
-                                                                  .screenWidth *
-                                                              0.4),
-                                                )),
-                                              ))
-                                          .toList(),
-                                      carouselController: _controller,
-                                      options: CarouselOptions(
-                                          enlargeStrategy:
-                                              CenterPageEnlargeStrategy.scale,
-                                          autoPlayCurve: Curves.fastOutSlowIn,
-                                          viewportFraction: 1.0,
-                                          enlargeCenterPage: false,
-                                          autoPlay: true,
-                                          aspectRatio: 1.1,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _current = index;
-                                            });
-                                          }),
-                                    ),
-                                    Obx(() => storeHomeMainController
-                                            .productDetailResponse
-                                            .value
-                                            .data!
-                                            .product!
-                                            .productImages!
-                                            .isEmpty
-                                        ? height0SizedBox
-                                        : SizedBox(
-                                            width: WidgetConstants.screenWidth *
-                                                0.4,
-                                            child: InkWell(
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              splashColor: Colors.transparent,
-                                              onTap: () {},
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children:
-                                                    storeHomeMainController
-                                                        .productIm!
-                                                        .asMap()
-                                                        .entries
-                                                        .map((entry) {
-                                                  return GestureDetector(
-                                                    onTap: () => _controller
-                                                        .animateToPage(
-                                                            entry.key),
-                                                    child: Container(
-                                                      width:
-                                                          _current == entry.key
-                                                              ? 25
-                                                              : 10,
-                                                      height: 5.0,
-                                                      margin: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 8.0,
-                                                          horizontal: 4.0),
-                                                      decoration:
-                                                          BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                              shape: BoxShape
-                                                                  .rectangle,
-                                                              color: _current ==
-                                                                      entry.key
-                                                                  ? AppColors
-                                                                      .primary
-                                                                  : AppColors
-                                                                      .grey),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          ))
-                                  ],
-                                ),
-
-
-                        ),
+                        Flexible(flex: 4, child: _buildProductImagesSection()),
                         width10SizedBox,
-                        Flexible(
-                          flex: 7,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                        storeHomeMainController
-                                                .productDetailResponse
-                                                .value
-                                                .data
-                                                ?.product
-                                                ?.productName ??
-                                            "",
-                                        style: const TextStyle(
-                                            overflow: TextOverflow.visible,
-                                            fontSize: 18,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600)),
-                                  ),
-                                  storeHomeMainController
-                                              .isFavouriteProduct.value ==
-                                          true
-                                      ? InkWell(
-                                          onTap: () {
-                                            storeHomeMainController
-                                                .isFavouriteProduct.value =
-                                                false;
-                                            if (storeHomeMainController
-                                                    .isLoading.value ==
-                                                false) {
-                                              storeHomeMainController
-                                                  .apiRemoveFavouriteProduct(
-                                                      storeHomeMainController
-                                                          .productDetailResponse
-                                                          .value
-                                                          .data
-                                                          ?.product
-                                                          ?.productId);
-                                            }
-                                          },
-                                          child: Image.asset(
-                                            ImageConstants.liked,
-                                            scale: 3.2,
-                                          ),
-                                        )
-                                      : InkWell(
-                                          onTap: () {
-                                            storeHomeMainController
-                                                .isFavouriteProduct.value =
-                                            true;
-                                            if (storeHomeMainController
-                                                    .isLoading.value ==
-                                                false) {
-                                              storeHomeMainController
-                                                  .apiCreateFavouriteProduct(
-                                                      storeHomeMainController
-                                                          .productDetailResponse
-                                                          .value
-                                                          .data
-                                                          ?.product
-                                                          ?.productId);
-                                            }
-                                          },
-                                          child: Image.asset(
-                                            ImageConstants.fav,
-                                            scale: 3.2,
-                                          ),
-                                        ),
-                                ],
-                              ),
-                              storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description ==
-                                      ""
-                                  ? height0SizedBox
-                                  : height4SizedBox,
-                              storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description ==
-                                      ""
-                                  ? height0SizedBox
-                                  : SizedBox(
-                                      width: 200,
-                                      child: Text(
-                                          storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.description ??
-                                              "",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColors.blacklight,
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                              storeHomeMainController.productDetailResponse
-                                          .value.data?.product?.description ==
-                                      ""
-                                  ? height0SizedBox
-                                  : height10SizedBox,
-                              height4SizedBox,
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            "${StringConstants.unitPriceText}:",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14)),
-                                    TextSpan(
-                                      text:
-                                          ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.productPrice ?? ""}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: AppColors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              height4SizedBox,
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: storeHomeMainController
-                                                    .productDetailResponse
-                                                    .value
-                                                    .data
-                                                    ?.product
-                                                    ?.offer
-                                                    ?.offerValue !=
-                                                null
-                                            ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
-                                            : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14)),
-                                    TextSpan(
-                                      text: storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data
-                                                  ?.product
-                                                  ?.offer
-                                                  ?.offerValue !=
-                                              null
-                                          ? storeHomeMainController
-                                                  .productDetailResponse
-                                                  .value
-                                                  .data!
-                                                  .product!
-                                                  .offer!
-                                                  .offerType!
-                                                  .contains("percentage")
-                                              ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}%'
-                                              : ''
-                                                  ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.offer?.offerValue ?? "0"}'
-                                          : storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data !=
-                                                  null
-                                              ? storeHomeMainController
-                                                      .productDetailResponse
-                                                      .value
-                                                      .data!
-                                                      .product!
-                                                      .discountType!
-                                                      .contains("percentage")
-                                                  ? ' ${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}%'
-                                                  : ' \$${storeHomeMainController.productDetailResponse.value.data?.product?.discountValue ?? "0"}'
-                                              : ' 0%',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: AppColors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              height20SizedBox,
-                              Row(
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        storeHomeMainController.itemsCount
-                                            .value = storeHomeMainController
-                                                    .itemsCount.value !=
-                                                0
-                                            ? storeHomeMainController
-                                                    .itemsCount.value -
-                                                1
-                                            : storeHomeMainController
-                                                .itemsCount.value;
-                                      },
-                                      child: Image.asset(
-                                        ImageConstants.subtract,
-                                        scale: 2.8,
-                                      )),
-                                  width10SizedBox,
-                                  Text(
-                                    storeHomeMainController.itemsCount
-                                                .toString()
-                                                .length <
-                                            2
-                                        ? storeHomeMainController.itemsCount
-                                            .toString()
-                                            .padLeft(2, '0')
-                                        : storeHomeMainController.itemsCount
-                                            .toString(),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                        color: AppColors.black),
-                                  ),
-                                  width10SizedBox,
-                                  InkWell(
-                                    onTap: () {
-                                      storeHomeMainController.itemsCount.value =
-                                          storeHomeMainController
-                                                  .itemsCount.value +
-                                              1;
-                                    },
-                                    child: Image.asset(
-                                      ImageConstants.add,
-                                      scale: 2.8,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
+                        Flexible(flex: 7, child: _buildProductDetailsSection()),
                       ],
                     ),
                   ),
@@ -764,39 +406,20 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                   _buildRowOtherDetail(
                       title: StringConstants.categoryNameText,
                       textData: storeHomeMainController.productDetailResponse
-                                      .value.data?.product?.productCategories !=
-                                  null &&
-                              storeHomeMainController
-                                  .productDetailResponse
-                                  .value
-                                  .data!
-                                  .product!
-                                  .productCategories!
-                                  .isNotEmpty
-                          ? storeHomeMainController
-                                  .productDetailResponse
-                                  .value
-                                  .data
-                                  ?.product
-                                  ?.productCategories
-                                  ?.first
-                                  .category
-                                  ?.categoryName ??
-                              ""
-                          : "NA"),
+                                      .value.data?.product?.productCategories != null &&
+                              storeHomeMainController.productDetailResponse.value.data!.product!.productCategories!.isNotEmpty
+                          ? storeHomeMainController.productDetailResponse.value.data?.product?.productCategories?.first.category?.categoryName ?? "" : "NA"),
 
                   _buildRowOtherDetail(
                       title: StringConstants.quantityUnitText,
                       textData:
-                          "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()}"),
+                          "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString()??""} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName.toString()??"NA"}"),
 
                   _buildRowOtherDetail(
                       title: StringConstants.featuredProductText,
                       textData: storeHomeMainController.productDetailResponse
-                                  .value.data?.product?.isFeaturedProduct ==
-                              true
-                          ? "Yes"
-                          : "No"),
+                                  .value.data?.product?.isFeaturedProduct == true
+                          ? "Yes" : "No"),
 
                   _buildRowOtherDetail(
                       title: StringConstants.lengthText,
@@ -829,21 +452,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     visible: storeHomeMainController.productDetailResponse.value
                             .data?.product?.isProductReturnable ==
                         true,
-                    child: Column(
-                      children: [
-                        height20SizedBox,
-                        _buildRowOtherDetail(
-                            title: StringConstants.returnDaysText,
-                            textData: storeHomeMainController
-                                    .productDetailResponse
-                                    .value
-                                    .data
-                                    ?.product
-                                    ?.returnDaysCount
-                                    .toString() ??
-                                "0"),
-                      ],
-                    ),
+                    child: _buildRowOtherDetail(
+                        title: StringConstants.returnDaysText,
+                        textData: storeHomeMainController
+                                .productDetailResponse
+                                .value
+                                .data
+                                ?.product
+                                ?.returnDaysCount
+                                .toString() ??
+                            "0"),
                   ),
                   Text(
                     StringConstants.ratingReviewText,
@@ -1122,4 +740,222 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           ),height10SizedBox
         ],
       );
+
+
+  Widget _buildProductImagesSection() {
+    var productImages = storeHomeMainController
+        .productDetailResponse.value.data?.product?.productImages;
+
+    if (productImages == null || productImages.isEmpty) {
+      return Image.asset(
+        ImageConstants.defaultProduct,
+        fit: BoxFit.fill,
+        height: 120,
+        width: 120,
+      );
+    }
+
+    return Column(
+      children: [
+        CarouselSlider(
+          items: storeHomeMainController.productIm!
+              .map((item) => InkWell(
+            onTap: () {},
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: CommonWidgets.cachedNetworkImage(
+                  item.image?.dynamicUrl.toString() ?? "",
+                  height: WidgetConstants.screenHeight * 0.6,
+                  width: WidgetConstants.screenWidth * 0.4,
+                ),
+              ),
+            ),
+          ))
+              .toList(),
+          carouselController: _controller,
+          options: CarouselOptions(
+            enlargeStrategy: CenterPageEnlargeStrategy.scale,
+            autoPlayCurve: Curves.fastOutSlowIn,
+            viewportFraction: 1.0,
+            enlargeCenterPage: false,
+            autoPlay: true,
+            aspectRatio: 1.1,
+            onPageChanged: (index, reason) {
+              _current = index;
+            },
+          ),
+        ),
+        Obx(() {
+          var productImages = storeHomeMainController
+              .productDetailResponse.value.data?.product?.productImages;
+          if (productImages == null || productImages.isEmpty) {
+            return const SizedBox(height: 0);
+          }
+          return _buildCarouselIndicator();
+        }),
+      ],
+    );
+  }
+
+  Widget _buildCarouselIndicator() {
+    return SizedBox(
+      width: WidgetConstants.screenWidth * 0.4,
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: storeHomeMainController.productIm!.asMap().entries.map(
+                (entry) {
+              return GestureDetector(
+                onTap: () => _controller.animateToPage(entry.key),
+                child: Container(
+                  width: _current == entry.key ? 25 : 10,
+                  height: 5.0,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    shape: BoxShape.rectangle,
+                    color: _current == entry.key ? AppColors.primary : AppColors.grey,
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductDetailsSection() {
+    var product = storeHomeMainController.productDetailResponse.value.data?.product;
+    if (product == null) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _buildProductTitleAndFavorite(),
+        if (product.description!.isNotEmpty) ...[
+          height4SizedBox,
+          SizedBox(width: 200, child: Text(product.description ??"", style: TextStyle(fontSize: 14, color: AppColors.blacklight, fontWeight: FontWeight.w400))),
+          height10SizedBox,
+        ],
+        height4SizedBox,
+        _buildProductPrice(),
+        height4SizedBox,
+        _buildProductDiscount(),
+        height20SizedBox,
+        _buildProductQuantitySelector(),
+      ],
+    );
+  }
+
+  Widget _buildProductTitleAndFavorite() {
+    var product = storeHomeMainController.productDetailResponse.value.data?.product;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            product?.productName ?? "",
+            style: const TextStyle(
+              overflow: TextOverflow.visible,
+              fontSize: 18,
+              color: AppColors.black,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            var isFavorite = storeHomeMainController.isFavouriteProduct.value;
+            storeHomeMainController.isFavouriteProduct.value = !isFavorite;
+            if (!storeHomeMainController.isLoading.value) {
+              if (isFavorite) {
+                storeHomeMainController.apiRemoveFavouriteProduct(product?.productId);
+              } else {
+                storeHomeMainController.apiCreateFavouriteProduct(product?.productId);
+              }
+            }
+          },
+          child: Image.asset(
+            storeHomeMainController.isFavouriteProduct.value
+                ? ImageConstants.liked
+                : ImageConstants.fav,
+            scale: 3.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductPrice() {
+    var product = storeHomeMainController.productDetailResponse.value.data?.product;
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: "${StringConstants.unitPriceText}:",
+            style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14),
+          ),
+          TextSpan(
+            text: ' \$${product?.productPrice ?? ""}',
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductDiscount() {
+    var product = storeHomeMainController.productDetailResponse.value.data?.product;
+    var discountText = product?.offer?.offerValue != null
+        ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
+        : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:";
+    var discountValue = product?.offer?.offerValue != null
+        ? product!.offer!.offerType!.contains("percentage")
+        ? ' ${product.offer!.offerValue}%'
+        : ' \$${product.offer!.offerValue}'
+        : product?.discountType?.contains("percentage") ?? false
+        ? ' ${product!.discountValue}%'
+        : ' \$${product?.discountValue ?? "0"}';
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: discountText, style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+          TextSpan(text: discountValue, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductQuantitySelector() {
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            storeHomeMainController.itemsCount.value = storeHomeMainController.itemsCount.value != 0
+                ? storeHomeMainController.itemsCount.value - 1
+                : 0;
+          },
+          child: Image.asset(ImageConstants.subtract, scale: 2.8),
+        ),
+       width10SizedBox,
+        Text(
+          storeHomeMainController.itemsCount.toString().padLeft(2, '0'),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+        ),
+        width10SizedBox,
+        InkWell(
+          onTap: () {
+            storeHomeMainController.itemsCount.value++;
+          },
+          child: Image.asset(ImageConstants.add, scale: 2.8),
+        ),
+      ],
+    );
+  }
 }

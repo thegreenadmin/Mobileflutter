@@ -78,11 +78,12 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.130),
+        // preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.130),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(
               padding: const EdgeInsets.only(
-                  left: 18.0, right: 18, top: 45, bottom: 0),
+                  left: 18.0, right: 18, top: 55, bottom: 0),
               child: Column(
                 children: [
                   Row(
@@ -161,7 +162,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                             child: Stack(
                                               children: [
                                                 CircleAvatar(
-                                                  radius: 20.0,
+                                                  radius: 18.0,
                                                   backgroundColor: Colors.white,
                                                   child: Image.asset(
                                                       ImageConstants.cart,
@@ -309,6 +310,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
                       // print("ADDRESSES BY GEOCODING:-------------------------------------------");
                       // print(p?.description!.toString());
+                      // print(p?.toJson()!.toString());
+
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
@@ -478,7 +481,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     searchStoreUserController.lat = lat;
     searchStoreUserController.lng = lng;
     searchStoreUserController.type.value = 0;
-    // Get.back();
     if(!isSearch){
       searchStoreUserController.placeId.value ="";
 

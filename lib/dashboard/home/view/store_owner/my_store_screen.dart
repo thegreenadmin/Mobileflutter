@@ -76,8 +76,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
         items: ownerStoresController.storeProductList
           .map(
             (item) =>   _buildStoreProductCard(item),
-      )
-          .toList(),
+      ).toList(),
       carouselController: _controllerProducts,
       options: CarouselOptions(
         enlargeStrategy: CenterPageEnlargeStrategy.scale,
@@ -184,8 +183,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                 : SizedBox(
                     width: 130,
                     child: Text(
-                      storeProduct.description ??
-                          "",
+                      storeProduct.description ?? "",
                       maxLines: 1,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
@@ -214,7 +212,6 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         ownerStoresController.getOwnerOfferList.isEmpty
             ? SizedBox(
-          // height: WidgetConstants.screenHeight * 0.80,
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

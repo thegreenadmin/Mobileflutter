@@ -253,26 +253,16 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                 children: [
                                                   InkWell(
                                                       onTap: () {
-                                                        storeHomeMainController
-                                                                        .cartItems[
-                                                                            i]
-                                                                        .itemsCount !=
-                                                                    0 &&
+                                                        storeHomeMainController.cartItems[i].itemsCount != 0 &&
                                                                 !storeHomeMainController
-                                                                    .isLoading
-                                                                    .value
+                                                                    .isLoading.value
                                                             ? storeHomeMainController.apiUpdateCart(
                                                                 cartItemId: int.parse(
                                                                     storeHomeMainController
-                                                                            .cartItems[
-                                                                                i]
-                                                                            .cartItemId ??
-                                                                        "0"),
+                                                                            .cartItems[i]
+                                                                            .cartItemId ?? "0"),
                                                                 quantity: storeHomeMainController
-                                                                        .cartItems[
-                                                                            i]
-                                                                        .itemsCount! -
-                                                                    1)
+                                                                        .cartItems[i].itemsCount! - 1)
                                                             : null;
                                                       },
                                                       child: Image.asset(
@@ -285,8 +275,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                 .cartItems[i]
                                                                 .itemsCount
                                                                 .toString()
-                                                                .length <
-                                                            2
+                                                                .length < 2
                                                         ? storeHomeMainController
                                                             .cartItems[i]
                                                             .itemsCount
@@ -561,12 +550,8 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                         height20SizedBox,
                         Obx(
                           () => Text(
-                            storeHomeMainController
-                                            .selectedDeliveryService.value ==
-                                        "1" ||
-                                    storeHomeMainController
-                                            .selectedDeliveryService.value ==
-                                        "3"
+                            storeHomeMainController.selectedDeliveryService.value == "1" ||
+                                    storeHomeMainController.selectedDeliveryService.value == "3"
                                 ? StringConstants.pickUpLocationText
                                 : StringConstants.shippingAddressText,
                             style: const TextStyle(
@@ -578,11 +563,8 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                         height15SizedBox,
                         Obx(
                           () => storeHomeMainController
-                                          .selectedDeliveryService.value ==
-                                      "1" ||
-                                  storeHomeMainController
-                                          .selectedDeliveryService.value ==
-                                      "3"
+                                          .selectedDeliveryService.value == "1" ||
+                                  storeHomeMainController.selectedDeliveryService.value == "3"
                               ? Container(
                                   width: WidgetConstants.screenWidth,
                                   padding: const EdgeInsets.symmetric(

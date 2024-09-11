@@ -275,7 +275,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                           children: [
                                             SizedBox(
                                               height: 20,
-                                              width: 100,
                                               child: ListView.separated(
                                                   separatorBuilder:
                                                       (BuildContext context,

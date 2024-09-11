@@ -146,6 +146,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       super.onInit();
+      storeProductList.value=[];
+      getOwnerOfferList.value=[];
       storeId.value = Get.parameters['storeId'] ?? "";
       selectedIndex.value = 0;
       getCurrentLocation();

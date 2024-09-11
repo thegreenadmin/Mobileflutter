@@ -73,14 +73,14 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
     );
   }
 
-  /* @override
+   @override
   initState() {
     super.initState();
     ownerStoresController.selectedIndex.value = 0;
-    ownerStoresController.firstName?.value =
-        SharedPreferenceStorage.getData(StringConstants.firstNameText);
-    ownerStoresController.lastName?.value =
-        SharedPreferenceStorage.getData(StringConstants.lastNameText);
+    // ownerStoresController.firstName?.value =
+    //     SharedPreferenceStorage.getData(StringConstants.firstNameText);
+    // ownerStoresController.lastName?.value =
+    //     SharedPreferenceStorage.getData(StringConstants.lastNameText);
     ownerStoresController.getApiData();
     ownerStoresController.getGkey();
     if (Get.parameters['isFromHome'] == "true") {
@@ -93,7 +93,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
     await ownerStoresController.apiGetStoreList();
     await ownerStoresController.apiGetDeliveryServices();
     await ownerStoresController.apiGetOwnerOffersList();
-  }*/
+    await ownerStoresController.apiGetFeaturedProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,8 +209,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                     ],
                                   ),
                                   height6SizedBox,
-                                  Obx(() => ownerStoresController
-                                          .is247Time.value
+                                  Obx(() => ownerStoresController.is247Time.value
                                       ? Text(StringConstants.storeHoursText,
                                           style: const TextStyle(
                                               color: AppColors.white,

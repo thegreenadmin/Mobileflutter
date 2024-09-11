@@ -81,8 +81,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                               decoration: BoxDecoration(
                                   color: searchStoreUserController
                                               .favouriteStore[index]
-                                              .isVerified ==
-                                          true
+                                              .isVerified == true
                                       ? AppColors.primarylight
                                       : AppColors.grey,
                                   borderRadius: const BorderRadius.all(
@@ -95,10 +94,8 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
@@ -120,32 +117,20 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                         ),
                                         width10SizedBox,
                                         SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
+                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                searchStoreUserController
-                                                        .favouriteStore[index]
-                                                        .storeName ??
-                                                    "",
+                                                searchStoreUserController.favouriteStore[index].storeName ?? "",
                                                 style: const TextStyle(
                                                     fontSize: 17.0,
                                                     color: AppColors.black,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                    fontWeight: FontWeight.w600),
                                               ),
                                               height4SizedBox,
                                               Visibility(
-                                                visible:
-                                                    searchStoreUserController
-                                                        .favouriteStore[index]
-                                                        .storeTimings!
-                                                        .isNotEmpty,
+                                                visible: searchStoreUserController.favouriteStore[index].storeTimings!.isNotEmpty,
                                                 child: Row(
                                                   children: [
                                                     Image.asset(
@@ -156,19 +141,15 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                     Expanded(
                                                       child: Text(
                                                         searchStoreUserController
-                                                                        .favouriteStore[
-                                                                            index]
-                                                                        .storeAddresses !=
-                                                                    null &&
+                                                                        .favouriteStore[index]
+                                                                        .storeAddresses != null &&
                                                                 searchStoreUserController
                                                                     .favouriteStore[
-                                                                        index]
-                                                                    .storeAddresses!
-                                                                    .isNotEmpty
+                                                                        index].storeAddresses!.isNotEmpty
                                                             ? searchStoreUserController
                                                                     .favouriteStore[
                                                                         index]
-                                                                    .storeAddresses
+                                                            .storeAddresses
                                                                     ?.first
                                                                     .addressLine1 ??
                                                                 ""
@@ -191,29 +172,16 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                               ),
                                               height4SizedBox,
                                               Text(
-                                                  searchStoreUserController
-                                                          .favouriteStore[index]
-                                                          .storeTimings!
-                                                          .isNotEmpty
-                                                      ? searchStoreUserController
-                                                                  .favouriteStore[
-                                                                      index]
-                                                                  .storeTimings
-                                                                  ?.first
-                                                                  .is24HoursActive ==
-                                                              false
+                                                  searchStoreUserController.favouriteStore[index].storeTimings!.isNotEmpty
+                                                      ? searchStoreUserController.favouriteStore[index].storeTimings?.first.is24HoursActive == false
                                                           ? "${StringConstants.storeHourText}: ${Utility.formatDateTime(searchStoreUserController.favouriteStore[index].storeTimings?.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                               "${Utility.formatDateTime(searchStoreUserController.favouriteStore[index].storeTimings?.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                          : StringConstants
-                                                              .storeHoursText
-                                                      : StringConstants
-                                                          .storeHoursText,
+                                                          : StringConstants.storeHoursText
+                                                      : StringConstants.storeHoursText,
                                                   style: TextStyle(
                                                       fontSize: 14.0,
-                                                      color:
-                                                          AppColors.blacklight,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
+                                                      color: AppColors.blacklight,
+                                                      fontWeight: FontWeight.w500)),
                                             ],
                                           ),
                                         )
@@ -221,10 +189,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                     ),
                                     Row(
                                       children: [
-                                        searchStoreUserController
-                                                    .favouriteStore[index]
-                                                    .isFavouriteStore!.value ==
-                                                true
+                                        searchStoreUserController.favouriteStore[index].isFavouriteStore!.value == true
                                             ? InkWell(
                                                 onTap: () {
                                                   searchStoreUserController
@@ -351,8 +316,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                       width10SizedBox,
                                       searchStoreUserController
                                                   .favouriteStore[index]
-                                                  .isVerified ==
-                                              false
+                                                  .isVerified == false
                                           ? RawMaterialButton(
                                               elevation: 0,
                                               onPressed: () {
@@ -360,8 +324,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                     .enterEinNumberAlert(
                                                         context,
                                                         searchStoreUserController
-                                                            .favouriteStore[
-                                                                index]
+                                                            .favouriteStore[index]
                                                             .storeId
                                                             .toString());
                                               },

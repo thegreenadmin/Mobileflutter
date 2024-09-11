@@ -20,6 +20,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: _buildOwnerAppBar(),
       body: _buildStackMethod(),
     );
@@ -41,7 +42,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
             ],
           ),
         ),
-        _builldClaimMethod(),
+        _buildClaimMethod(),
       ],
     );
   }
@@ -390,69 +391,90 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
     );
   }
 
-  Visibility _builldClaimMethod() {
+  Visibility _buildClaimMethod() {
     return Visibility(
       visible: isStoreOwner.value,
       child: Positioned(
-        bottom: 20,
-        left: 60,
-        right: 60,
-        child: Column(
-          children: [
-            CustomButton(
-              border: Border.all(
-                color: AppColors.primary,
-              ),
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [AppColors.white, AppColors.white],
-              ),
-              onTap: () {
-                // SharedPreferenceStorage.setData("context", context);
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(
-                //       builder: (_) => const AddNewStoreScreen(),
-                //     ))
-                Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
-                    .then((value) => ownerStoresController.apiGetStoreList());
-              },
-              height: 50,
-              text: StringConstants.addANewStoreText,
-              textColor: AppColors.primary,
-              borderRadius: 14,
-              fontWeight: FontWeight.w600,
-              iconL: false,
-              iconR: false,
-              fontSize: 16,
+        bottom: 0,
+        child: Container(
+          width: WidgetConstants.screenWidth,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white10,
+                Colors.white54,
+                Colors.white,
+                Colors.white,
+                Colors.white,
+                Colors.white,
+                Colors.white,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            height10SizedBox,
-            InkWell(
-              onTap: () {
-                Get.to(() => const ClaimStoreScreen(), id: pageIdApp.value);
-              },
-              child: const Text.rich(
-                textAlign: TextAlign.center,
-                softWrap: true,
-                TextSpan(
-                  children: [
-                    TextSpan(
-                        text: "Check if your store already exists. ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 13)),
-                    TextSpan(
-                      text: "Click Here.",
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: AppColors.primary),
-                    ),
-                  ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 60.0,right: 60.0,bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomButton(
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.white, AppColors.white],
+                  ),
+                  onTap: () {
+                    // SharedPreferenceStorage.setData("context", context);
+                    // Navigator.of(context)
+                    //     .push(MaterialPageRoute(
+                    //       builder: (_) => const AddNewStoreScreen(),
+                    //     ))
+                    Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
+                        .then((value) => ownerStoresController.apiGetStoreList());
+                  },
+                  height: 50,
+                  text: StringConstants.addANewStoreText,
+                  textColor: AppColors.primary,
+                  borderRadius: 14,
+                  fontWeight: FontWeight.w600,
+                  iconL: false,
+                  iconR: false,
+                  fontSize: 16,
                 ),
-              ),
+                height10SizedBox,
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const ClaimStoreScreen(), id: pageIdApp.value);
+                  },
+                  child: const Text.rich(
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: "Check if your store already exists. ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 13)),
+                        TextSpan(
+                          text: "Click Here.",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: AppColors.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

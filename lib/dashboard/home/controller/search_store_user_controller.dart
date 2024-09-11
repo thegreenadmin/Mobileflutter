@@ -459,8 +459,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": zipCodeTextController.text != "" && isFilter ? null : lng,
-      "latitude": zipCodeTextController.text != "" && isFilter ? null : lat,
+      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng,
+      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat,
       "city": isFilter && !isSearch ? "" : city.value,
       "place_id": isFilter && !isSearch ? "" : placeId.value,
       "state": isFilter && !isSearch ? "" : state.value,
@@ -802,7 +802,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           favouriteStore.clear();
           page.value = 1;
           apiGetFavoriteStores();
-        } /*else if (type.value == 0) {
+        } /* else if (type.value == 0) {
           storeAddresses.clear();
           page.value = 1;
           placeId.value = "";

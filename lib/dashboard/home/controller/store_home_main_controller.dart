@@ -689,9 +689,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Cart List Api
   Future apiGetCartListApi({bool isShowLoading = false}) async {
     isLoading.value = true;
-
-    debugPrint(
-        "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
     debugPrint(
         "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
 
@@ -722,7 +719,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-        log("cartDeliveryServiceCharge *******${cartData.value.cartDeliveryServiceCharge}");
+        // log("cartDeliveryServiceCharge *******${cartData.value.cartDeliveryServiceCharge}");
 
         if (cartListResponse.data?.cartTotalPrice is int ||
             cartListResponse.data?.cartTotalPrice is String) {
@@ -731,11 +728,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         } else {
           cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
         }
-        debugPrint("CART TOTAL VALUE ${cartTotalPrice.value}");
-        debugPrint("CART isDeleteCartItem.value${isDeleteCartItem.value}");
-        debugPrint(
-            "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
-        debugPrint("CART isFromHome.value ${isFromHome.value}");
+        // debugPrint("CART TOTAL VALUE ${cartTotalPrice.value}");
+        // debugPrint("CART isDeleteCartItem.value${isDeleteCartItem.value}");
+        // debugPrint(
+        //     "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
+        // debugPrint("CART isFromHome.value ${isFromHome.value}");
         cartData.value = cartListResponse.data ?? CartListData();
         if (selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == false) {
           Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);

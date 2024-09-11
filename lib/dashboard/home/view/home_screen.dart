@@ -121,7 +121,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
 
   PreferredSize _buildAppbar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(170.0),
+      preferredSize:  Size.fromHeight(WidgetConstants.screenHeight * 0.18),
+      // preferredSize: const Size.fromHeight(110.0),
       child: Container(
         color: AppColors.primarylight,
         child: Padding(
@@ -212,27 +213,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           Obx(
                             () => Visibility(
                               visible: roleApp.value == Role.customerRoleText &&
-                                  homeController.searchStoreUserController
-                                          .cartCount.value !=
-                                      0,
+                                  homeController.searchStoreUserController.cartCount.value != 0,
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         InkWell(
                                           onTap: () async {
                                             Get.parameters["storeId"] =
-                                                homeController
-                                                    .searchStoreUserController.storeIdValue.value;
-                                            await Get.to(
-                                                    () => const CartScreen(),
-                                                    id: pageIdApp.value)
-                                                ?.then((value) => homeController
-                                                    .searchStoreUserController.apiActiveCartApi());
+                                                homeController.searchStoreUserController.storeIdValue.value;
+                                            await Get.to(() => const CartScreen(), id: pageIdApp.value)
+                                                ?.then((value) => homeController.searchStoreUserController.apiActiveCartApi());
                                           },
                                           child: Stack(
                                             children: [
@@ -251,27 +245,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                                     decoration: BoxDecoration(
                                                       color: AppColors.red,
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.5),
+                                                          BorderRadius.circular(8.5),
                                                     ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                      minWidth: 15,
-                                                      minHeight: 15,
-                                                    ),
+                                                    constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
                                                     child: Obx(
                                                       () => Text(
-                                                        homeController
-                                                            .searchStoreUserController
-                                                            .cartItems
-                                                            .length
-                                                            .toString(),
+                                                        homeController.searchStoreUserController.cartItems.length.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 8,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center,
+                                                        ), textAlign: TextAlign.center,
                                                       ),
                                                     )),
                                               )
@@ -288,8 +271,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           GestureDetector(
                             onTap: () {
                               if (homeController.isLoading?.value == false) {
-                                Get.to(() => const NotificationListScreen(),
-                                    id: pageIdApp.value);
+                                Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
                               }
                             },
                             child: const Icon(
@@ -306,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         ],
                       )
                     ]),
-                height20SizedBox,
+                height12SizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -612,7 +594,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           child: Center(
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6.0),
-                                  child: Stack(children: <Widget>[
+                                  child: Stack(
+                                      children: <Widget>[
                                     CommonWidgets.cachedNetworkImage(
                                         item.image?.dynamicUrl.toString() ?? "",
                                         assetImg: ImageConstants.nopicfound,
@@ -638,12 +621,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
                                         child: Text(
-                                          offersCarouselList
-                                                  .where((p0) => item == p0)
-                                                  .first
-                                                  .store
-                                                  ?.storeName ??
-                                              "",
+                                          offersCarouselList.where((p0) => item == p0).first.store?.storeName ?? "",
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
@@ -672,40 +650,35 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         height5SizedBox,
         Obx(() => offersCarouselList.isEmpty
             ? height0SizedBox
-            : InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onTap: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: offersCarouselList
-                      .take(5)
-                      .toList()
-                      .asMap()
-                      .entries
-                      .map((entry) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (homeController.isLoading?.value == false) {
-                          _controller.animateToPage(entry.key);
-                        }
-                      },
-                      child: Container(
-                        width: _current == entry.key ? 25 : 10,
-                        height: 5.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            shape: BoxShape.rectangle,
-                            color: _current == entry.key
-                                ? AppColors.primary
-                                : AppColors.grey),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ))
+            : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: offersCarouselList
+                  .take(5)
+                  .toList()
+                  .asMap()
+                  .entries
+                  .map((entry) {
+                return GestureDetector(
+                  onTap: () {
+                    if (homeController.isLoading?.value == false) {
+                      _controller.animateToPage(entry.key);
+                    }
+                  },
+                  child: Container(
+                    width: _current == entry.key ? 25 : 10,
+                    height: 5.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        shape: BoxShape.rectangle,
+                        color: _current == entry.key
+                            ? AppColors.primary
+                            : AppColors.grey),
+                  ),
+                );
+              }).toList(),
+            ))
       ]);
 
   CarouselSlider _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {

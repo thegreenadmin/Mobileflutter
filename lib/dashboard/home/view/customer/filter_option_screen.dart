@@ -524,7 +524,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                           "" &&
                       searchStoreUserController
                               .closingTimeTextController.text ==
-                          "" &&
+                          "" &&  searchStoreUserController.isOpenNow.value=="" &&
                       searchStoreUserController.deliveryServicesList.isEmpty) {
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);

@@ -51,7 +51,8 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.12),
+        // preferredSize: const Size.fromHeight(90),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: walletController.role!.value,

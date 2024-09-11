@@ -318,7 +318,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.12),
         child: Obx(() => CommonAppBar(
             showActiveCart: true,
             role: ordersController.role!.value,
@@ -393,8 +393,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                       Get.parameters["isHome"] = "false";
                                       Get.parameters["isFromNotification"] = "false";
                                       Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
-                                      print("pageIdApp.value=======");
-                                      print(pageIdApp.value);
+
                                       Get.to(() => const OrderConfirmationScreen(), id: pageIdApp.value)?.then((value) {
                                         ordersController.apiGetOrderListApi();
                                       });
@@ -473,7 +472,6 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                               TextSpan(
                                                                 text:
                                                                     "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
-                                                                //'2023-03:30 AM',
                                                                 style: TextStyle(
                                                                     color: AppColors.blacklight,
                                                                     fontWeight: FontWeight.w400,

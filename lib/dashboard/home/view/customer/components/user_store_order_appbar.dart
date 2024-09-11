@@ -6,7 +6,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 mixin PreferredSizeWidget on Widget {
   Size get preferredSize => Size.fromHeight(WidgetConstants.screenHeight *
-      0.25); // Implement your preferredSize logic here
+      0.25);
 }
 
 class UserStoreOrderAppBar extends StatefulWidget with PreferredSizeWidget {
@@ -34,15 +34,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                   colorFilter:
                       const ColorFilter.mode(Colors.black45, BlendMode.darken),
                   image: storeHomeMainController
-                                  .storeDetailsResponse.value.data ==
-                              null ||
+                                  .storeDetailsResponse.value.data == null ||
                           storeHomeMainController.storeDetailsResponse.value
-                                  .data!.store!.image!.dynamicUrl ==
-                              null ||
+                                  .data!.store!.image!.dynamicUrl == null ||
                           storeHomeMainController.storeDetailsResponse.value
                               .data!.store!.image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.storeicon)
-                          as ImageProvider
+                      ? const AssetImage(ImageConstants.storeicon) as ImageProvider
                       : NetworkImage(storeHomeMainController
                           .storeDetailsResponse
                           .value
@@ -65,7 +62,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 0.0, right: 20, top: 8, bottom: 8),
+                                  left: 0.0, right: 0, top: 8, bottom: 8),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,27 +83,18 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                     ),
                                   ]),
                             ),
-
                             Row(
                               children: [
                                 Obx(
                                   () => Visibility(
-                                    visible: storeHomeMainController
-                                            .cartCount.value !=
-                                        0,
-                                    child: Padding(
+                                      visible: storeHomeMainController
+                                          .cartCount.value != 0,
+                                      child: Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [],
-                                          ),
                                           Row(
                                             children: [
                                               InkWell(
@@ -123,7 +111,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                                 child: Stack(
                                                   children: [
                                                     CircleAvatar(
-                                                      radius: 20.0,
+                                                      radius: 18.0,
                                                       backgroundColor:
                                                           Colors.white,
                                                       child: Image.asset(
@@ -134,38 +122,23 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                                       right: 0,
                                                       top: 0,
                                                       child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(1.5),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color:
-                                                                AppColors.red,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8.5),
+                                                          padding: const EdgeInsets.all(1.5),
+                                                          decoration: BoxDecoration(
+                                                            color: AppColors.red,
+                                                            borderRadius: BorderRadius.circular(8.5),
                                                           ),
-                                                          constraints:
-                                                              const BoxConstraints(
+                                                          constraints: const BoxConstraints(
                                                             minWidth: 15,
                                                             minHeight: 15,
                                                           ),
                                                           child: Obx(
                                                             () => Text(
-                                                              storeHomeMainController
-                                                                  .cartItems
-                                                                  .length
-                                                                  .toString(),
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .white,
+                                                              storeHomeMainController.cartItems.length.toString(),
+                                                              style: const TextStyle(
+                                                                color: Colors.white,
                                                                 fontSize: 10,
                                                               ),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                              textAlign: TextAlign.center,
                                                             ),
                                                           )),
                                                     )
@@ -179,9 +152,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                     ),
                                   ),
                                 ),
-                                storeHomeMainController
-                                            .isFavouriteStore.value ==
-                                        true
+                                width4SizedBox,
+                                storeHomeMainController.isFavouriteStore.value == true
                                     ? InkWell(
                                         onTap: () {
                                           storeHomeMainController
@@ -252,8 +224,8 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                               children: [
                                 Text(
                                   storeHomeMainController.storeDetailsResponse
-                                          .value.data?.store?.storeName ??
-                                      "", maxLines: 1,
+                                          .value.data?.store?.storeName ?? "",
+                                  maxLines: 1,
                                   style: const TextStyle(
                                       color: AppColors.white,
                                       fontSize: 18,
@@ -302,8 +274,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                               firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
                                                       "${Utility.formatDateTime(storeHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0",
                                               firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                  : StringConstants
-                                                      .storeHoursText
+                                                  : StringConstants.storeHoursText
                                               : StringConstants.storeHoursText,
                                           style: const TextStyle(
                                               overflow: TextOverflow.visible,
@@ -320,7 +291,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                       height: 20,
                                       child: ListView.separated(
                                           separatorBuilder: (BuildContext context, int index) {
-                                            return width6SizedBox;
+                                            return width4SizedBox;
                                           },
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
