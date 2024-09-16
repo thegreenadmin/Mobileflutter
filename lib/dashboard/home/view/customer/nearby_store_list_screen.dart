@@ -26,32 +26,33 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
           () => searchStoreUserController.storeAddresses.isEmpty
               ? searchStoreUserController.isDataLoading.value == true
                   ? height0SizedBox
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Image.asset(
-                            ImageConstants.nodata,
-                            scale: 8,
-                            color: AppColors.primary,
+                  : SingleChildScrollView(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Image.asset(
+                              ImageConstants.nodata,
+                              scale: 8,
+                              color: AppColors.primary,
+                            ),
                           ),
-                        ),
-                        height4SizedBox,
-                        Center(
-                          child: Text(
-                            searchStoreUserController.type.value == 0
-                                ? StringConstants.noNearbyStoreFoundText
-                                : searchStoreUserController.type.value == 1
-                                    ? StringConstants.noPreviousStoresFoundText
-                                    : StringConstants
-                                        .noFavouriteStoresFoundText,
-                            style: const TextStyle(
-                                fontStyle: FontStyle.italic, fontSize: 16),
+                          height4SizedBox,
+                          Center(
+                            child: Text(
+                              searchStoreUserController.type.value == 0
+                                  ? StringConstants.noNearbyStoreFoundText
+                                  : searchStoreUserController.type.value == 1
+                                      ? StringConstants.noPreviousStoresFoundText
+                                      : StringConstants.noFavouriteStoresFoundText,
+                              style: const TextStyle(
+                                  fontStyle: FontStyle.italic, fontSize: 16),
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      ),
+                  )
               : ListView.builder(
                   controller: searchStoreUserController.scrollController,
                   itemCount: searchStoreUserController.storeAddresses.length +

@@ -77,8 +77,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.130),
-        // preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.130),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.135),
         child: Container(
           color: AppColors.primarylight,
           child: Padding(

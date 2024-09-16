@@ -280,7 +280,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                             return null;
                           },
                           onTap: () async {
-                            TimeOfDay date = TimeOfDay.now();
+                            TimeOfDay? date = TimeOfDay.now();
                             FocusScope.of(context).requestFocus(FocusNode());
                             date = (await showTimePicker(
                               initialEntryMode: TimePickerEntryMode.input,
@@ -298,9 +298,9 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                                   child: child!,
                                 );
                               },
-                            ))!;
+                            ));
                             searchStoreUserController.openingTimeTextController
-                                .text = date.format(context).toString();
+                                .text = date!.format(context).toString();
 
                             searchStoreUserController.openingTime.value =
                                 Utility.formatDateTime(
@@ -382,7 +382,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                               return null;
                             },
                             onTap: () async {
-                              TimeOfDay date = TimeOfDay.now();
+                              TimeOfDay? date = TimeOfDay.now();
                               FocusScope.of(context).requestFocus(FocusNode());
                               date = (await showTimePicker(
                                 initialEntryMode: TimePickerEntryMode.input,
@@ -400,10 +400,10 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                                     child: child!,
                                   );
                                 },
-                              ))!;
+                              ));
                               searchStoreUserController
                                   .closingTimeTextController
-                                  .text = date.format(context).toString();
+                                  .text = date!.format(context).toString();
                               searchStoreUserController.closingTime.value =
                                   Utility.formatDateTime(
                                           searchStoreUserController
