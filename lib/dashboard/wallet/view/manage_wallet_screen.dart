@@ -46,7 +46,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(150.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(
                   left: 18.0, right: 20, top: 50, bottom: 10),
@@ -107,9 +107,9 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                             Flexible(
                                 child: Text(
                                     StringConstants
-                                        .toKnowBalanceYouDontHaveText,
+                                        .toKnowBalanceYouDoNotHaveText,
                                     style: TextStyle(
-                                        color: AppColors.blacklight,
+                                        color: AppColors.blackLight,
                                         fontSize: 18))),
                           ],
                         )
@@ -122,7 +122,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                     ? StringConstants.storeNameText
                                     : StringConstants.selectStoreText,
                                 style: TextStyle(
-                                    color: AppColors.blacklight, fontSize: 18),
+                                    color: AppColors.blackLight, fontSize: 18),
                               ),
                             ),
                             Expanded(
@@ -334,7 +334,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                           Row(
                             children: [
                               Image.asset(
-                                ImageConstants.autoreload,
+                                ImageConstants.autoreLoad,
                                 scale: 3.2,
                               ),
                               width15SizedBox,
@@ -386,13 +386,13 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 activeToggleColor: AppColors.primary,
                                 inactiveToggleColor: AppColors.grey,
                                 activeSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
                                 inactiveSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
-                                activeColor: AppColors.greymediumlight,
-                                inactiveColor: AppColors.greymediumlight,
+                                activeColor: AppColors.greyMediumLight,
+                                inactiveColor: AppColors.greyMediumLight,
                                 onToggle: (val) async {
                                   walletController.isAutoRechargeEnable.value =
                                       val;
@@ -484,7 +484,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 Image.asset(
                                   ImageConstants.addBank,
                                   scale: 20,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                 ),
                                 width15SizedBox,
                                 Text(
@@ -529,7 +529,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                           children: [
                             Image.asset(
                               ImageConstants.debitcard,
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               scale: 18.2,
                             ),
                             width15SizedBox,
@@ -595,7 +595,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               return Container(
                                 padding: const EdgeInsets.only(
                                     left: 10, right: 10, top: 15, bottom: 15),
-                                color: AppColors.primarylight,
+                                color: AppColors.primaryLight,
                                 child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -665,7 +665,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                               Text(
                                                 "**** **** **** **** ${walletController.cardList[index].card!.last4}",
                                                 style: TextStyle(
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.w500),
@@ -718,7 +718,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               return Container(
                                 padding: const EdgeInsets.only(
                                     left: 0, right: 10, top: 15, bottom: 15),
-                                color: AppColors.primarylight,
+                                color: AppColors.primaryLight,
                                 child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -750,7 +750,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                               Text(
                                                 "**** **** **** **** ${walletController.bankAccountList[index].bank!.last4}",
                                                 style: TextStyle(
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.w500),

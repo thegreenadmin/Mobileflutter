@@ -101,7 +101,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                           .selectedIndex.value ==
                                       0
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               scale: 3.8,
                             ),
                             height4SizedBox,
@@ -112,7 +112,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                               .selectedIndex.value ==
                                           0
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12),
                             )
@@ -131,7 +131,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                           .selectedIndex.value ==
                                       1
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               scale: 3.8,
                             ),
                             height4SizedBox,
@@ -142,7 +142,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                               .selectedIndex.value ==
                                           1
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12),
                             )
@@ -161,7 +161,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                           .selectedIndex.value ==
                                       2
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               scale: 3.6,
                             ),
                             height4SizedBox,
@@ -172,7 +172,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                               .selectedIndex.value ==
                                           2
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12),
                             )
@@ -191,7 +191,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                           .selectedIndex.value ==
                                       3
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               scale: 3.6,
                             ),
                             height4SizedBox,
@@ -202,7 +202,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                               .selectedIndex.value ==
                                           3
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12),
                             )
@@ -221,7 +221,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                           .selectedIndex.value ==
                                       4
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               scale: 3.8,
                             ),
                             height4SizedBox,
@@ -232,7 +232,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                                               .selectedIndex.value ==
                                           4
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12),
                             )

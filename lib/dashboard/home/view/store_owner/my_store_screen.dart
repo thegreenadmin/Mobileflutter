@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_product_model.dart';
@@ -46,13 +47,26 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
 
   SizedBox _buildOfferListCondition() {
     return SizedBox(
-        child: Obx(
-          () => ownerStoresController.getOwnerOfferList.isEmpty
-              ? ownerStoresController.isLoading.value == true
-                  ? height0SizedBox
-                  : _buildNoOfferMethod()
-              : _buildCarouselSlider(),
-        ));
+      child: Obx(
+            () {
+          // Deferring state changes to the end of the current frame
+          if (ownerStoresController.isOfferLoading.value) {
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              // Ensure this code is executed after the build phase
+              if (ownerStoresController.isOfferLoading.value) {
+                // You can safely call setState or any state-changing method here
+              }
+            });
+          }
+
+          return ownerStoresController.getOwnerOfferList.isEmpty
+              ? ownerStoresController.isOfferLoading.value
+              ? height0SizedBox
+              : _buildNoOfferMethod()
+              : _buildCarouselSlider();
+        },
+      ),
+    );
   }
 
   Obx _buildFeatureProductText() {
@@ -187,7 +201,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                       maxLines: 1,
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          color: AppColors.blacklight,
+                          color: AppColors.blackLight,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
                     ),

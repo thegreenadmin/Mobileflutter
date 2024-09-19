@@ -261,7 +261,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
               Text(
                 content,
                 style: TextStyle(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                     fontSize: 16,
                     height: 1.6,
                     fontWeight: FontWeight.w400),
@@ -324,7 +324,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             ),
             height12SizedBox,
             Text(
-              StringConstants.paymentConfirmatinText,
+              StringConstants.paymentConfirmationText,
               style: const TextStyle(
                   color: AppColors.black,
                   fontSize: 20,
@@ -335,7 +335,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             Text(
               "\$$amount ${StringConstants.amountWillBeDeductedText}",
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   height: 1.6,
                   fontWeight: FontWeight.w400),
@@ -447,7 +447,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                     height: 50.0,
                     width: 80.0,
                     decoration: BoxDecoration(
-                      color: AppColors.primarylight,
+                      color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     child: Center(
@@ -1033,7 +1033,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
               child: Text(
                 StringConstants.whatWouldLikeNowText,
                 style: TextStyle(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                     fontSize: 16,
                     height: 1.6,
                     fontWeight: FontWeight.w400),
@@ -1462,7 +1462,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
+                                    color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
                                     )),

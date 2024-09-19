@@ -168,7 +168,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: AppColors.blacklight),
+                              color: AppColors.blackLight),
                         ),
                         storeHomeMainController.productDetailResponse.value.data
                             ?.product?.productContents ==
@@ -232,7 +232,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
-                              color: AppColors.blacklight),
+                              color: AppColors.blackLight),
                         ),
                         height20SizedBox,
                         storeHomeMainController.productDetailResponse.value.data
@@ -264,7 +264,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: AppColors.blacklight),
+                              color: AppColors.blackLight),
                         ),
                         storeHomeMainController.productDetailResponse.value.data
                             ?.product?.productLinks ==
@@ -383,7 +383,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
-                          color: AppColors.blacklight),
+                          color: AppColors.blackLight),
                     ),
                     storeHomeMainController.productDetailResponse.value.data
                         ?.product?.description ==
@@ -543,8 +543,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           return height12SizedBox;
                         },
                         itemCount: storeHomeMainController.productDetailResponse
-                            .value.data?.product?.productReviews?.length ??
-                            0,
+                            .value.data?.product?.productReviews?.length ?? 0,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int i) {
@@ -552,7 +551,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 8),
                             decoration: const BoxDecoration(
-                                color: AppColors.greylight,
+                                color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8.0),
                                 )),
@@ -741,7 +740,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
-                    color: AppColors.blacklight),
+                    color: AppColors.blackLight),
               ),
               Text(
                 textData,
@@ -857,7 +856,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           height4SizedBox,
           SizedBox(width: 200,
               child: Text(
-                  product.description ?? "", style: TextStyle(fontSize: 14, color: AppColors.blacklight, fontWeight: FontWeight.w400))),
+                  product.description ?? "", style: TextStyle(fontSize: 14, color: AppColors.blackLight, fontWeight: FontWeight.w400))),
           height10SizedBox,
         ],
         height4SizedBox,

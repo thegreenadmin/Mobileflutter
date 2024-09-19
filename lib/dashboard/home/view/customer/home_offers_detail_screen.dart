@@ -22,7 +22,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -90,14 +90,14 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.8,
                                       padding: const EdgeInsets.only(
                                           top: 35, bottom: 35),
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -126,14 +126,14 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.8,
                                       height:
                                           WidgetConstants.screenHeight * 0.2,
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       child: CommonWidgets.cachedNetworkImage(
                                         addOffersController
                                             .offerImageDynamicLinkFromServer
@@ -154,7 +154,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                     Text(
                       StringConstants.offerNameText,
                       style: TextStyle(
-                          color: AppColors.blacklight,
+                          color: AppColors.blackLight,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -222,7 +222,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                           child: Text(
                             "${StringConstants.offerFor}:",
                             style: TextStyle(
-                                color: AppColors.blacklight,
+                                color: AppColors.blackLight,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
@@ -273,7 +273,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                     Text(
                       StringConstants.selectStoreText,
                       style: TextStyle(
-                          color: AppColors.blacklight,
+                          color: AppColors.blackLight,
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
                     ),
@@ -421,7 +421,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                                                                           .status! ==
                                                                       "deleted"
                                                                   ? AppColors
-                                                                      .primarylight
+                                                                      .primaryLight
                                                                   : AppColors
                                                                       .primary,
                                                               borderRadius:
@@ -460,7 +460,7 @@ class _HomeOffersDetailScreenState extends State<HomeOffersDetailScreen> {
                     Text(
                       StringConstants.discountsOrOffersText,
                       style: TextStyle(
-                          color: AppColors.blacklight,
+                          color: AppColors.blackLight,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),

@@ -271,7 +271,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                             maxLines: 1,
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400),
                                           ),

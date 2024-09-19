@@ -188,7 +188,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                         : StringConstants.switchToCustomerText,
                                     style: TextStyle(
                                         fontSize: 16,
-                                        color: AppColors.blacklight,
+                                        color: AppColors.blackLight,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -250,7 +250,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             Image.asset(
                               ImageConstants.arrowForward,
                               scale: 3.4,
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                             )
                           ],
                         ),
@@ -291,7 +291,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     Image.asset(
                                       ImageConstants.arrowForward,
                                       scale: 3.4,
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                     )
                                   ],
                                 ),
@@ -343,7 +343,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             Image.asset(
                               ImageConstants.arrowForward,
                               scale: 3.4,
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                             )
                           ],
                         ),
@@ -380,7 +380,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             Image.asset(
                               ImageConstants.arrowForward,
                               scale: 3.4,
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                             )
                           ],
                         ),
@@ -435,7 +435,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     Image.asset(
                                       ImageConstants.arrowForward,
                                       scale: 3.4,
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                     )
                                   ],
                                 ),
@@ -476,13 +476,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                 activeToggleColor: AppColors.primary,
                                 inactiveToggleColor: AppColors.grey,
                                 activeSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
                                 inactiveSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
-                                activeColor: AppColors.greymediumlight,
-                                inactiveColor: AppColors.greymediumlight,
+                                activeColor: AppColors.greyMediumLight,
+                                inactiveColor: AppColors.greyMediumLight,
                                 onToggle: (val) {
                                   accountController.isScreenLockNotify.value =
                                       val;
@@ -538,13 +538,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isUserInboxMessagesNotify
@@ -576,13 +576,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isOwnerInboxMessagesNotify
@@ -635,13 +635,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isUserTippingNotify.value = val;
@@ -670,13 +670,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isOwnerTippingNotify.value = val;
@@ -727,13 +727,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isUserOfferNotify.value = val;
@@ -763,13 +763,13 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     activeToggleColor: AppColors.primary,
                                     inactiveToggleColor: AppColors.grey,
                                     activeSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
                                     inactiveSwitchBorder: Border.all(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                     ),
-                                    activeColor: AppColors.greymediumlight,
-                                    inactiveColor: AppColors.greymediumlight,
+                                    activeColor: AppColors.greyMediumLight,
+                                    inactiveColor: AppColors.greyMediumLight,
                                     onToggle: (val) {
                                       accountController
                                           .isOwnerOfferNotify.value = val;
@@ -820,7 +820,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                         gradient: const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [AppColors.redlight, AppColors.redlight],
+                          colors: [AppColors.redLight, AppColors.redLight],
                         ),
                         onTap: () async {
                           Utility.showConfirmAlertMessage(
@@ -851,7 +851,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
     return PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Column(

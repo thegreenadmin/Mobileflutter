@@ -212,7 +212,7 @@ class AccountController extends GetxController with GlobalVarMixin{
               Text(
                 StringConstants.yourAreQualifiedText,
                 style: TextStyle(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                     fontSize: 18,
                     height: 1.6,
                     fontWeight: FontWeight.w400),

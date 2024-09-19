@@ -20,7 +20,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(75.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 18.0, right: 20, top: 40),
               child: Column(
@@ -30,7 +30,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             IconButton(
                               padding: EdgeInsets.zero,
@@ -45,18 +45,12 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                               ),
                             ),
                             width10SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  StringConstants.claimStoreText,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
+                            Text(
+                              StringConstants.claimStoreText,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -65,7 +59,6 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                           scale: 4,
                         )
                       ]),
-                  height20SizedBox,
                 ],
               )),
         ),
@@ -119,7 +112,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                             itemBuilder: (BuildContext context, int index) {
                               return Dismissible(
                                 background: Container(
-                                  color: AppColors.redlight,
+                                  color: AppColors.redLight,
                                   child: const Align(
                                     alignment: Alignment.centerRight,
                                     child: Row(
@@ -192,7 +185,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     decoration: const BoxDecoration(
-                                        color: AppColors.primarylight,
+                                        color: AppColors.primaryLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(8.0),
                                         )),
@@ -262,7 +255,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                           ImageConstants.loc,
                                                           scale: 3,
                                                           color: AppColors
-                                                              .blackmedium),
+                                                              .blackMedium),
                                                       width3SizedBox,
                                                       Expanded(
                                                         child: Text(
@@ -277,7 +270,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                                       .w400,
                                                               fontSize: 12.0,
                                                               color: AppColors
-                                                                  .blackmedium),
+                                                                  .blackMedium),
                                                         ),
                                                       ),
                                                     ]),
@@ -303,7 +296,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                               "${StringConstants.cityText}: ",
                                                               style: TextStyle(
                                                                   color: AppColors
-                                                                      .blackmedium,
+                                                                      .blackMedium,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,
@@ -344,7 +337,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                               "${StringConstants.stateText}: ",
                                                               style: TextStyle(
                                                                   color: AppColors
-                                                                      .blackmedium,
+                                                                      .blackMedium,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,

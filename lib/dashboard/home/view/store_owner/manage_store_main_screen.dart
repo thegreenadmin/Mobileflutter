@@ -63,7 +63,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                   : FontWeight.w400,
                           color: ownerStoresController.selectedIndex.value == i
                               ? AppColors.primary
-                              : AppColors.blacklight,
+                              : AppColors.blackLight,
                         ),
                       ),
                     ));
@@ -76,24 +76,19 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
    @override
   initState() {
     super.initState();
+    getApiData();
+  }
+
+  getApiData() async {
     ownerStoresController.selectedIndex.value = 0;
-    // ownerStoresController.firstName?.value =
-    //     SharedPreferenceStorage.getData(StringConstants.firstNameText);
-    // ownerStoresController.lastName?.value =
-    //     SharedPreferenceStorage.getData(StringConstants.lastNameText);
-    ownerStoresController.getApiData();
+    await ownerStoresController.getApiData();
     ownerStoresController.getGkey();
     if (Get.parameters['isFromHome'] == "true") {
       ownerStoresController.storeId.value = Get.parameters['storeId'] ?? "";
       ownerStoresController.apiGetParticularStore();
     }
-  }
 
-  getApiData() async {
-    await ownerStoresController.apiGetStoreList();
-    await ownerStoresController.apiGetDeliveryServices();
-    await ownerStoresController.apiGetOwnerOffersList();
-    await ownerStoresController.apiGetFeaturedProducts();
+
   }
 
   @override

@@ -23,7 +23,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -97,7 +97,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             DottedBorder(
                               borderType: BorderType.Circle,
                               radius: const Radius.circular(20),
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               strokeWidth: 1,
                               dashPattern: const [4, 4],
                               child: Obx(() => Container(
@@ -111,7 +111,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                       fit: BoxFit.contain,
                                       radius: 50.0,
                                       assetBackgroundColor:
-                                          AppColors.primarylight,
+                                          AppColors.primaryLight,
                                       assetImg: ImageConstants.userAccount,
                                       placeholder: (context, url) =>
                                           const CircleAvatar(
@@ -130,7 +130,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             height20SizedBox,
                             Text(StringConstants.uploadPhotoHereText,
                                 style: TextStyle(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400)),
                             height10SizedBox,
@@ -293,7 +293,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primarylight,
+                            color: AppColors.primaryLight,
                           ),
                         )),
                     height20SizedBox,
@@ -608,7 +608,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(
-                            color: AppColors.blacklight, fontSize: 15),
+                            color: AppColors.blackLight, fontSize: 15),
                         border: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(

@@ -94,7 +94,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           decoration: const BoxDecoration(
-                              color: AppColors.greylight,
+                              color: AppColors.greyLight,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               )),
@@ -157,7 +157,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                                 : "${storeHomeMainController.categoriesList[index].totalProducts.toString()} product",
                                             style: TextStyle(
                                                 fontSize: 14.0,
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400)),
                                       ],
                                     ),
@@ -165,7 +165,7 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                                 ),
                                 Icon(
                                   Icons.chevron_right,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   size: 24.0,
                                 ),
                               ],

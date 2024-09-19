@@ -23,7 +23,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
         color: AppColors.white,
         border: Border.all(
             width: 0, //
-            color: AppColors.blacklight),
+            color: AppColors.blackLight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -46,7 +46,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
                   color: ownerInboxController.isInboxSelected.value
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +60,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                           fontWeight: FontWeight.w400,
                           color: ownerInboxController.isInboxSelected.value
                               ? AppColors.primary
-                              : AppColors.blacklight,
+                              : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -83,7 +83,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                   width: WidgetConstants.screenWidth * 0.40,
                   color: ownerInboxController.isInboxSelected.value
                       ? AppColors.white
-                      : AppColors.primarylight,
+                      : AppColors.primaryLight,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,7 +95,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: ownerInboxController.isInboxSelected.value
-                              ? AppColors.blacklight
+                              ? AppColors.blackLight
                               : AppColors.primary,
                         ),
                       ),
@@ -114,7 +114,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -196,7 +196,7 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           decoration: const BoxDecoration(
-                              color: AppColors.greylight,
+                              color: AppColors.greyLight,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(8.0),
                               )),

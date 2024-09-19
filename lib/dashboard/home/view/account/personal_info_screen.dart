@@ -26,7 +26,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 18.0, right: 20, top: 50),
@@ -104,7 +104,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.firstNameText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -123,7 +123,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 ),
                 Text(StringConstants.lastNameText,
                     style: TextStyle(
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         fontWeight: FontWeight.w400,
                         fontSize: 16)),
                 height10SizedBox,
@@ -141,7 +141,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 ),
                 Text(StringConstants.nickNameText,
                     style: TextStyle(
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         fontWeight: FontWeight.w400,
                         fontSize: 16)),
                 height10SizedBox,
@@ -159,7 +159,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 ),
                 Text(StringConstants.emailIdText,
                     style: TextStyle(
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         fontWeight: FontWeight.w400,
                         fontSize: 16)),
                 height10SizedBox,
@@ -178,7 +178,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.phoneNumberText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -206,7 +206,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.addressLine1Text,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -226,7 +226,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.addressLine2Text,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -246,7 +246,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.townOrCityText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -266,7 +266,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.postalCodeText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -286,7 +286,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.countryText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -306,7 +306,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                 Text(
                   StringConstants.stateText,
                   style: TextStyle(
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
                 ),
@@ -329,7 +329,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                     ? Text(
                         StringConstants.identityInfoText,
                         style: TextStyle(
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       )
@@ -345,7 +345,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> with GlobalVarM
                             child: Obx(() => InkWell(
                                   onTap: () {},
                                   child: DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: CommonWidgets.cachedNetworkImage(

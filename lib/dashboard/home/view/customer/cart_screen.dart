@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -135,7 +135,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 15),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(8.0),
                                       )),
@@ -159,10 +159,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                 .cachedNetworkImage(
                                               storeHomeMainController
                                                       .cartItems[i]
-                                                      .product
-                                                      ?.image
-                                                      ?.dynamicUrl ??
-                                                  "",
+                                                      .product?.image?.dynamicUrl ?? "",
                                             ),
                                           ),
                                         ),
@@ -176,8 +173,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                 storeHomeMainController
                                                         .cartItems[i]
                                                         .product
-                                                        ?.productName ??
-                                                    "",
+                                                        ?.productName ?? "",
                                                 style: const TextStyle(
                                                     fontSize: 16.0,
                                                     color: AppColors.black,
@@ -195,8 +191,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                       storeHomeMainController
                                                               .cartItems[i]
                                                               .product
-                                                              ?.description ??
-                                                          "",
+                                                              ?.description ?? "",
                                                       style: const TextStyle(
                                                           fontSize: 14.0,
                                                           color:
@@ -225,11 +220,8 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                             text:
                                                                 "${StringConstants.unitPriceText}:",
                                                             style: const TextStyle(
-                                                                color: AppColors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                                color: AppColors.black,
+                                                                fontWeight: FontWeight.w400,
                                                                 fontSize: 14)),
                                                         TextSpan(
                                                           text:
@@ -570,7 +562,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4, vertical: 12),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(8.0),
                                       )),
@@ -597,7 +589,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4, vertical: 8),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(8.0),
                                       )),
@@ -733,13 +725,13 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                         height10SizedBox,
                         Center(
                           child: DottedBorder(
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                             strokeWidth: 1,
                             dashPattern: const [4, 4],
                             child: Obx(() => Container(
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, top: 10, bottom: 0),
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -784,7 +776,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   storeHomeMainController
                                       .cartData.value.cartTotalPrice!,
                           child: Container(
-                            color: AppColors.redlight,
+                            color: AppColors.redLight,
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

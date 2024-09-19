@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       preferredSize:  Size.fromHeight(WidgetConstants.screenHeight * 0.18),
       // preferredSize: const Size.fromHeight(110.0),
       child: Container(
-        color: AppColors.primarylight,
+        color: AppColors.primaryLight,
         child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 4, top: 50),
             child: Column(

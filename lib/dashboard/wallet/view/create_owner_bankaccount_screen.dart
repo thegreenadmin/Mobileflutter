@@ -19,7 +19,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Row(
@@ -154,8 +154,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                                             .toLowerCase()
                                     ? [AppColors.primary, AppColors.primary]
                                     : [
-                                        AppColors.primarylight,
-                                        AppColors.primarylight
+                                        AppColors.primaryLight,
+                                        AppColors.primaryLight
                                       ],
                               ),
                               onTap: () async {
@@ -170,7 +170,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                                       StringConstants.individualText
                                           .toLowerCase()
                                   ? AppColors.white
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                               text: StringConstants.individualText,
                               borderRadius: 12,
                               fontWeight: FontWeight.w500,
@@ -186,8 +186,8 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                                       StringConstants.companyText.toLowerCase()
                                   ? [AppColors.primary, AppColors.primary]
                                   : [
-                                      AppColors.primarylight,
-                                      AppColors.primarylight
+                                      AppColors.primaryLight,
+                                      AppColors.primaryLight
                                     ],
                             ),
                             onTap: () async {
@@ -200,7 +200,7 @@ class _CreateOwnerBankAccountState extends State<CreateOwnerBankAccount> with Gl
                                         .accountHolderTypeText.value ==
                                     StringConstants.companyText.toLowerCase()
                                 ? AppColors.white
-                                : AppColors.blacklight,
+                                : AppColors.blackLight,
                             text: StringConstants.companyText,
                             borderRadius: 12,
                             fontWeight: FontWeight.w500,

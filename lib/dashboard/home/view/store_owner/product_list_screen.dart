@@ -112,7 +112,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
   Dismissible _buildListCard(int index) {
     return Dismissible(
                       background: Container(
-                        color: AppColors.redlight,
+                        color: AppColors.redLight,
                         child: const Align(
                           alignment: Alignment.centerRight,
                           child: Row(
@@ -162,7 +162,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
                         decoration: const BoxDecoration(
-                            color: AppColors.greylight,
+                            color: AppColors.greyLight,
                             borderRadius: BorderRadius.all(
                               Radius.circular(12.0),
                             )),
@@ -297,7 +297,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                                               style: TextStyle(
                                                   fontSize: 14.0,
                                                   color: AppColors
-                                                      .blacklight,
+                                                      .blackLight,
                                                   fontWeight:
                                                       FontWeight.w400),
                                             ),
@@ -390,7 +390,7 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
     return PreferredSize(
       preferredSize:  Size.fromHeight(WidgetConstants.screenHeight*0.125),
       child: Container(
-        color: AppColors.primarylight,
+        color: AppColors.primaryLight,
         child: Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
             child: Column(

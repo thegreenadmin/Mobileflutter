@@ -61,7 +61,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                               .selectedIndex.value ==
                                           i
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                                 ),
                               ),
                               height8SizedBox,
@@ -391,7 +391,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
+                                    color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.0),
                                     )),
@@ -451,7 +451,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.orderIDText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
@@ -476,7 +476,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.orderedDateText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
@@ -520,7 +520,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                     .ellipsis,
                                                             style: TextStyle(
                                                                 color: AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
@@ -558,7 +558,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.orderType}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
@@ -598,7 +598,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.statusText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
@@ -669,7 +669,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.orderAmountText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),
@@ -692,7 +692,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                     "${StringConstants.totalOrderAmount}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 14)),

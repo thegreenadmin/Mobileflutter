@@ -35,7 +35,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Column(
@@ -190,7 +190,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                           }
                           return Dismissible(
                             background: Container(
-                              color: AppColors.redlight,
+                              color: AppColors.redLight,
                               child: const Align(
                                 alignment: Alignment.centerRight,
                                 child: Row(
@@ -267,7 +267,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
+                                    color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
                                     )),
@@ -334,7 +334,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                   style: TextStyle(
                                                       fontSize: 12.0,
                                                       color:
-                                                          AppColors.blacklight,
+                                                          AppColors.blackLight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
@@ -391,7 +391,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                                       .w400,
                                                               fontSize: 12.0,
                                                               color: AppColors
-                                                                  .blacklight),
+                                                                  .blackLight),
                                                         ),
                                                       )
                                                     ],
@@ -409,7 +409,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                 Image.asset(
                                                   ImageConstants.email,
                                                   scale: 4,
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                 ),
                                                 width5SizedBox,
                                                 Expanded(
@@ -428,7 +428,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                             FontWeight.w400,
                                                         fontSize: 12.0,
                                                         color: AppColors
-                                                            .blacklight),
+                                                            .blackLight),
                                                   ),
                                                 )
                                               ],
@@ -442,7 +442,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                               children: [
                                                 Image.asset(
                                                   ImageConstants.calling,
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                   scale: 4,
                                                 ),
                                                 width5SizedBox,
@@ -461,7 +461,7 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                                                           FontWeight.w400,
                                                       fontSize: 12.0,
                                                       color:
-                                                          AppColors.blacklight),
+                                                          AppColors.blackLight),
                                                 )
                                               ],
                                             ),

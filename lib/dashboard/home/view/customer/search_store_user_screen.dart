@@ -79,7 +79,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.135),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(
                   left: 18.0, right: 18, top: 55, bottom: 0),
@@ -241,7 +241,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               Container(
                 height: WidgetConstants.screenHeight * 0.3, //250,
                 width: WidgetConstants.screenWidth,
-                color: AppColors.primarylight,
+                color: AppColors.primaryLight,
               ),
               Positioned(
                 top: 30,
@@ -398,7 +398,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
             width: WidgetConstants.screenWidth,
             height: 40,
             child: TabBar(
-              unselectedLabelColor: AppColors.blacklight,
+              unselectedLabelColor: AppColors.blackLight,
               labelColor: AppColors.primary,
               indicatorColor: AppColors.primary,
               unselectedLabelStyle:

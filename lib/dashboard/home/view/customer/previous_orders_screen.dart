@@ -200,7 +200,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                                                 style: TextStyle(
                                                     overflow:
                                                         TextOverflow.visible,
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.w400),

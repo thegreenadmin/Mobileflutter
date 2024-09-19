@@ -27,7 +27,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.112),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -232,7 +232,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             decoration: const BoxDecoration(
-                                color: AppColors.greylight,
+                                color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8.0),
                                 )),
@@ -308,7 +308,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                           textAlign: TextAlign.justify,
                                           style: TextStyle(
                                               fontSize: 12.0,
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontWeight: FontWeight.w500),
                                         ),
                                       ],

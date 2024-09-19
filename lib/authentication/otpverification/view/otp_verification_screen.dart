@@ -34,7 +34,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               style: OutlinedButton.styleFrom(
                 minimumSize: Size.zero,
                 padding: EdgeInsets.zero,
-                side: BorderSide(width: 0.0, color: AppColors.blacklight),
+                side: BorderSide(width: 0.0, color: AppColors.blackLight),
                 shape: const CircleBorder(),
               ),
               child: const Icon(
@@ -72,7 +72,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           "${StringConstants.verificationCodeSentText}${otpVerificationController.countryCode.value.trim()}-${otpVerificationController.phoneNumber.value.trim()}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               fontSize: 16,
                               height: 1.4,
                               fontWeight: FontWeight.w400),
@@ -102,7 +102,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             errorTextSpace: 20,
                             textStyle: TextStyle(
                                 fontSize: 18,
-                                color: AppColors.blacklight,
+                                color: AppColors.blackLight,
                                 fontWeight: FontWeight.w500),
                             obscureText: true,
                             appContext: context,
@@ -145,7 +145,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               Text(StringConstants.didNotGetACodeText,
                                   style: TextStyle(
                                       fontSize: 15,
-                                      color: AppColors.blacklight)),
+                                      color: AppColors.blackLight)),
                               width5SizedBox,
                               InkWell(
                                 onTap: () {
@@ -193,7 +193,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                             fontSize: 16,
                             iconR: true,
                             imageR: Image.asset(
-                              ImageConstants.arrowright,
+                              ImageConstants.arrowRight,
                               scale: 3,
                             )),
                         height20SizedBox,

@@ -46,7 +46,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Row(

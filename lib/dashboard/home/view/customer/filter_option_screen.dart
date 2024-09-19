@@ -21,7 +21,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -97,7 +97,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                     labelStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         decoration: TextDecoration.none),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -154,7 +154,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                     labelStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         decoration: TextDecoration.none),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -223,7 +223,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                 hint: Text(
                   StringConstants.storeOpeningText,
                   style: TextStyle(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   ),
                 ),
                 items: <String>["Open Now", "Closed"].map((String value) {
@@ -314,7 +314,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                               errorMaxLines: 3,
                               hintText: StringConstants.openingTimeText,
                               hintStyle: TextStyle(
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -416,7 +416,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                               errorMaxLines: 3,
                               hintText: StringConstants.closingTimeText,
                               hintStyle: TextStyle(
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -460,12 +460,12 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                     suffixIcon: InkWell(
                       child: Icon(
                         Icons.arrow_drop_down,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                       ),
                     ),
                     hintText: StringConstants.pickupOptionsText,
                     hintStyle:
-                        TextStyle(color: AppColors.blacklight, fontSize: 16),
+                        TextStyle(color: AppColors.blackLight, fontSize: 16),
                     fillColor: Colors.white,
                     filled: false,
                     errorBorder: OutlineInputBorder(

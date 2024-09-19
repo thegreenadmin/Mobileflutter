@@ -23,7 +23,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Row(
@@ -123,7 +123,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                 ),
                                 padding: const EdgeInsets.only(
                                     left: 15, right: 15, top: 15, bottom: 15),
-                                color: AppColors.primarylight,
+                                color: AppColors.primaryLight,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -238,7 +238,7 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                     width10SizedBox,
                                                     Text(
                                                         StringConstants
-                                                            .quaterlyPlanText,
+                                                            .quarterlyPlanText,
                                                         style: const TextStyle(
                                                             color:
                                                                 AppColors.black,
@@ -490,13 +490,13 @@ class _MyAlertDialogState extends State<MyAlertDialog> {
                           top: 15.0, bottom: 15.0, left: 10.0),
                       color: selectIndex.value == index
                           ? AppColors.primary
-                          : AppColors.primarylight,
+                          : AppColors.primaryLight,
                       child: Text(
                         accountController.storeList[index].storeName ?? "",
                         style: TextStyle(
                           color: selectIndex.value != index
                               ? AppColors.primary
-                              : AppColors.primarylight,
+                              : AppColors.primaryLight,
                         ),
                       ),
                     ),

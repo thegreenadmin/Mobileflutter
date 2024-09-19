@@ -23,7 +23,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -87,7 +87,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                             DottedBorder(
                               borderType: BorderType.Circle,
                               radius: const Radius.circular(20),
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               strokeWidth: 1,
                               dashPattern: const [4, 4],
                               child: Obx(
@@ -102,7 +102,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                     fit: BoxFit.contain,
                                     radius: 50.0,
                                     assetBackgroundColor:
-                                        AppColors.primarylight,
+                                        AppColors.primaryLight,
                                     assetImg: ImageConstants.userAccount,
                                     placeholder: (context, url) =>
                                         const CircleAvatar(
@@ -362,7 +362,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primarylight,
+                            color: AppColors.primaryLight,
                           ),
                         )),
                     height20SizedBox,
@@ -907,7 +907,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(
-                            color: AppColors.blacklight, fontSize: 15),
+                            color: AppColors.blackLight, fontSize: 15),
                         border: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(

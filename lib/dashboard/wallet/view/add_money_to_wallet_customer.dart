@@ -112,7 +112,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(100.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -227,7 +227,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                 StringConstants.cardText
                                                     .toLowerCase()
                                             ? AppColors.primary
-                                            : AppColors.blacklight,
+                                            : AppColors.blackLight,
                                   )),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 12),
@@ -285,7 +285,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                       .paymentType!.value ==
                                                   StringConstants.gPayText
                                               ? AppColors.primary
-                                              : AppColors.blacklight,
+                                              : AppColors.blackLight,
                                         )),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
@@ -343,7 +343,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                       .paymentType!.value ==
                                                   StringConstants.applePaysText
                                               ? AppColors.primary
-                                              : AppColors.blacklight,
+                                              : AppColors.blackLight,
                                         )),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
@@ -542,7 +542,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                             .value ==
                                                         index
                                                     ? AppColors.primary
-                                                    : AppColors.primarylight,
+                                                    : AppColors.primaryLight,
                                                 child: InkWell(
                                                   onTap: () {
                                                     setState(() {
@@ -627,7 +627,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                                           ? AppColors
                                                                               .white
                                                                           : AppColors
-                                                                              .blacklight,
+                                                                              .blackLight,
                                                                       fontSize:
                                                                           15,
                                                                       fontWeight:
@@ -644,7 +644,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                                           ? AppColors
                                                                               .white
                                                                           : AppColors
-                                                                              .blacklight,
+                                                                              .blackLight,
                                                                       fontSize:
                                                                           15,
                                                                       fontWeight:

@@ -44,7 +44,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Image.asset(
-                    ImageConstants.fourtwenty,
+                    ImageConstants.fourTwenty,
                     scale: 3.5,
                   ),
                 ),

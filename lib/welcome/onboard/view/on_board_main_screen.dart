@@ -67,7 +67,7 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 20,
-                      color: AppColors.blacklight))),
+                      color: AppColors.blackLight))),
         ],
       ),
       body: Stack(
@@ -209,7 +209,7 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
       height: 8,
       width: isActive ? 25 : 8,
       decoration: BoxDecoration(
-          color: isActive ? AppColors.primary : AppColors.primarylight,
+          color: isActive ? AppColors.primary : AppColors.primaryLight,
           borderRadius: const BorderRadius.all(Radius.circular(10))),
     );
   }

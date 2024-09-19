@@ -30,7 +30,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -111,14 +111,14 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.8,
                                       padding: const EdgeInsets.only(
                                           top: 35, bottom: 35),
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -147,7 +147,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
@@ -155,7 +155,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                             WidgetConstants.screenWidth * 0.8,
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
-                                        color: AppColors.primarylight,
+                                        color: AppColors.primaryLight,
                                         child: CommonWidgets.cachedNetworkImage(
                                           addOffersController
                                               .offerImageDynamicLinkFromServer
@@ -479,7 +479,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                                               true
                                                           ? AppColors.primary
                                                           : AppColors
-                                                              .primarylight,
+                                                              .primaryLight,
                                                       borderRadius:
                                                           const BorderRadius
                                                               .all(

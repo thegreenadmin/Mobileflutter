@@ -90,7 +90,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
         if (controllerIdsList.isEmpty) {
           isLoading.value = false;
           Utility.showAlertMessage(strings
-              .AlertStringConstants.pleaseSelectAtleastOnePermissionText);
+              .AlertStringConstants.pleaseSelectAtLeastOnePermissionText);
         } else {
           isLoading.value = true;
           await apiCreateRole();

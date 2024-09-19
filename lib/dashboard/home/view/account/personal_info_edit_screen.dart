@@ -30,7 +30,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
           appBar: PreferredSize(
               preferredSize: const Size.fromHeight(80.0),
               child: Container(
-                color: AppColors.primarylight,
+                color: AppColors.primaryLight,
                 child: Padding(
                     padding:
                         const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -99,7 +99,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                               TextSpan(
                                   text: StringConstants.firstNameText,
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -141,7 +141,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                               TextSpan(
                                   text: StringConstants.lastNameText,
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -181,7 +181,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                         Text(
                           StringConstants.nickNameText,
                           style: TextStyle(
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
@@ -215,7 +215,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                               TextSpan(
                                   text: StringConstants.addressLine1Text,
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -347,7 +347,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                         Text(
                           StringConstants.addressLine2Text,
                           style: TextStyle(
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
@@ -375,7 +375,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   text: StringConstants.townOrCityText
                                       .toTitleCase(),
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -420,7 +420,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   text:
                                       StringConstants.zipCodeText.toTitleCase(),
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -466,7 +466,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   text:
                                       StringConstants.countryText.toTitleCase(),
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -567,7 +567,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                               TextSpan(
                                   text: StringConstants.stateText.toTitleCase(),
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400)),
                               TextSpan(
@@ -661,7 +661,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                         Text(
                           StringConstants.collectTheIdentityInfoText,
                           style: TextStyle(
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
@@ -683,7 +683,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                   .showSelectionDialog(context);
                                             },
                                             child: DottedBorder(
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               strokeWidth: 1,
                                               dashPattern: const [4, 4],
                                               child: CommonWidgets
@@ -741,7 +741,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   ],
                                 )
                               : DottedBorder(
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   strokeWidth: 1,
                                   dashPattern: const [4, 4],
                                   child: Container(
@@ -750,7 +750,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                         horizontal:
                                             WidgetConstants.screenWidth * 0.15,
                                         vertical: 20),
-                                    color: AppColors.primarylight,
+                                    color: AppColors.primaryLight,
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -767,7 +767,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                 .uploadIdentityProofText,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                color: AppColors.blacklight),
+                                                color: AppColors.blackLight),
                                           ),
                                           height8SizedBox,
                                           SizedBox(
@@ -796,7 +796,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                               child: Text(
                                                 StringConstants.uploadText,
                                                 style:  TextStyle(
-                                                    color: AppColors.blacklight),
+                                                    color: AppColors.blackLight),
                                               ),
                                             ),
                                           )

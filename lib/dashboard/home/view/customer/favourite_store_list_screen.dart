@@ -82,7 +82,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                   color: searchStoreUserController
                                               .favouriteStore[index]
                                               .isVerified == true
-                                      ? AppColors.primarylight
+                                      ? AppColors.primaryLight
                                       : AppColors.grey,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(10.0),
@@ -140,20 +140,11 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                     width4SizedBox,
                                                     Expanded(
                                                       child: Text(
-                                                        searchStoreUserController
-                                                                        .favouriteStore[index]
-                                                                        .storeAddresses != null &&
+                                                        searchStoreUserController.favouriteStore[index].storeAddresses != null &&
                                                                 searchStoreUserController
-                                                                    .favouriteStore[
-                                                                        index].storeAddresses!.isNotEmpty
-                                                            ? searchStoreUserController
-                                                                    .favouriteStore[
-                                                                        index]
-                                                            .storeAddresses
-                                                                    ?.first
-                                                                    .addressLine1 ??
-                                                                ""
-                                                            : "",
+                                                                    .favouriteStore[index].storeAddresses!.isNotEmpty
+                                                            ? searchStoreUserController.favouriteStore[index].storeAddresses?.first.addressLine1 ??
+                                                                "" : "",
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         maxLines: 1,
@@ -161,7 +152,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                         style: TextStyle(
                                                             fontSize: 14.0,
                                                             color: AppColors
-                                                                .blacklight,
+                                                                .blackLight,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500),
@@ -180,7 +171,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                       : StringConstants.storeHoursText,
                                                   style: TextStyle(
                                                       fontSize: 14.0,
-                                                      color: AppColors.blacklight,
+                                                      color: AppColors.blackLight,
                                                       fontWeight: FontWeight.w500)),
                                             ],
                                           ),
@@ -192,18 +183,11 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                         searchStoreUserController.favouriteStore[index].isFavouriteStore!.value == true
                                             ? InkWell(
                                                 onTap: () {
-                                                  searchStoreUserController
-                                                      .favouriteStore[index]
-                                                      .isFavouriteStore!.value =
-                                                      false;
-                                                  if (searchStoreUserController
-                                                          .isLoading.value ==
-                                                      false) {
-                                                    searchStoreUserController
-                                                        .apiRemoveFavouriteStore(
-                                                      searchStoreUserController
-                                                          .favouriteStore[index]
-                                                          .storeId,
+                                                  searchStoreUserController.favouriteStore[index]
+                                                      .isFavouriteStore!.value = false;
+                                                  if (searchStoreUserController.isLoading.value == false) {
+                                                    searchStoreUserController.apiRemoveFavouriteStore(
+                                                      searchStoreUserController.favouriteStore[index].storeId,
                                                     );
                                                   }
                                                 },
@@ -214,18 +198,10 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                 ),
                                               )
                                             : InkWell(
-                                                onTap: () {searchStoreUserController
-                                                    .favouriteStore[index]
-                                                    .isFavouriteStore!.value =
-                                                true;
-                                                  if (searchStoreUserController
-                                                          .isLoading.value ==
-                                                      false) {
-                                                    searchStoreUserController
-                                                        .apiCreateFavouriteStore(
-                                                      searchStoreUserController
-                                                          .favouriteStore[index]
-                                                          .storeId,
+                                                onTap: () {searchStoreUserController.favouriteStore[index].isFavouriteStore!.value = true;
+                                                  if (searchStoreUserController.isLoading.value == false) {
+                                                    searchStoreUserController.apiCreateFavouriteStore(
+                                                      searchStoreUserController.favouriteStore[index].storeId,
                                                     );
                                                   }
                                                 },
@@ -259,51 +235,36 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             itemCount: searchStoreUserController
-                                                    .favouriteStore[index]
-                                                    .storeDeliveryServices
-                                                    ?.length ??
-                                                0,
+                                                    .favouriteStore[index].storeDeliveryServices?.length ?? 0,
                                             itemBuilder: (_, i) {
                                               return Row(
                                                 children: [
                                                   searchStoreUserController
-                                                              .favouriteStore[
-                                                                  index]
-                                                              .storeDeliveryServices?[
-                                                                  i]
-                                                              .deliveryServiceId ==
-                                                          "1"
+                                                              .favouriteStore[index]
+                                                              .storeDeliveryServices?[i]
+                                                              .deliveryServiceId == "1"
                                                       ? Image.asset(
-                                                          ImageConstants
-                                                              .instore,
+                                                          ImageConstants.instore,
                                                           scale: 2.5,
                                                         )
                                                       : searchStoreUserController
-                                                                  .favouriteStore[
-                                                                      index]
-                                                                  .storeDeliveryServices?[
-                                                                      i]
-                                                                  .deliveryServiceId ==
-                                                              "2"
+                                                                  .favouriteStore[index]
+                                                                  .storeDeliveryServices?[i]
+                                                                  .deliveryServiceId == "2"
                                                           ? Image.asset(
                                                               ImageConstants
                                                                   .delivery,
                                                               scale: 2.7,
                                                             )
                                                           : Image.asset(
-                                                              ImageConstants
-                                                                  .curb,
+                                                              ImageConstants.curb,
                                                               scale: 2.1,
                                                             ),
                                                   width3SizedBox,
                                                   Text(
                                                     searchStoreUserController
-                                                            .favouriteStore[
-                                                                index]
-                                                            .storeDeliveryServices?[
-                                                                i]
-                                                            .deliveryServiceName ??
-                                                        "",
+                                                            .favouriteStore[index].storeDeliveryServices?[i]
+                                                            .deliveryServiceName ?? "",
                                                     style: const TextStyle(
                                                         fontSize: 12.0,
                                                         fontWeight:

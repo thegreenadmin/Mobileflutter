@@ -59,7 +59,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: const BoxDecoration(
-                    color: AppColors.greylight,
+                    color: AppColors.greyLight,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
                     )),
@@ -103,7 +103,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                       ),
                       Icon(
                         Icons.chevron_right,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         size: 24.0,
                       ),
                     ],
@@ -135,7 +135,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: const BoxDecoration(
-                    color: AppColors.greylight,
+                    color: AppColors.greyLight,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
                     )),
@@ -179,7 +179,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                       ),
                       Icon(
                         Icons.chevron_right,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         size: 24.0,
                       ),
                     ],
@@ -210,7 +210,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: const BoxDecoration(
-                    color: AppColors.greylight,
+                    color: AppColors.greyLight,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
                     )),
@@ -254,7 +254,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                       ),
                       Icon(
                         Icons.chevron_right,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         size: 24.0,
                       ),
                     ],
@@ -299,7 +299,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: const BoxDecoration(
-                    color: AppColors.greylight,
+                    color: AppColors.greyLight,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
                     )),
@@ -343,7 +343,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                       ),
                       Icon(
                         Icons.chevron_right,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         size: 24.0,
                       ),
                     ],

@@ -43,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
             style: OutlinedButton.styleFrom(
               minimumSize: Size.zero,
               padding: EdgeInsets.zero,
-              side: BorderSide(width: 0.0, color: AppColors.blacklight),
+              side: BorderSide(width: 0.0, color: AppColors.blackLight),
               shape: const CircleBorder(),
             ),
             child: const Icon(
@@ -188,7 +188,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         alignLabelWithHint: true,
                         hintText: StringConstants.mobileText,
                         hintStyle: TextStyle(
-                            color: AppColors.blacklight, fontSize: 15),
+                            color: AppColors.blackLight, fontSize: 15),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide: const BorderSide(
@@ -493,7 +493,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         iconR: true,
                         fontSize: 16,
                         imageR: Image.asset(
-                          ImageConstants.arrowright,
+                          ImageConstants.arrowRight,
                           scale: 3,
                         )),
                     height20SizedBox,

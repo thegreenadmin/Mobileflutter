@@ -20,7 +20,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(90.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Column(
@@ -132,7 +132,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
                                   )),
@@ -260,7 +260,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                                   "${StringConstants.cityText}: ",
                                                                   style: TextStyle(
                                                                       color: AppColors
-                                                                          .blacklight,
+                                                                          .blackLight,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w400,
@@ -303,7 +303,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                                   "${StringConstants.stateText}: ",
                                                                   style: TextStyle(
                                                                       color: AppColors
-                                                                          .blacklight,
+                                                                          .blackLight,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w400,

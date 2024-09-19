@@ -13,15 +13,14 @@ class MultiCustomDropDown extends StatefulWidget {
   final Function(List<dynamic>)? onChanged;
 
   const MultiCustomDropDown(
-      {Key? key,
+      {super.key,
       this.title,
       this.hintText,
       this.controller,
       this.list,
       this.label,
       this.validator,
-      this.onChanged, this.inputDecoration})
-      : super(key: key);
+      this.onChanged, this.inputDecoration});
 
   @override
   State<MultiCustomDropDown> createState() => _MultiCustomDropDownState();
@@ -77,7 +76,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           suffixIcon: InkWell(
             child: Icon(
               Icons.arrow_drop_down,
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
             ),
           ),
           hintText: widget.hintText,
@@ -90,7 +89,7 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
               width: 1.0,
             ),
           ),
@@ -98,28 +97,28 @@ class _MultiCustomDropDownState extends State<MultiCustomDropDown> {
           disabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
               width: 1.0,
             ),
           ),
           errorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
               width: 1.0,
             ),
           ),
           focusedErrorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
               width: 1.0,
             ),
           ),
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: BorderSide(
-              color: AppColors.blacklight,
+              color: AppColors.blackLight,
               width: 1.0,
             ),
           ),
@@ -208,7 +207,7 @@ class _MultiSelectState extends State<MultiSelect> {
           onPressed: _cancel,
           child: Text(StringConstants.cancelText,
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
         ),

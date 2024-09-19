@@ -45,7 +45,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.primarylight,
+      color: AppColors.primaryLight,
       child: Padding(
           padding: EdgeInsets.only(
               left: 20.0, right: 20, top: WidgetConstants.screenHeight * 0.06),

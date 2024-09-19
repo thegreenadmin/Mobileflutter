@@ -53,7 +53,7 @@ class SignupController extends GetxController {
             Text(
               "${StringConstants.alertText}!",
               style: const TextStyle(
-                  color: AppColors.primarydark,
+                  color: AppColors.primaryDark,
                   fontSize: 22,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
@@ -64,7 +64,7 @@ class SignupController extends GetxController {
             Text(
               AlertStringConstants.above18Text,
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   height: 1.6,
                   fontWeight: FontWeight.w400),

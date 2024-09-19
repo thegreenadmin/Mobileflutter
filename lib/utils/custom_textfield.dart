@@ -132,7 +132,7 @@ class CustomInputFieldState extends State<CustomInputField> {
           labelText: widget.labelText,
           labelStyle: widget.labelStyle ??
               TextStyle(
-                color: AppColors.blacklight,
+                color: AppColors.blackLight,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),

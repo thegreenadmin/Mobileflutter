@@ -210,7 +210,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                       Text(
                         StringConstants.shareYourFeedbackText,
                         style: TextStyle(
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
@@ -241,7 +241,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           StringConstants.yourThoughtText,
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              color: AppColors.blacklight,
+                              color: AppColors.blackLight,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
@@ -440,7 +440,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                                               text:
                                                   "${StringConstants.unitPriceText}: ",
                                               style: TextStyle(
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 16)),
                                           TextSpan(
@@ -449,7 +449,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
-                                                color: AppColors.blacklight),
+                                                color: AppColors.blackLight),
                                           ),
                                         ],
                                       ),
@@ -466,7 +466,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                       Text(
                         StringConstants.writeReasonText,
                         style: TextStyle(
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
@@ -587,7 +587,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
               child: Text(
                 StringConstants.continueShoppingWithGreenMallText,
                 style: TextStyle(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                     fontSize: 16,
                     height: 1.6,
                     fontWeight: FontWeight.w400),

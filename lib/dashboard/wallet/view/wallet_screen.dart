@@ -95,9 +95,9 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                 Flexible(
                                     child: Text(
                                         StringConstants
-                                            .toKnowBalanceYouDontHaveText,
+                                            .toKnowBalanceYouDoNotHaveText,
                                         style: TextStyle(
-                                            color: AppColors.blacklight,
+                                            color: AppColors.blackLight,
                                             fontSize: 18))),
                               ],
                             )
@@ -110,7 +110,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                     ? StringConstants.storeNameText
                                     : StringConstants.selectStoreText,
                                 style: TextStyle(
-                                    color: AppColors.blacklight, fontSize: 18),
+                                    color: AppColors.blackLight, fontSize: 18),
                               ),
                             ),
                             Expanded(

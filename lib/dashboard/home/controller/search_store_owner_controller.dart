@@ -48,6 +48,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   RxBool autoValidate = false.obs;
   RxBool isEnabledStore = false.obs;
   RxBool isLoading = false.obs;
+  RxBool isStoreLoading = false.obs;
+  RxBool isOfferLoading = false.obs;
   RxBool is247Time = false.obs;
   RxBool isEnabled = false.obs;
   RxBool isStoreLogoSelected = false.obs;
@@ -336,7 +338,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
-    isLoading.value = true;
+    isOfferLoading.value = true;
     debugPrint(
         "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
 
@@ -362,7 +364,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
+      isOfferLoading.value = false;
       debugPrint("OWNER OFFERS LIST BODY ******* $body");
       debugPrint("OWNER OFFERS LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -499,7 +501,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   ///Get Store List Api
   Future apiGetStoreList() async {
-    isLoading.value = true;
+    isStoreLoading.value = true;
     debugPrint(
         "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
 
@@ -515,7 +517,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             headers,
             showLoading: true)
         .then((value) async {
-      isLoading.value = false;
+      isStoreLoading.value = false;
       log("GET STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
@@ -541,7 +543,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     loadingData.value = true;
 
     debugPrint(
-        "GET UNCLAIMED STORE URL**********${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=500}");
+        "GET UNCLAIMED STORE URL**********${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=1000}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -550,7 +552,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            '${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=500',
+            '${ServerCommunicator().baseUrl + ServerCommunicator().unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=1000',
             headers,
             showLoading: false)
         .then((value) async {
@@ -807,8 +809,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                             ['store_page_content']['dynamic_url']
                         .split("pdf")[0]
                         .split("/")
-                        .last +
-                    "pdf";
+                        .last + "pdf";
               }
               if (storePages[i]['store_page_content']['orignal_url'] != null) {
                 termsOriginalLinkFromServer.value =
@@ -1082,7 +1083,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             Text(
               StringConstants.enterEinNumberText,
               style: const TextStyle(
-                  color: AppColors.primarydark,
+                  color: AppColors.primaryDark,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,

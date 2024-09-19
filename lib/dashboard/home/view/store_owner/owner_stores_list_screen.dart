@@ -35,7 +35,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
             children: [
               Expanded(
                   child: Obx(() => ownerStoresController.storeList.isEmpty
-                      ? ownerStoresController.isLoading.value == true
+                      ? ownerStoresController.isStoreLoading.value == true
                           ? height0SizedBox
                           : _buildNoStoresFoundMethod()
                       : _buildStoreListMethod())),
@@ -62,7 +62,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   Dismissible _buildListCard(int index) {
     return Dismissible(
           background: Container(
-            color: AppColors.redlight,
+            color: AppColors.redLight,
             child: const Align(
               alignment: Alignment.centerRight,
               child: Row(
@@ -115,7 +115,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: const BoxDecoration(
-                  color: AppColors.primarylight,
+                  color: AppColors.primaryLight,
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),
                   )),
@@ -185,7 +185,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                         children: [
                                           Image.asset(ImageConstants.loc,
                                               scale: 3,
-                                              color: AppColors.blackmedium),
+                                              color: AppColors.blackMedium),
                                           width3SizedBox,
                                           Expanded(
                                             child: Text(
@@ -198,7 +198,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   color:
-                                                      AppColors.blackmedium),
+                                                      AppColors.blackMedium),
                                             ),
                                           ),
                                         ]),
@@ -221,7 +221,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                   "${StringConstants.cityText}: ",
                                                   style: TextStyle(
                                                       color: AppColors
-                                                          .blackmedium,
+                                                          .blackMedium,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 12)),
@@ -255,7 +255,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                                   "${StringConstants.stateText}: ",
                                                   style: TextStyle(
                                                       color: AppColors
-                                                          .blackmedium,
+                                                          .blackMedium,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 12)),
@@ -330,7 +330,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
     return PreferredSize(
       preferredSize: const Size.fromHeight(90.0),
       child: Container(
-        color: AppColors.primarylight,
+        color: AppColors.primaryLight,
         child: Padding(
             padding: const EdgeInsets.only(left: 18.0, right: 20, top: 40),
             child: Column(

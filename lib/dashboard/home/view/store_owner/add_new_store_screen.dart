@@ -28,7 +28,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -127,7 +127,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     child: Row(
                                       children: [
                                         DottedBorder(
-                                          color: AppColors.blacklight,
+                                          color: AppColors.blackLight,
                                           strokeWidth: 1,
                                           dashPattern: const [4, 4],
                                           child: Container(
@@ -135,7 +135,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                 0.3,
                                             padding: const EdgeInsets.only(
                                                 top: 30, bottom: 30),
-                                            color: AppColors.primarylight,
+                                            color: AppColors.primaryLight,
                                             child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
@@ -162,7 +162,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     child: Row(
                                       children: [
                                         DottedBorder(
-                                          color: AppColors.blacklight,
+                                          color: AppColors.blackLight,
                                           strokeWidth: 1,
                                           dashPattern: const [4, 4],
                                           child: Container(
@@ -170,7 +170,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                 0.3,
                                             padding: const EdgeInsets.only(
                                                 top: 0, bottom: 0),
-                                            color: AppColors.primarylight,
+                                            color: AppColors.primaryLight,
                                             child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
@@ -267,14 +267,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
                                       width: WidgetConstants.screenWidth * 0.80,
                                       padding: const EdgeInsets.only(
                                           top: 35, bottom: 35),
-                                      color: AppColors.primarylight,
+                                      color: AppColors.primaryLight,
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -287,7 +287,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                             ),
                                             height6SizedBox,
                                             Text(StringConstants
-                                                .tapTouploadStoreImageText)
+                                                .tapToUploadStoreImageText)
                                           ]),
                                     ),
                                   ),
@@ -303,7 +303,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   DottedBorder(
-                                    color: AppColors.blacklight,
+                                    color: AppColors.blackLight,
                                     strokeWidth: 1,
                                     dashPattern: const [4, 4],
                                     child: Container(
@@ -311,7 +311,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                             WidgetConstants.screenWidth * 0.80,
                                         height:
                                             WidgetConstants.screenHeight * 0.2,
-                                        color: AppColors.primarylight,
+                                        color: AppColors.primaryLight,
                                         child: CommonWidgets.cachedNetworkImage(
                                           addNewStoreController
                                               .storeImageDynamicLinkFromServer

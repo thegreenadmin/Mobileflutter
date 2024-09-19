@@ -23,7 +23,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(90.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -76,7 +76,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                   Container(
                     width: WidgetConstants.screenWidth,
                     height: MediaQuery.of(context).size.height * .25,
-                    color: AppColors.primarylight,
+                    color: AppColors.primaryLight,
                     child: Image.asset(
                       ImageConstants.image,
                     ),
@@ -119,12 +119,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                             },
                             decoration: InputDecoration(
                               hintText: StringConstants.nameText,
-                              hintStyle: TextStyle(color: AppColors.blacklight),
+                              hintStyle: TextStyle(color: AppColors.blackLight),
                               labelText: StringConstants.nameText,
                               labelStyle: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   decoration: TextDecoration.none),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -183,12 +183,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                             },
                             decoration: InputDecoration(
                               hintText: StringConstants.emailText,
-                              hintStyle: TextStyle(color: AppColors.blacklight),
+                              hintStyle: TextStyle(color: AppColors.blackLight),
                               labelText: StringConstants.emailText,
                               labelStyle: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   decoration: TextDecoration.none),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -245,12 +245,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                             },
                             decoration: InputDecoration(
                               hintText: StringConstants.subjectText,
-                              hintStyle: TextStyle(color: AppColors.blacklight),
+                              hintStyle: TextStyle(color: AppColors.blackLight),
                               labelText: StringConstants.subjectText,
                               labelStyle: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   decoration: TextDecoration.none),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -310,12 +310,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               hintText: StringConstants.messageText,
-                              hintStyle: TextStyle(color: AppColors.blacklight),
+                              hintStyle: TextStyle(color: AppColors.blackLight),
                               labelText: StringConstants.messageText,
                               labelStyle: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.blacklight,
+                                  color: AppColors.blackLight,
                                   decoration: TextDecoration.none),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(

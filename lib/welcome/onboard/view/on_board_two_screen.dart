@@ -67,7 +67,7 @@ class OnBoardTwoState extends State<OnBoardTwo> {
                         fontSize: 16,
                         height: 1.6,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                       ),
                     ),
                   ],

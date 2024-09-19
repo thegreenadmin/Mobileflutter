@@ -98,7 +98,7 @@ class CommonWidgets {
           },
           child: Icon(
             Icons.arrow_back,
-            color: AppColors.blacklight,
+            color: AppColors.blackLight,
             size: 35,
           ),
         ),

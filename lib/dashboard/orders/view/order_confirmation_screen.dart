@@ -1,6 +1,5 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
@@ -57,6 +56,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
         return Future.value(true);
       },
       child: Scaffold(
+        backgroundColor: AppColors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.26),
           child: Stack(
@@ -534,7 +534,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           ),
                           activeStepBorderType: BorderType.normal,
                           unreachedStepBorderType: BorderType.normal,
-                          finishedStepBorderColor: AppColors.white,
                           finishedStepTextColor: AppColors.primary,
                           finishedStepBackgroundColor: AppColors.white,
                           activeStepIconColor: AppColors.white,
@@ -692,7 +691,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   },
                   height: 35,
                   border: Border.all(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                     width: 1,
                   ),
                   textColor: AppColors.red,
@@ -746,7 +745,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           decoration: const BoxDecoration(
-                              color: AppColors.primarylight,
+                              color: AppColors.primaryLight,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               )),
@@ -824,7 +823,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                               "${StringConstants.unitPriceText}: ",
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w400,
@@ -837,7 +836,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                                 FontWeight.w600,
                                                             fontSize: 14,
                                                             color: AppColors
-                                                                .blacklight),
+                                                                .blackLight),
                                                       ),
                                                     ],
                                                   ),
@@ -855,7 +854,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                         "${StringConstants.qtyText}: ",
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         fontSize: 14)),
@@ -871,7 +870,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                           FontWeight.w600,
                                                       fontSize: 14,
                                                       color:
-                                                          AppColors.blacklight),
+                                                          AppColors.blackLight),
                                                 ),
                                               ],
                                             ),
@@ -1001,7 +1000,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                               "${StringConstants.statusText}: ",
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w400,
@@ -1030,7 +1029,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                                 FontWeight.w600,
                                                             fontSize: 14,
                                                             color: AppColors
-                                                                .blacklight),
+                                                                .blackLight),
                                                       ),
                                                     ],
                                                   ),
@@ -1274,7 +1273,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                 text:
                                                     "${StringConstants.reviewText}: ",
                                                 style: TextStyle(
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 14)),
                                             TextSpan(
@@ -1303,7 +1302,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 14,
-                                                  color: AppColors.blacklight),
+                                                  color: AppColors.blackLight),
                                             ),
                                           ],
                                         ),
@@ -1359,7 +1358,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                           "${StringConstants.returnRequestDateText}: ",
                                                       style: TextStyle(
                                                           color: AppColors
-                                                              .blacklight,
+                                                              .blackLight,
                                                           fontWeight:
                                                               FontWeight.w400,
                                                           fontSize: 14)),
@@ -1385,7 +1384,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                             FontWeight.w600,
                                                         fontSize: 14,
                                                         color: AppColors
-                                                            .blacklight),
+                                                            .blackLight),
                                                   ),
                                                 ],
                                               ),
@@ -1447,7 +1446,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                           "${StringConstants.returnRequestAmountText}: ",
                                                       style: TextStyle(
                                                           color: AppColors
-                                                              .blacklight,
+                                                              .blackLight,
                                                           fontWeight:
                                                               FontWeight.w400,
                                                           fontSize: 14)),
@@ -1468,7 +1467,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                             FontWeight.w600,
                                                         fontSize: 14,
                                                         color: AppColors
-                                                            .blacklight),
+                                                            .blackLight),
                                                   ),
                                                 ],
                                               ),
@@ -1484,7 +1483,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                           "${StringConstants.lastUpdateDateText}:",
                                                       style: TextStyle(
                                                           color: AppColors
-                                                              .blacklight,
+                                                              .blackLight,
                                                           fontWeight:
                                                               FontWeight.w400,
                                                           fontSize: 14)),
@@ -1510,7 +1509,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                             FontWeight.w600,
                                                         fontSize: 14,
                                                         color: AppColors
-                                                            .blacklight),
+                                                            .blackLight),
                                                   ),
                                                 ],
                                               ),
@@ -1528,7 +1527,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                 text:
                                                     "${StringConstants.returnReasonText}: ",
                                                 style: TextStyle(
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 14)),
                                             TextSpan(
@@ -1551,7 +1550,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14,
-                                                  color: AppColors.blacklight),
+                                                  color: AppColors.blackLight),
                                             ),
                                           ],
                                         ),

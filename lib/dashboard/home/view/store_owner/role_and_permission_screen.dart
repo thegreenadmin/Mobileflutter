@@ -22,7 +22,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(
                     left: 20.0, right: 20, top: 50, bottom: 10),
@@ -167,7 +167,7 @@ class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with 
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 20),
                             decoration: const BoxDecoration(
-                                color: AppColors.greylight,
+                                color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8.0),
                                 )),

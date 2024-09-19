@@ -36,7 +36,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
         color: AppColors.white,
         border: Border.all(
             width: 0, //
-            color: AppColors.blacklight),
+            color: AppColors.blackLight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -64,7 +64,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.uerSelectedTab.value == 0 ? AppColors.primarylight : AppColors.white,
+                  color: ordersController.uerSelectedTab.value == 0 ? AppColors.primaryLight : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +75,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.uerSelectedTab.value == 0 ? AppColors.primary : AppColors.blacklight,
+                          color: ordersController.uerSelectedTab.value == 0 ? AppColors.primary : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -94,7 +94,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.uerSelectedTab.value == 1 ? AppColors.primarylight : AppColors.white,
+                  color: ordersController.uerSelectedTab.value == 1 ? AppColors.primaryLight : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,7 +105,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.uerSelectedTab.value == 1 ? AppColors.primary : AppColors.blacklight,
+                          color: ordersController.uerSelectedTab.value == 1 ? AppColors.primary : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -124,7 +124,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   margin: const EdgeInsets.all(4),
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.25,
-                  color: ordersController.uerSelectedTab.value == 2 ? AppColors.primarylight : AppColors.white,
+                  color: ordersController.uerSelectedTab.value == 2 ? AppColors.primaryLight : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +135,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: ordersController.uerSelectedTab.value == 2 ? AppColors.primary : AppColors.blacklight,
+                          color: ordersController.uerSelectedTab.value == 2 ? AppColors.primary : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -155,7 +155,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
         color: AppColors.white,
         border: Border.all(
             width: 0, //
-            color: AppColors.blacklight),
+            color: AppColors.blackLight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -176,7 +176,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.16,
                   color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -192,7 +192,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                             fontWeight: FontWeight.w400,
                             color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
                                 ? AppColors.primary
-                                : AppColors.blacklight,
+                                : AppColors.blackLight,
                           ),
                         ),
                       ),
@@ -213,7 +213,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.18,
                   color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -229,7 +229,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
                               ? AppColors.primary
-                              : AppColors.blacklight,
+                              : AppColors.blackLight,
                         ),
                       ))
                     ],
@@ -249,7 +249,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.20,
                   color: ordersController.orderStatusName.value == OrderStatusEnum.completed.statusName
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -265,7 +265,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                           fontWeight: FontWeight.w400,
                           color: ordersController.orderStatusName.value == OrderStatusEnum.completed.statusName
                               ? AppColors.primary
-                              : AppColors.blacklight,
+                              : AppColors.blackLight,
                         ),
                       ))
                     ],
@@ -285,7 +285,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   padding: const EdgeInsets.all(4),
                   width: WidgetConstants.screenWidth * 0.22,
                   color: ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -301,7 +301,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                             fontWeight: FontWeight.w400,
                             color: ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
                                 ? AppColors.primary
-                                : AppColors.blacklight,
+                                : AppColors.blackLight,
                           ),
                         ),
                       ),
@@ -401,7 +401,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                       decoration: const BoxDecoration(
-                                          color: AppColors.primarylight,
+                                          color: AppColors.primaryLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.0),
                                           )),
@@ -437,7 +437,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                               TextSpan(
                                                                   text: StringConstants.orderIDText,
                                                                   style: TextStyle(
-                                                                      color: AppColors.blacklight,
+                                                                      color: AppColors.blackLight,
                                                                       fontWeight: FontWeight.w400,
                                                                       overflow: TextOverflow.ellipsis,
                                                                       fontSize: 14)),
@@ -447,7 +447,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                                     fontWeight: FontWeight.w600,
                                                                     overflow: TextOverflow.ellipsis,
                                                                     fontSize: 14,
-                                                                    color: AppColors.blacklight),
+                                                                    color: AppColors.blackLight),
                                                               ),
                                                             ],
                                                             style: const TextStyle(overflow: TextOverflow.ellipsis),
@@ -465,7 +465,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                                     secFormat: '',
                                                                   ).toString(),
                                                                   style: TextStyle(
-                                                                      color: AppColors.blacklight,
+                                                                      color: AppColors.blackLight,
                                                                       fontWeight: FontWeight.w400,
                                                                       overflow: TextOverflow.ellipsis,
                                                                       fontSize: 14)),
@@ -473,7 +473,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                                 text:
                                                                     "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
                                                                 style: TextStyle(
-                                                                    color: AppColors.blacklight,
+                                                                    color: AppColors.blackLight,
                                                                     fontWeight: FontWeight.w400,
                                                                     overflow: TextOverflow.ellipsis,
                                                                     fontSize: 14),
@@ -546,7 +546,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                 ),
                                                 Icon(
                                                   Icons.chevron_right,
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                   size: 22.0,
                                                 ),
                                               ],
@@ -633,7 +633,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                       decoration: const BoxDecoration(
-                                          color: AppColors.primarylight,
+                                          color: AppColors.primaryLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.0),
                                           )),
@@ -668,13 +668,13 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                             TextSpan(
                                                                 text: StringConstants.orderIDText,
                                                                 style: TextStyle(
-                                                                    color: AppColors.blacklight,
+                                                                    color: AppColors.blackLight,
                                                                     fontWeight: FontWeight.w400,
                                                                     fontSize: 14)),
                                                             TextSpan(
                                                               text: ': ${ordersController.storeOrderList[i].orderId ?? "0"}',
                                                               style: TextStyle(
-                                                                  fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.blacklight),
+                                                                  fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.blackLight),
                                                             ),
                                                           ],
                                                         ),
@@ -689,7 +689,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                                     firstFormat: "yyyy-MM-dd HH:mm:ss",
                                                                     secFormat: "dd MMM yyyy"), //"14 Feb",
                                                                 style: TextStyle(
-                                                                    color: AppColors.blacklight,
+                                                                    color: AppColors.blackLight,
                                                                     fontWeight: FontWeight.w400,
                                                                     fontSize: 14)),
                                                             TextSpan(
@@ -697,7 +697,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                                   "-${Utility.formatDateTime('${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
                                                               //'2023-03:30 AM',
                                                               style: TextStyle(
-                                                                  color: AppColors.blacklight, fontWeight: FontWeight.w400, fontSize: 14),
+                                                                  color: AppColors.blackLight, fontWeight: FontWeight.w400, fontSize: 14),
                                                             ),
                                                           ],
                                                         ),
@@ -715,13 +715,13 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                               TextSpan(
                                                                   text: StringConstants.storeNameText,
                                                                   style: TextStyle(
-                                                                      color: AppColors.blacklight,
+                                                                      color: AppColors.blackLight,
                                                                       fontWeight: FontWeight.w400,
                                                                       fontSize: 14)),
                                                               TextSpan(
                                                                 text: ': ${ordersController.storeOrderList[i].store?.storeName ?? ""}',
                                                                 style: TextStyle(
-                                                                    fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.blacklight),
+                                                                    fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.blackLight),
                                                               ),
                                                             ],
                                                           ),
@@ -785,7 +785,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                 ),
                                                 Icon(
                                                   Icons.chevron_right,
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                   size: 22.0,
                                                 ),
                                               ],

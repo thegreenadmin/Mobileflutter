@@ -31,7 +31,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(
                   left: 18.0, right: 20, top: 50, bottom: 10),
@@ -98,9 +98,9 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                   Flexible(
                                       child: Text(
                                           StringConstants
-                                              .toKnowBalanceYouDontHaveText,
+                                              .toKnowBalanceYouDoNotHaveText,
                                           style: TextStyle(
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontSize: 18))),
                                 ],
                               )
@@ -227,7 +227,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                               flex: 6,
                               child: Center(
                                 child: LoadingAnimationWidget.twistingDots(
-                                  leftDotColor: AppColors.primarydark,
+                                  leftDotColor: AppColors.primaryDark,
                                   rightDotColor: AppColors.primary,
                                   size: 50,
                                 ),
@@ -469,7 +469,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                 .value ==
                                             index
                                         ? AppColors.primary
-                                        : AppColors.primarylight,
+                                        : AppColors.primaryLight,
                                     child: InkWell(
                                       onTap: () {
                                         setState(() {
@@ -517,7 +517,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                                   index
                                                               ? AppColors.white
                                                               : AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.w500),
@@ -532,7 +532,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                                   index
                                                               ? AppColors.white
                                                               : AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                           fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.w500),

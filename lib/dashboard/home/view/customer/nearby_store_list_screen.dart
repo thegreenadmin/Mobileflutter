@@ -94,7 +94,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                                 .store!
                                                 .isVerified ==
                                             true
-                                        ? AppColors.primarylight
+                                        ? AppColors.primaryLight
                                         : AppColors.grey,
                                     borderRadius: const BorderRadius.all(
                                       Radius.circular(10.0),
@@ -187,7 +187,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                                           style: TextStyle(
                                                               fontSize: 14.0,
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -220,7 +220,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                                     style: TextStyle(
                                                         fontSize: 14.0,
                                                         color: AppColors
-                                                            .blacklight,
+                                                            .blackLight,
                                                         fontWeight:
                                                             FontWeight.w500)),
                                               ],

@@ -23,7 +23,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -73,7 +73,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    color: AppColors.greymediumlight,
+                    color: AppColors.greyMediumLight,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: Row(
@@ -98,7 +98,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                                     "${StringConstants.accountIdText}:",
                                     overflow: TextOverflow.visible,
                                     style: TextStyle(
-                                        color: AppColors.blacklight,
+                                        color: AppColors.blackLight,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),
@@ -106,7 +106,7 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                                     "#${accountController.uuId!.value}",
                                     overflow: TextOverflow.visible,
                                     style: TextStyle(
-                                        color: AppColors.blacklight,
+                                        color: AppColors.blackLight,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ))

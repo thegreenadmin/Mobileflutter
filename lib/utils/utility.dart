@@ -196,7 +196,7 @@ class Utility {
             Text(
               description ?? "",
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   height: 1.6,
                   fontWeight: FontWeight.w400),

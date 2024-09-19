@@ -332,7 +332,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
             Text(
               StringConstants.enterEinNumberText,
               style: const TextStyle(
-                  color: AppColors.primarydark,
+                  color: AppColors.primaryDark,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,

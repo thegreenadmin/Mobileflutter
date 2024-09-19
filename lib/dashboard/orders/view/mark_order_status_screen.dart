@@ -90,7 +90,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                             style: TextStyle(
                                                 overflow:
                                                     TextOverflow.ellipsis,
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Expanded(
@@ -114,7 +114,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                             style: TextStyle(
                                                 overflow:
                                                     TextOverflow.visible,
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Expanded(
@@ -143,7 +143,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                       Text(
                                           "${StringConstants.orderAmountText}: ",
                                           style: TextStyle(
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
                                       Obx(() => Text(
@@ -224,7 +224,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                     .orderItemStatus.toString().toLowerCase().contains("ready") && ordersHomeMainController
                                     .getOrderItems.length>1)
 
-                                ? AppColors.greenlight.withOpacity(0.2) : AppColors.greylight,
+                                ? AppColors.greenLight.withOpacity(0.2) : AppColors.greyLight,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(10.0),
                             )),
@@ -386,7 +386,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   "",
                                               style: TextStyle(
                                                   color: AppColors
-                                                      .blacklight,
+                                                      .blackLight,
                                                   fontWeight:
                                                       FontWeight.w400,
                                                   fontSize: 14)),
@@ -402,7 +402,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   "${StringConstants.statusText}: ",
                                               style: TextStyle(
                                                   color: AppColors
-                                                      .blacklight,
+                                                      .blackLight,
                                                   fontWeight:
                                                       FontWeight.w400,
                                                   fontSize: 14)),
@@ -418,7 +418,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                     FontWeight.w600,
                                                 fontSize: 14,
                                                 color: AppColors
-                                                    .blacklight),
+                                                    .blackLight),
                                           ),
                                         ],
                                       ),
@@ -438,7 +438,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                     .visible,
                                                 style: TextStyle(
                                                     color: AppColors
-                                                        .blacklight,
+                                                        .blackLight,
                                                     fontWeight:
                                                         FontWeight
                                                             .w500,
@@ -469,7 +469,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                     .visible,
                                                 style: TextStyle(
                                                     color: AppColors
-                                                        .blacklight,
+                                                        .blackLight,
                                                     fontWeight:
                                                         FontWeight
                                                             .w500,
@@ -524,7 +524,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
   Divider buildDivider() {
     return Divider(
       height: 10,
-      color: AppColors.blacklight,
+      color: AppColors.blackLight,
     );
   }
 
@@ -544,7 +544,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10.0),
                                   )),
@@ -686,7 +686,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                 child: CustomButton(
                   width: WidgetConstants.screenWidth * 0.4,
                   border: Border.all(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   ),
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,

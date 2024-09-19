@@ -23,7 +23,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
       width: WidgetConstants.screenWidth * 0.90,
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border.all(width: 0, color: AppColors.blacklight),
+        border: Border.all(width: 0, color: AppColors.blackLight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -48,7 +48,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                   width: WidgetConstants.screenWidth * 0.40,
                   color: manageStoreController.isFeaturedTypeSelected.value
                       ? AppColors.white
-                      : AppColors.primarylight,
+                      : AppColors.primaryLight,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +64,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                   : FontWeight.w600,
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
-                                  ? AppColors.blacklight
+                                  ? AppColors.blackLight
                                   : AppColors.primary,
                         ),
                       ),
@@ -88,7 +88,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
                   color: manageStoreController.isFeaturedTypeSelected.value
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +106,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                           color:
                               manageStoreController.isFeaturedTypeSelected.value
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -124,7 +124,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -283,7 +283,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                       itemBuilder: (BuildContext context, int index) {
                         return Dismissible(
                           background: Container(
-                            color: AppColors.redlight,
+                            color: AppColors.redLight,
                             child: const Align(
                               alignment: Alignment.centerRight,
                               child: Row(
@@ -355,7 +355,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               decoration: const BoxDecoration(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8.0),
                                   )),
@@ -417,7 +417,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                                   style: TextStyle(
                                                       fontSize: 14.0,
                                                       color:
-                                                          AppColors.blacklight,
+                                                          AppColors.blackLight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 )),
@@ -509,7 +509,7 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                           },
                                           icon: Icon(
                                             Icons.arrow_forward_ios_rounded,
-                                            color: AppColors.blackmedium,
+                                            color: AppColors.blackMedium,
                                             size: 14.0,
                                           ),
                                         ),

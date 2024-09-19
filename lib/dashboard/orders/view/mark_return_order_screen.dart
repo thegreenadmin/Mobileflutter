@@ -22,7 +22,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -120,7 +120,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                           "${StringConstants.orderedDateText}: ",
                                           style: TextStyle(
                                               overflow: TextOverflow.ellipsis,
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
                                       Expanded(
@@ -143,7 +143,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                               style: TextStyle(
                                                   overflow:
                                                       TextOverflow.visible,
-                                                  color: AppColors.blacklight,
+                                                  color: AppColors.blackLight,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 14)),
                                           Expanded(
@@ -170,7 +170,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                         Text(
                                             "${StringConstants.orderAmountText}: ",
                                             style: TextStyle(
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
@@ -190,13 +190,13 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                           ),
                           Divider(
                             height: 10,
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: const BoxDecoration(
-                                color: AppColors.greylight,
+                                color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 )),
@@ -318,7 +318,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                           ),
                           Divider(
                             height: 10,
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                           ),
                         ]),
                   )),
@@ -366,7 +366,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
                                       )),
@@ -422,7 +422,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                       "",
                                                   style: TextStyle(
                                                       color:
-                                                          AppColors.blacklight,
+                                                          AppColors.blackLight,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 14)),
@@ -438,7 +438,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                           "${StringConstants.qtyText}: ",
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -452,7 +452,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                               .toString(),
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -465,7 +465,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                           "${StringConstants.unitPriceText}: ",
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -480,7 +480,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                               "0.00",
                                                           style: TextStyle(
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -549,7 +549,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
               children: [
                 CustomButton(
                   border: Border.all(
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   ),
                   gradient: const LinearGradient(
                     begin: Alignment.topCenter,

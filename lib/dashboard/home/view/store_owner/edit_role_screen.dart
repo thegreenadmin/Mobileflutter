@@ -20,7 +20,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -113,8 +113,8 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                         hintText: StringConstants.enterRoleText,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
-                          print("Hi checkingg ${value!.trim()}");
-                          if (value.trim().isEmpty) {
+
+                          if (value!.trim().isEmpty) {
                             return AlertStringConstants.pleaseEnterRoleText;
                           } else if (value.trim() == "Store Worker" ||
                               value.trim() == "store Worker" ||
@@ -140,7 +140,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                               value.trim() == "STOREMANAGER" ||
                               value.trim() == "STORE MANAGER") {
                             return value.trim() +
-                                AlertStringConstants.thisRoleisNotAvialbleText;
+                                AlertStringConstants.thisRoleIsNotAvailableText;
                           }
                           return null;
                         },
@@ -197,7 +197,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                                           height: 20,
                                           width: 30,
                                           child: Checkbox(
-                                            side: MaterialStateBorderSide
+                                            side: WidgetStateBorderSide
                                                 .resolveWith(
                                               (states) => BorderSide(
                                                   width: 1.0,

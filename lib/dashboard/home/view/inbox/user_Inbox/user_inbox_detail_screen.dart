@@ -90,7 +90,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
             Expanded(
               child: Container(
                   decoration: const BoxDecoration(
-                      color: AppColors.greylight,
+                      color: AppColors.greyLight,
                       borderRadius: BorderRadius.all(
                         Radius.circular(50),
                       )),
@@ -139,7 +139,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                       disabledBorder: InputBorder.none,
                       hintText: StringConstants.startTypingHereText,
                       hintStyle: TextStyle(
-                          color: AppColors.blacklight,
+                          color: AppColors.blackLight,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
                       counterText: "",
@@ -387,7 +387,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
-                            color: AppColors.primarylight,
+                            color: AppColors.primaryLight,
                             boxShadow: [
                               BoxShadow(
                                 color: AppColors.grey.withOpacity(0.1),
@@ -480,7 +480,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                       ).toString(),
                       style: TextStyle(
                         fontSize: 10,
-                        color: AppColors.blacklight,
+                        color: AppColors.blackLight,
                         fontWeight: FontWeight.w400,
                       )),
                 ),
@@ -606,7 +606,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(

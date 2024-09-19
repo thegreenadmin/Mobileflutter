@@ -90,7 +90,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                               StringConstants.thresholdText
                                                   .toLowerCase()
                                           ? AppColors.primary
-                                          : AppColors.blacklight,
+                                          : AppColors.blackLight,
                                 )),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 12),
@@ -144,7 +144,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                       walletController.autoChargeType.value ==
                                               "cyclic"
                                           ? AppColors.primary
-                                          : AppColors.blacklight,
+                                          : AppColors.blackLight,
                                 )),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 12),
@@ -697,7 +697,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                                   .selectedIndex!.value ==
                                               index
                                           ? AppColors.primary
-                                          : AppColors.primarylight,
+                                          : AppColors.primaryLight,
                                       child: InkWell(
                                         onTap: () {
                                           setState(() {
@@ -799,7 +799,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                                                 ? AppColors
                                                                     .white
                                                                 : AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight
@@ -816,7 +816,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                                                 ? AppColors
                                                                     .white
                                                                 : AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight

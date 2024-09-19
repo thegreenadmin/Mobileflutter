@@ -442,7 +442,7 @@ class StringConstants {
       "Please connect bank account first";
   static String payoutText = "Payout";
   static String proceedText = "Proceed";
-  static String paymentConfirmatinText = "Payment Confirmation";
+  static String paymentConfirmationText = "Payment Confirmation";
   static String previousOrdersText = "Previous Orders";
   static String productsListText = "Products List";
   static String profilePicText = "Profile Picture";
@@ -457,7 +457,7 @@ class StringConstants {
   //Q
   static String quantityUnitText = "Quantity Unit";
   static String qtyText = "Quantity";
-  static String quaterlyPlanText = "Quaterly Plan";
+  static String quarterlyPlanText = "Quarterly Plan";
 
   //R
   static String registerHereText = " Register Here!!";
@@ -563,7 +563,7 @@ class StringConstants {
   static String storeOfferAndDiscountText = "Store Offers & Discounts";
 
   //T
-  static String tapTouploadStoreImageText = "Tap to upload Store Image";
+  static String tapToUploadStoreImageText = "Tap to upload Store Image";
   static String thankOrderText = "Thank you for your Order !!";
   static String termsOfServiceText = "Terms of service";
   static String tokenText = "token";
@@ -594,7 +594,7 @@ class StringConstants {
   static String thresholdText = "Threshold";
   static String theGreenMallAppNameText = "The Green Mall";
   static String transactionIdText = "Transaction ID";
-  static String toKnowBalanceYouDontHaveText =
+  static String toKnowBalanceYouDoNotHaveText =
       "You need to add store first in order the check the balance.";
 
   //U
@@ -773,7 +773,7 @@ class AlertStringConstants {
   static String pleaseEnterPostalCodeText = "Please enter postal code";
   static String pleaseEnterCategoryNameText = "Please enter category name";
   static String pleaseEnterRoleText = "Please enter role";
-  static String thisRoleisNotAvialbleText =
+  static String thisRoleIsNotAvailableText =
       " role is not available. Please try with different one.";
   static String pleaseEnterShortDescriptionText =
       "Please enter short description";
@@ -798,7 +798,7 @@ class AlertStringConstants {
   static String pleaseSelectLogoText = "Please select logo";
   static String pleaseSelectCategoriesText = "Please select categories";
   static String pleaseSelectBannerText = "Please select banner";
-  static String pleaseSelectAtleastOnePermissionText =
+  static String pleaseSelectAtLeastOnePermissionText =
       "Please select at least one permission";
   static String pleaseEnterOfferNameText = "Please enter offer name";
   static String pleaseUploadImageText = "Please upload Image";

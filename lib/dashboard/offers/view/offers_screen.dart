@@ -171,7 +171,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
                                       )),
@@ -233,7 +233,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                   style: TextStyle(
                                                       fontSize: 14.0,
                                                       color:
-                                                          AppColors.blacklight,
+                                                          AppColors.blackLight,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
@@ -442,7 +442,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                   offersController.getOwnerOfferList.length) {
                                 return Dismissible(
                                   background: Container(
-                                    color: AppColors.redlight,
+                                    color: AppColors.redLight,
                                     child: const Align(
                                       alignment: Alignment.centerRight,
                                       child: Row(
@@ -506,7 +506,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     decoration: const BoxDecoration(
-                                        color: AppColors.greylight,
+                                        color: AppColors.greyLight,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(10.0),
                                         )),
@@ -588,7 +588,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                             style: TextStyle(
                                                                 fontSize: 14.0,
                                                                 color: AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400),

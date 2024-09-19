@@ -1,15 +1,15 @@
 class ImageConstants {
   //A
   static const String assetsIcon = "assets";
-  static const String fourtwenty = '$assetsIcon/420.png';
+  static const String fourTwenty = '$assetsIcon/420.png';
   static const String aboutUs = '$assetsIcon/aboutUs.png';
   static const String accountId = '$assetsIcon/accountId.png';
   static const String add = '$assetsIcon/add.png';
   static const String addFunds = '$assetsIcon/addFunds.png';
   static const String addMoney = '$assetsIcon/addMoney.png';
   static const String arrowForward = '$assetsIcon/arrowForward.png';
-  static const String arrowright = '$assetsIcon/arrowright.png';
-  static const String autoreload = '$assetsIcon/autoreload.png';
+  static const String arrowRight = '$assetsIcon/arrowright.png';
+  static const String autoreLoad = '$assetsIcon/autoreload.png';
   static const String addcard = '$assetsIcon/addcard.png';
   static const String asofnow = '$assetsIcon/asofnow.png';
   static const String addBank = '$assetsIcon/addbank.png';

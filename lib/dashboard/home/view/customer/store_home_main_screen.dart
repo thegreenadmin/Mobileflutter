@@ -125,7 +125,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                       .storeDetailsResponse.value.data?.store?.storePhone ??
                   "",
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   height: 1.6,
                   fontWeight: FontWeight.w400),
@@ -146,7 +146,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                       .storeDetailsResponse.value.data?.store?.storeEmail ??
                   "",
               style: TextStyle(
-                  color: AppColors.blacklight,
+                  color: AppColors.blackLight,
                   fontSize: 16,
                   height: 1.6,
                   fontWeight: FontWeight.w400),
@@ -257,7 +257,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                             .selectedIndex.value ==
                                         i
                                     ? AppColors.primary
-                                    : AppColors.blacklight,
+                                    : AppColors.blackLight,
                               ),
                             )
                           : Obx(() {
@@ -296,14 +296,14 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                                                   .selectedIndex.value ==
                                               i
                                           ? AppColors.primary
-                                          : AppColors.blacklight,
+                                          : AppColors.blackLight,
                                     ),
                                   ),
                                   Icon(
                                     Icons.arrow_drop_down,
                                     color: storeHomeMainController.selectedIndex.value == i
                                         ? AppColors.primary
-                                        : AppColors.blacklight,
+                                        : AppColors.blackLight,
                                     size: 24,
                                   )
                                 ]),

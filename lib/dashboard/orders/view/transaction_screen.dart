@@ -24,7 +24,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
         color: AppColors.white,
         border: Border.all(
             width: 0, //
-            color: AppColors.blacklight),
+            color: AppColors.blackLight),
         borderRadius: const BorderRadius.all(
           Radius.circular(4),
         ),
@@ -51,7 +51,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                   height: 47,
                   width: WidgetConstants.screenWidth * 0.40,
                   color: transactionController.isCurrentMonthSelected.value
-                      ? AppColors.primarylight
+                      ? AppColors.primaryLight
                       : AppColors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +69,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                           color:
                               transactionController.isCurrentMonthSelected.value
                                   ? AppColors.primary
-                                  : AppColors.blacklight,
+                                  : AppColors.blackLight,
                         ),
                       ),
                     ],
@@ -102,7 +102,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                   width: WidgetConstants.screenWidth * 0.40,
                   color: transactionController.isCurrentMonthSelected.value
                       ? AppColors.white
-                      : AppColors.primarylight,
+                      : AppColors.primaryLight,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,7 +118,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                   : FontWeight.w600,
                           color:
                               transactionController.isCurrentMonthSelected.value
-                                  ? AppColors.blacklight
+                                  ? AppColors.blackLight
                                   : AppColors.primary,
                         ),
                       ),
@@ -168,7 +168,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                               color:
                                   transactionController.selectedIndex.value == i
                                       ? AppColors.primary
-                                      : AppColors.blacklight,
+                                      : AppColors.blackLight,
                             ),
                           ),
                           height10SizedBox,
@@ -194,7 +194,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 18.0, right: 20, top: 50),
                 child: Column(
@@ -310,7 +310,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   decoration: const BoxDecoration(
-                                      color: AppColors.greylight,
+                                      color: AppColors.greyLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
                                       )),
@@ -398,7 +398,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                         .transactionIdText,
                                                             style: TextStyle(
                                                                 color: AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,
@@ -432,7 +432,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                       .w600,
                                                               fontSize: 14,
                                                               color: AppColors
-                                                                  .blacklight),
+                                                                  .blackLight),
                                                         ),
                                                       ],
                                                     ),
@@ -501,7 +501,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                       : "",
                                                       style: TextStyle(
                                                           color: AppColors
-                                                              .blacklight,
+                                                              .blackLight,
                                                           fontWeight:
                                                               FontWeight.w400,
                                                           fontSize: 14)),
@@ -753,7 +753,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 6, vertical: 10),
                                       decoration: const BoxDecoration(
-                                          color: AppColors.greylight,
+                                          color: AppColors.greyLight,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10.0),
                                           )),
@@ -817,7 +817,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                               .transactionIdText,
                                                                   style: TextStyle(
                                                                       color: AppColors
-                                                                          .blacklight,
+                                                                          .blackLight,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w400,
@@ -850,7 +850,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                             .w600,
                                                                     fontSize: 14,
                                                                     color: AppColors
-                                                                        .blacklight),
+                                                                        .blackLight),
                                                               ),
                                                             ],
                                                           ),
@@ -929,7 +929,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                             overflow: TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 color: AppColors
-                                                                    .blacklight,
+                                                                    .blackLight,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400,

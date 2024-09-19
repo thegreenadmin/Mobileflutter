@@ -231,7 +231,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                     overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
 
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400),
                                         ),

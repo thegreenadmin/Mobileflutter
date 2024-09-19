@@ -109,7 +109,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(WidgetConstants.screenWidth * 2.1),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(
                     left: 5.0, right: 20, top: 50, bottom: 10),
@@ -230,7 +230,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                 StringConstants.cardText
                                                     .toLowerCase()
                                             ? AppColors.primary
-                                            : AppColors.blacklight,
+                                            : AppColors.blackLight,
                                   )),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 12),
@@ -288,7 +288,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                       .paymentType!.value ==
                                                   StringConstants.gPayText
                                               ? AppColors.primary
-                                              : AppColors.blacklight,
+                                              : AppColors.blackLight,
                                         )),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
@@ -346,7 +346,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                       .paymentType!.value ==
                                                   StringConstants.applePaysText
                                               ? AppColors.primary
-                                              : AppColors.blacklight,
+                                              : AppColors.blackLight,
                                         )),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 12),
@@ -545,7 +545,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                             .value ==
                                                         index
                                                     ? AppColors.primary
-                                                    : AppColors.primarylight,
+                                                    : AppColors.primaryLight,
                                                 child: InkWell(
                                                   onTap: () {
                                                     setState(() {
@@ -630,7 +630,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                                           ? AppColors
                                                                               .white
                                                                           : AppColors
-                                                                              .blacklight,
+                                                                              .blackLight,
                                                                       fontSize:
                                                                           15,
                                                                       fontWeight:
@@ -647,7 +647,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                                           ? AppColors
                                                                               .white
                                                                           : AppColors
-                                                                              .blacklight,
+                                                                              .blackLight,
                                                                       fontSize:
                                                                           15,
                                                                       fontWeight:

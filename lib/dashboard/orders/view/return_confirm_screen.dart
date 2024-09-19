@@ -21,7 +21,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -119,7 +119,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                             "${StringConstants.orderedDateText}: ",
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                       ),
@@ -140,7 +140,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                         Text(
                                             "${StringConstants.orderAmountText}: ",
                                             style: TextStyle(
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
@@ -160,13 +160,13 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                           ),
                           Divider(
                             height: 10,
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: const BoxDecoration(
-                                color: AppColors.greylight,
+                                color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 )),
@@ -288,7 +288,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                           ),
                           Divider(
                             height: 10,
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                           ),
                         ]),
                   )),
@@ -332,7 +332,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 decoration: const BoxDecoration(
-                                    color: AppColors.greylight,
+                                    color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.0),
                                     )),
@@ -417,7 +417,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                                         .description ??
                                                     "",
                                                 style: TextStyle(
-                                                    color: AppColors.blacklight,
+                                                    color: AppColors.blackLight,
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 14)),
                                             height12SizedBox,
@@ -432,7 +432,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                                         "${StringConstants.qtyText}: ",
                                                         style: TextStyle(
                                                             color: AppColors
-                                                                .blacklight,
+                                                                .blackLight,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14)),
@@ -445,7 +445,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                                             .padLeft(2, '0'),
                                                         style: TextStyle(
                                                             color: AppColors
-                                                                .blacklight,
+                                                                .blackLight,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14)),
@@ -457,7 +457,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                                         "${StringConstants.unitPriceText}: ",
                                                         style: TextStyle(
                                                             color: AppColors
-                                                                .blacklight,
+                                                                .blackLight,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14)),
@@ -471,7 +471,7 @@ class _ReturnConfirmOrderScreenState extends State<ReturnConfirmOrderScreen> wit
                                                             "0.00",
                                                         style: TextStyle(
                                                             color: AppColors
-                                                                .blacklight,
+                                                                .blackLight,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             fontSize: 14)),

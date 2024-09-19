@@ -45,7 +45,7 @@ class _OwnerTransactionDetailScreenState
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Column(
@@ -141,7 +141,7 @@ class _OwnerTransactionDetailScreenState
                                       Text(
                                           "${StringConstants.orderedDateText}: ",
                                           style: TextStyle(
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14)),
                                       Text(
@@ -158,7 +158,7 @@ class _OwnerTransactionDetailScreenState
                                         Text(
                                             "${StringConstants.orderAmountText}: ",
                                             style: TextStyle(
-                                                color: AppColors.blacklight,
+                                                color: AppColors.blackLight,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
@@ -178,7 +178,7 @@ class _OwnerTransactionDetailScreenState
                           ),
                           Divider(
                             height: 20,
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                           ),
                         ]),
                   )),

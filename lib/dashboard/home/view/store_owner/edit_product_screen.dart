@@ -23,7 +23,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(80.0),
             child: Container(
-              color: AppColors.primarylight,
+              color: AppColors.primaryLight,
               child: Padding(
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, top: 50),
@@ -203,7 +203,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                       child: Row(
                                         children: [
                                           DottedBorder(
-                                            color: AppColors.blacklight,
+                                            color: AppColors.blackLight,
                                             strokeWidth: 1,
                                             dashPattern: const [4, 4],
                                             child: Container(
@@ -212,7 +212,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                       0.3,
                                               padding: const EdgeInsets.only(
                                                   top: 30, bottom: 30),
-                                              color: AppColors.primarylight,
+                                              color: AppColors.primaryLight,
                                               child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
@@ -403,7 +403,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                       .isSelected ==
                                                   true
                                               ? AppColors.primary
-                                              : AppColors.primarylight,
+                                              : AppColors.primaryLight,
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(100),
                                           ),
@@ -421,7 +421,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                         .categoriesList[i]
                                                         .isSelected ==
                                                     true
-                                                ? AppColors.primarylight
+                                                ? AppColors.primaryLight
                                                 : AppColors.primary,
                                           ),
                                         )),
@@ -1266,13 +1266,13 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                 activeToggleColor: AppColors.primary,
                                 inactiveToggleColor: AppColors.grey,
                                 activeSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
                                 inactiveSwitchBorder: Border.all(
-                                  color: AppColors.greylight,
+                                  color: AppColors.greyLight,
                                 ),
-                                activeColor: AppColors.greymediumlight,
-                                inactiveColor: AppColors.greymediumlight,
+                                activeColor: AppColors.greyMediumLight,
+                                inactiveColor: AppColors.greyMediumLight,
                                 onToggle: (val) {
                                   manageStoreController.isEnabled.value = val;
                                 },

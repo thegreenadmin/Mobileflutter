@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             iconL: false,
                             fontSize: 16,
                             imageR: Image.asset(
-                              ImageConstants.arrowright,
+                              ImageConstants.arrowRight,
                               scale: 3,
                             )),
                       ],

@@ -46,7 +46,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               TextSpan(
                                   text: StringConstants.welcomeToText,
                                   style: TextStyle(
-                                      color: AppColors.blacklight,
+                                      color: AppColors.blackLight,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18)),
                               TextSpan(
@@ -261,7 +261,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                         maxLines: 1,
                         softWrap: false,
                         style: TextStyle(
-                            color: AppColors.blacklight,
+                            color: AppColors.blackLight,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),

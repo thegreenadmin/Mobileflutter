@@ -86,7 +86,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                     Image.asset(
                       ImageConstants.arrowForward,
                       scale: 3.4,
-                      color: AppColors.blacklight,
+                      color: AppColors.blackLight,
                     )
                   ],
                 ),
@@ -136,7 +136,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                   Image.asset(
                     ImageConstants.arrowForward,
                     scale: 3.4,
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   )
                 ],
               ),
@@ -176,7 +176,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                   Image.asset(
                     ImageConstants.arrowForward,
                     scale: 3.4,
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   )
                 ],
               ),
@@ -225,7 +225,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                   Image.asset(
                     ImageConstants.arrowForward,
                     scale: 3.4,
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   )
                 ],
               ),
@@ -274,7 +274,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                   Image.asset(
                     ImageConstants.arrowForward,
                     scale: 3.4,
-                    color: AppColors.blacklight,
+                    color: AppColors.blackLight,
                   )
                 ],
               ),

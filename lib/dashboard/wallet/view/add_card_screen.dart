@@ -31,7 +31,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
-          color: AppColors.primarylight,
+          color: AppColors.primaryLight,
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
               child: Row(
@@ -110,7 +110,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                         return Container(
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, top: 15, bottom: 15),
-                          color: AppColors.primarylight,
+                          color: AppColors.primaryLight,
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -169,7 +169,7 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                                         Text(
                                           "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
                                           style: TextStyle(
-                                              color: AppColors.blacklight,
+                                              color: AppColors.blackLight,
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500),
                                         ),

@@ -94,7 +94,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                                 .previousStore[index]
                                                 .isVerified ==
                                             true
-                                        ? AppColors.primarylight
+                                        ? AppColors.primaryLight
                                         : AppColors.grey,
                                     borderRadius: const BorderRadius.all(
                                       Radius.circular(10.0),
@@ -190,7 +190,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                                           style: TextStyle(
                                                               fontSize: 14.0,
                                                               color: AppColors
-                                                                  .blacklight,
+                                                                  .blackLight,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -221,7 +221,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                                                     style: TextStyle(
                                                         fontSize: 14.0,
                                                         color:
-                                                            AppColors.blacklight,
+                                                            AppColors.blackLight,
                                                         fontWeight:
                                                             FontWeight.w500)),
                                               ],

@@ -28,7 +28,7 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> with Gl
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            color: AppColors.primarylight,
+            color: AppColors.primaryLight,
             child: Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
                 child: Row(
@@ -105,7 +105,7 @@ class _StoreOfferDetailScreenState extends State<StoreOfferDetailScreen> with Gl
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 20),
                         decoration: const BoxDecoration(
-                            color: AppColors.primarylight,
+                            color: AppColors.primaryLight,
                             borderRadius: BorderRadius.all(
                               Radius.circular(8.0),
                             )),
