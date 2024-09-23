@@ -77,6 +77,7 @@ class _EditRoleScreenState extends State<EditRoleScreen> with GlobalVarMixin{
                             fontWeight: FontWeight.w600),
                       ),
                       height20SizedBox,
+
                       Text.rich(
                         TextSpan(
                           children: [

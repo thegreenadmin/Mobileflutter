@@ -8,13 +8,13 @@ class UnclaimedStoresModel {
   UnclaimedStoresModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -33,17 +33,17 @@ class Data {
     if (json['store_addresses'] != null) {
       storeAddresses = <UnclaimedStoreList>[];
       json['store_addresses'].forEach((v) {
-        storeAddresses!.add(new UnclaimedStoreList.fromJson(v));
+        storeAddresses!.add(UnclaimedStoreList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_count'] = this.totalCount;
-    if (this.storeAddresses != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_count'] = totalCount;
+    if (storeAddresses != null) {
       data['store_addresses'] =
-          this.storeAddresses!.map((v) => v.toJson()).toList();
+          storeAddresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -85,26 +85,26 @@ class UnclaimedStoreList {
     landmark = json['landmark'];
     city = json['city'];
     postalCode = json['postal_code'];
-    state = json['state'] != null ? new State.fromJson(json['state']) : null;
-    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    state = json['state'] != null ? State.fromJson(json['state']) : null;
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['store_address_id'] = this.storeAddressId;
-    data['address_name'] = this.addressName;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['address_line_1'] = this.addressLine1;
-    data['address_line_2'] = this.addressLine2;
-    data['landmark'] = this.landmark;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    if (this.state != null) {
-      data['state'] = this.state!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['store_address_id'] = storeAddressId;
+    data['address_name'] = addressName;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['address_line_1'] = addressLine1;
+    data['address_line_2'] = addressLine2;
+    data['landmark'] = landmark;
+    data['city'] = city;
+    data['postal_code'] = postalCode;
+    if (state != null) {
+      data['state'] = state!.toJson();
     }
-    if (this.store != null) {
-      data['store'] = this.store!.toJson();
+    if (store != null) {
+      data['store'] = store!.toJson();
     }
     return data;
   }
@@ -136,19 +136,19 @@ class State {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     country =
-        json['country'] != null ? new Country.fromJson(json['country']) : null;
+        json['country'] != null ? Country.fromJson(json['country']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['country_id'] = this.countryId;
-    data['state_name'] = this.stateName;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.country != null) {
-      data['country'] = this.country!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['country_id'] = countryId;
+    data['state_name'] = stateName;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (country != null) {
+      data['country'] = country!.toJson();
     }
     return data;
   }
@@ -186,15 +186,15 @@ class Country {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['country_name'] = this.countryName;
-    data['phone_code'] = this.phoneCode;
-    data['currency'] = this.currency;
-    data['abbrevation'] = this.abbrevation;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['country_name'] = countryName;
+    data['phone_code'] = phoneCode;
+    data['currency'] = currency;
+    data['abbrevation'] = abbrevation;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -205,6 +205,8 @@ class Store {
   bool? hasStoreOwner;
   String? storeId;
   String? storeName;
+  String? storePhone;
+  String? storePhoneCode;
   bool? isVerified;
   bool? isEnabled;
 
@@ -214,32 +216,38 @@ class Store {
       this.hasStoreOwner,
       this.storeId,
       this.storeName,
+      this.storePhone,
+      this.storePhoneCode,
       this.isVerified,
       this.isEnabled});
 
   Store.fromJson(Map<String, dynamic> json) {
-    logo = json['logo'] != null ? new Logo.fromJson(json['logo']) : null;
-    image = json['image'] != null ? new Logo.fromJson(json['image']) : null;
+    logo = json['logo'] != null ? Logo.fromJson(json['logo']) : null;
+    image = json['image'] != null ? Logo.fromJson(json['image']) : null;
     hasStoreOwner = json['has_store_owner'];
     storeId = json['store_id'];
     storeName = json['store_name'];
+    storePhone = json['store_phone'];
+    storePhoneCode = json['store_phone_code'];
     isVerified = json['is_verified'];
     isEnabled = json['is_enabled'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.logo != null) {
-      data['logo'] = this.logo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (logo != null) {
+      data['logo'] = logo!.toJson();
     }
-    if (this.image != null) {
-      data['image'] = this.image!.toJson();
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
-    data['has_store_owner'] = this.hasStoreOwner;
-    data['store_id'] = this.storeId;
-    data['store_name'] = this.storeName;
-    data['is_verified'] = this.isVerified;
-    data['is_enabled'] = this.isEnabled;
+    data['has_store_owner'] = hasStoreOwner;
+    data['store_id'] = storeId;
+    data['store_name'] = storeName;
+    data['store_phone'] = storePhone;
+    data['store_phone_code'] = storePhoneCode;
+    data['is_verified'] = isVerified;
+    data['is_enabled'] = isEnabled;
     return data;
   }
 }
@@ -256,9 +264,9 @@ class Logo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['orignal_url'] = this.orignalUrl;
-    data['dynamic_url'] = this.dynamicUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orignal_url'] = orignalUrl;
+    data['dynamic_url'] = dynamicUrl;
     return data;
   }
 }

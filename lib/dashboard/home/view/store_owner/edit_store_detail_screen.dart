@@ -86,25 +86,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           fontSize: 20),
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeLogoText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storeLogoText, StringConstants.starText,),
 
                     height15SizedBox,
                     Row(
@@ -233,26 +215,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         )
                       ],
                     ),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeBannerImageText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox,buildText(StringConstants.storeBannerImageText, StringConstants.starText,),
+
 
                     height15SizedBox,
                     Obx(
@@ -333,26 +297,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                               ),
                             ),
                     ),
-                    height15SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height15SizedBox,buildText(StringConstants.storeNameText, StringConstants.starText,),
+
+
 
                     height4SizedBox,
                     //STORE NAME FIELD
@@ -382,25 +329,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.einBusinessId,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.einBusinessId, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //EIN NUMBER FIELD
                     CustomInputField(
@@ -462,25 +393,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.emailIdText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.emailIdText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //EMAIL FIELD
                     CustomInputField(
@@ -510,26 +425,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         return null;
                       },
                     ),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.phoneNumberText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox, buildText(StringConstants.phoneNumberText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -604,26 +502,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           fontWeight: FontWeight.w600,
                           fontSize: 20),
                     ),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.addressLine1Text,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox,buildText(StringConstants.addressLine1Text, StringConstants.starText,),
+
                     height4SizedBox,
                     //ADDRESS LINE 1 TEXT
 
@@ -826,25 +706,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.townOrCityText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.townOrCityText, StringConstants.starText,),
                     height4SizedBox,
                     //TOWN OR CITY FIELD
                     CustomInputField(
@@ -873,25 +735,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.postalCodeText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.postalCodeText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //ZIP CODE FIELD
                     CustomInputField(
@@ -919,26 +765,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         return null;
                       },
                     ),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.zoneText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox, buildText(StringConstants.zoneText, StringConstants.starText,),
+
                     //STATE FIELD
                     CustomInputField(
                       textInputAction: TextInputAction.next,
@@ -967,25 +795,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.countryText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.countryText, StringConstants.starText,),
+
                     height4SizedBox,
                     //COUNTRY FIELD
                     CustomInputField(
@@ -1014,6 +825,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                       },
                     ),
                     height25SizedBox,
+
                     Text(
                       StringConstants.storeTimingText,
                       style: const TextStyle(
@@ -1118,27 +930,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: StringConstants
-                                                    .openingTimeText,
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            TextSpan(
-                                              text: StringConstants.starText,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      buildText(StringConstants.openingTimeText, StringConstants.starText,),
+
+
                                       height4SizedBox,
                                       //OPENING TIME FIELD
                                       CustomInputField(
@@ -1318,27 +1112,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: StringConstants
-                                                    .closingTimeText,
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            TextSpan(
-                                              text: StringConstants.starText,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      buildText(StringConstants.closingTimeText, StringConstants.starText,),
+
+
                                       height4SizedBox,
                                       //CLOSING TIME TEXTFORM FIELD
                                       CustomInputField(
@@ -1515,25 +1291,10 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                     ),
                     height20SizedBox,
                     Obx(() => ownerStoreController.is247Time.value != true
-                        ? Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: StringConstants.workingDaysText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                TextSpan(
-                                  text: StringConstants.starText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          )
+                        ?
+                    buildText(StringConstants.workingDaysText, StringConstants.starText,)
+
+
                         : height0SizedBox),
                     height4SizedBox,
                     Obx(
@@ -1661,25 +1422,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           : height0SizedBox,
                     ),
                     height15SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.deliveryMethodsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.deliveryMethodsText, StringConstants.starText,),
+
 
                     height4SizedBox,
                     MultiCustomDropDown(
@@ -1761,25 +1505,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         title: StringConstants.selectDeliveryServicesText,
                         list: ownerStoreController.deliveryServices),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeTermsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          /* TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),*/
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storeTermsText, "",),
+
                     height4SizedBox,
                     //TERMS FIELD
                     CustomInputField(
@@ -1820,25 +1547,8 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                     ),
 
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storePrivacyText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          /* TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),*/
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storePrivacyText, "",),
+
                     height4SizedBox,
                     //PRIVACY FIELD
                     CustomInputField(
@@ -1941,6 +1651,27 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                 )),
           ),
         ),
+      ),
+    );
+  }
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }

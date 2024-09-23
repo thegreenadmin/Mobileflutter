@@ -119,7 +119,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 18.0, right: 18, top: 35, bottom: 10),
+                            left: 18.0, right: 18, top: 35, bottom: 0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,10 +140,10 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                               ),
                             ]),
                       ),
-                      height8SizedBox,
+
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 20.0, right: 20, top: 30, bottom: 10),
+                            left: 20.0, right: 20, top: 0, bottom: 10),
                         child: Row(
                           children: [
                             Container(

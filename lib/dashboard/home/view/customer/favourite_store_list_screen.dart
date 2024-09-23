@@ -141,21 +141,15 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                                     Expanded(
                                                       child: Text(
                                                         searchStoreUserController.favouriteStore[index].storeAddresses != null &&
-                                                                searchStoreUserController
-                                                                    .favouriteStore[index].storeAddresses!.isNotEmpty
-                                                            ? searchStoreUserController.favouriteStore[index].storeAddresses?.first.addressLine1 ??
-                                                                "" : "",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                                searchStoreUserController.favouriteStore[index].storeAddresses!.isNotEmpty
+                                                            ? searchStoreUserController.favouriteStore[index].storeAddresses?.first.addressLine1 ?? "" : "",
+                                                        overflow: TextOverflow.ellipsis,
                                                         maxLines: 1,
                                                         softWrap: false,
                                                         style: TextStyle(
                                                             fontSize: 14.0,
-                                                            color: AppColors
-                                                                .blackLight,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                            color: AppColors.blackLight,
+                                                            fontWeight: FontWeight.w500),
                                                       ),
                                                     ),
                                                   ],

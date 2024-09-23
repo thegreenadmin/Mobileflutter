@@ -87,25 +87,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                     ),
                     height15SizedBox,
                     //STORE LOGO TEXT
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeLogoText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+
+                    buildText(StringConstants.storeLogoText, StringConstants.starText,),
+
+
                     height15SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -235,25 +220,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                     ),
                     height20SizedBox,
                     //STORE BANNER TEXT
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeBannerImageText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storeBannerImageText, StringConstants.starText,),
+
+
                     height15SizedBox,
                     Obx(
                       () => addNewStoreController
@@ -334,25 +303,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             ),
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storeNameText, StringConstants.starText,),
+
                     height4SizedBox,
                     //STORE NAME FIELD
                     CustomInputField(
@@ -381,25 +333,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.einBusinessId,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.einBusinessId, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //EIN NUMBER FIELD
                     CustomInputField(
@@ -461,25 +397,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.emailIdText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.emailIdText, StringConstants.starText,),
+
                     height4SizedBox,
                     //EMAIL FIELD
                     CustomInputField(
@@ -511,25 +430,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.phoneNumberText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+
+                    buildText(StringConstants.phoneNumberText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //MOBILE FIELD
                     IntlPhoneField(
@@ -604,25 +508,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           fontSize: 20),
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.addressLine1Text,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.addressLine1Text, StringConstants.starText,),
                     height4SizedBox,
                     //ADDRESS LINE 1 TEXT
                     CustomInputField(
@@ -790,25 +676,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.townOrCityText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.townOrCityText, StringConstants.starText,),
+
                     height4SizedBox,
                     //TOWN OR CITY FIELD
                     CustomInputField(
@@ -838,25 +707,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.postalCodeText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.postalCodeText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //ZIP CODE FIELD
                     CustomInputField(
@@ -885,25 +738,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.zoneText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.zoneText, StringConstants.starText,),
+
                     height4SizedBox,
                     //STATE FIELD
                     CustomInputField(
@@ -932,25 +768,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.countryText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.countryText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     //COUNTRY FIELD
                     CustomInputField(
@@ -1088,27 +908,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: StringConstants
-                                                    .openingTimeText,
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            TextSpan(
-                                              text: StringConstants.starText,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      buildText(StringConstants.openingTimeText, StringConstants.starText,),
+
                                       height4SizedBox,
                                       //OPENING TIME TEXTFORM FIELD
                                       CustomInputField(
@@ -1168,27 +969,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: StringConstants
-                                                    .closingTimeText,
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            TextSpan(
-                                              text: StringConstants.starText,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.red,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      buildText(StringConstants.closingTimeText, StringConstants.starText,),
+
+
                                       height4SizedBox,
                                       //CLOSING TIME TEXTFORM FIELD
                                       CustomInputField(
@@ -1250,25 +1033,10 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           : height20SizedBox,
                     ),
                     Obx(() => addNewStoreController.is247Time.value != true
-                        ? Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: StringConstants.workingDaysText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                TextSpan(
-                                  text: StringConstants.starText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          )
+                        ?
+                    buildText(StringConstants.workingDaysText, StringConstants.starText,)
+
+
                         : height0SizedBox),
                     height4SizedBox,
                     Obx(
@@ -1312,25 +1080,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           : height0SizedBox,
                     ),
                     height15SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.deliveryMethodsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.deliveryMethodsText, StringConstants.starText,),
+
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
@@ -1364,25 +1115,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                         title: StringConstants.selectDeliveryServicesText,
                         list: addNewStoreController.deliveryServices),
                     height15SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storeTermsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          /* TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),*/
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storeTermsText, "",),
+
                     height4SizedBox,
                     //STORE TERMS FIELD
                     CustomInputField(
@@ -1422,25 +1156,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           icon: const Icon(Icons.attach_file_rounded)),
                     ),
                     height15SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.storePrivacyText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          /*TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),*/
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.storePrivacyText, "",),
                     height4SizedBox,
                     //STORE PRIVACY TERMS
                     CustomInputField(
@@ -1555,5 +1271,26 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
         }
       }
     }
+  }
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }

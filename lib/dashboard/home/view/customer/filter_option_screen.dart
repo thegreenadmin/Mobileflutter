@@ -83,6 +83,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                   autofocus: false,
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(100),
+                    FilteringTextInputFormatter
+                        .digitsOnly,
                   ],
                   style: const TextStyle(
                       color: AppColors.black,
@@ -90,52 +92,17 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                       fontWeight: FontWeight.w400),
                   controller: searchStoreUserController.zipCodeTextController,
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: StringConstants.zipCodeText,
-                    hintStyle: const TextStyle(color: AppColors.grey),
-                    labelText: StringConstants.zipCodeText,
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.blackLight,
-                        decoration: TextDecoration.none),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                  )),
+                  decoration: buildInputDecoration(StringConstants.zipCodeText)
+                ),
               height15SizedBox,
               TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.next,
                   autofocus: false,
                   inputFormatters: <TextInputFormatter>[
-                    LengthLimitingTextInputFormatter(40),
+                    LengthLimitingTextInputFormatter(50),
+                    FilteringTextInputFormatter
+                        .digitsOnly,
                   ],
                   style: const TextStyle(
                       color: AppColors.black,
@@ -147,77 +114,20 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                         searchStoreUserController.mileageTextController.text;
                   },
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: StringConstants.milesText,
-                    hintStyle: const TextStyle(color: AppColors.grey),
-                    labelText: StringConstants.milesText,
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.blackLight,
-                        decoration: TextDecoration.none),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.primary,
-                        width: 1.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                  )),
+                  decoration:  buildInputDecoration(StringConstants.milesText)
+              ),
               height15SizedBox,
               DropdownButtonFormField<String>(
-                // value: "Open Now",
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: const BorderSide(
-                      color: AppColors.grey,
-                      width: 1.0,
-                    ),
-                  ),
+                  hintText: StringConstants.storeOpeningText,
+                  hintStyle: TextStyle(
+                      color: AppColors.blackLight,
+                      fontWeight: FontWeight.w400),
+                  fillColor: Colors.white,
+                  border: buildOutlineInputBorder(AppColors.primary),
+                  errorBorder: buildOutlineInputBorder(AppColors.primary),
+                  focusedBorder: buildOutlineInputBorder(AppColors.primary),
+                  enabledBorder:  buildOutlineInputBorder(AppColors.grey),
                 ),
                 isExpanded: true,
                 hint: Text(
@@ -310,41 +220,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                                         secFormat: "HH:mm:ss")
                                     .toString();
                           },
-                          decoration: InputDecoration(
-                              errorMaxLines: 3,
-                              hintText: StringConstants.openingTimeText,
-                              hintStyle: TextStyle(
-                                  color: AppColors.blackLight,
-                                  fontWeight: FontWeight.w400),
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              )),
+                          decoration: buildInputDecoration(StringConstants.openingTimeText),
                         )
                       ],
                     ),
@@ -412,42 +288,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                                           secFormat: "HH:mm:ss")
                                       .toString();
                             },
-                            decoration: InputDecoration(
-                              errorMaxLines: 3,
-                              hintText: StringConstants.closingTimeText,
-                              hintStyle: TextStyle(
-                                  color: AppColors.blackLight,
-                                  fontWeight: FontWeight.w400),
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.primary,
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: AppColors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ))
+                            decoration: buildInputDecoration(StringConstants.closingTimeText))
                       ],
                     ),
                   )
@@ -463,32 +304,20 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                         color: AppColors.blackLight,
                       ),
                     ),
+                    labelText: StringConstants.pickupOptionsText,
+                    labelStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.blackLight,
+                        decoration: TextDecoration.none),
                     hintText: StringConstants.pickupOptionsText,
                     hintStyle:
                         TextStyle(color: AppColors.blackLight, fontSize: 16),
                     fillColor: Colors.white,
                     filled: false,
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
+                    errorBorder: buildOutlineInputBorder( AppColors.grey,),
+                    focusedBorder: buildOutlineInputBorder( AppColors.grey,),
+                    enabledBorder:buildOutlineInputBorder( AppColors.grey,),
                   ),
                   onChanged: (v) {
                     searchStoreUserController.deliveryServicesList.clear();
@@ -516,12 +345,14 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                   colors: [AppColors.primary, AppColors.primary],
                 ),
                 onTap: () {
-                  if (searchStoreUserController.zipCodeTextController.text == "" &&
-                      searchStoreUserController.mileageTextController.text ==
-                          "" &&
+                  if (searchStoreUserController.zipCodeTextController.text.isEmpty&& searchStoreUserController.zipCodeTextController.text == "" &&
+                      searchStoreUserController.mileageTextController.text.isEmpty &&     searchStoreUserController.mileageTextController.text ==
+                          "" &&    searchStoreUserController
+                      .openingTimeTextController.text.isEmpty &&
                       searchStoreUserController
                               .openingTimeTextController.text ==
-                          "" &&
+                          "" && searchStoreUserController
+                      .closingTimeTextController.text.isEmpty &&
                       searchStoreUserController
                               .closingTimeTextController.text ==
                           "" &&  searchStoreUserController.isOpenNow.value=="" &&
@@ -547,5 +378,36 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
         ),
       ),
     );
+  }
+
+  OutlineInputBorder buildOutlineInputBorder(color) {
+    return OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide:  BorderSide(
+                    color: color,
+                    width: 1.0,
+                  ),
+                );
+  }
+
+  InputDecoration buildInputDecoration(hintText) {
+    return InputDecoration(
+        labelText: hintText,
+        labelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: AppColors.blackLight,
+            decoration: TextDecoration.none),
+
+                            errorMaxLines: 3,
+                            hintText: hintText,
+                            hintStyle: TextStyle(
+                                color: AppColors.blackLight,
+                                fontWeight: FontWeight.w400),
+                            fillColor: Colors.white,
+                            border: buildOutlineInputBorder( AppColors.primary,),
+                            errorBorder: buildOutlineInputBorder( AppColors.primary,),
+                            focusedBorder: buildOutlineInputBorder( AppColors.primary,),
+                            enabledBorder: buildOutlineInputBorder( AppColors.grey,));
   }
 }

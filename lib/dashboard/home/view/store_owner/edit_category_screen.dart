@@ -89,25 +89,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> with GlobalVarM
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.updateCategoryImageText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.uploadCategoryImageText, StringConstants.starText,),
+
                     height25SizedBox,
                     Obx(
                       () => addNewCategoryController
@@ -193,25 +176,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> with GlobalVarM
                             ),
                     ),
                     height35SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.categoryNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.categoryNameText, StringConstants.starText,),
+
                     CustomInputField(
                       isBorderOutline: false,
                       inputFormatters: <TextInputFormatter>[
@@ -257,6 +223,27 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> with GlobalVarM
                 )),
           ),
         ),
+      ),
+    );
+  }
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }

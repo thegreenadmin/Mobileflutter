@@ -234,20 +234,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                         CrossAxisAlignment.start,
                                     children: [
                                       height10SizedBox,
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text: StringConstants
-                                                    .uploadProductPhotosText,
-                                                style: const TextStyle(
-                                                    color: AppColors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                          ],
-                                        ),
-                                      ),
+                                      buildText(StringConstants.uploadProductPhotosText, "",),
+
                                       height10SizedBox,
                                       Text(
                                           StringConstants
@@ -265,25 +253,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           : height0SizedBox,
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.productNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.productNameText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     CustomInputField(
                       isBorderOutline: false,
@@ -306,25 +278,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.categoriesText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+
+                    buildText(StringConstants.categoriesText, StringConstants.starText,),
+
+
                     height10SizedBox,
                     Container(
                         padding: const EdgeInsets.only(
@@ -443,25 +400,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                     //         ),
                     // ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.quantityUnitText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+
+                    buildText(StringConstants.quantityUnitText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -572,25 +514,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           ),
                         ]),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.pricePerUnitText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.pricePerUnitText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     CustomInputField(
                       isBorderOutline: false,
@@ -619,18 +545,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.shortDescriptionText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.shortDescriptionText,"",),
+
+
                     height4SizedBox,
                     CustomInputField(
                       isBorderOutline: false,
@@ -647,18 +564,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       textCapitalization: TextCapitalization.sentences,
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.contentsAndStrainsText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.contentsAndStrainsText,"",),
+
                     height4SizedBox,
                     CustomInputField(
                       isBorderOutline: false,
@@ -675,26 +582,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       textCapitalization: TextCapitalization.sentences,
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text:
-                                  StringConstants.additionalLinksToResearchText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          // const TextSpan(
-                          //   text: "*",
-                          //   style: TextStyle(
-                          //       fontSize: 16,
-                          //       color: AppColors.red,
-                          //       fontWeight: FontWeight.bold),
-                          // ),
-                        ],
-                      ),
-                    ),
+
+                    buildText(StringConstants.additionalLinksToResearchText, ""),
+
+
                     height4SizedBox,
                     CustomInputField(
                       isBorderOutline: false,
@@ -713,18 +604,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       textCapitalization: TextCapitalization.sentences,
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.discountsOrOffersText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.discountsOrOffersText, ""),
+
+
                     height4SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -822,25 +704,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                       ],
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.featuredProductText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.featuredProductText, StringConstants.starText,),
+
                     height4SizedBox,
                     DropdownButtonFormField<String>(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -918,19 +783,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            "${StringConstants.lengthText}(in)",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                  ],
-                                ),
-                              ),
+                              buildText("${StringConstants.lengthText}(in)",""),
+
+
                               CustomInputField(
                                 isBorderOutline: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -957,19 +812,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            "${StringConstants.breadthText}(in)",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                  ],
-                                ),
-                              ),
+                              buildText("${StringConstants.breadthText}(in)",""),
+
+
                               CustomInputField(
                                 isBorderOutline: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -1000,19 +845,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            "${StringConstants.heightText}(in)",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                  ],
-                                ),
-                              ),
+                              buildText("${StringConstants.heightText}(in)",""),
+
                               CustomInputField(
                                 isBorderOutline: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -1039,26 +873,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            "${StringConstants.weightText}(oz)",
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              buildText( "${StringConstants.weightText}(oz)", StringConstants.starText,),
+
+
                               CustomInputField(
                                 isBorderOutline: false,
                                 inputFormatters: <TextInputFormatter>[
@@ -1104,26 +921,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text:
-                                            StringConstants.returnAvailableText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              buildText( StringConstants.returnAvailableText, StringConstants.starText,),
+
+
                               DropdownButtonFormField<String>(
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -1209,25 +1009,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                              text: StringConstants.daysText,
-                                              style: const TextStyle(
-                                                  color: AppColors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400)),
-                                          TextSpan(
-                                            text: StringConstants.starText,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                color: AppColors.red,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+
+                                    buildText( StringConstants.daysText, StringConstants.starText,),
+
+
                                     CustomInputField(
                                       isBorderOutline: false,
                                       inputFormatters: <TextInputFormatter>[
@@ -1335,6 +1120,29 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                 )),
           ),
         ),
+      ),
+    );
+  }
+
+
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }

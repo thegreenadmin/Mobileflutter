@@ -336,29 +336,16 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                           Text(
                                                               "${StringConstants.stateText}: ",
                                                               style: TextStyle(
-                                                                  color: AppColors
-                                                                      .blackMedium,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontSize:
-                                                                      12)),
+                                                                  color: AppColors.blackMedium,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize: 12)),
                                                           Expanded(
                                                             child: Text(
-                                                              ownerStoresController
-                                                                      .unclaimedStoreList[
-                                                                          index]
-                                                                      .state!
-                                                                      .stateName ??
-                                                                  "",
+                                                              ownerStoresController.unclaimedStoreList[index]
+                                                                      .state!.stateName ?? "",
                                                               style: const TextStyle(
-                                                                  color:
-                                                                      AppColors
-                                                                          .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 12),
+                                                                  color: AppColors.black,
+                                                                  fontWeight: FontWeight.w600, fontSize: 12),
                                                             ),
                                                           ),
                                                         ],
@@ -377,38 +364,38 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                           //             false &&
                                           //         hasStoreAccess.value
                                           //     ?
-                                          RawMaterialButton(
-                                            elevation: 0,
-                                            onPressed: () {
-                                              ownerStoresController
-                                                  .enterEinNumberAlert(
-                                                      context,
-                                                      ownerStoresController
-                                                          .unclaimedStoreList[
-                                                              index]
-                                                          .store!
-                                                          .storeId
-                                                          .toString());
-                                            },
-                                            constraints: const BoxConstraints(),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8.0, 8.0, 8.0, 8.0),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 1.0,
-                                                  color: AppColors.primary),
-                                              borderRadius:
-                                                  BorderRadius.circular(28.0),
-                                            ),
-                                            fillColor: AppColors.primary,
-                                            child: Text(
-                                              StringConstants.claimStoreText,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14.0,
-                                                  color: hasStoreAccess.value
-                                                      ? AppColors.white
-                                                      : AppColors.grey),
+                                          Visibility(
+                                            visible: ownerStoresController.getUserDetailModel.data!.user!.phone ==  ownerStoresController
+                                                .unclaimedStoreList[index].store!.storePhone,
+                                            child: RawMaterialButton(
+                                              elevation: 0,
+                                              onPressed: () {
+                                                ownerStoresController
+                                                    .enterEinNumberAlert(
+                                                        context,
+                                                        ownerStoresController
+                                                            .unclaimedStoreList[index].store!.storeId.toString());
+                                              },
+                                              constraints: const BoxConstraints(),
+                                              padding: const EdgeInsets.fromLTRB(
+                                                  8.0, 8.0, 8.0, 8.0),
+                                              shape: RoundedRectangleBorder(
+                                                side: const BorderSide(
+                                                    width: 1.0,
+                                                    color: AppColors.primary),
+                                                borderRadius:
+                                                    BorderRadius.circular(28.0),
+                                              ),
+                                              fillColor: AppColors.primary,
+                                              child: Text(
+                                                StringConstants.claimStoreText,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14.0,
+                                                    color: hasStoreAccess.value
+                                                        ? AppColors.white
+                                                        : AppColors.grey),
+                                              ),
                                             ),
                                           )
                                           //  : height0SizedBox

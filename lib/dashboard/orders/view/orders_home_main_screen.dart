@@ -90,7 +90,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.22),
+        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -123,7 +123,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 18.0, right: 18, bottom: 8, top: 35),
+                            left: 18.0, right: 18, bottom: 0, top: 35),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,7 +154,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                               ),
                             ]),
                       ),
-                      height8SizedBox,
+
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 20.0, right: 8, bottom: 10),
@@ -313,26 +313,22 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                 ordersHomeMainController.storeId.value =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList?[index]
-                                            .storeId ??
-                                        "";
+                                            .storeId ?? "";
 
                                 ordersHomeMainController.orderId.value =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList?[index]
-                                            .orderId ??
-                                        "";
+                                            .orderId ?? "";
 
                                 Get.parameters["storeId"] =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList![index]
-                                            .storeId ??
-                                        "";
+                                            .storeId ?? "";
 
                                 Get.parameters["orderId"] =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList![index]
-                                            .orderId ??
-                                        "";
+                                            .orderId ?? "";
                                 ordersHomeMainController.onInit();
 
                                 ordersHomeMainController
@@ -450,10 +446,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                 Text(
                                                     "${StringConstants.orderIDText}: ",
                                                     style: TextStyle(
-                                                        color: AppColors
-                                                            .blackLight,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                        color: AppColors.blackLight,
+                                                        fontWeight: FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
                                                   "#${ordersHomeMainController
@@ -516,32 +510,24 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                         child: Text(
                                                             "${StringConstants.estimatedDeliveryDateText}: ",
                                                             overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                                TextOverflow.ellipsis,
                                                             style: TextStyle(
-                                                                color: AppColors
-                                                                    .blackLight,
+                                                                color: AppColors.blackLight,
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
+                                                                    FontWeight.w600,
                                                                 fontSize: 14)),
                                                       ),
                                                       Text(
                                                           Utility.parseDateTime(
                                                             DateTime.parse(
                                                                 ordersHomeMainController
-                                                                    .ownerOrderHistoryList![
-                                                                        index]
-                                                                    .estimateDeliveryDate
-                                                                    .toString()),
+                                                                    .ownerOrderHistoryList![index]
+                                                                    .estimateDeliveryDate.toString()),
                                                             secFormat: '',
                                                           ).toString(),
                                                           style: const TextStyle(
-                                                              color: AppColors
-                                                                  .black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
+                                                              color: AppColors.black,
+                                                              fontWeight: FontWeight.w600,
                                                               fontSize: 14))
                                                     ],
                                                   ),
@@ -551,8 +537,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                             height5SizedBox,
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
                                                     "${StringConstants.orderType}: ",
@@ -564,19 +549,16 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                         fontSize: 14)),
                                                 Text(
                                                     ordersHomeMainController
-                                                                .ownerOrderHistoryList?[
-                                                                    index]
+                                                                .ownerOrderHistoryList?[index]
                                                                 .deliveryServiceId
-                                                                .toString() ==
-                                                            "1"
+                                                                .toString() == "1"
                                                         ? StringConstants
                                                             .inStoreText
                                                         : ordersHomeMainController
                                                                     .ownerOrderHistoryList?[
                                                                         index]
                                                                     .deliveryServiceId
-                                                                    .toString() ==
-                                                                "2"
+                                                                    .toString() == "2"
                                                             ? StringConstants
                                                                 .deliveryText
                                                             : StringConstants

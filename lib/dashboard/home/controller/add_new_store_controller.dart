@@ -232,7 +232,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
           await apiUploadImage();
           update();
         }
-      } else {}
+      }
     });
   }
 
@@ -280,7 +280,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
-      } else {}
+      }
     } catch (e) {
       debugPrint(e.toString());
       if (e is mdio.DioException) {
@@ -349,7 +349,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
-      } else {}
+      }
     } catch (e) {
       debugPrint(e.toString());
       if (e is mdio.DioException) {

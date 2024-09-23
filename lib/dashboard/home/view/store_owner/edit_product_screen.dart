@@ -270,25 +270,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               ),
                       ),
                       height20SizedBox,
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                                text: StringConstants.productNameText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                            TextSpan(
-                              text: StringConstants.starText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildText(StringConstants.productNameText, StringConstants.starText,),
                       height4SizedBox,
                       CustomInputField(
                         isBorderOutline: false,
@@ -312,25 +294,8 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                         },
                       ),
                       height20SizedBox,
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                                text: StringConstants.categoriesText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                            TextSpan(
-                              text: StringConstants.starText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildText(StringConstants.categoriesText, StringConstants.starText,),
+
                       height10SizedBox,
                       Obx(() => manageStoreController
                                       .isSelectedCategory.value ==
@@ -429,25 +394,8 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               ],
                             )),
                       height20SizedBox,
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                                text: StringConstants.quantityUnitText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                            TextSpan(
-                              text: StringConstants.starText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildText(StringConstants.quantityUnitText, StringConstants.starText,),
+
                       height4SizedBox,
                       Row(
                         children: [
@@ -563,25 +511,8 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                         ],
                       ),
                       height20SizedBox,
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                                text: StringConstants.pricePerUnitText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                            TextSpan(
-                              text: StringConstants.starText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildText(StringConstants.pricePerUnitText, StringConstants.starText,),
+
                       height4SizedBox,
                       CustomInputField(
                         isBorderOutline: false,
@@ -783,25 +714,8 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                         ],
                       ),
                       height20SizedBox,
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                                text: StringConstants.featuredProductText,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                            TextSpan(
-                              text: StringConstants.starText,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildText(StringConstants.featuredProductText, StringConstants.starText,),
+
                       height4SizedBox,
                       Obx(() => manageStoreController
                               .selectedFeaturedType.value.isEmpty
@@ -888,19 +802,8 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              "${StringConstants.lengthText}(in)",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                    ],
-                                  ),
-                                ),
+                                buildText( "${StringConstants.lengthText}(in)",""),
+
                                 CustomInputField(
                                   isBorderOutline: false,
                                   keyboardType:
@@ -927,19 +830,9 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              "${StringConstants.breadthText}(in)",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                    ],
-                                  ),
-                                ),
+                                buildText( "${StringConstants.breadthText}(in)",""),
+
+
                                 CustomInputField(
                                   isBorderOutline: false,
                                   keyboardType:
@@ -970,19 +863,10 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              "${StringConstants.heightText}(in)",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                    ],
-                                  ),
-                                ),
+                                buildText( "${StringConstants.heightText}(in)",""),
+
+
+
                                 CustomInputField(
                                   isBorderOutline: false,
                                   keyboardType:
@@ -1009,26 +893,10 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              "${StringConstants.weightText}(oz)",
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                      TextSpan(
-                                        text: StringConstants.starText,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                buildText( "${StringConstants.weightText}(oz)",StringConstants.starText),
+
+
+
                                 CustomInputField(
                                   isBorderOutline: false,
                                   keyboardType:
@@ -1066,26 +934,10 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: StringConstants
-                                              .returnAvailableText,
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                      TextSpan(
-                                        text: StringConstants.starText,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                buildText(  StringConstants
+                                    .returnAvailableText,StringConstants.starText),
+
+
                                 Obx(
                                   () => manageStoreController
                                           .selectedProductReturnableType
@@ -1193,28 +1045,10 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  text:
-                                                      StringConstants.daysText,
-                                                  style: const TextStyle(
-                                                      color: AppColors.black,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                              TextSpan(
-                                                text: StringConstants.starText,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        buildText(  StringConstants
+                                            .daysText,StringConstants.starText),
+
+
                                         CustomInputField(
                                           isBorderOutline: false,
                                           keyboardType: TextInputType.number,
@@ -1304,5 +1138,27 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                     ],
                   )),
             ))));
+  }
+
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }

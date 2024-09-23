@@ -58,7 +58,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.26),
+          preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -91,7 +91,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                       ),
                       child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 35, left: 20.0, right: 20, bottom: 10),
+                              top: 35, left: 20.0, right: 20, bottom: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +159,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                             ),
                                           ),
                                   ]),
-                              height10SizedBox,
+
                               Row(
                                 children: [
                                   Container(
@@ -201,7 +201,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        height6SizedBox,
+                                        height4SizedBox,
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -231,7 +231,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                             ),
                                           ],
                                         ),
-                                        height6SizedBox,
+                                        height4SizedBox,
                                         SizedBox(
                                           height: 15,
                                           child: Row(
@@ -270,7 +270,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                             ],
                                           ),
                                         ),
-                                        height6SizedBox,
+                                        height4SizedBox,
                                         Row(
                                           children: [
                                             SizedBox(

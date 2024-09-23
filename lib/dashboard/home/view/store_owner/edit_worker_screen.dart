@@ -154,25 +154,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                       ],
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.employeeNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.employeeNameText, StringConstants.starText,),
                     height4SizedBox,
                     //EMPLOYEE NAME FIELD
                     CustomInputField(
@@ -263,26 +245,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                     //         ),
                     //       ),
                     //     )),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.emailIdText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox,buildText(StringConstants.emailIdText, StringConstants.starText,),
+
+
                     height4SizedBox,
 //WORKER EMAIL FIELD
 
@@ -317,26 +282,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                       },
                     ),
 
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.primaryStoreText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox,buildText(StringConstants.primaryStoreText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     Container(
                         padding: const EdgeInsets.only(
@@ -366,18 +314,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                           ),
                         )),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.shortDescriptionText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.shortDescriptionText, "",),
+
                     height4SizedBox,
                     CustomInputField(
                       maxLines: null,
@@ -460,26 +398,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                     //         ),
                     //       ),
                     //     )),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.workingDaysText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox,buildText(StringConstants.workingDaysText, StringConstants.starText,),
+
+
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
@@ -504,26 +425,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: StringConstants.startTimeText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            children: [ buildText(StringConstants.startTimeText, StringConstants.starText,),
+
+
                               height4SizedBox,
                               //START TIME FIELD
                               CustomInputField(
@@ -587,93 +491,7 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                       date?.format(context).toString() ?? "";
                                 },
                               ),
-                              // TextFormField(
-                              //     autovalidateMode:
-                              //         AutovalidateMode.onUserInteraction,
-                              //     textInputAction: TextInputAction.next,
-                              //     autofocus: false,
-                              //     inputFormatters: <TextInputFormatter>[
-                              //       LengthLimitingTextInputFormatter(100),
-                              //       FilteringTextInputFormatter.digitsOnly,
-                              //     ],
-                              //     style: const TextStyle(
-                              //         color: AppColors.black,
-                              //         fontSize: 16,
-                              //         fontWeight: FontWeight.w500),
-                              //     controller: addNewWorkerController
-                              //         .startTimeTextController,
-                              //     keyboardType: TextInputType.phone,
-                              //     validator: (value) {
-                              //       if (value!.trim().isEmpty) {
-                              //         return AlertStringConstants
-                              //             .startTimeAlertText;
-                              //       }
-                              //       return null;
-                              //     },
-                              //     onTap: () async {
-                              //       TimeOfDay? date = TimeOfDay.now();
-                              //       FocusScope.of(context)
-                              //           .requestFocus(FocusNode());
-                              //       date = (await showTimePicker(
-                              //         initialEntryMode:
-                              //             TimePickerEntryMode.input,
-                              //         helpText: StringConstants.selectTimeText,
-                              //         initialTime: TimeOfDay.now(),
-                              //         context: context,
-                              //         builder: (context, child) {
-                              //           return Theme(
-                              //             data: ThemeData.light().copyWith(
-                              //               colorScheme:
-                              //                   const ColorScheme.light(
-                              //                       primary: AppColors.primary),
-                              //               buttonTheme: const ButtonThemeData(
-                              //                   textTheme:
-                              //                       ButtonTextTheme.primary),
-                              //             ),
-                              //             child: child!,
-                              //           );
-                              //         },
-                              //       ));
 
-                              //       addNewWorkerController
-                              //               .startTimeTextController.text =
-                              //           date?.format(context).toString() ?? "";
-                              //     },
-                              //     decoration: InputDecoration(
-                              //       errorMaxLines: 3,
-                              //       hintText: StringConstants.startTimeText,
-                              //       hintStyle: const TextStyle(
-                              //           color: AppColors.grey, fontSize: 14),
-                              //       fillColor: Colors.white,
-                              //       border: UnderlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: const BorderSide(
-                              //           color: AppColors.primary,
-                              //           width: 1.0,
-                              //         ),
-                              //       ),
-                              //       errorBorder: UnderlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: const BorderSide(
-                              //           color: AppColors.primary,
-                              //           width: 1.0,
-                              //         ),
-                              //       ),
-                              //       focusedBorder: UnderlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: const BorderSide(
-                              //           color: AppColors.primary,
-                              //           width: 1.0,
-                              //         ),
-                              //       ),
-                              //       enabledBorder: UnderlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: const BorderSide(
-                              //           color: AppColors.grey,
-                              //           width: 1.0,
-                              //         ),
-                              //       ),
-                              //     )),
                             ],
                           ),
                         ),
@@ -683,26 +501,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: StringConstants.endTimeText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            children: [ buildText(StringConstants.endTimeText, StringConstants.starText,),
+
                               height4SizedBox,
                               CustomInputField(
                                 textInputAction: TextInputAction.next,
@@ -760,16 +560,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                     },
                                   ))!;
 
-                                  /* final startDT = DateTime(9, 9, 9, date.hour, date.minute);
-                                    final endDT = DateTime(9, 9, 9, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).hour, Utility.stringToTimeOfDay(addNewWorkerController.storeClosingTime.toString()).minute);
-                                    print(startDT);
-                                    print(endDT);
-                                    if (startDT.isBefore(endDT)) {
-                                      Utility.showToast("Please select time before ${addNewWorkerController.storeClosingTime.toString()}");
-                                    } else {
-                                      addNewWorkerController.endTimeTextController
-                                          .text = date.format(context).toString();
-                                    }*/
                                   addNewWorkerController.endTimeTextController
                                       .text = date.format(context).toString();
                                 },
@@ -865,26 +655,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                         )
                       ],
                     ),
-                    height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.mobileNoText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    height20SizedBox, buildText(StringConstants.mobileNoText, StringConstants.starText,),
+
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -952,25 +724,8 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                     height20SizedBox,
                     addNewWorkerController.storeRoleList.isEmpty
                         ? height0SizedBox
-                        : Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: StringConstants.roleText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                TextSpan(
-                                  text: StringConstants.starText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
+                        :
+                    buildText(StringConstants.roleText, StringConstants.starText,),
                     addNewWorkerController.storeRoleList.isEmpty
                         ? height0SizedBox
                         : Obx(
@@ -1075,6 +830,27 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                 )),
           ),
         ),
+      ),
+    );
+  }
+  Text buildText(title,starText) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+              text: title,
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          TextSpan(
+            text:starText,
+            style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.red,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }

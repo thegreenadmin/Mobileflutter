@@ -102,6 +102,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   late GetStoreProductList getStoreProductList = GetStoreProductList();
   RxList<Products> storeProductList = <Products>[].obs;
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   late GetOwnerOffersListModel getOwnerOffersListModel =
       GetOwnerOffersListModel();
@@ -171,6 +172,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   }
 
   getCurrentLocation() async {
+
     apiGetDeliveryServices();
     if (storeId.value != "") {
       await apiGetParticularStore();
@@ -185,6 +187,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   }
 
   getApiData() async {
+    await apiGetUserDetail();
     await apiGetFeaturedProducts();
     await apiGetOwnerOffersList();
     await apiGetStoreList();
@@ -262,7 +265,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
         Utility.showAlertMessage(responseData['message'].toString());
-      } else {}
+      }
     } catch (e) {
       debugPrint(e.toString());
       if (e is mdio.DioException) {
@@ -332,7 +335,38 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
           await apiUploadImage();
           update();
         }
-      } else {}
+      }
+    });
+  }
+
+  ///Get User Detail Info Api
+  Future apiGetUserDetail() async {
+    debugPrint(
+        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+
+    Map<String, String> headers = {
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
+
+
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        storage.clearData();
+        Get.parameters.clear();
+        await Get.offAll(const StartJourneyScreen());
+      }
     });
   }
 
@@ -557,7 +591,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             showLoading: false)
         .then((value) async {
       loadingData.value = false;
-      debugPrint("GET UNCLAIMED STORE RESPONSE *******${value?.body}");
+      log("GET UNCLAIMED STORE RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         // getStoreListModel = GetStoreListModel.fromJson(value?.body);

@@ -75,18 +75,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.profilePicText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.profilePicText,""),
                     height20SizedBox,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -149,25 +138,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       ],
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.employeeNameText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.employeeNameText,StringConstants.starText),
+
                     height4SizedBox,
                     //WORKER NAME FIELD
                     CustomInputField(
@@ -199,25 +171,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.emailIdText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.emailIdText,StringConstants.starText),
+
+
                     height4SizedBox,
                     //EMAIL ID FIELD
                     CustomInputField(
@@ -249,25 +205,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.primaryStoreText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.primaryStoreText,StringConstants.starText),
                     height4SizedBox,
                     Container(
                         padding: const EdgeInsets.only(
@@ -297,18 +235,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                           ),
                         )),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.shortDescriptionText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.shortDescriptionText,""),
+
                     height4SizedBox,
                     //SHORT DESCRIPTION FIELD
                     CustomInputField(
@@ -337,25 +265,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       },
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.workingDaysText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.workingDaysText,StringConstants.starText),
+
                     height4SizedBox,
                     MultiCustomDropDown(
                         onChanged: (v) {
@@ -381,25 +292,8 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: StringConstants.startTimeText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              buildText(StringConstants.startTimeText,StringConstants.starText),
+
                               height4SizedBox,
                               //START TIME FIELD
                               CustomInputField(
@@ -472,25 +366,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: StringConstants.endTimeText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400)),
-                                    TextSpan(
-                                      text: StringConstants.starText,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              buildText(StringConstants.endTimeText,StringConstants.starText),
+
+
                               height4SizedBox,
                               //END TIME FIELD
                               CustomInputField(
@@ -569,25 +447,9 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                       ],
                     ),
                     height20SizedBox,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                              text: StringConstants.mobileNoText,
-                              style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextSpan(
-                            text: StringConstants.starText,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildText(StringConstants.mobileNoText,StringConstants.starText),
+
+
                     height4SizedBox,
                     IntlPhoneField(
                       initialCountryCode: 'US',
@@ -656,25 +518,7 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: StringConstants.roleText,
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400)),
-                                      TextSpan(
-                                        text: StringConstants.starText,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                buildText(StringConstants.roleText,StringConstants.starText),
                                 DropdownButtonFormField<String>(
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -772,5 +616,27 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
         ),
       ),
     );
+  }
+
+  Text buildText(title,starText) {
+    return Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: title,
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400)),
+                        TextSpan(
+                          text:starText,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
   }
 }
