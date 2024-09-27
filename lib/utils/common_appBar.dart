@@ -123,7 +123,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                         await Get.to(() => const CartScreen(),
                                                 id: pageIdApp.value)
                                             ?.then((value) {
-                                          widget.okayTap;
+                                          // widget.okayTap;
                                           storeHomeMainController
                                               .apiActiveCartApi();
                                         });

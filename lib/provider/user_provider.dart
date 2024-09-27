@@ -213,6 +213,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    print(headers);
       Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(

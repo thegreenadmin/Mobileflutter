@@ -222,6 +222,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                       .storeLocation.value,
                                                   overflow:
                                                       TextOverflow.visible,
+                                                  maxLines: 2,
                                                   softWrap: true,
                                                   style: const TextStyle(
                                                       color: AppColors.white,
@@ -509,78 +510,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   color: AppColors.grey,
                 ),
                 height30SizedBox,
-                Obx(
-                  () => Visibility(
-                    visible: ordersController.orderStatusTypeName.value !=
-                            OrderStatusEnum.returnRequest.statusName &&
-                        ordersController.orderStatusTypeName.value !=
-                            OrderStatusEnum.returnConfirmed.statusName &&
-                        ordersController.orderStatusTypeName.value !=
-                            OrderStatusEnum.returnCancelled.statusName &&
-                        ordersController.orderStatusTypeName.value !=
-                            OrderStatusEnum.returned.statusName,
-                    child: Column(
-                      children: [
-                        EasyStepper(
-                          activeStep: ordersController.activeStep.value,
-                          stepShape: StepShape.circle,
-                          borderThickness: 0,
-                          stepRadius: WidgetConstants.screenWidth * 0.075,
-                          lineStyle: LineStyle(
-                            lineLength: WidgetConstants.screenWidth * 0.063,
-                            lineType: LineType.normal,
-                            activeLineColor: AppColors.grey,
-                            defaultLineColor: AppColors.grey,
-                          ),
-                          activeStepBorderType: BorderType.normal,
-                          unreachedStepBorderType: BorderType.normal,
-                          finishedStepTextColor: AppColors.primary,
-                          finishedStepBackgroundColor: AppColors.white,
-                          activeStepIconColor: AppColors.white,
-                          showLoadingAnimation: false,
-                          showStepBorder: false,
-                          disableScroll: true,
-                          unreachedStepIconColor: AppColors.black,
-                          unreachedStepTextColor: AppColors.black,
-                          steps: List<EasyStep>.generate(
-                            ordersController.stepInd.length,
-                            (index) => EasyStep(
-                              customStep: Center(
-                                child: ordersController
-                                            .stepInd[index].isSelected ==
-                                        true
-                                    ? Image.asset(
-                                        ImageConstants.blueTick,
-                                        scale: 3.5,
-                                      )
-                                    : Image.asset(
-                                        ImageConstants.blackTick,
-                                        scale: 3.5,
-                                      ),
-                              ),
-                              customTitle: Text(
-                                ordersController.stepInd[index].name ?? "",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    overflow: TextOverflow.visible,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                    color: AppColors.black),
-                              ),
-                            ),
-                          ),
-                          onStepReached: (index) {},
-                        ),
-                        height20SizedBox,
-                      ],
-                    ),
-                  ),
-                ),
+                buildEasyStepper(),
                 Obx(
                   () => Visibility(
                     visible: ordersController.orderStatusTypeName.value ==
-                            OrderStatusEnum.inProgress.statusName &&
-                        ordersController.orderType.value != "2",
+                            OrderStatusEnum.readyForPickup.statusName &&
+                        ordersController.orderType.value != "2" /*&& !ordersController.isCustomerReached.value*/,
                     child: Column(
                       children: [
                         CustomButton(
@@ -590,7 +525,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () {
-                            ordersController.apiReadyPickupOrder();
+                            ordersController.apiIamHereNotification();
                           },
                           height: 50,
                           width: WidgetConstants.screenWidth * 0.5,
@@ -655,6 +590,76 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
         ),
       ),
     );
+  }
+
+  Obx buildEasyStepper() {
+    return Obx(
+                () => Visibility(
+                  visible: ordersController.orderStatusTypeName.value !=
+                          OrderStatusEnum.returnRequest.statusName &&
+                      ordersController.orderStatusTypeName.value !=
+                          OrderStatusEnum.returnConfirmed.statusName &&
+                      ordersController.orderStatusTypeName.value !=
+                          OrderStatusEnum.returnCancelled.statusName &&
+                      ordersController.orderStatusTypeName.value !=
+                          OrderStatusEnum.returned.statusName,
+                  child: Column(
+                    children: [
+                      EasyStepper(
+                        activeStep: ordersController.activeStep.value,
+                        stepShape: StepShape.circle,
+                        borderThickness: 0,
+                        stepRadius: WidgetConstants.screenWidth * 0.075,
+                        lineStyle: LineStyle(
+                          lineLength: WidgetConstants.screenWidth * 0.063,
+                          lineType: LineType.normal,
+                          activeLineColor: AppColors.grey,
+                          defaultLineColor: AppColors.grey,
+                        ),
+                        activeStepBorderType: BorderType.normal,
+                        unreachedStepBorderType: BorderType.normal,
+                        finishedStepTextColor: AppColors.primary,
+                        finishedStepBackgroundColor: AppColors.white,
+                        activeStepIconColor: AppColors.white,
+                        showLoadingAnimation: false,
+                        showStepBorder: false,
+                        disableScroll: true,
+                        unreachedStepIconColor: AppColors.black,
+                        unreachedStepTextColor: AppColors.black,
+                        steps: List<EasyStep>.generate(
+                          ordersController.stepInd.length,
+                          (index) => EasyStep(
+                            customStep: Center(
+                              child: ordersController
+                                          .stepInd[index].isSelected ==
+                                      true
+                                  ? Image.asset(
+                                      ImageConstants.blueTick,
+                                      scale: 3.5,
+                                    )
+                                  : Image.asset(
+                                      ImageConstants.blackTick,
+                                      scale: 3.5,
+                                    ),
+                            ),
+                            customTitle: Text(
+                              ordersController.stepInd[index].name ?? "",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  overflow: TextOverflow.visible,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: AppColors.black),
+                            ),
+                          ),
+                        ),
+                        onStepReached: (index) {},
+                      ),
+                      height20SizedBox,
+                    ],
+                  ),
+                ),
+              );
   }
 
   Widget buildOrderItems() {

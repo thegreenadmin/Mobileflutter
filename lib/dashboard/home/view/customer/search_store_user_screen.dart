@@ -14,6 +14,7 @@ import "package:google_maps_webservice/geocoding.dart";
 import "package:google_maps_webservice/places.dart";
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/favourite_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.dart';
@@ -64,7 +65,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
@@ -148,15 +150,18 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                         children: [
                                           InkWell(
                                             onTap: () async {
-                                              await Get.to(
-                                                      () => const CartScreen(),
-                                                      id: pageIdApp.value)
-                                                  ?.then((value) =>
-                                                      searchStoreUserController
-                                                          .apiActiveCartApi());
+
                                               Get.parameters["storeId"] =
                                                   searchStoreUserController
                                                       .storeIdValue.value;
+                                              await Get.to(() => const CartScreen(),
+                                                  id: pageIdApp.value)
+                                                  ?.then((value) {
+                                                storeHomeMainController
+                                                    .apiActiveCartApi();
+
+                                              });
+
                                             },
                                             child: Stack(
                                               children: [
@@ -331,6 +336,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         searchStoreUserController.state.value =
                             Utility.extractLocality(
                                 result, "administrative_area_level_1");
+                        // print("ADDRESSES BY GEOCODING:------------------");
+                        // print(response.results.first.geometry.location.lat);
+                        // print(response.results.first.geometry.location.lng);
                         updateMap(response.results.first.geometry.location.lat,
                             response.results.first.geometry.location.lng,isSearch: true);
                       }

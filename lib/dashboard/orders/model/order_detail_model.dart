@@ -53,24 +53,30 @@ class OrderDetailResponse {
 class OrderDetailData {
   OrderDetailData({
     this.order,
+    this.sentNotification,
   });
 
   Order? order;
+  SentNotification? sentNotification;
 
   OrderDetailData copyWith({
     Order? order,
+    SentNotification? sentNotification,
   }) =>
       OrderDetailData(
         order: order ?? this.order,
+        sentNotification: sentNotification ?? this.sentNotification,
       );
 
   factory OrderDetailData.fromJson(Map<String, dynamic> json) =>
       OrderDetailData(
         order: json["order"] == null ? null : Order.fromJson(json["order"]),
+        sentNotification: json["sentNotification"] == null ? null : SentNotification.fromJson(json["sentNotification"]),
       );
 
   Map<String, dynamic> toJson() => {
         "order": order?.toJson(),
+        "sentNotification": sentNotification?.toJson(),
       };
 }
 
@@ -389,4 +395,108 @@ class ProductImage {
         "product_image_id": productImageId,
         "image": image?.toJson(),
       };
+}
+class SentNotification {
+  String? id;
+  String? userId;
+  String? storeId;
+  dynamic messageHeadId;
+  String? orderId;
+  dynamic offerId;
+  bool? isNotificationForStore;
+  bool? isSent;
+  bool? isRead;
+  String? title;
+  String? message;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  SentNotification({
+    this.id,
+    this.userId,
+    this.storeId,
+    this.messageHeadId,
+    this.orderId,
+    this.offerId,
+    this.isNotificationForStore,
+    this.isSent,
+    this.isRead,
+    this.title,
+    this.message,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  SentNotification copyWith({
+    String? id,
+    String? userId,
+    String? storeId,
+    dynamic messageHeadId,
+    String? orderId,
+    dynamic offerId,
+    bool? isNotificationForStore,
+    bool? isSent,
+    bool? isRead,
+    String? title,
+    String? message,
+    String? status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      SentNotification(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        storeId: storeId ?? this.storeId,
+        messageHeadId: messageHeadId ?? this.messageHeadId,
+        orderId: orderId ?? this.orderId,
+        offerId: offerId ?? this.offerId,
+        isNotificationForStore: isNotificationForStore ?? this.isNotificationForStore,
+        isSent: isSent ?? this.isSent,
+        isRead: isRead ?? this.isRead,
+        title: title ?? this.title,
+        message: message ?? this.message,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory SentNotification.fromJson(Map<String, dynamic> json) {
+    return SentNotification(
+      id: json['id'] as String?,
+      userId: json['userId'] as String?,
+      storeId: json['storeId'] as String?,
+      messageHeadId: json['messageHeadId'],
+      orderId: json['orderId'] as String?,
+      offerId: json['offerId'],
+      isNotificationForStore: json['isNotificationForStore'] as bool?,
+      isSent: json['isSent'] as bool?,
+      isRead: json['isRead'] as bool?,
+      title: json['title'] as String?,
+      message: json['message'] as String?,
+      status: json['status'] as String?,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'storeId': storeId,
+      'messageHeadId': messageHeadId,
+      'orderId': orderId,
+      'offerId': offerId,
+      'isNotificationForStore': isNotificationForStore,
+      'isSent': isSent,
+      'isRead': isRead,
+      'title': title,
+      'message': message,
+      'status': status,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
+  }
 }

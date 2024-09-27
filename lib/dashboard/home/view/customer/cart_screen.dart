@@ -35,9 +35,9 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.lastSelectedIndex.value = 0;
       }
-      storeHomeMainController.apiGetUserDetailsApi();
+      // storeHomeMainController.apiGetUserDetailsApi();
       storeHomeMainController.showLoading.value = true;
-      storeHomeMainController.apiGetUserWalletBalance();
+      // storeHomeMainController.apiGetUserWalletBalance();
     });
   }
 
@@ -63,8 +63,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
                                   onPressed: () {
-                                    storeHomeMainController.itemsCount.value =
-                                    1;
+                                    storeHomeMainController.itemsCount.value = 1;
                                     // if (Get.parameters['isFromAddProduct'] ==
                                     //         'yes' &&
                                     //     Get.parameters["isFromHome"] ==

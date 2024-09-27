@@ -7,6 +7,7 @@ class ServerCommunicator {
 
   // ********************** STAGING SERVER *************
 
+
   String baseUrl = "http://18.224.191.88:3520/api/v1/";
   String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
   String baseUrlWithoutApi = "http://18.224.191.88:3520/";
@@ -24,6 +25,7 @@ class ServerCommunicator {
 //C
   String createUser = 'user/create';
   String createItemReview = 'order/item/review/create';
+  String hereNotification = 'order/iamherenotification';
   String createStore = 'store/create';
   String createStoreUser = 'store/user/create';
   String countries = 'utils/countries';

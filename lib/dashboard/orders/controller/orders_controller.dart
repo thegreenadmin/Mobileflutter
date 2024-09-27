@@ -24,6 +24,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   RxBool isActiveOrders = false.obs;
   RxBool isFromNotification = false.obs;
   RxBool isHome = false.obs;
+  RxBool isCustomerReached = false.obs;
   RxBool isLoading = false.obs;
   RxBool preventCall = false.obs;
   RxBool isDataLoading = false.obs;
@@ -33,6 +34,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   RxString email = "".obs;
   RxString phone = "".obs;
   RxString? role = "".obs;
+  RxString? currentUserId = "".obs;
   RxString orderStatus = "".obs;
   RxString storeId = "0".obs;
   RxString productId = "".obs;
@@ -114,6 +116,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
 
         apiGetOrderStatusListApi();
+        apiGetUserDetail();
         getPage();
         setupScrollController();
       }
@@ -133,6 +136,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
   final scrollController = ScrollController();
   final scrollController1 = ScrollController();
+  late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
   setupScrollController() {
     scrollController.addListener(() {
@@ -230,6 +234,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           color: Colors.amber,
                         ),
                         onRatingUpdate: (rating) {
+
                           ratingValue.value = rating;
                         },
                         updateOnDrag: true,
@@ -634,6 +639,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
       "rating": ratingValue.value.toInt()
     };
 
+    debugPrint("data ********** $data");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .postWithHeadersApi(
@@ -663,6 +669,89 @@ class OrdersController extends GetxController with GlobalVarMixin{
       }
     });
   }
+
+
+  ///Get User Detail Info Api
+  Future apiGetUserDetail() async {
+    debugPrint(
+        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+
+    Map<String, String> headers = {
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
+        email!.value = getUserDetailModel.data?.user?.email ?? "";
+        currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
+
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        storage.clearData();
+        Get.parameters.clear();
+        await Get.offAll(const StartJourneyScreen());
+      }
+    });
+  }
+ ///CREATE ITEM REVIEW
+  Future apiIamHereNotification() async {
+    isLoading.value = true;
+    debugPrint("Here Notification URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().hereNotification}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("data ********** ${int.parse(orderStatus.value)}");
+    debugPrint("data ********** ${int.parse(storeId.value)}");
+    debugPrint("data ********** ${int.parse(currentUserId!.value)}");
+    debugPrint("data ********** ${int.parse(orderStatus.value)}");
+    Map<String, dynamic> data = {
+      "order_id": int.parse(orderStatus.value),
+      "store_id":int.parse(storeId.value),
+      "user_id": int.parse(currentUserId!.value??"0"),
+    };
+
+    debugPrint("data ********** $data");
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .postWithHeadersApi(
+            data,
+            ServerCommunicator().baseUrl +
+                ServerCommunicator().hereNotification,
+            headers,
+            showLoading: false)
+        .then((value) async {
+      isLoading.value = false;
+      debugPrint("CREATE ITEM REVIEW *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        Utility.showToast(value?.body['message']);
+        apiGetOrderDetailsApi();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        storage.clearData();
+        Get.parameters.clear();
+        Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
+
+
 
   ///RETURN ORDER
   Future apiReturnOrder() async {
@@ -1035,10 +1124,12 @@ class OrdersController extends GetxController with GlobalVarMixin{
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("ORDER Details*******${value?.body}");
+      log("ORDER Details*******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse = OrderDetailResponse.fromJson(value?.body);
+        log("sentNotification Details*******${orderDetailResponse.data?.sentNotification?.id}");
+        isCustomerReached.value = orderDetailResponse.data?.sentNotification?.title?.contains("reached the store") ?? false;
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
         orderType.value =
@@ -1167,8 +1258,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
     debugPrint("CANCEL REQUEST BODY ********** $data");
     debugPrint("CANCEL REQUEST TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            data,
+        .postWithHeadersApi(data,
             ServerCommunicator().baseUrl +
                 ServerCommunicator().cancelReturnOrder,
             headers,

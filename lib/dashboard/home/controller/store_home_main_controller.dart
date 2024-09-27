@@ -547,7 +547,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           debugPrint("CART TOTAL VALUE${cartTotalPrice.value}");
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
-          storeIdValue.value = activeCartModel.data!.storeId.toString();
+          storeId.value = activeCartModel.data!.storeId.toString();
+          await apiGetCartListApi();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1183,8 +1184,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
         }
         if (storeId.value != "") {
-          await apiGetCartListApi(isShowLoading: true);
+
           await apiActiveCartApi();
+          await apiGetCartListApi(isShowLoading: true);
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

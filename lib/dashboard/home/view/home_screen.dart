@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
@@ -66,39 +65,43 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       appBar: _buildAppbar(),
-      body: RefreshIndicator(
-        onRefresh: _pullRefresh,
-        child: SingleChildScrollView(
-          child: Container(
-            height: WidgetConstants.screenHeight * 0.84,
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Obx(() => roleApp.value == Role.customerRoleText
-                  ? _buildCarouselSlider(
-                      offersCarouselList: homeController.userCarouselImgList,
-                      featuredProductList:
-                          homeController.featuredUserProductList)
-                  : _buildCarouselSlider(
-                      offersCarouselList: homeController.getOwnerOfferList,
-                      featuredProductList:
-                          homeController.ownerFeatureProductList)),
-              height5SizedBox,
-              _buildFeatureProductText(),
-              height10SizedBox,
-              Expanded(
-                child: Obx(
-                  () => roleApp.value == Role.customerRoleText
-                      ? _buildProductsCarousel(
-                          featuredProductList:
-                              homeController.featuredUserProductList)
-                      : _buildProductsCarousel(
-                          featuredProductList:
-                              homeController.ownerFeatureProductList),
-                ),
-              )
-            ]),
-          ),
+      body: buildBody(),
+    );
+  }
+
+  RefreshIndicator buildBody() {
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: SingleChildScrollView(
+        child: Container(
+          height: WidgetConstants.screenHeight * 0.84,
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Obx(() => roleApp.value == Role.customerRoleText
+                ? _buildCarouselSlider(
+                    offersCarouselList: homeController.userCarouselImgList,
+                    featuredProductList:
+                        homeController.featuredUserProductList)
+                : _buildCarouselSlider(
+                    offersCarouselList: homeController.getOwnerOfferList,
+                    featuredProductList:
+                        homeController.ownerFeatureProductList)),
+            height5SizedBox,
+            _buildFeatureProductText(),
+            height10SizedBox,
+            Expanded(
+              child: Obx(
+                () => roleApp.value == Role.customerRoleText
+                    ? _buildProductsCarousel(
+                        featuredProductList:
+                            homeController.featuredUserProductList)
+                    : _buildProductsCarousel(
+                        featuredProductList:
+                            homeController.ownerFeatureProductList),
+              ),
+            )
+          ]),
         ),
       ),
     );

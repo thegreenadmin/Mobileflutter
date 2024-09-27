@@ -196,11 +196,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
         debugPrint(
-            "ACTIVE CART cartCount*******${activeCartModel.data!.cartItems!.isEmpty}");
+            "ACTIVE CART cartCount******* ${activeCartModel.data!.cartItems!.isEmpty}");
         debugPrint(
-            "ACTIVE CART storeId*******${int.parse(activeCartModel.data!.storeId.toString()) == 0}");
-        debugPrint(
-            "ACTIVE CART storeId* check******${int.parse(activeCartModel.data!.storeId.toString()) == 0 && activeCartModel.data!.cartItems!.isEmpty}");
+            "ACTIVE CART storeId******* ${activeCartModel.data!.storeId.toString()}");
+
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
@@ -208,8 +207,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi(
-              storeId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -224,54 +221,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-  ///Get Cart List Api
-  Future apiGetCartListApi({String storeId = ""}) async {
-    isLoading.value = true;
-    debugPrint(
-        "GET CART LIST STORE DELIVERY SERVICE ID********** ${storeDeliveryServiceId.value.toString() == "0"}");
-    debugPrint(
-        "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
-
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(
-            storeDeliveryServiceId.value.toString() == "0" &&
-                    selectedUserAddress.value.userAddressId == null
-                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId"
-                : storeDeliveryServiceId.value.toString() != "0" &&
-                        selectedUserAddress.value.userAddressId == null
-                    ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                    : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
-            headers,
-            showLoading: false)
-        .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET CART LIST RESPONSE  123*******${value?.body}");
-      debugPrint(
-          "GET CART LIST URL 1*******${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId");
-
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        cartListResponse = CartListResponse.fromJson(value?.body);
-        cartItems.value = cartListResponse.data?.cartItems ?? [];
-        cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
-      } else {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
-      }
-    });
-  }
 
   ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
@@ -442,6 +391,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     if (isFilter || isSearch || page.value == 1) {
       page.value = 1;
       storeAddresses.clear();
+      totalCount.value = 0;
     }
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
@@ -516,21 +466,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           storeAddresses.addAll(storeAddressesNewList);
         }
         storeAddresses.toSet().toList();
-        city.value = "";
-        country.value = "";
-        state.value = "";
-        placeId.value = "";
-
-        zipCodeTextController.clear();
-
-        openingTimeTextController.clear();
-        closingTimeTextController.clear();
-        mileageTextController.clear();
-        deliveryServicesController.clear();
-        isOpenNow.value = "";
-        deliveryServicesList.clear();
-        update();
-        if (isFilter) {
+        if(storeAddresses.length >= totalCount.value){
           city.value = "";
           country.value = "";
           state.value = "";
@@ -544,14 +480,34 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           deliveryServicesController.clear();
           isOpenNow.value = "";
           deliveryServicesList.clear();
-          initialIndex.value = 0;
-          for (var element in deliveryServices) {
-            element.isSelected = false;
-          }
+        }
 
+
+        update();
+        if (isFilter  ) {
+          if(storeAddresses.length >= totalCount.value){
+            city.value = "";
+            country.value = "";
+            state.value = "";
+            placeId.value = "";
+
+            zipCodeTextController.clear();
+
+            openingTimeTextController.clear();
+            closingTimeTextController.clear();
+            mileageTextController.clear();
+            deliveryServicesController.clear();
+            isOpenNow.value = "";
+            deliveryServicesList.clear();
+            initialIndex.value = 0;
+            for (var element in deliveryServices) {
+              element.isSelected = false;
+            }
+          }
           Get.back(id: pageIdApp.value);
         }
-        if (isSearch) {
+
+        if (isSearch && storeAddresses.length >= totalCount.value) {
           city.value = "";
           country.value = "";
           state.value = "";
