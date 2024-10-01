@@ -6,6 +6,8 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import '../../controller/store_home_main_controller.dart';
+
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
 
@@ -16,7 +18,8 @@ class NearbyStoreListScreen extends StatefulWidget {
 class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with GlobalVarMixin{
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
-
+  final StoreHomeMainController storeHomeMainController =
+  Get.put(StoreHomeMainController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +84,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                 Get.parameters['isFromFav'] = "false";
                                 Get.parameters["isFromHome"] = "true";
                                 Get.parameters["isFromOptions"] = "false";
+                                 storeHomeMainController.onInit();
                                 await Get.to(() => const StoreHomeMainScreen(),
                                     id: pageIdApp.value);
                               },

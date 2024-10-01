@@ -293,105 +293,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         return null;
                       },
                     ),
-                    // TextFormField(
-                    //   onTap: () async {
-                    //     DateTime date = DateTime.now();
-                    //     FocusScope.of(context).requestFocus(FocusNode());
-                    //     date = (await showDatePicker(
-                    //       helpText: StringConstants.selectDateText,
-                    //       builder: (BuildContext context, Widget? child) {
-                    //         return Theme(
-                    //           data: ThemeData.light().copyWith(
-                    //             colorScheme: const ColorScheme.light(
-                    //                 primary: AppColors.primary),
-                    //             buttonTheme: const ButtonThemeData(
-                    //                 textTheme: ButtonTextTheme.primary),
-                    //           ),
-                    //           child: child!,
-                    //         );
-                    //       },
-                    //       context: context,
-                    //       initialDate: DateTime.now(),
-                    //       firstDate: DateTime.utc(1200, 1, 1),
-                    //       lastDate: DateTime.now(),
-                    //     ))!;
 
-                    //     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                    //     formattedDate = formatter.format(date);
-                    //     signupController.dateTextController.text =
-                    //         formattedDate!;
-                    //     signupController.dateOfEvent.value =
-                    //         date.toIso8601String();
-
-                    //     signupController.isAdultCheck(
-                    //         signupController.dateTextController.text);
-                    //     bool result = signupController.isAdultCheck(
-                    //         signupController.dateTextController.text);
-                    //     if (!result) {
-                    //       signupController.ageAlertDailogue(Get.context);
-                    //       signupController.dateTextController.clear();
-                    //     }
-                    //   },
-                    //   validator: (value) {
-                    //     if (value!.trim().isEmpty) {
-                    //       return AlertStringConstants.pleaseSelectDateText;
-                    //     }
-                    //     return null;
-                    //   },
-                    //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                    //   textInputAction: TextInputAction.done,
-                    //   enabled: true,
-                    //   style: const TextStyle(
-                    //       color: AppColors.black,
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w400),
-                    //   controller: signupController.dateTextController,
-                    //   decoration: InputDecoration(
-                    //     labelText: StringConstants.dobText,
-                    //     labelStyle: TextStyle(
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w400,
-                    //         color: AppColors.blacklight,
-                    //         decoration: TextDecoration.none),
-                    //     fillColor: Colors.white,
-                    //     contentPadding: const EdgeInsets.only(
-                    //         left: 10, right: 10, top: 5, bottom: 5),
-                    //     hintText: StringConstants.ageText,
-                    //     hintStyle: const TextStyle(color: AppColors.primary),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.primary,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     errorBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.red,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.primary,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     disabledBorder: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //       borderSide: const BorderSide(
-                    //         color: AppColors.grey,
-                    //         width: 1.0,
-                    //       ),
-                    //     ),
-                    //     prefixIcon: Image.asset(
-                    //       ImageConstants.calendar,
-                    //       scale: 2.8,
-                    //     ),
-                    //   ),
-                    // ),
                     height20SizedBox,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -481,8 +383,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          debugPrint(
-                              signupController.phoneNumberTextController.text);
                           signupController.validateAndSubmit(
                               isFromOwner: widget.isFromOwner);
                         },

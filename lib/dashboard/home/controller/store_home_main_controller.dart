@@ -106,7 +106,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       isFromFav.value = Get.parameters["isFromFav"] == "true";
       isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
-
         getCurrentLocation();
         apiGetUserDetailsApi();
         if (storeId.value != "" && productId.value != "") {

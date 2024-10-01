@@ -539,7 +539,10 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
-                          apiReturnOrder();
+                          if( !isLoading.value){
+                            apiReturnOrder();
+                          }
+
                         },
                         height: 50,
                         text: StringConstants.submitText,
@@ -799,9 +802,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        Utility.showAlertMessage(value?.body['message']);
+        Get.back(id: pageIdApp.value);
+        Get.back(id: pageIdApp.value);
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
+
         }
       }
     });
