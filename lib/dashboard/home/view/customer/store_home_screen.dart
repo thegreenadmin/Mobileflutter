@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' ;
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart'
 as offer;
@@ -17,8 +17,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
   final StoreHomeMainController storeHomeMainController =
   Get.put(StoreHomeMainController());
 
-  final CarouselController _controller = CarouselController();
-  final CarouselController _controllerProducts = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
+  final CarouselSliderController _controllerProducts = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

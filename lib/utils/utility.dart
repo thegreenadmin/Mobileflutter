@@ -410,7 +410,6 @@ class Utility {
                       ),
                       onTap: () async {
                         Get.back();
-                        // Navigator.pop(contextt);
                         onGalleryClick!();
                       },
                     ),
@@ -431,7 +430,6 @@ class Utility {
                       ),
                       onTap: () async {
                         Get.back();
-                        // Navigator.pop(contextt);
                         onCameraClick!();
                       },
                     )

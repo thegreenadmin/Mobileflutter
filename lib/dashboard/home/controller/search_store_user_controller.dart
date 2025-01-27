@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
-
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
+import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -33,7 +37,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   RxList<StoreAddress> storeAddresses = <StoreAddress>[].obs;
 
   late CartListResponse cartListResponse = CartListResponse();
-  RxList<CartItem> cartItems = <CartItem>[].obs;
+  RxList<CartItems> cartItems = <CartItems>[].obs;
 
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
   RxList<UserAddresses> userAddress = <UserAddresses>[].obs;
@@ -70,8 +74,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   RxBool isClicked = false.obs;
   RxInt type = 0.obs;
   final scrollController = ScrollController();
-  dynamic lat = 0.0;
-  dynamic lng = 0.0;
+  RxDouble lat = 0.0.obs;
+  RxDouble lng = 0.0.obs;
   RxInt cartCount = 0.obs;
   RxDouble walletBalance = 0.0.obs;
   RxString storeAddressId = "".obs;
@@ -132,6 +136,64 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       getPage();
     });
   }
+
+
+  void updateMap(lati, lngi, {isSearch = false}) async {
+    CameraPosition kLake = CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(lati, lngi),
+        tilt: 0.0,
+        zoom: 14.15);
+    final GoogleMapController controller =
+    await googleMapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    lat.value = lati;
+    lng.value = lngi;
+    type.value = 0;
+    if(!isSearch){
+      placeId.value ="";
+
+    }
+    await apiGetNearByStores(isSearch: isSearch);
+    updateMarker(lat.value, lng.value);
+  }
+
+  void updateMarker(latitude, longitude) async {
+    const MarkerId markerId = MarkerId("12345");
+    final Uint8List markerIcon =
+    await getBytesFromAsset(ImageConstants.marker, 60);
+    final Marker marker = Marker(
+      markerId: markerId,
+      icon: BitmapDescriptor.bytes(markerIcon),
+      position: LatLng(latitude, longitude),
+    );
+      markers[markerId] = marker;
+  }
+
+  late GlobalConfigs secureData;
+
+  void updateCurrentLocation() async {
+    // print("updateCurrentLocation *************************************");
+    secureData =
+    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey =
+    secureData.configs['kGoogleApiKey'];
+    Position currentLocation = await Utility.fetchCurrentLocation();
+
+    updateMap(currentLocation.latitude, currentLocation.longitude);
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
+
+
 
   void _listenForPermissionStatus() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -196,10 +258,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
         debugPrint(
-            "ACTIVE CART cartCount******* ${activeCartModel.data!.cartItems!.isEmpty}");
+            "ACTIVE CART cartCount******* ${activeCartModel.data!.cartItems!.length}");
         debugPrint(
             "ACTIVE CART storeId******* ${activeCartModel.data!.storeId.toString()}");
-
+        cartCount.value = activeCartModel.data!.cartItems!.length;
+        // cartItems.value = activeCartModel.data!.cartItems??[];
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
@@ -380,14 +443,31 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     );
   }
 
+  clearNearbyPArms(){
+    city.value = "";
+    country.value = "";
+    state.value = "";
+    placeId.value = "";
+
+    zipCodeTextController.clear();
+    lng.value = 0.0;
+    lat.value = 0.0;
+
+    openingTimeTextController.clear();
+    closingTimeTextController.clear();
+    mileageTextController.clear();
+    deliveryServicesController.clear();
+    isOpenNow.value = "";
+    deliveryServicesList.clear();
+  }
+
+
   ///Get Nearby Stores Api
   Future apiGetNearByStores({
     bool isFilter = false,
     bool isSearch = false,
   }) async {
     isClicked.value = true;
-    debugPrint("GET GET NEARBY STORES isSearch********** $isSearch");
-
     if (isFilter || isSearch || page.value == 1) {
       page.value = 1;
       storeAddresses.clear();
@@ -396,8 +476,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     isDataLoading.value = true;
     nearbyStoreListResponse = NearbyStoreListResponse();
     isLoading.value = storeAddresses.isNotEmpty ? true : false;
-    debugPrint("GET GET NEARBY STORES URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -409,8 +487,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng,
-      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat,
+      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng.value,
+      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat.value,
       "city": isFilter && !isSearch ? "" : city.value,
       "place_id": isFilter && !isSearch ? "" : placeId.value,
       "state": isFilter && !isSearch ? "" : state.value,
@@ -437,9 +515,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "show_previous_stores": type.value == 1 ? true : null,
       "delivery_services": isFilter ? [] : deliveryServicesList
     };
+    debugPrint("GET GET NEARBY STORES URL**********"
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
 
     debugPrint("TOKEN ********** $headers");
-    debugPrint("GET NEARBY STORES BODY*******$data");
+    log("GET NEARBY STORES BODY******* $data");
     UserProvider()
         .postWithHeadersApi(
             data,
@@ -450,7 +530,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
-      debugPrint("GET NEARBY STORES *******${value?.body}");
+      log("GET NEARBY STORES *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isClicked.value = false;
@@ -467,38 +547,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         }
         storeAddresses.toSet().toList();
         if(storeAddresses.length >= totalCount.value){
-          city.value = "";
-          country.value = "";
-          state.value = "";
-          placeId.value = "";
-
-          zipCodeTextController.clear();
-
-          openingTimeTextController.clear();
-          closingTimeTextController.clear();
-          mileageTextController.clear();
-          deliveryServicesController.clear();
-          isOpenNow.value = "";
-          deliveryServicesList.clear();
+          clearNearbyPArms();
         }
-
-
         update();
         if (isFilter  ) {
           if(storeAddresses.length >= totalCount.value){
-            city.value = "";
-            country.value = "";
-            state.value = "";
-            placeId.value = "";
-
-            zipCodeTextController.clear();
-
-            openingTimeTextController.clear();
-            closingTimeTextController.clear();
-            mileageTextController.clear();
-            deliveryServicesController.clear();
-            isOpenNow.value = "";
-            deliveryServicesList.clear();
+            clearNearbyPArms();
             initialIndex.value = 0;
             for (var element in deliveryServices) {
               element.isSelected = false;
@@ -508,16 +562,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         }
 
         if (isSearch && storeAddresses.length >= totalCount.value) {
-          city.value = "";
-          country.value = "";
-          state.value = "";
-          placeId.value = "";
-
-          zipCodeTextController.clear();
-          openingTimeTextController.clear();
-          closingTimeTextController.clear();
-          mileageTextController.clear();
-          isOpenNow.value = "";
+          clearNearbyPArms();
           initialIndex.value = 0;
 
         }
@@ -539,7 +584,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   ///Get Previous Stores Api
   Future apiGetPreviousStores({
     bool isFilter = false,
-  }) async {
+  })
+  async {
     isClicked.value = true;
     isDataLoading.value = true;
     if (page.value == 1) {

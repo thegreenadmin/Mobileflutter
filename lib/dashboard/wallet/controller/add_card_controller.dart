@@ -628,9 +628,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Get Card List Api
   Future apiGetCardList() async {
     userStripeCardId?.value = "";
-    if (cardList.isNotEmpty) {
-      cardList.clear();
-    }
+
 
     // isLoading.value = true;
     debugPrint("GET CARD LIST URL**********"
@@ -648,6 +646,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: true)
         .then((value) async {
+      if (cardList.isNotEmpty) {
+        cardList.clear();
+      }
       isLoading.value = false;
       debugPrint("GET CARD LIST RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode200 ||

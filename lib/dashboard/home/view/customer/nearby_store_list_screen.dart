@@ -86,7 +86,7 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                                 Get.parameters["isFromOptions"] = "false";
                                  storeHomeMainController.onInit();
                                 await Get.to(() => const StoreHomeMainScreen(),
-                                    id: pageIdApp.value);
+                                    id: pageIdApp.value)?.then((v)=>searchStoreUserController.updateCurrentLocation());
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(vertical: 6),

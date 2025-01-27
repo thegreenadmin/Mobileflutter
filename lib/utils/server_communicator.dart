@@ -7,10 +7,13 @@ class ServerCommunicator {
 
   // ********************** STAGING SERVER *************
 
-
   String baseUrl = "http://18.224.191.88:3520/api/v1/";
   String baseUrlWithoutV1 = "http://18.224.191.88:3520/api/";
   String baseUrlWithoutApi = "http://18.224.191.88:3520/";
+
+  // String baseUrl = "http://172.24.0.239:3520/api/v1/";
+  // String baseUrlWithoutV1 = "http://172.24.0.239:3520/api/";
+  // String baseUrlWithoutApi = "http://172.24.0.239:3520/";
 
   // ********************** PRODUCTION SERVER *************
 
@@ -194,8 +197,7 @@ class ServerCommunicator {
   String userMembershipCreate = 'user/membership/create';
   String userMembershipList = 'user/membership/list';
   String userDelete = 'user/delete';
-  String userStripeConnectedAccountDetails =
-      'user/stripe/connected/account/details';
+  String userStripeConnectedAccountDetails = 'user/stripe/connected/account/details';
   String userPaymentMethod = "user/wallet/recharge/paymentMethod";
 
 //V

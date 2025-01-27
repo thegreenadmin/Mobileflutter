@@ -34,12 +34,13 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
     phoneNumber.value = Get.arguments["phoneNumber"] ?? "";
     countryCode.value = Get.arguments["countryCode"] ?? "";
     isSignUp.value = Get.arguments["signUp"] ?? false;
+    getFcmToken();
   }
 
   getFcmToken() async {
     fcmToken!.value = (await messaging.getToken())!;
 
-    debugPrint("FCM TOKEN *************$fcmToken");
+    // debugPrint("FCM TOKEN *************$fcmToken");
   }
 
   bool otpValidateAndSave() {
@@ -58,6 +59,7 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
       try {
         await messaging.getToken().then((value) {
           fcmToken!.value = value ?? "";
+          debugPrint("FCM TOKEN *************$fcmToken");
 
           apiOtpVerify();
         });

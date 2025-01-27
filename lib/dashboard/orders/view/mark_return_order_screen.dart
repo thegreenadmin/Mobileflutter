@@ -437,25 +437,16 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                       Text(
                                                           "${StringConstants.qtyText}: ",
                                                           style: TextStyle(
-                                                              color: AppColors
-                                                                  .blackLight,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              color: AppColors.blackLight,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
                                                               .getOrderItems[
-                                                                  index]
-                                                              .product!
-                                                              .quantity
-                                                              .toString(),
+                                                          index].orderItemCount.toString().padLeft(2, '0'),
                                                           style: TextStyle(
-                                                              color: AppColors
-                                                                  .blackLight,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              color: AppColors.blackLight,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14)),
                                                     ],
                                                   ),
@@ -466,9 +457,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blackLight,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14)),
                                                       Text(
                                                           ordersHomeMainController
@@ -481,9 +470,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .blackLight,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              fontWeight: FontWeight.w500,
                                                               fontSize: 14)),
                                                     ],
                                                   )
@@ -501,7 +488,7 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                 height: 20,
                                                 width: 30,
                                                 child: Checkbox(
-                                                  side: MaterialStateBorderSide
+                                                  side: WidgetStateBorderSide
                                                       .resolveWith(
                                                     (states) => BorderSide(
                                                         width: 1.0,
@@ -509,23 +496,16 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
                                                             .withOpacity(0.5)),
                                                   ),
                                                   shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6.0)),
+                                                      borderRadius: BorderRadius.circular(6.0)),
                                                   activeColor:
                                                       AppColors.primary,
                                                   value:
                                                       ordersHomeMainController
-                                                              .getOrderItems[
-                                                                  index]
-                                                              .isSelected ??
-                                                          false,
+                                                              .getOrderItems[index].isSelected ?? false,
                                                   onChanged: (bool? value) {
                                                     setState(() {
                                                       ordersHomeMainController
-                                                          .getOrderItems
-                                                          .elementAt(index)
-                                                          .isSelected = value;
+                                                          .getOrderItems.elementAt(index).isSelected = value;
                                                     });
                                                   },
                                                 )),

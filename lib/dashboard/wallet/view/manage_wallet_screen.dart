@@ -23,20 +23,39 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
 
   bottomSheetToAddMoney(context, {isFromEdit = false}) {
     return showModalBottomSheet(
-        isScrollControlled: true,
-        isDismissible: true,
-        useSafeArea: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(25), topLeft: Radius.circular(25))),
-        context: context,
-        builder: (BuildContext ctxx) {
-          return Padding(
-            padding: MediaQuery.of(ctxx).viewInsets,
-            child: Wrap(
-                children: <Widget>[AutoReloadScreen(isFromEdit: isFromEdit)]),
-          );
-        }).then((value) => {walletController.apiGetCardList()});
+      isScrollControlled: true,
+      isDismissible: true,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(25),
+          topLeft: Radius.circular(25),
+        ),
+      ),
+      context: context,
+      builder: (BuildContext ctx) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.5, // Initial height as a fraction of the screen height
+          minChildSize: 0.25, // Minimum height
+          maxChildSize: 0.85, // Maximum height
+          builder: (BuildContext context, ScrollController scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AutoReloadScreen(isFromEdit: isFromEdit),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ).then((value) => {walletController.apiGetCardList()});
   }
 
   @override

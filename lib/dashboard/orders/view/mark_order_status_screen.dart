@@ -298,8 +298,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                           () =>
                                               ordersHomeMainController
                                                           .selectedIndex
-                                                          .value ==
-                                                      3
+                                                          .value == 3
                                                   ? height0SizedBox
                                                   : Flexible(
                                                       flex: 1,
@@ -308,7 +307,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                           width: 30,
                                                           child:
                                                               Checkbox(
-                                                            side: MaterialStateBorderSide
+                                                            side: WidgetStateBorderSide
                                                                 .resolveWith(
                                                               (states) => BorderSide(
                                                                   width:
@@ -849,7 +848,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
 
     }else{
       Utility.showConfirmAlertMessage(
-        "You have selected ${ordersHomeMainController.count.value} of ${ordersHomeMainController.getOrderItems.length} items are you sure to cancel the remaining ones?",
+        "You have selected ${ordersHomeMainController.count.value} of ${ordersHomeMainController.getOrderItems.length} items are you sure you want to cancel the remaining ones?",
         okayTap: (){
           ordersHomeMainController.apiMarkDelivered();
         },

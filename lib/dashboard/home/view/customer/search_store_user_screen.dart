@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui' as ui;
+
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver, GlobalVarMixin{
   TabController? _tabController;
 
-  final SearchStoreUserController searchStoreUserController =
+  SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
 
   // var kGoogleApiKey = ""; //TickerProviderStateMixin //SingleTickerProviderStateMixin
@@ -56,7 +56,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
         length: 3,
         vsync: this);
 
-    updateCurrentLocation();
+    searchStoreUserController.clearNearbyPArms();
+    searchStoreUserController.updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
   }
 
@@ -65,6 +66,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   final StoreHomeMainController storeHomeMainController =
   Get.put(StoreHomeMainController());
   @override
@@ -98,9 +100,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () {
+                                // Get.delete<SearchStoreUserController>();
                                 Get.back(id: pageIdApp.value);
 
-                                Get.delete<SearchStoreUserController>();
                               },
                               icon: const Icon(
                                 Icons.arrow_back,
@@ -193,7 +195,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                                       child: Obx(
                                                         () => Text(
                                                           searchStoreUserController
-                                                              .cartItems.length
+                                                              .cartCount.value
                                                               .toString(),
                                                           style:
                                                               const TextStyle(
@@ -287,8 +289,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                 id: pageIdApp.value);
                           },
                           child: Image.asset(
-                            ImageConstants.filterbutton,
-                            scale: 3,
+                              ImageConstants.filterbutton,
+                              scale: 3,
                           ),
                         ))
                   ],
@@ -311,11 +313,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           components: []);
                       searchStoreUserController.searchController.text =
                           p?.description!.toString() ?? "";
-
-                      // print("ADDRESSES BY GEOCODING:-------------------------------------------");
-                      // print(p?.description!.toString());
-                      // print(p?.toJson()!.toString());
-
                       ///ADDRESSES BY GEOCODING
                       searchStoreUserController.placeId.value =
                           p?.placeId.toString() ?? "";
@@ -339,7 +336,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                         // print("ADDRESSES BY GEOCODING:------------------");
                         // print(response.results.first.geometry.location.lat);
                         // print(response.results.first.geometry.location.lng);
-                        updateMap(response.results.first.geometry.location.lat,
+
+                        searchStoreUserController.lat.value = response.results.first.geometry.location.lat;
+                        searchStoreUserController.lng.value = response.results.first.geometry.location.lng;
+                        searchStoreUserController.updateMap(response.results.first.geometry.location.lat,
                             response.results.first.geometry.location.lng,isSearch: true);
                       }
                     },
@@ -360,6 +360,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       suffixIcon: InkWell(
                         onTap: () {
                           searchStoreUserController.searchController.clear();
+                          searchStoreUserController.clearNearbyPArms();
+                          searchStoreUserController.updateCurrentLocation();
                         },
                         child: Image.asset(
                           ImageConstants.cross,
@@ -476,60 +478,4 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     );
   }
 
-  void updateMap(lat, lng, {isSearch = false}) async {
-    CameraPosition kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(lat, lng),
-        tilt: 0.0,
-        zoom: 14.15);
-    final GoogleMapController controller =
-        await searchStoreUserController.googleMapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
-    searchStoreUserController.lat = lat;
-    searchStoreUserController.lng = lng;
-    searchStoreUserController.type.value = 0;
-    if(!isSearch){
-      searchStoreUserController.placeId.value ="";
-
-    }
-    await searchStoreUserController.apiGetNearByStores(isSearch: isSearch);
-    updateMarker(lat, lng);
-  }
-
-  void updateMarker(latitude, longitude) async {
-    const MarkerId markerId = MarkerId("12345");
-    final Uint8List markerIcon =
-        await getBytesFromAsset(ImageConstants.marker, 60);
-    final Marker marker = Marker(
-      markerId: markerId,
-      icon: BitmapDescriptor.fromBytes(markerIcon),
-      position: LatLng(latitude, longitude),
-    );
-    setState(() {
-      searchStoreUserController.markers[markerId] = marker;
-    });
-  }
-
-  late GlobalConfigs secureData;
-
-  void updateCurrentLocation() async {
-
-    secureData =
-        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    searchStoreUserController.kGoogleApiKey =
-        secureData.configs['kGoogleApiKey'];
-    Position currentLocation = await Utility.fetchCurrentLocation();
-
-    updateMap(currentLocation.latitude, currentLocation.longitude);
-  }
-
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
-  }
 }

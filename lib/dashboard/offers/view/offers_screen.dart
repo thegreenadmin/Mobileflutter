@@ -47,7 +47,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
             storeId:
                 offersController.searchStoreUserController.storeIdValue.value,
             cartLength:
-                offersController.searchStoreUserController.cartItems.length,
+                offersController.searchStoreUserController.cartCount.value,
             firstName: offersController.firstName!.value,
             labelText: StringConstants.offersText,
             lastName: offersController.lastName!.value,

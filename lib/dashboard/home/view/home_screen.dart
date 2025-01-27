@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
@@ -30,9 +31,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, GlobalVarMixin {
 
-  final CarouselController _controllerProducts = CarouselController();
+  final CarouselSliderController _controllerProducts = CarouselSliderController();
   int _current = 0;
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   // final StoreHomeMainController storeHomeMainController =
   //     Get.put(StoreHomeMainController());
   final AccountController accountController = Get.put(AccountController());
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
   }
 
   @override
@@ -229,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                             Get.parameters["storeId"] =
                                                 homeController.searchStoreUserController.storeIdValue.value;
                                             await Get.to(() => const CartScreen(), id: pageIdApp.value)
-                                                ?.then((value) => homeController.searchStoreUserController.apiActiveCartApi());
+                                                ?.then((value) => homeController.apiActiveCartApi());
                                           },
                                           child: Stack(
                                             children: [
@@ -253,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                                     constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
                                                     child: Obx(
                                                       () => Text(
-                                                        homeController.searchStoreUserController.cartItems.length.toString(),
+                                                        homeController.searchStoreUserController.cartCount.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 8,

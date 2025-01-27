@@ -155,7 +155,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                                   minHeight: 15,
                                                 ),
                                                 child: Text(
-                                                  widget.cartLength.toString(),
+                                                  widget.cartCount.toString(),
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 10,

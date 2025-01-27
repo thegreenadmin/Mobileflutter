@@ -112,42 +112,48 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(100.0),
           child: Container(
+            width: Get.width,
             color: AppColors.primaryLight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            onPressed: () {
-                              Get.back(id: pageIdApp.value);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: AppColors.black,
-                              size: 24.0,
-                            ),
+            padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child:  Row(
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            Get.back(id: pageIdApp.value);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.black,
+                            size: 24.0,
                           ),
-                          width10SizedBox,
-                          Text(
+                        ),
+                        width10SizedBox,
+                        Expanded(
+                          child: Text(
                             StringConstants.addMoneyToMyWalletText,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
                           ),
-                        ],
-                      ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
-                    ])),
+                        ),
+                      ],
+                    ),
+                  ),
+                  width4SizedBox,
+                  Image.asset(
+                    ImageConstants.homeMall,
+                    scale: 4,
+                  )
+                ]),
           ),
         ),
         body: SingleChildScrollView(
@@ -174,8 +180,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: <TextInputFormatter>[
                       LengthLimitingTextInputFormatter(100),
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}'))
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
                     ],
                     autofocus: false,
                     hintText: StringConstants.amountText,
@@ -184,6 +189,15 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return AlertStringConstants.pleaseEnterAmountText;
+                      }
+                      // Check if the input is a valid decimal number
+                      try {
+                        final parsedValue = double.parse(value);
+                        if (parsedValue < 10) {
+                          return 'Please enter an amount greater than or equal to 10';
+                        }
+                      } catch (e) {
+                        return 'Invalid input. Please enter a valid decimal number';
                       }
                       return null;
                     },

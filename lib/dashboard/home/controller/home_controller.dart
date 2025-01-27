@@ -17,7 +17,9 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
+  RxString? storeIdValue = "".obs;
   RxInt pageId = 0.obs;
+  RxInt cartCount = 0.obs;
   RxBool? isLoading = false.obs;
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
@@ -47,13 +49,14 @@ class HomeController extends GetxController with GlobalVarMixin {
   dynamic lng = 0.0;
   final SearchStoreUserController searchStoreUserController =
       Get.put(SearchStoreUserController());
-
+  ActiveCartModel activeCartModel = ActiveCartModel();
   @override
   void onInit() {
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       apiGetUserDetail();
+      // apiActiveCartApi();
     });
   }
 
@@ -65,8 +68,8 @@ class HomeController extends GetxController with GlobalVarMixin {
     if (roleApp.value == Role.customerRoleText) {
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();
+      searchStoreUserController.apiActiveCartApi();
 
-      searchStoreUserController.onInit();
     } else {
       await apiGetOwnerOffersList();
       await apiGetOwnerFeaturedProducts();
@@ -133,6 +136,52 @@ class HomeController extends GetxController with GlobalVarMixin {
     });
   }
 
+
+  ///Get Active Cart Api
+  Future apiActiveCartApi() async {
+    isLoading?.value = true;
+    debugPrint(
+        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+    debugPrint("TOKEN ********** $headers");
+    UserProvider()
+        .getWithHeadersApi(
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
+        headers,
+        showLoading: false)
+        .then((value) async {
+      isLoading?.value = false;
+      debugPrint("ACTIVE CART Home RESPONSE *******${value?.body}");
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        activeCartModel = ActiveCartModel.fromJson(value?.body);
+        debugPrint(
+            "ACTIVE CART Home cartCount ******* ${activeCartModel.data!.cartItems!.length}");
+        debugPrint(
+            "ACTIVE CART Home storeId ******* ${activeCartModel.data!.storeId.toString()}");
+        cartCount.value = activeCartModel.data!.cartItems!.length;
+        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
+            activeCartModel.data!.cartItems!.isEmpty) {
+          cartCount.value = 0;
+        } else {
+          storeIdValue?.value = activeCartModel.data!.storeId.toString();
+        }
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        storage.clearData();
+        Get.parameters.clear();
+        Get.offAll(const StartJourneyScreen());
+      } else {
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
+      }
+    });
+  }
   ///Get User Detail Info Api
   Future apiGetUserDetail() async {
     debugPrint(

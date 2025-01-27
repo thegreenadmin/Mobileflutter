@@ -74,7 +74,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxBool? isInsufficientBalance = false.obs;
   RxBool isValidAddress = false.obs;
   RxBool isOrderDeliverable = false.obs;
-  RxString storeIdValue = "".obs;
+  RxString storeIdValue = "0".obs;
   RxBool isLoading = false.obs;
   RxBool showLoading = true.obs;
   RxBool isPlaceOrder = true.obs;
@@ -214,7 +214,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           .any((element) => element.storePageType != "terms")) {
         Utility.showToast(StringConstants.noTermsFoundText);
       } else {
-
         if (storeDetailsResponse
                     .value.data!.store!.storePages![0].storePageType ==
                 "terms" ||
@@ -665,7 +664,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .then((value) async {
       isLoading.value = false;
 
-      debugPrint("GET USER DETAIL *******${value?.body}");
+      log("GET USER DETAIL selectedUserAddress *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
@@ -690,7 +689,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   Future apiGetCartListApi({bool isShowLoading = false}) async {
     isLoading.value = true;
     debugPrint(
-        "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0" && selectedUserAddress.value.userAddressId == null ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}" : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
+        "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ?
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0"
+            && selectedUserAddress.value.userAddressId == null ?
+        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+            : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -773,6 +776,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     isLoading.value = true;
     debugPrint("API PLACE ORDER URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -790,7 +794,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     Map<String, dynamic> data = {
       "store_id": int.parse(storeId.value.toString()),
       "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": selectedDeliveryService.value == "1" ||
+      "user_address_id": selectedDeliveryService.value == "1" &&
               selectedDeliveryService.value == "3"
           ? int.parse(storeAddressId.value)
           : selectedUserAddress.value.userAddressId != null
@@ -799,7 +803,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       "cart_items": selectedItems
     };
     debugPrint("TOKEN ********** $headers");
-    debugPrint("API PLACE ORDER BODY ********** $data");
+    debugPrint("API PLACE ORDER BODY ********** ${jsonEncode(data)}");
     UserProvider()
         .postWithHeadersApi(
             data,

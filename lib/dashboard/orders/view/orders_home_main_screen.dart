@@ -642,7 +642,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                   ],
                                                                 ),*/
                                             height5SizedBox,
-                                            Row(
+                                           /* Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
@@ -664,7 +664,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                         fontSize: 14))
                                               ],
                                             ),
-                                            height5SizedBox,
+                                            height5SizedBox,*/
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

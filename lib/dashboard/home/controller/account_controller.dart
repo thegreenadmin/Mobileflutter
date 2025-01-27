@@ -42,6 +42,7 @@ class AccountController extends GetxController with GlobalVarMixin{
   RxBool plan90 = false.obs;
   RxBool plan180 = false.obs;
   RxBool plan365 = false.obs;
+  RxBool isStoreFound = false.obs;
 
   RxString? firstName = "".obs;
   RxString? lastName = "".obs;

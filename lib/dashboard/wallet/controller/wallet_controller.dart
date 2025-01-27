@@ -125,7 +125,7 @@ class WalletController extends GetxController with GlobalVarMixin{
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Get.parameters["isController"] != "no") {
         if (roleApp.value == Role.customerRoleText) {
-          searchStoreUserController.onInit();
+          searchStoreUserController.apiActiveCartApi();
         }
 
         getPage();

@@ -34,47 +34,47 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // storeHomeMainController.productId.value =
-      //     Get.parameters["productId"] ?? "";
-      // storeHomeMainController.isFromHome.value =
-      //     Get.parameters["isFromHome"] == "true";
-      // storeHomeMainController.isFromFav.value =
-      //     Get.parameters["isFromFav"] == "true";
-      // storeHomeMainController.isFromMenu.value =
-      //     Get.parameters["isFromMenu"] == "true";
-      // // storeHomeMainController.apiGetUserDetailsApi();
-      // storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+      storeHomeMainController.productId.value =
+          Get.parameters["productId"] ?? "";
+      storeHomeMainController.isFromHome.value =
+          Get.parameters["isFromHome"] == "true";
+      storeHomeMainController.isFromFav.value =
+          Get.parameters["isFromFav"] == "true";
+      storeHomeMainController.isFromMenu.value =
+          Get.parameters["isFromMenu"] == "true";
+      storeHomeMainController.apiGetUserDetailsApi();
+      storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
 
-      // storeHomeMainController.getCurrentLocation();
-      // if (storeHomeMainController.isFromMenu.value) {
-      //   storeHomeMainController.selectedIndex.value = 1;
-      //
-      //   if (storeHomeMainController.storeId.value != "" &&
-      //       storeHomeMainController.productId.value != "") {
-      //     storeHomeMainController.apiGetShopProductDetailApi();
-      //   }
-      // } else if (storeHomeMainController.isFromFav.value) {
-      //   storeHomeMainController.selectedIndex.value = 2;
-      //   storeHomeMainController.apiFeatureProductListApi(
-      //       isFeaturedProduct: true);
-      //   if (storeHomeMainController.storeId.value != "" &&
-      //       storeHomeMainController.productId.value != "") {
-      //     storeHomeMainController.apiGetShopProductDetailApi();
-      //   }
-      // } else if (storeHomeMainController.isFromHome.value) {
-      //   storeHomeMainController.selectedIndex.value = 0;
-      //   storeHomeMainController.apiGetStoreOffersApi();
-      //   storeHomeMainController.apiFeatureProductListApi(
-      //       isFeaturedProduct: true);
-      //   if (storeHomeMainController.storeId.value != "" &&
-      //       storeHomeMainController.productId.value != "") {
-      //     storeHomeMainController.apiGetShopProductDetailApi();
-      //   }
-      // } else {
-      //   storeHomeMainController.onIndexChange(0);
-      // }
-      //
-      // storeHomeMainController.apiGetUserWalletBalance();
+      storeHomeMainController.getCurrentLocation();
+      if (storeHomeMainController.isFromMenu.value) {
+        storeHomeMainController.selectedIndex.value = 1;
+
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
+      } else if (storeHomeMainController.isFromFav.value) {
+        storeHomeMainController.selectedIndex.value = 2;
+        storeHomeMainController.apiFeatureProductListApi(
+            isFeaturedProduct: true);
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
+      } else if (storeHomeMainController.isFromHome.value) {
+        storeHomeMainController.selectedIndex.value = 0;
+        storeHomeMainController.apiGetStoreOffersApi();
+        storeHomeMainController.apiFeatureProductListApi(
+            isFeaturedProduct: true);
+        if (storeHomeMainController.storeId.value != "" &&
+            storeHomeMainController.productId.value != "") {
+          storeHomeMainController.apiGetShopProductDetailApi();
+        }
+      } else {
+        storeHomeMainController.onIndexChange(0);
+      }
+
+      storeHomeMainController.apiGetUserWalletBalance();
     });
   }
 

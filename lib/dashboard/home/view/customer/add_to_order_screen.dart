@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +17,7 @@ class AddToOrderScreen extends StatefulWidget {
 class _AddToOrderScreenState extends State<AddToOrderScreen> {
   final StoreHomeMainController storeHomeMainController =
   Get.put(StoreHomeMainController());
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
 
 /*  @override
@@ -688,7 +688,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               if (storeHomeMainController.isVerifiedStore.value) {
                 Get.parameters['isFromAddProduct'] = "yes";
                 if (int.parse(storeHomeMainController.storeIdValue
-                    .toString()) ==
+                    .toString()??"0") ==
                     0) {
                   if (storeHomeMainController.itemsCount.value != 0) {
                     storeHomeMainController.apiAddToCart(context);

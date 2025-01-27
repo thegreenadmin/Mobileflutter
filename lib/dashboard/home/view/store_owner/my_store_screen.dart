@@ -21,8 +21,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
       Get.put(OwnerStoresController());
   int _current = 0;
-  final CarouselController _controller = CarouselController();
-  final CarouselController _controllerProducts = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
+  final CarouselSliderController _controllerProducts = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

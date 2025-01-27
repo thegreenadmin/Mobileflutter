@@ -61,7 +61,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
             storeId:
                 walletController.searchStoreUserController.storeIdValue.value,
             cartLength:
-                walletController.searchStoreUserController.cartItems.length,
+                walletController.searchStoreUserController.cartCount.value,
             firstName: walletController.firstName!.value,
             labelText: StringConstants.walletText,
             lastName: walletController.lastName!.value,

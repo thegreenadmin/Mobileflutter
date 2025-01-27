@@ -549,14 +549,28 @@ class _MyAlertDialogState extends State<MyAlertDialog> {
                         cancelText: StringConstants.noText,
                         okay: StringConstants.yesText, okayTap: () {
                       Get.back();
-                      accountController.apiCreateMembershipPlan(
+
+                      // Check if there is an active membership for the selected store ID
+                      bool isStoreFound = accountController.activeMembershipList.any((store) {
+                        final isSelectedStore = store.membershipStore?.storeId == accountController.selectedStoreId!.value;
+                        final isExpired = store.expiredAt?.isBefore(DateTime.now()) ?? true;
+                        return isSelectedStore && !isExpired;
+                      });
+
+                      if (!isStoreFound) {
+                        // Selected store ID is not in the list or the plan has expired
+                        accountController.apiCreateMembershipPlan(
                           index: widget.activemenbershipIndex,
-                          membershipPlanId: accountController
-                              .membershipList[widget.activemenbershipIndex]
-                              .membershipPlanId!,
-                          planDays: accountController
-                              .membershipList[widget.activemenbershipIndex]
-                              .selectedPlan!);
+                          membershipPlanId: accountController.membershipList[widget.activemenbershipIndex].membershipPlanId!,
+                          planDays: accountController.membershipList[widget.activemenbershipIndex].selectedPlan!,
+                        );
+                      } else {
+                        print("You already have an existing plan.");
+                        Utility.showToast("You already have an existing plan.");
+                        // Membership plan already exists and is not expired
+
+                      }
+                      // Utility.showAlertMessage("You already have an existing plan.");
                     });
                   }
                 },

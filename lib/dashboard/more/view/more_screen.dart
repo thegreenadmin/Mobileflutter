@@ -30,7 +30,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
             storeId:
                 moreController.searchStoreUserController.storeIdValue.value,
             cartLength:
-                moreController.searchStoreUserController.cartItems.length,
+                moreController.searchStoreUserController.cartCount.value,
             firstName: moreController.firstName!.value,
             labelText: StringConstants.moreText,
             lastName: moreController.lastName!.value,

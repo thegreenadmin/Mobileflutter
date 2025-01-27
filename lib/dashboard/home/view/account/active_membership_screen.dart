@@ -265,22 +265,11 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                 colors: [AppColors.white, AppColors.white],
               ),
               onTap: () async {
-                // SharedPreferenceStorage.setData("context", context);
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(
-                //       builder: (_) => const SelectMembershipPlan(),
-                //     ))
+
                 accountController.apiGetActiveMembershipList();
-                print(accountController.activeMembershipList.length);
-                if(accountController.activeMembershipList.isEmpty || (accountController.activeMembershipList.isNotEmpty &&
-                    accountController.activeMembershipList.first.expiredAt!.isBefore(DateTime.now())) ){
                   Get.to(() => const SelectMembershipPlan(), id: pageIdApp.value)!
                       .then((value) =>
                       accountController.apiGetActiveMembershipList());
-                }else{
-                  Utility.showAlertMessage("You already have an existing plan.");
-                }
-
               },
               height: 50,
               text: StringConstants.selectMembershipPlanText,

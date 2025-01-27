@@ -324,7 +324,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
             role: ordersController.role!.value,
             cartCount: ordersController.searchStoreUserController.cartCount.value,
             storeId: ordersController.searchStoreUserController.storeIdValue.value,
-            cartLength: ordersController.searchStoreUserController.cartItems.length,
+            cartLength: ordersController.searchStoreUserController.cartCount.value,
             firstName: firstName.value,
             labelText: StringConstants.ordersText,
             lastName: lastName.value,

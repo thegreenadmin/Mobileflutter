@@ -807,6 +807,7 @@ class AlertStringConstants {
   static String pleaseSelectDiscountType = "Please select discount type";
   static String pleaseEnterChargeAmountText = "Please enter charge amount";
   static String pleaseEnterAmountText = "Please enter amount";
+  static String pleaseEnterAmount10Text = "Please enter amount above than \$10";
   static String pleaseSelectProductToProceedText =
       "Please select product to proceed";
   static String pleaseAddAtLeastOneItemText =

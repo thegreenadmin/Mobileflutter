@@ -9,13 +9,14 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProvider extends GetConnect {
+
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
 
 
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -30,11 +31,11 @@ class UserProvider extends GetConnect {
       try {
       final res = await ioClient.get(Uri.parse(url), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -43,7 +44,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -52,7 +53,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -61,7 +62,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -74,10 +75,9 @@ class UserProvider extends GetConnect {
     }
   }
 
-  Future<Response?> postApi(Map data, String url,
-      {bool showLoading = false}) async {
+  Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
 
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -94,7 +94,7 @@ class UserProvider extends GetConnect {
           body: json.encode(data),
           headers: {"Content-Type": "application/json"});
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -103,7 +103,7 @@ class UserProvider extends GetConnect {
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await  Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -112,7 +112,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await  Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -121,7 +121,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -130,7 +130,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await  Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -147,7 +147,7 @@ class UserProvider extends GetConnect {
   Future<Response?> putApi(Map data, String url,
       {bool showLoading = false}) async {
 
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -163,11 +163,11 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url));
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -176,7 +176,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -185,7 +185,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -194,7 +194,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -214,7 +214,7 @@ class UserProvider extends GetConnect {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
     print(headers);
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -231,7 +231,7 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -244,7 +244,7 @@ class UserProvider extends GetConnect {
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -253,7 +253,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -262,7 +262,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -271,7 +271,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -290,7 +290,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -306,7 +306,7 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         if (showLoading) Get.back();
@@ -319,7 +319,7 @@ class UserProvider extends GetConnect {
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -328,7 +328,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -337,7 +337,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -346,7 +346,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -365,7 +365,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -381,7 +381,7 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -393,7 +393,7 @@ class UserProvider extends GetConnect {
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -402,7 +402,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -411,7 +411,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -420,7 +420,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -439,7 +439,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-      Future.delayed(const Duration(milliseconds: 100), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -456,7 +456,7 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
@@ -468,7 +468,7 @@ class UserProvider extends GetConnect {
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
@@ -477,7 +477,7 @@ class UserProvider extends GetConnect {
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
@@ -486,7 +486,7 @@ class UserProvider extends GetConnect {
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
@@ -495,7 +495,7 @@ class UserProvider extends GetConnect {
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      Future.delayed(const Duration(milliseconds: 100), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
