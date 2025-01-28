@@ -13,7 +13,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
-class AccountController extends GetxController with GlobalVarMixin{
+class AccountController extends GetxController with GlobalVarMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
@@ -82,14 +82,12 @@ class AccountController extends GetxController with GlobalVarMixin{
   RxList<StatesList> statesList = <StatesList>[].obs;
 
   NotificationStatusModel notificationStatusModel = NotificationStatusModel();
-  RxList<NotificationSettings> notificationStatusList =
-      <NotificationSettings>[].obs;
+  RxList<NotificationSettings> notificationStatusList = <NotificationSettings>[].obs;
 
   MembershipPlanModel membershipPlanModel = MembershipPlanModel();
   RxList<MembershipPlans> membershipList = <MembershipPlans>[].obs;
 
-  ActiveMembershipPlanModel activeMembershipPlanModel =
-      ActiveMembershipPlanModel();
+  ActiveMembershipPlanModel activeMembershipPlanModel = ActiveMembershipPlanModel();
   RxList<ActiveMemberships> activeMembershipList = <ActiveMemberships>[].obs;
 
   List userAddress = [];
@@ -117,18 +115,12 @@ class AccountController extends GetxController with GlobalVarMixin{
   }
 
   getGkey() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
 
-    secureData =
-        await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-    var val = await SharedPreferenceStorage.getData(
-        StringConstants.authenticatedText.toLowerCase());
+    var val = await SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase());
     BioMetricAuthentication.isBioMetricAuthenticated.value = val ?? false;
 
     if (roleApp.value == Role.customerRoleText) {
@@ -157,22 +149,16 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   Future<void> showSelectionDialog(BuildContext context) {
     return Utility.showSelectionMediaDialog(context, onGalleryClick: () async {
-      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
-          imageQuality: 50,
-          source: ImageSource.gallery,
-          maxWidth: 900,
-          maxHeight: 900);
+      XFile? pickedFile = await ImagePickerClass.picker
+          .pickImage(imageQuality: 50, source: ImageSource.gallery, maxWidth: 900, maxHeight: 900);
       if (pickedFile != null) {
         idProofImage.value = pickedFile;
         await apiUploadImage();
         update();
       } else {}
     }, onCameraClick: () async {
-      XFile? pickedFile = await ImagePickerClass.picker.pickImage(
-          imageQuality: 50,
-          source: ImageSource.camera,
-          maxWidth: 900,
-          maxHeight: 900);
+      XFile? pickedFile = await ImagePickerClass.picker
+          .pickImage(imageQuality: 50, source: ImageSource.camera, maxWidth: 900, maxHeight: 900);
       if (pickedFile != null) {
         idProofImage.value = pickedFile;
         await apiUploadImage();
@@ -203,20 +189,13 @@ class AccountController extends GetxController with GlobalVarMixin{
               height12SizedBox,
               Text(
                 StringConstants.storeAccessText,
-                style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
+                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
               Text(
                 StringConstants.yourAreQualifiedText,
-                style: TextStyle(
-                    color: AppColors.blackLight,
-                    fontSize: 18,
-                    height: 1.6,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: AppColors.blackLight, fontSize: 18, height: 1.6, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.start,
               ),
               height20SizedBox,
@@ -239,10 +218,7 @@ class AccountController extends GetxController with GlobalVarMixin{
                       child: Center(
                         child: Text(
                           StringConstants.okayText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.0,
-                              color: AppColors.white),
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: AppColors.white),
                         ),
                       ),
                     ),
@@ -272,10 +248,7 @@ class AccountController extends GetxController with GlobalVarMixin{
               height12SizedBox,
               Text(
                 StringConstants.enterNumberOfDaysText,
-                style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
+                style: const TextStyle(color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.start,
               ),
               height12SizedBox,
@@ -286,17 +259,13 @@ class AccountController extends GetxController with GlobalVarMixin{
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(100),
                   ],
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w500),
                   controller: noOfDaysTextController,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     hintText: StringConstants.numberOfDaysText,
-                    hintStyle:
-                        const TextStyle(color: AppColors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -334,8 +303,7 @@ class AccountController extends GetxController with GlobalVarMixin{
                   InkWell(
                     onTap: () async {
                       if (noOfDaysTextController.text.isEmpty) {
-                        Utility.showAlertMessage(
-                            AlertStringConstants.pleaseEnterDaysText);
+                        Utility.showAlertMessage(AlertStringConstants.pleaseEnterDaysText);
                       } else {
                         Get.back();
                         apiCreateMembershipPlan();
@@ -352,10 +320,7 @@ class AccountController extends GetxController with GlobalVarMixin{
                       child: Center(
                         child: Text(
                           StringConstants.okayText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.0,
-                              color: AppColors.white),
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: AppColors.white),
                         ),
                       ),
                     ),
@@ -377,27 +342,20 @@ class AccountController extends GetxController with GlobalVarMixin{
       mdio.FormData formData = mdio.FormData.fromMap({});
 
       Map<String, String> headers = {
-        StringConstants.authorizationText:
-            "${StringConstants.bearerText} ${authToken.value}",
+        StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
       };
       formData.files.add(MapEntry(
           "file",
           mdio.MultipartFile.fromBytes(await idProofImage.value.readAsBytes(),
-              contentType: MediaType.parse("image/png"),
-              filename: "file-name.png".toString())));
-      final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
-          data: formData,
-          options: mdio.Options(headers: headers));
+              contentType: MediaType.parse("image/png"), filename: "file-name.png".toString())));
+      final res = await dio.post(ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          data: formData, options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
+      debugPrint("IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
       debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
       if (res.statusCode == 200 || res.statusCode == 201) {
-        idProofImageOriginalLinkFromServer.value =
-            responseData['data']['urls']['orignal_url'];
-        idProofImageDynamicLinkFromServer.value =
-            responseData['data']['urls']['dynamic_url'];
+        idProofImageOriginalLinkFromServer.value = responseData['data']['urls']['orignal_url'];
+        idProofImageDynamicLinkFromServer.value = responseData['data']['urls']['dynamic_url'];
         await apiAddUserIdProof();
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
@@ -408,8 +366,7 @@ class AccountController extends GetxController with GlobalVarMixin{
       if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
           debugPrint("${e.response?.data ?? ""}");
-          final responseData =
-              json.decode(e.response?.data) as Map<String, dynamic>;
+          final responseData = json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
       }
@@ -439,23 +396,17 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   ///Get User Detail Info Api
   Future apiGetUserDetailApi() async {
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
+    debugPrint("GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
 
     Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
-            headers,
-            showLoading: true)
+        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().userDetail, headers, showLoading: true)
         .then((value) async {
       debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+      if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userId!.value = getUserDetailModel.data!.user!.userId ?? "";
         uuId!.value = getUserDetailModel.data!.user!.uuId ?? "";
@@ -470,16 +421,14 @@ class AccountController extends GetxController with GlobalVarMixin{
         email.value = getUserDetailModel.data!.user!.email ?? "";
         emailTextController.text = email.value;
         phone.value = getUserDetailModel.data!.user!.phone ?? "";
-        hasStoreAccess.value =
-            getUserDetailModel.data!.user!.hasStoreAccess ?? false;
+        hasStoreAccess.value = getUserDetailModel.data!.user!.hasStoreAccess ?? false;
         List<UserAddresses> userAddress = <UserAddresses>[];
         userAddress = getUserDetailModel.data!.user!.userAddresses!;
         if (userAddress.isNotEmpty) {
           userAddress = getUserDetailModel.data!.user!.userAddresses!;
           for (int i = 0; i < userAddress.length; i++) {
             countryId!.value = userAddress[i].state!.country!.countryId ?? "";
-            countryDropdownValue.value =
-                userAddress[i].state!.country!.countryName ?? "";
+            countryDropdownValue.value = userAddress[i].state!.country!.countryName ?? "";
             countryTextController.text = countryDropdownValue.value;
             stateId.value = userAddress[i].state!.stateId ?? "";
             stateDropdownValue.value = userAddress[i].state!.stateName ?? "";
@@ -496,8 +445,7 @@ class AccountController extends GetxController with GlobalVarMixin{
             postalCode.value = postalCodeTextController.text;
           }
           if (getUserDetailModel.data!.userProof != null) {
-            idProofImageDynamicLinkFromServer.value =
-                getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
+            idProofImageDynamicLinkFromServer.value = getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
         }
         // await apiGetCountries();
@@ -518,25 +466,19 @@ class AccountController extends GetxController with GlobalVarMixin{
   ///Get Store List Api
   Future apiGetAllStoreList() async {
     isLoading.value = true;
-    debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
+    debugPrint("GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
-            headers,
-            showLoading: true)
+        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().storeList, headers, showLoading: true)
         .then((value) async {
       isLoading.value = false;
       debugPrint("GET STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+      if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
@@ -556,27 +498,20 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   ///Get Countries Api
   Future apiGetCountries() async {
-    debugPrint(
-        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
+    debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
 
     Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().countries,
-            headers,
-            showLoading: false)
+        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
         .then((value) async {
       debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.clear();
-        countriesList.addAll(
-            getCountriesModel.data!.countries as Iterable<CountriesList>);
+        countriesList.addAll(getCountriesModel.data!.countries as Iterable<CountriesList>);
         if (userAddress.isEmpty && countryId!.value.isEmpty) {
           countryId!.value = countriesList[0].countryId!;
           countryIndex.value = 0;
@@ -605,20 +540,17 @@ class AccountController extends GetxController with GlobalVarMixin{
         "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
 
     Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
-            headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId", headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET STATES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
@@ -647,13 +579,11 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   ///Update User Detail Api
   Future apiUpdateUserDetail() async {
-    debugPrint(
-        "UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
+    debugPrint("UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "user": {
@@ -662,13 +592,10 @@ class AccountController extends GetxController with GlobalVarMixin{
         "nick_name": nickNameTextController.text.trim(),
       },
       "address": {
-        "user_address_id":
-            getUserDetailModel.data?.user?.userAddresses != null &&
-                    getUserDetailModel.data!.user!.userAddresses!.isNotEmpty
-                ? getUserDetailModel
-                        .data?.user?.userAddresses?.first.userAddressId ??
-                    0
-                : null,
+        "user_address_id": getUserDetailModel.data?.user?.userAddresses != null &&
+                getUserDetailModel.data!.user!.userAddresses!.isNotEmpty
+            ? getUserDetailModel.data?.user?.userAddresses?.first.userAddressId ?? 0
+            : null,
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
@@ -680,15 +607,11 @@ class AccountController extends GetxController with GlobalVarMixin{
     };
     debugPrint("UPDATE USER DETAIL BODY**********$data");
     UserProvider()
-        .putWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}",
-            headers,
+        .putWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         firstNameTextController.clear();
         lastNameTextController.clear();
@@ -704,8 +627,6 @@ class AccountController extends GetxController with GlobalVarMixin{
           Get.back(id: pageIdApp.value);
         } else {
           Get.back(id: pageIdApp.value);
-
-          await apiGetUserDetailApi();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -715,18 +636,17 @@ class AccountController extends GetxController with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+      await apiGetUserDetailApi();
     });
   }
 
   ///Add user id proof Api
   Future apiAddUserIdProof() async {
-    debugPrint(
-        "ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
+    debugPrint("ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "proof_type_id": 1,
@@ -736,15 +656,11 @@ class AccountController extends GetxController with GlobalVarMixin{
     };
     debugPrint("ID PROOF DETAIL BODY**********$data");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}",
-            headers,
+        .postWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("ID PROOF DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -764,74 +680,58 @@ class AccountController extends GetxController with GlobalVarMixin{
         "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
 
     Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner",
-            headers,
+            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner", headers,
             showLoading: false)
         .then((value) async {
       debugPrint("GET NOTIFICATION STATUS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         notificationStatusModel = NotificationStatusModel.fromJson(value?.body);
 
-        notificationStatusList.value =
-            notificationStatusModel.data!.notificationSettings!;
+        notificationStatusList.value = notificationStatusModel.data!.notificationSettings!;
 
         for (int i = 0; i < notificationStatusList.length; i++) {
           if (notificationStatusList[i].notificationType == "order") {
             if (notificationStatusList[i].isForStore == true) {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value =
-                    notificationStatusList[i].isEnabled == true;
-                isUserTippingNotify.value =
-                    notificationStatusList[i].isEnabled != true;
+                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled == true;
+                isUserTippingNotify.value = notificationStatusList[i].isEnabled != true;
               }
             } else {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value =
-                    notificationStatusList[i].isEnabled != true;
-                isUserTippingNotify.value =
-                    notificationStatusList[i].isEnabled == true;
+                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled != true;
+                isUserTippingNotify.value = notificationStatusList[i].isEnabled == true;
               }
             }
           }
           if (notificationStatusList[i].notificationType == "offer") {
             if (notificationStatusList[i].isForStore == true) {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value =
-                    notificationStatusList[i].isEnabled == true;
-                isUserOfferNotify.value =
-                    notificationStatusList[i].isEnabled != true;
+                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled == true;
+                isUserOfferNotify.value = notificationStatusList[i].isEnabled != true;
               }
             } else {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value =
-                    notificationStatusList[i].isEnabled != true;
-                isUserOfferNotify.value =
-                    notificationStatusList[i].isEnabled == true;
+                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled != true;
+                isUserOfferNotify.value = notificationStatusList[i].isEnabled == true;
               }
             }
           }
           if (notificationStatusList[i].notificationType == "message") {
             if (notificationStatusList[i].isForStore == true) {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value =
-                    notificationStatusList[i].isEnabled == true;
-                isUserInboxMessagesNotify.value =
-                    notificationStatusList[i].isEnabled != true;
+                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
+                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
               }
             } else {
               if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value =
-                    notificationStatusList[i].isEnabled != true;
-                isUserInboxMessagesNotify.value =
-                    notificationStatusList[i].isEnabled == true;
+                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
+                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
               }
             }
           }
@@ -860,25 +760,17 @@ class AccountController extends GetxController with GlobalVarMixin{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    Map data = {
-      "notification_type": notificationType,
-      "is_for_store": isOwner,
-      "is_enabled": isEnabled
-    };
+    Map data = {"notification_type": notificationType, "is_for_store": isOwner, "is_enabled": isEnabled};
     debugPrint("UPDATE NOTIFICATION STATUS BODY**********$data");
     UserProvider()
         .postWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationSettingSave}",
-            headers,
+            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationSettingSave}", headers,
             showLoading: true)
         .then((value) async {
       log("UPDATE NOTIFICATION STATUS RESPONSE $notificationType *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         debugPrint("UPDATE NOTIFICATION offer **0***** $notificationType}");
 
@@ -911,21 +803,17 @@ class AccountController extends GetxController with GlobalVarMixin{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
     debugPrint("CREATE USER ACCESS BODY**********$data");
     UserProvider()
         .postWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}",
-            headers,
+            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE USER ACCESS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -948,19 +836,15 @@ class AccountController extends GetxController with GlobalVarMixin{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}",
-            headers,
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}", headers,
             showLoading: false)
         .then((value) async {
       log("GET MEMBERSHIP LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         membershipPlanModel = MembershipPlanModel.fromJson(value?.body);
         membershipList.value = membershipPlanModel.data!.membershipPlans!;
         update();
@@ -976,17 +860,13 @@ class AccountController extends GetxController with GlobalVarMixin{
   }
 
   ///Create membership plan
-  Future apiCreateMembershipPlan(
-      {int index = 0,
-      String membershipPlanId = "",
-      String planDays = ""}) async {
+  Future apiCreateMembershipPlan({int index = 0, String membershipPlanId = "", String planDays = ""}) async {
     debugPrint(
         "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {
       "store_id": selectedStoreId!.value,
@@ -1002,14 +882,11 @@ class AccountController extends GetxController with GlobalVarMixin{
     debugPrint("CREATE MEMBERSHIP BODY**********$data");
     UserProvider()
         .postWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}",
-            headers,
+            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("CREATE MEMBERSHIP RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         selectedStoreId!.value = "";
         Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
@@ -1037,8 +914,7 @@ class AccountController extends GetxController with GlobalVarMixin{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
@@ -1048,12 +924,9 @@ class AccountController extends GetxController with GlobalVarMixin{
             showLoading: false)
         .then((value) async {
       debugPrint("GET ACTIVE MEMBERSHIP LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        activeMembershipPlanModel =
-            ActiveMembershipPlanModel.fromJson(value?.body);
-        activeMembershipList.value =
-            activeMembershipPlanModel.data!.memberships!;
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+        activeMembershipPlanModel = ActiveMembershipPlanModel.fromJson(value?.body);
+        activeMembershipList.value = activeMembershipPlanModel.data!.memberships!;
 
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -1069,26 +942,20 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   ///Delete User Account
   Future apiDeleteUserAccount() async {
-    debugPrint(
-        "DELETE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}");
+    debugPrint("DELETE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
     debugPrint("DELETE USER BODY**********$data");
     UserProvider()
-        .deleteWithHeadersApi(
-            data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}",
-            headers,
+        .deleteWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("DELETE USER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -1106,22 +973,17 @@ class AccountController extends GetxController with GlobalVarMixin{
 
   ///logout user account
   Future apiLogOutUser() async {
-    debugPrint(
-        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
+    debugPrint("LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
-            headers,
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}", headers,
             showLoading: true)
         .then((value) async {
       debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
