@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +11,6 @@ import 'package:global_configs/global_configs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
-import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -25,12 +25,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   TextEditingController searchController = TextEditingController();
   TextEditingController deliveryServicesController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
-  late NearbyStoreListResponse nearbyStoreListResponse =
-      NearbyStoreListResponse();
-  late PreviousStoreResponse previousStoreListResponse =
-      PreviousStoreResponse();
-  late FavouriteStoreResponse favouriteStoreListResponse =
-      FavouriteStoreResponse();
+  late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
+  late PreviousStoreResponse previousStoreListResponse = PreviousStoreResponse();
+  late FavouriteStoreResponse favouriteStoreListResponse = FavouriteStoreResponse();
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   RxList<StoreDetails> favouriteStore = <StoreDetails>[].obs;
   RxList<StoreDetails> previousStore = <StoreDetails>[].obs;
@@ -92,8 +89,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   void setupScrollController() {
     scrollController.addListener(() {
-      if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 10) {
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 10) {
         if (type.value == 0) {
           if (storeAddresses.length < totalCount.value) {
             page.value++;
@@ -115,11 +111,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-  Rx<permission.PermissionStatus> permissionStatus =
-      permission.PermissionStatus.denied.obs;
+  Rx<permission.PermissionStatus> permissionStatus = permission.PermissionStatus.denied.obs;
 
-  Completer<GoogleMapController> googleMapController =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
 
   final CameraPosition kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -137,22 +131,16 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-
   void updateMap(lati, lngi, {isSearch = false}) async {
-    CameraPosition kLake = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(lati, lngi),
-        tilt: 0.0,
-        zoom: 14.15);
-    final GoogleMapController controller =
-    await googleMapController.future;
+    CameraPosition kLake =
+        CameraPosition(bearing: 192.8334901395799, target: LatLng(lati, lngi), tilt: 0.0, zoom: 14.15);
+    final GoogleMapController controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
     lat.value = lati;
     lng.value = lngi;
     type.value = 0;
-    if(!isSearch){
-      placeId.value ="";
-
+    if (!isSearch) {
+      placeId.value = "";
     }
     await apiGetNearByStores(isSearch: isSearch);
     updateMarker(lat.value, lng.value);
@@ -160,24 +148,21 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   void updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
-    final Uint8List markerIcon =
-    await getBytesFromAsset(ImageConstants.marker, 60);
+    final Uint8List markerIcon = await getBytesFromAsset(ImageConstants.marker, 60);
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.bytes(markerIcon),
       position: LatLng(latitude, longitude),
     );
-      markers[markerId] = marker;
+    markers[markerId] = marker;
   }
 
   late GlobalConfigs secureData;
 
   void updateCurrentLocation() async {
     // print("updateCurrentLocation *************************************");
-    secureData =
-    await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey =
-    secureData.configs['kGoogleApiKey'];
+    secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     Position currentLocation = await Utility.fetchCurrentLocation();
 
     updateMap(currentLocation.latitude, currentLocation.longitude);
@@ -185,23 +170,17 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
-
-
 
   void _listenForPermissionStatus() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var status = await permission.Permission.location.request();
       permissionStatus.value = status;
       if (permissionStatus.value == permission.PermissionStatus.denied ||
-          permissionStatus.value ==
-              permission.PermissionStatus.permanentlyDenied) {
+          permissionStatus.value == permission.PermissionStatus.permanentlyDenied) {
         Utility.showConfirmAlertMessage(AlertStringConstants.alertText,
             description: Platform.isAndroid
                 ? AlertStringConstants.locationAndroidAlertText
@@ -218,12 +197,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   }
 
   getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
 
     var roleVal = roleApp.value;
     role?.value = roleVal;
@@ -238,33 +213,25 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
-    debugPrint(
-        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
+    debugPrint("ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
-            headers,
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}", headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        debugPrint(
-            "ACTIVE CART cartCount******* ${activeCartModel.data!.cartItems!.length}");
-        debugPrint(
-            "ACTIVE CART storeId******* ${activeCartModel.data!.storeId.toString()}");
+        debugPrint("ACTIVE CART cartCount******* ${activeCartModel.data!.cartItems!.length}");
+        debugPrint("ACTIVE CART storeId******* ${activeCartModel.data!.storeId.toString()}");
         cartCount.value = activeCartModel.data!.cartItems!.length;
         // cartItems.value = activeCartModel.data!.cartItems??[];
-        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
-            activeCartModel.data!.cartItems!.isEmpty) {
+        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 && activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
         } else {
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
@@ -284,7 +251,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-
   ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
     isLoading.value = true;
@@ -292,25 +258,19 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
 
     Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
-            headers,
+        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}", headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("USER WALLET BALANCE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
-        if (value?.body["data"]["balance"] is int ||
-            value?.body["data"]["balance"] is String) {
-          walletBalance.value =
-              double.parse(value?.body["data"]["balance"].toString() ?? "");
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+        if (value?.body["data"]["balance"] is int || value?.body["data"]["balance"] is String) {
+          walletBalance.value = double.parse(value?.body["data"]["balance"].toString() ?? "");
           debugPrint("USER WALLET BALANCE *******${walletBalance.value}");
         } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"];
@@ -343,10 +303,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
             height10SizedBox,
             Text(
               StringConstants.enterEinNumberText,
-              style: const TextStyle(
-                  color: AppColors.primaryDark,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600),
+              style: const TextStyle(color: AppColors.primaryDark, fontSize: 20, fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             height15SizedBox,
@@ -366,10 +323,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     }
                     return null;
                   },
-                  style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(color: AppColors.black, fontSize: 16, fontWeight: FontWeight.w400),
                   controller: einNumberTextController,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
@@ -426,10 +380,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
                     child: Center(
                       child: Text(
                         StringConstants.okayText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: Colors.white),
+                        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0, color: Colors.white),
                       ),
                     ),
                   ),
@@ -443,15 +394,15 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     );
   }
 
-  clearNearbyPArms(){
+  clearNearbyPArms() {
     city.value = "";
     country.value = "";
     state.value = "";
     placeId.value = "";
 
     zipCodeTextController.clear();
-    lng.value = 0.0;
-    lat.value = 0.0;
+    /*lng.value = 0.0;
+    lat.value = 0.0;*/
 
     openingTimeTextController.clear();
     closingTimeTextController.clear();
@@ -460,7 +411,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     isOpenNow.value = "";
     deliveryServicesList.clear();
   }
-
 
   ///Get Nearby Stores Api
   Future apiGetNearByStores({
@@ -479,37 +429,31 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng.value,
-      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat.value,
+      "longitude": zipCodeTextController.text != "" ? null : lng.value,
+      "latitude": zipCodeTextController.text != "" ? null : lat.value,
       "city": isFilter && !isSearch ? "" : city.value,
       "place_id": isFilter && !isSearch ? "" : placeId.value,
       "state": isFilter && !isSearch ? "" : state.value,
       "country": isFilter && !isSearch ? "" : country.value,
-      "postal_code":
-      !isSearch  && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
-      "mileage": mileageTextController.text != ""
-          ? int.parse(mileageTextController.text)
-          : 50,
+      "postal_code": !isSearch && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
+      "mileage": mileageTextController.text != "" ? int.parse(mileageTextController.text) : 50,
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"
               ? true
               : false,
       "opening_time": openingTimeTextController.text != ""
-          ? Utility.formatDateTime(openingTimeTextController.text,
-              firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
           : null,
       "closing_time": closingTimeTextController.text != ""
-          ? Utility.formatDateTime(closingTimeTextController.text,
-              firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
           : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
@@ -521,23 +465,20 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     debugPrint("TOKEN ********** $headers");
     log("GET NEARBY STORES BODY******* $data");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList,
-            headers,
+        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList, headers,
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
       log("GET NEARBY STORES *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         isClicked.value = false;
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         totalCount.value = nearbyStoreListResponse.data?.totalCount ?? 0;
         List<StoreAddress>? storeAddressesNewList = [];
-        storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses?.where((s)=> s.store?.isVerified==true).toList();
+        storeAddressesNewList =
+            nearbyStoreListResponse.data!.storeAddresses?.where((s) => s.store?.isVerified == true).toList();
 
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
@@ -546,12 +487,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           storeAddresses.addAll(storeAddressesNewList);
         }
         storeAddresses.toSet().toList();
-        if(storeAddresses.length >= totalCount.value){
+        if (storeAddresses.length >= totalCount.value) {
           clearNearbyPArms();
         }
         update();
-        if (isFilter  ) {
-          if(storeAddresses.length >= totalCount.value){
+        if (isFilter) {
+          if (storeAddresses.length >= totalCount.value) {
             clearNearbyPArms();
             initialIndex.value = 0;
             for (var element in deliveryServices) {
@@ -564,7 +505,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         if (isSearch && storeAddresses.length >= totalCount.value) {
           clearNearbyPArms();
           initialIndex.value = 0;
-
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isClicked.value = false;
@@ -584,8 +524,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   ///Get Previous Stores Api
   Future apiGetPreviousStores({
     bool isFilter = false,
-  })
-  async {
+  }) async {
     isClicked.value = true;
     isDataLoading.value = true;
     if (page.value == 1) {
@@ -598,8 +537,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -613,19 +551,18 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       isFavLoading.value = false;
       isDataLoading.value = false;
       debugPrint("GET PREVIOUS STORES *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         isClicked.value = false;
         previousStoreListResponse = PreviousStoreResponse.fromJson(value?.body);
         totalCount.value = previousStoreListResponse.data?.totalCount ?? 0;
         List<StoreDetails>? storeAddressesNewList = [];
-        storeAddressesNewList = previousStoreListResponse.data!.previousStores?.where((s)=> s.isVerified==true).toList();
+        storeAddressesNewList =
+            previousStoreListResponse.data!.previousStores?.where((s) => s.isVerified == true).toList();
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             previousStore.value = [];
           }
           previousStore.addAll(storeAddressesNewList);
-
         }
         previousStore.toSet().toList();
         update();
@@ -660,8 +597,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     debugPrint("TOKEN ********** $headers");
@@ -675,15 +611,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       isFavLoading.value = false;
       isDataLoading.value = false;
       debugPrint("GET FAVOURITE STORES *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         isClicked.value = false;
-        favouriteStoreListResponse =
-            FavouriteStoreResponse.fromJson(value?.body);
+        favouriteStoreListResponse = FavouriteStoreResponse.fromJson(value?.body);
         totalCount.value = favouriteStoreListResponse.data?.totalCount ?? 0;
         List<StoreDetails>? storeAddressesNewList = [];
         storeAddressesNewList =
-            favouriteStoreListResponse.data!.favouriteStores?.where((s)=> s.isVerified==true).toList();
+            favouriteStoreListResponse.data!.favouriteStores?.where((s) => s.isVerified == true).toList();
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
             favouriteStore.value = [];
@@ -715,25 +649,19 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
     Map data = {"store_id": int.parse(id ?? "0")};
 
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createFavouriteStore,
-            headers,
+        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().createFavouriteStore, headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Create Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         if (type.value == 2) {
           favouriteStore.clear();
@@ -743,12 +671,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (type.value == 2) {
-          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+          favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
         } else if (type.value == 0) {
-          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= false;
+          storeAddresses.where((p0) => p0.store!.storeId == id).first.store?.isFavouriteStore?.value = false;
         } else if (type.value == 1) {
-
-          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+          previousStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
         }
 
         Utility.showAlertMessage(value?.body['message']);
@@ -758,12 +685,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Get.offAll(const StartJourneyScreen());
       } else {
         if (type.value == 2) {
-          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+          favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
         } else if (type.value == 0) {
-          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= false;
+          storeAddresses.where((p0) => p0.store!.storeId == id).first.store?.isFavouriteStore?.value = false;
         } else if (type.value == 1) {
-
-          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= false;
+          previousStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
         }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -788,17 +714,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     debugPrint("TOKEN ********** $headers");
     debugPrint("data ********** ${data.toString()}");
     UserProvider()
-        .deleteWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
-            headers,
+        .deleteWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().removeFavouriteStore, headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("Remove Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         if (type.value == 2) {
           favouriteStore.clear();
@@ -816,12 +737,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         }*/
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (type.value == 2) {
-          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value = true;
+          favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
         } else if (type.value == 0) {
-          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value = true;
+          storeAddresses.where((p0) => p0.store!.storeId == id).first.store?.isFavouriteStore?.value = true;
         } else if (type.value == 1) {
           previousStore.clear();
-          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value = true;
+          previousStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
         }
 
         Utility.showAlertMessage(value?.body['message']);
@@ -830,12 +751,12 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Get.offAll(const StartJourneyScreen());
       } else {
         if (type.value == 2) {
-          favouriteStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+          favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
         } else if (type.value == 0) {
-          storeAddresses.where((p0) => p0.store!.storeId == id ).first.store?.isFavouriteStore?.value= true;
+          storeAddresses.where((p0) => p0.store!.storeId == id).first.store?.isFavouriteStore?.value = true;
         } else if (type.value == 1) {
           previousStore.clear();
-          previousStore.where((p0) => p0.storeId == id ).first.isFavouriteStore?.value= true;
+          previousStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
         }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -874,28 +795,19 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
+      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    Map data = {
-      "store_id": int.parse(storeId),
-      "store_ein": einNumberTextController.text.trim()
-    };
+    Map data = {"store_id": int.parse(storeId), "store_ein": einNumberTextController.text.trim()};
     debugPrint("CLAIM STORE BODY **********"
         "$data");
     debugPrint("TOKEN ********** $headers");
     UserProvider()
-        .postWithHeadersApi(
-            data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().claimStoreRequest,
-            headers,
+        .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().claimStoreRequest, headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
       debugPrint("CLAIM STORE API BODY *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         einNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
