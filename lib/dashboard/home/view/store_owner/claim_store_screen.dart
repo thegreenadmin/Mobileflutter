@@ -128,56 +128,9 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                           itemCount:
                               ownerStoresController.unclaimedStoreList.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Dismissible(
-                              background: Container(
-                                color: AppColors.redLight,
-                                child: const Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.delete,
-                                        color: AppColors.red,
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              direction: DismissDirection.endToStart,
-                              resizeDuration:
-                                  const Duration(milliseconds: 200),
-                              key: UniqueKey(),
-                              confirmDismiss:
-                                  (DismissDirection direction) async {
-                                hasStoreAccess.value &&
-                                            permissionStoreList.isEmpty ||
-                                        permissionStoreList.any((element) =>
-                                            element.storeId ==
-                                                ownerStoresController
-                                                    .unclaimedStoreList[index]
-                                                    .store!
-                                                    .storeId &&
-                                            element.isStoreOwner == true)
-                                    ? Utility.showConfirmAlertMessage(
-                                        AlertStringConstants.areYouSureText,
-                                        okay: StringConstants.deleteText,
-                                        okayTap: () {
-                                        ownerStoresController.apiDeleteStore(
-                                            storeId: ownerStoresController
-                                                .unclaimedStoreList[index]
-                                                .store!
-                                                .storeId
-                                                .toString());
-                                      })
-                                    : Utility.showAlertMessage(
-                                        AlertStringConstants
-                                            .notAuthorizedToStoreText);
-                                return null;
-                              },
+                            return Visibility(
+                              visible: ownerStoresController.getUserDetailModel.data!.user!.phone ==  ownerStoresController
+                                  .unclaimedStoreList[index].store!.storePhone,
                               child: InkWell(
                                 onTap: () async {
                                   // ownerStoresController.storeId.value =
