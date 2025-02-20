@@ -436,13 +436,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "q": "",
       "page": page.value,
       "page_size": 5,
-      "longitude": zipCodeTextController.text != "" ? null : lng.value,
-      "latitude": zipCodeTextController.text != "" ? null : lat.value,
+      "longitude": zipCodeTextController.text != "" || isFilter ? null : lng.value,
+      "latitude": zipCodeTextController.text != "" || isFilter ? null : lat.value,
       "city": isFilter && !isSearch ? "" : city.value,
       "place_id": isFilter && !isSearch ? "" : placeId.value,
       "state": isFilter && !isSearch ? "" : state.value,
       "country": isFilter && !isSearch ? "" : country.value,
-      "postal_code": !isSearch && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
+      "postal_code": !isSearch  && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
       "mileage": mileageTextController.text != "" ? int.parse(mileageTextController.text) : 50,
       "is_open_now": isOpenNow.value == ""
           ? null
@@ -462,7 +462,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     debugPrint("GET GET NEARBY STORES URL**********"
         "${ServerCommunicator().baseUrl}${ServerCommunicator().nearByStoreList}");
 
-    debugPrint("TOKEN ********** $headers");
+    debugPrint("TOKEN ********** ${zipCodeTextController.text}");
+    debugPrint("TOKEN ********** ${!isSearch && zipCodeTextController.text != ""}");
     log("GET NEARBY STORES BODY******* $data");
     UserProvider()
         .postWithHeadersApi(data, ServerCommunicator().baseUrl + ServerCommunicator().nearByStoreList, headers,
