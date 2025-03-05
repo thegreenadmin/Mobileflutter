@@ -213,13 +213,11 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                           icon: Column(children: [
                             Image.asset(
                               bottomNavigationPageController
-                                          .selectedIndex.value ==
-                                      4
+                                          .selectedIndex.value == 4
                                   ? ImageConstants.morefill
                                   : ImageConstants.more,
                               color: bottomNavigationPageController
-                                          .selectedIndex.value ==
-                                      4
+                                          .selectedIndex.value == 4
                                   ? AppColors.primary
                                   : AppColors.blackLight,
                               scale: 3.8,
@@ -229,8 +227,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                               BottomNavStringConstants.moreText,
                               style: TextStyle(
                                   color: bottomNavigationPageController
-                                              .selectedIndex.value ==
-                                          4
+                                              .selectedIndex.value == 4
                                       ? AppColors.primary
                                       : AppColors.blackLight,
                                   fontWeight: FontWeight.w500,
