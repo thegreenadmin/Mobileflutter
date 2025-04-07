@@ -1,4 +1,6 @@
 PODS:
+  - connectivity_plus (0.0.1):
+    - Flutter
   - country_codes (0.0.1):
     - Flutter
   - devicelocale (0.0.1):
@@ -175,6 +177,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - country_codes (from `.symlinks/plugins/country_codes/ios`)
   - devicelocale (from `.symlinks/plugins/devicelocale/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
@@ -224,6 +227,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   country_codes:
     :path: ".symlinks/plugins/country_codes/ios"
   devicelocale:
@@ -280,6 +285,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
+  connectivity_plus: 2a701ffec2c0ae28a48cf7540e279787e77c447d
   country_codes: b0900f46ad686281d5dab438e354e44ad10f5941
   devicelocale: 35ba84dc7f45f527c3001535d8c8d104edd5d926
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c

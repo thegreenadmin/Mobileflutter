@@ -150,8 +150,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
     List<add_worker.AddWorkerEmployeeTiming>? employeeTimings = [];
     for (var element in selectedWeekDaysList) {
       if (element.isSelected == true) {
-        debugPrint("${element.id} ${element.isSelected} ${element.name} ");
-        add_worker.AddWorkerEmployeeTiming employeeTiming =
+                 add_worker.AddWorkerEmployeeTiming employeeTiming =
             add_worker.AddWorkerEmployeeTiming();
         employeeTiming.dayOfWeek = element.id;
         employeeTiming.is24HrsActive = is247Time.value;
@@ -169,21 +168,16 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
       }
     }
     addWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint(
-        "ADD WORKER URL ***********${ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser}");
-    debugPrint("ADD WORKER URL ***********$headers");
-    debugPrint("ADD WORKER BODY ***********${addWorkerRequest.toJson()}");
-
+               
     UserProvider()
         .postWithHeadersApi(
             addWorkerRequest,
-            ServerCommunicator().baseUrl + ServerCommunicator().createStoreUser,
+            ServerCommunicator.baseUrl + ServerCommunicator.createStoreUser,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("ADD WORKER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message'] ?? "");
         resetForm();
@@ -203,10 +197,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   /// Edit Worker Api
   Future<dynamic> apiEditWorker() async {
     isLoading.value = true;
-    debugPrint("storeId ***${storeId.value}*");
-    debugPrint(
-        "EDIT WORKER***${storeId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().editWorker}");
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -268,9 +259,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
                   firstFormat: "hh:mm a",
                   secFormat: "HH:mm:ss")
               .toString();
-          debugPrint("test isSelected dayOfWeek");
-          debugPrint(element.id.toString());
-
+                      
           if (!employeeTimings.any((data) => data.dayOfWeek == element.id)) {
             employeeTimings.add(employeeTiming);
           }
@@ -295,24 +284,21 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
                   secFormat: "HH:mm:ss")
               .toString();
 
-          debugPrint("test else dayOfWeek");
-          employeeTimings.add(employeeTiming);
+                     employeeTimings.add(employeeTiming);
         }
       }
     }
     editWorkerRequest.employeeTimings = employeeTimings;
-    debugPrint("EDIT WORKER BODY ***${editWorkerRequest.toJson()}");
-
+     
     UserProvider()
         .putWithHeadersApi(
             editWorkerRequest,
-            ServerCommunicator().baseUrl + ServerCommunicator().editWorker,
+            ServerCommunicator.baseUrl + ServerCommunicator.editWorker,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("EDIT WORKER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         resetForm();
@@ -334,10 +320,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   /// Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
-    debugPrint("storeId ***${storeId.value}*");
-    debugPrint(
-        "DELETE WORKER URL **********${storeId.value}**${workerId.value}*******${ServerCommunicator().baseUrl}${ServerCommunicator().deleteWorker}");
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -351,12 +334,11 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
     UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().deleteWorker,
+            ServerCommunicator.baseUrl + ServerCommunicator.deleteWorker,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE WORKER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message']);
         await apiGetWorkerList();
@@ -419,14 +401,11 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == ApiConstants.statusCode200 ||
+                    if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         userImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
@@ -438,11 +417,9 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(responseData['message'].toString());
       }
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -453,16 +430,14 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   ///Get particular store api
   Future apiGetParticularStore() async {
-    debugPrint(
-        "GET PARTICULAR STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDetails}?store_id=$storeId",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeDetails}?store_id=$storeId",
             headers,
             showLoading: false)
         .then((value) async {
@@ -527,21 +502,18 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   ///Get User Store List Api
   Future apiGetUserStoreList() async {
-    debugPrint(
-        "GET USER STORE LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStore}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userStore,
+            ServerCommunicator.baseUrl + ServerCommunicator.userStore,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET USER STORE LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getUserStoreListModel = GetUserStoreListModel.fromJson(value?.body);
         getUserStoreList.value = getUserStoreListModel.data!.stores!;
@@ -562,22 +534,19 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   Future apiGetWorkerList() async {
     workerList.clear();
     isLoading.value = true;
-    debugPrint(
-        "WORKER LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().workerList}?store_id=${int.parse(storeId.value)}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.workerList}?store_id=${int.parse(storeId.value)}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("WORKER LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         workerListResponse = WorkerListResponse.fromJson(value?.body);
         workerList.value = workerListResponse.data?.storeUsers ?? [];
@@ -598,22 +567,19 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   Future apiGetRoleList() async {
     workerList.clear();
     isLoading.value = true;
-    debugPrint(
-        "API ROLE LIST URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().roleList}?store_id=${int.parse(storeId.value)}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.roleList}?store_id=${int.parse(storeId.value)}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("API GET ROLE LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeRoleListResponse = StoreRoleListResponse.fromJson(value?.body);
         storeRoleList.value = storeRoleListResponse.data?.storeRoles ?? [];
@@ -634,22 +600,19 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   Future apiGetWorkerDetail() async {
     isLoading.value = true;
     selectedWeekDaysList.clear();
-    debugPrint(
-        "GET STORE USER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeUserDetail}?store_user_id=${int.parse(workerId.value)}&store_id=${int.parse(storeId.value)}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET  STORE USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         workerDetailResponse = WorkerDetailResponse.fromJson(value?.body);
         employeeNameTextController.text =

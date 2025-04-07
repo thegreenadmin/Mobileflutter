@@ -68,19 +68,15 @@ class ContactUsController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("CREATE USER BODY********** $data");
-    debugPrint(
-        "CREATE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().utilsQueryCreate}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().utilsQueryCreate,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.utilsQueryCreate,
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("CREATE USER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         nameTextController.clear();

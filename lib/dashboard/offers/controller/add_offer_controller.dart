@@ -89,14 +89,11 @@ class AddOffersController extends GetxController with GlobalVarMixin{
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == ApiConstants.statusCode200 ||
+                    if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         offerImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
@@ -108,11 +105,9 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -124,17 +119,21 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    apiGetStoreList();
+
 
     isFrom.value = Get.parameters["isFrom"] ?? "";
     if (isFrom.value == StringConstants.addOfferText) {
     } else {
       storeIdValue.value = Get.parameters["storeId"] ?? "";
       offerId.value = Get.parameters["offerId"] ?? "";
-
+      WidgetsBinding.instance.addPostFrameCallback((_) {
       if (storeIdValue.value.isNotEmpty && offerId.value.isNotEmpty) {
-        apiGetStoreProducts();
+
+          apiGetStoreProducts();
+
+
       }
+      });
     }
     getPage();
   }
@@ -191,9 +190,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
   ///Add Offer Api
   Future apiAddOffer() async {
-    debugPrint(
-        "ADD OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferCreate}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -215,18 +212,15 @@ class AddOffersController extends GetxController with GlobalVarMixin{
     offer.offerType = discountType.value.toLowerCase();
     offer.offerValue = double.parse(discountOrOfferTextController.text.trim());
     addOfferRequestModel.offer = offer;
-    debugPrint("ADD OFFER BODY********** ${addOfferRequestModel.toJson()}");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             addOfferRequestModel,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeOfferCreate,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeOfferCreate,
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("ADD OFFER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         radioValue.value = "";
@@ -252,24 +246,20 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
-    debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeList,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
@@ -297,10 +287,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   /// Get store products List Api
   Future apiGetStoreProducts() async {
     isLoading.value = true;
-    debugPrint(
-      "GET STORE PRODUCTS LIST URL ADD**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
-    );
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -318,14 +305,12 @@ class AddOffersController extends GetxController with GlobalVarMixin{
     UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductList}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+                    if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
@@ -348,11 +333,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   ///Get store products have no offer
   Future apiGetStoreNonOfferProducts() async {
     isLoading.value = true;
-    debugPrint(
-      "GET STORE PRODUCTS LIST URL**********"
-      "${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
-    );
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -370,14 +351,12 @@ class AddOffersController extends GetxController with GlobalVarMixin{
     UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeNonOfferProductList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeNonOfferProductList}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+                    if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreNonOfferProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
@@ -432,22 +411,18 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers Detail List Api
   Future apiGetOffersDetail() async {
-    debugPrint(
-      "GET OFFER DETAIL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
-    );
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
             headers,
             showLoading: true)
         .then((value) async {
-      log("GET OFFER DETAIL RESPONSE *******${jsonEncode(value?.body)}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOfferDetailModel = GetOfferDetailModel.fromJson(value?.body);
         offerNameTextController.text = getOfferDetailModel.data!.offerName!;
@@ -516,17 +491,14 @@ class AddOffersController extends GetxController with GlobalVarMixin{
       },
       "offer_products": selectedProducts
     };
-    debugPrint("UPDATE OFFER BODY**********$body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .putWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferEdit,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeOfferEdit,
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("UPDATE OFFER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         radioValue.value = "";

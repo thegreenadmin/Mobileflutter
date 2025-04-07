@@ -295,30 +295,25 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Store Details Api
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
-    debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${ownerSelectedStore.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${ownerSelectedStore.value}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE DETAILS RESPONSE*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
         dynamicLink.value =
             storeDetailsResponse.value.data!.store!.dynamicLink.toString();
-        debugPrint("DEEP LINK ***********${dynamicLink.value}");
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
@@ -334,22 +329,18 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Countries Api
   Future apiGetCountries() async {
     countryList.clear();
-    debugPrint(
-        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            ServerCommunicator.baseUrl + ServerCommunicator.countries,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         countryListModel = CountryListModel.fromJson(value?.body);
         countryList.value = countryListModel.data!.countries!;
@@ -370,24 +361,20 @@ class WalletController extends GetxController with GlobalVarMixin{
   Future apiGetStoreList() async {
     storeList.clear();
     isStoresLoading.value = true;
-    debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().ownersStoreList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().ownersStoreList,
+            ServerCommunicator.baseUrl + ServerCommunicator.ownersStoreList,
             headers,
             showLoading: false)
         .then((value) async {
       isStoresLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${jsonEncode(value?.body)}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetOwnerStoresResponse.fromJson(value?.body);
         storeList.clear();
@@ -430,7 +417,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
-          'POST', Uri.parse(ServerCommunicator().createStripeToken));
+          'POST', Uri.parse(ServerCommunicator.createStripeToken));
       request.bodyFields = {
         'card[number]': cardNumber.value,
         'card[exp_month]': month,
@@ -445,36 +432,29 @@ class WalletController extends GetxController with GlobalVarMixin{
         stripeToken.value = parsed['id'].toString();
         await apiCreateCard();
       } else {
-        debugPrint(response.reasonPhrase);
-      }
+               }
     } catch (error) {
-      debugPrint(error.toString());
-    }
+           }
   }
 
   ///Api Create Card
   Future apiCreateCard() async {
-    debugPrint(
-        "CREATE CARD URL *******${ServerCommunicator().baseUrl + ServerCommunicator().createCard}");
-    Map body = {"token_id": stripeToken.value};
+         Map body = {"token_id": stripeToken.value};
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("CREATE CARD BODY *******$body");
-    debugPrint("CREATE CARD HEADERS *******$headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().createCard,
+            ServerCommunicator.baseUrl + ServerCommunicator.createCard,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       if (value != null) {
-        debugPrint("CREATE CARD  RESPONSE *******${value.body}");
-        if (value.body['success'] == true ||
+                 if (value.body['success'] == true ||
             value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
@@ -492,34 +472,31 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Card List Api
   Future apiGetCardList() async {
     isLoading.value = true;
-    debugPrint("GET CARD LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeCardList}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET CARD LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         cardListModel = CardListModel.fromJson(value?.body);
         cardList.value = cardListModel.data?.cards ?? [];
+        isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
+        Get.parameters.clear(); isLoading.value = false;
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message']
                 .toString()
                 .toLowerCase()
@@ -534,9 +511,7 @@ class WalletController extends GetxController with GlobalVarMixin{
   /// Add Money to stripe wallet
   Future apiAddMoneyToWallet() async {
     isLoading.value = true;
-    debugPrint(
-        "ADD MONEY TO WALLET URL *******${ServerCommunicator().baseUrl + ServerCommunicator().userWalletRechargeStripe}");
-    Map body = {
+         Map body = {
       "user_stripe_card_id": userStripeCardId!.value,
       "amount": amountTextController.text.trim()
     };
@@ -546,33 +521,33 @@ class WalletController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("ADD MONEY TO WALLET BODY *******$body");
-    debugPrint("ADD MONEY TO WALLET HEADERS *******$headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().userWalletRechargeStripe,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.userWalletRechargeStripe,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       if (value != null) {
-        isLoading.value = false;
-        debugPrint("ADD MONEY TO WALLET RESPONSE *******${value.body}");
-        if (value.body['status'] == ApiConstants.statusCode201 ||
+
+                 if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           userStripeCardId!.value = "";
           amountTextController.clear();
           selectPaymentType.value = "";
           selectPaymentType.value.isEmpty;
+          isLoading.value = false;
           userStripeCardId!.value.isEmpty;
           Future.delayed(const Duration(seconds: 1), () {
             Get.back(id: pageIdApp.value);
           });
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
+                   isLoading.value = false;
           Utility.showAlertMessage(value.body['message']);
         } else {
+                   isLoading.value = false;
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -583,34 +558,30 @@ class WalletController extends GetxController with GlobalVarMixin{
   Future apiGetUserWalletBalance() async {
     userWalletBalance!.value = "";
     isLoading.value = true;
-    debugPrint("GET USER WALLET BALANCE URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletBalance}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET USER WALLET BALANCE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {isLoading.value = false;
         userWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -621,9 +592,7 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Delete Card api
   Future apiDeleteCard({String userStripeCardId = ""}) async {
     isLoading.value = true;
-    debugPrint(
-        "DELETE CARD URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -631,29 +600,27 @@ class WalletController extends GetxController with GlobalVarMixin{
     };
     Map body = {"user_stripe_card_id": userStripeCardId};
 
-    debugPrint("DELETE CARD BODY ************* $body");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeCardDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeCardDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("DELETE CARD RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         Utility.showToast(value?.body['message']);
         await apiGetCardList();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         await apiGetCardList();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -664,38 +631,34 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Owner Balance Api
   Future apiGetOwnerWalletBalance() async {
     isLoading.value = true;
-    debugPrint(
-        "GET OWNER WALLET BALANCE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${ownerSelectedStore.value}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeWalletBalance}?store_id=${ownerSelectedStore.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeWalletBalance}?store_id=${ownerSelectedStore.value}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET OWNER WALLET BALANCE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {  isLoading.value = false;
         ownerWalletBalance!.value =
             value?.body['data']['balance'].toStringAsFixed(2);
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
         String msg = value?.body["message"].toString().toLowerCase() ?? "";
-        if (msg.contains("store not found")) {
+        if (msg.contains("store not found")) {  isLoading.value = false;
           Utility.showAlertMessage("Please select store");
-        } else {
+        } else {  isLoading.value = false;
           if (value?.body['message'] != null) {
             Utility.showAlertMessage(value?.body['message']);
           }
@@ -714,7 +677,7 @@ class WalletController extends GetxController with GlobalVarMixin{
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request =
-          http.Request('POST', Uri.parse(ServerCommunicator().createBankToken));
+          http.Request('POST', Uri.parse(ServerCommunicator.createBankToken));
       request.bodyFields = {
         'bank_account[country]': selectedCountry.value.trim(),
         'bank_account[currency]': "USD",
@@ -724,37 +687,30 @@ class WalletController extends GetxController with GlobalVarMixin{
         'bank_account[routing_number]': routingTextController.text.trim(),
         'bank_account[account_number]': accountNumberTextController.text.trim()
       };
-      debugPrint("BANK ACCOUNT TOKEN BODY **********${request.bodyFields}");
-      request.headers.addAll(headers);
+             request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       var streamResponse = await http.Response.fromStream(response);
-      debugPrint("BANK ACCOUNT RESPONSE ************${streamResponse.body}");
-      debugPrint(response.statusCode.toString());
-      debugPrint(response.reasonPhrase);
-
+                     
       if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
 
         bankToken.value = parsed['id'].toString();
-
+        isLoading.value = false;
         apiCreateStoreStripeAccount();
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 400) {  isLoading.value = false;
         var parsed = jsonDecode(streamResponse.body);
         Utility.showAlertMessage(parsed['error']['message'].toString());
-      } else {
+      } else {  isLoading.value = false;
         var parsed = jsonDecode(streamResponse.body);
         Utility.showAlertMessage(parsed['error']['message'].toString());
       }
-    } catch (error) {
-      debugPrint(error.toString());
-    }
+    } catch (error) {  isLoading.value = false;
+           }
   }
 
   Future apiCreateStoreStripeAccount() async {
     isLoading.value = true;
-    debugPrint(
-        "CREATE OWNER STRIPE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankCreate}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -763,20 +719,16 @@ class WalletController extends GetxController with GlobalVarMixin{
     Map<String, String> body = {
       "token_id": bankToken.value,
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().userStripeBankCreate,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.userStripeBankCreate,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("CREATE OWNER STRIPE BANK ACCOUNT BODY ******* $body");
-      debugPrint(
-          "CREATE OWNER STRIPE BANK ACCOUNT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+
+                    if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message']);
         selectedCountry.value = "";
@@ -788,12 +740,12 @@ class WalletController extends GetxController with GlobalVarMixin{
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();isLoading.value = false;
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -804,39 +756,35 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get BANK ACCOUNT List Api
   Future apiGetBankAccountList() async {
     isLoading.value = true;
-    debugPrint("GET BANK ACCOUNT LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeBankList}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET BANK ACCOUNT LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {  isLoading.value = false;
         bankAccountListModel = BankAccountListModel.fromJson(value?.body);
         bankAccountList.value = bankAccountListModel.data?.banks ?? [];
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message']
                 .toString()
                 .toLowerCase()
                 .contains("stripe") !=
-            true) {
+            true) {  isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -845,9 +793,7 @@ class WalletController extends GetxController with GlobalVarMixin{
 
   ///Delete Card api
   Future apiDeleteBankAccounts({String userStripeBankId = ""}) async {
-    debugPrint(
-        "DELETE BANK ACCOUNT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankDelete}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -855,28 +801,26 @@ class WalletController extends GetxController with GlobalVarMixin{
     };
     Map body = {"user_stripe_bank_id": userStripeBankId};
 
-    debugPrint("DELETE BANK ACCOUNT BODY ************* $body");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeBankDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeBankDelete}",
             headers,
             showLoading: false)
-        .then((value) async {
-      debugPrint("DELETE BANK ACCOUNT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+        .then((value) async {  isLoading.value = false;
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetBankAccountList();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         await apiGetBankAccountList();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -887,9 +831,7 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Create Auto Recharge
   Future apiCreateAutoRecharge() async {
     isLoading.value = true;
-    debugPrint(
-        "CREATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoCharge}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -911,21 +853,17 @@ class WalletController extends GetxController with GlobalVarMixin{
       "frequency":
           autoChargeType.value == "threshold" ? "1" : selectedFrequency.value
     };
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("CREATE AUTO RECHARGE BODY ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().userWalletAutoCharge,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.userWalletAutoCharge,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("CREATE AUTO RECHARGE BODY ******* $body");
-      debugPrint("CREATE AUTO RECHARGE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+                    if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) { isLoading.value = false;
         Utility.showToast(value?.body['message']);
         routingTextController.clear();
         startDateTextController.clear();
@@ -938,14 +876,14 @@ class WalletController extends GetxController with GlobalVarMixin{
         accountNumberTextController.clear();
         await apiGetAutoRechargeDetail();
         Get.back(id: pageIdApp.value);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -956,28 +894,24 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Auto recharge
   Future apiGetAutoRechargeDetail() async {
     isLoading.value = true;
-    debugPrint("GET AUTO RECHARGE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeGet}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeGet}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletAutoChargeGet}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      log("GET AUTO RECHARGE DETAIL RESPONSE *******${jsonEncode(value?.body)}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+              if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {isLoading.value = false;
         getAutoRechargeModel = GetAutoRechargeModel.fromJson(value?.body);
 
-        if (getAutoRechargeModel.data?.userWalletAutoCharge != null) {
+        if (getAutoRechargeModel.data?.userWalletAutoCharge != null) {isLoading.value = false;
           if (getAutoRechargeModel.data?.userWalletAutoCharge?.status ==
               "active") {
             isAutoRechargeEnable.value = true;
@@ -1036,14 +970,14 @@ class WalletController extends GetxController with GlobalVarMixin{
           }
         } else {
           isAutoRechargeEnable.value = false;
-        }
+        }isLoading.value = false;
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1054,9 +988,7 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Update Auto Recharge
   Future apiUpdateAutoRecharge() async {
     isLoading.value = true;
-    debugPrint(
-        "UPDATE AUTO RECHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeUpdate}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1081,19 +1013,16 @@ class WalletController extends GetxController with GlobalVarMixin{
               ? frequencyTextController.text
               : selectedFrequency.value
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .putWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().userWalletAutoChargeUpdate,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.userWalletAutoChargeUpdate,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("UPDATE AUTO RECHARGE BODY ******* $body");
-      debugPrint("UPDATE AUTO RECHARGE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+
+                    if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message']);
         selectedFrequency.value = "";
@@ -1107,16 +1036,16 @@ class WalletController extends GetxController with GlobalVarMixin{
         startDateTextController.clear();
         endDateTextController.clear();
         Get.back(id: pageIdApp.value);
-
+        isLoading.value = false;
         await apiGetAutoRechargeDetail();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1127,9 +1056,7 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Delete autoCharge api
   Future apiDisableAutoRecharge() async {
     isLoading.value = true;
-    debugPrint(
-        "DISABLE AUTO CHARGE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1140,29 +1067,27 @@ class WalletController extends GetxController with GlobalVarMixin{
           .data!.userWalletAutoCharge!.userWalletAutoChargeId
           .toString()
     };
-    debugPrint("DISABLE AUTO CHARGE BODY ************* $body");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletAutoChargeDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletAutoChargeDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("DISABLE AUTO CHARGE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value = false;
         Utility.showToast(value?.body['message']);
         await apiGetAutoRechargeDetail();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         await apiGetAutoRechargeDetail();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1173,36 +1098,31 @@ class WalletController extends GetxController with GlobalVarMixin{
   ///Get Account Details
   Future apiGetAccountDetails() async {
     isLoading.value = true;
-    debugPrint("GET STRIPE CONNECTED ACCOUNT DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userStripeConnectedAccountDetails}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeConnectedAccountDetails}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint(
-          "GET STRIPE CONNECTED ACCOUNT DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {isLoading.value = false;
         capability.value =
             value?.body["data"]['account']['capabilities']['transfers'];
         payouts.value = value?.body["data"]['account']['payouts_enabled'];
         accountLink.value = value?.body["data"]['accountLink']['url'];
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       }
     });

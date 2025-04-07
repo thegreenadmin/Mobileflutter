@@ -20,7 +20,7 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxString? storeIdValue = "".obs;
   RxInt pageId = 0.obs;
   RxInt cartCount = 0.obs;
-  RxBool? isLoading = false.obs;
+  RxBool isLoading = false.obs;
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
 
@@ -139,31 +139,23 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
-    isLoading?.value = true;
-    debugPrint(
-        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
-    Map<String, String> headers = {
+    isLoading.value = true;
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
       "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
+        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}",
         headers,
         showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("ACTIVE CART Home RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+      isLoading.value = false;
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        debugPrint(
-            "ACTIVE CART Home cartCount ******* ${activeCartModel.data!.cartItems!.length}");
-        debugPrint(
-            "ACTIVE CART Home storeId ******* ${activeCartModel.data!.storeId.toString()}");
-        cartCount.value = activeCartModel.data!.cartItems!.length;
+                          cartCount.value = activeCartModel.data!.cartItems!.length;
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
@@ -184,29 +176,24 @@ class HomeController extends GetxController with GlobalVarMixin {
   }
   ///Get User Detail Info Api
   Future apiGetUserDetail() async {
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+            ServerCommunicator.baseUrl + ServerCommunicator.userDetail,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
-        firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
-        lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
-
+        SharedPreferenceStorage
+            .setData("userData", getUserDetailModel.data);
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
@@ -215,6 +202,9 @@ class HomeController extends GetxController with GlobalVarMixin {
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
+        firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
+        lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
+
         await getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -227,21 +217,18 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///logout user account
   Future apiLogOutUser() async {
-    debugPrint(
-        "LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.logoutUser}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         clearData();
@@ -267,27 +254,22 @@ class HomeController extends GetxController with GlobalVarMixin {
   Future apiGetUserOffersList() async {
     userCarouselImgList.clear();
     userOfferList.clear();
-    isLoading?.value = true;
-    debugPrint(
-      "GET USER OFFER STORES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=3",
-    );
-
+    isLoading.value = true;
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("GET USER OFFER STORES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value?.body);
         userOfferList.value = userOffersModel.data!.offers!;
@@ -298,13 +280,14 @@ class HomeController extends GetxController with GlobalVarMixin {
           }
           userCarouselImgList.add(userOfferList[i]);
         }
+        isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -314,10 +297,8 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [USER OLD]
   Future apiGetUserFeaturedProductsOLD() async {
-    isLoading?.value = true;
-    debugPrint("USER FEATURED PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-
+    isLoading.value = true;
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -341,30 +322,27 @@ class HomeController extends GetxController with GlobalVarMixin {
       ]
     };
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("USER FEATURED PRODUCT BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeFeatureProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeFeatureProductList,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
-            userFeaturedProductModel.data!.products!;
+            userFeaturedProductModel.data!.products!;  isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
+        Get.parameters.clear();  isLoading.value = false;
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -375,11 +353,10 @@ class HomeController extends GetxController with GlobalVarMixin {
   ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
     featuredUserProductList.clear();
-    isLoading?.value = true;
+    isLoading.value = true;
     String url =
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
-    debugPrint("USER FEATURED PRODUCT URL**********$url");
-
+        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeProducts}?longitude=${lng.toString()}&latitude=${lat.toString()}&mileage=1000&page=1&page_size=5";
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -403,25 +380,22 @@ class HomeController extends GetxController with GlobalVarMixin {
       ]
     };
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("USER FEATURED PRODUCT BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .getWithHeadersApi(url, headers, showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("USER FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
-            userFeaturedProductModel.data?.products ??[];
+            userFeaturedProductModel.data?.products ??[]; isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
+        Get.parameters.clear(); isLoading.value = false;
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -432,18 +406,15 @@ class HomeController extends GetxController with GlobalVarMixin {
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
     getOwnerOfferList.clear();
-    isLoading?.value = true;
+    isLoading.value = true;
     ownerCarouselImgList.clear();
-    debugPrint(
-        "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    Map body = {
+         Map body = {
       "store_id": null,
       "page": 1,
       "page_size": 3,
@@ -454,14 +425,12 @@ class HomeController extends GetxController with GlobalVarMixin {
     UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeOfferList,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("OWNER OFFERS LIST BODY ******* $body");
-      log("OWNER OFFERS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+                     if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
@@ -472,13 +441,15 @@ class HomeController extends GetxController with GlobalVarMixin {
             }
             ownerCarouselImgList.add(getOwnerOfferList[i].image!.dynamicUrl!);
           }
-        }
+        }    isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
+        isLoading.value = false;
         await Get.offAll(const StartJourneyScreen());
       } else {
+                       isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -489,17 +460,14 @@ class HomeController extends GetxController with GlobalVarMixin {
   ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
     ownerFeatureProductList.clear();
-    isLoading?.value = true;
-    debugPrint("OWNER FEATURED PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}");
-
+    isLoading.value = true;
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-
+     
     Map<String, dynamic> body = {
       "q": "",
       "store_id": null,
@@ -519,25 +487,25 @@ class HomeController extends GetxController with GlobalVarMixin {
     UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeProductList,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading?.value = false;
-      debugPrint("OWNER FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         ownerFeaturedProductModel =
             OwnerFeaturedProductModel.fromJson(value?.body);
         ownerFeatureProductList.value =
             ownerFeaturedProductModel.data?.products ?? [];
+        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
+        Get.parameters.clear();isLoading.value = false;
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

@@ -39,8 +39,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
   getFcmToken() async {
     fcmToken!.value = (await messaging.getToken())!;
-
-    // debugPrint("FCM TOKEN *************$fcmToken");
   }
 
   bool otpValidateAndSave() {
@@ -59,7 +57,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
       try {
         await messaging.getToken().then((value) {
           fcmToken!.value = value ?? "";
-          debugPrint("FCM TOKEN *************$fcmToken");
 
           apiOtpVerify();
         });
@@ -83,23 +80,20 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
           ? StringConstants.gcmText
           : StringConstants.apnsText,
     };
-    debugPrint("OTP VERIFY BODY********** $data");
-    debugPrint(
-        "OTP VERIFY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().otpVerify}");
-    UserProvider()
+                UserProvider()
         .postApi(
-            data, ServerCommunicator().baseUrl + ServerCommunicator().otpVerify,
-            showLoading: true)
+            data, ServerCommunicator.baseUrl + ServerCommunicator.otpVerify,
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("OTP VERIFY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         otpTextController.clear();
         SharedPreferenceStorage.removeData("token");
         SharedPreferenceStorage.setData("pageId", 0);
         authToken.value = value?.body['data']['token'];
+
         SharedPreferenceStorage.setData("token", value?.body['data']['token']);
         hasStoreAccess.value = value?.body['data']['has_store_access'] ?? false;
         isStoreOwner.value = value?.body['data']['is_store_owner'] ?? false;
@@ -116,11 +110,14 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
           SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
           roleApp.value = Role.customerRoleText;
         }
+        isLoading.value = false;
         Get.offAll(() => const BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         // Email must be unique & user already exists
+                isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {
+                isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -135,24 +132,25 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim()
     };
-    debugPrint("RESEND BODY********** $data");
-    debugPrint(
-        "RESEND OTP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
-    UserProvider()
+                UserProvider()
         .postApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
-            showLoading: true)
+            ServerCommunicator.baseUrl + ServerCommunicator.generateOtp,
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("RESEND OTP RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201) {
+
+              if (value?.body["status"] == ApiConstants.statusCode201) {
+                isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //User not exist
+                isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
+
       } else if (value?.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
+                isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {
+                isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -163,22 +161,18 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     try {
-      debugPrint(
-          "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
-      Map<String, String> headers = {
+              Map<String, String> headers = {
         StringConstants.authorizationText:
             "${StringConstants.bearerText} ${authToken.value}",
       };
-      debugPrint("GET STORE PERMISSIONS TOKEN ********** $headers");
-      UserProvider()
+              UserProvider()
           .getWithHeadersApi(
-              ServerCommunicator().baseUrl +
-                  ServerCommunicator().storePermissionsList,
+              ServerCommunicator.baseUrl +
+                  ServerCommunicator.storePermissionsList,
               headers,
               showLoading: false)
           .then((value) async {
-        log("GET STORE PERMISSIONS RESPONSE *******${value?.body}");
-        if (value?.body["status"] == ApiConstants.statusCode201 ||
+                  if (value?.body["status"] == ApiConstants.statusCode201 ||
             value?.body["status"] == ApiConstants.statusCode200) {
           getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
           permissionStoreList.value = getPermissionsModel.data!.stores!;

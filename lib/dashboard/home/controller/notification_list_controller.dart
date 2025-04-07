@@ -46,24 +46,20 @@ class NotificationListController extends GetxController with GlobalVarMixin {
   ///Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {
     isLoading.value = true;
-    debugPrint("GET NOTIFICATION LIST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("GET NOTIFICATION LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         notificationListModel = NotificationListModel.fromJson(value?.body);
         notificationList.value =

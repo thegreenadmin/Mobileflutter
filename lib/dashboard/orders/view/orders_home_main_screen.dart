@@ -314,8 +314,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                     ordersHomeMainController
                                             .ownerOrderHistoryList?[index]
                                             .storeId ?? "";
-
-                                ordersHomeMainController.orderId.value =
+                                ordersHomeMainController.orderAmount.value=
+                                ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2);                             ordersHomeMainController.orderId.value =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList?[index]
                                             .orderId ?? "";
@@ -380,8 +380,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                 .selectedIndex.value);
                                       });
 
-                                debugPrint(
-                                    "selectedIndex================== ${ordersHomeMainController.selectedIndex.value}");
+
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

@@ -475,9 +475,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
 
                   CustomInputField(
                     onTap: () async {
-                      debugPrint(
-                          "ADDRESSES---description----------------->");
-                      Prediction? p = await PlacesAutocomplete.show(
+                                              Prediction? p = await PlacesAutocomplete.show(
                           offset: 0,
                           radius: 1000,
                           types: [],
@@ -487,9 +485,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           mode: Mode.overlay,
                           language: "en",
                           components: []);
-                      debugPrint(
-                          "ADDRESSES---description->${p?.description}");
-                      if (p?.description != null) {
+                                              if (p?.description != null) {
                         int idx = p?.description?.indexOf(",") ?? 0;
                         List parts = [
                           p?.description?.substring(0, idx).trim(),
@@ -511,13 +507,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           ? response.results.first
                           : null;
 
-                      debugPrint(
-                          "ADDRESSES---lat lng ->${jsonEncode(result)}");
-                      debugPrint(
-                          "ADDRESSES---lat  ->${response.results.first.geometry.location.lat}");
-                      debugPrint(
-                          "ADDRESSES--- lng ->${response.results.first.geometry.location.lng}");
-
+                                                                        
                       if (result != null) {
                         ownerStoreController.townOrCityTextController.text =
                             Utility.extractLocality(result, "locality");
@@ -539,8 +529,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
                         String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
 
-                        debugPrint("ADDRESSES---->$address");
-
+                          
                         if(placeMark.isNotEmpty){
                           ownerStoreController.townOrCityTextController
                               .text = placeMark.first.locality??"";
@@ -596,18 +585,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                 addresses.latitude.toString();
                           }
                         }
-                        debugPrint("ADDRESSES--*************-->${addresses.toString()}");
-                        debugPrint("ADDRESSES---->${addresses.address}");
-                        debugPrint("CITY---->${addresses.city}");
-                        debugPrint("COUNTRY---->${addresses.country}");
-                        debugPrint(
-                            "COUNTRY CODE---->${addresses.countryCode}");
-                        debugPrint("POSTALCODE---->${addresses.postalCode}");
-                        debugPrint("STATE---->${addresses.state}");
-                        debugPrint(
-                            "STREETNUMBER---->${addresses.streetNumber}");
-                        debugPrint("LAT---->${addresses.latitude}");
-                        debugPrint("LONG---->${addresses.longitude}");*/
+                                                                                                                                                                                                                                                                    */
                     },
                     readOnly: true,
                     textInputAction: TextInputAction.next,

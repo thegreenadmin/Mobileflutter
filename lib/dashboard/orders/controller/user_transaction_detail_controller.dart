@@ -56,25 +56,20 @@ class UserTransactionDetailController extends GetxController with GlobalVarMixin
   Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
-    debugPrint("USER TRANSACTION DETAIL URL **********");
-    debugPrint(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionDetail}?user_wallet_transaction_id=${userStripeCardId!.value}");
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionDetail}?user_wallet_transaction_id=${userStripeCardId!.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletTransactionDetail}?user_wallet_transaction_id=${userStripeCardId!.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER TRANSACTION DETAIL  RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         if (value?.body["data"]["transaction"]['transaction'] != null) {
           orderId!.value = value?.body["data"]["transaction"]['transaction_id'];

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,19 +12,21 @@ import 'package:thegreenmall/utils/utility.dart';
 class UserProvider extends GetConnect {
 
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
-      {bool showLoading = false}) async {
+      {bool showLoading = false}) async
+  {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
 
+    log("API URL********** $url");
+    log("API METHOD********** GET getWithHeadersApi");
+    log("API headers********** $headers");
 
-    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -31,43 +34,47 @@ class UserProvider extends GetConnect {
       try {
       final res = await ioClient.get(Uri.parse(url), headers: headers);
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
+
+      log("API res.statusCode********** ${res.statusCode}");
+      log("API Response********** ${res.body}");
+      log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } finally {
       ioClient.close();
@@ -76,15 +83,17 @@ class UserProvider extends GetConnect {
   }
 
   Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
+    log("API URL********** $url");
+    log("API METHOD********** POST postApi");
+    log("API data ********** $data");
 
-    await Future.delayed(const Duration(milliseconds: 100), () {
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
+
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -94,48 +103,50 @@ class UserProvider extends GetConnect {
           body: json.encode(data),
           headers: {"Content-Type": "application/json"});
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+
+      log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      await  Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await  Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await  Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     }finally {
         ioClient.close();
@@ -145,16 +156,18 @@ class UserProvider extends GetConnect {
 
   // Signup request
   Future<Response?> putApi(Map data, String url,
-      {bool showLoading = false}) async {
-
-    await Future.delayed(const Duration(milliseconds: 100), () {
+      {bool showLoading = false}) async
+  {
+    log("API URL********** $url");
+    log("API data ********** $data");
+    log("API METHOD********** PUT");
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
+
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -163,43 +176,44 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url));
 
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
+      log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } finally {
         ioClient.close();
@@ -211,17 +225,21 @@ class UserProvider extends GetConnect {
   Future<Response?> postWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
+
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    print(headers);
-    await Future.delayed(const Duration(milliseconds: 100), () {
+    log("API URL********** $url");
+    log("API headers ********** $headers");
+    log("API data ********** $data");
+    log("API METHOD********** POST postWithHeadersApi");
+
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
+
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -231,52 +249,52 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
-
+      log("API Response********** ${json.decode(res.body)}");
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } finally {
         ioClient.close();
@@ -290,14 +308,17 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    await Future.delayed(const Duration(milliseconds: 100), () {
+    log("API URL********** $url");
+    log("API data ********** $data");
+    log("API data ********** $headers");
+    log("API METHOD********** PUT putWithHeadersApi");
+
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -306,52 +327,53 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         if (showLoading) Get.back();
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
       }
+      log("API Response********** ${json.decode(res.body)}");
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     }finally {
         ioClient.close();
@@ -365,14 +387,18 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    await Future.delayed(const Duration(milliseconds: 100), () {
+    log("API URL********** $url");
+    log("API data ********** $data");
+    log("API data ********** $headers");
+    log("API METHOD********** PUT putWithHeadersApi1");
+
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
+
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -381,51 +407,51 @@ class UserProvider extends GetConnect {
       final res = await ioClient.put(Uri.parse(url),
           body: json.encode(data), headers: headers);
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
       final mData = json.decode(res.body) as Map<String, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
-      }
+      } log("API Response********** ${json.decode(res.body)}");
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } finally {
       ioClient.close();
@@ -439,14 +465,18 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    await Future.delayed(const Duration(milliseconds: 100), () {
+    log("API URL********** $url");
+    log("API data ********** $data");
+    log("API data ********** $headers");
+    log("API METHOD********** DELETE deleteWithHeadersApi");
+
         if (showLoading) {
           Get.dialog(
               const Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      });
+
       HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
@@ -456,51 +486,50 @@ class UserProvider extends GetConnect {
           body: jsonEncode(data), headers: headers);
 
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100));
+
       final mData = json.decode(res.body) as Map<dynamic, dynamic>;
       if (mData["multicast_id"] != null) {
         Utility.showAlertMessage("FCM Error", title: "Alert!");
         return null;
-      }
+      } log("API Response********** ${json.decode(res.body)}");
       return Response(
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
     } on SocketException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Please check your network connection.",
           title: "No Internet Connection!",
         );
-      });
+
       return null;
     } on TimeoutException {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           "Connection timed out.",
           title:  AlertStringConstants.alertText,
         );
-      });
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } catch (e) {
       if (showLoading) Get.back();
-      await Future.delayed(const Duration(milliseconds: 100), () {
+
         Utility.showAlertMessage(
           e.toString(),
           title:  AlertStringConstants.alertText,
         );
-      });
+
       return null;
     } finally {
       ioClient.close();

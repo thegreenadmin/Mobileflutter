@@ -48,7 +48,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
       color: AppColors.primaryLight,
       child: Padding(
           padding: EdgeInsets.only(
-              left: 20.0, right: 20, top: WidgetConstants.screenHeight * 0.06),
+              left: 20.0, right: 20, top: WidgetConstants.screenHeight * 0.06,bottom: 10),
           child: Column(
             children: [
               Row(

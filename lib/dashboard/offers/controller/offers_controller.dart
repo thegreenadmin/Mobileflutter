@@ -22,7 +22,7 @@ class OffersController extends GetxController with GlobalVarMixin{
   RxString? storeId = "".obs;
   RxString? offerId = "".obs;
 
-  RxBool? isLoading = false.obs;
+  RxBool isLoading = false.obs;
   RxString role = "".obs;
   RxInt pageId = 0.obs;
   late GetUserDetailModel getUserDetailModel = GetUserDetailModel();
@@ -62,10 +62,10 @@ class OffersController extends GetxController with GlobalVarMixin{
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-      role!.value = roleData;
+      role.value = roleData;
       if (Get.parameters["isController"] != "no") {
         if (role.value == Role.customerRoleText) {
-          searchStoreUserController.onInit();
+          searchStoreUserController.apiActiveCartApi();
         }
         isFromNotification.value =
             Get.parameters["isFromNotification"] == "true" ? true : false;
@@ -126,20 +126,19 @@ class OffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+
     if (page.value == 1) {
+      isLoading.value = true;
       getOwnerOfferList.clear();
     }
     getOwnerOffersListModel = GetOwnerOffersListModel();
-    isLoading!.value = true;
-    debugPrint(
-        "GET OWNER OFFERS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferList}");
-    Map<String, String> headers = {
+
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    Map body = {
+         Map body = {
       "store_id": null,
       "page": page.value,
       "page_size": 3,
@@ -150,14 +149,12 @@ class OffersController extends GetxController with GlobalVarMixin{
     UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOfferList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeOfferList,
             headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
-      debugPrint("OWNER OFFERS LIST BODY ******* $body");
-      debugPrint("OWNER OFFERS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+      isLoading.value = false;
+                    if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         totalCount.value = getOwnerOffersListModel.data?.totalCount ?? 0;
@@ -170,13 +167,15 @@ class OffersController extends GetxController with GlobalVarMixin{
           getOwnerOfferList.addAll(offerListNewList);
         }
         getOwnerOfferList.toSet().toList();
+        isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
+        isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -187,29 +186,25 @@ class OffersController extends GetxController with GlobalVarMixin{
   ///Get Offers List Api [USER]
   Future apiGetUserOffersList() async {
     if (pageCustomer.value == 1) {
+      isLoading.value = true;
       getUserOfferList.clear();
     }
     getUserOffersListModel = GetUserOfferListModel();
-    isLoading!.value = true;
-    debugPrint(
-      "GET USER OFFERS LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=$pageCustomer&page_size=3",
-    );
 
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
             headers,
-            showLoading: pageCustomer.value == 1)
+            showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
-      debugPrint("USER OFFERS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserOffersListModel = GetUserOfferListModel.fromJson(value?.body);
         totalCountCustomer.value = getUserOffersListModel.data?.totalCount ?? 0;
@@ -222,13 +217,14 @@ class OffersController extends GetxController with GlobalVarMixin{
           getUserOfferList.addAll(offerUserNewList);
         }
         getUserOfferList.toSet().toList();
+        isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -238,9 +234,7 @@ class OffersController extends GetxController with GlobalVarMixin{
 
   ///Delete Offer
   Future apiDeleteOffer() async {
-    debugPrint(
-        "DELETE OFFER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -248,30 +242,27 @@ class OffersController extends GetxController with GlobalVarMixin{
     };
     deleteOfferRequestModel.storeId = int.parse(storeId!.value);
     deleteOfferRequestModel.offerId = int.parse(offerId!.value);
-    debugPrint(
-        "DELETE OFFER  BODY ************* ${deleteOfferRequestModel.toJson()}");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             deleteOfferRequestModel,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOfferDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOfferDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE OFFER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         page.value = 1;
         apiGetOwnerOffersList();
-
+        isLoading.value = false;
         Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
-        Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);  isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -282,10 +273,8 @@ class OffersController extends GetxController with GlobalVarMixin{
   ///Api Get offers products
   Future apiGetOffersProducts(
       {String storeId = "", String offerId = ""}) async {
-    isLoading!.value = true;
-    debugPrint("GET OFFERS PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-    Map<String, String> headers = {
+    isLoading.value = true;
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -303,30 +292,28 @@ class OffersController extends GetxController with GlobalVarMixin{
       "offer_id": offerId,
       "filters": []
     };
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("GET OFFERS PRODUCT BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeFeatureProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeFeatureProductList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      isLoading!.value = false;
-      debugPrint("GET OFFERS PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
+        isLoading.value = false;
         featuredUserProductList.value =
             userFeaturedProductModel.data!.products!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();
+        Get.parameters.clear(); isLoading.value = false;
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

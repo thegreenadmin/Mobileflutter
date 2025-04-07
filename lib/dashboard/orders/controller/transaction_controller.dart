@@ -59,8 +59,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
     switch (i) {
       case 0: //Jan
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/01/01",
                   endDateOfMonth:
@@ -75,8 +74,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
       case 1: //Feb
         {
           int year = DateTime.now().year;
-          debugPrint(selectedIndex.value.toString());
-          bool isLeapYear(int year) =>
+                     bool isLeapYear(int year) =>
               (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
           role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
@@ -93,8 +91,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 2: //March
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/03/01",
                   endDateOfMonth:
@@ -107,8 +104,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 3: //April
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/04/01",
                   endDateOfMonth:
@@ -121,8 +117,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 4: //May
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/05/01",
                   endDateOfMonth:
@@ -135,8 +130,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 5: //june
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/06/01",
                   endDateOfMonth:
@@ -149,8 +143,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 6: //july
         {
-          debugPrint(selectedIndex.value.toString());
-
+           
           role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/07/01",
@@ -164,8 +157,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 7: //aug
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/08/01",
                   endDateOfMonth:
@@ -178,8 +170,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 8: //sept
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/09/01",
                   endDateOfMonth:
@@ -192,8 +183,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 9: //oct
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/10/01",
                   endDateOfMonth:
@@ -206,8 +196,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 10: //Nov
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/11/01",
                   endDateOfMonth:
@@ -220,8 +209,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
         break;
       case 11: //Dec
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth: "${DateTime.now().year}/12/01",
                   endDateOfMonth:
@@ -235,8 +223,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
 
       default:
         {
-          debugPrint(selectedIndex.value.toString());
-          role!.value == Role.customerRoleText
+                     role!.value == Role.customerRoleText
               ? apiGetUserOrderTransactionHistory(
                   startDateOfMonth:
                       "${DateTime.now().year}/01/${daysInMonth(DateTime.now())}",
@@ -274,32 +261,23 @@ class TransactionController extends GetxController with GlobalVarMixin{
     isLoading.value = true;
     String currentMonth =
         "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
-    debugPrint("USER ORDER HISTORY URL **********");
-    debugPrint(
-      (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
-              (endDateOfMonth == "" || endDateOfMonth.isEmpty)
-          ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
-          : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
-    );
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
             (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
                     (endDateOfMonth == "" || endDateOfMonth.isEmpty)
-                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
-                : "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
+                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+                : "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER ORDER HISTORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserTransactionModel = GetUserTransactionModel.fromJson(value?.body);
         userTransactionList!.value =
@@ -320,32 +298,23 @@ class TransactionController extends GetxController with GlobalVarMixin{
     isLoading.value = true;
     String currentMonth =
         "${DateTime.now().month < 9 ? "0" : ""}${DateTime.now().month}";
-    debugPrint("OWNER ORDER HISTORY URL **********");
-    debugPrint(
-      (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
-              (endDateOfMonth == "" || endDateOfMonth.isEmpty)
-          ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}-$currentMonth-01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
-          : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
-    );
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
             (startDateOfMonth == "" || startDateOfMonth.isEmpty) &&
                     (endDateOfMonth == "" || endDateOfMonth.isEmpty)
-                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
-                : "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
+                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
+                : "${ServerCommunicator.baseUrl}${ServerCommunicator.storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerTransactionModel =
             GetOwnerTransactionModel.fromJson(value?.body);

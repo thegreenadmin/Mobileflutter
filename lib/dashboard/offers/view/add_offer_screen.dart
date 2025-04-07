@@ -22,6 +22,9 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
     addOffersController.offerNameTextController.clear();
     addOffersController.discountOrOfferTextController.clear();
     addOffersController.offerImageDynamicLinkFromServer.value = "";
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      addOffersController.apiGetStoreList();
+    });
   }
 
   @override

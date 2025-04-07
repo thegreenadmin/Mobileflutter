@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import "package:google_maps_webservice/geocoding.dart";
 import 'package:intl/intl.dart';
+import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class Utility {
@@ -42,7 +43,7 @@ class Utility {
   }
 
   static String loadImageUrl(String url) {
-    return ServerCommunicator().baseUrlWithoutV1 + url;
+    return ServerCommunicator.baseUrlWithoutV1 + url;
   }
 
   static void showConfirmAlertMessage(title,
@@ -154,6 +155,22 @@ class Utility {
         actions: const <Widget>[],
       ),
     );
+  }
+
+  Future<UserDetailData?> getUserData() async {
+    final dynamic storedData = await SharedPreferenceStorage.getData("userData");
+
+    if (storedData == null) {
+      return null;
+    }
+
+    if (storedData is Map<String, dynamic>) {
+      return UserDetailData.fromJson(storedData);
+    } else if (storedData is UserDetailData) {
+      return storedData;
+    }
+
+    return null; // Fallback in case the type is unexpected
   }
 
   static void showAlertMessage(

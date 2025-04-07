@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +35,7 @@ class SignupController extends GetxController {
   RxString selectedRegion = "".obs;
   String? formattedDate;
   RxBool autoValidate = false.obs;
+  RxBool isLoading = false.obs;
   RxBool isFromOwner = false.obs;
 
   void ageAlertDailogue(
@@ -179,6 +182,7 @@ class SignupController extends GetxController {
 
   ///Create Account User Api
   Future apiCreateUser({bool isFromOwner = false}) async {
+    isLoading.value = true;
     Map data = {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
@@ -188,22 +192,25 @@ class SignupController extends GetxController {
       "dob": dateTextController.text.trim(),
       "has_store_access": isFromOwner
     };
-    debugPrint("CREATE USER BODY********** $data");
+    debugPrint("CREATE USER BODY********** ${jsonEncode(data)}");
     debugPrint(
-        "CREATE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createUser}");
+        "CREATE USER URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.createUser}");
     UserProvider()
         .postApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().createUser,
-            showLoading: true)
+            ServerCommunicator.baseUrl + ServerCommunicator.createUser,
+            showLoading: false)
         .then((value) async {
       debugPrint("CREATE USER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+        isLoading.value = false;
         await apiGenerateOtp();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //email must be unique & user already exists
+        isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -216,10 +223,10 @@ class SignupController extends GetxController {
     Map data = {"phone": phoneNumber.value, "phone_code": countryCode.value};
     debugPrint("LOGIN BODY********** $data");
     debugPrint(
-        "LOGIN URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
+        "LOGIN URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.generateOtp}");
     UserProvider()
         .postApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
+            ServerCommunicator.baseUrl + ServerCommunicator.generateOtp,
             showLoading: false)
         .then((value) async {
       debugPrint("LOGIN RESPONSE *******${value?.body}");

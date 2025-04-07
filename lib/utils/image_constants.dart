@@ -1,6 +1,6 @@
 class ImageConstants {
   //A
-  static const String assetsIcon = "assets";
+  static const String assetsIcon = "assets/icons";
   static const String fourTwenty = '$assetsIcon/420.png';
   static const String aboutUs = '$assetsIcon/aboutUs.png';
   static const String accountId = '$assetsIcon/accountId.png';

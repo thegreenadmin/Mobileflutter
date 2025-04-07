@@ -49,26 +49,23 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
     RxString url = "".obs;
     if (showPreviousMessages.value) {
       url.value =
-          "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.storeMessageInbox}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
     } else {
       url.value =
-          "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageInbox}?page=1&page_size=10";
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.storeMessageInbox}?page=1&page_size=10";
     }
-    debugPrint("GET OWNER INBOX URL********** ${url.value}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(url.value, headers, showLoading: showLoading)
         .then((value) async {
       //isLoading.value = false;
-      log("GET OWNER INBOX RESPONSE *******${jsonEncode(value?.body)}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         inboxModel = OwnerInboxModel.fromJson(value?.body);
         inboxList.value = inboxModel.data?.messageHeads ?? [];
@@ -90,9 +87,7 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
   ///Delete Store messages
   Future apiDeleteStoreMessages(
       {String messageHeadId = "", String storeId = ""}) async {
-    debugPrint(
-        "DELETE STORE MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -100,16 +95,14 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
     };
 
     Map body = {"message_head_id": messageHeadId, "store_id": storeId};
-    debugPrint("DELETE STORE MSGS BODY ************* $body");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeMessageDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeMessageDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE STORE MSGS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetInboxList();

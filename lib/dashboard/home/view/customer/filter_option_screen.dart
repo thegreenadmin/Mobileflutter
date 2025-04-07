@@ -306,40 +306,72 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
               title: StringConstants.pickupOptionsText,
               list: searchStoreUserController.deliveryServices),
           height20SizedBox,
-          CustomButton(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.primary, AppColors.primary],
-            ),
-            onTap: () {
-              if (searchStoreUserController.zipCodeTextController.text.isEmpty&& searchStoreUserController.zipCodeTextController.text == "" &&
-                  searchStoreUserController.mileageTextController.text.isEmpty &&     searchStoreUserController.mileageTextController.text ==
-                      "" &&    searchStoreUserController
-                  .openingTimeTextController.text.isEmpty &&
-                  searchStoreUserController
-                          .openingTimeTextController.text ==
-                      "" && searchStoreUserController
-                  .closingTimeTextController.text.isEmpty &&
-                  searchStoreUserController
-                          .closingTimeTextController.text ==
-                      "" &&  searchStoreUserController.isOpenNow.value=="" &&
-                  searchStoreUserController.deliveryServicesList.isEmpty) {
-                Utility.showAlertMessage(
-                    AlertStringConstants.pleaseSelectOneFilterText);
-              } else {
-                searchStoreUserController.placeId.value = "";
-                searchStoreUserController.apiGetNearByStores(
-                  isFilter: true,
-                );
-              }
-            },
-            height: 50,
-            text: StringConstants.saveText,
-            borderRadius: 12,
-            fontWeight: FontWeight.w500,
-            iconL: false,
-            fontSize: 16,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomButton(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.primary, AppColors.primary],
+                ),
+                onTap: () {
+                  if (searchStoreUserController.zipCodeTextController.text.isEmpty&& searchStoreUserController.zipCodeTextController.text == "" &&
+                      searchStoreUserController.mileageTextController.text.isEmpty &&     searchStoreUserController.mileageTextController.text ==
+                          "" &&    searchStoreUserController
+                      .openingTimeTextController.text.isEmpty &&
+                      searchStoreUserController
+                              .openingTimeTextController.text ==
+                          "" && searchStoreUserController
+                      .closingTimeTextController.text.isEmpty &&
+                      searchStoreUserController
+                              .closingTimeTextController.text ==
+                          "" &&  searchStoreUserController.isOpenNow.value=="" &&
+                      searchStoreUserController.deliveryServicesList.isEmpty) {
+                    Utility.showAlertMessage(
+                        AlertStringConstants.pleaseSelectOneFilterText);
+                  } else {
+                    searchStoreUserController.placeId.value = "";
+                    searchStoreUserController.apiGetNearByStores(
+                      isFilter: true,
+                    );
+                  }
+                },
+                height: 50,
+                width: WidgetConstants.screenWidth * 0.43,
+                text: StringConstants.saveText,
+                borderRadius: 12,
+                fontWeight: FontWeight.w500,
+                iconL: false,
+                fontSize: 16,
+              ),
+              CustomButton(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [AppColors.white, AppColors.white],
+                ),
+                onTap: () async {
+                  // Utility.showConfirmAlertMessage(
+                  //     AlertStringConstants.areYouSureLogoutAccountText,
+                  //     cancelText: StringConstants.noText,
+                  //     okay: StringConstants.yesText, okayTap: () {
+                  //   // accountController.apiLogOutUser();
+                  // });
+                  searchStoreUserController.clearNearbyPArms();
+                  searchStoreUserController.apiGetNearByStores();
+                  Get.back(id: pageIdApp.value);
+                }, border: Border.all(
+                color: AppColors.primary,
+              ),
+                height: 50,   width: WidgetConstants.screenWidth * 0.43,
+                textColor: AppColors.primary,
+                text: StringConstants.clearFiltersText,
+                borderRadius: 12,
+
+                fontWeight: FontWeight.w600,
+              ),
+            ],
           ),
         ],
       );

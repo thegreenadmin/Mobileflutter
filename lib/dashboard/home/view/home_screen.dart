@@ -66,46 +66,69 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
-      appBar: _buildAppbar(),
+      // appBar: _buildAppbar(),
       body: buildBody(),
     );
   }
 
-  RefreshIndicator buildBody() {
-    return RefreshIndicator(
-      onRefresh: _pullRefresh,
-      child: SingleChildScrollView(
-        child: Container(
-          height: WidgetConstants.screenHeight * 0.84,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Obx(() => roleApp.value == Role.customerRoleText
-                ? _buildCarouselSlider(
-                    offersCarouselList: homeController.userCarouselImgList,
-                    featuredProductList:
-                        homeController.featuredUserProductList)
-                : _buildCarouselSlider(
-                    offersCarouselList: homeController.getOwnerOfferList,
-                    featuredProductList:
-                        homeController.ownerFeatureProductList)),
-            height5SizedBox,
-            _buildFeatureProductText(),
-            height10SizedBox,
-            Expanded(
-              child: Obx(
-                () => roleApp.value == Role.customerRoleText
-                    ? _buildProductsCarousel(
-                        featuredProductList:
+   buildBody() {
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: _pullRefresh,
+          child: SingleChildScrollView(
+            child: Container(
+              // height: WidgetConstants.screenHeight * 0.84,
+
+              child:
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+                    _buildAppbar(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => roleApp.value == Role.customerRoleText
+                          ? _buildCarouselSlider(
+                              offersCarouselList: homeController.userCarouselImgList,
+                              featuredProductList:
+                                  homeController.featuredUserProductList)
+                          : _buildCarouselSlider(
+                              offersCarouselList: homeController.getOwnerOfferList,
+                              featuredProductList:
+                                  homeController.ownerFeatureProductList)),
+                      height20SizedBox,
+                      _buildFeatureProductText(),
+                      height20SizedBox,
+                      Obx(
+                            () => roleApp.value == Role.customerRoleText
+                            ? _buildProductsCarousel(
+                            featuredProductList:
                             homeController.featuredUserProductList)
-                    : _buildProductsCarousel(
-                        featuredProductList:
+                            : _buildProductsCarousel(
+                            featuredProductList:
                             homeController.ownerFeatureProductList),
-              ),
-            )
-          ]),
+                      )
+                    ],
+                  ),
+                ),
+
+              ]),
+            ),
+          ),
         ),
-      ),
+        //LOADING OVERLAY
+        Obx(() {
+          return homeController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
+          )
+              : const SizedBox.shrink();
+        }),
+      ],
     );
   }
 
@@ -275,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           ),
                           GestureDetector(
                             onTap: () {
-                              if (homeController.isLoading?.value == false) {
+                              if (homeController.isLoading.value == false) {
                                 Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
                               }
                             },
@@ -510,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                       id: pageIdApp.value,
                                       arguments: {"isFromCart": false})
                                   ?.then((value) {
-                                homeController.isLoading?.value = true;
+                                homeController.isLoading.value = true;
                                 homeController.apiGetUserDetail();
                                 homeController.getCurrentLocation();
                               });
@@ -571,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     .take(5)
                     .map((item) => InkWell(
                           onTap: () async {
-                            if (homeController.isLoading?.value == false) {
+                            if (homeController.isLoading.value == false) {
                               if (roleApp.value == Role.customerRoleText) {
                                 Get.parameters["isFromMenu"] = "false";
                                 Get.parameters['isFromFav'] = "false";
@@ -665,7 +688,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                   .map((entry) {
                 return GestureDetector(
                   onTap: () {
-                    if (homeController.isLoading?.value == false) {
+                    if (homeController.isLoading.value == false) {
                       _controller.animateToPage(entry.key);
                     }
                   },
@@ -691,12 +714,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       items: featuredProductList
           ?.map(
             (item) => SizedBox(
-              width: WidgetConstants.screenWidth * 0.4,
+              width: WidgetConstants.screenWidth * 0.48,
               child: InkWell(
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onTap: () {
-                  if (homeController.isLoading?.value == false) {
+                  if (homeController.isLoading.value == false) {
                     if (roleApp.value == Role.customerRoleText) {
                       Get.parameters["isFromHome"] = "false";
                       Get.parameters["isFromFav"] = "false";
@@ -781,8 +804,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                             .image!
                             .dynamicUrl
                             .toString(),
-                        height: WidgetConstants.screenHeight * 0.22,
-                        width: WidgetConstants.screenWidth * 0.4,
+                        height: WidgetConstants.screenHeight * 0.25,
+                        width: WidgetConstants.screenWidth * 0.5,
                       ),
                     ),
                     height8SizedBox,
@@ -806,7 +829,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       options: CarouselOptions(
         enlargeStrategy: CenterPageEnlargeStrategy.scale,
         autoPlayCurve: Curves.fastOutSlowIn,
-        viewportFraction: 0.5,
+        viewportFraction: 0.6,
         enlargeCenterPage: false,
         autoPlay: true,
         aspectRatio: 1.2,

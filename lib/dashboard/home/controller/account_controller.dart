@@ -101,12 +101,12 @@ class AccountController extends GetxController with GlobalVarMixin {
   var kGoogleApiKey = "";
   late GlobalConfigs secureData;
 
+
   @override
   void onInit() {
     super.onInit();
     isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
-    debugPrint(isFromCart.value.toString());
-    apiGetUserDetailApi();
+         apiGetUserDetailApi();
     getGkey();
   }
 
@@ -115,10 +115,8 @@ class AccountController extends GetxController with GlobalVarMixin {
   }
 
   getGkey() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
 
-    secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
+     secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     kGoogleApiKey = secureData.configs['kGoogleApiKey'];
     var val = await SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase());
     BioMetricAuthentication.isBioMetricAuthenticated.value = val ?? false;
@@ -348,12 +346,10 @@ class AccountController extends GetxController with GlobalVarMixin {
           "file",
           mdio.MultipartFile.fromBytes(await idProofImage.value.readAsBytes(),
               contentType: MediaType.parse("image/png"), filename: "file-name.png".toString())));
-      final res = await dio.post(ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+      final res = await dio.post(ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData, options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint("IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+                    if (res.statusCode == 200 || res.statusCode == 201) {
         idProofImageOriginalLinkFromServer.value = responseData['data']['urls']['orignal_url'];
         idProofImageDynamicLinkFromServer.value = responseData['data']['urls']['dynamic_url'];
         await apiAddUserIdProof();
@@ -362,11 +358,9 @@ class AccountController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData = json.decode(e.response?.data) as Map<String, dynamic>;
+                     final responseData = json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
       }
@@ -396,21 +390,17 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get User Detail Info Api
   Future apiGetUserDetailApi() async {
-    debugPrint("GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().userDetail, headers, showLoading: true)
+         UserProvider()
+        .getWithHeadersApi(ServerCommunicator.baseUrl + ServerCommunicator.userDetail, headers, showLoading: false)
         .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
+             if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userId!.value = getUserDetailModel.data!.user!.userId ?? "";
         uuId!.value = getUserDetailModel.data!.user!.uuId ?? "";
-        debugPrint("ACCOUNT ID ----------${uuId!.value}");
 
         firstName!.value = getUserDetailModel.data!.user!.firstName ?? "";
         firstNameTextController.text = firstName!.value;
@@ -447,17 +437,17 @@ class AccountController extends GetxController with GlobalVarMixin {
           if (getUserDetailModel.data!.userProof != null) {
             idProofImageDynamicLinkFromServer.value = getUserDetailModel.data!.userProof!.image!.dynamicUrl ?? "";
           }
-        }
+        } isLoading.value = false;
         // await apiGetCountries();
         await apiGetMembershipList();
         await apiGetActiveMembershipList();
         await apiGetAllStoreList();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         // await apiGetCountries();
-      } else if (value?.body["status"] == 401) {
+      } else if (value?.body["status"] == 401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
+      } else { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message'].toString());
       }
     });
@@ -466,29 +456,26 @@ class AccountController extends GetxController with GlobalVarMixin {
   ///Get Store List Api
   Future apiGetAllStoreList() async {
     isLoading.value = true;
-    debugPrint("GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().storeList, headers, showLoading: true)
+         UserProvider()
+        .getWithHeadersApi(ServerCommunicator.baseUrl + ServerCommunicator.storeList, headers, showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 || value?.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
-        storeList.clear();
+        storeList.clear();  isLoading.value = false;
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         // Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -498,17 +485,14 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get Countries Api
   Future apiGetCountries() async {
-    debugPrint("GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi(ServerCommunicator().baseUrl + ServerCommunicator().countries, headers, showLoading: false)
+         UserProvider()
+        .getWithHeadersApi(ServerCommunicator.baseUrl + ServerCommunicator.countries, headers, showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.clear();
         countriesList.addAll(getCountriesModel.data!.countries as Iterable<CountriesList>);
@@ -521,12 +505,12 @@ class AccountController extends GetxController with GlobalVarMixin {
               countryIndex.value = i;
             }
           }
-        }
+        }  isLoading.value = false;
         apiGetStates();
-      } else if (value?.body["status"] == ApiConstants.statusCode403) {
+      } else if (value?.body["status"] == ApiConstants.statusCode403) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -536,21 +520,17 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get States Api
   Future apiGetStates() async {
-    debugPrint(
-        "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId", headers,
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.states}?country_id=$countryId", headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STATES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.clear();
         statesList.addAll(getStateModel.data!.states as Iterable<StatesList>);
@@ -565,11 +545,11 @@ class AccountController extends GetxController with GlobalVarMixin {
         } else {
           stateIndex.value = 0;
           stateId.value = statesList[0].stateId.toString();
-        }
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        }  isLoading.value = false;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -579,8 +559,7 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Update User Detail Api
   Future apiUpdateUserDetail() async {
-    debugPrint("UPDATE USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -605,13 +584,11 @@ class AccountController extends GetxController with GlobalVarMixin {
         "postal_code": postalCodeTextController.text.trim()
       }
     };
-    debugPrint("UPDATE USER DETAIL BODY**********$data");
-    UserProvider()
-        .putWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().updateUser}", headers,
-            showLoading: true)
+         UserProvider()
+        .putWithHeadersApi(data, "${ServerCommunicator.baseUrl}${ServerCommunicator.updateUser}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("UPDATE USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         firstNameTextController.clear();
         lastNameTextController.clear();
@@ -627,12 +604,12 @@ class AccountController extends GetxController with GlobalVarMixin {
           Get.back(id: pageIdApp.value);
         } else {
           Get.back(id: pageIdApp.value);
-        }
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        }  isLoading.value = false;
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
-        if (value?.body['message'] != null) {
+      } else {  isLoading.value = false;
+        if (value?.body['message'] != null) {  isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -642,8 +619,7 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Add user id proof Api
   Future apiAddUserIdProof() async {
-    debugPrint("ID PROOF DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -654,19 +630,20 @@ class AccountController extends GetxController with GlobalVarMixin {
       "image_url": idProofImageOriginalLinkFromServer.value,
       "expiredAt": ""
     };
-    debugPrint("ID PROOF DETAIL BODY**********$data");
-    UserProvider()
-        .postWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userProof}", headers,
-            showLoading: true)
+         UserProvider()
+        .postWithHeadersApi(data, "${ServerCommunicator.baseUrl}${ServerCommunicator.userProof}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("ID PROOF DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         Utility.showToast(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
-      } else {
+               isLoading.value = false;
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -676,23 +653,19 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
-    debugPrint(
-        "GET NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationList}?is_for_store=$isOwner", headers,
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.notificationList}?is_for_store=$isOwner", headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET NOTIFICATION STATUS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         notificationStatusModel = NotificationStatusModel.fromJson(value?.body);
-
+        isLoading.value = false;
         notificationStatusList.value = notificationStatusModel.data!.notificationSettings!;
 
         for (int i = 0; i < notificationStatusList.length; i++) {
@@ -738,11 +711,11 @@ class AccountController extends GetxController with GlobalVarMixin {
         }
 
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
-        if (value?.body['message'] != null) {
+        if (value?.body['message'] != null) {  isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -755,25 +728,20 @@ class AccountController extends GetxController with GlobalVarMixin {
     bool isOwner = false,
     bool isEnabled = false,
   }) async {
-    debugPrint(
-        "UPDATE NOTIFICATION STATUS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().notificationSettingSave}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"notification_type": notificationType, "is_for_store": isOwner, "is_enabled": isEnabled};
-    debugPrint("UPDATE NOTIFICATION STATUS BODY**********$data");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
-            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().notificationSettingSave}", headers,
-            showLoading: true)
+            data, "${ServerCommunicator.baseUrl}${ServerCommunicator.notificationSettingSave}", headers,
+            showLoading: false)
         .then((value) async {
-      log("UPDATE NOTIFICATION STATUS RESPONSE $notificationType *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        debugPrint("UPDATE NOTIFICATION offer **0***** $notificationType}");
-
+        isLoading.value = false;
         if (roleApp.value == Role.customerRoleText) {
           await apiGetNotificationStatus(false);
           if (forFirstTimeCustomer.value && notificationType == "offer") {
@@ -785,10 +753,10 @@ class AccountController extends GetxController with GlobalVarMixin {
             forFirstTimeOwner.value = false;
           }
         }
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -798,29 +766,29 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Create store access
   Future apiCreateStoreAccess() async {
-    debugPrint(
-        "CREATE USER ACCESS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
-    debugPrint("CREATE USER ACCESS BODY**********$data");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
-            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userStoreAccessCreate}", headers,
-            showLoading: true)
+            data, "${ServerCommunicator.baseUrl}${ServerCommunicator.userStoreAccessCreate}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("CREATE USER ACCESS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         Utility.showToast(value?.body['message']);
         Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+               isLoading.value = false;
       } else {
+               isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -830,28 +798,26 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get membership list
   Future apiGetMembershipList() async {
-    debugPrint(
-      "GET MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}",
-    );
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
-        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().utilMembershipPlans}", headers,
+         UserProvider()
+        .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.utilMembershipPlans}", headers,
             showLoading: false)
         .then((value) async {
-      log("GET MEMBERSHIP LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         membershipPlanModel = MembershipPlanModel.fromJson(value?.body);
         membershipList.value = membershipPlanModel.data!.membershipPlans!;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else {
+               isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -861,9 +827,7 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Create membership plan
   Future apiCreateMembershipPlan({int index = 0, String membershipPlanId = "", String planDays = ""}) async {
-    debugPrint(
-        "CREATE MEMBERSHIP URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -879,26 +843,24 @@ class AccountController extends GetxController with GlobalVarMixin {
                   ? "180"
                   : "365"
     };
-    debugPrint("CREATE MEMBERSHIP BODY**********$data");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
-            data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipCreate}", headers,
-            showLoading: true)
+            data, "${ServerCommunicator.baseUrl}${ServerCommunicator.userMembershipCreate}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("CREATE MEMBERSHIP RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         selectedStoreId!.value = "";
         Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
-
+        isLoading.value = false;
         noOfDaysTextController.clear();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         noOfDaysTextController.clear();
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -908,31 +870,26 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get active membership list
   Future apiGetActiveMembershipList() async {
-    debugPrint(
-      "GET ACTIVE MEMBERSHIP LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=100&order_by=membership_id&order_type=DESC",
-    );
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userMembershipList}?active_memberships=true&page=1&page_size=1000&order_by=membership_id&order_type=DESC",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userMembershipList}?active_memberships=true&page=1&page_size=1000&order_by=membership_id&order_type=DESC",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET ACTIVE MEMBERSHIP LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         activeMembershipPlanModel = ActiveMembershipPlanModel.fromJson(value?.body);
         activeMembershipList.value = activeMembershipPlanModel.data!.memberships!;
-
+        isLoading.value = false;
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -942,28 +899,29 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Delete User Account
   Future apiDeleteUserAccount() async {
-    debugPrint("DELETE USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"has_store_access": true};
-    debugPrint("DELETE USER BODY**********$data");
-    UserProvider()
-        .deleteWithHeadersApi(data, "${ServerCommunicator().baseUrl}${ServerCommunicator().userDelete}", headers,
-            showLoading: true)
+         UserProvider()
+        .deleteWithHeadersApi(data, "${ServerCommunicator.baseUrl}${ServerCommunicator.userDelete}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("DELETE USER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         Utility.showToast(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {
+               isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -973,24 +931,27 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///logout user account
   Future apiLogOutUser() async {
-    debugPrint("LOGGED OUT USER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}");
-    Map<String, String> headers = {
+    isLoading.value = true;
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
-        .getWithHeadersApi("${ServerCommunicator().baseUrl}${ServerCommunicator().logoutUser}", headers,
-            showLoading: true)
+        .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.logoutUser}", headers,
+            showLoading: false)
         .then((value) async {
-      debugPrint("LOGGED OUT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+             if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         Utility.showToast(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+               isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         clearData();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
+               isLoading.value = false;
       } else {
+               isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

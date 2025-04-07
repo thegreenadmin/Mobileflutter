@@ -28,9 +28,7 @@ class StoreOfferDetailController extends GetxController with GlobalVarMixin {
   ///Get store offer detail
   Future apiGetStoreOffersDetail() async {
     isLoading.value = true;
-    debugPrint("STORE FEATURED PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -55,19 +53,16 @@ class StoreOfferDetailController extends GetxController with GlobalVarMixin {
       ]
     };
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("STORE FEATURED PRODUCT BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeFeatureProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeFeatureProductList,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE FEATURED PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeOfferDetailModel = StoreOfferDetailModel.fromJson(value?.body);
         storeOfferDetailList.value = storeOfferDetailModel.data!.products!;

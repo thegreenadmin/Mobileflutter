@@ -100,8 +100,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
         selectedCount = selectedCount + 1;
       }
     }
-    debugPrint("selectedCount : ============ ${selectedCount.toString()}");
-    if (selectedCount > 5) {
+         if (selectedCount > 5) {
       return Utility.showAlertMessage(
           AlertStringConstants.only5MaximumImagesCanSelectText);
     } else {
@@ -260,8 +259,8 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   Future<Future<bool?>?> apiUploadMultipleImage(length) async {
     var request = http.MultipartRequest(
         'POST',
-        Uri.parse(ServerCommunicator().baseUrl +
-            ServerCommunicator().fileUploadMultiple));
+        Uri.parse(ServerCommunicator.baseUrl +
+            ServerCommunicator.fileUploadMultiple));
 
     Map<String, String> headers = {
       StringConstants.authorizationText:
@@ -278,8 +277,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     }
     var response = await request.send();
     response.stream.transform(utf8.decoder).listen((value) {
-      debugPrint(value);
-      imagesList.clear();
+             imagesList.clear();
       for (int i = 0; i < jsonDecode(value)['data']['files'].length; i++) {
         var imageData = jsonDecode(value)['data']['files'][i];
         imagesList.add(ProductImagesList(
@@ -300,22 +298,19 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   Future apiGetCategoriesList() async {
     categoriesList.clear();
     isLoading.value = true;
-    debugPrint(
-        "GET CATEGORIES URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}"}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.categoryList}?store_id=${storeId.value}&is_featured_category=${isFeaturedTypeSelected.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CATEGORIES LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getCategoriesModel = GetCategoriesModel.fromJson(value?.body);
         categoriesList.value = getCategoriesModel.data!.categories!;
@@ -347,22 +342,19 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   Future apiGetQuantityList() async {
     quantityTypeList.clear();
     isLoading.value = true;
-    debugPrint(
-        "GET QuantityList URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeQuantityTypeList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeQuantityTypeList}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET Quantity LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         quantityListResponse =
             quantity_model.QuantityListResponse.fromJson(value?.body);
@@ -437,19 +429,15 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("CREATE PRODUCT BODY********** ${inputData.toJson()}");
-    debugPrint(
-        "CREATE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createProduct}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             inputData,
-            ServerCommunicator().baseUrl + ServerCommunicator().createProduct,
+            ServerCommunicator.baseUrl + ServerCommunicator.createProduct,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CREATE PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         Get.back(id: pageIdApp.value);
@@ -473,10 +461,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   /// Get store products List Api
   Future apiGetStoreProducts() async {
     isLoading.value = true;
-    debugPrint(
-      "GET STORE PRODUCTS LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
-    );
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -495,14 +480,12 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductList}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE PRODUCTS LIST BODY *******$body");
-      debugPrint("GET STORE PRODUCTS LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+                    if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStoreProductList = GetStoreProductList.fromJson(value?.body);
         storeProductList.value = getStoreProductList.data!.products!;
@@ -523,10 +506,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   /// Api to get details of one product
   Future apiGetProductDetails() async {
     isLoading.value = true;
-    debugPrint(
-      "GET PRODUCTS DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
-    );
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -534,13 +514,12 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET PRODUCTS DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productNameTextController.text =
             value?.body["data"]['product']["product_name"] ?? "";
@@ -606,9 +585,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
             value?.body["data"]['product']["weight"].toString()??"";
         selectedCategories.value =
             value?.body["data"]['product']['product_categories'] ?? [];
-        debugPrint(
-            "selectedCategories Length******${selectedCategories.length}");
-        isSelectedCategory.value = false;
+                 isSelectedCategory.value = false;
         for (int i = 0; i < categoriesList.length; i++) {
           for (int j = 0; j < selectedCategories.length; j++) {
             if (categoriesList[i].categoryId.toString() ==
@@ -653,9 +630,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   /// Update  Store Product Api
   Future apiUpdateStoreProductDetail() async {
     isLoading.value = true;
-    debugPrint(
-        "UPDATE STORE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -741,18 +716,15 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
       )
     ];
 
-    debugPrint(
-        "UPDATE STORE PRODUCT BODY********************${inputData.toJson()}");
-    UserProvider()
+         UserProvider()
         .putWithHeadersApi(
             inputData,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductEdit}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductEdit}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("UPDATE STORE PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 
@@ -778,25 +750,21 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
 
   /// Api Delete Product
   Future apiDeleteProduct() async {
-    debugPrint(
-        "DELETE PRODUCT URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"store_id": storeId.value, "product_id": productId.value};
-    debugPrint("DELETE PRODUCT BODY ************* $data");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeProductDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetStoreProducts();
@@ -818,25 +786,21 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
 
   /// Api Delete Category
   Future apiDeleteCategory() async {
-    debugPrint(
-        "DELETE CATEGORY URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     Map data = {"store_id": storeId.value, "category_id": categoryId.value};
-    debugPrint("DELETE CATEGORY BODY ************* $data");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE CATEGORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetCategoriesList();

@@ -126,23 +126,19 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
   ///Get Store Role List Api
   Future apiGetStoreRole() async {
     isLoading.value = true;
-    debugPrint(
-        "GET STORE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeRoleList}?store_id=${storeId.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE ROLE  RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getRoleListModel = GetRoleListModel.fromJson(value?.body);
         storeRoleList.value = getRoleListModel.data!.storeRoles!;
@@ -178,19 +174,15 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("CREATE ROLE BODY********** ${createRoleRequestModel.toJson()}");
-    debugPrint(
-        "CREATE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleCreate}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             createRoleRequestModel,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeRoleCreate,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeRoleCreate,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CREATE ROLE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 
@@ -211,24 +203,20 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
   ///Get Controllers Api
   Future apiGetControllers() async {
     isLoading.value = true;
-    debugPrint(
-        "GET STORE CONTROLLER URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeControllerList}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeControllerList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeControllerList,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET STORE CONTROLLER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStoreControllerModel = GetStoreControllerModel.fromJson(value?.body);
         moduleList.value = getStoreControllerModel.data!.modules!;
@@ -251,9 +239,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
 
   ///Delete Store Role
   Future apiDeleteRole() async {
-    debugPrint(
-        "DELETE ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -262,17 +248,14 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
     deleteRoleRequestModel.storeId = int.parse(storeId.value);
     deleteRoleRequestModel.roleId = int.parse(roleId.value);
 
-    debugPrint(
-        "DELETE ROLE  BODY ************* ${getStoreDetailModel.toJson()}");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             deleteRoleRequestModel,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeRoleDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE CATEGORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetStoreRole();
@@ -297,23 +280,19 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
   Future apiGetStoreRoleDetail() async {
     isLoading.value = true;
     isEnabled = false.obs;
-    debugPrint(
-        "GET ROLE DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET ROLE DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStoreDetailModel = GetStoreDetailModel.fromJson(value?.body);
         permissionList.value = getStoreDetailModel.data!.role!.permissions!;
@@ -385,19 +364,15 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("EDIT ROLE BODY********** $data");
-    debugPrint(
-        "EDIT ROLE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRoleEdit}");
-    UserProvider()
+              UserProvider()
         .putWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeRoleEdit,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeRoleEdit,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("EDIT ROLE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 

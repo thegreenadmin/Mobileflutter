@@ -112,13 +112,10 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
       if (isTermsSelected.value) {
         termsFile.value = XFile(result.files.single.path!);
 
-        debugPrint(
-            "TERMS FILE ***********${termsFile.value.path.split("/").last}");
-        uploadPdfToServer();
+                 uploadPdfToServer();
       } else {
         privacyFile.value = XFile(result.files.single.path!);
-        debugPrint("PRIVACY FILE *********** $termsFile");
-        uploadPdfToServer();
+                 uploadPdfToServer();
       }
     } else {}
   }
@@ -134,8 +131,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-    debugPrint("CURRENT LAT AND LNG ************$lat $lng");
-    await apiGetDeliveryServices();
+         await apiGetDeliveryServices();
   }
 
   Future<void> createDynamicLink() async {
@@ -150,8 +146,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
       ),
     );
     shortLink = await dynamicLinks.buildShortLink(parameters);
-    debugPrint("PARAMETERS **************${shortLink!.shortUrl}");
-  }
+       }
 
   getGKey() async {
     firstName.value =
@@ -255,14 +250,11 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL RESPONSE *******$responseData");
-      if (res.statusCode == ApiConstants.statusCode200 ||
+                    if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isStoreLogoSelected.value) {
           storeLogoOriginalLinkFromServer.value =
@@ -282,11 +274,9 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(responseData['message'].toString());
       }
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -316,14 +306,11 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
                   ? termsFile.value.path.split("/").last
                   : privacyFile.value.path.split("/").last)));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "PDF UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("PDF UPLOAD URL RESPONSE *******$responseData");
-
+              
       if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
         if (isTermsSelected.value) {
@@ -351,11 +338,9 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(responseData['message'].toString());
       }
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -410,22 +395,15 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint(
-        "CREATE STORE openingTimeTextController********** ${openingTimeTextController.text}");
-    debugPrint(
-        "CREATE STORE closingTimeTextController********** ${closingTimeTextController.text}");
-    debugPrint(
-        "CREATE STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().createStore}");
-    UserProvider()
+                   UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().createStore,
+            ServerCommunicator.baseUrl + ServerCommunicator.createStore,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CREATE STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 
@@ -467,7 +445,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         privacyOriginalLinkFromServer.value = "";
         storeIdValue.value = value?.body["data"]['store_id'].toString() ?? "";
         dynamicLink =
-            ServerCommunicator().baseUrlWithoutApi + storeIdValue.value;
+            ServerCommunicator.baseUrlWithoutApi + storeIdValue.value;
         apiGetPermissions();
         // await createDynamicLink();
         // await apiDynamicLink();
@@ -488,22 +466,18 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     try {
-      debugPrint(
-          "GET STORE PERMISSIONS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
-      Map<String, String> headers = {
+             Map<String, String> headers = {
         StringConstants.authorizationText:
             "${StringConstants.bearerText} ${authToken.value}",
       };
-      debugPrint("GET STORE PERMISSIONS TOKEN ********** $headers");
-      UserProvider()
+             UserProvider()
           .getWithHeadersApi(
-              ServerCommunicator().baseUrl +
-                  ServerCommunicator().storePermissionsList,
+              ServerCommunicator.baseUrl +
+                  ServerCommunicator.storePermissionsList,
               headers,
               showLoading: false)
           .then((value) async {
-        log("GET STORE PERMISSIONS RESPONSE *******${value?.body}");
-        if (value?.body["status"] == ApiConstants.statusCode201 ||
+                  if (value?.body["status"] == ApiConstants.statusCode201 ||
             value?.body["status"] == ApiConstants.statusCode200) {
           getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
           permissionStoreList.clear();
@@ -517,15 +491,13 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         }
       });
     } catch (e) {
-      log("GET STORE PERMISSIONS ERROR*******${e.toString()}");
+      log("ERROR*******${e.toString()}");
     }
   }
 
   ///Dynamic link
   Future apiDynamicLink() async {
-    debugPrint(
-        "DYNAMIC URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -536,17 +508,15 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
       "store_id": int.parse(storeIdValue.value),
       "dynamic_link": shortLink!.shortUrl.toString(),
     };
-    debugPrint("DYNAMIC LINK BODY**********$data");
-
+     
     UserProvider()
         .putWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeDynamicLinkUpdate}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeDynamicLinkUpdate}",
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("DYNAMIC LINK RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -564,23 +534,19 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
-    debugPrint(
-        "GET DELIVERY LIST URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().deliveryServiceList}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().deliveryServiceList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.deliveryServiceList,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET DELIVERY LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         deliveryServicesResponse =
             DeliveryServicesResponse.fromJson(value?.body);
@@ -620,22 +586,18 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
-    debugPrint(
-        "GET COUNTRIES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().countries}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().countries,
+            ServerCommunicator.baseUrl + ServerCommunicator.countries,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET COUNTRIES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getCountriesModel = GetCountriesModel.fromJson(value?.body);
         countriesList.value = getCountriesModel.data!.countries!;
@@ -659,22 +621,18 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get States Api
   Future apiGetStates() async {
     statesList.clear();
-    debugPrint(
-        "GET STATES URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().states}?country_id=$countryId",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.states}?country_id=$countryId",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STATES RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.value = getStateModel.data!.states!;

@@ -38,28 +38,25 @@ class UserInboxController extends GetxController with GlobalVarMixin{
     RxString url = "".obs;
     if (showPreviousMessages.value) {
       url.value =
-          "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}";
     } else {
       url.value =
-          "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10";
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.messageInboxList}?page=1&page_size=10";
     }
-    debugPrint("GET USER INBOX URL**********${url.value}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
             headers,
             showLoading: isShowLoading)
         .then((value) async {
       isLoading.value = false;
-      log("GET INBOX RESPONSE *******${jsonEncode(value?.body)}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         inboxModel = UserInboxModel.fromJson(value?.body);
         inboxList.value = inboxModel.data?.messageHeads ?? [];
@@ -79,9 +76,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
 
   ///Delete USER messages
   Future apiDeleteUserMessages({String messageHeadId = ""}) async {
-    debugPrint(
-        "DELETE USER MSGS URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().messageDelete}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -90,16 +85,14 @@ class UserInboxController extends GetxController with GlobalVarMixin{
     Map body = {
       "message_head_id": messageHeadId,
     };
-    debugPrint("DELETE USER MSGS BODY ************* $body");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageDelete}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageDelete}",
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("DELETE USER MSGS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetInboxList();

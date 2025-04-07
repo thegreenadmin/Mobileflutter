@@ -21,235 +21,239 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
-        child: Container(
-          color: AppColors.primaryLight,
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            Get.back(id: accountController.pageId.value);
-                            //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: AppColors.black,
-                            size: 24.0,
-                          ),
-                        ),
-                        width10SizedBox,
-                        Text(
-                          StringConstants.activeMembershipsText,
-                          style: const TextStyle(
-                              fontSize: 20,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
-                  ])),
-        ),
-      ),
+
       body: Stack(
         children: <Widget>[
-          Obx(
-            () => Container(
-              height: WidgetConstants.screenHeight,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              child: accountController.activeMembershipList.isEmpty
-                  ? accountController.isLoading.value == true
-                      ? height0SizedBox
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                ImageConstants.nodata,
-                                scale: 8,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            height4SizedBox,
-                            Center(
-                              child: Text(
-                                StringConstants.noActiveMembershipText,
-                                style: const TextStyle(
-                                    fontStyle: FontStyle.italic, fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )
-                  : ListView.separated(
-                      padding: const EdgeInsets.only(bottom: 80),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return height15SizedBox;
-                      },
-                      itemCount: accountController.activeMembershipList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                            elevation: 2,
-                            child: ClipPath(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        left: BorderSide(
-                                            color: AppColors.primary,
-                                            width: 5))),
-                                child: Container(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 10, top: 15, bottom: 15),
-                                  color: AppColors.primaryLight,
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Image.asset(
-                                                      ImageConstants.membership,
-                                                      color: AppColors.primary,
-                                                      scale: 20,
-                                                    ),
-                                                    width12SizedBox,
-                                                    Text(
-                                                      "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} ${StringConstants.planText.toUpperCase()}",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.primary,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ],
-                                                ),
-                                                height10SizedBox,
-                                                SizedBox(
-                                                  width: WidgetConstants
-                                                          .screenWidth *
-                                                      0.7,
-                                                  child: Text(
-                                                    "${accountController.activeMembershipList[index].membershipPlan!.planDescription} ",
-                                                    maxLines: 5,
-                                                    style: const TextStyle(
-                                                        color: AppColors.black,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                height10SizedBox,
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "${StringConstants.amountText}: ",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      "\$${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                                height10SizedBox,
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "${StringConstants.storeText}: ",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      accountController
-                                                          .activeMembershipList[
-                                                              index]
-                                                          .membershipStore!
-                                                          .storeName!
-                                                          .toCapitalized(),
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                                height10SizedBox,
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "${StringConstants.statusText}: ",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      "${accountController.activeMembershipList[index].status!.toCapitalized()} ${StringConstants.tillText} ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
-                                                      style: const TextStyle(
-                                                          color:
-                                                              AppColors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                                height10SizedBox,
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ]),
+          Column(
+            children: [
+              Container(
+                color: AppColors.primaryLight,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  Get.back(id: accountController.pageId.value);
+                                  //Get.back(id:int.parse(SharedPreferenceStorage.getData("pageId").toString() ));
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.black,
+                                  size: 24.0,
                                 ),
                               ),
-                            ));
-                      }),
-            ),
+                              width10SizedBox,
+                              Text(
+                                StringConstants.activeMembershipsText,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          )
+                        ])),
+              ),
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    height: WidgetConstants.screenHeight,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: accountController.activeMembershipList.isEmpty
+                        ? accountController.isLoading.value == true
+                            ? height0SizedBox
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Image.asset(
+                                      ImageConstants.nodata,
+                                      scale: 8,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  height4SizedBox,
+                                  Center(
+                                    child: Text(
+                                      StringConstants.noActiveMembershipText,
+                                      style: const TextStyle(
+                                          fontStyle: FontStyle.italic, fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              )
+                        : ListView.separated(
+                            padding: const EdgeInsets.only(bottom: 80),
+                            separatorBuilder: (BuildContext context, int index) {
+                              return height15SizedBox;
+                            },
+                            itemCount: accountController.activeMembershipList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                  elevation: 2,
+                                  child: ClipPath(
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              left: BorderSide(
+                                                  color: AppColors.primary,
+                                                  width: 5))),
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, right: 10, top: 15, bottom: 15),
+                                        color: AppColors.primaryLight,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Image.asset(
+                                                            ImageConstants.membership,
+                                                            color: AppColors.primary,
+                                                            scale: 20,
+                                                          ),
+                                                          width12SizedBox,
+                                                          Text(
+                                                            "${accountController.activeMembershipList[index].membershipPlan!.planName.toString().toUpperCase()} ${StringConstants.planText.toUpperCase()}",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.primary,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight.w600),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height10SizedBox,
+                                                      SizedBox(
+                                                        width: WidgetConstants
+                                                                .screenWidth *
+                                                            0.7,
+                                                        child: Text(
+                                                          "${accountController.activeMembershipList[index].membershipPlan!.planDescription} ",
+                                                          maxLines: 5,
+                                                          style: const TextStyle(
+                                                              color: AppColors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight.w600),
+                                                        ),
+                                                      ),
+                                                      height10SizedBox,
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "${StringConstants.amountText}: ",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w600),
+                                                          ),
+                                                          Text(
+                                                            "\$${accountController.activeMembershipList[index].membershipCharge!.toStringAsFixed(2)}",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w500),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height10SizedBox,
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "${StringConstants.storeText}: ",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w600),
+                                                          ),
+                                                          Text(
+                                                            accountController
+                                                                .activeMembershipList[
+                                                                    index]
+                                                                .membershipStore!
+                                                                .storeName!
+                                                                .toCapitalized(),
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w500),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height10SizedBox,
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "${StringConstants.statusText}: ",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w600),
+                                                          ),
+                                                          Text(
+                                                            "${accountController.activeMembershipList[index].status!.toCapitalized()} ${StringConstants.tillText} ${DateFormat('MM-dd-yyyy').format(DateTime.parse(accountController.activeMembershipList[index].expiredAt.toString()))}",
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    AppColors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight.w500),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height10SizedBox,
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  ));
+                            }),
+                  ),
+                ),
+              ),
+            ],
           ),
           Positioned(
             bottom: 20,
@@ -281,6 +285,18 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
               fontSize: 16,
             ),
           ),
+
+          //LOADING OVERLAY
+          Obx(() {
+            return accountController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
+            )
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

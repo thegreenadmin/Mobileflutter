@@ -62,28 +62,21 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///Get Store List Api
   apiGetStoreList() async {
-    debugPrint(
-        "authToken from mixin**********${authToken.value}");
-    isLoading.value = true;
-    debugPrint(
-        "GET BottomNav  STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
-    Map<String, String> headers = {
+          isLoading.value = true;
+          Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}"
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeList,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint(
-          "GET BottomNav STORE LIST RESPONSE ******* ${pageIdApp.value} ${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
@@ -108,22 +101,18 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
-    debugPrint(
-        "GET STORE PERMISSIONS URL BOTTOM **********${ServerCommunicator().baseUrl}${ServerCommunicator().storePermissionsList}");
-    Map<String, String> headers = {
+          Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}"
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storePermissionsList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storePermissionsList,
             headers,
             showLoading: false)
         .then((value) async {
-      debugPrint("GET STORE PERMISSIONS RESPONSE BOTTOM*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
         permissionStoreList.value = getPermissionsModel.data!.stores!;
@@ -167,8 +156,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
             Get.put(HomeController()).onInit();
           });
         } catch (e) {
-          debugPrint("Bottom Nav  Home Error:-----------${e.toString()}");
-        }
+                    }
       } else if (selectedIndex.value == 1) {
         Get.parameters["isController"] = "yes";
         try {
@@ -177,8 +165,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
             Get.put(WalletController()).onInit();
           });
         } catch (e) {
-          debugPrint("Bottom Nav  Wallet Error:-----------${e.toString()}");
-        }
+                    }
       } else if (selectedIndex.value == 2) {
         Get.parameters["isController"] = "yes";
         try {
@@ -202,8 +189,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
             }
           });
         } catch (e) {
-          debugPrint("Bottom Nav Order Error:-----------${e.toString()}");
-        }
+                    }
       } else if (selectedIndex.value == 3) {
         Get.parameters["isController"] = "yes";
         try {
@@ -213,8 +199,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
             offersController.onInit();
           });
         } catch (e) {
-          debugPrint("Bottom Nav  Offer Error:-----------${e.toString()}");
-        }
+                    }
       } else if (selectedIndex.value == 4) {
         Get.parameters["isController"] = "yes";
         try {
@@ -223,8 +208,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
             Get.put(MoreController()).onInit();
           });
         } catch (e) {
-          debugPrint("Bottom Nav  More Error:-----------${e.toString()}");
-        }
+                    }
       }
     }
   }

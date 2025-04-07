@@ -102,14 +102,11 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+                    if (res.statusCode == 200 || res.statusCode == 201) {
         userSelectedImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
         userSelectedImageDynamicLinkFromServer.value =
@@ -120,11 +117,9 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
         Utility.showToast(responseData['message'].toString());
       } else {}
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -140,24 +135,20 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
     }
     messageListModel = UserMessageListModel();
     isLoading.value = true;
-    debugPrint(
-        "USER MESSAGE LIST URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageList}?page=${page.value.toString()}&page_size=10&message_head_id=${messageHeadId.value}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MESSAGE LIST RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         messageListModel = UserMessageListModel.fromJson(value?.body);
         totalCount.value = messageListModel.data?.totalCount ?? 0;
@@ -213,32 +204,27 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
     messageTextController.clear();
     userSelectedImageOriginalLinkFromServer.value = "";
     userSelectedImageDynamicLinkFromServer.value = "";
-    debugPrint(
-        "MESSAGE SEND URL********** ${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    Map body = {
+         Map body = {
       "message_head_id": messageHeadId.value,
       "message": msgText.trim().isEmpty ? "" : msgText.trim(),
       "image_url":
           selectedImageOriginalLink.isEmpty ? null : selectedImageOriginalLink
     };
-    debugPrint("MESSAGE SEND BODY ********** $body");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             body,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageSend}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageSend}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MESSAGE SEND RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         userSelectedImage.value = XFile("");
         update();

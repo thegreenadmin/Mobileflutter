@@ -317,496 +317,492 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.12),
-        child: Obx(() => CommonAppBar(
-            showActiveCart: true,
-            role: ordersController.role!.value,
-            cartCount: ordersController.searchStoreUserController.cartCount.value,
-            storeId: ordersController.searchStoreUserController.storeIdValue.value,
-            cartLength: ordersController.searchStoreUserController.cartCount.value,
-            firstName: firstName.value,
-            labelText: StringConstants.ordersText,
-            lastName: lastName.value,
-            okayTap: () {
-              ordersController.searchStoreUserController.apiActiveCartApi();
-            },
-            isFromNotification: false)),
-      ),
-      body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
+      body: Stack(
+        children: [
+          Column(
             children: [
-              Obx(
-                () => ordersController.role?.value == Role.customerRoleText
-                    ? Center(
-                        child: userOrdersTab(),
-                      )
-                    : Center(
-                        child: storeOrdersTab(),
+              Obx(() => CommonAppBar(
+                showActiveCart: true,
+                role: ordersController.role!.value,
+                cartCount: ordersController.searchStoreUserController.cartCount.value,
+                storeId: ordersController.searchStoreUserController.storeIdValue.value,
+                cartLength: ordersController.searchStoreUserController.cartCount.value,
+                firstName: firstName.value,
+                labelText: StringConstants.ordersText,
+                lastName: lastName.value,
+                okayTap: () {
+                  ordersController.searchStoreUserController.apiActiveCartApi();
+                },
+                isFromNotification: false,
+              )),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    children: [
+                      Obx(
+                            () => ordersController.role?.value == Role.customerRoleText
+                            ? Center(child: userOrdersTab())
+                            : Center(child: storeOrdersTab()),
                       ),
+                      height25SizedBox,
+                      Obx(() {
+                        final isCustomer = ordersController.role?.value == Role.customerRoleText;
+                        final isEmpty = isCustomer
+                            ? ordersController.orderList.isEmpty
+                            : ordersController.storeOrderList.isEmpty;
+                        final isLoading = ordersController.isDataLoading.value;
+
+                        if (isEmpty) {
+                          return isLoading ? height0SizedBox : buildNoDataFound();
+                        }
+
+                        return Flexible(
+                          child: ListView.separated(
+                            controller: ordersController.scrollController,
+                            separatorBuilder: (context, index) => height12SizedBox,
+                            itemCount: (isCustomer
+                                ? ordersController.orderList.length
+                                : ordersController.storeOrderList.length) +
+                                (ordersController.isLoading.value ? 1 : 0),
+                            itemBuilder: (context, i) {
+                              if (i < (isCustomer
+                                  ? ordersController.orderList.length
+                                  : ordersController.storeOrderList.length)) {
+                                return isCustomer ? buildCustomerOrders(i) : buildStoreOrders(i);
+                              } else if (ordersController.isLoading.value) {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  ordersController.scrollController.jumpTo(
+                                      ordersController.scrollController.position.maxScrollExtent);
+                                });
+                                return CommonWidgets.loadingIndicator();
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
               ),
-              height25SizedBox,
-              Obx(() => ordersController.role?.value == Role.customerRoleText
-                  ? ordersController.orderList.isEmpty
-                      ? ordersController.isDataLoading.value == true
-                          ? height0SizedBox
-                          : Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      ImageConstants.nodata,
-                                      scale: 8,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  height4SizedBox,
-                                  Center(
-                                    child: Text(
-                                      StringConstants.noOrdersFoundText,
-                                      style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                      : Expanded(
-                          child: ListView.separated(
-                              controller: ordersController.scrollController,
-                              separatorBuilder: (BuildContext context, int index) {
-                                return height12SizedBox;
-                              },
-                              itemCount: ordersController.orderList.length + (ordersController.isLoading.value ? 1 : 0),
-                              itemBuilder: (BuildContext context, int i) {
-                                if (i < ordersController.orderList.length) {
-                                  return InkWell(
-                                    onTap: () async {
-                                      ordersController.storeId.value = ordersController.orderList[i].storeId ?? "";
-                                      ordersController.orderStatus.value = ordersController.orderList[i].orderId ?? "";
-                                      ordersController.apiGetStoreDetailsApi();
-                                      Get.parameters["orderStatus"] = ordersController.orderList[i].orderId ?? "";
-                                      ordersController.apiGetOrderDetailsApi();
-                                      Get.parameters["isFromTransaction"] = "false";
-                                      Get.parameters["isHome"] = "false";
-                                      Get.parameters["isFromNotification"] = "false";
-                                      Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
-
-                                      Get.to(() => const OrderConfirmationScreen(), id: pageIdApp.value)?.then((value) {
-                                        ordersController.apiGetOrderListApi();
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                      decoration: const BoxDecoration(
-                                          color: AppColors.primaryLight,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          )),
-                                      child: Column(children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
-                                              child: CommonWidgets.circleCachedNetworkImage(
-                                                ordersController.orderList[i].store?.logo?.dynamicUrl.toString() ?? "",
-                                                fit: BoxFit.contain,
-                                                radius: 22.0,
-                                                assetImg: ImageConstants.nopicfound,
-                                              ),
-                                            ),
-                                            width5SizedBox,
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text.rich(
-                                                          TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                  text: StringConstants.orderIDText,
-                                                                  style: TextStyle(
-                                                                      color: AppColors.blackLight,
-                                                                      fontWeight: FontWeight.w400,
-                                                                      overflow: TextOverflow.ellipsis,
-                                                                      fontSize: 14)),
-                                                              TextSpan(
-                                                                text: ': ${ordersController.orderList[i].orderId ?? "0"}',
-                                                                style: TextStyle(
-                                                                    fontWeight: FontWeight.w600,
-                                                                    overflow: TextOverflow.ellipsis,
-                                                                    fontSize: 14,
-                                                                    color: AppColors.blackLight),
-                                                              ),
-                                                            ],
-                                                            style: const TextStyle(overflow: TextOverflow.ellipsis),
-                                                          ),
-                                                          style: const TextStyle(overflow: TextOverflow.ellipsis),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Text.rich(
-                                                          TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                  text: Utility.parseDateTime(
-                                                                    DateTime.parse(ordersController.orderList[i].orderDate.toString()),
-                                                                    secFormat: '',
-                                                                  ).toString(),
-                                                                  style: TextStyle(
-                                                                      color: AppColors.blackLight,
-                                                                      fontWeight: FontWeight.w400,
-                                                                      overflow: TextOverflow.ellipsis,
-                                                                      fontSize: 14)),
-                                                              TextSpan(
-                                                                text:
-                                                                    "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
-                                                                style: TextStyle(
-                                                                    color: AppColors.blackLight,
-                                                                    fontWeight: FontWeight.w400,
-                                                                    overflow: TextOverflow.ellipsis,
-                                                                    fontSize: 14),
-                                                              ),
-                                                            ],
-                                                            style: const TextStyle(overflow: TextOverflow.ellipsis),
-                                                          ),
-                                                          style: const TextStyle(overflow: TextOverflow.ellipsis),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  height8SizedBox,
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Text(ordersController.orderList[i].store?.storeName ?? "",
-                                                          style: const TextStyle(
-                                                              color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16)),
-                                                      Text(
-                                                        "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
-                                                        style: const TextStyle(
-                                                            color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        height6SizedBox,
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text.rich(
-                                              softWrap: true,
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: "${StringConstants.statusText} : ",
-                                                      style: const TextStyle(
-                                                          color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                  TextSpan(
-                                                    text: ordersController.orderList[i].orderHistories?.first.orderStatus?.orderStatusName
-                                                            ?.toTitleCase() ??
-                                                        "",
-                                                    style:
-                                                        const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                          text: "${StringConstants.productsText}: ",
-                                                          style: const TextStyle(
-                                                              color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                      TextSpan(
-                                                        text: ordersController.orderList[i].orderItems?.length.toString() ?? "0",
-                                                        style: const TextStyle(
-                                                            color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.chevron_right,
-                                                  color: AppColors.blackLight,
-                                                  size: 22.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ]),
-                                    ),
-                                  );
-                                } else if (ordersController.isLoading.value) {
-                                  Timer(const Duration(milliseconds: 10), () {
-                                    ordersController.scrollController.jumpTo(ordersController.scrollController.position.maxScrollExtent);
-                                  });
-                                  return CommonWidgets.loadingIndicator();
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }),
-                        )
-                  : ordersController.storeOrderList.isEmpty
-                      ? ordersController.isDataLoading.value == true
-                          ? height0SizedBox
-                          : Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      ImageConstants.nodata,
-                                      scale: 8,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  height4SizedBox,
-                                  Center(
-                                    child: Text(
-                                      StringConstants.noOrdersFoundText,
-                                      style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                      : Expanded(
-                          child: ListView.separated(
-                              controller: ordersController.scrollController,
-                              separatorBuilder: (BuildContext context, int index) {
-                                return height12SizedBox;
-                              },
-                              itemCount: ordersController.storeOrderList.length + (ordersController.isLoading.value ? 1 : 0),
-                              itemBuilder: (BuildContext context, int i) {
-                                if (i < ordersController.storeOrderList.length) {
-                                  return InkWell(
-                                    onTap: () {
-                                      // SharedPreferenceStorage.setData(
-                                      //     "context", context);
-
-                                      Get.parameters["storeId"] = ordersController.storeOrderList[i].store?.storeId.toString() ?? "";
-                                      Get.parameters["orderId"] = ordersController.storeOrderList[i].orderId.toString();
-                                      ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"11"
-                                              OrderStatusEnum.returnRequest.statusName
-                                          ? Get.to(() => const MarkReturnOrderScreen(), id: pageIdApp.value, arguments: {
-                                              "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                              "orderId": ordersController.storeOrderList[i].orderId.toString(),
-                                            })?.then((value) {
-                                              ordersController.apiGetStoreOrderListApi();
-                                            })
-                                          : ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"12"
-                                                  OrderStatusEnum.returnConfirmed.statusName
-                                              ? Get.to(() => const ReturnConfirmOrderScreen(),
-                                                  id: int.parse(SharedPreferenceStorage.getData("pageId").toString()),
-                                                  arguments: {
-                                                      "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                                      "orderId": ordersController.storeOrderList[i].orderId.toString(),
-                                                    })
-                                              : ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
-                                                  ? null
-                                                  : Get.to(() => const OrdersHomeMainScreen(), id: pageIdApp.value, arguments: {
-                                                      "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                                      "orderId": ordersController.storeOrderList[i].orderId ?? "",
-                                                    });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                      decoration: const BoxDecoration(
-                                          color: AppColors.primaryLight,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0),
-                                          )),
-                                      child: Column(children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
-                                              child: CommonWidgets.circleCachedNetworkImage(
-                                                ordersController.storeOrderList[i].store?.logo?.dynamicUrl.toString() ?? "",
-                                                fit: BoxFit.contain,
-                                                radius: 22.0,
-                                                assetImg: ImageConstants.nopicfound,
-                                              ),
-                                            ),
-                                            width5SizedBox,
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text.rich(
-                                                        TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                                text: StringConstants.orderIDText,
-                                                                style: TextStyle(
-                                                                    color: AppColors.blackLight,
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontSize: 14)),
-                                                            TextSpan(
-                                                              text: ': ${ordersController.storeOrderList[i].orderId ?? "0"}',
-                                                              style: TextStyle(
-                                                                  fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.blackLight),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      // width20SizedBox,
-                                                      Text.rich(
-                                                        TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                                text: Utility.formatDateTime(
-                                                                    '${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}',
-                                                                    firstFormat: "yyyy-MM-dd HH:mm:ss",
-                                                                    secFormat: "dd MMM yyyy"), //"14 Feb",
-                                                                style: TextStyle(
-                                                                    color: AppColors.blackLight,
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontSize: 14)),
-                                                            TextSpan(
-                                                              text:
-                                                                  "-${Utility.formatDateTime('${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
-                                                              //'2023-03:30 AM',
-                                                              style: TextStyle(
-                                                                  color: AppColors.blackLight, fontWeight: FontWeight.w400, fontSize: 14),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  height8SizedBox,
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text.rich(
-                                                          TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                  text: StringConstants.storeNameText,
-                                                                  style: TextStyle(
-                                                                      color: AppColors.blackLight,
-                                                                      fontWeight: FontWeight.w400,
-                                                                      fontSize: 14)),
-                                                              TextSpan(
-                                                                text: ': ${ordersController.storeOrderList[i].store?.storeName ?? ""}',
-                                                                style: TextStyle(
-                                                                    fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.blackLight),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          overflow: TextOverflow.visible,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "\$${ordersController.storeOrderList[i].totalAmount?.toStringAsFixed(2)}",
-                                                          textAlign: TextAlign.end,
-                                                          style: const TextStyle(
-                                                              color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        height6SizedBox,
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text.rich(
-                                              softWrap: true,
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: "${StringConstants.statusText}: ",
-                                                      style: const TextStyle(
-                                                          color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                  TextSpan(
-                                                    text: ordersController
-                                                            .storeOrderList[i].orderHistories?.first.orderStatus?.orderStatusName
-                                                            ?.toTitleCase() ??
-                                                        "",
-                                                    style:
-                                                        const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                          text: "${StringConstants.productText}: ",
-                                                          style: const TextStyle(
-                                                              color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                      TextSpan(
-                                                        text: ordersController.storeOrderList[i].orderItems?.length.toString() ?? "0",
-                                                        style: const TextStyle(
-                                                            color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons.chevron_right,
-                                                  color: AppColors.blackLight,
-                                                  size: 22.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ]),
-                                    ),
-                                  );
-                                } else if (ordersController.isLoading.value) {
-                                  Timer(const Duration(milliseconds: 10), () {
-                                    ordersController.scrollController.jumpTo(ordersController.scrollController.position.maxScrollExtent);
-                                  });
-                                  return CommonWidgets.loadingIndicator();
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }),
-                        ))
             ],
-          )),
+          ),
+          // LOADING OVERLAY
+          Obx(() {
+            return ordersController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),
+            )
+                : const SizedBox.shrink();
+          }),
+        ],
+      )
+
     );
+  }
+
+  InkWell buildStoreOrders(int i) {
+    return InkWell(
+                                          onTap: () {
+                                            // SharedPreferenceStorage.setData(
+                                            //     "context", context);
+
+                                            Get.parameters["storeId"] = ordersController.storeOrderList[i].store?.storeId.toString() ?? "";
+                                            Get.parameters["orderId"] = ordersController.storeOrderList[i].orderId.toString();
+                                            ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"11"
+                                                    OrderStatusEnum.returnRequest.statusName
+                                                ? Get.to(() => const MarkReturnOrderScreen(), id: pageIdApp.value, arguments: {
+                                                    "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
+                                                    "orderId": ordersController.storeOrderList[i].orderId.toString(),
+                                                  })?.then((value) {
+                                                    ordersController.apiGetStoreOrderListApi();
+                                                  })
+                                                : ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"12"
+                                                        OrderStatusEnum.returnConfirmed.statusName
+                                                    ? Get.to(() => const ReturnConfirmOrderScreen(),
+                                                        id: int.parse(SharedPreferenceStorage.getData("pageId").toString()),
+                                                        arguments: {
+                                                            "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
+                                                            "orderId": ordersController.storeOrderList[i].orderId.toString(),
+                                                          })
+                                                    : ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
+                                                        ? null
+                                                        : Get.to(() => const OrdersHomeMainScreen(), id: pageIdApp.value, arguments: {
+                                                            "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
+                                                            "orderId": ordersController.storeOrderList[i].orderId ?? "",
+                                                          });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                            decoration: const BoxDecoration(
+                                                color: AppColors.primaryLight,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                )),
+                                            child: Column(children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
+                                                    child: CommonWidgets.circleCachedNetworkImage(
+                                                      ordersController.storeOrderList[i].store?.logo?.dynamicUrl.toString() ?? "",
+                                                      fit: BoxFit.contain,
+                                                      radius: 22.0,
+                                                      assetImg: ImageConstants.nopicfound,
+                                                    ),
+                                                  ),
+                                                  width5SizedBox,
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.max,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                          children: [
+                                                            Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                      text: StringConstants.orderIDText,
+                                                                      style: TextStyle(
+                                                                          color: AppColors.blackLight,
+                                                                          fontWeight: FontWeight.w400,
+                                                                          fontSize: 14)),
+                                                                  TextSpan(
+                                                                    text: ': ${ordersController.storeOrderList[i].orderId ?? "0"}',
+                                                                    style: TextStyle(
+                                                                        fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.blackLight),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            // width20SizedBox,
+                                                            Text.rich(
+                                                              TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                      text: Utility.formatDateTime(
+                                                                          '${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}',
+                                                                          firstFormat: "yyyy-MM-dd HH:mm:ss",
+                                                                          secFormat: "dd MMM yyyy"), //"14 Feb",
+                                                                      style: TextStyle(
+                                                                          color: AppColors.blackLight,
+                                                                          fontWeight: FontWeight.w400,
+                                                                          fontSize: 14)),
+                                                                  TextSpan(
+                                                                    text:
+                                                                        "-${Utility.formatDateTime('${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
+                                                                    //'2023-03:30 AM',
+                                                                    style: TextStyle(
+                                                                        color: AppColors.blackLight, fontWeight: FontWeight.w400, fontSize: 14),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        height8SizedBox,
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text.rich(
+                                                                TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                        text: StringConstants.storeNameText,
+                                                                        style: TextStyle(
+                                                                            color: AppColors.blackLight,
+                                                                            fontWeight: FontWeight.w400,
+                                                                            fontSize: 14)),
+                                                                    TextSpan(
+                                                                      text: ': ${ordersController.storeOrderList[i].store?.storeName ?? ""}',
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.blackLight),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                overflow: TextOverflow.visible,
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                "\$${ordersController.storeOrderList[i].totalAmount?.toStringAsFixed(2)}",
+                                                                textAlign: TextAlign.end,
+                                                                style: const TextStyle(
+                                                                    color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              height6SizedBox,
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text.rich(
+                                                    softWrap: true,
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                            text: "${StringConstants.statusText}: ",
+                                                            style: const TextStyle(
+                                                                color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+                                                        TextSpan(
+                                                          text: ordersController
+                                                                  .storeOrderList[i].orderHistories?.first.orderStatus?.orderStatusName
+                                                                  ?.toTitleCase() ??
+                                                              "",
+                                                          style:
+                                                              const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text.rich(
+                                                        TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                                text: "${StringConstants.productText}: ",
+                                                                style: const TextStyle(
+                                                                    color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+                                                            TextSpan(
+                                                              text: ordersController.storeOrderList[i].orderItems?.length.toString() ?? "0",
+                                                              style: const TextStyle(
+                                                                  color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.chevron_right,
+                                                        color: AppColors.blackLight,
+                                                        size: 22.0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ]),
+                                          ),
+                                        );
+  }
+
+  InkWell buildCustomerOrders(int i) {
+    return InkWell(
+                                          onTap: () async {
+                                            ordersController.storeId.value = ordersController.orderList[i].storeId ?? "";
+                                            ordersController.orderStatus.value = ordersController.orderList[i].orderId ?? "";
+                                            ordersController.apiGetStoreDetailsApi();
+                                            Get.parameters["orderStatus"] = ordersController.orderList[i].orderId ?? "";
+                                            ordersController.apiGetOrderDetailsApi();
+                                            Get.parameters["isFromTransaction"] = "false";
+                                            Get.parameters["isHome"] = "false";
+                                            Get.parameters["isFromNotification"] = "false";
+                                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
+
+                                            Get.to(() => const OrderConfirmationScreen(), id: pageIdApp.value)?.then((value) {
+                                              ordersController.apiGetOrderListApi();
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                            decoration: const BoxDecoration(
+                                                color: AppColors.primaryLight,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                )),
+                                            child: Column(children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
+                                                    child: CommonWidgets.circleCachedNetworkImage(
+                                                      ordersController.orderList[i].store?.logo?.dynamicUrl.toString() ?? "",
+                                                      fit: BoxFit.contain,
+                                                      radius: 22.0,
+                                                      assetImg: ImageConstants.nopicfound,
+                                                    ),
+                                                  ),
+                                                  width5SizedBox,
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.max,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text.rich(
+                                                                TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                        text: StringConstants.orderIDText,
+                                                                        style: TextStyle(
+                                                                            color: AppColors.blackLight,
+                                                                            fontWeight: FontWeight.w400,
+                                                                            overflow: TextOverflow.ellipsis,
+                                                                            fontSize: 14)),
+                                                                    TextSpan(
+                                                                      text: ': ${ordersController.orderList[i].orderId ?? "0"}',
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          fontSize: 14,
+                                                                          color: AppColors.blackLight),
+                                                                    ),
+                                                                  ],
+                                                                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                                                ),
+                                                                style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text.rich(
+                                                                TextSpan(
+                                                                  children: [
+                                                                    TextSpan(
+                                                                        text: Utility.parseDateTime(
+                                                                          DateTime.parse(ordersController.orderList[i].orderDate.toString()),
+                                                                          secFormat: '',
+                                                                        ).toString(),
+                                                                        style: TextStyle(
+                                                                            color: AppColors.blackLight,
+                                                                            fontWeight: FontWeight.w400,
+                                                                            overflow: TextOverflow.ellipsis,
+                                                                            fontSize: 14)),
+                                                                    TextSpan(
+                                                                      text:
+                                                                          "-${Utility.formatDateTime('${ordersController.orderList[i].createdAt.toString().substring(0, 10)} ${ordersController.orderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
+                                                                      style: TextStyle(
+                                                                          color: AppColors.blackLight,
+                                                                          fontWeight: FontWeight.w400,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          fontSize: 14),
+                                                                    ),
+                                                                  ],
+                                                                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                                                ),
+                                                                style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        height8SizedBox,
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text(ordersController.orderList[i].store?.storeName ?? "",
+                                                                style: const TextStyle(
+                                                                    color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16)),
+                                                            Text(
+                                                              "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
+                                                              style: const TextStyle(
+                                                                  color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              height6SizedBox,
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text.rich(
+                                                    softWrap: true,
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                            text: "${StringConstants.statusText} : ",
+                                                            style: const TextStyle(
+                                                                color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+                                                        TextSpan(
+                                                          text: ordersController.orderList[i].orderHistories?.first.orderStatus?.orderStatusName
+                                                                  ?.toTitleCase() ??
+                                                              "",
+                                                          style:
+                                                              const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text.rich(
+                                                        TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                                text: "${StringConstants.productsText}: ",
+                                                                style: const TextStyle(
+                                                                    color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+                                                            TextSpan(
+                                                              text: ordersController.orderList[i].orderItems?.length.toString() ?? "0",
+                                                              style: const TextStyle(
+                                                                  color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.chevron_right,
+                                                        color: AppColors.blackLight,
+                                                        size: 22.0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ]),
+                                          ),
+                                        );
+  }
+
+  Expanded buildNoDataFound() {
+    return Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Image.asset(
+                                            ImageConstants.nodata,
+                                            scale: 8,
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                        height4SizedBox,
+                                        Center(
+                                          child: Text(
+                                            StringConstants.noOrdersFoundText,
+                                            style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
   }
 }

@@ -501,33 +501,23 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
-    debugPrint(
-        "ACTIVE CART URL ********** ${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopCartActive}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("ACTIVE CART RESPONSE*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        debugPrint(
-            "ACTIVE CART activeCartModel*******${int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0}");
-        debugPrint(
-            "ACTIVE CART activeCartModel1*******${activeCartModel.data!.cartItems!.isEmpty}");
-        debugPrint(
-            "ACTIVE CART activeCartModel2*******${activeCartModel.data!.cartItems}");
-
+                           
         if (int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
@@ -542,8 +532,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
           }
 
-          debugPrint("CART TOTAL VALUE${cartTotalPrice.value}");
-          isValidAddress.value = activeCartModel.data!.isValidAddress!;
+                     isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeId.value = activeCartModel.data!.storeId.toString();
           await apiGetCartListApi();
@@ -565,25 +554,21 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Api Contact store
   Future apiContactStore() async {
     isLoading.value = true;
-    debugPrint("CONTACT STORE URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().messageStore}?store_id=${storeId.value}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().messageStore}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=${storeId.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("CONTACT STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
@@ -608,26 +593,22 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Categories Api
   Future apiGetStoreCategoriesApi() async {
     isLoading.value = true;
-    debugPrint("GET STORE CATEGORIES URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}?store_id=${storeId.value}&is_featured_category=false");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=${storeId.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
 
-      debugPrint("GET  Store Categories  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoriesListResponse =
             StoreCategoriesListResponse.fromJson(value?.body);
@@ -648,24 +629,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get User detail Api
   Future apiGetUserDetailsApi() async {
     isLoading.value = true;
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+            ServerCommunicator.baseUrl + ServerCommunicator.userDetail,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
-      log("GET USER DETAIL selectedUserAddress *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         userAddress.value = getUserDetailModel.data!.user!.userAddresses!;
@@ -688,42 +665,33 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Cart List Api
   Future apiGetCartListApi({bool isShowLoading = false}) async {
     isLoading.value = true;
-    debugPrint(
-        "GET CART LIST URL 00000000*******${storeDeliveryServiceId.value.toString() == "0" && selectedUserAddress.value.userAddressId == null ?
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId" : storeDeliveryServiceId.value.toString() != "0"
-            && selectedUserAddress.value.userAddressId == null ?
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-            : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=$storeId&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}"}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-
+     
     UserProvider()
         .getWithHeadersApi(
             storeDeliveryServiceId.value.toString() == "0" &&
                     selectedUserAddress.value.userAddressId == null
-                ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}"
+                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}"
                 : storeDeliveryServiceId.value.toString() != "0" &&
                         selectedUserAddress.value.userAddressId == null
-                    ? "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                    : "${ServerCommunicator().baseUrl}${ServerCommunicator().cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+                    ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+                    : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
             showLoading: isShowLoading)
         .then((value) async {
       isLoading.value = false;
-      log("GET CART LIST RESPONSE 123*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-        // log("cartDeliveryServiceCharge *******${cartData.value.cartDeliveryServiceCharge}");
-
+        //
         if (cartListResponse.data?.cartTotalPrice is int ||
             cartListResponse.data?.cartTotalPrice is String) {
           cartTotalPrice.value = double.parse(
@@ -731,11 +699,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         } else {
           cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
         }
-        // debugPrint("CART TOTAL VALUE ${cartTotalPrice.value}");
-        // debugPrint("CART isDeleteCartItem.value${isDeleteCartItem.value}");
-        // debugPrint(
-        //     "CART TOTAL VALUE${cartListResponse.data!.cartItems!.isEmpty}");
-        // debugPrint("CART isFromHome.value ${isFromHome.value}");
         cartData.value = cartListResponse.data ?? CartListData();
         if (selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == false) {
           Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);
@@ -774,8 +737,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   Future apiPlaceOrder() async {
     isPlaceOrder.value = false;
     isLoading.value = true;
-    debugPrint("API PLACE ORDER URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -802,24 +763,21 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
               : null,
       "cart_items": selectedItems
     };
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("API PLACE ORDER BODY ********** ${jsonEncode(data)}");
+
     UserProvider()
         .postWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().placeOrder}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.placeOrder}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("API PLACE ORDER RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
         orderStatus.value = value?.body["data"]["order_id"];
         isPlaceOrder.value = true;
-        debugPrint("API PLACE ORDER isPlaceOrder ********** $isPlaceOrder");
-        Get.parameters["storeId"] = storeId.value.toString();
+                 Get.parameters["storeId"] = storeId.value.toString();
         Get.parameters["orderStatus"] = value?.body["data"]["order_id"] ?? "";
         Get.parameters["isFromTransaction"] = "false";
         Get.parameters["isFromNotification"] = "false";
@@ -839,6 +797,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isPlaceOrder.value = true;
         selectedDeliveryService.value= "0";
+
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
@@ -867,9 +826,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     BuildContext context,
   ) async {
     isLoading.value = true;
-    debugPrint("ADD TO CART URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().createCart}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -882,19 +839,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       "items_count": itemsCount.value
     };
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("data ********** $data");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().createCart}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
 
-      debugPrint("ADD TO CART RESPONSE  *******${value?.body}");
-
+       
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
@@ -916,9 +870,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Update Cart Api
   Future apiUpdateCart({int cartItemId = 0, quantity = 0}) async {
     isLoading.value = true;
-    debugPrint("UPDATE CART URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().updateCart}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -930,17 +882,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       "items_count": quantity
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .putWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().updateCart}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.updateCart}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("UPDATE CART RESPONSE  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isDeleteCartItem.value = true;
         await apiGetCartListApi();
@@ -962,9 +912,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Delete Cart Api
   Future apiDeleteCart({int cartItemId = 0}) async {
     isLoading.value = true;
-    debugPrint("DELETE CART URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -975,17 +923,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       "cart_item_id": cartItemId,
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .deleteWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().deleteItemFromCart}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.deleteItemFromCart}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("DELETE CART RESPONSE  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isDeleteCartItem.value = true;
@@ -1121,24 +1067,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   Future apiGetStoreOffersApi() async {
     offersList.clear();
     isLoading.value = true;
-    debugPrint("Store Offers URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOffersList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersList}?store_id=${storeId.value}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Store Offers *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
@@ -1158,34 +1100,28 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get User Wallet Balance Api
   Future apiGetUserWalletBalance() async {
     isLoading.value = true;
-    debugPrint("User Wallet Balance URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().userWalletBalance}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletBalance}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER WALLET BALANCE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         if (value?.body["data"]["balance"] is int ||
             value?.body["data"]["balance"] is String) {
           walletBalance.value =
               double.parse(value?.body["data"]["balance"].toString() ?? "");
-          debugPrint("USER WALLET BALANCE 1*******${walletBalance.value}");
-        } else if (value?.body["data"]["balance"] is double) {
+                   } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"] ?? 0.0;
-          debugPrint("USER WALLET BALANCE 2*******${walletBalance.value}");
-        }
+                   }
         if (storeId.value != "") {
 
           await apiActiveCartApi();
@@ -1208,47 +1144,34 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Store Details Api
   Future apiGetStoreDetailsApi({dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
     isLoading.value = true;
-    debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
             headers,
             showLoading: showLoading.value)
         .then((value) async {
       isLoading.value = false;
       showLoading.value = false;
-      log("STORE DETAILS RESPONSE*******${value?.body}");
-      debugPrint(
-          "storeLocation  *******${json.encode(value?.body["data"]["store"]["store_addresses"][0])}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+                     if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
         storeLocation.value =
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
-        debugPrint("isFavouriteStore before *******${isFavouriteStore.value}");
-
-        debugPrint(
-            "store response before *******${storeDetailsResponse.value.data?.store?.storePages}");
-
-        debugPrint(
-            "isFavouriteStore before *******${storeDetailsResponse.value.data?.store?.isFavouriteStore}");
-        isVerifiedStore.value =
+         
+         
+                 isVerifiedStore.value =
             storeDetailsResponse.value.data?.store?.isVerified ?? false;
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
 
-        debugPrint("CURRENT listIndex ***${listIndex.value}*********");
-
-        debugPrint("isFavouriteStore after*******${isFavouriteStore.value}");
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+         
+               } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1266,24 +1189,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Shop  Product Detail Api
   Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
-    debugPrint("Product Shop Detail  URL*****----------*****"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      log("Product Shop Detail  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         productDetailResponse.value =
             ShopProductDetailResponse.fromJson(value?.body);
@@ -1339,9 +1258,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       String categoryId = "0"}) async {
     featureProductList.clear();
     isLoading.value = true;
-    debugPrint("FeatureProductList URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1370,19 +1287,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           : []
     };
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("data ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeFeatureProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeFeatureProductList,
             headers,
             showLoading: false /*showLoading.value*/)
         .then((value) async {
       isLoading.value = false;
-      log("Feature ProductList Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         featureProductListResponse =
             FeatureProductListResponse.fromJson(value?.body);
@@ -1535,9 +1449,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
     isLoading.value = true;
-    debugPrint("Create Favourite Store URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1546,18 +1458,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     Map data = {"store_id": int.parse(id ?? "0")};
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createFavouriteStore,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.createFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Create Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = true;
@@ -1581,9 +1491,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
     isLoading.value = true;
-    debugPrint("Remove Favourite Store URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1592,19 +1500,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     Map data = {"store_id": int.parse(id ?? "0")};
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("data ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Remove Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
@@ -1630,9 +1535,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Create Favourite Product Api
   Future apiCreateFavouriteProduct(String? id) async {
     isLoading.value = true;
-    debugPrint("Create Favourite Product URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteProduct}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1641,19 +1544,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     Map data = {"product_id": int.parse(id ?? "0")};
 
-    debugPrint("Create Favourite Product body ********** $data");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createFavouriteProduct,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.createFavouriteProduct,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Create Favourite Product *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 
@@ -1679,9 +1579,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Remove Favourite Product Api
   Future apiRemoveFavouriteProduct(String? id,{bool isFromFavS = false}) async {
     isLoading.value = true;
-    debugPrint("Remove Favourite Product URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteProduct}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1690,19 +1588,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     Map data = {"product_id": int.parse(id ?? "0")};
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("data ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteProduct,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.removeFavouriteProduct,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("Remove Favourite Product *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         isFromFavS ? apiFeatureProductListApi(isFavouriteProducts: true) : null;
@@ -1727,9 +1622,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Previous orders ProductList Api
   Future apiGetPreviousOrders() async {
     isLoading.value = true;
-    debugPrint("PREVIOUS ORDERS URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreProductList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1754,19 +1647,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         // }
       ]
     };
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("PREVIOUS ORDERS BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().shopStoreProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.shopStoreProductList,
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("PREVIOUS ORDERS RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         previousOrdersModel = PreviousOrdersModel.fromJson(value?.body);
         previousOrderList.value = previousOrdersModel.data?.products ?? [];
@@ -1790,9 +1680,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       {String storeId = "", String offerId = ""}) async {
     featuredUserProductList.clear();
     isLoading.value = true;
-    debugPrint("GET OFFERS PRODUCT URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeFeatureProductList}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -1810,19 +1698,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       "offer_id": offerId,
       "filters": []
     };
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("GET OFFERS PRODUCT BODY ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeFeatureProductList,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeFeatureProductList,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET OFFERS PRODUCT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);

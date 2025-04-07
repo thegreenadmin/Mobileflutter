@@ -77,9 +77,7 @@ class TransactionDetailController extends GetxController with GlobalVarMixin{
   Future apiGetUserOrderTransactionHistory(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
-    debugPrint(
-        "USER ORDER HISTORY API URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -103,18 +101,15 @@ class TransactionDetailController extends GetxController with GlobalVarMixin{
       "only_active_orders": true,
       "order_statuses": []
     };
-    debugPrint("USER ORDER HISTORY API BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().orderList,
+            ServerCommunicator.baseUrl + ServerCommunicator.orderList,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("USER ORDER HISTORY URL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         update();
       } else {
@@ -129,25 +124,20 @@ class TransactionDetailController extends GetxController with GlobalVarMixin{
   Future apiGetOwnerTransactionDetail(
       {String startDateOfMonth = "", String endDateOfMonth = ""}) async {
     isLoading.value = true;
-    debugPrint("OWNER TRANSACTION DETAIL URL **********");
-    debugPrint(
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}");
-
+          
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeTransactionDetail}?store_wallet_transaction_id=${storeWalletTransactionId!.value}&store_id=${storeId!.value}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("OWNER TRANSACTION DETAIL  RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         if (value?.body["data"]["transaction"]['order_transaction'] != null) {
           customerName!.value = value?.body["data"]["transaction"]

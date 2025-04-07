@@ -627,9 +627,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///CREATE ITEM REVIEW
   Future apiCreateReview() async {
     isLoading.value = true;
-    debugPrint("CREATE ITEM REVIEW URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().createItemReview}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -642,30 +640,27 @@ class OrdersController extends GetxController with GlobalVarMixin{
       "rating": ratingValue.value.toInt()
     };
 
-    debugPrint("data ********** $data");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createItemReview,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.createItemReview,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("CREATE ITEM REVIEW *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {  isLoading.value = false;
         Utility.showToast(value?.body['message']);
         reviewController.clear();
         ratingValue.value = 0.0;
         apiGetOrderDetailsApi();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -676,28 +671,24 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
   ///Get User Detail Info Api
   Future apiGetUserDetail() async {
-    debugPrint(
-        "GET USER DETAIL URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().userDetail}");
-
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
       "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-        ServerCommunicator().baseUrl + ServerCommunicator().userDetail,
+        ServerCommunicator.baseUrl + ServerCommunicator.userDetail,
         headers,
         showLoading: false)
-        .then((value) async {
-      debugPrint("GET USER DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+        .then((value) async {  isLoading.value = false;
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {  isLoading.value = false;
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
 
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
@@ -708,45 +699,36 @@ class OrdersController extends GetxController with GlobalVarMixin{
  ///CREATE ITEM REVIEW
   Future apiIamHereNotification() async {
     isLoading.value = true;
-    debugPrint("Here Notification URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().hereNotification}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("data ********** ${int.parse(orderStatus.value)}");
-    debugPrint("data ********** ${int.parse(storeId.value)}");
-    debugPrint("data ********** ${int.parse(currentUserId!.value)}");
-    debugPrint("data ********** ${int.parse(orderStatus.value)}");
-    Map<String, dynamic> data = {
+                        Map<String, dynamic> data = {
       "order_id": int.parse(orderStatus.value),
       "store_id":int.parse(storeId.value),
       "user_id": int.parse(currentUserId!.value??"0"),
     };
 
-    debugPrint("data ********** $data");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().hereNotification,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.hereNotification,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("CREATE ITEM REVIEW *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         Utility.showToast(value?.body['message']);
         apiGetOrderDetailsApi();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -759,9 +741,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///RETURN ORDER
   Future apiReturnOrder() async {
     isLoading.value = true;
-    debugPrint("RETURN ORDER URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().returnOrder}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -779,34 +759,31 @@ class OrdersController extends GetxController with GlobalVarMixin{
       ]
     };
 
-    debugPrint("REQUEST ********** $data");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().returnOrder,
+            ServerCommunicator.baseUrl + ServerCommunicator.returnOrder,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("RETURN ORDER *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         Utility.showToast(value?.body['message']);
         reasonController.clear();
         apiGetOrderDetailsApi();
         Get.back(id: pageIdApp.value);
         Get.back(id: pageIdApp.value);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         Get.back(id: pageIdApp.value);
         Get.back(id: pageIdApp.value);
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
 
@@ -818,32 +795,28 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Order Status List Api
   Future apiGetOrderStatusListApi() async {
     isLoading.value = true;
-    debugPrint("Order Status List URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}");
 
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** ${jsonEncode(headers)}");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().orderStatusList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.orderStatusList}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Order Status List *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         orderStatusListResponse = OrderStatusListResponse.fromJson(value?.body);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -854,16 +827,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Order List Api
   Future apiGetOrderListApi() async {
     if (page.value == 1) {
+      isLoading.value = true;
       orderList.clear();
     }
     orderListResponse = OrderListResponse();
     isDataLoading.value = orderList.isNotEmpty ? true : false;
 
     isLoading.value = orderList.isNotEmpty ? true : false;
-    debugPrint("role List URL**********${role!.value}");
-    debugPrint("Order List URL****${page.value}******"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}");
-    Map<String, String> headers = {
+              Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -918,21 +889,19 @@ class OrdersController extends GetxController with GlobalVarMixin{
                   : []
     };
 
-    log("Order List data ********** ${jsonEncode(data)}");
-    debugPrint("TOKEN ********** ${jsonEncode(headers)}");
-    UserProvider()
+
+         UserProvider()
         .postWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().orderList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.orderList}",
             headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
-      debugPrint("Order List *******${page.value}*******${value?.body}");
-      isLoading.value = false;
+             isLoading.value = false;
       isDataLoading.value = false;
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         orderListResponse = OrderListResponse.fromJson(value?.body);
         totalCount.value = orderListResponse.data!.totalCount;
         List<Order>? orders = [];
@@ -946,14 +915,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
         orderList.toSet().toList();
 
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
 
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
-        if (value?.body['message'] != null) {
+      } else { isLoading.value = false;
+        if (value?.body['message'] != null) { isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -963,13 +932,12 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Store Order List Api
   Future apiGetStoreOrderListApi() async {
     if (pageStore.value == 1) {
+      isLoading.value = true;
       storeOrderList.value = [];
     }
     storeOrderListResponse = StoreOrderListResponse();
     isDataLoading.value = storeOrderList.isNotEmpty ? true : false;
     isLoading.value = storeOrderList.isNotEmpty ? true : false;
-    debugPrint("Order List URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -998,19 +966,16 @@ class OrdersController extends GetxController with GlobalVarMixin{
             ]
     };
 
-    debugPrint("PARAMETERS ********** ${jsonEncode(data)}");
-    debugPrint("TOKEN ********** ${jsonEncode(headers)}");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOrderList}",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Store Order  List *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value = false;
         storeOrderListResponse = StoreOrderListResponse.fromJson(value?.body);
         List<Order>? orders = [];
         orders = storeOrderListResponse.data!.orders ?? [];
@@ -1022,12 +987,12 @@ class OrdersController extends GetxController with GlobalVarMixin{
         }
         storeOrderList.toSet().toList();
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1038,36 +1003,33 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Store Details Api
   Future apiGetStoreDetailsApi() async {
     isLoading.value = true;
-    debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=");
 
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}&latitude=&longitude=",
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      log("Store Details*******${jsonEncode(value?.body)}");
+
+
       if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+          value?.body["status"] == ApiConstants.statusCode200) {    isLoading.value = false;
         storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
         storeLocation.value =
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {    isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {    isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1078,35 +1040,31 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Store List Api
   Future apiGetStoreList() async {
     isLoading.value = true;
-    debugPrint(
-        "GET STORE URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeList}");
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator().baseUrl + ServerCommunicator().storeList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("GET STORE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+
+             if (value?.body["status"] == ApiConstants.statusCode200 ||
+          value?.body["status"] == ApiConstants.statusCode201) {    isLoading.value = false;
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
         Get.parameters["storeCount"] = storeList.length.toString();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1117,26 +1075,23 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Get Order Details Api
   Future apiGetOrderDetailsApi() async {
     isLoading.value = true;
-    debugPrint("ORDER DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}");
 
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.orderDetail}?store_id=${storeId.value}&order_id=${orderStatus.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      log("ORDER Details*******${value?.body}");
+
+
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         orderDetailResponse = OrderDetailResponse.fromJson(value?.body);
-        log("sentNotification Details*******${orderDetailResponse.data?.sentNotification?.id}");
+        isLoading.value = false;
         isCustomerReached.value = orderDetailResponse.data?.sentNotification?.title?.contains("reached the store") ?? false;
         orderItems.value = orderDetailResponse.data?.order?.orderItems ?? [];
         totalAmount.value = orderDetailResponse.data?.order?.totalAmount ?? 0.0;
@@ -1172,7 +1127,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
           stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
-        } else {
+        } else { isLoading.value = false;
           stepInd.firstWhere((element) => element.id == 2).name =
               "Ready for pickup";
         }
@@ -1186,11 +1141,11 @@ class OrdersController extends GetxController with GlobalVarMixin{
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']); isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1201,9 +1156,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Cancel Order Api
   Future apiCancelOrder() async {
     isLoading.value = true;
-    debugPrint("Cancel Order URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1220,26 +1173,24 @@ class OrdersController extends GetxController with GlobalVarMixin{
       ]
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().cancelOrder,
+            ServerCommunicator.baseUrl + ServerCommunicator.cancelOrder,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Cancel Order *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value = false;
         Utility.showToast(value?.body['message']);
         Get.until((route) => route.isFirst, id: pageIdApp.value);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1250,9 +1201,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Cancel Order Api
   Future apiCancelReturnRequestOrder() async {
     isLoading.value = true;
-    debugPrint("CANCEL REQUEST URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().cancelReturnOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1263,19 +1212,16 @@ class OrdersController extends GetxController with GlobalVarMixin{
       "store_id": int.parse(storeId.value),
       "order_id": int.parse(orderStatus.value),
     };
-    debugPrint("CANCEL REQUEST BODY ********** $data");
-    debugPrint("CANCEL REQUEST TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().cancelReturnOrder,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.cancelReturnOrder,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Cancel Return Request  *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {  isLoading.value = false;
         Utility.showToast(value?.body['message']);
         orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
         isActiveOrders.value = true;
@@ -1285,10 +1231,10 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Get.until((route) => route.isFirst, id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1299,9 +1245,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Cancel Order Api
   Future apiReadyPickupOrder() async {
     isLoading.value = true;
-    debugPrint("Ready Pickup URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().readyPickup}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1313,26 +1257,24 @@ class OrdersController extends GetxController with GlobalVarMixin{
       "order_id": int.parse(orderStatus.value),
     };
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl + ServerCommunicator().readyPickup,
+            ServerCommunicator.baseUrl + ServerCommunicator.readyPickup,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Ready Pickup Response *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) { isLoading.value = false;
         Utility.showToast(value?.body['message']);
         apiGetOrderDetailsApi();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1343,9 +1285,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
     isLoading.value = true;
-    debugPrint("Create Favourite Store URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().createFavouriteStore}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1354,27 +1294,25 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
     Map data = {"store_id": int.parse(id ?? "0")};
 
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .postWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createFavouriteStore,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.createFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Create Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        isFavouriteStore.value = true;
+        isFavouriteStore.value = true; isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -1385,9 +1323,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
     isLoading.value = true;
-    debugPrint("Remove Favourite Store URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().removeFavouriteStore}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1396,28 +1332,25 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
     Map data = {"store_id": int.parse(id ?? "0")};
 
-    debugPrint("TOKEN ********** $headers");
-    debugPrint("data ********** ${data.toString()}");
-    UserProvider()
+              UserProvider()
         .deleteWithHeadersApi(
             data,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().removeFavouriteStore,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.removeFavouriteStore,
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
-      debugPrint("Remove Favourite Store *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value = false;
         Utility.showToast(value?.body['message']);
         isFavouriteStore.value = false;
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

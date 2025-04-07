@@ -161,14 +161,11 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
               contentType: MediaType.parse("image/png"),
               filename: "file-name.png".toString())));
       final res = await dio.post(
-          ServerCommunicator().baseUrl + ServerCommunicator().fileUpload,
+          ServerCommunicator.baseUrl + ServerCommunicator.fileUpload,
           data: formData,
           options: mdio.Options(headers: headers));
       final responseData = res.data;
-      debugPrint(
-          "IMAGE UPLOAD URL LINK ******* ${ServerCommunicator().baseUrl}${ServerCommunicator().fileUpload}");
-      debugPrint("IMAGE UPLOAD URL LINK *******$responseData");
-      if (res.statusCode == 200 || res.statusCode == 201) {
+                    if (res.statusCode == 200 || res.statusCode == 201) {
         categoryImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
         categoryImageDynamicLinkFromServer.value =
@@ -179,11 +176,9 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
         Utility.showAlertMessage(responseData['message'].toString());
       } else {}
     } catch (e) {
-      debugPrint(e.toString());
-      if (e is mdio.DioException) {
+             if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
-          debugPrint("${e.response?.data ?? ""}");
-          final responseData =
+                     final responseData =
               json.decode(e.response?.data) as Map<String, dynamic>;
           return responseData;
         }
@@ -195,23 +190,13 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
   ///Add Category Api
   Future apiAddCategory() async {
     isLoading.value = true;
-    debugPrint(
-        "ADD CATEGORY URL*>>*********${ServerCommunicator().baseUrl}${ServerCommunicator().createStoreCategory}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("ADD CATEGORY headers********** $headers");
-    debugPrint("ADD CATEGORY store_id********** ${int.parse(storeId.value)}");
-    debugPrint(
-        "ADD CATEGORY is_featured_category********** ${isFeaturedTypeSelected.value}");
-    debugPrint(
-        "ADD CATEGORY category_name********** ${categoryNameTextController.text.trim()}");
-    debugPrint(
-        "ADD CATEGORY image_url********** ${categoryImageOriginalLinkFromServer.value}");
-
+                         
     Map body = {
       "store_id": int.parse(storeId.value),
       "parent_category_id": null,
@@ -219,19 +204,16 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
       "category_name": categoryNameTextController.text.trim(),
       "image_url": categoryImageOriginalLinkFromServer.value
     };
-    debugPrint("ADD CATEGORY BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().createStoreCategory,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.createStoreCategory,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("GET CATEGORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         Get.parameters["categoryName"] = categoryNameTextController.text;
@@ -253,21 +235,18 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
 
   ///Get Category Detail Api
   Future apiGetCategoryDetail() async {
-    debugPrint(
-        "GET CATEGORY DETAIL URL**********${ServerCommunicator().baseUrl}${"${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}"}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}",
             headers,
             showLoading: true)
         .then((value) async {
-      debugPrint("GET CATEGORY DETAIL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
             value?.body["data"]['category']['category_name'] ?? "";
@@ -293,9 +272,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
   ///Update Category Api
   Future apiUpdateCategory() async {
     isLoading.value = true;
-    debugPrint(
-        "UPDATE CATEGORY  URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -309,18 +286,16 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
       "category_name": categoryNameTextController.text.trim(),
       "image_url": categoryImageOriginalLinkFromServer.value
     };
-    debugPrint("UPDATE CATEGORY BODY**********$data");
-    UserProvider()
+         UserProvider()
         .putWithHeadersApi(
             data,
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeCategoryEdit}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryEdit}",
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
       (value);
-      debugPrint("UPDATE CATEGORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
 

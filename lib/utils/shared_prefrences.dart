@@ -22,6 +22,8 @@ class SharedPreferenceStorage with GlobalVarMixin{
     // storage.write(key, value);
   }
 
+  // dynamic getData(String key) => GetStorage().read(key);
+
   static String? getString(String key) {
     final GetStorage storage = GetStorage();
     return storage.read(key);

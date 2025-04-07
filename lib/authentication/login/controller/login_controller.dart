@@ -19,6 +19,7 @@ class LoginController extends GetxController {
   RxString selectedRegion = "".obs;
 
   RxBool autoValidate = false.obs;
+  RxBool isLoading = false.obs;
   RxList<String> countryCodes = <String>[].obs;
 
 
@@ -56,19 +57,18 @@ class LoginController extends GetxController {
  
   ///Login Api
   Future apiGenerateOtp() async {
+    isLoading.value = true;
     Map data = {
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim()
     };
-    debugPrint("LOGIN BODY********** $data");
-    debugPrint(
-        "LOGIN URL**********${ServerCommunicator().baseUrl}${ServerCommunicator().generateOtp}");
+
     UserProvider()
         .postApi(data,
-            ServerCommunicator().baseUrl + ServerCommunicator().generateOtp,
-            showLoading: true)
+            ServerCommunicator.baseUrl + ServerCommunicator.generateOtp,
+            showLoading: false)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value?.body}");
+
       if (value?.body["status"] == ApiConstants.statusCode201) {
         phoneTextController.clear();
         Utility.showToast(value?.body['message']);
@@ -77,13 +77,17 @@ class LoginController extends GetxController {
           "phoneNumber": phoneNumber.value.trim(),
           "countryCode": countryCode.value.trim()
         });
+        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         //User not exist
+        isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else if (value?.body["status"] == ApiConstants.statusCode400) {
         //Phone Number is not valid
+        isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
       } else {
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

@@ -120,37 +120,27 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
     switch (i) {
       case 0: //Active Orders
         {
-          debugPrint("Active Orders========");
-          debugPrint(selectedIndex.value.toString());
-          await apiGetOwnerOrderHistory();
+                                await apiGetOwnerOrderHistory();
         }
         break;
       case 1: //In-progress Orders
         {
-          debugPrint("In-progress  Orders========");
-          debugPrint(selectedIndex.value.toString());
-          await apiGetOwnerOrderHistory();
+                                await apiGetOwnerOrderHistory();
         }
         break;
       case 2: //Pickup Orders
         {
-          debugPrint("Pickup Orders========");
-          debugPrint(selectedIndex.value.toString());
-          await apiGetOwnerOrderHistory();
+                                await apiGetOwnerOrderHistory();
         }
         break;
       case 3: //Completed Orders
         {
-          debugPrint("Completed Orders========");
-          debugPrint(selectedIndex.value.toString());
-          await apiGetOwnerOrderHistory();
+                                await apiGetOwnerOrderHistory();
         }
         break;
       default:
         {
-          debugPrint("Active Orders========");
-          debugPrint(selectedIndex.value.toString());
-          await apiGetOwnerOrderHistory();
+                                await apiGetOwnerOrderHistory();
         }
         break;
     }
@@ -166,22 +156,19 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Get Store Details Api
   Future apiGetStoreDetails() async {
     isLoading.value = true;
-    debugPrint("STORE DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}");
-
+     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
     UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().shopStoreDetails}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("STORE DETAIL BODY*******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value =
             store.StoreDetailsResponse.fromJson(value?.body);
@@ -210,9 +197,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
     if (page.value == 1) {
       ownerOrderHistoryList!.value = [];
     }
-    debugPrint(
-        "OWNER ORDER HISTORY URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderList}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -277,19 +262,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
                       }, // return Request
                     ]
     };
-    debugPrint("OWNER ORDER HISTORY BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl + ServerCommunicator().storeOrderList,
+            ServerCommunicator.baseUrl + ServerCommunicator.storeOrderList,
             headers,
             showLoading: page.value == 1)
         .then((value) async {
       isLoading.value = false;
 
-      log("OWNER ORDER HISTORY RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
             GetOwnerOrderHistoryModel.fromJson(value?.body);
@@ -317,37 +299,33 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Get Store Order Details Api
   Future apiGetStoreOrderDetail() async {
     isLoading.value = true;
-    debugPrint("STORE ORDER DETAIL URL**********"
-        "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}");
-    Map<String, String> headers = {
+         Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+         UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}",
             headers,
             showLoading: false)
         .then((value) async {
       isLoading.value = false;
-      log("STORE ORDER DETAIL RESPONSE **********${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Future.delayed(Duration.zero, () {
           getStoreOrderDetailModel.value =
               GetStoreOrderDetailModel.fromJson(value?.body);
-          log("STORE ORDER DETAIL RESPONSE customerName**********${getStoreOrderDetailModel.value.data!.order!.customerName.toString()}");
-          customerName.value =
+                      customerName.value =
               getStoreOrderDetailModel.value.data?.order?.customerName ?? "";
           orderDate.value = Utility.parseDateTime(
             DateTime.parse(getStoreOrderDetailModel.value.data!.order!.orderDate
                 .toString()),
             secFormat: '',
           ).toString();
-          orderAmount.value = getStoreOrderDetailModel
-              .value.data!.order!.totalAmount
-              .toStringAsFixed(2);
+          // orderAmount.value = getStoreOrderDetailModel
+          //     .value.data!.order!.totalAmount
+          //     .toStringAsFixed(2);
+
           orderId.value = getStoreOrderDetailModel.value.data!.order!.orderId!;
           storeId.value = getStoreOrderDetailModel.value.data!.order!.storeId!;
           orderStatusId.value = getStoreOrderDetailModel
@@ -399,9 +377,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Confirm Return Request
   Future apiConfirmReturnRequest() async {
     isLoading.value = true;
-    debugPrint(
-        "RETURN ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeConfirmReturnOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -417,19 +393,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_items": orderItems
     };
 
-    debugPrint("RETURN ORDER CONFIRM BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeConfirmReturnOrder,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeConfirmReturnOrder,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         await apiGetOwnerOrderHistory();
@@ -446,9 +419,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Complete Return Request
   Future apiCompleteReturnRequest() async {
     isLoading.value = true;
-    debugPrint(
-        "RETURN ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCompleteReturnOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -468,20 +439,17 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_items": orderItems
     };
 
-    debugPrint("RETURN ORDER COMPLETE BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-
+          
     UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeCompleteReturnOrder,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeCompleteReturnOrder,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
@@ -502,9 +470,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Reject Return Request
   Future apiRejectReturnRequest() async {
     isLoading.value = true;
-    debugPrint(
-        "RETURN ORDER REJECT URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeRejectReturnOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -516,19 +482,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_id": int.parse(orderId.value),
     };
 
-    debugPrint("RETURN ORDER REJECT BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeRejectReturnOrder,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeRejectReturnOrder,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER REJECT RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         page.value == 1;
@@ -546,9 +509,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Cancel order ready
   Future apiCancelOrder() async {
     isLoading.value = true;
-    debugPrint(
-        "MARK ORDER CANCEL URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeCancelOrder}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -567,19 +528,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_items": orderItems
     };
 
-    debugPrint("MARK ORDER CANCEL BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeCancelOrder,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeCancelOrder,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CANCEL RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
@@ -600,9 +558,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready
   Future apiMarkOrderReady() async {
     isLoading.value = true;
-    debugPrint(
-        "MARK ORDER CONFIRM URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderConfirm}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -622,19 +578,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_items": orderItems
     };
 
-    debugPrint("MARK ORDER CONFIRM BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeOrderConfirm,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeOrderConfirm,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER CONFIRM RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
@@ -655,9 +608,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready for Shipped
   Future apiMarkReadyForShipping() async {
     isLoading.value = true;
-    debugPrint(
-        "MARK ORDER SHIPPED URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderShipped}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -680,19 +631,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
-    debugPrint("MARK ORDER SHIPPED BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeOrderShipped,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeOrderShipped,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER SHIPPED RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
@@ -713,9 +661,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready for Pick
   Future apiMarkReadyForPickUp() async {
     isLoading.value = true;
-    debugPrint(
-        "MARK ORDER PICKUP URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderPickUp}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -738,19 +684,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
-    debugPrint("MARK ORDER PICKUP BODY********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeOrderPickUp,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeOrderPickUp,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER PICKUP RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
@@ -771,9 +714,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order delivered
   Future apiMarkDelivered() async {
     isLoading.value = true;
-    debugPrint(
-        "MARK ORDER COMPLETE URL **********${ServerCommunicator().baseUrl}${ServerCommunicator().storeOrderDelivered}");
-
+     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -782,11 +723,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
     List<dynamic> orderItems = [];
 
     for (var element in getOrderItems) {
-      print("PICKUP --------------------");
-      print(element.isSelected);
-      print(element.orderItemStatus);
-      print("PICKUP -----------ENDDDDDDDD---------");
-      if (element.isSelected == true &&
+                                  if (element.isSelected == true &&
           element.orderItemStatus == OrderStatusEnum.receivedOrder.statusName ||element.isSelected == true &&
           element.orderItemStatus == OrderStatusEnum.inProgress.statusName || element.isSelected == true &&
               element.orderItemStatus == OrderStatusEnum.inTransit.statusName ||
@@ -802,19 +739,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_id": int.parse(orderId.value),
       "order_items": orderItems
     };
-    debugPrint("MARK ORDER COMPLETE BODY ********** $body");
-    debugPrint("TOKEN ********** $headers");
-    UserProvider()
+              UserProvider()
         .postWithHeadersApi(
             body,
-            ServerCommunicator().baseUrl +
-                ServerCommunicator().storeOrderDelivered,
+            ServerCommunicator.baseUrl +
+                ServerCommunicator.storeOrderDelivered,
             headers,
             showLoading: true)
         .then((value) async {
       isLoading.value = false;
-      debugPrint("MARK ORDER COMPLETE RESPONSE *******${value?.body}");
-      if (value?.body["status"] == ApiConstants.statusCode201 ||
+             if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         for (var element in getOrderItems) {
