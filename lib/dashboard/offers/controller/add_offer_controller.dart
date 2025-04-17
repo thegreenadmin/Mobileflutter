@@ -190,7 +190,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
   ///Add Offer Api
   Future apiAddOffer() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -218,8 +218,8 @@ class AddOffersController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeOfferCreate,
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async {  isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
@@ -230,12 +230,12 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         offerImageDynamicLinkFromServer.value = "";
         discountOrOfferTextController.clear();
         Get.back(id: pageIdApp.value);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -256,7 +256,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             ServerCommunicator.baseUrl + ServerCommunicator.storeList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
@@ -307,7 +307,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
             body,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
                     if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -411,6 +411,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers Detail List Api
   Future apiGetOffersDetail() async {
+    isLoading.value = true;
          Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -420,8 +421,8 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersDetails}?store_id=${storeIdValue.value}&offer_id=${offerId.value}",
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async {isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOfferDetailModel = GetOfferDetailModel.fromJson(value?.body);
@@ -461,12 +462,12 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         storeName.value = getOfferDetailModel.data!.store!.storeName!;
 
         update();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -476,6 +477,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
   ///Update Offer Api
   Future apiUpdateOffer() async {
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -496,20 +498,20 @@ class AddOffersController extends GetxController with GlobalVarMixin{
             body,
             ServerCommunicator.baseUrl + ServerCommunicator.storeOfferEdit,
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async {isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
         radioValue.value = "";
-
+        isLoading.value = false;
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

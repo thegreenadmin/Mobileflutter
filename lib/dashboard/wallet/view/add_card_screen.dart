@@ -28,177 +28,183 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
-        child: Container(
-          color: AppColors.primaryLight,
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            Get.back(id: pageIdApp.value);
-
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: AppColors.black,
-                            size: 24.0,
-                          ),
-                        ),
-                        width10SizedBox,
-                        Text(
-                          StringConstants.cardAndPaymentText,
-                          style: const TextStyle(
-                              fontSize: 20,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
-                  ])),
-        ),
-      ),
       body: Stack(
         children: <Widget>[
           Obx(
-            () => Container(
-              height: WidgetConstants.screenHeight,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: addCardController.cardList.isEmpty
-                  ? addCardController.isLoading.value == true
-                      ? height0SizedBox
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.asset(
-                                ImageConstants.nodata,
-                                scale: 8,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            height4SizedBox,
-                            Center(
-                              child: Text(
-                                StringConstants.noCardsFoundText,
-                                style: const TextStyle(
-                                    fontStyle: FontStyle.italic, fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )
-                  : ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return height15SizedBox;
-                      },
-                      itemCount: addCardController.cardList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 15, bottom: 15),
-                          color: AppColors.primaryLight,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Image.asset(
-                                        addCardController.cardList[index].card!
-                                                    .brand ==
-                                                StringConstants.visaText
-                                            ? ImageConstants.visacard
-                                            : addCardController.cardList[index]
-                                                        .card!.brand ==
-                                                    StringConstants
-                                                        .masterCardText
-                                                ? ImageConstants.mastercard
-                                                : addCardController
-                                                            .cardList[index]
-                                                            .card!
-                                                            .brand ==
-                                                        StringConstants
-                                                            .americanExpressText
-                                                    ? ImageConstants
-                                                        .americanexpress
-                                                    : addCardController
-                                                                .cardList[index]
-                                                                .card!
-                                                                .brand ==
-                                                            StringConstants
-                                                                .discoverText
-                                                        ? ImageConstants
-                                                            .discovecard
-                                                        : ImageConstants.card,
-                                        height: 20,
-                                      ),
-                                    ),
-                                    width15SizedBox,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          addCardController
-                                              .cardList[index].card!.brand
-                                              .toString()
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                              color: AppColors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        height10SizedBox,
-                                        Text(
-                                          "**** **** **** **** ${addCardController.cardList[index].card!.last4}",
-                                          style: TextStyle(
-                                              color: AppColors.blackLight,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+            () => Column(
+              children: [
+                Container(
+                color: AppColors.primaryLight,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  Get.back(id: pageIdApp.value);
+
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.black,
+                                  size: 24.0,
                                 ),
-                                InkWell(
-                                    onTap: () async {
-                                      Utility.showConfirmAlertMessage(
-                                          AlertStringConstants.areYouSureText,
-                                          okay: StringConstants.deleteText,
-                                          okayTap: () async {
-                                        Get.back();
-                                        // Navigator.pop(Get.context!);
-                                        addCardController.apiDeleteCard(
-                                            userStripeCardId: addCardController
-                                                    .cardList[index]
-                                                    .userStripeCardId ??
-                                                "");
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      ImageConstants.deleteicon,
-                                      scale: 3.0,
-                                    )),
-                              ]),
-                        );
-                      }),
+                              ),
+                              width10SizedBox,
+                              Text(
+                                StringConstants.cardAndPaymentText,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          )
+                        ])),
+              ),
+                Expanded(
+                  child: Container(
+                    height: WidgetConstants.screenHeight * 0.8,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                    child:  addCardController.cardList.isEmpty
+                        ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            ImageConstants.nodata,
+                            scale: 8,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        height4SizedBox,
+                        Center(
+                          child: Text(
+                            StringConstants.noCardsFoundText,
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    )
+                        : ListView.separated(
+                      padding: EdgeInsets.zero,
+                            separatorBuilder: (BuildContext context, int index) {
+                              return height15SizedBox;
+                            },
+                            itemCount: addCardController.cardList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Visibility(
+                                visible: addCardController.cardList[index].card!=null,
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 15, bottom: 15),
+                                  color: AppColors.primaryLight,
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Image.asset(
+                                                addCardController.cardList[index].card!=null &&
+                                                addCardController.cardList[index].card!
+                                                            .brand ==
+                                                        StringConstants.visaText
+                                                    ? ImageConstants.visacard
+                                                    :addCardController.cardList[index].card!=null &&  addCardController.cardList[index]
+                                                                .card!.brand ==
+                                                            StringConstants
+                                                                .masterCardText
+                                                        ? ImageConstants.mastercard
+                                                        : addCardController.cardList[index].card!=null &&  addCardController
+                                                                    .cardList[index]
+                                                                    .card!
+                                                                    .brand ==
+                                                                StringConstants
+                                                                    .americanExpressText
+                                                            ? ImageConstants
+                                                                .americanexpress
+                                                            : addCardController.cardList[index].card!=null &&  addCardController
+                                                                        .cardList[index]
+                                                                        .card!
+                                                                        .brand ==
+                                                                    StringConstants
+                                                                        .discoverText
+                                                                ? ImageConstants
+                                                                    .discovecard
+                                                                : ImageConstants.card,
+                                                height: 20,
+                                              ),
+                                            ),
+                                            width15SizedBox,
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  addCardController
+                                                      .cardList[index].card?.brand
+                                                      .toString()
+                                                      .toUpperCase() ??"",
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                height10SizedBox,
+                                                Text(
+                                                  "**** **** **** **** ${addCardController.cardList[index].card?.last4 ??""}",
+                                                  style: TextStyle(
+                                                      color: AppColors.blackLight,
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        InkWell(
+                                            onTap: () async {
+                                              Utility.showConfirmAlertMessage(
+                                                  AlertStringConstants.areYouSureText,
+                                                  okay: StringConstants.deleteText,
+                                                  okayTap: () async {
+                                                Get.back();
+                                                // Navigator.pop(Get.context!);
+                                                addCardController.apiDeleteCard(
+                                                    userStripeCardId: addCardController
+                                                            .cardList[index]
+                                                            .userStripeCardId ??
+                                                        "");
+                                              });
+                                            },
+                                            child: Image.asset(
+                                              ImageConstants.deleteicon,
+                                              scale: 3.0,
+                                            )),
+                                      ]),
+                                ),
+                              );
+                            }),
+                  ),
+                ),
+              ],
             ),
           ),
           Positioned(
@@ -234,6 +240,16 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
               fontSize: 16,
             ),
           ),
+          //LOADING OVERLAY
+          Obx(() {
+            return addCardController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),)
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

@@ -106,7 +106,10 @@ class AddCardController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    getApiData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getApiData();
+    });
+
   }
 
   getGKey() async {
@@ -137,7 +140,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   //Get User Detail Info Api
   Future apiGetUserDetailApi() async {
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -148,6 +151,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
@@ -182,12 +186,15 @@ class AddCardController extends GetxController with GlobalVarMixin{
             // await apiGetCountries();
           }
         }
+        isLoading.value= false;
       } else if (value?.body["status"] == 401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
+        isLoading.value= false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
+               isLoading.value= false;
         Utility.showAlertMessage(value?.body['message'].toString());
       }
     });
@@ -312,7 +319,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Get Countries Api
   Future apiGetCountries() async {
     countryList.clear();
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -325,14 +332,18 @@ class AddCardController extends GetxController with GlobalVarMixin{
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
+               isLoading.value= false;
         countryListModel = CountryListModel.fromJson(value?.body);
         countryList.value = countryListModel.data!.countries!;
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401)
+      {
+        isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
       } else {
+               isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
       }
     });
@@ -341,7 +352,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Get States Api
   Future apiGetStates() async {
     statesList.clear();
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -354,6 +365,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value= false;
         getStateModel = GetStatesModel.fromJson(value?.body);
         statesList.value = getStateModel.data!.states!;
         if (stateId.value.isNotEmpty) {
@@ -363,14 +375,15 @@ class AddCardController extends GetxController with GlobalVarMixin{
             }
           }
         } else {
+          isLoading.value= false;
           stateId.value = statesList[0].stateId.toString();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();isLoading.value= false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
       }
     });
@@ -388,7 +401,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Get Store List Api
   Future apiGetStoreList() async {
     isStoreLoading.value = true;
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -402,17 +415,17 @@ class AddCardController extends GetxController with GlobalVarMixin{
         .then((value) async {
       isStoreLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+          value?.body["status"] == ApiConstants.statusCode201) {isLoading.value= false;
         getStoreListModel = GetOwnerStoresResponse.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data as Iterable<Datum>);
 
         Get.parameters["storeCount"] = storeList.length.toString();
-        if (storeList.length == 1) {
+        if (storeList.length == 1) {isLoading.value= false;
           selectedStore.value = storeList[0].storeId.toString();
           storeId?.value = storeList[0].storeId.toString();
           apiGetOwnerWalletBalance();
-        } else {
+        } else {isLoading.value= false;
           if (storeList.isNotEmpty) {
             storeNameValue.value = storeList[0].storeName.toString();
             selectedStore.value = storeList[0].storeId.toString();
@@ -425,7 +438,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
             await Get.offAll(const StartJourneyScreen());
           }
         }
-      } else {
+      } else {isLoading.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -435,7 +448,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Create Stripe Token
   Future<void> apiCreateStripeToken(context) async {
-
+    isLoading.value= true;
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
@@ -484,7 +497,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Update User Detail Api
   Future apiUpdateUserDetail() async {
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -518,14 +531,14 @@ class AddCardController extends GetxController with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.updateUser}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value= false;
                  // Utility.showToast(value?.body['message']);
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
-               } else {
-        if (value?.body['message'] != null) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value= false;
+               } else {isLoading.value= false;
+        if (value?.body['message'] != null) {isLoading.value= false;
                      // Utility.showAlertMessage(value?.body['message']);
         }
       }
@@ -535,7 +548,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Api Create Card
   Future apiCreateCard() async {
          Map body = {"token_id": stripeToken.value};
-
+         isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -546,9 +559,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
             body,
             ServerCommunicator.baseUrl + ServerCommunicator.createCard,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      if (value != null) {
+      if (value != null) {isLoading.value= false;
                  if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
@@ -581,8 +594,8 @@ class AddCardController extends GetxController with GlobalVarMixin{
           stateId.value = "";
           Get.back(id: pageIdApp.value);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value.body['message']);
-        } else {
+          Utility.showAlertMessage(value.body['message']);isLoading.value= false;
+        } else {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
         }
       }
@@ -593,8 +606,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   Future apiGetCardList() async {
     userStripeCardId?.value = "";
 
-
-    // isLoading.value = true;
+    isLoading.value = true;
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -605,24 +617,23 @@ class AddCardController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.userStripeCardList}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       if (cardList.isNotEmpty) {
         cardList.clear();
       }
-      isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         cardListModel = CardListModel.fromJson(value?.body);
         cardList.value = cardListModel.data?.cards ?? [];
-
+        isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();isLoading.value= false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value= false;
         if (value?.body['message']
                 .toString()
                 .toLowerCase()
@@ -640,7 +651,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
       "user_stripe_card_id": userStripeCardId!.value,
       "amount": amountTextController.text.trim()
     };
-
+         isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -652,9 +663,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.userWalletRechargeStripe,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) {
-      if (value != null) {
+      if (value != null) {isLoading.value= false;
                  if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Get.back(id: pageIdApp.value);
@@ -670,8 +681,8 @@ class AddCardController extends GetxController with GlobalVarMixin{
           update();
           Utility.showToast(value.body['message']);
         } else if (value.statusCode == ApiConstants.statusCode401) {
-          Utility.showAlertMessage(value.body['message']);
-        } else {
+          Utility.showAlertMessage(value.body['message']);isLoading.value= false;
+        } else {isLoading.value= false;
           if (value.body['message'] != null) {
             Utility.showAlertMessage(value.body['message']);
           }
@@ -685,7 +696,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
       "store_id": int.parse(ownerStoreId),
       "user_stripe_card_id": userStripeCardId!.value,
       "amount": ownerAmountTextController.text.trim()
-    };
+    };isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -697,9 +708,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.ownerWalletRechargeStripe,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) {
-      if (value != null) {
+      if (value != null) {isLoading.value= false;
                  if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Get.back(id: pageIdApp.value);
@@ -714,9 +725,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
           update();
           Utility.showToast(value.body['message']);
-        } else if (value.statusCode == ApiConstants.statusCode401) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
-        } else {
+        } else {isLoading.value= false;
           if (value.body['message'] != null) {
             Utility.showAlertMessage(value.body['message']);
           }
@@ -727,8 +738,8 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Get Card List Api
   Future apiGetUserWalletBalance() async {
-    // isLoading.value = true;
-     
+    isLoading.value = true;
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -761,7 +772,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Delete Card api
   Future apiDeleteCard({String userStripeCardId = ""}) async {
-     
+    isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -777,18 +788,18 @@ class AddCardController extends GetxController with GlobalVarMixin{
             showLoading: false)
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode201 ||
-          value?.body["status"] == ApiConstants.statusCode200) {
+          value?.body["status"] == ApiConstants.statusCode200) {isLoading.value= false;
         Utility.showToast(value?.body['message']);
         await apiGetCardList();
-      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
         await apiGetCardList();
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -841,7 +852,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
       "user_stripe_bank_id": int.parse(userStripeBankId!.value),
       "amount": double.parse(payoutAmountTextController.text.trim())
     };
-
+         isLoading.value= true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -853,13 +864,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeStripePayoutCreate,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       if (value != null) {
                  if (value.body['success'] == true ||
             value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
-          userStripeBankId!.value = "";
+          userStripeBankId!.value = "";isLoading.value= false;
           payoutAmountTextController.clear();
           userStripeBankId!.value = "";
           payoutAmountTextController.clear();
@@ -867,14 +878,14 @@ class AddCardController extends GetxController with GlobalVarMixin{
           storeId!.value = "";
           Get.back(id: pageIdApp.value);
           Utility.showToast(value.body['message']);
-        } else if (value.body["status"] == ApiConstants.statusCode401) {
+        } else if (value.body["status"] == ApiConstants.statusCode401) {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
           storage.clearData();
           Get.parameters.clear();
           Get.offAll(const StartJourneyScreen());
-        } else if (value.body["status"] == ApiConstants.statusCode409) {
+        } else if (value.body["status"] == ApiConstants.statusCode409) {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
-        } else {
+        } else {isLoading.value= false;
           if (value.body['message'] != null) {
             Utility.showAlertMessage(value.body['message']);
           }
@@ -911,10 +922,10 @@ class AddCardController extends GetxController with GlobalVarMixin{
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();isLoading.value= false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value= false;
         String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
@@ -941,9 +952,9 @@ class AddCardController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
-      isLoading.value = false;
+
              if (value?.body["status"] == ApiConstants.statusCode200 ||
-          value?.body["status"] == ApiConstants.statusCode201) {
+          value?.body["status"] == ApiConstants.statusCode201) {isLoading.value = false;
         if (value?.body['data']['balance'] != null) {
           ownerWalletBalance!.value =
               value?.body['data']['balance'].toStringAsFixed(2) ?? "0.00";
@@ -952,11 +963,11 @@ class AddCardController extends GetxController with GlobalVarMixin{
         }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
+        Utility.showAlertMessage(value?.body['message']);isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {isLoading.value = false;
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
@@ -1004,7 +1015,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   /// Add Money to stripe wallet
   Future apiPaymentIntent(String type) async {
-     
+    isLoading.value = true;
          Map body = {
       "payment_service_name": type,
       "amount": double.parse(amountTextController.text) * 100
@@ -1031,15 +1042,15 @@ class AddCardController extends GetxController with GlobalVarMixin{
             body,
             ServerCommunicator.baseUrl + ServerCommunicator.paymentIntent,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
-      if (value != null) {
+      if (value != null) {isLoading.value = false;
                  if (value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           Utility.showToast(value.body['message']);
-        } else if (value.statusCode == ApiConstants.statusCode401) {
+        } else if (value.statusCode == ApiConstants.statusCode401) {isLoading.value = false;
           Utility.showAlertMessage(value.body['message']);
-        } else {
+        } else {isLoading.value = false;
           Utility.showAlertMessage(value.body['message']);
         }
       }

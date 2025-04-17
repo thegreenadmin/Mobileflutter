@@ -603,56 +603,56 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primaryLight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back(id: pageIdApp.value);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Obx(() => Text(
-                                    userInboxDetailController.storeName.value,
-                                    style: const TextStyle(
-                                        fontSize: 22,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
-          )),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: Stack(
           children: [
             Column(
               children: [
+                PreferredSize(
+                    preferredSize: const Size.fromHeight(80.0),
+                    child: Container(
+                      color: AppColors.primaryLight,
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0, right: 20, top: 50,bottom: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          padding: EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            Get.back(id: pageIdApp.value);
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_back,
+                                            color: AppColors.black,
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        width10SizedBox,
+                                        Obx(() => Text(
+                                          userInboxDetailController.storeName.value,
+                                          style: const TextStyle(
+                                              fontSize: 22,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                      ],
+                                    ),
+                                    Image.asset(
+                                      ImageConstants.homeMall,
+                                      scale: 4,
+                                    )
+                                  ]),
+                            ],
+                          )),
+                    )),
                 Obx(() => Expanded(
                       child: userInboxDetailController.messageList.isEmpty
                           ? SizedBox(
@@ -733,6 +733,16 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                 .isNotEmpty
                             ? buildPhotoLibraryGridView()
                             : Container()),
+                //LOADING OVERLAY
+                Obx(() {
+                  return userInboxDetailController.isLoading.value
+                      ? Container(
+                    color: Colors.black.withOpacity(0.2),
+                    child: const Center(
+                      child: CircularProgressIndicator(color: AppColors.primary),
+                    ),)
+                      : const SizedBox.shrink();
+                }),
               ],
             ),
           ],

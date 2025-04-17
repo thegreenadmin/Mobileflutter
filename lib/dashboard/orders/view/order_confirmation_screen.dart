@@ -105,7 +105,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                         ? height0SizedBox
                                         : IconButton(
                                       splashRadius: 40,
-                                            padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.all(10),
                                             constraints: const BoxConstraints(),
                                             onPressed: () {
                                               Get.back(id: pageIdApp.value);
@@ -277,6 +277,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                             SizedBox(
                                               height: 20,
                                               child: ListView.separated(
+
+                                                  padding: EdgeInsets.zero,
                                                   separatorBuilder:
                                                       (BuildContext context,
                                                           int index) {
@@ -739,6 +741,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           ],
                         )
                   : ListView.separated(
+
                       separatorBuilder: (BuildContext context, int index) {
                         return height8SizedBox;
                       },

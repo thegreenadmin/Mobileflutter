@@ -76,13 +76,17 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    apiGetUserStoreList();
-    apiGetWorkerList();
-    apiGetRoleList();
-    apiGetParticularStore();
-    getPage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeId.value = Get.parameters["storeId"] ?? "";
+      storeName.value = Get.parameters["storeName"] ?? "";
+      apiGetUserStoreList();
+      apiGetWorkerList();
+      apiGetRoleList();
+      apiGetParticularStore();
+      getPage();
+
+    });
+
   }
 
   getPage() async {
@@ -174,7 +178,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
             addWorkerRequest,
             ServerCommunicator.baseUrl + ServerCommunicator.createStoreUser,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
@@ -320,7 +324,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   /// Delete Worker Api
   Future<dynamic> apiDeleteWorker() async {
-          
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -337,7 +341,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl + ServerCommunicator.deleteWorker,
             headers,
             showLoading: false)
-        .then((value) async {
+        .then((value) async { isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         Utility.showToast(value?.body['message']);
@@ -387,6 +391,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   ///Api upload image to server
   Future apiUploadImage() async {
     try {
+      isLoading.value = true;
       final dio = mdio.Dio();
       mdio.FormData formData = mdio.FormData.fromMap({});
 
@@ -407,6 +412,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
       final responseData = res.data;
                     if (res.statusCode == ApiConstants.statusCode200 ||
           res.statusCode == ApiConstants.statusCode201) {
+                      isLoading.value = false;
         userImageOriginalLinkFromServer.value =
             responseData['data']['urls']['orignal_url'];
         userImageDynamicLinkFromServer.value =
@@ -414,9 +420,11 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
         return responseData;
       } else if (res.statusCode == ApiConstants.statusCode401) {
+                      isLoading.value = false;
         Utility.showAlertMessage(responseData['message'].toString());
       }
     } catch (e) {
+      isLoading.value = false;
              if (e is mdio.DioException) {
         if (e.type == mdio.DioExceptionType.badResponse) {
                      final responseData =
@@ -430,7 +438,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   ///Get particular store api
   Future apiGetParticularStore() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -441,7 +449,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
-      log("GET PARTICULAR STORE RESPONSE *******${value?.body}");
+      isLoading.value = false;
       if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         storeTimings.value =
@@ -502,7 +510,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   ///Get User Store List Api
   Future apiGetUserStoreList() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -512,7 +520,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl + ServerCommunicator.userStore,
             headers,
             showLoading: false)
-        .then((value) async {
+        .then((value) async { isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getUserStoreListModel = GetUserStoreListModel.fromJson(value?.body);
@@ -543,7 +551,7 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.workerList}?store_id=${int.parse(storeId.value)}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||

@@ -6,30 +6,24 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class OfferProductScreen extends StatefulWidget {
+class OfferProductScreen extends StatelessWidget {
   final bool isFromStore;
   final offer.Offer? offerObj;
   final String? storeId;
 
-  const OfferProductScreen({
+   OfferProductScreen({
     super.key,
     this.isFromStore = false,
     this.offerObj,
     this.storeId,
   });
 
-  @override
-  State<OfferProductScreen> createState() => _OfferProductScreenState();
-}
-
-class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarMixin {
   final OffersController offersController = Get.put(OffersController());
-  final StoreHomeMainController storeHomeMainController = Get.put(StoreHomeMainController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: !widget.isFromStore
+        appBar: !isFromStore
             ? PreferredSize(
                 preferredSize: const Size.fromHeight(80.0),
                 child: Container(
@@ -81,19 +75,29 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                    if (!widget.isFromStore) {
-                      Get.parameters["isFromHome"] = "true";
+                      Get.parameters["isFromHome"] = "false";
                       Get.parameters["isFromFav"] = "false";
-                      Get.parameters["isFromMenu"] = "false";
+                      Get.parameters["isFromMenu"] = "true";
                       Get.parameters["isFromOptions"] = "false";
 
-                      Get.parameters["storeId"] = widget.storeId ?? "";
+                      Get.parameters["storeId"] = storeId ?? "";
+
+                      if(  offerObj?.isOfferForStore == true){
+
+                        Get.parameters["invokedIndex"] = "0";
+                      }else{
+                        Get.parameters["productId"] =
+                            offersController.featuredUserProductList[0].productId ?? "";
+                        Get.parameters["storeId"] =
+                            offersController.featuredUserProductList[0].storeId ?? "";
+                        Get.parameters["invokedIndex"] = "2";
+                      }
 
                       await Get.to(
                         () => const StoreHomeMainScreen(),
                         id: pageIdApp.value,
                       );
-                    }
+
                   },
                   child: Card(
                       elevation: 1,
@@ -111,29 +115,29 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
                                       shape: BoxShape.rectangle,
                                       border: Border.all(color: AppColors.primary, width: 0)),
                                   child: CommonWidgets.cachedNetworkImage(
-                                    widget.offerObj?.image?.dynamicUrl == null ||
-                                            widget.offerObj!.image!.dynamicUrl!.isEmpty
-                                        ? ""
-                                        : widget.offerObj?.image?.dynamicUrl ?? "",
+                                    offerObj?.image?.dynamicUrl == null || offerObj!.image!.dynamicUrl!.isEmpty
+                                        ? "" : offerObj?.image?.dynamicUrl ?? "",
                                     fit: BoxFit.fill,
                                   )),
                             ),
                             height10SizedBox,
                             Text(
-                              widget.offerObj?.offerName ?? "",
-                              style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                              offerObj?.offerName ?? "",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontSize: 16),
                             ),
                             height4SizedBox,
                             Text(
-                              "${StringConstants.offerTypeText}: ${widget.offerObj?.isOfferForStore == true ? "Store" : "Products"}",
+                              "${StringConstants.offerTypeText}: ${offerObj?.isOfferForStore == true ? "Store" : "Products"}",
                               style: const TextStyle(color: Colors.black, fontSize: 12),
                             ),
                             height4SizedBox,
                             Text(
-                              widget.offerObj?.offerType != null &&
-                                      widget.offerObj!.offerType.toString().contains("per")
-                                  ? "${StringConstants.offerPriceText}: ${widget.offerObj?.offerValue}%"
-                                  : "${StringConstants.offerPriceText}: \$${widget.offerObj?.offerValue}",
+                              offerObj?.offerType != null && offerObj!.offerType.toString().contains("per")
+                                  ? "${StringConstants.offerPriceText}: ${offerObj?.offerValue}%"
+                                  : "${StringConstants.offerPriceText}: \$${offerObj?.offerValue}",
                               style: const TextStyle(color: Colors.black, fontSize: 12),
                             ),
                           ],
@@ -142,7 +146,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
                 ),
                 Obx(() {
                   return Visibility(
-                    visible: widget.offerObj?.isOfferForStore == false,
+                    visible: offerObj?.isOfferForStore == false,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -153,6 +157,7 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
                         ),
                         height10SizedBox,
                         ListView.builder(
+                            padding: EdgeInsets.zero,
                             primary: false,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -160,15 +165,15 @@ class _OfferProductScreenState extends State<OfferProductScreen> with GlobalVarM
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () async {
-                                  Get.parameters["isFromHome"] = "true";
+                                  Get.parameters["isFromHome"] = "false";
                                   Get.parameters["isFromFav"] = "false";
-                                  Get.parameters["isFromMenu"] = "false";
+                                  Get.parameters["isFromMenu"] = "true";
                                   Get.parameters["isFromOptions"] = "false";
+                                  Get.parameters["invokedIndex"] = "2";
                                   Get.parameters["productId"] =
                                       offersController.featuredUserProductList[index].productId ?? "";
                                   Get.parameters["storeId"] =
                                       offersController.featuredUserProductList[index].storeId ?? "";
-                                  storeHomeMainController.invokedIndex.value = 3;
                                   await Get.to(
                                     () => const StoreHomeMainScreen(),
                                     id: pageIdApp.value,

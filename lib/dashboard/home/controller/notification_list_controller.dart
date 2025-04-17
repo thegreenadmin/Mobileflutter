@@ -56,7 +56,7 @@ class NotificationListController extends GetxController with GlobalVarMixin {
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.notificationListUrl}?is_notification_for_store=$isForStore&page=1&page_size=1000",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode200 ||

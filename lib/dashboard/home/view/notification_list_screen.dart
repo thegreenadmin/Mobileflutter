@@ -24,265 +24,286 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildPreferredSize(),
         body: buildBody());
   }
 
-  Container buildBody() {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
-        child: Column(children: [
-          Expanded(
-            child: Obx(() => notificationListController
-                    .notificationList.isEmpty
-                ? notificationListController.isLoading.value == true
-                    ? height0SizedBox
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Image.asset(
-                              ImageConstants.nodata,
-                              scale: 8,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          height4SizedBox,
-                          Center(
-                            child: Text(
-                              StringConstants.noNotificationFoundYetText,
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      )
-                : ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) {
-                      return height12SizedBox;
-                    },
-                    itemCount:
-                        notificationListController.notificationList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          Get.parameters["storeId"] =
-                              notificationListController
-                                      .notificationList[index].storeId ??
-                                  "";
-                          Get.parameters["storeName"] =
-                              notificationListController
-                                      .notificationList[index]
-                                      .store
-                                      ?.storeName ??
-                                  "";
-                          Get.parameters["messageHeadId"] =
-                              notificationListController
-                                      .notificationList[index]
-                                      .messageHeadId ??
-                                  "";
-
-                          Get.parameters["orderStatus"] =
-                              notificationListController
-                                      .notificationList[index].orderId ??
-                                  "";
-                          Get.parameters["orderId"] =
-                              notificationListController
-                                      .notificationList[index].orderId ??
-                                  "";
-                          Get.parameters["isController"] = "yes";
-                          Get.parameters["isFromNotification"] = "true";
-                          // notificationListController.notificationList[index]
-                          //         .isNotificationForStore!
-                          //     ? roleApp.value = Role.storeOwnerRoleText
-                          //     : roleApp.value = Role.customerRoleText;
-
-                          notificationListController.notificationList[index]
-                              .isNotificationForStore!
-                              ? roleApp(Role.storeOwnerRoleText)
-                              : roleApp(Role.customerRoleText);
-                          notificationListController
-                                          .notificationList[index].orderId !=
-                                      null &&
-                                  notificationListController
-                                      .notificationList[index]
-                                      .isNotificationForStore!
-                              ? Get.put(OrdersHomeMainController()).onInit()
-                              : null;
-                          Get.parameters["isFromMenu"] = "false";
-                          Get.parameters['isFromFav'] = "false";
-                          Get.parameters["isFromHome"] = "true";
-                          Get.parameters["isFromOptions"] = "false";
-                          // Get.parameters["isAddToOrderScreen"]=="false";
-                          notificationListController
-                                      .notificationList[index].orderId !=
-                                  null
-                              ? notificationListController
-                                      .notificationList[index]
-                                      .isNotificationForStore!
-                                  ? Get.to(
-                                      () => const OrdersHomeMainScreen(),
-                                      id: pageIdApp.value,
-                                    )
-                                  : Get.to(
-                                      () => const OrderConfirmationScreen(),
-                                      id: pageIdApp.value,
-                                    )
-                              : notificationListController
-                                          .notificationList[index].offerId !=
-                                      null
-                                  ? Get.to(() => const StoreHomeMainScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {
-                                          "isFromNotification": true,
-                                        })
-                                  : notificationListController
-                                              .notificationList[index]
-                                              .messageHeadId !=
-                                          null
-                                      ? roleApp.value == Role.customerRoleText
-                                          ? Get.to(
-                                              () =>
-                                                  const UserInboxDetailScreen(),
-                                              id: pageIdApp.value,
-                                              arguments: {
-                                                  "storeId":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .storeId,
-                                                  "storeName":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .store!
-                                                          .storeName,
-                                                  "messageHeadId":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .messageHeadId,
-                                                })
-                                          : Get.to(
-                                              () =>
-                                                  const OwnerInboxDetailScreen(),
-                                              id: pageIdApp.value,
-                                              arguments: {
-                                                  "storeId":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .storeId,
-                                                  "storeName":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .store!
-                                                          .storeName,
-                                                  "messageHeadId":
-                                                      notificationListController
-                                                          .notificationList[
-                                                              index]
-                                                          .messageHeadId,
-                                                })
-                                      : null;
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: const BoxDecoration(
-                              color: AppColors.greyLight,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              )),
-                          child: Column(children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: 2,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: AppColors.white,
-                                            width: 1)),
-                                    child: CommonWidgets
-                                        .circleCachedNetworkImage(
-                                      notificationListController
-                                              .notificationList[index]
-                                              .store
-                                              ?.logo
-                                              ?.dynamicUrl
-                                              .toString() ??
-                                          "",
-                                      fit: BoxFit.contain,
-                                      radius: 22.0,
-                                      assetImg: ImageConstants.nopicfound,
+   buildBody() {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            buildPreferredSize(),
+            Expanded(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                  child: Column(children: [
+                    Expanded(
+                      child: Obx(() => notificationListController
+                              .notificationList.isEmpty
+                          ? notificationListController.isLoading.value == true
+                              ? height0SizedBox
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Image.asset(
+                                        ImageConstants.nodata,
+                                        scale: 8,
+                                        color: AppColors.primary,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                width8SizedBox,
-                                Flexible(
-                                  flex: 8,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        notificationListController
-                                                .notificationList[index]
-                                                .store!
-                                                .storeName ??
-                                            "",
-                                        textAlign: TextAlign.justify,
+                                    height4SizedBox,
+                                    Center(
+                                      child: Text(
+                                        StringConstants.noNotificationFoundYetText,
                                         style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w600),
+                                            fontStyle: FontStyle.italic, fontSize: 16),
                                       ),
-                                      height4SizedBox,
-                                      Text(
-                                        notificationListController
-                                                .notificationList[index]
-                                                .title ??
-                                            "",
-                                        textAlign: TextAlign.justify,
-                                        style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      height4SizedBox,
-                                      Text(
-                                        Utility.parseDateTime(
-                                          DateTime.parse(
-                                            notificationListController
-                                                    .notificationList[index]
-                                                    .createdAt ??
-                                                "",
-                                          ),
-                                          secFormat: '',
-                                        ).toString(),
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            color: AppColors.blackLight,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 )
-                              ],
-                            ),
-                          ]),
-                        ),
-                      );
-                    })),
-          ),
-        ]),
-      );
+                          : ListView.separated(
+                          padding: EdgeInsets.zero,
+                              separatorBuilder: (BuildContext context, int index) {
+                                return height12SizedBox;
+                              },
+                              itemCount:
+                                  notificationListController.notificationList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    Get.parameters["storeId"] =
+                                        notificationListController
+                                                .notificationList[index].storeId ??
+                                            "";
+                                    Get.parameters["storeName"] =
+                                        notificationListController
+                                                .notificationList[index]
+                                                .store
+                                                ?.storeName ??
+                                            "";
+                                    Get.parameters["messageHeadId"] =
+                                        notificationListController
+                                                .notificationList[index]
+                                                .messageHeadId ??
+                                            "";
+
+                                    Get.parameters["orderStatus"] =
+                                        notificationListController
+                                                .notificationList[index].orderId ??
+                                            "";
+                                    Get.parameters["orderId"] =
+                                        notificationListController
+                                                .notificationList[index].orderId ??
+                                            "";
+                                    Get.parameters["isController"] = "yes";
+                                    Get.parameters["isFromNotification"] = "true";
+                                    // notificationListController.notificationList[index]
+                                    //         .isNotificationForStore!
+                                    //     ? roleApp.value = Role.storeOwnerRoleText
+                                    //     : roleApp.value = Role.customerRoleText;
+
+                                    notificationListController.notificationList[index]
+                                        .isNotificationForStore!
+                                        ? roleApp(Role.storeOwnerRoleText)
+                                        : roleApp(Role.customerRoleText);
+                                    notificationListController
+                                                    .notificationList[index].orderId !=
+                                                null &&
+                                            notificationListController
+                                                .notificationList[index]
+                                                .isNotificationForStore!
+                                        ? Get.put(OrdersHomeMainController()).onInit()
+                                        : null;
+                                    Get.parameters["isFromMenu"] = "false";
+                                    Get.parameters['isFromFav'] = "false";
+                                    Get.parameters["isFromHome"] = "true";
+                                    Get.parameters["isFromOptions"] = "false";
+                                    // Get.parameters["isAddToOrderScreen"]=="false";
+                                    notificationListController
+                                                .notificationList[index].orderId !=
+                                            null
+                                        ? notificationListController
+                                                .notificationList[index]
+                                                .isNotificationForStore!
+                                            ? Get.to(
+                                                () => const OrdersHomeMainScreen(),
+                                                id: pageIdApp.value,
+                                              )
+                                            : Get.to(
+                                                () => const OrderConfirmationScreen(),
+                                                id: pageIdApp.value,
+                                              )
+                                        : notificationListController
+                                                    .notificationList[index].offerId !=
+                                                null
+                                            ? Get.to(() => const StoreHomeMainScreen(),
+                                                id: pageIdApp.value,
+                                                arguments: {
+                                                    "isFromNotification": true,
+                                                  })
+                                            : notificationListController
+                                                        .notificationList[index]
+                                                        .messageHeadId !=
+                                                    null
+                                                ? roleApp.value == Role.customerRoleText
+                                                    ? Get.to(
+                                                        () =>
+                                                            const UserInboxDetailScreen(),
+                                                        id: pageIdApp.value,
+                                                        arguments: {
+                                                            "storeId":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .storeId,
+                                                            "storeName":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .store!
+                                                                    .storeName,
+                                                            "messageHeadId":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .messageHeadId,
+                                                          })
+                                                    : Get.to(
+                                                        () =>
+                                                            const OwnerInboxDetailScreen(),
+                                                        id: pageIdApp.value,
+                                                        arguments: {
+                                                            "storeId":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .storeId,
+                                                            "storeName":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .store!
+                                                                    .storeName,
+                                                            "messageHeadId":
+                                                                notificationListController
+                                                                    .notificationList[
+                                                                        index]
+                                                                    .messageHeadId,
+                                                          })
+                                                : null;
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    decoration: const BoxDecoration(
+                                        color: AppColors.greyLight,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        )),
+                                    child: Column(children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            flex: 2,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                      color: AppColors.white,
+                                                      width: 1)),
+                                              child: CommonWidgets
+                                                  .circleCachedNetworkImage(
+                                                notificationListController
+                                                        .notificationList[index]
+                                                        .store
+                                                        ?.logo
+                                                        ?.dynamicUrl
+                                                        .toString() ??
+                                                    "",
+                                                fit: BoxFit.contain,
+                                                radius: 22.0,
+                                                assetImg: ImageConstants.nopicfound,
+                                              ),
+                                            ),
+                                          ),
+                                          width8SizedBox,
+                                          Flexible(
+                                            flex: 8,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  notificationListController
+                                                          .notificationList[index]
+                                                          .store!
+                                                          .storeName ??
+                                                      "",
+                                                  textAlign: TextAlign.justify,
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight: FontWeight.w600),
+                                                ),
+                                                height4SizedBox,
+                                                Text(
+                                                  notificationListController
+                                                          .notificationList[index]
+                                                          .title ??
+                                                      "",
+                                                  textAlign: TextAlign.justify,
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppColors.black,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                height4SizedBox,
+                                                Text(
+                                                  Utility.parseDateTime(
+                                                    DateTime.parse(
+                                                      notificationListController
+                                                              .notificationList[index]
+                                                              .createdAt ??
+                                                          "",
+                                                    ),
+                                                    secFormat: '',
+                                                  ).toString(),
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                      fontSize: 12.0,
+                                                      color: AppColors.blackLight,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ]),
+                                  ),
+                                );
+                              })),
+                    ),
+                  ]),
+                ),
+            ),
+          ],
+        ),
+        //LOADING OVERLAY
+        Obx(() {
+          return notificationListController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),)
+              : const SizedBox.shrink();
+        }),
+      ],
+    );
   }
 
   PreferredSize buildPreferredSize() {
@@ -292,7 +313,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
             color: AppColors.primaryLight,
             child: Padding(
                 padding:
-                    const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+                    const EdgeInsets.only(left: 10.0, right: 20, top: 50,bottom: 10),
                 child: Column(
                   children: [
                     Row(
@@ -302,7 +323,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                           Row(
                             children: [
                               IconButton(
-                                padding: EdgeInsets.zero,
+                                padding: EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);

@@ -7,7 +7,10 @@ import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.d
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewProductScreen extends StatefulWidget {
-  const AddNewProductScreen({super.key});
+  final bool isEdit;
+
+  const AddNewProductScreen({super.key, this.isEdit = false});
+
 
   @override
   State<AddNewProductScreen> createState() => _AddNewProductScreenState();
@@ -20,7 +23,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
+      // appBar: buildAppBar(),
       body: buildBody(context),
     );
   }
@@ -31,7 +34,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
         child: Container(
           color: AppColors.primaryLight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              padding: const EdgeInsets.only(left: 15.0, right: 20, top: 50,bottom: 10),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,7 +42,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                     Row(
                       children: [
                         IconButton(
-                          padding: EdgeInsets.zero,
+                          padding: EdgeInsets.all(5),
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             manageStoreController.resetForm();
@@ -72,870 +75,659 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
         ));
   }
 
-  GestureDetector buildBody(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-      child: SingleChildScrollView(
-        child: Form(
-          key: manageStoreController.formKey,
-          child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Obx(
-                    () => manageStoreController.imageUrlList.isEmpty ||
-                            manageStoreController.imageUrlList.every(
-                                (element) => element.status == "deleted")
-                        ? height0SizedBox
-                        : Column(
-                            children: [
-                              Text(StringConstants.uploadProductPhotosText,
-                                  style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400)),
-                              height6SizedBox
-                            ],
-                          ),
-                  ),
-                  Obx(
-                    () => manageStoreController.imageUrlList.isEmpty ||
-                            manageStoreController.imageUrlList.every(
-                                (element) => element.status == "deleted")
-                        ? height0SizedBox
-                        : SizedBox(
-                            height: 100,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 6.0),
-                              child: ListView.separated(
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return width5SizedBox;
-                                  },
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: manageStoreController
-                                      .imageUrlList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return manageStoreController
-                                                .imageUrlList[index].status ==
-                                            "deleted"
-                                        ? const SizedBox(height: 0, width: 0)
-                                        : Stack(
-                                            alignment: Alignment.topRight,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(0.0),
-                                                child: CommonWidgets
-                                                    .cachedNetworkImage(
-                                                  manageStoreController
-                                                      .imageUrlList[index]
-                                                      .dynamicImageUrl!,
-                                                  fit: BoxFit.cover,
-                                                  height: WidgetConstants
-                                                          .screenHeight *
-                                                      0.1,
-                                                  width: WidgetConstants
-                                                          .screenHeight *
-                                                      0.1,
-                                                  placeholder: (context, url) => SizedBox(
-                                                      height: WidgetConstants
-                                                              .screenHeight *
-                                                          0.1,
-                                                      width: WidgetConstants
-                                                              .screenHeight *
-                                                          0.1,
-                                                      child: const Center(
-                                                          child:
-                                                              CircularProgressIndicator())),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  manageStoreController
-                                                      .imageUrlList
-                                                      .removeAt(index);
-                                                  setState(() {});
-                                                },
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(2),
-                                                  child: Icon(
-                                                      Icons.delete_forever,
-                                                      color:
-                                                          AppColors.primary),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                  }),
+   buildBody(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            buildAppBar(),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: manageStoreController.formKey,
+                    child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () => manageStoreController.imageUrlList.isEmpty ||
+                                      manageStoreController.imageUrlList.every(
+                                          (element) => element.status == "deleted")
+                                  ? height0SizedBox
+                                  : Column(
+                                      children: [
+                                        Text(StringConstants.uploadProductPhotosText,
+                                            style: const TextStyle(
+                                                color: AppColors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400)),
+                                        height6SizedBox
+                                      ],
+                                    ),
                             ),
-                          ),
-                  ),
-                  height15SizedBox,
-                  Obx(
-                    () => manageStoreController.imageUrlList.isEmpty ||
-                            manageStoreController.imageUrlList.every(
-                                (element) => element.status == "deleted")
-                        ? height0SizedBox
-                        : InkWell(
-                            onTap: () {
-                              manageStoreController.selectImages(true);
-                            },
-                            child: Image.asset(
-                              ImageConstants.uploadbutton,
-                              scale: 3,
-                            ),
-                          ),
-                  ),
-                  Obx(
-                    () => manageStoreController.imageUrlList.isEmpty ||
-                            manageStoreController.imageUrlList.every(
-                                (element) => element.status == "deleted")
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                flex: 4,
-                                child: InkWell(
-                                  onTap: () {
-                                    manageStoreController.selectImages(true);
-                                  },
-                                  child: Row(
-                                    children: [
-                                      DottedBorder(
-                                        color: AppColors.blackLight,
-                                        strokeWidth: 1,
-                                        dashPattern: const [4, 4],
-                                        child: Container(
-                                          width: WidgetConstants.screenWidth *
-                                              0.3,
-                                          padding: const EdgeInsets.only(
-                                              top: 30, bottom: 30),
-                                          color: AppColors.primaryLight,
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset(
-                                                  ImageConstants.upload,
-                                                  scale: 2.5,
-                                                ),
-                                              ]),
-                                        ),
+                            Obx(
+                              () => manageStoreController.imageUrlList.isEmpty ||
+                                      manageStoreController.imageUrlList.every(
+                                          (element) => element.status == "deleted")
+                                  ? height0SizedBox
+                                  : SizedBox(
+                                      height: 100,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.symmetric(vertical: 6.0),
+                                        child: ListView.separated(
+                                            padding: EdgeInsets.zero,
+                                            separatorBuilder:
+                                                (BuildContext context, int index) {
+                                              return width5SizedBox;
+                                            },
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: manageStoreController
+                                                .imageUrlList.length,
+                                            itemBuilder:
+                                                (BuildContext context, int index) {
+                                              return manageStoreController
+                                                          .imageUrlList[index].status ==
+                                                      "deleted"
+                                                  ? const SizedBox(height: 0, width: 0)
+                                                  : Stack(
+                                                      alignment: Alignment.topRight,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(0.0),
+                                                          child: CommonWidgets
+                                                              .cachedNetworkImage(
+                                                            manageStoreController
+                                                                .imageUrlList[index]
+                                                                .dynamicImageUrl!,
+                                                            fit: BoxFit.cover,
+                                                            height: WidgetConstants
+                                                                    .screenHeight *
+                                                                0.1,
+                                                            width: WidgetConstants
+                                                                    .screenHeight *
+                                                                0.1,
+                                                            placeholder: (context, url) => SizedBox(
+                                                                height: WidgetConstants
+                                                                        .screenHeight *
+                                                                    0.1,
+                                                                width: WidgetConstants
+                                                                        .screenHeight *
+                                                                    0.1,
+                                                                child: const Center(
+                                                                    child:
+                                                                        CircularProgressIndicator())),
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            manageStoreController
+                                                                .imageUrlList
+                                                                .removeAt(index);
+                                                            setState(() {});
+                                                          },
+                                                          child: const Padding(
+                                                            padding: EdgeInsets.all(2),
+                                                            child: Icon(
+                                                                Icons.delete_forever,
+                                                                color:
+                                                                    AppColors.primary),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    );
+                                            }),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              width20SizedBox,
-                              Flexible(
-                                flex: 6,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    height10SizedBox,
-                                    buildText(StringConstants.uploadProductPhotosText, "",),
-
-                                    height10SizedBox,
-                                    Text(
-                                        StringConstants
-                                            .theImageMustBeAtLeastText,
-                                        style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400)),
-                                    height10SizedBox,
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        : height0SizedBox,
-                  ),
-                  height20SizedBox,
-                  buildText(StringConstants.productNameText, StringConstants.starText,),
-
-
-                  height4SizedBox,
-                  CustomInputField(
-                    isBorderOutline: false,
-                    inputFormatters: <TextInputFormatter>[
-                      LengthLimitingTextInputFormatter(25),
-                    ],
-                    keyboardType: TextInputType.text,
-                    autofocus: false,
-                    textInputAction: TextInputAction.next,
-                    controller:
-                        manageStoreController.productNameTextController,
-                    hintText: StringConstants.enterProductNameText,
-                    textCapitalization: TextCapitalization.words,
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return AlertStringConstants
-                            .pleaseEnterProductNameText;
-                      }
-                      return null;
-                    },
-                  ),
-                  height20SizedBox,
-
-                  buildText(StringConstants.categoriesText, StringConstants.starText,),
-
-
-                  height10SizedBox,
-                  Container(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 10, bottom: 10),
-                      margin: const EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                        color: AppColors.primary,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(100),
-                        ),
-                      ),
-                      child: Text(
-                        manageStoreController.categoryName.value,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.white,
-                        ),
-                      )),
-                  // Obx(
-                  //   () => manageStoreController.categoriesList.isEmpty
-                  //       ? height0SizedBox
-                  //       : Wrap(
-                  //           children: [
-                  //             for (var i = 0;
-                  //                 i <
-                  //                     manageStoreController
-                  //                         .categoriesList.length;
-                  //                 i++)
-                  //               InkWell(
-                  //                 onTap: () {
-                  //                   if (manageStoreController
-                  //                           .categoriesList[i].isSelected ==
-                  //                       true) {
-                  //                     for (var item in manageStoreController
-                  //                         .selectedCategories) {
-                  //                       if (item['category_id'] ==
-                  //                           manageStoreController
-                  //                               .categoriesList[i]
-                  //                               .categoryId) {
-                  //                         item['status'] = "deleted";
-                  //                       }
-                  //                     }
-                  //                     manageStoreController.categoriesList[i]
-                  //                         .isSelected = false;
-                  //                   } else {
-                  //                     for (var item in manageStoreController
-                  //                         .selectedCategories) {
-                  //                       if (item['category_id'] ==
-                  //                           manageStoreController
-                  //                               .categoriesList[i]
-                  //                               .categoryId) {
-                  //                         item['status'] = "active";
-                  //                       }
-                  //                     }
-                  //                     manageStoreController.categoriesList[i]
-                  //                         .isSelected = true;
-                  //                   }
-                  //                   setState(() {});
-                  //                 },
-                  //                 child: Container(
-                  //                     padding: const EdgeInsets.only(
-                  //                         left: 15,
-                  //                         right: 15,
-                  //                         top: 10,
-                  //                         bottom: 10),
-                  //                     margin: const EdgeInsets.all(3),
-                  //                     decoration: BoxDecoration(
-                  //                       boxShadow: [
-                  //                         BoxShadow(
-                  //                           color:
-                  //                               Colors.grey.withOpacity(0.1),
-                  //                           spreadRadius: 5,
-                  //                           blurRadius: 7,
-                  //                           offset: const Offset(0, 2),
-                  //                         ),
-                  //                       ],
-                  //                       color: manageStoreController
-                  //                                   .categoriesList[i]
-                  //                                   .isSelected ==
-                  //                               true
-                  //                           ? AppColors.primary
-                  //                           : AppColors.primarylight,
-                  //                       borderRadius: const BorderRadius.all(
-                  //                         Radius.circular(100),
-                  //                       ),
-                  //                     ),
-                  //                     child: Text(
-                  //                       manageStoreController
-                  //                               .categoriesList[i]
-                  //                               .categoryName ??
-                  //                           "",
-                  //                       textAlign: TextAlign.center,
-                  //                       style: TextStyle(
-                  //                         fontSize: 12,
-                  //                         fontWeight: FontWeight.w500,
-                  //                         color: manageStoreController
-                  //                                     .categoriesList[i]
-                  //                                     .isSelected ==
-                  //                                 true
-                  //                             ? AppColors.primarylight
-                  //                             : AppColors.primary,
-                  //                       ),
-                  //                     )),
-                  //               )
-                  //           ],
-                  //         ),
-                  // ),
-                  height20SizedBox,
-
-                  buildText(StringConstants.quantityUnitText, StringConstants.starText,),
-
-
-                  height4SizedBox,
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Flexible(
-                          flex: 5,
-                          child: Obx(() => DropdownButtonFormField<String>(
-                                isExpanded: true,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (v) {
-                                  if (v == null || v.trim() == '') {
-                                    return AlertStringConstants
-                                        .pleaseSelectQuantityUnitText;
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  errorMaxLines: 3,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.grey,
-                                      width: 1.0,
                                     ),
-                                  ),
-                                  border: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                hint: Text(
-                                  StringConstants.selectTypeText,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.grey,
-                                      fontSize: 14),
-                                ),
-                                items: manageStoreController.quantityTypeList
-                                    .map((dynamic value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.quantityTypeId,
-                                    child: Text(
-                                      value.quantityTypeName,
-                                      style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  manageStoreController.quantityValue.value =
-                                      value.toString();
-                                },
-                              )),
-                        ),
-                        width15SizedBox,
-                        Flexible(
-                          flex: 5,
-                          child: CustomInputField(
-                            isBorderOutline: false,
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(100),
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^(\d+)?\.?\d{0,2}'))
-                            ],
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: true),
-                            autofocus: false,
-                            textInputAction: TextInputAction.next,
-                            controller:
-                                manageStoreController.quantityTextController,
-                            hintText: StringConstants.enterQuantityText,
-                            textCapitalization: TextCapitalization.words,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return AlertStringConstants
-                                    .pleaseEnterQuantityText;
-                              } else if (value == ".") {
-                                return AlertStringConstants.invalidInputText;
-                              } else if (double.parse(value) == 0.0) {
-                                return AlertStringConstants
-                                    .invalidQuantityText;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ]),
-                  height20SizedBox,
-                  buildText(StringConstants.pricePerUnitText, StringConstants.starText,),
-
-
-                  height4SizedBox,
-                  CustomInputField(
-                    isBorderOutline: false,
-                    inputFormatters: <TextInputFormatter>[
-                      LengthLimitingTextInputFormatter(100),
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,2}'))
-                    ],
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    autofocus: false,
-                    textInputAction: TextInputAction.next,
-                    controller:
-                        manageStoreController.pricePerUnitTextController,
-                    hintText: StringConstants.enterPriceText,
-                    textCapitalization: TextCapitalization.words,
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return AlertStringConstants.pleaseEnterPriceText;
-                      } else if (value == ".") {
-                        return AlertStringConstants.invalidInputText;
-                      } else if (double.parse(value) == 0.0) {
-                        return AlertStringConstants.invalidAmountText;
-                      }
-                      return null;
-                    },
-                  ),
-                  height20SizedBox,
-                  buildText(StringConstants.shortDescriptionText,"",),
-
-
-                  height4SizedBox,
-                  CustomInputField(
-                    isBorderOutline: false,
-                    inputFormatters: <TextInputFormatter>[
-                      LengthLimitingTextInputFormatter(100),
-                    ],
-                    textInputAction: TextInputAction.newline,
-                    keyboardType: TextInputType.multiline,
-                    autofocus: false,
-                    maxLines: null,
-                    controller:
-                        manageStoreController.shortDescriptionTextController,
-                    hintText: StringConstants.shortDescriptionText,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                  height20SizedBox,
-                  buildText(StringConstants.contentsAndStrainsText,"",),
-
-                  height4SizedBox,
-                  CustomInputField(
-                    isBorderOutline: false,
-                    inputFormatters: <TextInputFormatter>[
-                      LengthLimitingTextInputFormatter(100),
-                    ],
-                    textInputAction: TextInputAction.newline,
-                    keyboardType: TextInputType.multiline,
-                    autofocus: false,
-                    maxLines: null,
-                    controller: manageStoreController
-                        .contentsAndStrainsTextController,
-                    hintText: StringConstants.contentsAndStrainsText,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                  height20SizedBox,
-
-                  buildText(StringConstants.additionalLinksToResearchText, ""),
-
-
-                  height4SizedBox,
-                  CustomInputField(
-                    isBorderOutline: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter(RegExp(r"\s"),
-                          allow: false),
-                      LengthLimitingTextInputFormatter(25),
-                    ],
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.text,
-                    autofocus: false,
-                    maxLines: null,
-                    controller:
-                        manageStoreController.additionalLinkTextController,
-                    hintText: StringConstants.additionalLinksToResearchText,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                  height20SizedBox,
-                  buildText(StringConstants.discountsOrOffersText, ""),
-
-
-                  height4SizedBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        flex: 5,
-                        child: DropdownButtonFormField<String>(
-                          autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
-                          /*validator: (v) {
-                            if (v==null || v?.trim()=='') {
-                              return AlertStringConstants.pleaseSelectDiscountTypeText;
-                            }
-                            return null;
-                          },*/
-                          decoration: InputDecoration(
-                            errorMaxLines: 3,
-                            enabledBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.grey,
-                                width: 1.0,
-                              ),
                             ),
-                            border: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
+                            height15SizedBox,
+                            Obx(
+                              () => manageStoreController.imageUrlList.isEmpty ||
+                                      manageStoreController.imageUrlList.every(
+                                          (element) => element.status == "deleted")
+                                  ? height0SizedBox
+                                  : InkWell(
+                                      onTap: () {
+                                        manageStoreController.selectImages(true);
+                                      },
+                                      child: Image.asset(
+                                        ImageConstants.uploadbutton,
+                                        scale: 3,
+                                      ),
+                                    ),
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
-                                color: AppColors.primary,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: Text(
-                            StringConstants.selectTypeText,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.grey,
-                                fontSize: 14),
-                          ),
-                          items: <String>["Percentage", "Amount"]
-                              .map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (v) {
-                            manageStoreController.discountType.value =
-                                v.toString();
-                          },
-                        ),
-                      ),
-                      width15SizedBox,
-                      Flexible(
-                        flex: 5,
-                        child: CustomInputField(
-                          isBorderOutline: false,
-                          inputFormatters: <TextInputFormatter>[
-                            LengthLimitingTextInputFormatter(100),
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^(\d+)?\.?\d{0,2}'))
-                          ],
-                          textInputAction: TextInputAction.next,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          autofocus: false,
-                          maxLines: null,
-                          controller: manageStoreController
-                              .discountOrOfferTextController,
-                          hintText: StringConstants.enterValueText,
-                        ),
-                      ),
-                    ],
-                  ),
-                  height20SizedBox,
-                  buildText(StringConstants.featuredProductText, StringConstants.starText,),
+                            Obx(
+                              () => manageStoreController.imageUrlList.isEmpty ||
+                                      manageStoreController.imageUrlList.every(
+                                          (element) => element.status == "deleted")
+                                  ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          flex: 4,
+                                          child: InkWell(
+                                            onTap: () {
+                                              manageStoreController.selectImages(true);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                DottedBorder(
+                                                  color: AppColors.blackLight,
+                                                  strokeWidth: 1,
+                                                  dashPattern: const [4, 4],
+                                                  child: Container(
+                                                    width: WidgetConstants.screenWidth *
+                                                        0.3,
+                                                    padding: const EdgeInsets.only(
+                                                        top: 30, bottom: 30),
+                                                    color: AppColors.primaryLight,
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment.center,
+                                                        children: [
+                                                          Image.asset(
+                                                            ImageConstants.upload,
+                                                            scale: 2.5,
+                                                          ),
+                                                        ]),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        width20SizedBox,
+                                        Flexible(
+                                          flex: 6,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              height10SizedBox,
+                                              buildText(StringConstants.uploadProductPhotosText, "",),
 
-                  height4SizedBox,
-                  DropdownButtonFormField<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (v) {
-                      if (v == null || v.trim() == '') {
-                        return AlertStringConstants
-                            .pleaseSelectAnyOneTypeText;
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      errorMaxLines: 3,
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
-                        ),
-                      ),
-                      errorBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    isExpanded: true,
-                    hint: Text(
-                      StringConstants.selectTypeText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.grey,
-                          fontSize: 14),
-                    ),
-                    items: <String>["Yes", "No"].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (v) {
-                      if (v == "Yes") {
-                        manageStoreController.isFeatured.value = true;
-                      } else {
-                        manageStoreController.isFeatured.value = false;
-                      }
-                    },
-                  ),
-                  height20SizedBox,
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildText("${StringConstants.lengthText}(in)",""),
+                                              height10SizedBox,
+                                              Text(
+                                                  StringConstants
+                                                      .theImageMustBeAtLeastText,
+                                                  style: const TextStyle(
+                                                      color: AppColors.black,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400)),
+                                              height10SizedBox,
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  : height0SizedBox,
+                            ),
+                            height20SizedBox,
+                            buildText(StringConstants.productNameText, StringConstants.starText,),
 
 
+                            height4SizedBox,
                             CustomInputField(
                               isBorderOutline: false,
                               inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                LengthLimitingTextInputFormatter(25),
                               ],
-                              textInputAction: TextInputAction.next,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
+                              keyboardType: TextInputType.text,
                               autofocus: false,
-                              maxLines: null,
-                              controller:
-                                  manageStoreController.lengthTextController,
-                              hintText: StringConstants.lengthText,
-                            ),
-                          ],
-                        ),
-                      ),
-                      width12SizedBox,
-                      Flexible(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildText("${StringConstants.breadthText}(in)",""),
-
-
-                            CustomInputField(
-                              isBorderOutline: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
                               textInputAction: TextInputAction.next,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              autofocus: false,
-                              maxLines: null,
                               controller:
-                                  manageStoreController.breadthTextController,
-                              hintText: StringConstants.breadthText,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  height20SizedBox,
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildText("${StringConstants.heightText}(in)",""),
-
-                            CustomInputField(
-                              isBorderOutline: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              textInputAction: TextInputAction.next,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              autofocus: false,
-                              maxLines: null,
-                              controller:
-                                  manageStoreController.heightTextController,
-                              hintText: StringConstants.heightText,
-                            ),
-                          ],
-                        ),
-                      ),
-                      width12SizedBox,
-                      Flexible(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildText( "${StringConstants.weightText}(oz)", StringConstants.starText,),
-
-
-                            CustomInputField(
-                              isBorderOutline: false,
-                              inputFormatters: <TextInputFormatter>[
-                                LengthLimitingTextInputFormatter(100),
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
-                              ],
-                              textInputAction: TextInputAction.next,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              autofocus: false,
-                              maxLines: null,
-                              controller:
-                                  manageStoreController.weightTextController,
-                              hintText: StringConstants.weightText,
+                                  manageStoreController.productNameTextController,
+                              hintText: StringConstants.enterProductNameText,
+                              textCapitalization: TextCapitalization.words,
                               validator: (value) {
                                 if (value!.trim().isEmpty) {
                                   return AlertStringConstants
-                                      .pleaseEnterWeightText;
-                                } else if (value == ".") {
-                                  return AlertStringConstants
-                                      .invalidInputText;
-                                } else if (double.parse(value) == 0.0) {
-                                  return AlertStringConstants
-                                      .invalidInputText;
+                                      .pleaseEnterProductNameText;
                                 }
                                 return null;
                               },
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  height20SizedBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        flex: 5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildText( StringConstants.returnAvailableText, StringConstants.starText,),
+                            height20SizedBox,
+
+                            buildText(StringConstants.categoriesText, StringConstants.starText,),
 
 
+                            height10SizedBox,
+                            Container(
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 10, bottom: 10),
+                                margin: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                  color: AppColors.primary,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                ),
+                                child: Text(
+                                  manageStoreController.categoryName.value,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.white,
+                                  ),
+                                )),
+                            // Obx(
+                            //   () => manageStoreController.categoriesList.isEmpty
+                            //       ? height0SizedBox
+                            //       : Wrap(
+                            //           children: [
+                            //             for (var i = 0;
+                            //                 i <
+                            //                     manageStoreController
+                            //                         .categoriesList.length;
+                            //                 i++)
+                            //               InkWell(
+                            //                 onTap: () {
+                            //                   if (manageStoreController
+                            //                           .categoriesList[i].isSelected ==
+                            //                       true) {
+                            //                     for (var item in manageStoreController
+                            //                         .selectedCategories) {
+                            //                       if (item['category_id'] ==
+                            //                           manageStoreController
+                            //                               .categoriesList[i]
+                            //                               .categoryId) {
+                            //                         item['status'] = "deleted";
+                            //                       }
+                            //                     }
+                            //                     manageStoreController.categoriesList[i]
+                            //                         .isSelected = false;
+                            //                   } else {
+                            //                     for (var item in manageStoreController
+                            //                         .selectedCategories) {
+                            //                       if (item['category_id'] ==
+                            //                           manageStoreController
+                            //                               .categoriesList[i]
+                            //                               .categoryId) {
+                            //                         item['status'] = "active";
+                            //                       }
+                            //                     }
+                            //                     manageStoreController.categoriesList[i]
+                            //                         .isSelected = true;
+                            //                   }
+                            //                   setState(() {});
+                            //                 },
+                            //                 child: Container(
+                            //                     padding: const EdgeInsets.only(
+                            //                         left: 15,
+                            //                         right: 15,
+                            //                         top: 10,
+                            //                         bottom: 10),
+                            //                     margin: const EdgeInsets.all(3),
+                            //                     decoration: BoxDecoration(
+                            //                       boxShadow: [
+                            //                         BoxShadow(
+                            //                           color:
+                            //                               Colors.grey.withOpacity(0.1),
+                            //                           spreadRadius: 5,
+                            //                           blurRadius: 7,
+                            //                           offset: const Offset(0, 2),
+                            //                         ),
+                            //                       ],
+                            //                       color: manageStoreController
+                            //                                   .categoriesList[i]
+                            //                                   .isSelected ==
+                            //                               true
+                            //                           ? AppColors.primary
+                            //                           : AppColors.primarylight,
+                            //                       borderRadius: const BorderRadius.all(
+                            //                         Radius.circular(100),
+                            //                       ),
+                            //                     ),
+                            //                     child: Text(
+                            //                       manageStoreController
+                            //                               .categoriesList[i]
+                            //                               .categoryName ??
+                            //                           "",
+                            //                       textAlign: TextAlign.center,
+                            //                       style: TextStyle(
+                            //                         fontSize: 12,
+                            //                         fontWeight: FontWeight.w500,
+                            //                         color: manageStoreController
+                            //                                     .categoriesList[i]
+                            //                                     .isSelected ==
+                            //                                 true
+                            //                             ? AppColors.primarylight
+                            //                             : AppColors.primary,
+                            //                       ),
+                            //                     )),
+                            //               )
+                            //           ],
+                            //         ),
+                            // ),
+                            height20SizedBox,
+
+                            buildText(StringConstants.quantityUnitText, StringConstants.starText,),
+
+
+                            height4SizedBox,
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Obx(() => DropdownButtonFormField<String>(
+                                          isExpanded: true,
+                                          autovalidateMode:
+                                              AutovalidateMode.onUserInteraction,
+                                          validator: (v) {
+                                            if (v == null || v.trim() == '') {
+                                              return AlertStringConstants
+                                                  .pleaseSelectQuantityUnitText;
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                            errorMaxLines: 3,
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderRadius: BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            border: UnderlineInputBorder(
+                                              borderRadius: BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderRadius: BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderRadius: BorderRadius.circular(5.0),
+                                              borderSide: const BorderSide(
+                                                color: AppColors.primary,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                          ),
+                                          hint: Text(
+                                            StringConstants.selectTypeText,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.grey,
+                                                fontSize: 14),
+                                          ),
+                                          items: manageStoreController.quantityTypeList
+                                              .map((dynamic value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value.quantityTypeId,
+                                              child: Text(
+                                                value.quantityTypeName,
+                                                style: const TextStyle(
+                                                    color: AppColors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            manageStoreController.quantityValue.value =
+                                                value.toString();
+                                          },
+                                        )),
+                                  ),
+                                  width15SizedBox,
+                                  Flexible(
+                                    flex: 5,
+                                    child: CustomInputField(
+                                      isBorderOutline: false,
+                                      inputFormatters: <TextInputFormatter>[
+                                        LengthLimitingTextInputFormatter(100),
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                      ],
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              decimal: true),
+                                      autofocus: false,
+                                      textInputAction: TextInputAction.next,
+                                      controller:
+                                          manageStoreController.quantityTextController,
+                                      hintText: StringConstants.enterQuantityText,
+                                      textCapitalization: TextCapitalization.words,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterQuantityText;
+                                        } else if (value == ".") {
+                                          return AlertStringConstants.invalidInputText;
+                                        } else if (double.parse(value) == 0.0) {
+                                          return AlertStringConstants
+                                              .invalidQuantityText;
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ]),
+                            height20SizedBox,
+                            buildText(StringConstants.pricePerUnitText, StringConstants.starText,),
+
+
+                            height4SizedBox,
+                            CustomInputField(
+                              isBorderOutline: false,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(100),
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^(\d+)?\.?\d{0,2}'))
+                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(decimal: true),
+                              autofocus: false,
+                              textInputAction: TextInputAction.next,
+                              controller:
+                                  manageStoreController.pricePerUnitTextController,
+                              hintText: StringConstants.enterPriceText,
+                              textCapitalization: TextCapitalization.words,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return AlertStringConstants.pleaseEnterPriceText;
+                                } else if (value == ".") {
+                                  return AlertStringConstants.invalidInputText;
+                                } else if (double.parse(value) == 0.0) {
+                                  return AlertStringConstants.invalidAmountText;
+                                }
+                                return null;
+                              },
+                            ),
+                            height20SizedBox,
+                            buildText(StringConstants.shortDescriptionText,"",),
+
+
+                            height4SizedBox,
+                            CustomInputField(
+                              isBorderOutline: false,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                              textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
+                              autofocus: false,
+                              maxLines: null,
+                              controller:
+                                  manageStoreController.shortDescriptionTextController,
+                              hintText: StringConstants.shortDescriptionText,
+                              textCapitalization: TextCapitalization.sentences,
+                            ),
+                            height20SizedBox,
+                            buildText(StringConstants.contentsAndStrainsText,"",),
+
+                            height4SizedBox,
+                            CustomInputField(
+                              isBorderOutline: false,
+                              inputFormatters: <TextInputFormatter>[
+                                LengthLimitingTextInputFormatter(100),
+                              ],
+                              textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
+                              autofocus: false,
+                              maxLines: null,
+                              controller: manageStoreController
+                                  .contentsAndStrainsTextController,
+                              hintText: StringConstants.contentsAndStrainsText,
+                              textCapitalization: TextCapitalization.sentences,
+                            ),
+                            height20SizedBox,
+
+                            buildText(StringConstants.additionalLinksToResearchText, ""),
+
+
+                            height4SizedBox,
+                            CustomInputField(
+                              isBorderOutline: false,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter(RegExp(r"\s"),
+                                    allow: false),
+                                LengthLimitingTextInputFormatter(25),
+                              ],
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.text,
+                              autofocus: false,
+                              maxLines: null,
+                              controller:
+                                  manageStoreController.additionalLinkTextController,
+                              hintText: StringConstants.additionalLinksToResearchText,
+                              textCapitalization: TextCapitalization.sentences,
+                            ),
+                            height20SizedBox,
+                            buildText(StringConstants.discountsOrOffersText, ""),
+
+
+                            height4SizedBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  flex: 5,
+                                  child: DropdownButtonFormField<String>(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    /*validator: (v) {
+                                      if (v==null || v?.trim()=='') {
+                                        return AlertStringConstants.pleaseSelectDiscountTypeText;
+                                      }
+                                      return null;
+                                    },*/
+                                    decoration: InputDecoration(
+                                      errorMaxLines: 3,
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.grey,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      errorBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.primary,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    isExpanded: true,
+                                    hint: Text(
+                                      StringConstants.selectTypeText,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.grey,
+                                          fontSize: 14),
+                                    ),
+                                    items: <String>["Percentage", "Amount"]
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (v) {
+                                      manageStoreController.discountType.value =
+                                          v.toString();
+                                    },
+                                  ),
+                                ),
+                                width15SizedBox,
+                                Flexible(
+                                  flex: 5,
+                                  child: CustomInputField(
+                                    isBorderOutline: false,
+                                    inputFormatters: <TextInputFormatter>[
+                                      LengthLimitingTextInputFormatter(100),
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                    ],
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                    autofocus: false,
+                                    maxLines: null,
+                                    controller: manageStoreController
+                                        .discountOrOfferTextController,
+                                    hintText: StringConstants.enterValueText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            height20SizedBox,
+                            buildText(StringConstants.featuredProductText, StringConstants.starText,),
+
+                            height4SizedBox,
                             DropdownButtonFormField<String>(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (v) {
                                 if (v == null || v.trim() == '') {
                                   return AlertStringConstants
@@ -982,8 +774,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                     color: AppColors.grey,
                                     fontSize: 14),
                               ),
-                              items:
-                                  <String>["Yes", "No"].map((String value) {
+                              items: <String>["Yes", "No"].map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(
@@ -997,138 +788,372 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                               }).toList(),
                               onChanged: (v) {
                                 if (v == "Yes") {
-                                  manageStoreController
-                                      .isProductReturnable.value = true;
+                                  manageStoreController.isFeatured.value = true;
                                 } else {
-                                  manageStoreController
-                                      .isProductReturnable.value = false;
+                                  manageStoreController.isFeatured.value = false;
                                 }
                               },
                             ),
-                          ],
-                        ),
-                      ),
-                      width12SizedBox,
-                      Obx(() => manageStoreController
-                                  .isProductReturnable.value ==
-                              true
-                          ? Flexible(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-
-                                  buildText( StringConstants.daysText, StringConstants.starText,),
+                            height20SizedBox,
+                            Row(
+                              children: [
+                                Flexible(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText("${StringConstants.lengthText}(in)",""),
 
 
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                      FilteringTextInputFormatter.digitsOnly,
+                                      CustomInputField(
+                                        isBorderOutline: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          LengthLimitingTextInputFormatter(100),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                        ],
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        autofocus: false,
+                                        maxLines: null,
+                                        controller:
+                                            manageStoreController.lengthTextController,
+                                        hintText: StringConstants.lengthText,
+                                      ),
                                     ],
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.number,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    controller: manageStoreController
-                                        .daysTextController,
-                                    hintText: StringConstants.daysText,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterValidDaysText;
-                                      } else if (value.trim() == "0" ||
-                                          value.trim() == "00") {
-                                        return AlertStringConstants
-                                            .invalidInputText;
-                                      }
-                                      return null;
-                                    },
                                   ),
-                                ],
+                                ),
+                                width12SizedBox,
+                                Flexible(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText("${StringConstants.breadthText}(in)",""),
+
+
+                                      CustomInputField(
+                                        isBorderOutline: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          LengthLimitingTextInputFormatter(100),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                        ],
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        autofocus: false,
+                                        maxLines: null,
+                                        controller:
+                                            manageStoreController.breadthTextController,
+                                        hintText: StringConstants.breadthText,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            height20SizedBox,
+                            Row(
+                              children: [
+                                Flexible(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText("${StringConstants.heightText}(in)",""),
+
+                                      CustomInputField(
+                                        isBorderOutline: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          LengthLimitingTextInputFormatter(100),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                        ],
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        autofocus: false,
+                                        maxLines: null,
+                                        controller:
+                                            manageStoreController.heightTextController,
+                                        hintText: StringConstants.heightText,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                width12SizedBox,
+                                Flexible(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText( "${StringConstants.weightText}(oz)", StringConstants.starText,),
+
+
+                                      CustomInputField(
+                                        isBorderOutline: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          LengthLimitingTextInputFormatter(100),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                        ],
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        autofocus: false,
+                                        maxLines: null,
+                                        controller:
+                                            manageStoreController.weightTextController,
+                                        hintText: StringConstants.weightText,
+                                        validator: (value) {
+                                          if (value!.trim().isEmpty) {
+                                            return AlertStringConstants
+                                                .pleaseEnterWeightText;
+                                          } else if (value == ".") {
+                                            return AlertStringConstants
+                                                .invalidInputText;
+                                          } else if (double.parse(value) == 0.0) {
+                                            return AlertStringConstants
+                                                .invalidInputText;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            height20SizedBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText( StringConstants.returnAvailableText, StringConstants.starText,),
+
+
+                                      DropdownButtonFormField<String>(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        validator: (v) {
+                                          if (v == null || v.trim() == '') {
+                                            return AlertStringConstants
+                                                .pleaseSelectAnyOneTypeText;
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                          errorMaxLines: 3,
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.grey,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          border: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          errorBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
+                                              color: AppColors.primary,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                        ),
+                                        isExpanded: true,
+                                        hint: Text(
+                                          StringConstants.selectTypeText,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.grey,
+                                              fontSize: 14),
+                                        ),
+                                        items:
+                                            <String>["Yes", "No"].map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (v) {
+                                          if (v == "Yes") {
+                                            manageStoreController
+                                                .isProductReturnable.value = true;
+                                          } else {
+                                            manageStoreController
+                                                .isProductReturnable.value = false;
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                width12SizedBox,
+                                Obx(() => manageStoreController
+                                            .isProductReturnable.value ==
+                                        true
+                                    ? Flexible(
+                                        flex: 5,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+
+                                            buildText( StringConstants.daysText, StringConstants.starText,),
+
+
+                                            CustomInputField(
+                                              isBorderOutline: false,
+                                              inputFormatters: <TextInputFormatter>[
+                                                LengthLimitingTextInputFormatter(100),
+                                                FilteringTextInputFormatter.digitsOnly,
+                                              ],
+                                              textInputAction: TextInputAction.next,
+                                              keyboardType: TextInputType.number,
+                                              autofocus: false,
+                                              maxLines: null,
+                                              controller: manageStoreController
+                                                  .daysTextController,
+                                              hintText: StringConstants.daysText,
+                                              validator: (value) {
+                                                if (value!.trim().isEmpty) {
+                                                  return AlertStringConstants
+                                                      .pleaseEnterValidDaysText;
+                                                } else if (value.trim() == "0" ||
+                                                    value.trim() == "00") {
+                                                  return AlertStringConstants
+                                                      .invalidInputText;
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : height0SizedBox)
+                              ],
+                            ),
+                            height20SizedBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      StringConstants.enableProductText,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Obx(() => FlutterSwitch(
+                                      height: 28,
+                                      width: 50,
+                                      value: manageStoreController.isEnabled.value,
+                                      activeToggleColor: AppColors.primary,
+                                      inactiveToggleColor: AppColors.grey,
+                                      activeSwitchBorder: Border.all(
+                                        color: AppColors.greyLight,
+                                      ),
+                                      inactiveSwitchBorder: Border.all(
+                                        color: AppColors.greyLight,
+                                      ),
+                                      activeColor: AppColors.greyMediumLight,
+                                      inactiveColor: AppColors.greyMediumLight,
+                                      onToggle: (val) {
+                                        manageStoreController.isEnabled.value = val;
+                                      },
+                                    )),
+                              ],
+                            ),
+                            height40SizedBox,
+                            CustomButton(
+                              gradient: const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [AppColors.primary, AppColors.primary],
                               ),
-                            )
-                          : height0SizedBox)
-                    ],
-                  ),
-                  height20SizedBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            StringConstants.enableProductText,
-                            style: const TextStyle(
+                              onTap: () {
+                                debugPrint(
+                                    manageStoreController.isLoading.value.toString());
+                                if (manageStoreController.isLoading.value == false) {
+                                  manageStoreController.selectedCategories.clear();
+                                  for (int i = 0;
+                                      i < manageStoreController.categoriesList.length;
+                                      i++) {
+                                    if (manageStoreController
+                                            .categoriesList[i].isSelected ??
+                                        false) {
+                                      manageStoreController.selectedCategories.add({
+                                        "category_id": manageStoreController
+                                            .categoriesList[i].categoryId
+                                      });
+                                    }
+                                  }
+                                  manageStoreController.isLoading.value = true;
+                                  manageStoreController.validateAndSubmit();
+                                }
+                              },
+                              height: 50,
+                              text: StringConstants.saveText,
+                              borderRadius: 12,
+                              fontWeight: FontWeight.w500,
+                              iconL: false,
                               fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.black,
                             ),
-                          ),
-                        ],
-                      ),
-                      Obx(() => FlutterSwitch(
-                            height: 28,
-                            width: 50,
-                            value: manageStoreController.isEnabled.value,
-                            activeToggleColor: AppColors.primary,
-                            inactiveToggleColor: AppColors.grey,
-                            activeSwitchBorder: Border.all(
-                              color: AppColors.greyLight,
-                            ),
-                            inactiveSwitchBorder: Border.all(
-                              color: AppColors.greyLight,
-                            ),
-                            activeColor: AppColors.greyMediumLight,
-                            inactiveColor: AppColors.greyMediumLight,
-                            onToggle: (val) {
-                              manageStoreController.isEnabled.value = val;
-                            },
-                          )),
-                    ],
+                            height40SizedBox,
+                          ],
+                        )),
                   ),
-                  height40SizedBox,
-                  CustomButton(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.primary, AppColors.primary],
-                    ),
-                    onTap: () {
-                      debugPrint(
-                          manageStoreController.isLoading.value.toString());
-                      if (manageStoreController.isLoading.value == false) {
-                        manageStoreController.selectedCategories.clear();
-                        for (int i = 0;
-                            i < manageStoreController.categoriesList.length;
-                            i++) {
-                          if (manageStoreController
-                                  .categoriesList[i].isSelected ??
-                              false) {
-                            manageStoreController.selectedCategories.add({
-                              "category_id": manageStoreController
-                                  .categoriesList[i].categoryId
-                            });
-                          }
-                        }
-                        manageStoreController.isLoading.value = true;
-                        manageStoreController.validateAndSubmit();
-                      }
-                    },
-                    height: 50,
-                    text: StringConstants.saveText,
-                    borderRadius: 12,
-                    fontWeight: FontWeight.w500,
-                    iconL: false,
-                    fontSize: 16,
-                  ),
-                  height40SizedBox,
-                ],
-              )),
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
+        //LOADING OVERLAY
+        Obx(() {
+          return manageStoreController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),)
+              : const SizedBox.shrink();
+        }),
+      ],
     );
   }
 

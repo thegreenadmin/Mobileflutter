@@ -565,7 +565,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=${storeId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -604,7 +604,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=${storeId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
@@ -683,7 +683,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                     ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
                     : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
-            showLoading: isShowLoading)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -769,7 +769,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.placeOrder}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -844,7 +844,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
 
@@ -1153,7 +1153,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
             headers,
-            showLoading: showLoading.value)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       showLoading.value = false;
@@ -1199,7 +1199,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.shopProductDetails}?store_id=${storeId.value}&product_id=${productId.value}&latitude=$lat&longitude=$lng",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -1704,7 +1704,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeFeatureProductList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||

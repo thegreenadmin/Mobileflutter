@@ -26,6 +26,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
       alignment: Alignment.bottomCenter,
       children: [
         Obx(() => Container(
+          height: WidgetConstants.screenHeight * 0.33,
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                 color: const Color(0xff7c94b6),
@@ -69,7 +70,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                   children: [
                                     IconButton(
                                       splashRadius: 40,
-                                      padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.all(10),
                                       constraints: const BoxConstraints(),
                                       onPressed: () {
                                         Get.delete<StoreHomeMainController>();
@@ -104,9 +105,12 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                                   await Get.to(
                                                           const CartScreen(),
                                                           id: pageIdApp.value)
-                                                      ?.then((value) =>
-                                                          storeHomeMainController
-                                                              .apiActiveCartApi());
+                                                      ?.then((value) async =>
+                                                      storeHomeMainController
+                                                              .onInit(),
+
+
+                                                  );
                                                 },
                                                 child: Stack(
                                                   children: [

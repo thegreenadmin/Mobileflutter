@@ -621,137 +621,157 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80.0),
-          child: Container(
-            color: AppColors.primaryLight,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back(id: pageIdApp.value, result: true);
-                                  // Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
-                                ),
-                              ),
-                              width10SizedBox,
-                              Obx(() => Text(
-                                    ownerInboxDetailController.storeName.value,
-                                    style: const TextStyle(
-                                        fontSize: 22,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  )),
-                            ],
-                          ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
-                        ]),
-                  ],
-                )),
-          )),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Obx(() => Expanded(
-                      child: ownerInboxDetailController.messageList.isEmpty
-                          ? SizedBox(
-                              height: WidgetConstants.screenHeight,
-                              child: Column(
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              PreferredSize(
+                  preferredSize: const Size.fromHeight(80.0),
+                  child: Container(
+                    color: AppColors.primaryLight,
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 18.0, right: 20, top: 50,bottom: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ownerInboxDetailController.isLoading.value
-                                      ? height0SizedBox
-                                      : Column(
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        padding: EdgeInsets.all(10),
+                                        constraints: const BoxConstraints(),
+                                        onPressed: () {
+                                          Get.back(id: pageIdApp.value, result: true);
+                                          // Get.back();
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.black,
+                                          size: 24.0,
+                                        ),
+                                      ),
+                                      width10SizedBox,
+                                      Obx(() => Text(
+                                        ownerInboxDetailController.storeName.value,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                    ],
+                                  ),
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  )
+                                ]),
+                          ],
+                        )),
+                  )),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Obx(() => Expanded(
+                                child: ownerInboxDetailController.messageList.isEmpty
+                                    ? SizedBox(
+                                        height: WidgetConstants.screenHeight,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            height20SizedBox,
-                                            Image.asset(
-                                              ImageConstants.nodata,
-                                              color: AppColors.primary,
-                                              scale: 8,
-                                            ),
-                                            Text(
-                                              StringConstants.noMessagesYetText,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.primary,
-                                              ),
-                                            ),
+                                            ownerInboxDetailController.isLoading.value
+                                                ? height0SizedBox
+                                                : Column(
+                                                    children: [
+                                                      height20SizedBox,
+                                                      Image.asset(
+                                                        ImageConstants.nodata,
+                                                        color: AppColors.primary,
+                                                        scale: 8,
+                                                      ),
+                                                      Text(
+                                                        StringConstants.noMessagesYetText,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w600,
+                                                          color: AppColors.primary,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ],
                                         ),
-                                ],
-                              ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              reverse: true,
-                              primary: false,
-                              controller:
-                                  ownerInboxDetailController.scrollController,
-                              padding: const EdgeInsets.only(bottom: 10),
-                              itemCount:
-                                  ownerInboxDetailController.messageList.isEmpty
-                                      ? 1
-                                      : ownerInboxDetailController
-                                              .messageList.length +
-                                          (ownerInboxDetailController
-                                                  .isLoading.value
-                                              ? 1
-                                              : 0),
-                              itemBuilder: (context, index) {
-                                if (index <
-                                    ownerInboxDetailController
-                                        .messageList.length) {
-                                  return _buildMessage(
-                                    ownerInboxDetailController.messageList,
-                                    index,
-                                  );
-                                } else if (ownerInboxDetailController
-                                    .isLoading.value) {
-                                  Timer(const Duration(milliseconds: 10), () {
-                                    ownerInboxDetailController.scrollController
-                                        .jumpTo(ownerInboxDetailController
-                                            .scrollController
-                                            .position
-                                            .maxScrollExtent);
-                                  });
-                                  return CommonWidgets.loadingIndicator();
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }),
-                    )),
-                _buildMessageComposer(),
-                GetBuilder<OwnerInboxDetailController>(
-                    builder: (inboxDetailController) => inboxDetailController
-                            .userSelectedImageDynamicLinkFromServer.isNotEmpty
-                        ? buildPhotoLibraryGridView()
-                        : Container()),
-              ],
-            ),
-          ],
-        ),
+                                      )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        reverse: true,
+                                        primary: false,
+                                        controller:
+                                            ownerInboxDetailController.scrollController,
+                                        padding: const EdgeInsets.only(bottom: 10),
+                                        itemCount:
+                                            ownerInboxDetailController.messageList.isEmpty
+                                                ? 1
+                                                : ownerInboxDetailController
+                                                        .messageList.length +
+                                                    (ownerInboxDetailController
+                                                            .isLoading.value
+                                                        ? 1
+                                                        : 0),
+                                        itemBuilder: (context, index) {
+                                          if (index <
+                                              ownerInboxDetailController
+                                                  .messageList.length) {
+                                            return _buildMessage(
+                                              ownerInboxDetailController.messageList,
+                                              index,
+                                            );
+                                          } else if (ownerInboxDetailController
+                                              .isLoading.value) {
+                                            Timer(const Duration(milliseconds: 10), () {
+                                              ownerInboxDetailController.scrollController
+                                                  .jumpTo(ownerInboxDetailController
+                                                      .scrollController
+                                                      .position
+                                                      .maxScrollExtent);
+                                            });
+                                            return CommonWidgets.loadingIndicator();
+                                          } else {
+                                            return const SizedBox();
+                                          }
+                                        }),
+                              )),
+                          _buildMessageComposer(),
+                          GetBuilder<OwnerInboxDetailController>(
+                              builder: (inboxDetailController) => inboxDetailController
+                                      .userSelectedImageDynamicLinkFromServer.isNotEmpty
+                                  ? buildPhotoLibraryGridView()
+                                  : Container()),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          //LOADING OVERLAY
+          Obx(() {
+            return ownerInboxDetailController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),)
+                : const SizedBox.shrink();
+          }),
+        ],
       ),
     ));
   }

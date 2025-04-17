@@ -831,9 +831,9 @@ class OrdersController extends GetxController with GlobalVarMixin{
       orderList.clear();
     }
     orderListResponse = OrderListResponse();
-    isDataLoading.value = orderList.isNotEmpty ? true : false;
-
-    isLoading.value = orderList.isNotEmpty ? true : false;
+    if (page.value > 1) {
+      isDataLoading.value =true;
+    }
               Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:

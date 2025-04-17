@@ -61,7 +61,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   RxInt pageId = 0.obs;
   RxString storeId = "".obs;
-  RxString miles = "".obs;
+  RxString miles = "50".obs;
 
   RxBool isLoading = false.obs;
   RxBool isFavLoading = false.obs;
@@ -70,7 +70,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   RxBool isDataLoading = false.obs;
   RxBool isClicked = false.obs;
   RxInt type = 0.obs;
-  final scrollController = ScrollController();
+  final nearByStoresScrollController = ScrollController();
+  final previousStoresScrollController = ScrollController();
+  final favouriteStoresScrollController = ScrollController();
+
   RxDouble lat = 0.0.obs;
   RxDouble lng = 0.0.obs;
   RxInt cartCount = 0.obs;
@@ -87,29 +90,50 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     Categories(id: 3, name: "Curb side", isSelected: false),
   ].obs;
 
-  void setupScrollController() {
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 10) {
-        if (type.value == 0) {
-          if (storeAddresses.length < totalCount.value) {
-            page.value++;
-            placeId.value = "";
-            apiGetNearByStores();
-          }
-        } else if (type.value == 1) {
-          if (previousStore.length < totalCount.value) {
-            page.value++;
-            apiGetPreviousStores();
-          }
-        } else if (type.value == 2) {
-          if (favouriteStore.length < totalCount.value) {
-            page.value++;
-            apiGetFavoriteStores();
-          }
+
+   setupNearByStoresScrollController() {
+    nearByStoresScrollController.addListener(() {
+      log("Previous scroll position: ${nearByStoresScrollController.position.pixels}");
+
+      if (nearByStoresScrollController.position.pixels >=
+          nearByStoresScrollController.position.maxScrollExtent - 10) {
+        if (storeAddresses.length < totalCount.value && !isLoading.value) {
+          page.value++;
+          placeId.value = "";
+          log("page.value scroll position: ${page.value}");
+          log("CALL apiGetNearByStores SCROLL");
+          apiGetNearByStores();
         }
       }
     });
   }
+
+  void setupPreviousStoresScrollController() {
+    previousStoresScrollController.addListener(() {
+      log("Previous scroll position: ${previousStoresScrollController.position.pixels}");
+      if (previousStoresScrollController.position.pixels >=
+          previousStoresScrollController.position.maxScrollExtent - 10) {
+        if (previousStore.length < totalCount.value && !isLoading.value) {
+          page.value++;
+          apiGetPreviousStores();
+        }
+      }
+    });
+  }
+
+  void setupFavoriteStoresScrollController() {
+    favouriteStoresScrollController.addListener(() {
+      log("Favorite scroll position: ${favouriteStoresScrollController.position.pixels}");
+      if (favouriteStoresScrollController.position.pixels >=
+          favouriteStoresScrollController.position.maxScrollExtent - 10) {
+        if (favouriteStore.length < totalCount.value && !isLoading.value) {
+          page.value++;
+          apiGetFavoriteStores();
+        }
+      }
+    });
+  }
+
 
   Rx<permission.PermissionStatus> permissionStatus = permission.PermissionStatus.denied.obs;
 
@@ -125,19 +149,26 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   @override
   void onInit() {
     super.onInit();
+    setupNearByStoresScrollController();
+    setupPreviousStoresScrollController();
+    setupFavoriteStoresScrollController();
+    _listenForPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _listenForPermissionStatus();
+
+
       getPage();
+      log("🧪 type value onInit: ${type.value}");
+
     });
   }
 
-  void updateMap(lati, lngi, {isSearch = false}) async {
+  void updateMap(latitude, longitude, {isSearch = false}) async {
     CameraPosition kLake =
-        CameraPosition(bearing: 192.8334901395799, target: LatLng(lati, lngi), tilt: 0.0, zoom: 14.15);
+        CameraPosition(bearing: 192.8334901395799, target: LatLng(latitude, longitude), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
-    lat.value = lati;
-    lng.value = lngi;
+    lat.value = latitude;
+    lng.value = longitude;
     type.value = 0;
     if (!isSearch) {
       placeId.value = "";
@@ -148,7 +179,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   void updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
-    final Uint8List markerIcon = await getBytesFromAsset(ImageConstants.marker, 60);
+    final Uint8List markerIcon = await getBytesFromAsset(ImageConstants.marker, 20);
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.bytes(markerIcon),
@@ -190,6 +221,21 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           await permission.openAppSettings();
           await permission.Permission.location.request();
           await getPage();
+          if (roleApp.value == Role.customerRoleText) {
+            switch (type.value) {
+              case 0:
+                setupNearByStoresScrollController();
+                break;
+              case 1:
+                setupPreviousStoresScrollController();
+                break;
+              case 2:
+                setupFavoriteStoresScrollController();
+                break;
+            }
+
+            apiActiveCartApi();
+          }
           Get.back();
         });
       }
@@ -199,15 +245,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   getPage() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-
-    var roleVal = roleApp.value;
-    role?.value = roleVal;
     searchController.clear();
-    page.value = 1;
-    if (roleApp.value == Role.customerRoleText) {
-      setupScrollController();
-      apiActiveCartApi();
-    }
+
+
   }
 
   ///Get Active Cart Api
@@ -408,16 +448,23 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   Future apiGetNearByStores({
     bool isFilter = false,
     bool isSearch = false,
-  }) async {
+  }) async
+  {
+
     isClicked.value = true;
+
     if (isFilter || isSearch || page.value == 1) {
-      page.value = 1;
+      page.value = 1 ;
       storeAddresses.clear();
-      totalCount.value = 0;
+      isLoading.value =  true ;
     }
-    isDataLoading.value = true;
+     if (isFilter || isSearch || page.value > 1) {
+       isDataLoading.value = true;
+    }
+
+    log("🔥 Loading page: ${page.value}");
     nearbyStoreListResponse = NearbyStoreListResponse();
-    isLoading.value = storeAddresses.isNotEmpty ? true : false;
+
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -435,7 +482,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "state": isFilter && !isSearch ? "" : state.value,
       "country": isFilter && !isSearch ? "" : country.value,
       "postal_code": !isSearch  && zipCodeTextController.text != "" ? zipCodeTextController.text : null,
-      "mileage": mileageTextController.text != "" ? int.parse(mileageTextController.text) : 50,
+      "mileage": miles.value,
+      // "mileage": miles.value,
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"
@@ -451,11 +499,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "show_previous_stores": type.value == 1 ? true : null,
       "delivery_services": isFilter ? [] : deliveryServicesList
     };
-     
-                    UserProvider()
+    UserProvider()
         .postWithHeadersApi(data, ServerCommunicator.baseUrl + ServerCommunicator.nearByStoreList, headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
+
       isLoading.value = false;
       isFavLoading.value = false;
       isDataLoading.value = false;
@@ -464,8 +512,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         nearbyStoreListResponse = NearbyStoreListResponse.fromJson(value?.body);
         totalCount.value = nearbyStoreListResponse.data?.totalCount ?? 0;
         List<StoreAddress>? storeAddressesNewList = [];
-        storeAddressesNewList =
-            nearbyStoreListResponse.data!.storeAddresses?.where((s) => s.store?.isVerified == true).toList();
+        storeAddressesNewList = nearbyStoreListResponse.data!.storeAddresses?.where((s) => s.store?.isVerified == true).toList();
 
         if (storeAddressesNewList!.isNotEmpty) {
           if (page.value == 1) {
@@ -473,23 +520,27 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           }
           storeAddresses.addAll(storeAddressesNewList);
         }
-        storeAddresses.toSet().toList();
-        if (storeAddresses.length >= totalCount.value) {
+        storeAddresses.value = storeAddresses.toSet().toList();
+
+        if (totalCount.value > 0 && storeAddresses.length
+            >= totalCount.value) {
           clearNearbyPArms();
         }
-        update();
+
         if (isFilter) {
-          if (storeAddresses.length >= totalCount.value) {
-            // clearNearbyPArms();
+          if (totalCount.value > 0 && storeAddresses.length
+              >= totalCount.value) {
+            clearNearbyPArms();
             initialIndex.value = 0;
             for (var element in deliveryServices) {
               element.isSelected = false;
             }
           }
+          update();
           Get.back(id: pageIdApp.value);
         }
 
-        if (isSearch && storeAddresses.length >= totalCount.value) {
+        if (totalCount.value > 0 && isSearch && storeAddresses.length >= totalCount.value) {
           clearNearbyPArms();
           initialIndex.value = 0;
         }
@@ -511,15 +562,19 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   ///Get Previous Stores Api
   Future apiGetPreviousStores({
     bool isFilter = false,
-  }) async {
+  }) async
+  {
     isClicked.value = true;
     isDataLoading.value = true;
     if (page.value == 1) {
       previousStore.clear();
+      isLoading.value =  true ;
+    }
+    if (page.value > 1) {
+      isDataLoading.value = true;
     }
     previousStoreListResponse = PreviousStoreResponse();
-    isLoading.value = previousStore.isNotEmpty ? true : false;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -529,7 +584,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.previousStoreList}?page=${page.value.toString()}&page_size=5",
             headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       isFavLoading.value = false;
@@ -571,11 +626,14 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     isClicked.value = true;
     if (page.value == 1) {
       favouriteStore.clear();
+      isLoading.value =  true ;
     }
-    isDataLoading.value = true;
+    if ( page.value > 1) {
+      isDataLoading.value = true;
+    }
+
     favouriteStoreListResponse = FavouriteStoreResponse();
-    isLoading.value = favouriteStore.isNotEmpty ? true : false;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -585,7 +643,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.favouriteStoreList}?page=${page.value.toString()}&page_size=5",
             headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       isFavLoading.value = false;
@@ -785,5 +843,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         }
       }
     });
+  }
+
+  @override
+  void onClose() {
+    nearByStoresScrollController.dispose();
+    previousStoresScrollController.dispose();
+    favouriteStoresScrollController.dispose();
+    super.onClose();
   }
 }

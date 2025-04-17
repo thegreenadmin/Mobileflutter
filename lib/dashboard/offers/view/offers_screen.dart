@@ -136,9 +136,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                         Expanded(
                           child: Obx(() => offersController.role.value == Role.customerRoleText
                               ? offersController.getUserOfferList.isEmpty
-                                  ? offersController.isLoading.value == true
-                                      ? height0SizedBox
-                                      : Column(
+                                  ?  Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
@@ -161,6 +159,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                           ],
                                         )
                                   : ListView.separated(
+                              padding: EdgeInsets.zero,
                                       separatorBuilder:
                                           (BuildContext context, int index) {
                                         return height8SizedBox;
@@ -257,6 +256,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                     WidgetConstants.screenHeight * 0.2,
                                                 width: WidgetConstants.screenWidth,
                                                 child: ListView.separated(
+                                                    padding: EdgeInsets.zero,
                                                     separatorBuilder:
                                                         (BuildContext context, int i) {
                                                       return width8SizedBox;
@@ -273,19 +273,12 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                         (BuildContext context, int i) =>
                                                             InkWell(
                                                               onTap: () async {
-                                                                storeHomeMainController
-                                                                        .offerObj.value =
-                                                                    offersController
-                                                                        .getUserOfferList[
-                                                                            index]
-                                                                        .offers![i];
+                                                                storeHomeMainController.offerObj.value =
+                                                                    offersController.getUserOfferList[index].offers![i];
                                                                 await offersController
                                                                     .apiGetOffersProducts(
                                                                         offerId: offersController
-                                                                            .getUserOfferList[
-                                                                                index]
-                                                                            .offers![i]
-                                                                            .offerId
+                                                                            .getUserOfferList[index].offers![i].offerId
                                                                             .toString(),
                                                                         storeId: offersController
                                                                             .getUserOfferList[
@@ -293,54 +286,29 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                                             .storeId
                                                                             .toString());
 
-                                                             await  Get.to(
-                                                                  () =>
+                                                             await Get.to(() =>
                                                                       OfferProductScreen(
-                                                                        storeId: offersController
-                                                                            .getUserOfferList[
-                                                                        index].storeId,
-                                                                    offerObj: offersController
-                                                                        .getUserOfferList[
-                                                                            index]
-                                                                        .offers![i],
+                                                                        storeId: offersController.getUserOfferList[index].storeId,
+                                                                    offerObj: offersController.getUserOfferList[index].offers![i],
                                                                   ),
                                                                   id: pageIdApp.value,
                                                                 );
                                                               },
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Stack(
-                                                                    alignment: Alignment
-                                                                        .bottomCenter,
+                                                                    alignment: Alignment.bottomCenter,
                                                                     children: [
                                                                       ClipRRect(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .circular(
-                                                                                    8.0),
-                                                                        child: CommonWidgets
-                                                                            .cachedNetworkImage(
-                                                                          offersController
-                                                                              .getUserOfferList[
-                                                                                  index]
-                                                                              .offers![i]
-                                                                              .image!
-                                                                              .dynamicUrl!
-                                                                              .toString(),
-                                                                          fit:
-                                                                              BoxFit.fill,
-                                                                          width: WidgetConstants
-                                                                                  .screenWidth *
-                                                                              0.8,
-                                                                          assetImg:
-                                                                              ImageConstants
-                                                                                  .nopicfound,
+                                                                        borderRadius: BorderRadius.circular(8.0),
+                                                                        child: CommonWidgets.cachedNetworkImage(
+                                                                          offersController.getUserOfferList[index].offers![i].image!
+                                                                              .dynamicUrl!.toString(),
+                                                                          fit: BoxFit.fill,
+                                                                          width: WidgetConstants.screenWidth * 0.8,
+                                                                          assetImg: ImageConstants.nopicfound,
                                                                         ),
                                                                       ),
                                                                       SizedBox(
@@ -348,38 +316,24 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                                         child: Card(
                                                                           shape:
                                                                               const RoundedRectangleBorder(
-                                                                                  borderRadius:
-                                                                                      BorderRadius.all(
-                                                                            Radius
-                                                                                .circular(
-                                                                                    10),
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(10),
                                                                           )),
-                                                                          color: Colors
-                                                                              .white,
+                                                                          color: Colors.white,
                                                                           elevation: 2.0,
                                                                           child: Padding(
-                                                                            padding: const EdgeInsets
-                                                                                .only(
-                                                                                left:
-                                                                                    12.0,
+                                                                            padding: const EdgeInsets.only(
+                                                                                left: 12.0,
                                                                                 right: 12,
-                                                                                bottom:
-                                                                                    10,
+                                                                                bottom: 10,
                                                                                 top: 10),
                                                                             child: Column(
-                                                                              crossAxisAlignment:
-                                                                                  CrossAxisAlignment
-                                                                                      .start,
-                                                                              mainAxisAlignment:
-                                                                                  MainAxisAlignment
-                                                                                      .center,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 Text(
-                                                                                  offersController.getUserOfferList[index].offers![i].offerName ??
-                                                                                      "",
+                                                                                  offersController.getUserOfferList[index].offers![i].offerName ?? "",
                                                                                   style: const TextStyle(
-                                                                                      color:
-                                                                                          AppColors.black,
+                                                                                      color: AppColors.black,
                                                                                       fontWeight: FontWeight.w500,
                                                                                       fontSize: 14),
                                                                                 ),
@@ -400,8 +354,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                         } else if (offersController.isLoading.value) {
                                           Timer(const Duration(milliseconds: 10), () {
                                             offersController.scrollController1.jumpTo(
-                                                offersController.scrollController1
-                                                    .position.maxScrollExtent);
+                                                offersController.scrollController1.position.maxScrollExtent);
                                           });
                                           return CommonWidgets.loadingIndicator();
                                         } else {
@@ -409,9 +362,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                         }
                                       })
                               : offersController.getOwnerOfferList.isEmpty
-                                  ? offersController.isLoading.value == true
-                                      ? height0SizedBox
-                                      : Column(
+                                  ? Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
@@ -434,20 +385,18 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                           ],
                                         )
                                   : ListView.separated(
+                              padding: EdgeInsets.zero,
                                       separatorBuilder:
                                           (BuildContext context, int index) {
                                         return height8SizedBox;
                                       },
                                       shrinkWrap: true,
                                       controller: offersController.scrollController,
-                                      itemCount: offersController
-                                              .getOwnerOfferList.isEmpty
+                                      itemCount: offersController.getOwnerOfferList.isEmpty
                                           ? 1
-                                          : offersController.getOwnerOfferList.length +
-                                              (offersController.isLoading.value ? 1 : 0),
+                                          : offersController.getOwnerOfferList.length + (offersController.isLoading.value ? 1 : 0),
                                       itemBuilder: (BuildContext context, int index) {
-                                        if (index <
-                                            offersController.getOwnerOfferList.length) {
+                                        if (index < offersController.getOwnerOfferList.length) {
                                           return Dismissible(
                                             background: Container(
                                               color: AppColors.redLight,
@@ -478,128 +427,72 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                           permissionStoreList.isEmpty ||
                                                       permissionStoreList.any((element) =>
                                                           element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
-                                                              element.isStoreOwner ==
-                                                                  true ||
+                                                              element.isStoreOwner == true ||
                                                           element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
                                                               element.controllers!.any(
-                                                                  (ele) =>
-                                                                      ele.controllerKey ==
-                                                                      PermissionKey
-                                                                          .editOffers
-                                                                          .statusName))
+                                                                  (ele) => ele.controllerKey ==
+                                                                      PermissionKey.editOffers.statusName))
                                                   ? Utility.showConfirmAlertMessage(
                                                       AlertStringConstants.areYouSureText,
                                                       okay: StringConstants.deleteText,
                                                       okayTap: () async {
                                                       Get.back();
-                                                      offersController.storeId!
-                                                          .value = offersController
-                                                              .getOwnerOfferList[index]
-                                                              .store!
-                                                              .storeId ??
-                                                          "";
-                                                      offersController.offerId!
-                                                          .value = offersController
-                                                              .getOwnerOfferList[index]
-                                                              .offerId ??
-                                                          "";
-                                                      await offersController
-                                                          .apiDeleteOffer();
+                                                      offersController.storeId!.value = offersController
+                                                              .getOwnerOfferList[index].store!.storeId ?? "";
+                                                      offersController.offerId!.value = offersController
+                                                              .getOwnerOfferList[index].offerId ?? "";
+                                                      await offersController.apiDeleteOffer();
                                                     })
                                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
 
                                               return null;
                                             },
                                             child: Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 10),
-                                              decoration: const BoxDecoration(
-                                                  color: AppColors.greyLight,
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  )),
+                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                              decoration: const BoxDecoration(color: AppColors.greyLight,
+                                                  borderRadius: BorderRadius.all(Radius.circular(10.0),)),
                                               child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Container(
-                                                              decoration: BoxDecoration(
-                                                                  shape: BoxShape.circle,
-                                                                  border: Border.all(
-                                                                      color:
-                                                                          AppColors.white,
-                                                                      width: 1)),
-                                                              child: CommonWidgets
-                                                                  .circleCachedNetworkImage(
-                                                                offersController
-                                                                    .getOwnerOfferList[
-                                                                        index]
-                                                                    .store!
-                                                                    .logo!
-                                                                    .dynamicUrl!,
+                                                              decoration: BoxDecoration(shape: BoxShape.circle,
+                                                                  border: Border.all(color: AppColors.white, width: 1)),
+                                                              child: CommonWidgets.circleCachedNetworkImage(
+                                                                offersController.getOwnerOfferList[index].store!.logo!.dynamicUrl!,
                                                                 fit: BoxFit.contain,
                                                                 radius: 24.0,
-                                                                assetImg: ImageConstants
-                                                                    .nopicfound,
+                                                                assetImg: ImageConstants.nopicfound,
                                                               ),
                                                             ),
                                                             width10SizedBox,
                                                             Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Text(
-                                                                  offersController
-                                                                          .getOwnerOfferList[
-                                                                              index]
-                                                                          .store!
-                                                                          .storeName ??
-                                                                      "",
-                                                                  overflow: TextOverflow
-                                                                      .ellipsis,
+                                                                  offersController.getOwnerOfferList[index].store!.storeName ?? "",
+                                                                  overflow: TextOverflow.ellipsis,
                                                                   maxLines: 2,
                                                                   style: const TextStyle(
                                                                       fontSize: 16.0,
-                                                                      color:
-                                                                          AppColors.black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
+                                                                      color: AppColors.black,
+                                                                      fontWeight: FontWeight.w600),
                                                                 ),
                                                                 height8SizedBox,
                                                                 Row(
                                                                   children: [
-                                                                    Image.asset(
-                                                                      ImageConstants.loc,
-                                                                      scale: 3,
-                                                                    ),
+                                                                    Image.asset(ImageConstants.loc, scale: 3,),
                                                                     width6SizedBox,
-                                                                    Text(
-                                                                      offersController
-                                                                              .getOwnerOfferList[
-                                                                                  index]
-                                                                              .store!
-                                                                              .storeAddresses![
-                                                                                  0]
-                                                                              .city ??
-                                                                          "",
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .fade,
+                                                                    Text(offersController.getOwnerOfferList[index].store!.storeAddresses![0].city ?? "",
+                                                                      overflow: TextOverflow.fade,
                                                                       style: TextStyle(
                                                                           fontSize: 14.0,
-                                                                          color: AppColors
-                                                                              .blackLight,
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .w400),
+                                                                          color: AppColors.blackLight,
+                                                                          fontWeight: FontWeight.w400),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -610,63 +503,31 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                         Flexible(
                                                           child: InkWell(
                                                             onTap: () {
-                                                              Get.parameters["isFrom"] =
-                                                                  StringConstants
-                                                                      .editOfferText;
+                                                              Get.parameters["isFrom"] = StringConstants.editOfferText;
                                                               Get.parameters["storeId"] =
-                                                                  offersController
-                                                                          .getOwnerOfferList[
-                                                                              index]
-                                                                          .store!
-                                                                          .storeId ??
-                                                                      "";
+                                                                  offersController.getOwnerOfferList[index].store!.storeId ?? "";
                                                               Get.parameters["offerId"] =
-                                                                  offersController
-                                                                          .getOwnerOfferList[
-                                                                              index]
-                                                                          .offerId ??
-                                                                      "";
+                                                                  offersController.getOwnerOfferList[index].offerId ?? "";
 
-                                                              hasStoreAccess.value &&
-                                                                          permissionStoreList
-                                                                              .isEmpty ||
+                                                              hasStoreAccess.value && permissionStoreList.isEmpty ||
                                                                       permissionStoreList.any((element) =>
                                                                           element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
-                                                                              element.isStoreOwner ==
-                                                                                  true ||
+                                                                              element.isStoreOwner == true ||
                                                                           element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
                                                                               element.controllers!.any((ele) =>
-                                                                                  ele.controllerKey ==
-                                                                                  PermissionKey
-                                                                                      .editOffers
-                                                                                      .statusName))
+                                                                                  ele.controllerKey == PermissionKey.editOffers.statusName))
                                                                   ? Get.to(() => const EditOfferScreen(),
-                                                                          id: pageIdApp
-                                                                              .value,
+                                                                          id: pageIdApp.value,
                                                                           arguments: {
-                                                                          "isFrom":
-                                                                              StringConstants
-                                                                                  .editOfferText,
-                                                                          "storeId": offersController
-                                                                                  .getOwnerOfferList[
-                                                                                      index]
-                                                                                  .store!
-                                                                                  .storeId ??
-                                                                              "",
-                                                                          "offerId": offersController
-                                                                                  .getOwnerOfferList[
-                                                                                      index]
-                                                                                  .offerId ??
-                                                                              ""
+                                                                          "isFrom": StringConstants.editOfferText,
+                                                                          "storeId": offersController.getOwnerOfferList[index]
+                                                                                  .store!.storeId ?? "",
+                                                                          "offerId": offersController.getOwnerOfferList[index].offerId ?? ""
                                                                         })!
                                                                       .then((value) {
-                                                                offersController.role.value ==
-                                                                              Role
-                                                                                  .customerRoleText
-                                                                          ? offersController
-                                                                              .apiGetUserOffersList()
-                                                                          : offersController
-                                                                              .apiGetOwnerOffersList();
+                                                                offersController.role.value == Role.customerRoleText
+                                                                          ? offersController.apiGetUserOffersList()
+                                                                          : offersController.apiGetOwnerOffersList();
                                                                     })
                                                                   : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                                                             },
@@ -682,48 +543,26 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                     height12SizedBox,
                                                     SizedBox(
                                                         height:
-                                                            WidgetConstants.screenHeight *
-                                                                0.2,
-                                                        width:
-                                                            WidgetConstants.screenWidth,
+                                                            WidgetConstants.screenHeight * 0.2,
+                                                        width: WidgetConstants.screenWidth,
                                                         child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             Stack(
-                                                              alignment:
-                                                                  Alignment.bottomCenter,
+                                                              alignment: Alignment.bottomCenter,
                                                               children: [
-                                                                ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(8.0),
-                                                                  child: CommonWidgets
-                                                                      .cachedNetworkImage(
+                                                                ClipRRect(borderRadius: BorderRadius.circular(8.0),
+                                                                  child: CommonWidgets.cachedNetworkImage(
                                                                     offersController
-                                                                        .getOwnerOfferList[
-                                                                            index]
-                                                                        .image!
-                                                                        .dynamicUrl
-                                                                        .toString(),
+                                                                        .getOwnerOfferList[index].image!.dynamicUrl.toString(),
                                                                     fit: BoxFit.fill,
-                                                                    width: WidgetConstants
-                                                                            .screenWidth *
-                                                                        0.8,
-                                                                    assetImg:
-                                                                        ImageConstants
-                                                                            .nopicfound,
-                                                                    placeholder: (context,
-                                                                            url) =>
+                                                                    width: WidgetConstants.screenWidth * 0.8,
+                                                                    assetImg: ImageConstants.nopicfound,
+                                                                    placeholder: (context, url) =>
                                                                         SizedBox(
-                                                                            width: WidgetConstants
-                                                                                    .screenWidth *
-                                                                                0.8,
-                                                                            child: const Center(
-                                                                                child:
-                                                                                    CircularProgressIndicator())),
+                                                                            width: WidgetConstants.screenWidth * 0.8,
+                                                                            child: const Center(child: CircularProgressIndicator())),
                                                                   ),
                                                                 ),
                                                                 SizedBox(
@@ -731,42 +570,23 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                                   child: Card(
                                                                     shape:
                                                                         const RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius
-                                                                                    .all(
-                                                                      Radius.circular(10),
+                                                                            borderRadius: BorderRadius.all(Radius.circular(10),
                                                                     )),
                                                                     color: Colors.white,
                                                                     elevation: 2.0,
                                                                     child: Padding(
                                                                       padding:
-                                                                          const EdgeInsets
-                                                                              .only(
-                                                                              left: 12.0,
-                                                                              right: 12,
-                                                                              bottom: 10,
-                                                                              top: 10),
+                                                                          const EdgeInsets.only(left: 12.0, right: 12, bottom: 10, top: 10),
                                                                       child: Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .center,
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            offersController
-                                                                                .getOwnerOfferList[
-                                                                                    index]
-                                                                                .offerName!,
+                                                                            offersController.getOwnerOfferList[index].offerName!,
                                                                             style: const TextStyle(
-                                                                                color: AppColors
-                                                                                    .black,
-                                                                                fontWeight:
-                                                                                    FontWeight
-                                                                                        .w500,
-                                                                                fontSize:
-                                                                                    16),
+                                                                                color: AppColors.black,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                fontSize: 16),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -784,8 +604,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                         } else if (offersController.isLoading.value) {
                                           Timer(const Duration(milliseconds: 10), () {
                                             offersController.scrollController.jumpTo(
-                                                offersController.scrollController.position
-                                                    .maxScrollExtent);
+                                                offersController.scrollController.position.maxScrollExtent);
                                           });
                                           return CommonWidgets.loadingIndicator();
                                         } else {

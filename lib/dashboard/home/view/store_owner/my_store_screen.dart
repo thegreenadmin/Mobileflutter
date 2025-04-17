@@ -50,19 +50,15 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
       child: Obx(
             () {
           // Deferring state changes to the end of the current frame
-          if (ownerStoresController.isOfferLoading.value) {
+          if (ownerStoresController.isLoading.value) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
               // Ensure this code is executed after the build phase
-              if (ownerStoresController.isOfferLoading.value) {
-                // You can safely call setState or any state-changing method here
-              }
+
             });
           }
 
           return ownerStoresController.getOwnerOfferList.isEmpty
-              ? ownerStoresController.isOfferLoading.value
-              ? height0SizedBox
-              : _buildNoOfferMethod()
+              ? _buildNoOfferMethod()
               : _buildCarouselSlider();
         },
       ),

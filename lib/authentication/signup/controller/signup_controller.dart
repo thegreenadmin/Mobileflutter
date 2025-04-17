@@ -190,7 +190,8 @@ class SignupController extends GetxController {
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
       "dob": dateTextController.text.trim(),
-      "has_store_access": isFromOwner
+      "has_store_access": isFromOwner,
+      "is_store_owner": isFromOwner,
     };
     debugPrint("CREATE USER BODY********** ${jsonEncode(data)}");
     debugPrint(

@@ -271,14 +271,12 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              // SharedPreferenceStorage.setData("context", context);
+
               Get.parameters["storeId"] = ownerStoresController.storeId.value;
               Get.parameters["storeName"] =
                   ownerStoresController.storeName.value;
 
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (_) => const WorkerListScreen(),
-              // ));
+              
               hasStoreAccess.value && permissionStoreList.isEmpty ||
                       permissionStoreList.any((element) =>
                           element.storeId ==

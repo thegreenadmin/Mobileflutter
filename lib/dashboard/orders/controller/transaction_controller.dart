@@ -274,7 +274,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
                 ? "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletTransactionList}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
                 : "${ServerCommunicator.baseUrl}${ServerCommunicator.userWalletTransactionList}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -311,7 +311,7 @@ class TransactionController extends GetxController with GlobalVarMixin{
                 ? "${ServerCommunicator.baseUrl}${ServerCommunicator.storeTransaction}?page=1&page_size=10&from_date=${DateTime.now().year}/$currentMonth/01&to_date=${DateTime.now().year}/$currentMonth/${daysInMonth(DateTime.now())}"
                 : "${ServerCommunicator.baseUrl}${ServerCommunicator.storeTransaction}?page=1&page_size=10&from_date=$startDateOfMonth&to_date=$endDateOfMonth",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||

@@ -84,17 +84,22 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit(bool isEdit) async {
     if (validateAndSave()) {
       try {
-        if (controllerIdsList.isEmpty) {
-          isLoading.value = false;
-          Utility.showAlertMessage(strings
-              .AlertStringConstants.pleaseSelectAtLeastOnePermissionText);
-        } else {
-          isLoading.value = true;
-          await apiCreateRole();
+        if(isEdit){
+          await apiEditRole();
+        }else{
+          if (controllerIdsList.isEmpty) {
+            isLoading.value = false;
+            Utility.showAlertMessage(strings
+                .AlertStringConstants.pleaseSelectAtLeastOnePermissionText);
+          } else {
+            isLoading.value = true;
+            await apiCreateRole();
+          }
         }
+
       } catch (_) {}
     } else {
       isLoading.value = false;
@@ -135,7 +140,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeRoleList}?store_id=${storeId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -179,7 +184,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
             createRoleRequestModel,
             ServerCommunicator.baseUrl + ServerCommunicator.storeRoleCreate,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -213,7 +218,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeControllerList,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -239,7 +244,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
 
   ///Delete Store Role
   Future apiDeleteRole() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -255,6 +260,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
@@ -289,7 +295,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeRoleDetail}?store_id=${storeId.value}&role_id=${roleId.value}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -369,7 +375,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
             data,
             ServerCommunicator.baseUrl + ServerCommunicator.storeRoleEdit,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||

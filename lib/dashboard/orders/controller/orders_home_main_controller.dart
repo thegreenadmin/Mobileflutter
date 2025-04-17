@@ -14,6 +14,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
 
   RxBool isCurrentMonthSelected = true.obs;
   RxBool isLoading = true.obs;
+  RxBool isDataLoading = true.obs;
   RxBool preventCall = false.obs;
   RxString? firstName = "".obs;
   RxString? role = "".obs;
@@ -33,14 +34,11 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   RxString storeCount = "0".obs;
   RxBool isFromNotification = false.obs;
 
-  Rx<store.StoreDetailsResponse> storeDetailsResponse =
-      store.StoreDetailsResponse().obs;
-  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel =
-      GetOwnerOrderHistoryModel();
+  Rx<store.StoreDetailsResponse> storeDetailsResponse = store.StoreDetailsResponse().obs;
+  GetOwnerOrderHistoryModel getOwnerOrderHistoryModel = GetOwnerOrderHistoryModel();
   RxList<Orders>? ownerOrderHistoryList = <Orders>[].obs;
 
-  Rx<GetStoreOrderDetailModel> getStoreOrderDetailModel =
-      GetStoreOrderDetailModel().obs;
+  Rx<GetStoreOrderDetailModel> getStoreOrderDetailModel = GetStoreOrderDetailModel().obs;
   RxList<OrderItem> getOrderItems = <OrderItem>[].obs;
   RxList<OrderHistories> orderHistories = <OrderHistories>[].obs;
 
@@ -51,17 +49,13 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
       role!.value = roleData;
 
-
       if (Get.parameters["isController"] != "no") {
-        isFromNotification.value =
-            Get.parameters["isFromNotification"] == "true" ? true : false;
+        isFromNotification.value = Get.parameters["isFromNotification"] == "true" ? true : false;
 
-        if (Get.parameters["storeId"] != "" &&
-            Get.parameters["storeId"] != null) {
+        if (Get.parameters["storeId"] != "" && Get.parameters["storeId"] != null) {
           storeId.value = Get.parameters["storeId"] ?? "";
         }
-        if (Get.parameters["orderId"] != "" &&
-            Get.parameters["orderId"] != null) {
+        if (Get.parameters["orderId"] != "" && Get.parameters["orderId"] != null) {
 
           orderId.value = Get.parameters["orderId"] ?? "";
           apiGetStoreOrderDetail();
@@ -193,11 +187,15 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       {String startDateOfMonth = "",
       String endDateOfMonth = "",
       orderStatus = Map<String, String>}) async {
-    isLoading.value = true;
+
     if (page.value == 1) {
+      isLoading.value = true;
       ownerOrderHistoryList!.value = [];
     }
-     
+      if (page.value > 1) {
+        isDataLoading.value =true;
+    }
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -267,9 +265,11 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             body,
             ServerCommunicator.baseUrl + ServerCommunicator.storeOrderList,
             headers,
-            showLoading: page.value == 1)
+            showLoading: false)
         .then((value) async {
+
       isLoading.value = false;
+      isDataLoading.value = false;
 
               if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
@@ -399,7 +399,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeConfirmReturnOrder,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -446,7 +446,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeCompleteReturnOrder,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -488,7 +488,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeRejectReturnOrder,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -534,7 +534,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeCancelOrder,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -584,7 +584,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeOrderConfirm,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -637,7 +637,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeOrderShipped,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -690,7 +690,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeOrderPickUp,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -745,7 +745,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.storeOrderDelivered,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||

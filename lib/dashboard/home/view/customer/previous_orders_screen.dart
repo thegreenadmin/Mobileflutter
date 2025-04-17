@@ -19,7 +19,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
     return Scaffold(
       body: Container(
           height: WidgetConstants.screenHeight,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,7 +31,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
-              height20SizedBox,
+              height10SizedBox,
               Obx(
                 () => storeHomeMainController.previousOrderList.isEmpty
                     ? storeHomeMainController.isLoading.value == true
@@ -40,7 +40,7 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              height60SizedBox,
+                              SizedBox(height: WidgetConstants.screenHeight *0.09,),
                               Center(
                                 child: Image.asset(
                                   ImageConstants.nodata,
@@ -61,15 +61,13 @@ class _PreviousOrdersScreenState extends State<PreviousOrdersScreen> {
                           )
                     : Expanded(
                         child: GridView.builder(
+                          padding: EdgeInsets.zero,
                           itemCount:
                               storeHomeMainController.previousOrderList.length,
                           shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio:
-                                (WidgetConstants.screenHeight * 0.47 +
-                                        WidgetConstants.screenHeight * 0.22) /
-                                    WidgetConstants.screenHeight,
+                                (WidgetConstants.screenHeight * 0.47 + WidgetConstants.screenHeight * 0.22) / WidgetConstants.screenHeight,
                             mainAxisSpacing: 0.0,
                             crossAxisSpacing: 10.0,
                             crossAxisCount: 2,

@@ -539,6 +539,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     ),
                     height20SizedBox,
                     ListView.separated(
+                        padding: EdgeInsets.zero,
                         separatorBuilder: (BuildContext context, int index) {
                           return height12SizedBox;
                         },

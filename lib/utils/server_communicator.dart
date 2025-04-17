@@ -15,9 +15,10 @@ class ServerCommunicator {
   // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
-  static String get baseUrl => dotenv.env['APP_BASE_URL'] ?? 'http://18.224.191.88:3520/api/v1/';
-  static String get baseUrlWithoutV1 => dotenv.env['BASE_URL_WO_V1'] ?? 'http://18.224.191.88:3520/api/';
-  static String get baseUrlWithoutApi => dotenv.env['BASE_URL_WO_API'] ?? 'http://18.224.191.88:3520/';
+  static String get baseUrlWithoutApi => dotenv.env['BASE_URL_WO_API'] ?? 'http://172.24.0.202:8080/';
+  static String get baseUrl => '${baseUrlWithoutApi}api/v1/';
+  static String get baseUrlWithoutV1 => '${baseUrlWithoutApi}api/';
+
   static String get kGoogleApiKey => dotenv.env['GOOGLE_MAP_KEY'] ?? '';
 
 
@@ -26,6 +27,9 @@ class ServerCommunicator {
   // String baseUrlWithoutApi = "https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com/";
 
 //********************************* URLS **********************
+
+  // Staging API URL:    https://tfq2tvvrsc.execute-api.us-east-1.amazonaws.com
+  // Prod API URL:    https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com
 //A
 
 //B

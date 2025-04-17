@@ -25,6 +25,7 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
   String? imageData;
   bool dataLoaded = false;
   RxBool isFeaturedTypeSelected = false.obs;
+  RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
   RxString? role = "".obs;
   // RxString? firstName = "".obs;
@@ -217,7 +218,7 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
 
   ///Get Category Detail Api
   Future apiGetCategoryDetail() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -226,8 +227,8 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}",
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async { isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
@@ -253,7 +254,7 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
 
   ///Update Category Api
   Future apiUpdateCategory(BuildContext contextt) async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -272,8 +273,8 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryEdit}",
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async { isLoading.value = false;
       (value);
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {

@@ -44,8 +44,8 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
   }
 
   ///Get Inbox message heads List Api
-  Future apiGetInboxList({showLoading = true}) async {
-    //isLoading.value = true;
+  Future apiGetInboxList({showLoading = false}) async {
+    isLoading.value = true;
     RxString url = "".obs;
     if (showPreviousMessages.value) {
       url.value =
@@ -64,7 +64,7 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
          UserProvider()
         .getWithHeadersApi(url.value, headers, showLoading: showLoading)
         .then((value) async {
-      //isLoading.value = false;
+      isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         inboxModel = OwnerInboxModel.fromJson(value?.body);
@@ -87,7 +87,7 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
   ///Delete Store messages
   Future apiDeleteStoreMessages(
       {String messageHeadId = "", String storeId = ""}) async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -102,6 +102,7 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 
 import 'package:flutter/foundation.dart';
@@ -34,7 +35,10 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   TabController? _tabController;
 
   SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
+  Get.isRegistered<SearchStoreUserController>()
+      ? Get.find<SearchStoreUserController>()
+      : Get.put(SearchStoreUserController());
+
 
   // var kGoogleApiKey = ""; //TickerProviderStateMixin //SingleTickerProviderStateMixin
   // final Completer<GoogleMapController> _controller =
@@ -50,12 +54,14 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
     searchStoreUserController.searchController.clear();
     _tabController = TabController(
         initialIndex: searchStoreUserController.initialIndex.value,
         length: 3,
         vsync: this);
 
+    searchStoreUserController.miles.value = "50";
     searchStoreUserController.clearNearbyPArms();
     searchStoreUserController.updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
@@ -67,12 +73,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     super.dispose();
   }
 
-  final StoreHomeMainController storeHomeMainController =
-  Get.put(StoreHomeMainController());
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      debugPrint("App resumed");
       await permission.Permission.location.request();
     }
   }
@@ -80,399 +83,410 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.135),
-        child: Container(
-          color: AppColors.primaryLight,
-          child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 18.0, right: 18, top: 55, bottom: 0),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 135,
+                color: AppColors.primaryLight,
+                child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 18.0, right: 18, top: 55, bottom: 0),
+                    child: Column(
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                // Get.delete<SearchStoreUserController>();
-                                Get.back(id: pageIdApp.value);
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {
+                                      // Get.delete<SearchStoreUserController>();
+                                      Get.back(id: pageIdApp.value);
 
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: AppColors.black,
-                                size: 24.0,
-                              ),
-                            ),
-                            width8SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Obx(
-                                  () => Text(
-                                    'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                Text(
-                                  StringConstants.searchForStoreText,
-                                  style: const TextStyle(
-                                      fontSize: 16,
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_back,
                                       color: AppColors.black,
-                                      fontWeight: FontWeight.w400),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Obx(
-                              () => Visibility(
-                                visible:
-                                    searchStoreUserController.cartCount.value !=
-                                        0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                      size: 24.0,
+                                    ),
+                                  ),
+                                  width8SizedBox,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-
-                                              Get.parameters["storeId"] =
-                                                  searchStoreUserController
-                                                      .storeIdValue.value;
-                                              await Get.to(() => const CartScreen(),
-                                                  id: pageIdApp.value)
-                                                  ?.then((value) {
-                                                storeHomeMainController
-                                                    .apiActiveCartApi();
-
-                                              });
-
-                                            },
-                                            child: Stack(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 18.0,
-                                                  backgroundColor: Colors.white,
-                                                  child: Image.asset(
-                                                      ImageConstants.cart,
-                                                      height: 16),
-                                                ),
-                                                Positioned(
-                                                  right: 0,
-                                                  top: 0,
-                                                  child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              1.5),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.5),
-                                                      ),
-                                                      constraints:
-                                                          const BoxConstraints(
-                                                        minWidth: 15,
-                                                        minHeight: 15,
-                                                      ),
-                                                      child: Obx(
-                                                        () => Text(
-                                                          searchStoreUserController
-                                                              .cartCount.value
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 8,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      )),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      Obx(
+                                            () => Text(
+                                          'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
+                                      Text(
+                                        StringConstants.searchForStoreText,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w400),
+                                      )
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 4,
-                            ),
-                          ],
-                        )
-                      ]),
-                  height4SizedBox,
-                  Visibility(
-                    visible: true,
-                    child: Obx(() => Text(
+                              Row(
+                                children: [
+                                  Obx(
+                                        () => Visibility(
+                                      visible:
+                                      searchStoreUserController.cartCount.value !=
+                                          0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () async {
+
+                                                    Get.parameters["storeId"] =
+                                                        searchStoreUserController
+                                                            .storeIdValue.value;
+                                                    await Get.to(() => const CartScreen(),
+                                                        id: pageIdApp.value)
+                                                        ?.then((value) {
+                                                      searchStoreUserController
+                                                          .apiActiveCartApi();
+
+                                                    });
+
+                                                  },
+                                                  child: Stack(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius: 18.0,
+                                                        backgroundColor: Colors.white,
+                                                        child: Image.asset(
+                                                            ImageConstants.cart,
+                                                            height: 16),
+                                                      ),
+                                                      Positioned(
+                                                        right: 0,
+                                                        top: 0,
+                                                        child: Container(
+                                                            padding:
+                                                            const EdgeInsets.all(
+                                                                1.5),
+                                                            decoration: BoxDecoration(
+                                                              color: AppColors.red,
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8.5),
+                                                            ),
+                                                            constraints:
+                                                            const BoxConstraints(
+                                                              minWidth: 15,
+                                                              minHeight: 15,
+                                                            ),
+                                                            child: Obx(
+                                                                  () => Text(
+                                                                searchStoreUserController
+                                                                    .cartCount.value
+                                                                    .toString(),
+                                                                style:
+                                                                const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 8,
+                                                                ),
+                                                                textAlign:
+                                                                TextAlign.center,
+                                                              ),
+                                                            )),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  ),
+                                ],
+                              )
+                            ]),
+                        height4SizedBox,
+                        Obx(() => Text(
                           searchStoreUserController.miles.value != ""
                               ? "Nearby stores are shown from ${searchStoreUserController.miles.value} miles radius"
                               : StringConstants.nearByLabelForMilesText,
                           style: const TextStyle(
                               fontSize: 12, color: AppColors.black),
                         )),
-                  ),
-                  height4SizedBox,
-                ],
-              )),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: WidgetConstants.screenHeight * 0.3, //250,
-                width: WidgetConstants.screenWidth,
-                color: AppColors.primaryLight,
+                        height4SizedBox,
+                      ],
+                    )),
               ),
-              Positioned(
-                top: 30,
-                child: Stack(
-                  children: [
-                    SizedBox(
-                        height: WidgetConstants.screenHeight * 0.3, //250,
-                        width: WidgetConstants.screenWidth,
-                        child: GoogleMap(
-                          myLocationButtonEnabled: false,
-                          mapType: MapType.normal,
-                          zoomControlsEnabled: true,
-                          minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                          initialCameraPosition:
-                              searchStoreUserController.kGooglePlex,
-                          markers: Set<Marker>.of(
-                              searchStoreUserController.markers.values),
-                          onMapCreated: (GoogleMapController controller) {
-                            searchStoreUserController.googleMapController =
-                                Completer();
-                            searchStoreUserController.googleMapController
-                                .complete(controller);
+              Stack(
+                children: [
+                  Container(
+                    height: WidgetConstants.screenHeight * 0.3, //250,
+                    width: WidgetConstants.screenWidth,
+                    color: AppColors.primaryLight,
+                  ),
+                  Positioned(
+                    top: 25,
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                            height: WidgetConstants.screenHeight * 0.3, //250,
+                            width: WidgetConstants.screenWidth,
+                            child: GoogleMap(
+                              myLocationButtonEnabled: false,
+                              mapType: MapType.normal,
+                              zoomControlsEnabled: true,
+                              minMaxZoomPreference: MinMaxZoomPreference.unbounded,
+                              initialCameraPosition:
+                                  searchStoreUserController.kGooglePlex,
+                              markers: Set<Marker>.of(
+                                  searchStoreUserController.markers.values),
+                              onMapCreated: (GoogleMapController controller) {
+                                searchStoreUserController.googleMapController =
+                                    Completer();
+                                searchStoreUserController.googleMapController
+                                    .complete(controller);
 
-                            // if (!searchStoreUserController
-                            //     .googleMapController.isCompleted) {
-                            //   searchStoreUserController.googleMapController
-                            //       .complete(controller);
-                            // }
-                          },
-                        )),
-                    Positioned(
-                        top: WidgetConstants.screenHeight * 0.22,
-                        right: 10,
-                        child: InkWell(
-                          onTap: () async {
-                            searchStoreUserController.searchController.clear();
-                            await Get.to(() => const FilterOptionScreen(),
-                                id: pageIdApp.value);
-                          },
-                          child: Image.asset(
-                              ImageConstants.filterbutton,
-                              scale: 3,
+                                // if (!searchStoreUserController
+                                //     .googleMapController.isCompleted) {
+                                //   searchStoreUserController.googleMapController
+                                //       .complete(controller);
+                                // }
+                              },
+                            )),
+                        Positioned(
+                            top: WidgetConstants.screenHeight * 0.22,
+                            right: 10,
+                            child: InkWell(
+                              onTap: () async {
+                                searchStoreUserController.searchController.clear();
+                                await Get.to(() => const FilterOptionScreen(),
+                                    id: pageIdApp.value);
+                              },
+                              child: Image.asset(
+                                  ImageConstants.filterbutton,
+                                  scale: 3,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 0),
+                    child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onTap: () async {
+                          Prediction? p = await PlacesAutocomplete.show(
+                              offset: 0,
+                              radius: 1000,
+                              types: [],
+                              strictbounds: false,
+                              context: context,
+                              apiKey: searchStoreUserController.kGoogleApiKey,
+                              mode: Mode.overlay,
+                              language: "en",
+                              components: []);
+                          searchStoreUserController.searchController.text =
+                              p?.description!.toString() ?? "";
+                          ///ADDRESSES BY GEOCODING
+                          searchStoreUserController.placeId.value =
+                              p?.placeId.toString() ?? "";
+                          final geocoding = GoogleMapsGeocoding(
+                              apiKey: searchStoreUserController.kGoogleApiKey);
+                          GeocodingResponse response = await geocoding
+                              .searchByAddress(p?.description.toString() ?? "");
+                          final result = response.results.isNotEmpty
+                              ? response.results.first
+                              : null;
+                          if (result != null) {
+                            searchStoreUserController.city.value =
+                                Utility.extractLocality(result, "locality");
+                            searchStoreUserController.country.value =
+                                Utility.extractLocality(result, "country");
+                            searchStoreUserController.zipCodeTextController.text =
+                                Utility.extractLocality(result, "postal_code");
+                            searchStoreUserController.state.value =
+                                Utility.extractLocality(
+                                    result, "administrative_area_level_1");
+                            // print("ADDRESSES BY GEOCODING:------------------");
+                            // print(response.results.first.geometry.location.lat);
+                            // print(response.results.first.geometry.location.lng);
+
+                            searchStoreUserController.lat.value = response.results.first.geometry.location.lat;
+                            searchStoreUserController.lng.value = response.results.first.geometry.location.lng;
+                            searchStoreUserController.updateMap(response.results.first.geometry.location.lat,
+                                response.results.first.geometry.location.lng,isSearch: true);
+                          }
+                        },
+                        controller: searchStoreUserController.searchController,
+                        style: const TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          filled: true,
+                          isDense: true,
+                          prefixIcon: Image.asset(
+                            ImageConstants.search,
+                            color: AppColors.grey,
+                            scale: 4,
                           ),
-                        ))
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              searchStoreUserController.searchController.clear();
+                              searchStoreUserController.clearNearbyPArms();
+                              searchStoreUserController.updateCurrentLocation();
+                            },
+                            child: Image.asset(
+                              ImageConstants.cross,
+                              scale: 4,
+                            ),
+                          ),
+                          focusColor: AppColors.grey,
+                          hintText: StringConstants.searchText,
+                          hintStyle: const TextStyle(color: AppColors.grey),
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(
+                              color: AppColors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: WidgetConstants.screenWidth,
+                height: 40,
+                child: TabBar(
+                  unselectedLabelColor: AppColors.blackLight,
+                  labelColor: AppColors.primary,
+                  indicatorColor: AppColors.primary,
+                  unselectedLabelStyle:
+                      const TextStyle(fontWeight: FontWeight.w400),
+                  labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+                  isScrollable: false,
+                  onTap: (i) async {
+                    searchStoreUserController.storeAddresses.clear();
+                    searchStoreUserController.previousStore.clear();
+                    searchStoreUserController.favouriteStore.clear();
+                    searchStoreUserController.page.value = 1;
+                    searchStoreUserController.type.value = i;
+                    searchStoreUserController.totalCount.value = 0;
+                    Get.parameters["isFromHome"] = "true";
+                    Get.parameters["isFromFav"] = "false";
+                    Get.parameters["isFromMenu"] = "false";
+                    Get.parameters["isFromOptions"] = "false";
+                    searchStoreUserController.miles.value = "50";
+                    if (i == 0 &&
+                        searchStoreUserController.isClicked.value == false) {
+                      searchStoreUserController.placeId.value = "";
+                      await searchStoreUserController.apiGetNearByStores();
+                    } else if (i == 1 &&
+                        searchStoreUserController.isClicked.value == false) {
+                      await searchStoreUserController.apiGetPreviousStores();
+                    } else if (i == 2 &&
+                        searchStoreUserController.isClicked.value == false) {
+                      await searchStoreUserController.apiGetFavoriteStores();
+                    }
+                  },
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        StringConstants.nearbyText,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        StringConstants.previousText,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        StringConstants.favoriteText,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ],
+                  controller: _tabController,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children:  [
+                    NearbyStoreListScreen(),
+                    PreviousStoreListScreen(),
+                    FavouriteStoreListScreen(),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 1),
-                child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    onTap: () async {
-                      Prediction? p = await PlacesAutocomplete.show(
-                          offset: 0,
-                          radius: 1000,
-                          types: [],
-                          strictbounds: false,
-                          context: context,
-                          apiKey: searchStoreUserController.kGoogleApiKey,
-                          mode: Mode.overlay,
-                          language: "en",
-                          components: []);
-                      searchStoreUserController.searchController.text =
-                          p?.description!.toString() ?? "";
-                      ///ADDRESSES BY GEOCODING
-                      searchStoreUserController.placeId.value =
-                          p?.placeId.toString() ?? "";
-                      final geocoding = GoogleMapsGeocoding(
-                          apiKey: searchStoreUserController.kGoogleApiKey);
-                      GeocodingResponse response = await geocoding
-                          .searchByAddress(p?.description.toString() ?? "");
-                      final result = response.results.isNotEmpty
-                          ? response.results.first
-                          : null;
-                      if (result != null) {
-                        searchStoreUserController.city.value =
-                            Utility.extractLocality(result, "locality");
-                        searchStoreUserController.country.value =
-                            Utility.extractLocality(result, "country");
-                        searchStoreUserController.zipCodeTextController.text =
-                            Utility.extractLocality(result, "postal_code");
-                        searchStoreUserController.state.value =
-                            Utility.extractLocality(
-                                result, "administrative_area_level_1");
-                        // print("ADDRESSES BY GEOCODING:------------------");
-                        // print(response.results.first.geometry.location.lat);
-                        // print(response.results.first.geometry.location.lng);
-
-                        searchStoreUserController.lat.value = response.results.first.geometry.location.lat;
-                        searchStoreUserController.lng.value = response.results.first.geometry.location.lng;
-                        searchStoreUserController.updateMap(response.results.first.geometry.location.lat,
-                            response.results.first.geometry.location.lng,isSearch: true);
-                      }
-                    },
-                    controller: searchStoreUserController.searchController,
-                    style: const TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      prefixIcon: Image.asset(
-                        ImageConstants.search,
-                        color: AppColors.grey,
-                        scale: 4,
-                      ),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          searchStoreUserController.searchController.clear();
-                          searchStoreUserController.clearNearbyPArms();
-                          searchStoreUserController.updateCurrentLocation();
-                        },
-                        child: Image.asset(
-                          ImageConstants.cross,
-                          scale: 4,
-                        ),
-                      ),
-                      focusColor: AppColors.grey,
-                      hintText: StringConstants.searchText,
-                      hintStyle: const TextStyle(color: AppColors.grey),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                    )),
-              ),
             ],
           ),
-          SizedBox(
-            width: WidgetConstants.screenWidth,
-            height: 40,
-            child: TabBar(
-              unselectedLabelColor: AppColors.blackLight,
-              labelColor: AppColors.primary,
-              indicatorColor: AppColors.primary,
-              unselectedLabelStyle:
-                  const TextStyle(fontWeight: FontWeight.w400),
-              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-              isScrollable: false,
-              onTap: (i) async {
-                searchStoreUserController.storeAddresses.clear();
-                searchStoreUserController.previousStore.clear();
-                searchStoreUserController.favouriteStore.clear();
-                searchStoreUserController.page.value = 1;
-                searchStoreUserController.type.value = i;
-                searchStoreUserController.totalCount.value = 0;
-                Get.parameters["isFromHome"] = "true";
-                Get.parameters["isFromFav"] = "false";
-                Get.parameters["isFromMenu"] = "false";
-                Get.parameters["isFromOptions"] = "false";
-                if (i == 0 &&
-                    searchStoreUserController.isClicked.value == false) {
-                  searchStoreUserController.placeId.value = "";
-                  await searchStoreUserController.apiGetNearByStores();
-                } else if (i == 1 &&
-                    searchStoreUserController.isClicked.value == false) {
-                  await searchStoreUserController.apiGetPreviousStores();
-                } else if (i == 2 &&
-                    searchStoreUserController.isClicked.value == false) {
-                  await searchStoreUserController.apiGetFavoriteStores();
-                }
-              },
-              tabs: [
-                Tab(
-                  child: Text(
-                    StringConstants.nearbyText,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    StringConstants.previousText,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    StringConstants.favoriteText,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ),
-              ],
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _tabController,
-              children: const [
-                Center(child: NearbyStoreListScreen()),
-                Center(child: PreviousStoreListScreen()),
-                Center(child: FavouriteStoreListScreen()),
-              ],
-            ),
-          ),
+          //LOADING OVERLAY
+          Obx(() {
+            return searchStoreUserController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),)
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

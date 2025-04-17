@@ -22,293 +22,302 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
 
   Padding horizontalTabs() {
     return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Obx(
-          () => SizedBox(
-            height: 50,
-            width: WidgetConstants.screenWidth,
-            child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) {
-                  return width10SizedBox;
-                },
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: ordersHomeMainController.horizontalTabList.length,
-                itemBuilder: (_, i) {
-                  return InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        ordersHomeMainController.onIndexChange(i);
-                        setState(() {});
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                ordersHomeMainController.horizontalTabList[i],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: ordersHomeMainController
-                                              .selectedIndex.value ==
-                                          i
-                                      ? FontWeight.w500
-                                      : FontWeight.w400,
-                                  color: ordersHomeMainController
-                                              .selectedIndex.value ==
-                                          i
-                                      ? AppColors.primary
-                                      : AppColors.blackLight,
-                                ),
-                              ),
-                              height8SizedBox,
-                              Container(
-                                color: ordersHomeMainController
-                                            .selectedIndex.value ==
-                                        i
-                                    ? AppColors.primary
-                                    : null,
-                                height: 2,
-                                width: 80,
-                              ),
-                              const Divider(
-                                thickness: 1,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ));
-                }),
+      padding: const EdgeInsets.all(10.0),
+      child: Obx(
+            () => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+            ordersHomeMainController.horizontalTabList.length,
+                (i) => InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTap: () {
+                ordersHomeMainController.onIndexChange(i);
+                setState(() {});
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    ordersHomeMainController.horizontalTabList[i],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: ordersHomeMainController.selectedIndex.value == i
+                          ? FontWeight.w500
+                          : FontWeight.w400,
+                      color: ordersHomeMainController.selectedIndex.value == i
+                          ? AppColors.primary
+                          : AppColors.blackLight,
+                    ),
+                  ),
+                  height8SizedBox,
+                  Container(
+                    color: ordersHomeMainController.selectedIndex.value == i
+                        ? AppColors.primary
+                        : Colors.transparent,
+                    height: 2,
+                    width: 80,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.25),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Obx(() => Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xff7c94b6),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black45, BlendMode.darken),
-                      image: ordersHomeMainController.storeDetailsResponse.value
-                                      .data?.store?.image?.dynamicUrl ==
-                                  null ||
-                              ordersHomeMainController.storeDetailsResponse
-                                  .value.data!.store!.image!.dynamicUrl!.isEmpty
-                          ? const AssetImage(ImageConstants.storeicon)
-                              as ImageProvider
-                          : NetworkImage(ordersHomeMainController
-                              .storeDetailsResponse
-                              .value
-                              .data!
-                              .store!
-                              .image!
-                              .dynamicUrl!),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Obx(() => Container(
+                    height: WidgetConstants.screenHeight * 0.25,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff7c94b6),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black45, BlendMode.darken),
+                        image: ordersHomeMainController.storeDetailsResponse.value
+                            .data?.store?.image?.dynamicUrl ==
+                            null ||
+                            ordersHomeMainController.storeDetailsResponse
+                                .value.data!.store!.image!.dynamicUrl!.isEmpty
+                            ? const AssetImage(ImageConstants.storeicon)
+                        as ImageProvider
+                            : NetworkImage(ordersHomeMainController
+                            .storeDetailsResponse
+                            .value
+                            .data!
+                            .store!
+                            .image!
+                            .dynamicUrl!),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 18.0, right: 18, bottom: 0, top: 35),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Visibility(
-                                visible: int.parse(ordersHomeMainController
-                                            .storeCount.value) >
-                                        1 ||
-                                    ordersHomeMainController
-                                        .isFromNotification.value,
-                                child: IconButton(
-                                  splashRadius: 40,
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  onPressed: () {
-                                    Get.back(id: pageIdApp.value);
-                                    Get.delete<OrdersHomeMainController>();
-                                  },
-                                  icon: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.arrow_back,
-                                      color: AppColors.white,
-                                      size: 26.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 18.0, right: 18, bottom: 0, top: 35),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Visibility(
+                                  visible: int.parse(ordersHomeMainController
+                                      .storeCount.value) >
+                                      1 ||
+                                      ordersHomeMainController
+                                          .isFromNotification.value,
+                                  child: IconButton(
+                                    splashRadius: 40,
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {
+                                      Get.back(id: pageIdApp.value);
+                                      Get.delete<OrdersHomeMainController>();
+                                    },
+                                    icon: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.arrow_back,
+                                        color: AppColors.white,
+                                        size: 26.0,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ]),
-                      ),
+                              ]),
+                        ),
 
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20.0, right: 8, bottom: 10),
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: AppColors.white, width: 1)),
-                              child: CommonWidgets.circleCachedNetworkImage(
-                                ordersHomeMainController.storeDetailsResponse
-                                        .value.data?.store?.logo?.dynamicUrl ??
-                                    "",
-                                fit: BoxFit.contain,
-                                radius: 32.0,
-                                assetImg: ImageConstants.nopicfound,
-                              ),
-                            ),
-                            width10SizedBox,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 8, bottom: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: AppColors.white, width: 1)),
+                                child: CommonWidgets.circleCachedNetworkImage(
                                   ordersHomeMainController.storeDetailsResponse
-                                          .value.data?.store?.storeName ??
+                                      .value.data?.store?.logo?.dynamicUrl ??
                                       "",
-                                  style: const TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
+                                  fit: BoxFit.contain,
+                                  radius: 32.0,
+                                  assetImg: ImageConstants.nopicfound,
                                 ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4.0),
-                                      child: Image.asset(
-                                        ImageConstants.loc,
+                              ),
+                              width10SizedBox,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    ordersHomeMainController.storeDetailsResponse
+                                        .value.data?.store?.storeName ??
+                                        "",
+                                    style: const TextStyle(
                                         color: AppColors.white,
-                                        scale: 3,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4.0),
+                                        child: Image.asset(
+                                          ImageConstants.loc,
+                                          color: AppColors.white,
+                                          scale: 3,
+                                        ),
                                       ),
+                                      width4SizedBox,
+                                      SizedBox(
+                                        width: WidgetConstants.screenWidth * 0.6,
+                                        child: Text(
+                                            ordersHomeMainController
+                                                .storeLocation.value,
+                                            overflow: TextOverflow.visible,
+                                            style: const TextStyle(
+                                                overflow: TextOverflow.visible,
+                                                color: AppColors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400)),
+                                      ),
+                                    ],
+                                  ),
+                                  height4SizedBox,
+                                  SizedBox(
+                                    height: 20,
+                                    width: WidgetConstants.screenWidth * 0.7,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            ordersHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data !=
+                                                null &&
+                                                ordersHomeMainController
+                                                    .storeDetailsResponse
+                                                    .value
+                                                    .data!
+                                                    .store!
+                                                    .storeTimings!
+                                                    .isNotEmpty
+                                                ? ordersHomeMainController
+                                                .storeDetailsResponse
+                                                .value
+                                                .data!
+                                                .store!
+                                                .storeTimings!
+                                                .first
+                                                .is24HoursActive ==
+                                                false
+                                                ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
+                                                "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
+                                                : StringConstants
+                                                .storeHoursText
+                                                : StringConstants.storeHoursText,
+                                            style: const TextStyle(
+                                                overflow: TextOverflow.visible,
+                                                color: AppColors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400)),
+                                      ],
                                     ),
-                                    width4SizedBox,
-                                    SizedBox(
-                                      width: WidgetConstants.screenWidth * 0.6,
-                                      child: Text(
-                                          ordersHomeMainController
-                                              .storeLocation.value,
-                                          overflow: TextOverflow.visible,
-                                          style: const TextStyle(
-                                              overflow: TextOverflow.visible,
-                                              color: AppColors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400)),
-                                    ),
-                                  ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ))
+                ],
+              ),
+              horizontalTabs(),
+              Obx(() => Expanded(
+                  child: ordersHomeMainController.ownerOrderHistoryList!.isEmpty
+                      ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Image.asset(
+                                    ImageConstants.nodata,
+                                    scale: 8,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                                 height4SizedBox,
-                                SizedBox(
-                                  height: 20,
-                                  width: WidgetConstants.screenWidth * 0.7,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                          ordersHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data !=
-                                                      null &&
-                                                  ordersHomeMainController
-                                                      .storeDetailsResponse
-                                                      .value
-                                                      .data!
-                                                      .store!
-                                                      .storeTimings!
-                                                      .isNotEmpty
-                                              ? ordersHomeMainController
-                                                          .storeDetailsResponse
-                                                          .value
-                                                          .data!
-                                                          .store!
-                                                          .storeTimings!
-                                                          .first
-                                                          .is24HoursActive ==
-                                                      false
-                                                  ? "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.openingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")} - "
-                                                      "${Utility.formatDateTime(ordersHomeMainController.storeDetailsResponse.value.data!.store!.storeTimings!.first.closingTime ?? "0", firstFormat: "hh:mm:ss", secFormat: "hh:mm a")}"
-                                                  : StringConstants
-                                                      .storeHoursText
-                                              : StringConstants.storeHoursText,
-                                          style: const TextStyle(
-                                              overflow: TextOverflow.visible,
-                                              color: AppColors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400)),
-                                    ],
+                                Center(
+                                  child: Text(
+                                    AlertStringConstants.noDataFoundText,
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 16),
                                   ),
                                 ),
                               ],
                             )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ))
-          ],
-        ),
+                      : ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) {
+                            return height10SizedBox;
+                          },
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          controller: ordersHomeMainController.scrollController,
+                          itemCount: ordersHomeMainController
+                                  .ownerOrderHistoryList!.length +
+                              (ordersHomeMainController.isDataLoading.value ? 1 : 0),
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index <
+                                ordersHomeMainController
+                                    .ownerOrderHistoryList!.length) {
+                              return buildOrderCard(index);
+                            } else if (ordersHomeMainController.isDataLoading.value) {
+                              Timer(const Duration(milliseconds: 10), () {
+                                ordersHomeMainController.scrollController.jumpTo(
+                                    ordersHomeMainController.scrollController
+                                        .position.maxScrollExtent);
+                              });
+
+                              return CommonWidgets.loadingIndicator();
+                            } else {
+                              return const SizedBox();
+                            }
+                          })))
+            ],
+          ),
+          //LOADING OVERLAY
+          Obx(() {
+            return ordersHomeMainController.isLoading.value
+                ? Container(
+              color: Colors.black.withOpacity(0.2),
+              child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              ),)
+                : const SizedBox.shrink();
+          }),
+        ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        child: Column(
-          children: [
-            horizontalTabs(),
-            Obx(() => Expanded(
-                child: ordersHomeMainController.ownerOrderHistoryList!.isEmpty
-                    ? ordersHomeMainController.isLoading.value == true
-                        ? height0SizedBox
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.asset(
-                                  ImageConstants.nodata,
-                                  scale: 8,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              height4SizedBox,
-                              Center(
-                                child: Text(
-                                  AlertStringConstants.noDataFoundText,
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ],
-                          )
-                    : ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) {
-                          return height10SizedBox;
-                        },
-                        controller: ordersHomeMainController.scrollController,
-                        itemCount: ordersHomeMainController
-                                .ownerOrderHistoryList!.length +
-                            (ordersHomeMainController.isLoading.value ? 1 : 0),
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index <
-                              ordersHomeMainController
-                                  .ownerOrderHistoryList!.length) {
-                            return InkWell(
+    );
+  }
+
+  InkWell buildOrderCard(int index) {
+    return InkWell(
                               onTap: () {
                                 ordersHomeMainController.storeId.value =
                                     ordersHomeMainController
@@ -694,21 +703,5 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                 ]),
                               ),
                             );
-                          } else if (ordersHomeMainController.isLoading.value) {
-                            Timer(const Duration(milliseconds: 10), () {
-                              ordersHomeMainController.scrollController.jumpTo(
-                                  ordersHomeMainController.scrollController
-                                      .position.maxScrollExtent);
-                            });
-
-                            return CommonWidgets.loadingIndicator();
-                          } else {
-                            return const SizedBox();
-                          }
-                        })))
-          ],
-        ),
-      ),
-    );
   }
 }

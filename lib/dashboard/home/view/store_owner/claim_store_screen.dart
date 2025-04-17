@@ -17,7 +17,6 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
       body: buildStack(),
     );
   }
@@ -28,7 +27,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
       child: Container(
         color: AppColors.primaryLight,
         child: Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 20, top: 40),
+            padding: const EdgeInsets.only(left: 10.0, right: 20, top: 50,bottom: 10),
             child: Column(
               children: [
                 Row(
@@ -39,7 +38,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           IconButton(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
@@ -74,46 +73,60 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
   Stack buildStack() {
     return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          child: Column(
-            children: [
-              Expanded(
-                  child: Obx(() => ownerStoresController
-                          .unclaimedStoreList.isEmpty
-                      ? ownerStoresController.loadingData.value == true ||
-                              ownerStoresController.isDataComing.value
-                          ? height0SizedBox
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Image.asset(
-                                    ImageConstants.nodata,
-                                    scale: 8,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                                height4SizedBox,
-                                Center(
-                                  child: Text(
-                                    ownerStoresController
-                                                .isDataComing.value ==
-                                            true
-                                        ? ""
-                                        : StringConstants.noStoresFoundText,
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            )
-                      : buildListView())),
-            ],
-          ),
+        Column(
+          children: [
+            buildAppBar(),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Obx(() => ownerStoresController
+                                .unclaimedStoreList.isEmpty
+                            ?  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Image.asset(
+                                          ImageConstants.nodata,
+                                          scale: 8,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      height4SizedBox,
+                                      Center(
+                                        child: Text(
+                                          ownerStoresController
+                                                      .isDataComing.value ==
+                                                  true
+                                              ? ""
+                                              : StringConstants.noStoresFoundText,
+                                          style: const TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                            : buildListView())),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
+        //LOADING OVERLAY
+        Obx(() {
+          return ownerStoresController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),)
+              : const SizedBox.shrink();
+        }),
       ],
     );
   }

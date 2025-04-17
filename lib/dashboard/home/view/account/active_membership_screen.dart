@@ -71,9 +71,7 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                     height: WidgetConstants.screenHeight,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     child: accountController.activeMembershipList.isEmpty
-                        ? accountController.isLoading.value == true
-                            ? height0SizedBox
-                            : Column(
+                        ?  Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [

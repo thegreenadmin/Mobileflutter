@@ -33,12 +33,11 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
           Expanded(
               child: Obx(
             () => storeHomeMainController.categoriesList.isEmpty
-                ? storeHomeMainController.isLoading.value == true
-                    ? height0SizedBox
-                    : Column(
+                ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
+                        children:
+                        [ SizedBox(height: WidgetConstants.screenHeight *0.09,),
                           Center(
                             child: Image.asset(
                               ImageConstants.nodata,
@@ -57,126 +56,131 @@ class _StoreMenuScreenState extends State<StoreMenuScreen> {
                         ],
                       )
                 : ListView.separated(
+                padding: EdgeInsets.zero,
                     separatorBuilder: (BuildContext context, int index) {
                       return height6SizedBox;
                     },
                     itemCount: storeHomeMainController.categoriesList.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        onTap: () async {
-                          storeHomeMainController.apiFeatureProductListApi(
-                              categoryId: storeHomeMainController
-                                      .categoriesList[index].categoryId ??
-                                  "0");
-                          Get.parameters["categoryName"] =
-                              storeHomeMainController
-                                  .categoriesList[index].categoryName;
-                          Get.parameters["categoryId"] = storeHomeMainController
-                              .categoriesList[index].categoryId;
-                          storeHomeMainController.categoryName.value =
-                              storeHomeMainController
-                                      .categoriesList[index].categoryName ??
-                                  '';
-                          storeHomeMainController.categoryId.value =
-                              storeHomeMainController
-                                      .categoriesList[index].categoryId ??
-                                  '';
-                          storeHomeMainController.invokedIndex.value++;
-                          // Get.parameters["isAddToOrderScreen"]=="false";
-                          /* await Get.to(() => const UserProductListScreen(),
-                              id: pageIdApp.value);*/
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: const BoxDecoration(
-                              color: AppColors.greyLight,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              )),
-                          child: Column(children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: AppColors.white,
-                                              width: 1)),
-                                      child: CommonWidgets
-                                          .circleCachedNetworkImage(
-                                        storeHomeMainController.categoriesList
-                                                    .isNotEmpty &&
-                                                storeHomeMainController
-                                                        .categoriesList[index]
-                                                        .image
-                                                        ?.dynamicUrl !=
-                                                    null
-                                            ? storeHomeMainController
-                                                    .categoriesList[index]
-                                                    .image
-                                                    ?.dynamicUrl
-                                                    .toString() ??
-                                                ""
-                                            : "",
-                                        fit: BoxFit.contain,
-                                        radius: 25.0,
-                                        assetImg:
-                                            ImageConstants.defaultCategory,
-                                      ),
-                                    ),
-                                    width10SizedBox,
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          storeHomeMainController
-                                                  .categoriesList[index]
-                                                  .categoryName ??
-                                              '',
-                                          style: const TextStyle(
-                                              fontSize: 16.0,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        height4SizedBox,
-                                        Text(
-                                            storeHomeMainController
-                                                        .categoriesList[index]
-                                                        .totalProducts! >
-                                                    1
-                                                ? "${storeHomeMainController.categoriesList[index].totalProducts.toString()} products"
-                                                : "${storeHomeMainController.categoriesList[index].totalProducts.toString()} product",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: AppColors.blackLight,
-                                                fontWeight: FontWeight.w400)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Icon(
-                                  Icons.chevron_right,
-                                  color: AppColors.blackLight,
-                                  size: 24.0,
-                                ),
-                              ],
-                            ),
-                          ]),
-                        ),
-                      );
+                      return buildCategoryCard(index);
                     }),
           )),
         ]),
       ),
     );
+  }
+
+  InkWell buildCategoryCard(int index) {
+    return InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        storeHomeMainController.apiFeatureProductListApi(
+                            categoryId: storeHomeMainController
+                                    .categoriesList[index].categoryId ??
+                                "0");
+                        Get.parameters["categoryName"] =
+                            storeHomeMainController
+                                .categoriesList[index].categoryName;
+                        Get.parameters["categoryId"] = storeHomeMainController
+                            .categoriesList[index].categoryId;
+                        storeHomeMainController.categoryName.value =
+                            storeHomeMainController
+                                    .categoriesList[index].categoryName ??
+                                '';
+                        storeHomeMainController.categoryId.value =
+                            storeHomeMainController
+                                    .categoriesList[index].categoryId ??
+                                '';
+                        storeHomeMainController.invokedIndex.value++;
+                        // Get.parameters["isAddToOrderScreen"]=="false";
+                        /* await Get.to(() => const UserProductListScreen(),
+                            id: pageIdApp.value);*/
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        decoration: const BoxDecoration(
+                            color: AppColors.greyLight,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            )),
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: AppColors.white,
+                                            width: 1)),
+                                    child: CommonWidgets
+                                        .circleCachedNetworkImage(
+                                      storeHomeMainController.categoriesList
+                                                  .isNotEmpty &&
+                                              storeHomeMainController
+                                                      .categoriesList[index]
+                                                      .image
+                                                      ?.dynamicUrl !=
+                                                  null
+                                          ? storeHomeMainController
+                                                  .categoriesList[index]
+                                                  .image
+                                                  ?.dynamicUrl
+                                                  .toString() ??
+                                              ""
+                                          : "",
+                                      fit: BoxFit.contain,
+                                      radius: 25.0,
+                                      assetImg:
+                                          ImageConstants.defaultCategory,
+                                    ),
+                                  ),
+                                  width10SizedBox,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        storeHomeMainController
+                                                .categoriesList[index]
+                                                .categoryName ??
+                                            '',
+                                        style: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      height4SizedBox,
+                                      Text(
+                                          storeHomeMainController
+                                                      .categoriesList[index]
+                                                      .totalProducts! >
+                                                  1
+                                              ? "${storeHomeMainController.categoriesList[index].totalProducts.toString()} products"
+                                              : "${storeHomeMainController.categoriesList[index].totalProducts.toString()} product",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: AppColors.blackLight,
+                                              fontWeight: FontWeight.w400)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.chevron_right,
+                                color: AppColors.blackLight,
+                                size: 24.0,
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
+                    );
   }
 }

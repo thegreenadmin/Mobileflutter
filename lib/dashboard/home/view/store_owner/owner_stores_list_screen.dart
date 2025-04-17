@@ -21,7 +21,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: _buildOwnerAppBar(),
+      // appBar: _buildOwnerAppBar(),
       body: _buildStackMethod(),
     );
   }
@@ -29,20 +29,35 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   Stack _buildStackMethod() {
     return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          child: Column(
-            children: [
-              Expanded(
-                  child: Obx(() => ownerStoresController.storeList.isEmpty
-                      ? ownerStoresController.isStoreLoading.value == true
-                          ? height0SizedBox
-                          : _buildNoStoresFoundMethod()
-                      : _buildStoreListMethod())),
-            ],
-          ),
+        Column(
+          children: [
+            _buildOwnerAppBar(),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Obx(() => ownerStoresController.storeList.isEmpty
+                            ?  _buildNoStoresFoundMethod()
+                            : _buildStoreListMethod())),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         _buildClaimMethod(),
+        //LOADING OVERLAY
+        Obx(() {
+          return ownerStoresController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),)
+              : const SizedBox.shrink();
+        }),
       ],
     );
   }
@@ -161,6 +176,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                           ),
                           height8SizedBox,
                           ListView.separated(
+                              padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               separatorBuilder:
@@ -332,7 +348,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
       child: Container(
         color: AppColors.primaryLight,
         child: Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 20, top: 40),
+            padding: const EdgeInsets.only(left: 18.0, right: 20, top: 50,bottom: 10),
             child: Column(
               children: [
                 Row(
@@ -343,7 +359,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);

@@ -19,86 +19,97 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
+      // appBar: _buildAppbar(),
       body: _buildBody(),
     );
   }
 
-  Container _buildBody() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  "${StringConstants.viewText} ${StringConstants.productText}s",
-                  style: const TextStyle(
-                      fontSize: 18.0,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    hasStoreAccess.value && permissionStoreList.isEmpty ||
-                            permissionStoreList.any((element) =>
+   _buildBody() {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            _buildAppbar(),
+            Expanded(child:Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "${StringConstants.viewText} ${StringConstants.productText}s",
+                          style: const TextStyle(
+                              fontSize: 18.0,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            hasStoreAccess.value && permissionStoreList.isEmpty ||
+                                permissionStoreList.any((element) =>
                                 element.storeId ==
-                                        manageStoreController.storeId.value &&
+                                    manageStoreController.storeId.value &&
                                     element.isStoreOwner == true ||
-                                element.storeId ==
+                                    element.storeId ==
                                         manageStoreController.storeId.value
                                             .toString() &&
-                                    element.controllers!.any((ele) =>
+                                        element.controllers!.any((ele) =>
                                         ele.controllerKey ==
-                                        PermissionKey
-                                            .createProduct.statusName))
-                        ? Get.to(() => const AddNewProductScreen(),
+                                            PermissionKey
+                                                .createProduct.statusName))
+                                ? Get.to(() => const AddNewProductScreen(),
                                 id: pageIdApp.value)
-                            ?.then((value) {
-                            manageStoreController.apiGetStoreProducts();
-                          })
-                        : Utility.showAlertMessage(
-                            AlertStringConstants.notAuthorizedToStoreText);
-                    manageStoreController.resetForm();
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.add,
-                        color: AppColors.primary,
-                        size: 18.0,
-                      ),
-                      width2SizedBox,
-                      Text(
-                        StringConstants.addNewProductText,
-                        style: const TextStyle(
-                            fontSize: 16.0,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500),
-                      )
+                                ?.then((value) {
+                              manageStoreController.apiGetStoreProducts();
+                            })
+                                : Utility.showAlertMessage(
+                                AlertStringConstants.notAuthorizedToStoreText);
+                            manageStoreController.resetForm();
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.primary,
+                                size: 18.0,
+                              ),
+                              width2SizedBox,
+                              Text(
+                                StringConstants.addNewProductText,
+                                style: const TextStyle(
+                                    fontSize: 16.0,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ))
                     ],
-                  ))
-            ],
-          ),
-          height15SizedBox,
-          Expanded(
-              child: Obx(() => manageStoreController.storeProductList.isEmpty
-                  ? manageStoreController.isLoading.value == true
-                      ? height0SizedBox
-                      : _buildNoDataMethod()
-                  : _buildListViewMethod())),
-        ],
-      ),
+                  ),
+                  height15SizedBox,
+                  Expanded(
+                      child: Obx(() => manageStoreController.storeProductList.isEmpty
+                          ? manageStoreController.isLoading.value == true
+                          ? height0SizedBox
+                          : _buildNoDataMethod()
+                          : _buildListViewMethod())),
+                ],
+              ),
+            ), ),
+
+          ],
+        ),
+      ],
     );
   }
 
   ListView _buildListViewMethod() {
     return ListView.separated(
+        padding: EdgeInsets.zero,
                     separatorBuilder: (BuildContext context, int index) {
                       return height12SizedBox;
                     },
@@ -392,17 +403,17 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
       child: Container(
         color: AppColors.primaryLight,
         child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+            padding: const EdgeInsets.only(left: 15.0, right: 20, top: 50,bottom: 10),
             child: Column(
               children: [
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -359,6 +361,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                   //   // accountController.apiLogOutUser();
                   // });
                   searchStoreUserController.clearNearbyPArms();
+                  log("CALL apiGetNearByStores FILTER");
                   searchStoreUserController.apiGetNearByStores();
                   Get.back(id: pageIdApp.value);
                 }, border: Border.all(

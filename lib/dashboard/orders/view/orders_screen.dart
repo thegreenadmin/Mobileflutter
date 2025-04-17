@@ -1,13 +1,8 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
-import 'package:thegreenmall/dashboard/orders/view/component/order_status_enum.dart';
-import 'package:thegreenmall/dashboard/orders/view/mark_return_order_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/return_confirm_screen.dart';
 import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -23,10 +18,8 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
 
   @override
   initState(){
-    ordersController.role?.value = Role.customerRoleText;
     super.initState();
   }
-
 
   Container userOrdersTab() {
     return Container(
@@ -147,173 +140,6 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
     );
   }
 
-  Container storeOrdersTab() {
-    return Container(
-      height: 47,
-      width: WidgetConstants.screenWidth * 0.90,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        border: Border.all(
-            width: 0, //
-            color: AppColors.blackLight),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
-      child: Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () {
-                  ordersController.orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
-                  ordersController.page.value = 1;
-                  ordersController.storeOrderList.clear();
-                  ordersController.apiGetStoreOrderListApi();
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(4),
-                  height: 47,
-                  padding: const EdgeInsets.all(4),
-                  width: WidgetConstants.screenWidth * 0.16,
-                  color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                      ? AppColors.primaryLight
-                      : AppColors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          StringConstants.newText,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w400,
-                            color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                                ? AppColors.primary
-                                : AppColors.blackLight,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  ordersController.orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
-                  ordersController.page.value = 1;
-                  ordersController.storeOrderList.clear();
-                  ordersController.apiGetStoreOrderListApi();
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(4),
-                  height: 47,
-                  padding: const EdgeInsets.all(4),
-                  width: WidgetConstants.screenWidth * 0.18,
-                  color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                      ? AppColors.primaryLight
-                      : AppColors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: Text(
-                        StringConstants.pendingText,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value == OrderStatusEnum.receivedOrder.statusName
-                              ? AppColors.primary
-                              : AppColors.blackLight,
-                        ),
-                      ))
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  ordersController.orderStatusName.value = OrderStatusEnum.completed.statusName;
-                  ordersController.page.value = 1;
-                  ordersController.storeOrderList.clear();
-                  ordersController.apiGetStoreOrderListApi();
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(4),
-                  height: 47,
-                  padding: const EdgeInsets.all(4),
-                  width: WidgetConstants.screenWidth * 0.20,
-                  color: ordersController.orderStatusName.value == OrderStatusEnum.completed.statusName
-                      ? AppColors.primaryLight
-                      : AppColors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: Text(
-                        StringConstants.receivedText,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w400,
-                          color: ordersController.orderStatusName.value == OrderStatusEnum.completed.statusName
-                              ? AppColors.primary
-                              : AppColors.blackLight,
-                        ),
-                      ))
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  ordersController.orderStatusName.value = OrderStatusEnum.cancelled.statusName;
-                  ordersController.page.value = 1;
-                  ordersController.storeOrderList.clear();
-                  ordersController.apiGetStoreOrderListApi();
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(4),
-                  height: 47,
-                  padding: const EdgeInsets.all(4),
-                  width: WidgetConstants.screenWidth * 0.22,
-                  color: ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
-                      ? AppColors.primaryLight
-                      : AppColors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          StringConstants.cancelledText,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
-                                ? AppColors.primary
-                                : AppColors.blackLight,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -340,37 +166,23 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     children: [
-                      Obx(
-                            () => ordersController.role?.value == Role.customerRoleText
-                            ? Center(child: userOrdersTab())
-                            : Center(child: storeOrdersTab()),
-                      ),
+                      Center(child: userOrdersTab()),
                       height25SizedBox,
                       Obx(() {
-                        final isCustomer = ordersController.role?.value == Role.customerRoleText;
-                        final isEmpty = isCustomer
-                            ? ordersController.orderList.isEmpty
-                            : ordersController.storeOrderList.isEmpty;
-                        final isLoading = ordersController.isDataLoading.value;
-
+                        final isEmpty = ordersController.orderList.isEmpty;
                         if (isEmpty) {
-                          return isLoading ? height0SizedBox : buildNoDataFound();
+                          return buildNoDataFound();
                         }
-
                         return Flexible(
-                          child: ListView.separated(
+                          child: ListView.separated( padding: EdgeInsets.zero,
                             controller: ordersController.scrollController,
                             separatorBuilder: (context, index) => height12SizedBox,
-                            itemCount: (isCustomer
-                                ? ordersController.orderList.length
-                                : ordersController.storeOrderList.length) +
-                                (ordersController.isLoading.value ? 1 : 0),
+                            itemCount: (ordersController.orderList.length) +
+                                (ordersController.isDataLoading.value ? 1 : 0),
                             itemBuilder: (context, i) {
-                              if (i < (isCustomer
-                                  ? ordersController.orderList.length
-                                  : ordersController.storeOrderList.length)) {
-                                return isCustomer ? buildCustomerOrders(i) : buildStoreOrders(i);
-                              } else if (ordersController.isLoading.value) {
+                              if (i <  ordersController.orderList.length) {
+                                return  buildCustomerOrders(i) ;
+                              } else if (ordersController.isDataLoading.value) {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                   ordersController.scrollController.jumpTo(
                                       ordersController.scrollController.position.maxScrollExtent);
@@ -406,203 +218,6 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
     );
   }
 
-  InkWell buildStoreOrders(int i) {
-    return InkWell(
-                                          onTap: () {
-                                            // SharedPreferenceStorage.setData(
-                                            //     "context", context);
-
-                                            Get.parameters["storeId"] = ordersController.storeOrderList[i].store?.storeId.toString() ?? "";
-                                            Get.parameters["orderId"] = ordersController.storeOrderList[i].orderId.toString();
-                                            ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"11"
-                                                    OrderStatusEnum.returnRequest.statusName
-                                                ? Get.to(() => const MarkReturnOrderScreen(), id: pageIdApp.value, arguments: {
-                                                    "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                                    "orderId": ordersController.storeOrderList[i].orderId.toString(),
-                                                  })?.then((value) {
-                                                    ordersController.apiGetStoreOrderListApi();
-                                                  })
-                                                : ordersController.storeOrderList[i].orderHistories!.first.orderStatus!.orderStatusName == //"12"
-                                                        OrderStatusEnum.returnConfirmed.statusName
-                                                    ? Get.to(() => const ReturnConfirmOrderScreen(),
-                                                        id: int.parse(SharedPreferenceStorage.getData("pageId").toString()),
-                                                        arguments: {
-                                                            "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                                            "orderId": ordersController.storeOrderList[i].orderId.toString(),
-                                                          })
-                                                    : ordersController.orderStatusName.value == OrderStatusEnum.cancelled.statusName
-                                                        ? null
-                                                        : Get.to(() => const OrdersHomeMainScreen(), id: pageIdApp.value, arguments: {
-                                                            "storeId": ordersController.storeOrderList[i].store?.storeId.toString() ?? "",
-                                                            "orderId": ordersController.storeOrderList[i].orderId ?? "",
-                                                          });
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                            decoration: const BoxDecoration(
-                                                color: AppColors.primaryLight,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0),
-                                                )),
-                                            child: Column(children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle, border: Border.all(color: AppColors.white, width: 1)),
-                                                    child: CommonWidgets.circleCachedNetworkImage(
-                                                      ordersController.storeOrderList[i].store?.logo?.dynamicUrl.toString() ?? "",
-                                                      fit: BoxFit.contain,
-                                                      radius: 22.0,
-                                                      assetImg: ImageConstants.nopicfound,
-                                                    ),
-                                                  ),
-                                                  width5SizedBox,
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisSize: MainAxisSize.max,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          children: [
-                                                            Text.rich(
-                                                              TextSpan(
-                                                                children: [
-                                                                  TextSpan(
-                                                                      text: StringConstants.orderIDText,
-                                                                      style: TextStyle(
-                                                                          color: AppColors.blackLight,
-                                                                          fontWeight: FontWeight.w400,
-                                                                          fontSize: 14)),
-                                                                  TextSpan(
-                                                                    text: ': ${ordersController.storeOrderList[i].orderId ?? "0"}',
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.blackLight),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            // width20SizedBox,
-                                                            Text.rich(
-                                                              TextSpan(
-                                                                children: [
-                                                                  TextSpan(
-                                                                      text: Utility.formatDateTime(
-                                                                          '${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}',
-                                                                          firstFormat: "yyyy-MM-dd HH:mm:ss",
-                                                                          secFormat: "dd MMM yyyy"), //"14 Feb",
-                                                                      style: TextStyle(
-                                                                          color: AppColors.blackLight,
-                                                                          fontWeight: FontWeight.w400,
-                                                                          fontSize: 14)),
-                                                                  TextSpan(
-                                                                    text:
-                                                                        "-${Utility.formatDateTime('${ordersController.storeOrderList[i].createdAt.toString().substring(0, 10)} ${ordersController.storeOrderList[i].createdAt.toString().substring(11, 23)}', firstFormat: "yyyy-MM-dd HH:mm:ss", secFormat: "hh:mm a")}",
-                                                                    //'2023-03:30 AM',
-                                                                    style: TextStyle(
-                                                                        color: AppColors.blackLight, fontWeight: FontWeight.w400, fontSize: 14),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        height8SizedBox,
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Expanded(
-                                                              child: Text.rich(
-                                                                TextSpan(
-                                                                  children: [
-                                                                    TextSpan(
-                                                                        text: StringConstants.storeNameText,
-                                                                        style: TextStyle(
-                                                                            color: AppColors.blackLight,
-                                                                            fontWeight: FontWeight.w400,
-                                                                            fontSize: 14)),
-                                                                    TextSpan(
-                                                                      text: ': ${ordersController.storeOrderList[i].store?.storeName ?? ""}',
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.blackLight),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                overflow: TextOverflow.visible,
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                "\$${ordersController.storeOrderList[i].totalAmount?.toStringAsFixed(2)}",
-                                                                textAlign: TextAlign.end,
-                                                                style: const TextStyle(
-                                                                    color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              height6SizedBox,
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text.rich(
-                                                    softWrap: true,
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                            text: "${StringConstants.statusText}: ",
-                                                            style: const TextStyle(
-                                                                color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                        TextSpan(
-                                                          text: ordersController
-                                                                  .storeOrderList[i].orderHistories?.first.orderStatus?.orderStatusName
-                                                                  ?.toTitleCase() ??
-                                                              "",
-                                                          style:
-                                                              const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text.rich(
-                                                        TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                                text: "${StringConstants.productText}: ",
-                                                                style: const TextStyle(
-                                                                    color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-                                                            TextSpan(
-                                                              text: ordersController.storeOrderList[i].orderItems?.length.toString() ?? "0",
-                                                              style: const TextStyle(
-                                                                  color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.chevron_right,
-                                                        color: AppColors.blackLight,
-                                                        size: 22.0,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              )
-                                            ]),
-                                          ),
-                                        );
-  }
 
   InkWell buildCustomerOrders(int i) {
     return InkWell(

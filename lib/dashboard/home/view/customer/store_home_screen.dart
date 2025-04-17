@@ -309,7 +309,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                           offerId: item.offerId.toString(),
                           storeId: item.storeId.toString());
                       storeHomeMainController.offerObj.value = item;
-                      storeHomeMainController.invokedIndex.value = 2;
+                      Get.parameters["invokedIndex"] = "2";
                     },
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),

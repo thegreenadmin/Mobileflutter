@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -22,6 +23,7 @@ class StoreHomeMainScreen extends StatefulWidget {
 class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
+var argument = Get.arguments;
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -34,6 +36,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      storeHomeMainController.invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
       storeHomeMainController.productId.value =
           Get.parameters["productId"] ?? "";
       storeHomeMainController.isFromHome.value =
@@ -48,7 +51,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
-
+        storeHomeMainController.apiGetStoreCategoriesApi();
         if (storeHomeMainController.storeId.value != "" &&
             storeHomeMainController.productId.value != "") {
           storeHomeMainController.apiGetShopProductDetailApi();
@@ -75,6 +78,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       }
 
       storeHomeMainController.apiGetUserWalletBalance();
+      // storeHomeMainController.invokedIndex.value = argument;
     });
   }
 
@@ -226,6 +230,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
         height: 18,
         width: WidgetConstants.screenWidth,
         child: ListView.separated(
+            padding: EdgeInsets.zero,
             separatorBuilder: (BuildContext context, int index) {
               return width50SizedBox;
             },
@@ -453,9 +458,6 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(WidgetConstants.screenHeight * 0.30),
-            child: const UserStoreOrderAppBar()),
         body: Obx(
               () {
             Widget buildScreen() {
@@ -503,59 +505,29 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                       return const Expanded(child: PreviousOrdersScreen());
                     case 2:
                       if (storeHomeMainController
-                          .storeDetailsResponse
-                          .value
-                          .data!
-                          .store!
-                          .storePages!
-                          .first
-                          .storePageContent!
-                          .dynamicUrl ==
-                          null) {
+                          .storeDetailsResponse.value.data!.store!
+                          .storePages!.first.storePageContent!.dynamicUrl == null) {
                         return const Expanded(child: StoreHomeScreen());
                       } else {
                         return Expanded(
                           child: PdfViewScreen(
                             isShowPrivacy: true,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString(),
+                            url: storeHomeMainController.storeDetailsResponse.value
+                                .data!.store!.storePages!.first.storePageContent!.dynamicUrl.toString(),
                           ),
                         );
                       }
                     case 3:
                       if (storeHomeMainController
-                          .storeDetailsResponse
-                          .value
-                          .data!
-                          .store!
-                          .storePages!
-                          .first
-                          .storePageContent!
-                          .dynamicUrl ==
-                          null) {
+                          .storeDetailsResponse.value.data!
+                          .store!.storePages!.first.storePageContent!.dynamicUrl == null) {
                         return const Expanded(child: StoreHomeScreen());
                       } else {
                         return Expanded(
                           child: PdfViewScreen(
                             isShowPrivacy: false,
-                            url: storeHomeMainController
-                                .storeDetailsResponse
-                                .value
-                                .data!
-                                .store!
-                                .storePages!
-                                .first
-                                .storePageContent!
-                                .dynamicUrl
-                                .toString(),
+                            url: storeHomeMainController.storeDetailsResponse.value.data!
+                                .store!.storePages!.first.storePageContent!.dynamicUrl.toString(),
                           ),
                         );
                       }
@@ -574,14 +546,29 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
               }
             }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            return Stack(
               children: [
-                horizontalTabs(),
-                const Divider(
-                  thickness: 1,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const UserStoreOrderAppBar(),
+                    horizontalTabs(),
+                    const Divider(
+                      thickness: 1,
+                    ),
+                    buildScreen(),
+                  ],
                 ),
-                buildScreen(),
+                //LOADING OVERLAY
+                Obx(() {
+                  return storeHomeMainController.isLoading.value
+                      ? Container(
+                    color: Colors.black.withOpacity(0.2),
+                    child: const Center(
+                      child: CircularProgressIndicator(color: AppColors.primary),
+                    ),)
+                      : const SizedBox.shrink();
+                }),
               ],
             );
           },

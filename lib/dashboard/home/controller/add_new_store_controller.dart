@@ -123,6 +123,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
+
     getGKey();
     getCurrentLocation();
   }
@@ -131,7 +132,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
-         await apiGetDeliveryServices();
+
   }
 
   Future<void> createDynamicLink() async {
@@ -400,7 +401,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             data,
             ServerCommunicator.baseUrl + ServerCommunicator.createStore,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -466,6 +467,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
     try {
+      isLoading.value = true;
              Map<String, String> headers = {
         StringConstants.authorizationText:
             "${StringConstants.bearerText} ${authToken.value}",
@@ -477,14 +479,15 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
               headers,
               showLoading: false)
           .then((value) async {
+               isLoading.value = false;
                   if (value?.body["status"] == ApiConstants.statusCode201 ||
             value?.body["status"] == ApiConstants.statusCode200) {
           getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
           permissionStoreList.clear();
           permissionStoreList.value = getPermissionsModel.data!.stores!;
-        } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
-        } else {
+        } else { isLoading.value = false;
           if (value?.body['message'] != null) {
             Utility.showAlertMessage(value?.body['message']);
           }
@@ -497,7 +500,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
 
   ///Dynamic link
   Future apiDynamicLink() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -514,16 +517,17 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeDynamicLinkUpdate}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
+      isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+      } else if (value?.body["status"] == ApiConstants.statusCode401) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Get.back(id: pageIdApp.value);
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -534,7 +538,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get DeliveryServices Api
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -546,6 +550,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         deliveryServicesResponse =
@@ -572,10 +577,10 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -586,7 +591,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get Countries Api
   Future apiGetCountries() async {
     countriesList.clear();
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -597,6 +602,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
         getCountriesModel = GetCountriesModel.fromJson(value?.body);
@@ -607,10 +613,10 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         apiGetStates();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -621,7 +627,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   ///Get States Api
   Future apiGetStates() async {
     statesList.clear();
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -632,6 +638,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getStateModel = GetStatesModel.fromJson(value?.body);
@@ -642,15 +649,15 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
               stateId.value = statesList[i].stateId.toString();
             }
           }
-        } else {
+        } else { isLoading.value = false;
           stateId.value = statesList[0].stateId.toString();
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

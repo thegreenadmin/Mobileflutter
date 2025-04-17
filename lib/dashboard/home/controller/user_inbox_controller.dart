@@ -32,7 +32,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
   }
 
   ///Get Inbox message heads List Api
-  Future apiGetInboxList({isShowLoading = true}) async {
+  Future apiGetInboxList({isShowLoading = false}) async {
     isLoading.value = true;
 
     RxString url = "".obs;
@@ -53,7 +53,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.messageInboxList}?page=1&page_size=10&show_previous_messages=${showPreviousMessages.value}",
             headers,
-            showLoading: isShowLoading)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
               if (value?.body["status"] == ApiConstants.statusCode200 ||
@@ -76,7 +76,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
 
   ///Delete USER messages
   Future apiDeleteUserMessages({String messageHeadId = ""}) async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -92,6 +92,7 @@ class UserInboxController extends GetxController with GlobalVarMixin{
             headers,
             showLoading: false)
         .then((value) async {
+           isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);

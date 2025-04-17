@@ -17,88 +17,141 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90.0),
-        child: Container(
-          color: AppColors.primaryLight,
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Obx(
-                              () => Text(
-                                'Hi, ${firstName.value} ${lastName.value}',
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                            height4SizedBox,
-                            Text(
-                              StringConstants.ordersText,
-                              style: const TextStyle(
-                                  fontSize: 22,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
-                      ]),
-                ],
-              )),
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-        child: Column(
-          children: [
-            Expanded(
-                child: Obx(() => ordersController.storeList.isEmpty
-                    ? ordersController.isLoading.value == true
-                        ? height0SizedBox
-                        : Column(
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(90.0),
+      //   child: Container(
+      //     color: AppColors.primaryLight,
+      //     child: Padding(
+      //         padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+      //         child: Column(
+      //           children: [
+      //             Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //                 children: [
+      //                   Column(
+      //                     crossAxisAlignment: CrossAxisAlignment.start,
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       Obx(
+      //                         () => Text(
+      //                           'Hi, ${firstName.value} ${lastName.value}',
+      //                           style: const TextStyle(
+      //                               fontSize: 20,
+      //                               color: AppColors.black,
+      //                               fontWeight: FontWeight.w400),
+      //                         ),
+      //                       ),
+      //                       height4SizedBox,
+      //                       Text(
+      //                         StringConstants.ordersText,
+      //                         style: const TextStyle(
+      //                             fontSize: 22,
+      //                             color: AppColors.black,
+      //                             fontWeight: FontWeight.w600),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   Image.asset(
+      //                     ImageConstants.homeMall,
+      //                     scale: 4,
+      //                   )
+      //                 ]),
+      //           ],
+      //         )),
+      //   ),
+      // ),
+      body: Column(
+        children: [
+          Container(
+            color: AppColors.primaryLight,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50,),
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Center(
-                                child: Image.asset(
-                                  ImageConstants.nodata,
-                                  scale: 8,
-                                  color: AppColors.primary,
+                              Obx(
+                                    () => Text(
+                                  'Hi, ${firstName.value} ${lastName.value}',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                               height4SizedBox,
-                              Center(
-                                child: Text(
-                                  StringConstants.noOrdersFoundText,
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 16),
-                                ),
+                              Text(
+                                StringConstants.ordersText,
+                                style: const TextStyle(
+                                    fontSize: 22,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ],
+                          ),
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
                           )
-                    : ListView.separated(
-                        padding: const EdgeInsets.only(bottom: 60),
-                        separatorBuilder: (BuildContext context, int index) {
-                          return height12SizedBox;
-                        },
-                        itemCount: ordersController.storeList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
+                        ]),
+                  ],
+                )),
+          ),
+          height8SizedBox,
+          // ✅ Dynamic flexible space for list or empty state
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+              child: Obx(() {
+                if (ordersController.storeList.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          ImageConstants.nodata,
+                          scale: 8,
+                          color: AppColors.primary,
+                        ),
+                        height4SizedBox,
+                        Text(
+                          StringConstants.noOrdersFoundText,
+                          style: const TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                else {
+                  return ListView.separated(
+
+                      padding: const EdgeInsets.only(bottom: 60),
+                      separatorBuilder: (BuildContext context, int index) {
+                        return height12SizedBox;
+                      },
+                      itemCount: ordersController.storeList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildStoreCard(index);
+                      });
+                }
+              }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  InkWell buildStoreCard(int index) {
+    return InkWell(
                             onTap: () async {
                               ordersController.storeId.value =
                                   ordersController.storeList[index].storeId ??
@@ -180,6 +233,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                           ),
                                           height8SizedBox,
                                           ListView.separated(
+                                              padding: EdgeInsets.zero,
                                               shrinkWrap: true,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
@@ -346,10 +400,5 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               ]),
                             ),
                           );
-                        }))),
-          ],
-        ),
-      ),
-    );
   }
 }

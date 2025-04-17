@@ -71,16 +71,23 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
     }
   }
 
-  void validateAndSubmit() async {
+  void validateAndSubmit({bool isEdit =false}) async {
     if (validateAndSave()) {
       try {
+
         if (categoryImageDynamicLinkFromServer.isEmpty) {
           isLoading.value = false;
           Utility.showAlertMessage(
               AlertStringConstants.pleaseUploadCategoryImage);
         } else {
-          isLoading.value = true;
-          await apiAddCategory();
+          if(!isEdit){
+            isLoading.value = true;
+            await apiAddCategory();
+          }else{
+            isLoading.value = true;
+            await apiUpdateCategory();
+          }
+
         }
       } catch (_) {}
     } else {
@@ -210,7 +217,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
             ServerCommunicator.baseUrl +
                 ServerCommunicator.createStoreCategory,
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -235,7 +242,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
 
   ///Get Category Detail Api
   Future apiGetCategoryDetail() async {
-     
+    isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -244,8 +251,8 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryDetail}?store_id=${storeId.value}&category_id=${categoryId.value}",
             headers,
-            showLoading: true)
-        .then((value) async {
+            showLoading: false)
+        .then((value) async {    isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         categoryNameTextController.text =
@@ -291,7 +298,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryEdit}",
             headers,
-            showLoading: true)
+            showLoading: false)
         .then((value) async {
       isLoading.value = false;
       (value);
