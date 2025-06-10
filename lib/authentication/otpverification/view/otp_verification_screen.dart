@@ -128,8 +128,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       onCompleted: (value) {
                                         if (otpVerificationController.isLoading.value ==
                                             false) {
-                                          otpVerificationController.isLoading.value =
-                                              true;
                                           otpVerificationController
                                               .validateAndSubmitOtp();
                                         }
@@ -152,8 +150,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                             if (otpVerificationController
                                                     .isLoading.value ==
                                                 false) {
-                                              otpVerificationController.isLoading.value =
-                                                  true;
                                               otpVerificationController.apiResendOtp();
                                               // otpVerificationController
                                               //     .validateAndSubmitOtp();
@@ -180,8 +176,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       onTap: () {
                                         if (otpVerificationController.isLoading.value ==
                                             false) {
-                                          otpVerificationController.isLoading.value =
-                                              true;
                                           otpVerificationController
                                               .validateAndSubmitOtp();
                                         }

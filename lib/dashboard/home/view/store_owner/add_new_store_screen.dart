@@ -1176,9 +1176,9 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
-                                print(addNewStoreController.isLoading.value);
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (addNewStoreController.isLoading.value != true) {
-                                  addNewStoreController.isLoading.value = true;
+
                                   addNewStoreController.validateAndSubmit();
                                 }
                               },

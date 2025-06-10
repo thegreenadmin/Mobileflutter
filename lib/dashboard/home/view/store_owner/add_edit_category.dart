@@ -313,6 +313,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (addNewCategoryController.isLoading.value != true) {
                                   addNewCategoryController.validateAndSubmit(isEdit: widget.isEdit);
                                 }

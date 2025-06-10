@@ -8,6 +8,9 @@ import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class Utility {
+
+  static bool _isDialogShowing = false;
+
   static void showMessage(String title, String message) {
     Get.snackbar(title, message,
         margin: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
@@ -182,6 +185,9 @@ class Utility {
     void Function()? okayTap,
     void Function()? cancelTap,
   }) {
+    if (_isDialogShowing) return;
+
+    _isDialogShowing = true;
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -222,6 +228,7 @@ class Utility {
             height25SizedBox,
             InkWell(
               onTap: () {
+                _isDialogShowing = false;
                 okayTap ?? Get.back();
                 // isLoadingValue ? true : false;
               },

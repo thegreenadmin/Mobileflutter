@@ -1584,8 +1584,9 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (ownerStoreController.isLoading.value != true) {
-                                  ownerStoreController.isLoading.value = true;
+
                                   ownerStoreController.validateAndSubmit();
                                 }
                               },

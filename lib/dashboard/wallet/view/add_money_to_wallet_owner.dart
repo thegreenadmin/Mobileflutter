@@ -12,8 +12,9 @@ import 'payment_configurations.dart' as payment_configurations;
 
 class AddMoneyToWalletOwner extends StatefulWidget {
   const AddMoneyToWalletOwner({
-    super.key,
+    super.key,  this.selectedStore,
   });
+  final String? selectedStore;
 
   @override
   State<StatefulWidget> createState() {
@@ -31,6 +32,11 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
   @override
   void initState() {
     super.initState();
+
+    if(widget.selectedStore!=null){
+      addCardController
+          .selectedStore.value = widget.selectedStore!;
+    }
     addCardController.apiGetCardList();
     _payClient = Pay({
       PayProvider.google_pay: PaymentConfiguration.fromJsonString(
@@ -109,54 +115,54 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
 
         body: Stack(
           children: [
-            Column(
-              children: [
-                Container(
-                  color: AppColors.primaryLight,
-                  child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 5.0, right: 20, top: 50, bottom: 10),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    padding: EdgeInsets.all(5),
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      Get.back(id: pageIdApp.value);
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_back,
-                                      color: AppColors.black,
-                                      size: 24.0,
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    color: AppColors.primaryLight,
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 5.0, right: 20, top: 50, bottom: 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      padding: EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        Get.back(id: pageIdApp.value);
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: AppColors.black,
+                                        size: 24.0,
+                                      ),
                                     ),
-                                  ),
-                                  width10SizedBox,
-                                  const Flexible(
-                                    child: Text(
-                                      "Add money to store wallet",
-                                      overflow: TextOverflow.visible,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
+                                    width10SizedBox,
+                                    const Flexible(
+                                      child: Text(
+                                        "Add money to store wallet",
+                                        overflow: TextOverflow.visible,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: AppColors.black,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 4,
-                            )
-                          ])),
-                ),
-                SingleChildScrollView(
-                  child: Form(
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              )
+                            ])),
+                  ),
+                  Form(
                     key: addCardController.formKey3,
                     child: Container(
                       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -189,6 +195,15 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return AlertStringConstants.pleaseEnterAmountText;
+                              }
+                              // Check if the input is a valid decimal number
+                              try {
+                                final parsedValue = double.parse(value);
+                                if (parsedValue < 10) {
+                                  return 'Please enter an amount greater than or equal to 10';
+                                }
+                              } catch (e) {
+                                return 'Invalid input. Please enter a valid decimal number';
                               }
                               return null;
                             },
@@ -277,7 +292,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                           onTap: () {
                                             addCardController.paymentType!.value =
                                                 StringConstants.gPayText;
-
+                  
                                             addCardController.selectPaymentType.value =
                                                 StringConstants.gPayText;
                                           },
@@ -516,7 +531,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                         const NeverScrollableScrollPhysics(),
                                                     itemBuilder: (BuildContext context,
                                                         int index) {
-
+                  
                                                       if (addCardController
                                                           .userStripeCardId!
                                                           .value
@@ -549,7 +564,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                                 addCardController
                                                                     .selectedIndex!
                                                                     .value = index;
-
+                  
                                                                 addCardController
                                                                         .userStripeCardId!
                                                                         .value =
@@ -695,8 +710,8 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             //LOADING OVERLAY
             Obx(() {

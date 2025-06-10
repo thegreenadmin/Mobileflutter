@@ -90,12 +90,12 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-    firstName.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+    // firstName.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+    //         "";
+    // lastName.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+    //         "";
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
@@ -113,6 +113,10 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
 
   void validateAndSubmit({bool isEdit = false}) async {
     if (validateAndSave()) {
+      // if(mobileNoTextController.text==""){
+      //   Utility.showAlertMessage(AlertStringConstants.pleaseEnterPhoneText);
+      //   return;
+      // }
       try {
         if (isEdit) {
           apiEditWorker();

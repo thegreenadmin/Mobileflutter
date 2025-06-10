@@ -1136,8 +1136,9 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                   colors: [AppColors.primary, AppColors.primary],
                                 ),
                                 onTap: () {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   if (manageStoreController.isLoading.value != true) {
-                                    manageStoreController.isLoading.value = true;
+
                                     manageStoreController
                                         .validateAndSubmitUpdateProduct();
                                   }

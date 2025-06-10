@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -8,8 +10,10 @@ import 'package:thegreenmall/utils/utils.dart';
 
 class PayOutScreen extends StatefulWidget {
   const PayOutScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,  this.selectedStore,
+  });
+  final String? selectedStore;
+
   @override
   State<StatefulWidget> createState() {
     return PayOutScreenState();
@@ -22,13 +26,18 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
   @override
   void initState() {
     super.initState();
+    if(widget.selectedStore!=null){
+      addCardController
+          .selectedStore.value = widget.selectedStore!;
+    }
+
     addCardController.apiGetBankAccountList();
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Stack(
         children: [
           Column(
@@ -48,7 +57,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () {
-                                  Get.back(id: pageIdApp.value);
+                                  Get.back(result:addCardController.selectedStore.value,id: pageIdApp.value);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -133,14 +142,12 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                   autovalidateMode:
                                                       AutovalidateMode.onUserInteraction,
                                                   value: addCardController
-                                                              .storeNameValue.value !=
-                                                          ""
+                                                              .storeNameValue.value != ""
                                                       ? addCardController.storeList
                                                           .firstWhere((element) =>
                                                               element.storeId
                                                                   .toString() ==
-                                                              addCardController
-                                                                  .selectedStore.value)
+                                                              addCardController.selectedStore.value)
                                                           .storeId
                                                       : null,
                                                   isExpanded: true,
@@ -198,6 +205,8 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                     );
                                                   }).toList(),
                                                   onChanged: (value) {
+                                                    addCardController.selectedStore.value =
+                                                        value.toString();
                                                     addCardController.storeId!.value =
                                                         value.toString();
                                                     addCardController.selectedStore

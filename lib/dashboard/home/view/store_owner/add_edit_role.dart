@@ -138,6 +138,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                           colors: [AppColors.primary, AppColors.primary],
                         ),
                         onTap: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           if (addNewRoleController.isLoading.value != true) {
                            if(widget.isEdit ){
                              addNewRoleController.validateAndSubmit(true);

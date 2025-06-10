@@ -116,12 +116,7 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+
     role?.value = roleApp.value;
     isFeaturedTypeSelected.value = false;
     if (Get.parameters["storeId"] != "") {

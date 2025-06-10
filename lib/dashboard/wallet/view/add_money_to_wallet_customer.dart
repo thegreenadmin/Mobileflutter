@@ -113,54 +113,54 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
       child: Scaffold(
         body: Stack(
           children: [
-            Column(
-              children: [
-                Container(
-                  width: Get.width,
-                  color: AppColors.primaryLight,
-                  padding: const EdgeInsets.only(left: 5.0, right: 20, top: 50),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child:  Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Get.back(id: pageIdApp.value);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.black,
-                                  size: 24.0,
+        SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: Get.width,
+                    color: AppColors.primaryLight,
+                    padding: const EdgeInsets.only(left: 5.0, right: 20, top: 50),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child:  Row(
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.all(5),
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    Get.back(id: pageIdApp.value);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: AppColors.black,
+                                    size: 24.0,
+                                  ),
                                 ),
-                              ),
-                              width10SizedBox,
-                              Expanded(
-                                child: Text(
-                                  StringConstants.addMoneyToMyWalletText,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
+                                width10SizedBox,
+                                Expanded(
+                                  child: Text(
+                                    StringConstants.addMoneyToMyWalletText,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        width4SizedBox,
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
-                      ]),
-                ),
-                SingleChildScrollView(
-                  child: Form(
+                          width4SizedBox,
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          )
+                        ]),
+                  ),
+                  Form(
                     key: addCardController.formKey1,
                     child: Container(
                       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -714,8 +714,8 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             //LOADING OVERLAY
             Obx(() {

@@ -40,15 +40,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
       : Get.put(SearchStoreUserController());
 
 
-  // var kGoogleApiKey = ""; //TickerProviderStateMixin //SingleTickerProviderStateMixin
-  // final Completer<GoogleMapController> _controller =
-  // Completer<GoogleMapController>();
-  // final CameraPosition _kGooglePlex = const CameraPosition(
-  //   target: LatLng(37.42796133580664, -122.085749655962),
-  //   // zoom: 14.4746,
-  //   zoom: 50.4746,
-  // );
-  // Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
@@ -125,7 +116,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     children: [
                                       Obx(
                                             () => Text(
-                                          'Hi, ${searchStoreUserController.firstName?.value} ${searchStoreUserController.lastName?.value}',
+                                              'Hi, ${firstName.value} ${lastName.value}',
                                           style: const TextStyle(
                                               fontSize: 18,
                                               color: AppColors.black,
@@ -341,7 +332,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             searchStoreUserController.lat.value = response.results.first.geometry.location.lat;
                             searchStoreUserController.lng.value = response.results.first.geometry.location.lng;
                             searchStoreUserController.updateMap(response.results.first.geometry.location.lat,
-                                response.results.first.geometry.location.lng,isSearch: true);
+                                response.results.first.geometry.location.lng,isSearchVal: true);
                           }
                         },
                         controller: searchStoreUserController.searchController,

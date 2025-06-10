@@ -6,8 +6,9 @@ import 'package:thegreenmall/utils/utils.dart';
 
 class AddCardScreen extends StatefulWidget {
   const AddCardScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,  this.selectedStore,
+  });
+  final String? selectedStore;
 
   @override
   State<StatefulWidget> createState() {
@@ -20,7 +21,12 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
 
   @override
   void initState() {
-    addCardController.apiGetUserWalletBalance();
+
+    if(widget.selectedStore!=null){
+      addCardController
+          .selectedStore.value = widget.selectedStore!;
+    }
+    // addCardController.apiGetUserWalletBalance();
     addCardController.apiGetCardList();
     super.initState();
   }

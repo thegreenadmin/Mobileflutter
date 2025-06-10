@@ -1107,8 +1107,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
-                                debugPrint(
-                                    manageStoreController.isLoading.value.toString());
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (manageStoreController.isLoading.value == false) {
                                   manageStoreController.selectedCategories.clear();
                                   for (int i = 0;
@@ -1123,7 +1122,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                       });
                                     }
                                   }
-                                  manageStoreController.isLoading.value = true;
+
                                   manageStoreController.validateAndSubmit();
                                 }
                               },

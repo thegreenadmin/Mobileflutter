@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/io_client.dart';
@@ -20,7 +21,15 @@ class UserProvider extends GetConnect {
     log("API URL********** $url");
     log("API METHOD********** GET getWithHeadersApi");
     log("API headers********** $headers");
-
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -40,16 +49,7 @@ class UserProvider extends GetConnect {
       log("API Response********** ${res.body}");
       log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -85,8 +85,16 @@ class UserProvider extends GetConnect {
   Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
     log("API URL********** $url");
     log("API METHOD********** POST postApi");
-    log("API data ********** $data");
-
+    log("API data ********** ${json.encode(data)}");
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -112,16 +120,7 @@ class UserProvider extends GetConnect {
 
       log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -161,6 +160,17 @@ class UserProvider extends GetConnect {
     log("API URL********** $url");
     log("API data ********** $data");
     log("API METHOD********** PUT");
+
+    // ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
+    
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -179,16 +189,7 @@ class UserProvider extends GetConnect {
 
       log("API Response********** ${json.decode(res.body)}");
       return Response(statusCode: res.statusCode, body: json.decode(res.body));
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -232,7 +233,15 @@ class UserProvider extends GetConnect {
     log("API headers ********** $headers");
     log("API data ********** $data");
     log("API METHOD********** POST postWithHeadersApi");
-
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -260,16 +269,7 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -312,7 +312,15 @@ class UserProvider extends GetConnect {
     log("API data ********** $data");
     log("API data ********** $headers");
     log("API METHOD********** PUT putWithHeadersApi");
-
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -339,16 +347,7 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -391,7 +390,15 @@ class UserProvider extends GetConnect {
     log("API data ********** $data");
     log("API data ********** $headers");
     log("API METHOD********** PUT putWithHeadersApi1");
-
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -417,16 +424,7 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -469,7 +467,15 @@ class UserProvider extends GetConnect {
     log("API data ********** $data");
     log("API data ********** $headers");
     log("API METHOD********** DELETE deleteWithHeadersApi");
-
+// ✅ Check Internet Before Proceeding
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if ( connectivityResult.contains(ConnectivityResult.none)) {
+      Utility.showAlertMessage(
+        "Please check your network connection.",
+        title: "No Internet Connection!",
+      );
+      return null;
+    }
         if (showLoading) {
           Get.dialog(
               const Center(
@@ -496,16 +502,7 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    } on SocketException {
-      if (showLoading) Get.back();
-
-        Utility.showAlertMessage(
-          "Please check your network connection.",
-          title: "No Internet Connection!",
-        );
-
-      return null;
-    } on TimeoutException {
+    }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(

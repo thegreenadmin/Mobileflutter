@@ -34,13 +34,8 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
           height5SizedBox,
           InkWell(
             highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
+            // splashColor: Colors.grey,
             onTap: () {
-              // SharedPreferenceStorage.setData("context", context);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (_) => const EditStoreDetailScreen(),
-              // ));
-
               hasStoreAccess.value && permissionStoreList.isEmpty ||
                       permissionStoreList.any((element) =>
                           element.storeId ==
@@ -118,7 +113,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
           ),
           InkWell(
             highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
+            // splashColor: Colors.transparent,
             onTap: () {
               Get.parameters["storeId"] = ownerStoresController.storeId.value;
               Get.parameters["productId"] = "";
@@ -194,7 +189,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
           ),
           InkWell(
             highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
+            // splashColor: Colors.transparent,
             onTap: () {
               Get.parameters["storeId"] = ownerStoresController.storeId.value;
               Get.parameters["storeName"] =
@@ -269,7 +264,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
           ),
           InkWell(
             highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
+            // splashColor: Colors.transparent,
             onTap: () {
 
               Get.parameters["storeId"] = ownerStoresController.storeId.value;

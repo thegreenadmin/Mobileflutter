@@ -596,7 +596,8 @@ class StringConstants {
   static String theGreenMallAppNameText = "The Green Mall";
   static String transactionIdText = "Transaction ID";
   static String toKnowBalanceYouDoNotHaveText =
-      "You need to add store first in order the check the balance.";
+      "You need to add a store first, in order to check the store balance";
+
 
   //U
   static String usText = "US";

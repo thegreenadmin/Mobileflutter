@@ -20,18 +20,41 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildPreferredSize(),
+      // appBar: buildPreferredSize(),
       body: buildSingleChildScrollView(context),
     );
   }
 
-  SingleChildScrollView buildSingleChildScrollView(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Container(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-        child: buildColumn(context),
-      ),
+   buildSingleChildScrollView(BuildContext context) {
+    return Stack(
+      children: [
+
+        Column(
+          children: [
+            buildPreferredSize(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: buildColumn(context),
+                ),
+              ),
+            ),
+
+          ],
+        ),
+        //LOADING OVERLAY
+        Obx(() {
+          return searchStoreUserController.isLoading.value
+              ? Container(
+            color: Colors.black.withOpacity(0.2),
+            child: const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),)
+              : const SizedBox.shrink();
+        }),
+      ],
     );
   }
 
@@ -333,10 +356,14 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                     Utility.showAlertMessage(
                         AlertStringConstants.pleaseSelectOneFilterText);
                   } else {
-                    searchStoreUserController.placeId.value = "";
-                    searchStoreUserController.apiGetNearByStores(
-                      isFilter: true,
-                    );
+                    // searchStoreUserController.isFilter.value = true;
+                    // searchStoreUserController.isSearch.value = false;
+                   if( !searchStoreUserController. isLoading.value){
+                     searchStoreUserController.apiGetNearByStores(
+                       isFilter: true,
+                     );
+                   }
+
                   }
                 },
                 height: 50,
@@ -354,15 +381,8 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                   colors: [AppColors.white, AppColors.white],
                 ),
                 onTap: () async {
-                  // Utility.showConfirmAlertMessage(
-                  //     AlertStringConstants.areYouSureLogoutAccountText,
-                  //     cancelText: StringConstants.noText,
-                  //     okay: StringConstants.yesText, okayTap: () {
-                  //   // accountController.apiLogOutUser();
-                  // });
                   searchStoreUserController.clearNearbyPArms();
-                  log("CALL apiGetNearByStores FILTER");
-                  searchStoreUserController.apiGetNearByStores();
+                  searchStoreUserController.updateCurrentLocation();
                   Get.back(id: pageIdApp.value);
                 }, border: Border.all(
                 color: AppColors.primary,
@@ -386,7 +406,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
         child: Container(
           color: AppColors.primaryLight,
           child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50),
+              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 50,bottom: 10),
               child: Column(
                 children: [
                   Row(

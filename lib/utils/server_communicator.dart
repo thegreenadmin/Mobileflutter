@@ -30,6 +30,7 @@ class ServerCommunicator {
 
   // Staging API URL:    https://tfq2tvvrsc.execute-api.us-east-1.amazonaws.com
   // Prod API URL:    https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com
+  // Local API URL:    http://172.24.0.202:8080
 //A
 
 //B
@@ -193,7 +194,7 @@ class ServerCommunicator {
   static const userWalletTransactionList = 'user/wallet/transactions/list';
   static const notificationSettingSave = 'notification/setting/save';
   static const userWalletTransactionDetail = 'user/wallet/transaction/details';
-  static const utilsQueryCreate = '/utils/query/create';
+  static const utilsQueryCreate = 'utils/query/create';
   static const userStripeBankCreate = 'user/stripe/bank/create';
   static const userStripeBankList = 'user/stripe/bank/list';
   static const userWalletAutoCharge = 'user/wallet/autocharge/create';

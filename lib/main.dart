@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:thegreenmall/provider/network_service.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
@@ -17,6 +18,7 @@ RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  NetworkService().startMonitoring();
   await Firebase.initializeApp();
   await GetStorage.init();
   await dotenv.load(fileName: 'assets/env/api_key.env');

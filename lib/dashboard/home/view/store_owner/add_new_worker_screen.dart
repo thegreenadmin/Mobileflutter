@@ -467,6 +467,14 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                   ),
                                 ),
                               ),
+
+                              validator: (value) {
+                                if (value!.toString().trim().isEmpty) {
+                                  return AlertStringConstants
+                                      .pleaseEnterPhoneText;
+                                }
+                                return null;
+                              },
                               onCountryChanged: (value) {
                                 addNewWorkerController.countryCode.value =
                                     "+${value.dialCode}";
@@ -564,9 +572,10 @@ class _AddNewWorkerScreenState extends State<AddNewWorkerScreen> with GlobalVarM
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (addNewWorkerController.isLoading.value != true) {
-                                  addNewWorkerController.isLoading.value = true;
                                   addNewWorkerController.validateAndSubmit();
+
                                 }
                               },
                               height: 50,

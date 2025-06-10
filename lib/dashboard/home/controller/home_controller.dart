@@ -47,34 +47,40 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxList<ProductsList> featuredUserProductList = <ProductsList>[].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-  final SearchStoreUserController searchStoreUserController =
-      Get.put(SearchStoreUserController());
+  // final SearchStoreUserController searchStoreUserController =
+  //     Get.put(SearchStoreUserController());
   ActiveCartModel activeCartModel = ActiveCartModel();
   @override
   void onInit() {
     super.onInit();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       apiGetUserDetail();
-      // apiActiveCartApi();
     });
   }
 
   getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    try {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
 
-    if (roleApp.value == Role.customerRoleText) {
-      await apiGetUserOffersList();
-      await apiGetUserFeaturedProducts();
-      searchStoreUserController.apiActiveCartApi();
+      if (roleApp.value == Role.customerRoleText) {
+        await apiGetUserOffersList();
+        await apiGetUserFeaturedProducts();
 
-    } else {
-      await apiGetOwnerOffersList();
-      await apiGetOwnerFeaturedProducts();
+        await apiActiveCartApi();
+      } else {
+        await apiGetOwnerOffersList();
+        await apiGetOwnerFeaturedProducts();
+      }
+    } catch (e) {
+      // Handle denied permission
+      Utility.showToast('Please enable location permission in settings.');
+    } finally {
+      isLoading.value = false; // Stop loader in any case
     }
   }
+
 
   List<PopupMenuEntry<String>>? userTypeOptionsPopUpList(context) {
     return List.generate(2, (index) {
@@ -155,7 +161,8 @@ class HomeController extends GetxController with GlobalVarMixin {
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-                          cartCount.value = activeCartModel.data!.cartItems!.length;
+        cartCount.value = activeCartModel.data!.cartItems!.length;
+        storeIdValue?.value = activeCartModel.data!.storeId.toString();
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;

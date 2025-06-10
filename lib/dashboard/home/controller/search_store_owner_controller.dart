@@ -344,7 +344,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         showLoading: false)
         .then((value) async {
            isLoading.value = false;
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+           if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
 
@@ -367,7 +367,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-         Map body = {
+
+    Map body = {
       "store_id": storeId.value,
       "page": 1,
       "page_size": 1000,
@@ -383,7 +384,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             showLoading: false)
         .then((value) async {
            isLoading.value = false;
-                    if (value?.body["status"] == ApiConstants.statusCode201 ||
+           if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;

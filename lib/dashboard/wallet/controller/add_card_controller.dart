@@ -130,9 +130,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
     role.value = roleVal;
     getGKey();
     await apiGetUserWalletBalance();
+
+    if (roleApp.value == Role.storeOwnerRoleText) {
+
+      await apiGetStoreList();
+    }
     await apiGetCardList();
     await apiGetBankAccountList();
-    await apiGetStoreList();
     await apiGetUserDetailApi();
     // await apiGetCountries();
     await apiGetAccountDetails();
@@ -285,7 +289,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   validateAndSavePayOut() {
     if (validateAndSave2()) {
       try {
-        if (storeId!.value.isEmpty) {
+        if (selectedStore.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
         } else {
           apiCreatePayout();
@@ -422,13 +426,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
         Get.parameters["storeCount"] = storeList.length.toString();
         if (storeList.length == 1) {isLoading.value= false;
-          selectedStore.value = storeList[0].storeId.toString();
+          // selectedStore.value = storeList[0].storeId.toString();
           storeId?.value = storeList[0].storeId.toString();
           apiGetOwnerWalletBalance();
         } else {isLoading.value= false;
           if (storeList.isNotEmpty) {
             storeNameValue.value = storeList[0].storeName.toString();
-            selectedStore.value = storeList[0].storeId.toString();
+            // selectedStore.value = storeList[0].storeId.toString();
             storeId?.value = storeList[0].storeId.toString();
             apiGetOwnerWalletBalance();
           } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -848,7 +852,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
   ///Api create payout
   Future apiCreatePayout() async {
          Map body = {
-      "store_id": int.parse(storeId!.value),
+      "store_id": int.parse(selectedStore.value),
       "user_stripe_bank_id": int.parse(userStripeBankId!.value),
       "amount": double.parse(payoutAmountTextController.text.trim())
     };
@@ -867,7 +871,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
             showLoading: false)
         .then((value) async {
       if (value != null) {
-                 if (value.body['success'] == true ||
+        if (value.body['success'] == true ||
             value.body['status'] == ApiConstants.statusCode201 ||
             value.body['status'] == ApiConstants.statusCode200) {
           userStripeBankId!.value = "";isLoading.value= false;
@@ -875,7 +879,6 @@ class AddCardController extends GetxController with GlobalVarMixin{
           userStripeBankId!.value = "";
           payoutAmountTextController.clear();
           ownerWalletBalance!.value = "0.00";
-          storeId!.value = "";
           Get.back(id: pageIdApp.value);
           Utility.showToast(value.body['message']);
         } else if (value.body["status"] == ApiConstants.statusCode401) {isLoading.value= false;

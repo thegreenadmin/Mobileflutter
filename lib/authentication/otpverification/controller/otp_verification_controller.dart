@@ -37,9 +37,26 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
     getFcmToken();
   }
 
-  getFcmToken() async {
-    fcmToken!.value = (await messaging.getToken())!;
+  Future<void> getFcmToken() async {
+    try {
+      await messaging.getToken().then((v){
+        fcmToken!.value = v!;
+        if (fcmToken?.value != null) {
+          // Save or use the token
+          print("FCM Token: $fcmToken!.value");
+        } else {
+          // Handle null token case
+          Utility.showAlertMessage("Unable to retrieve device token. Please try again.");
+        }
+      });
+
+    } catch (e) {
+      // Handle error gracefully
+      print("FCM Token Error: $e");
+      Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
+    }
   }
+
 
   bool otpValidateAndSave() {
     final form = formKey.currentState;
@@ -57,10 +74,11 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
       try {
         await messaging.getToken().then((value) {
           fcmToken!.value = value ?? "";
-
           apiOtpVerify();
         });
-      } catch (_) {}
+      } catch (_) {
+        // Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
+      }
     } else {
       autoValidate.value = true;
     }

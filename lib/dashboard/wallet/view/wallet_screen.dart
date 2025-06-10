@@ -277,7 +277,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                           return;
                                         }
                                         Get.to(
-                                          () => const AddMoneyToWalletOwner(),
+                                          () =>  AddMoneyToWalletOwner( selectedStore : walletController.ownerSelectedStore.value ?? ""),
                                           id: pageIdApp.value,
                                         )!
                                             .then((value) => walletController

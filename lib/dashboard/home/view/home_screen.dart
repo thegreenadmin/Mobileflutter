@@ -74,46 +74,40 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       children: [
         RefreshIndicator(
           onRefresh: _pullRefresh,
-          child: SingleChildScrollView(
-            child: Container(
-              // height: WidgetConstants.screenHeight * 0.84,
-
-              child:
-                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                    _buildAppbar(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(() => roleApp.value == Role.customerRoleText
-                          ? _buildCarouselSlider(
-                              offersCarouselList: homeController.userCarouselImgList,
-                              featuredProductList:
-                                  homeController.featuredUserProductList)
-                          : _buildCarouselSlider(
-                              offersCarouselList: homeController.getOwnerOfferList,
-                              featuredProductList:
-                                  homeController.ownerFeatureProductList)),
-                      height20SizedBox,
-                      _buildFeatureProductText(),
-                      height20SizedBox,
-                      Obx(
-                            () => roleApp.value == Role.customerRoleText
-                            ? _buildProductsCarousel(
-                            featuredProductList:
-                            homeController.featuredUserProductList)
-                            : _buildProductsCarousel(
-                            featuredProductList:
-                            homeController.ownerFeatureProductList),
-                      )
-                    ],
-                  ),
-                ),
-
-              ]),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              _buildAppbar(), 
+              Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              child: SingleChildScrollView(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(() => roleApp.value == Role.customerRoleText
+                      ? _buildCarouselSlider(
+                          offersCarouselList: homeController.userCarouselImgList,
+                          featuredProductList:
+                              homeController.featuredUserProductList)
+                      : _buildCarouselSlider(
+                          offersCarouselList: homeController.getOwnerOfferList ,
+                          featuredProductList:
+                              homeController.ownerFeatureProductList)),
+                  height20SizedBox,
+                  _buildFeatureProductText(),
+                  height20SizedBox,
+                  Obx(
+                        () => roleApp.value == Role.customerRoleText
+                        ? _buildProductsCarousel(
+                        featuredProductList:
+                        homeController.featuredUserProductList)
+                        : _buildProductsCarousel(
+                        featuredProductList:
+                        homeController.ownerFeatureProductList),
+                  )
+                ],
+              ),
             ),
-          ),
+              ),
+          ]),
+
         ),
         //LOADING OVERLAY
         Obx(() {
@@ -144,445 +138,449 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     );
   }
 
-  PreferredSize _buildAppbar() {
-    return PreferredSize(
-      preferredSize:  Size.fromHeight(WidgetConstants.screenHeight * 0.18),
-      child: Container(
-        color: AppColors.primaryLight,
-        child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 4, top: 50),
-            child: Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+   _buildAppbar() {
+    return Container(
+      color: AppColors.primaryLight,
+      child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 4, top: 50,bottom: 10),
+          child: Column(
+            children: [
+              buildTitle(),
+              height12SizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Obx(() => Text(
-                                "${StringConstants.hiText}${firstName.value} ${lastName.value}",
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: StringConstants.welcomeToText,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: ' T',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: 'he',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 17,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: ' G',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: 'reen',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: ' M',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: 'all',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Obx(
-                            () => Visibility(
-                              visible: roleApp.value == Role.customerRoleText &&
-                                  homeController.searchStoreUserController.cartCount.value != 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () async {
-                                            Get.parameters["storeId"] =
-                                                homeController.searchStoreUserController.storeIdValue.value;
-                                            await Get.to(() => const CartScreen(), id: pageIdApp.value)
-                                                ?.then((value) => homeController.apiActiveCartApi());
-                                          },
-                                          child: Stack(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 18.0,
-                                                backgroundColor: Colors.white,
-                                                child: Image.asset(
-                                                    ImageConstants.cart,
-                                                    height: 14),
-                                              ),
-                                              Positioned(
-                                                right: 0,
-                                                top: 0,
-                                                child: Container(
-                                                    padding: const EdgeInsets.all(1.5),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.red,
-                                                      borderRadius:
-                                                          BorderRadius.circular(8.5),
-                                                    ),
-                                                    constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
-                                                    child: Obx(
-                                                      () => Text(
-                                                        homeController.searchStoreUserController.cartCount.toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 8,
-                                                        ), textAlign: TextAlign.center,
-                                                      ),
-                                                    )),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (homeController.isLoading.value == false) {
-                                Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
-                              }
-                            },
-                            child: const Icon(
-                              Icons.notifications_active,
-                              color: AppColors.primary,
-                              size: 24.0,
-                            ),
-                          ),
-                          width10SizedBox,
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          ),
-                        ],
-                      )
-                    ]),
-                height12SizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        RawMaterialButton(
-                          elevation: 0,
-                          onPressed: () async {
-                            roleApp.value == Role.customerRoleText
-                                ? Get.to(() => const UserInboxScreen(),
-                                    id: pageIdApp.value)
-                                : hasStoreAccess.value &&
-                                            permissionStoreList.isEmpty ||
-                                        permissionStoreList.any((element) =>
-                                            element.isStoreOwner == true ||
-                                            element.controllers!.any((ele) =>
-                                                ele.controllerKey ==
-                                                PermissionKey
-                                                    .manageMessages.statusName))
-                                    ? await Get.to(() => const OwnerInboxScreen(),
-                                        id: pageIdApp.value)
-                                    : Utility.showAlertMessage(
-                                        AlertStringConstants
-                                            .notAuthorizedToStoreText);
-                          },
-                          constraints: const BoxConstraints(),
-                          padding:
-                              const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 1.0, color: AppColors.primary),
-                            borderRadius: BorderRadius.circular(28.0),
-                          ),
-                          fillColor: AppColors.white,
-                          child: Row(
-                            children: [
-                              Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Image.asset(
-                                    ImageConstants.message,
-                                    scale: 2.5,
-                                    color: AppColors.white,
-                                  )),
-                              width5SizedBox,
-                              Text(
-                                StringConstants.inboxText,
-                                style: const TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                        width8SizedBox,
-                        Obx(() => hasStoreAccess.value
-                            ? RawMaterialButton(
-                                elevation: 0,
-                                onPressed: () async {
-                                  if (roleApp.value == Role.customerRoleText) {
-                                    Get.parameters["firstName"] =
-                                        firstName.value.toString();
-                                    Get.parameters["lastName"] =
-                                        lastName.value.toString();
-
-                                    Get.parameters["isFromHome"] = "true";
-                                    Get.parameters["isFromFav"] = "false";
-                                    Get.parameters["isFromMenu"] = "false";
-                                    await Get.to(
-                                      () => const SearchStoreUserScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {
-                                        "firstName": firstName.value,
-                                        "lastName": lastName.value,
-                                      },
-                                    );
-                                  } else {
-                                    Get.parameters["isFromHome"] = 'false';
-                                    Get.parameters["firstName"] =
-                                        firstName.value.toString();
-                                    Get.parameters["lastName"] = lastName.value;
-                                    Get.parameters['storeId'] = "";
-                                    await Get.to(
-                                      () => const OwnerStoresListScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {
-                                        "firstName": firstName.value,
-                                        "lastName": lastName.value,
-                                      },
-                                    );
-                                  }
-                                },
-                                constraints: const BoxConstraints(),
-                                padding: const EdgeInsets.fromLTRB(
-                                    2.0, 2.0, 10.0, 2.0),
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 1.0, color: AppColors.primary),
-                                  borderRadius: BorderRadius.circular(28.0),
-                                ),
-                                fillColor: AppColors.white,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                        child: Image.asset(
-                                          ImageConstants.storeUnion,
-                                          scale: 2.2,
-                                          color: AppColors.white,
-                                        )),
-                                    width4SizedBox,
-                                    Text(
-                                      StringConstants.storesText,
-                                      style: const TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : RawMaterialButton(
-                                elevation: 0,
-                                onPressed: () async {
-                                  if (roleApp.value == Role.customerRoleText) {
-                                    await Get.to(
-                                      () => const SearchStoreUserScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {
-                                        "firstName": firstName.value,
-                                        "lastName": lastName.value,
-                                      },
-                                    );
-                                  }
-                                },
-                                constraints: const BoxConstraints(),
-                                padding: const EdgeInsets.fromLTRB(
-                                    2.0, 2.0, 10.0, 2.0),
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 1.0, color: AppColors.primary),
-                                  borderRadius: BorderRadius.circular(28.0),
-                                ),
-                                fillColor: AppColors.white,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                        child: Image.asset(
-                                          ImageConstants.storeUnion,
-                                          scale: 2.2,
-                                          color: AppColors.white,
-                                        )),
-                                    width5SizedBox,
-                                    Text(
-                                      StringConstants.storesText,
-                                      style: const TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        RawMaterialButton(
-                            elevation: 0,
-                            onPressed: () async {
-                              hasStoreAccess.value &&
+                      RawMaterialButton(
+                        elevation: 0,
+                        onPressed: () async {
+                          roleApp.value == Role.customerRoleText
+                              ? Get.to(() => const UserInboxScreen(),
+                                  id: pageIdApp.value)
+                              : hasStoreAccess.value &&
                                           permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
                                           element.isStoreOwner == true ||
                                           element.controllers!.any((ele) =>
                                               ele.controllerKey ==
-                                              PermissionKey.manageTransaction
-                                                  .statusName))
-                                  ?await  Get.to(() => const TransactionScreen(),
+                                              PermissionKey
+                                                  .manageMessages.statusName))
+                                  ? await Get.to(() => const OwnerInboxScreen(),
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
                                       AlertStringConstants
                                           .notAuthorizedToStoreText);
-                            },
-                            constraints: const BoxConstraints(),
-                            padding: const EdgeInsets.all(14.0),
-                            shape: const CircleBorder(
-                              side: BorderSide(
-                                  width: 1.0, color: AppColors.primary),
+                        },
+                        constraints: const BoxConstraints(),
+                        padding:
+                            const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1.0, color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(28.0),
+                        ),
+                        fillColor: AppColors.white,
+                        child: Row(
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Image.asset(
+                                  ImageConstants.message,
+                                  scale: 2.5,
+                                  color: AppColors.white,
+                                )),
+                            width5SizedBox,
+                            Text(
+                              StringConstants.inboxText,
+                              style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w500),
                             ),
-                            fillColor: AppColors.white,
-                            child: Image.asset(
-                              ImageConstants.union,
-                              scale: 2.4,
-                            )),
-                        width5SizedBox,
-                        RawMaterialButton(
-                            elevation: 0,
-                            onPressed: () {
-                              Get.parameters["isFromCart"] = "false";
-                              Get.to(() => const AccountScreen(),
-                                      id: pageIdApp.value,
-                                      arguments: {"isFromCart": false})
-                                  ?.then((value) {
-                                homeController.isLoading.value = true;
-                                homeController.apiGetUserDetail();
-                                homeController.getCurrentLocation();
-                              });
-                            },
-                            constraints: const BoxConstraints(),
-                            padding: const EdgeInsets.all(14.0),
-                            shape: const CircleBorder(
-                              side: BorderSide(
-                                  width: 1.0, color: AppColors.primary),
-                            ),
-                            fillColor: AppColors.white,
-                            child: Image.asset(
-                              ImageConstants.user,
-                              scale: 2.5,
-                            )),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            )),
-      ),
+                          ],
+                        ),
+                      ),
+                      width8SizedBox,
+                      Obx(() => hasStoreAccess.value
+                          ? RawMaterialButton(
+                              elevation: 0,
+                              onPressed: () async {
+                                if (roleApp.value == Role.customerRoleText) {
+                                  Get.parameters["firstName"] =
+                                      firstName.value.toString();
+                                  Get.parameters["lastName"] =
+                                      lastName.value.toString();
+
+                                  Get.parameters["isFromHome"] = "true";
+                                  Get.parameters["isFromFav"] = "false";
+                                  Get.parameters["isFromMenu"] = "false";
+                                  await Get.to(
+                                    () => const SearchStoreUserScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {
+                                      "firstName": firstName.value,
+                                      "lastName": lastName.value,
+                                    },
+                                  );
+                                } else {
+                                  Get.parameters["isFromHome"] = 'false';
+                                  Get.parameters["firstName"] =
+                                      firstName.value.toString();
+                                  Get.parameters["lastName"] = lastName.value;
+                                  Get.parameters['storeId'] = "";
+                                  await Get.to(
+                                    () => const OwnerStoresListScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {
+                                      "firstName": firstName.value,
+                                      "lastName": lastName.value,
+                                    },
+                                  );
+                                }
+                              },
+                              constraints: const BoxConstraints(),
+                              padding: const EdgeInsets.fromLTRB(
+                                  2.0, 2.0, 10.0, 2.0),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1.0, color: AppColors.primary),
+                                borderRadius: BorderRadius.circular(28.0),
+                              ),
+                              fillColor: AppColors.white,
+                              child: Row(
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                      child: Image.asset(
+                                        ImageConstants.storeUnion,
+                                        scale: 2.2,
+                                        color: AppColors.white,
+                                      )),
+                                  width4SizedBox,
+                                  Text(
+                                    StringConstants.storesText,
+                                    style: const TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : RawMaterialButton(
+                              elevation: 0,
+                              onPressed: () async {
+                                if (roleApp.value == Role.customerRoleText) {
+                                  await Get.to(
+                                    () => const SearchStoreUserScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {
+                                      "firstName": firstName.value,
+                                      "lastName": lastName.value,
+                                    },
+                                  );
+                                }
+                              },
+                              constraints: const BoxConstraints(),
+                              padding: const EdgeInsets.fromLTRB(
+                                  2.0, 2.0, 10.0, 2.0),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1.0, color: AppColors.primary),
+                                borderRadius: BorderRadius.circular(28.0),
+                              ),
+                              fillColor: AppColors.white,
+                              child: Row(
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                      child: Image.asset(
+                                        ImageConstants.storeUnion,
+                                        scale: 2.2,
+                                        color: AppColors.white,
+                                      )),
+                                  width5SizedBox,
+                                  Text(
+                                    StringConstants.storesText,
+                                    style: const TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      RawMaterialButton(
+                          elevation: 0,
+                          onPressed: () async {
+                            hasStoreAccess.value &&
+                                        permissionStoreList.isEmpty ||
+                                    permissionStoreList.any((element) =>
+                                        element.isStoreOwner == true ||
+                                        element.controllers!.any((ele) =>
+                                            ele.controllerKey ==
+                                            PermissionKey.manageTransaction
+                                                .statusName))
+                                ?await  Get.to(() => const TransactionScreen(),
+                                    id: pageIdApp.value)
+                                : Utility.showAlertMessage(
+                                    AlertStringConstants
+                                        .notAuthorizedToStoreText);
+                          },
+                          constraints: const BoxConstraints(),
+                          padding: const EdgeInsets.all(14.0),
+                          shape: const CircleBorder(
+                            side: BorderSide(
+                                width: 1.0, color: AppColors.primary),
+                          ),
+                          fillColor: AppColors.white,
+                          child: Image.asset(
+                            ImageConstants.union,
+                            scale: 2.4,
+                          )),
+                      width5SizedBox,
+                      RawMaterialButton(
+                          elevation: 0,
+                          onPressed: () {
+                            Get.parameters["isFromCart"] = "false";
+                            Get.to(() => const AccountScreen(),
+                                    id: pageIdApp.value,
+                                    arguments: {"isFromCart": false})
+                                ?.then((value) {
+                              homeController.isLoading.value = true;
+                              homeController.apiGetUserDetail();
+                              homeController.getCurrentLocation();
+                            });
+                          },
+                          constraints: const BoxConstraints(),
+                          padding: const EdgeInsets.all(14.0),
+                          shape: const CircleBorder(
+                            side: BorderSide(
+                                width: 1.0, color: AppColors.primary),
+                          ),
+                          fillColor: AppColors.white,
+                          child: Image.asset(
+                            ImageConstants.user,
+                            scale: 2.5,
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          )),
     );
   }
+
+   Row buildTitle() {
+     return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(() => Text(
+                            "${StringConstants.hiText}${firstName.value} ${lastName.value}",
+                            style: const TextStyle(
+                                fontSize: 18,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600),
+                          )),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: StringConstants.welcomeToText,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' T',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'he',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' G',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'reen',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' M',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'all',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Obx(
+                        () => Visibility(
+                          visible: roleApp.value == Role.customerRoleText &&
+                              homeController.cartCount.value != 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        if(homeController.isLoading.value == false){
+
+                                          Get.parameters["storeId"] =
+                                              homeController.storeIdValue?.value;
+                                          await Get.to(() => const CartScreen(), id: pageIdApp.value)
+                                              ?.then((value) => homeController.apiActiveCartApi());
+                                        }
+                                      },
+                                      child: Stack(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 18.0,
+                                            backgroundColor: Colors.white,
+                                            child: Image.asset(
+                                                ImageConstants.cart,
+                                                height: 14),
+                                          ),
+                                          Positioned(
+                                            right: 0,
+                                            top: 0,
+                                            child: Container(
+                                                padding: const EdgeInsets.all(1.5),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.5),
+                                                ),
+                                                constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
+                                                child: Obx(
+                                                  () => Text(
+                                                    homeController.cartCount.toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 8,
+                                                    ), textAlign: TextAlign.center,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (homeController.isLoading.value == false) {
+                            Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.notifications_active,
+                          color: AppColors.primary,
+                          size: 24.0,
+                        ),
+                      ),
+                      width10SizedBox,
+                      Image.asset(
+                        ImageConstants.homeMall,
+                        scale: 4,
+                      ),
+                    ],
+                  )
+                ]);
+   }
 
   _buildCarouselSlider(
           {RxList<OffersList>? offersCarouselList,
           RxList<ProductsList>? featuredProductList}) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Column(crossAxisAlignment: CrossAxisAlignment.center,
+
+          children: [
         offersCarouselList!.isEmpty
             ? SizedBox(
                 height:
                     offersCarouselList.isEmpty && featuredProductList!.isEmpty
                         ? WidgetConstants.screenHeight * 0.60
                         : WidgetConstants.screenHeight * 0.30,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        ImageConstants.greenmall420,
-                      ),
-                      Text(
-                        StringConstants.welcomeToGreenMallText,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primary),
-                      )
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      ImageConstants.greenmall420,
+                    ),
+                    Text(
+                      StringConstants.welcomeToGreenMallText,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary),
+                    )
+                  ],
                 ),
               )
             : CarouselSlider(
@@ -712,11 +710,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             ))
       ]);
 
-  CarouselSlider _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
-    return CarouselSlider(
+   _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
+    return featuredProductList!.isEmpty
+        ? height5SizedBox
+
+        : CarouselSlider(
       items: featuredProductList
           ?.map(
-            (item) => SizedBox(
+            (item) => Container(
+              // color: AppColors.red,
               width: WidgetConstants.screenWidth * 0.48,
               child: InkWell(
                 highlightColor: Colors.transparent,
@@ -835,7 +837,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         viewportFraction: 0.6,
         enlargeCenterPage: false,
         autoPlay: true,
-        aspectRatio: 1.2,
+        aspectRatio: 1.3,
       ),
     );
   }

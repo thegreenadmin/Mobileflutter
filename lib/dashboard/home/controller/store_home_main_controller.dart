@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -83,11 +82,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
   RxString? role = "".obs;
-  // RxString? firstName = "".obs;
-  // RxString? lastName = "".obs;
   RxDouble cartTotalPrice = 0.0.obs;
 
-  // final scrollController = ScrollController();
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
@@ -111,11 +107,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         if (storeId.value != "" && productId.value != "") {
           apiGetShopProductDetailApi();
         }
-        if (isFromMenu.value) {
+
+      if (isFromMenu.value) {
           selectedIndex.value = 1;
           invokedIndex.value = 2;
           lastSelectedIndex.value = 1;
-          // onIndexChange(1);
         }
         if (isFromFav.value) {
           selectedIndex.value = 2;
@@ -124,7 +120,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           if(storeId.value != "") {
             apiFeatureProductListApi(isFavouriteProducts: true);
           }
-          // onIndexChange(2);
         }
         if (isFromHome.value) {
           selectedIndex.value = 0;
@@ -135,15 +130,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             apiGetStoreOffersApi();
             apiFeatureProductListApi(isFeaturedProduct: true);
           }
-
-
-          // onIndexChange(0);
         }
         if (isFromOptions.value) {
           selectedIndex.value = 3;
           lastSelectedIndex.value = 3;
           showLoading.value = false;
-          // onIndexChange(3);
         }
        apiGetUserWalletBalance();
 
@@ -672,7 +663,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-     
+     try{
     UserProvider()
         .getWithHeadersApi(
             storeDeliveryServiceId.value.toString() == "0" &&
@@ -691,7 +682,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         cartListResponse = CartListResponse.fromJson(value?.body);
         cartItems.value = cartListResponse.data?.cartItems ?? [];
         cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-        //
         if (cartListResponse.data?.cartTotalPrice is int ||
             cartListResponse.data?.cartTotalPrice is String) {
           cartTotalPrice.value = double.parse(
@@ -731,6 +721,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
       }
     });
+     }catch(e){
+       Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
+     }
   }
 
   ///Place Order Api

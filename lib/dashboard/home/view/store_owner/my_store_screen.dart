@@ -80,21 +80,23 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
   }
 
    _buildProductsCarousel() {
-    return ownerStoresController.storeProductList.isEmpty  ?
-    height0SizedBox
-        : CarouselSlider(
-        items: ownerStoresController.storeProductList
-          .map(
-            (item) =>   _buildStoreProductCard(item),
-      ).toList(),
-      carouselController: _controllerProducts,
-      options: CarouselOptions(
-        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        viewportFraction: 0.5,
-        enlargeCenterPage: false,
-        autoPlay: true,
-        aspectRatio: 1.4,
+    return  Obx(
+          () => ownerStoresController.storeProductList.isEmpty  ?
+      height0SizedBox
+          : CarouselSlider(
+          items: ownerStoresController.storeProductList
+            .map(
+              (item) =>   _buildStoreProductCard(item),
+        ).toList(),
+        carouselController: _controllerProducts,
+        options: CarouselOptions(
+          enlargeStrategy: CenterPageEnlargeStrategy.scale,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          viewportFraction: 0.5,
+          enlargeCenterPage: false,
+          autoPlay: true,
+          aspectRatio: 1.4,
+        ),
       ),
     );
   }
@@ -359,52 +361,57 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
     );
   }
 
-  Column _buildNoOfferMethod() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Center(
-          child: Image.asset(
-            ImageConstants.nodata,
-            scale: 8,
-            color: AppColors.primary,
+   _buildNoOfferMethod() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+          Center(
+            child: Image.asset(
+              ImageConstants.nodata,
+              scale: 8,
+              color: AppColors.primary,
+            ),
           ),
-        ),
-        height4SizedBox,
-        Center(
-          child: Text(
-            StringConstants.noOffersFoundText,
-            style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+          height4SizedBox,
+          Center(
+            child: Text(
+              StringConstants.noOffersFoundText,
+              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+            ),
           ),
-        ),
-        height30SizedBox,
-        CustomButton(
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppColors.primary, AppColors.primary],
+          height30SizedBox,
+          CustomButton(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [AppColors.primary, AppColors.primary],
+            ),
+            onTap: () {
+              Get.parameters["isFrom"] = StringConstants.addOfferText;
+              Get.to(() => const AddOfferScreen(),
+                  id: pageIdApp.value,
+                  arguments: {
+                    "isFrom": StringConstants.addOfferText,
+                  })?.then((v) {
+                ownerStoresController.getApiData();
+                ownerStoresController.getCurrentLocation();
+              });
+            },
+            height: 50,
+            width: WidgetConstants.screenWidth * 0.3,
+            text: StringConstants.addOfferText,
+            borderRadius: 12,
+            fontWeight: FontWeight.w500,
+            iconL: false,
+            fontSize: 16,
           ),
-          onTap: () {
-            Get.parameters["isFrom"] = StringConstants.addOfferText;
-            Get.to(() => const AddOfferScreen(),
-                id: pageIdApp.value,
-                arguments: {
-                  "isFrom": StringConstants.addOfferText,
-                })?.then((v) {
-              ownerStoresController.getApiData();
-              ownerStoresController.getCurrentLocation();
-            });
-          },
-          height: 50,
-          width: WidgetConstants.screenWidth * 0.3,
-          text: StringConstants.addOfferText,
-          borderRadius: 12,
-          fontWeight: FontWeight.w500,
-          iconL: false,
-          fontSize: 16,
-        ),
-      ],
+
+        ],
+      ),
     );
   }
 }

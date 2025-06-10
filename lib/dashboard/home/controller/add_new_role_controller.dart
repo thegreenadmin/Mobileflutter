@@ -59,12 +59,7 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-    firstName?.value = await SharedPreferenceStorage.getData(
-            strings.StringConstants.firstNameText) ??
-        "";
-    lastName?.value = await SharedPreferenceStorage.getData(
-            strings.StringConstants.lastNameText) ??
-        "";
+
 
     var roleVal = await SharedPreferenceStorage.getData(strings.Role.role);
     role?.value = roleVal;

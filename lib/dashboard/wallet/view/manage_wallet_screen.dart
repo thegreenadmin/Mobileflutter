@@ -455,7 +455,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                             InkWell(
                               onTap: () {
                                 Get.to(
-                                  () => const AddCardScreen(),
+                                  () =>  AddCardScreen(selectedStore : walletController.ownerSelectedStore.value ?? ""),
                                   id: pageIdApp.value,
                                 )!
                                     .then((value) => walletController.apiGetCardList());
@@ -487,18 +487,18 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 ? height0SizedBox
                                 : InkWell(
                                     onTap: () {
-                                      Get.to(
-                                        () => WebviewPageScreen(
+                                      if(walletController.accountLink.value !=""){ Get.to(
+                                            () => WebviewPageScreen(
                                             isFrom: "connectAccount",
                                             url: Uri.parse(
-                                                    walletController.accountLink.value)
+                                                walletController.accountLink.value)
                                                 .toString()),
                                         id: pageIdApp.value,
                                       )!
                                           .then((value) {
                                         walletController.apiGetAccountDetails();
                                         walletController.apiGetBankAccountList();
-                                      });
+                                      });}
                                     },
                                     child: Row(
                                       children: [
@@ -536,9 +536,17 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                           : InkWell(
                               onTap: () {
                                 Get.to(
-                                  () => const PayOutScreen(),
+                                  () => PayOutScreen(selectedStore : walletController.ownerSelectedStore.value ?? ""),
                                   id: pageIdApp.value,
                                 )?.then((value) {
+                                  print("Returned string from PayOutScreen screen: $value");
+
+                                  if (value != null ) {
+                                    print("Returned string from PayOutScreen screen: $value");
+
+                                    // You can store it or use it here
+                                    walletController.ownerSelectedStore.value = value.toString();
+                                  }
                                   walletController.apiGetBankAccountList();
                                   walletController.apiGetAccountDetails();
                                   walletController.apiGetOwnerWalletBalance();
@@ -791,6 +799,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
 
                                               InkWell(
                                                   onTap: () async {
+
+
                                                     Get.to(
                                                       () => WebviewPageScreen(
                                                           isFrom: "connectAccount",

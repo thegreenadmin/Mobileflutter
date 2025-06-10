@@ -218,7 +218,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     )
               : ListView.separated(
                   separatorBuilder: (BuildContext context, int index) {
-                    return width40SizedBox;
+                    return height8SizedBox;
                   },
                   padding: EdgeInsets.only(
                       bottom: WidgetConstants.screenHeight * 0.2),

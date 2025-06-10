@@ -150,25 +150,22 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
-        try {
+
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 0;
             Get.put(HomeController()).onInit();
           });
-        } catch (e) {
-                    }
+
       } else if (selectedIndex.value == 1) {
         Get.parameters["isController"] = "yes";
-        try {
+
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 1;
             Get.put(WalletController()).onInit();
           });
-        } catch (e) {
-                    }
+
       } else if (selectedIndex.value == 2) {
         Get.parameters["isController"] = "yes";
-        try {
           if (roleApp.value == Role.customerRoleText) {
             pageIdApp.value = 4;
           } else {
@@ -188,27 +185,23 @@ class BottomNavController extends GetxController with GlobalVarMixin{
               pageIdApp.value = 4;
             }
           });
-        } catch (e) {
-                    }
+
       } else if (selectedIndex.value == 3) {
         Get.parameters["isController"] = "yes";
-        try {
           Future.delayed(Duration.zero, () async {
             pageIdApp.value = 5;
             OffersController offersController = Get.put(OffersController());
             offersController.onInit();
           });
-        } catch (e) {
-                    }
+
       } else if (selectedIndex.value == 4) {
         Get.parameters["isController"] = "yes";
-        try {
+
           Future.delayed(Duration.zero, () async {
             pageIdApp.value = 6;
             Get.put(MoreController()).onInit();
           });
-        } catch (e) {
-                    }
+
       }
     }
   }

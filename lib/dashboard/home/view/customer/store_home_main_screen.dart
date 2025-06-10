@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -65,7 +67,9 @@ var argument = Get.arguments;
           storeHomeMainController.apiGetShopProductDetailApi();
         }
       } else if (storeHomeMainController.isFromHome.value) {
+
         storeHomeMainController.selectedIndex.value = 0;
+        log(storeHomeMainController.selectedIndex.value.toString());
         storeHomeMainController.apiGetStoreOffersApi();
         storeHomeMainController.apiFeatureProductListApi(
             isFeaturedProduct: true);
@@ -270,8 +274,8 @@ var argument = Get.arguments;
                                 onOpened: () async {
                                   storeHomeMainController.selectedIndex.value =
                                       3;
-                                  await storeHomeMainController
-                                      .apiGetPreviousOrders();
+                                  // await storeHomeMainController
+                                  //     .apiGetPreviousOrders();
                                 },
                                 offset: const Offset(0, 25),
                                 shape: const TooltipShape(),
@@ -323,8 +327,8 @@ var argument = Get.arguments;
 
   List<PopupMenuEntry<String>>? createOptionsPopUpList(ctx) {
     if (storeHomeMainController
-        .storeDetailsResponse.value.data!.store!.storePages!
-        .any((element) =>
+        .storeDetailsResponse.value.data?.store != null && storeHomeMainController
+        .storeDetailsResponse.value.data!.store!.storePages!.any((element) =>
             element.storePageType == "privacy" &&
             element.storePageContent?.dynamicUrl != null &&
             storeHomeMainController.listIndex.value < 4)) {
@@ -332,6 +336,7 @@ var argument = Get.arguments;
           storeHomeMainController.listIndex.value + 1;
     }
     if (storeHomeMainController
+        .storeDetailsResponse.value.data?.store != null && storeHomeMainController
         .storeDetailsResponse.value.data!.store!.storePages!
         .any((element) =>
             element.storePageType == "terms" &&
@@ -469,13 +474,13 @@ var argument = Get.arguments;
                     case 1:
                     case 3:
                       return const Expanded(child: AddToOrderScreen());
-                    case 2:
+                   /* case 2:
                       return Expanded(
                         child: OfferProductScreen(
                           isFromStore: true,
                           offerObj: storeHomeMainController.offerObj.value,
                         ),
-                      );
+                      );*/
                     default:
                       return const Expanded(child: StoreHomeScreen());
                   }

@@ -777,8 +777,9 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                                 colors: [AppColors.primary, AppColors.primary],
                               ),
                               onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 if (addNewWorkerController.isLoading.value = true) {
-                                  addNewWorkerController.isLoading.value = true;
+
                                   addNewWorkerController.validateAndSubmit(
                                       isEdit: true);
                                 }

@@ -28,12 +28,12 @@ class UserTransactionDetailController extends GetxController with GlobalVarMixin
   }
 
   getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
+    // firstName?.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
+    //         "";
+    // lastName?.value =
+    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
+    //         "";
     role?.value = roleApp.value;
   }
 
