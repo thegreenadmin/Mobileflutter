@@ -5,7 +5,9 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/add_edit_role.dart'
 import 'package:thegreenmall/utils/utils.dart';
 
 class RoleAndPermissionScreen extends StatefulWidget {
-  const RoleAndPermissionScreen({super.key});
+  final String? storeId;
+  final String? storeName;
+  const RoleAndPermissionScreen({super.key, this.storeId, this.storeName});
 
   @override
   State<RoleAndPermissionScreen> createState() =>
@@ -14,6 +16,15 @@ class RoleAndPermissionScreen extends StatefulWidget {
 
 class _RoleAndPermissionScreenState extends State<RoleAndPermissionScreen> with GlobalVarMixin{
   AddNewRoleController addNewRoleController = Get.put(AddNewRoleController());
+
+
+
+  @override
+  void initState() {
+    addNewRoleController.storeId.value = widget.storeId??"";
+    addNewRoleController.storeName.value = widget.storeName??"";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -539,11 +539,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                   () => PayOutScreen(selectedStore : walletController.ownerSelectedStore.value ?? ""),
                                   id: pageIdApp.value,
                                 )?.then((value) {
-                                  print("Returned string from PayOutScreen screen: $value");
-
                                   if (value != null ) {
-                                    print("Returned string from PayOutScreen screen: $value");
-
                                     // You can store it or use it here
                                     walletController.ownerSelectedStore.value = value.toString();
                                   }

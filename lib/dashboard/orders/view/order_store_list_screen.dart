@@ -156,10 +156,10 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               ordersController.storeId.value =
                                   ordersController.storeList[index].storeId ??
                                       "";
-                              Get.parameters["storeId"] =
-                                  ordersController.storeList[index].storeId ??
-                                      "";
-                              Get.parameters["orderId"] = "";
+                              // Get.parameters["storeId"] =
+                              //     ordersController.storeList[index].storeId ??
+                              //         "";
+                              // Get.parameters["orderId"] = "";
 
                               hasStoreAccess.value && permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
@@ -176,7 +176,12 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                                                   ele.controllerKey ==
                                                   PermissionKey
                                                       .manageOrders.statusName))
-                                  ? Get.to(() => const OrdersHomeMainScreen(),
+                                  ? Get.to(() =>  OrdersHomeMainScreen(
+                                storeId: ordersController.storeList[index].storeId ??
+                                    "",
+                                orderId:"",
+                                isHome: false,
+                              ),
                                       id: pageIdApp.value)
                                   : Utility.showAlertMessage(
                                       AlertStringConstants.notAuthorizedToStoreText);

@@ -7,7 +7,18 @@ import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.d
 import 'package:thegreenmall/utils/utils.dart';
 
 class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({super.key});
+  final bool? isFromHome;
+  final String? storeId;
+  final String? productId;
+  final String? categoryName;
+
+  const EditProductScreen({
+    Key? key,
+     this.isFromHome =false,
+    this.storeId,
+    this.productId,
+    this.categoryName,
+  }) : super(key: key);
 
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
@@ -16,6 +27,19 @@ class EditProductScreen extends StatefulWidget {
 class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMixin{
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
+
+
+  @override
+  void initState() {
+      manageStoreController.storeId.value = widget.storeId ??"";
+      manageStoreController.productId.value =  widget.productId ??"";
+      manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
+      manageStoreController.storeLocation.value = Get.parameters["storeLocation"] ?? "";
+      manageStoreController.categoryName.value = widget.categoryName ??"";
+      // manageStoreController.categoryId.value =widget.categoryName;
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -724,6 +748,32 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                       hintText: StringConstants.enterValueText,
                                       controller: manageStoreController
                                           .discountOrOfferTextController,
+                                      validator: (value) {
+                                        final v = value?.trim();
+                                        if (v == null || v.isEmpty) {
+                                          return AlertStringConstants.pleaseEnterValueText;
+                                        }
+
+                                        final parsed = double.tryParse(v);
+                                        if (parsed == null || parsed == 0) {
+                                          return AlertStringConstants.invalidAmountText;
+                                        }
+
+                                        final isPercentage = manageStoreController.discountType.value.toLowerCase() == "percentage";
+                                        if (isPercentage && parsed >= 100) {
+                                          return "Percentage value must be less than 100%";
+                                        }
+
+
+                                        // Rule 2: For amount, it must not exceed any selected product's price
+                                        final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text.toString()) ?? 0;
+                                        if (parsed >= productPrice) {
+                                          return "Discount amount must be less than product price";
+                                        }
+
+
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ],

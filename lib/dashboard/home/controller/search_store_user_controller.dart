@@ -24,7 +24,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   TextEditingController storeOpeningTextController = TextEditingController();
   TextEditingController openingTimeTextController = TextEditingController();
   TextEditingController closingTimeTextController = TextEditingController();
-  TextEditingController searchController = TextEditingController();
+  // TextEditingController searchController = TextEditingController();
   TextEditingController deliveryServicesController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
   late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
@@ -105,18 +105,14 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         bool canLoad = !isClicked.value;
         int maxPage = (totalCount.value / 5).ceil();
 
-        log("page.value scroll position: ${storeAddresses.length} ${totalCount.value} ${isLoading.value} ${page.value}");
-        log("📦 Scroll Check: Loaded=${storeAddresses.length}, Total=${totalCount.value}, Page=${page.value}");
 
         if (hasMore && canLoad) {
           if (page.value >= maxPage) {
-            log("🚫 Max page reached. No more data to fetch.");
+
             return;
           }
           isClicked.value = true; // PREVENT DOUBLE API CALLS!
           page.value++;
-          log("page.value scroll position: ${page.value}");
-
           apiGetNearByStores();
         }
       }
@@ -163,6 +159,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   @override
   void onInit() {
     super.onInit();
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
     setupNearByStoresScrollController();
     setupPreviousStoresScrollController();
     setupFavoriteStoresScrollController();
@@ -207,18 +204,15 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   void updateCurrentLocation() async {
     // secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
     // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-
-    print("updateCurrentLocation-----------------");
-
     kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
-    print("updateCurrentLocation-----------------");
+
+
 
     Position currentLocation = await Utility.fetchCurrentLocation();
-    print("updateCurrentLocation-----------------");
-    print(currentLocation.latitude);
-    print(currentLocation.longitude);
-    print("updateCurrentLocation-----------------");
 
+    lng.value = currentLocation.longitude;
+    lat.value = currentLocation.latitude;
+    print("updateCurrentLocation-----------------");
     updateMap(currentLocation.latitude, currentLocation.longitude);
   }
 
@@ -268,8 +262,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   getPage() async {
     firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
     lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    searchController.clear();
-
+    // if (searchController.hasListeners) {
+    //   searchController.clear(); // or any safe usage
+    // }
 
   }
 
@@ -929,6 +924,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     nearByStoresScrollController.dispose();
     previousStoresScrollController.dispose();
     favouriteStoresScrollController.dispose();
+    // searchController.dispose();
     super.onClose();
   }
 }

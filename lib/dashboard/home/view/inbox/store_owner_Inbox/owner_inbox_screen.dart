@@ -334,51 +334,43 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                                     RawMaterialButton(
                                                       elevation: 0,
                                                       onPressed: () {
-                                                        Get.parameters["storeName"] =
-                                                            ownerInboxController
-                                                                    .inboxList[index]
-                                                                    .store!
-                                                                    .storeName ??
-                                                                "";
-                                                        Get.parameters["storeId"] =
-                                                            ownerInboxController
-                                                                    .inboxList[index]
-                                                                    .store!
-                                                                    .storeId ??
-                                                                "";
-                                                        Get.parameters["messageHeadId"] =
-                                                            ownerInboxController
-                                                                    .inboxList[index]
-                                                                    .messageHeadId ??
-                                                                "";
-                                                        Get.parameters["customerName"] =
-                                                            " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}";
+                                                        // Get.parameters["storeName"] =
+                                                        //     ownerInboxController
+                                                        //             .inboxList[index]
+                                                        //             .store!
+                                                        //             .storeName ??
+                                                        //         "";
+                                                        // Get.parameters["storeId"] =
+                                                        //     ownerInboxController
+                                                        //             .inboxList[index]
+                                                        //             .store!
+                                                        //             .storeId ??
+                                                        //         "";
+                                                        // Get.parameters["messageHeadId"] =
+                                                        //     ownerInboxController
+                                                        //             .inboxList[index]
+                                                        //             .messageHeadId ??
+                                                        //         "";
+                                                        // Get.parameters["customerName"] =
+                                                        //     " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}";
                                                         Get.to(
                                                                 () =>
-                                                                    const OwnerInboxDetailScreen(),
-                                                                id: pageIdApp.value,
-                                                                arguments: {
-                                                              "storeName":
-                                                                  ownerInboxController
-                                                                          .inboxList[
-                                                                              index]
-                                                                          .store!
-                                                                          .storeName ??
-                                                                      "",
-                                                              "storeId":
-                                                                  ownerInboxController
-                                                                          .inboxList[
-                                                                              index]
+                                                                     OwnerInboxDetailScreen(
+                                                                      storeId: ownerInboxController
+                                                                          .inboxList[index]
                                                                           .store!
                                                                           .storeId ??
-                                                                      "",
-                                                              "messageHeadId":
-                                                                  ownerInboxController
-                                                                          .inboxList[
-                                                                              index]
-                                                                          .messageHeadId ??
-                                                                      ""
-                                                            })!
+                                                                          "",storeName: ownerInboxController
+                                                                         .inboxList[index]
+                                                                         .store!
+                                                                         .storeName ??
+                                                                         "",customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
+                                                                       messageHeadId: ownerInboxController
+                                                                         .inboxList[index]
+                                                                         .messageHeadId ??
+                                                                         "",
+                                                                    ),
+                                                                id: pageIdApp.value,)!
                                                             .then((value) {
                                                           ownerInboxController
                                                               .apiGetInboxList(

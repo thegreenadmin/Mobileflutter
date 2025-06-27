@@ -8,7 +8,9 @@ import '../../controller/add_new_worker_controller.dart';
 import '../../model/categories_model.dart';
 
 class WorkerListScreen extends StatefulWidget {
-  const WorkerListScreen({super.key});
+  final String? storeId;
+  final String? storeName;
+  const WorkerListScreen({super.key, this.storeId, this.storeName});
 
   @override
   State<WorkerListScreen> createState() => _WorkerListScreenState();
@@ -21,8 +23,8 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
   @override
   void initState() {
     super.initState();
-    addNewWorkerController.storeId.value = Get.parameters["storeId"] ?? "";
-    addNewWorkerController.storeName.value = Get.parameters["storeName"] ?? "";
+    addNewWorkerController.storeId.value =  widget.storeId??"";
+    addNewWorkerController.storeName.value =  widget.storeName??"";
     addNewWorkerController.apiGetUserStoreList();
     addNewWorkerController.apiGetWorkerList();
     addNewWorkerController.apiGetRoleList();

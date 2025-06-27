@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/cart_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
@@ -15,6 +16,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import '../../offers/controller/offers_controller.dart';
 
 class StoreHomeMainController extends GetxController  with GlobalVarMixin{
+
   Rx<StoreDetailsResponse> storeDetailsResponse = StoreDetailsResponse().obs;
   late StoreOffersListResponse offersListResponse = StoreOffersListResponse();
   RxList<Offer> offersList = <Offer>[].obs;
@@ -93,14 +95,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
-      productId.value = Get.parameters["productId"] ?? "";
-      categoryName.value = Get.parameters["categoryName"] ?? "";
-      categoryId.value = Get.parameters["categoryId"] ?? "";
-      isFromHome.value = Get.parameters["isFromHome"] == "true";
-      isFromFav.value = Get.parameters["isFromFav"] == "true";
-      isFromMenu.value = Get.parameters["isFromMenu"] == "true";
+
+      // storeId.value = Get.parameters["storeId"] ?? "";
+      // invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
+      // productId.value = Get.parameters["productId"] ?? "";
+      // categoryName.value = Get.parameters["categoryName"] ?? "";
+      // categoryId.value = Get.parameters["categoryId"] ?? "";
+      // isFromHome.value = Get.parameters["isFromHome"] == "true";
+      // isFromFav.value = Get.parameters["isFromFav"] == "true";
+      // isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
         getCurrentLocation();
         apiGetUserDetailsApi();
@@ -164,9 +167,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
        apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
-      if (Get.parameters["categoryId"] != "") {
-          apiFeatureProductListApi(
-            categoryId: Get.parameters["categoryId"] ?? "0");
+      if (categoryId.value.isNotEmpty) {
+        apiFeatureProductListApi(categoryId: categoryId.value);
       }
     } else if (i == 2) {
        apiFeatureProductListApi(isFavouriteProducts: true);
@@ -545,7 +547,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Api Contact store
   Future apiContactStore() async {
     isLoading.value = true;
-     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -563,11 +564,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           value?.body["status"] == ApiConstants.statusCode200) {
         Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
-        Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
+        Get.parameters["storeId"] = storeId.value ?? "";
+        // Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =
             value?.body["data"]["message_head_id"] ?? "";
         // SharedPreferenceStorage.setData("context", ctx);
-        await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
+        await Get.to(() =>  UserInboxDetailScreen(
+          storeId: storeId.value ??
+              "",storeName: value?.body["data"]["store_name"] ??
+            "",
+          // customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
+          messageHeadId: value?.body["data"]["message_head_id"] ??
+              "",
+
+        ), id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
@@ -770,21 +780,22 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         itemsCount.value = 1;
         orderStatus.value = value?.body["data"]["order_id"];
         isPlaceOrder.value = true;
-                 Get.parameters["storeId"] = storeId.value.toString();
-        Get.parameters["orderStatus"] = value?.body["data"]["order_id"] ?? "";
-        Get.parameters["isFromTransaction"] = "false";
-        Get.parameters["isFromNotification"] = "false";
-        Get.parameters["isHome"] = "true";
+                 // Get.parameters["storeId"] = storeId.value.toString();
+        // Get.parameters["orderStatus"] = value?.body["data"]["order_id"] ?? "";
+        // Get.parameters["isFromTransaction"] = "false";
+        // Get.parameters["isFromNotification"] = "false";
+        // Get.parameters["isHome"] = "true";
         isInsufficientBalance!.value = false;
 
-        Get.to(() => const OrderConfirmationScreen(),
+        Get.to(() =>  OrderConfirmationScreen(
+          storeId: storeId.value.toString(),
+          orderStatus: value?.body["data"]["order_id"] ?? "",
+          isFromNotification: false,
+          isFromTransaction: false,
+            isHome:true
+        ),
             id: pageIdApp.value,
-            arguments: {
-              "storeId": storeId.value.toString(),
-              "orderStatus": orderStatus.value,
-              "isFromTransaction": false,
-              "isFromNotification": false
-            });
+           );
         selectedDeliveryService.value= "0";
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -989,16 +1000,22 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 InkWell(
                   onTap: () async {
                     Get.back();
-                    Get.parameters["storeId"] = storeId.value;
+                    // Get.parameters["storeId"] = storeId.value;
                     selectedIndex.value = 1;
                     invokedIndex.value = 0;
                     lastSelectedIndex.value = 1;
                     await apiGetStoreCategoriesApi();
-                    if (Get.parameters["categoryId"] != "") {
                       apiFeatureProductListApi(
-                          categoryId: Get.parameters["categoryId"] ?? "0");
-                    }
-                    await Get.to(() => const StoreHomeMainScreen(),
+                          categoryId: categoryId.value);
+                    await Get.to(() =>  StoreHomeMainScreen(
+                        args:  StoreHomeMainArgs(
+                          storeId: storeId.value,
+                          // productId: homeController.featuredUserProductList[0].productId ?? "",
+                          invokedIndex: 0,
+                          isFromMenu: isFromMenu.value,isFromFav: isFromFav.value,
+                          isFromHome: isFromHome.value, isFromOptions: isFromOptions.value,
+                        )
+                    ),
                         id: pageIdApp.value);
                   },
                   child: Container(
@@ -1025,7 +1042,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                   onTap: () async {
                     Get.back();
                     apiGetUserWalletBalance();
-                    Get.to(() => const CartScreen(),
+                    Get.to(() => const CartScreen(isFromAddProduct:true),
                         id: pageIdApp.value)?.then((value) =>  onInit());
                   },
                   child: Container(

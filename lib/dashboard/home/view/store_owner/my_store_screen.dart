@@ -128,16 +128,16 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
       children: <Widget>[
         InkWell(
           onTap: () {
-            Get.parameters["isFromHome"] = "true";
-            Get.parameters["storeId"] =
-                storeProduct.storeId;
-            Get.parameters["productId"] =
-                storeProduct.productId;
-            Get.parameters["categoryName"] = storeProduct.productCategories
-                    ?.first
-                    .category
-                    ?.categoryName ??
-                "";
+            // Get.parameters["isFromHome"] = "true";
+            // Get.parameters["storeId"] =
+            //     storeProduct.storeId;
+            // Get.parameters["productId"] =
+            //     storeProduct.productId;
+            // Get.parameters["categoryName"] = storeProduct.productCategories
+            //         ?.first
+            //         .category
+            //         ?.categoryName ??
+            //     "";
             hasStoreAccess.value && permissionStoreList.isEmpty ||
                     permissionStoreList.any((element) =>
                         element.storeId ==
@@ -148,13 +148,23 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                             element.controllers!.any((ele) =>
                                 ele.controllerKey ==
                                 PermissionKey.editProduct.statusName))
-                ? Get.to(() => const EditProductScreen(),
+                ? Get.to(() =>  EditProductScreen(
+              isFromHome:true,
+              storeId: storeProduct.storeId,
+              productId: storeProduct.productId,
+              categoryName: storeProduct.productCategories
+                  ?.first
+                  .category
+                  ?.categoryName ??
+                  "",
+            ),
                         id: pageIdApp.value,
-                        arguments: {
+                        /*arguments: {
                         "isFromHome": true,
                         'storeId':
                         storeProduct.storeId
-                      })!
+                      }*/
+            )!
                     .then((value) =>
                         ownerStoresController.apiGetFeaturedProducts())
                 : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
@@ -392,11 +402,9 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
             ),
             onTap: () {
               Get.parameters["isFrom"] = StringConstants.addOfferText;
-              Get.to(() => const AddOfferScreen(),
+              Get.to(() =>  AddOfferScreen(isFrom:StringConstants.addOfferText),
                   id: pageIdApp.value,
-                  arguments: {
-                    "isFrom": StringConstants.addOfferText,
-                  })?.then((v) {
+                 )?.then((v) {
                 ownerStoresController.getApiData();
                 ownerStoresController.getCurrentLocation();
               });

@@ -15,8 +15,11 @@ import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import 'components/store_home_main_args.dart';
+
 class StoreHomeMainScreen extends StatefulWidget {
-  const StoreHomeMainScreen({super.key});
+  final StoreHomeMainArgs args;
+  const StoreHomeMainScreen({super.key, required this.args});
 
   @override
   State<StoreHomeMainScreen> createState() => _StoreHomeMainScreenState();
@@ -25,7 +28,6 @@ class StoreHomeMainScreen extends StatefulWidget {
 class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   final StoreHomeMainController storeHomeMainController =
       Get.put(StoreHomeMainController());
-var argument = Get.arguments;
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -36,19 +38,27 @@ var argument = Get.arguments;
 
   @override
   void initState() {
-    super.initState();
+     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      storeHomeMainController.invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
-      storeHomeMainController.productId.value =
-          Get.parameters["productId"] ?? "";
-      storeHomeMainController.isFromHome.value =
-          Get.parameters["isFromHome"] == "true";
-      storeHomeMainController.isFromFav.value =
-          Get.parameters["isFromFav"] == "true";
-      storeHomeMainController.isFromMenu.value =
-          Get.parameters["isFromMenu"] == "true";
-      storeHomeMainController.apiGetUserDetailsApi();
-      storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+      // storeHomeMainController.invokedIndex.value = int.parse(Get.parameters["invokedIndex"]??"0");
+      // storeHomeMainController.productId.value =
+      //     Get.parameters["productId"] ?? "";
+      // storeHomeMainController.isFromHome.value =
+      //     Get.parameters["isFromHome"] == "true";
+      // storeHomeMainController.isFromFav.value =
+      //     Get.parameters["isFromFav"] == "true";
+      // storeHomeMainController.isFromMenu.value =
+      //     Get.parameters["isFromMenu"] == "true";
+      // storeHomeMainController.apiGetUserDetailsApi();
+      // storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+      storeHomeMainController.storeId.value = widget.args.storeId ??"";
+      storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
+      storeHomeMainController.productId.value = widget.args.productId ??"";
+      storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
+      storeHomeMainController.categoryId.value = widget.args.categoryId??"";
+      storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
+      storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
+      storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
 
       storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
@@ -246,6 +256,15 @@ var argument = Get.arguments;
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
+                    storeHomeMainController.storeId.value = widget.args.storeId ??"";
+                    storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
+                    storeHomeMainController.productId.value = widget.args.productId ??"";
+                    storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
+                    storeHomeMainController.categoryId.value = widget.args.categoryId??"";
+                    storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
+                    storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
+                    storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+
                     storeHomeMainController.onIndexChange(i);
                   },
                   child: Row(
@@ -387,6 +406,15 @@ var argument = Get.arguments;
             ),
           ),
           onTap: () {
+            storeHomeMainController.storeId.value = widget.args.storeId ??"";
+            storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
+            storeHomeMainController.productId.value = widget.args.productId ??"";
+            storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
+            storeHomeMainController.categoryId.value = widget.args.categoryId??"";
+            storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
+            storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
+            storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+
             contactAlertDialog(ctx);
           },
         );

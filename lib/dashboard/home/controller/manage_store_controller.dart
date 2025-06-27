@@ -116,7 +116,6 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-
     role?.value = roleApp.value;
     isFeaturedTypeSelected.value = false;
     if (Get.parameters["storeId"] != "") {

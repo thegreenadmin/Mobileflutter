@@ -6,7 +6,10 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'component/order_status_enum.dart';
 
 class MarkOrderStatusScreen extends StatefulWidget {
-  const MarkOrderStatusScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  final bool? isFromNotification;
+  const MarkOrderStatusScreen({super.key, this.orderId, this.storeId, this.isFromNotification});
 
   @override
   State<MarkOrderStatusScreen> createState() => _MarkOrderStatusScreenState();
@@ -16,6 +19,13 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
 
+  @override
+  void initState() {
+    ordersHomeMainController.storeId?.value = widget.storeId??"";
+    ordersHomeMainController.orderId?.value = widget.orderId??"";
+    ordersHomeMainController.isFromNotification?.value = widget.isFromNotification??false;
+    super.initState();
+  }
 
 
   @override

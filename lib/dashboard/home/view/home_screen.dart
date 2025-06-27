@@ -20,6 +20,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'customer/components/store_home_main_args.dart';
 import 'store_owner/manage_store_main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -74,11 +75,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       children: [
         RefreshIndicator(
           onRefresh: _pullRefresh,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: ListView(/*crossAxisAlignment: CrossAxisAlignment.start,*/ children: [
               _buildAppbar(), 
               Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              child: SingleChildScrollView(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Obx(() => roleApp.value == Role.customerRoleText
@@ -104,7 +104,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                   )
                 ],
               ),
-            ),
               ),
           ]),
 
@@ -142,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     return Container(
       color: AppColors.primaryLight,
       child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 4, top: 50,bottom: 10),
+          padding: const EdgeInsets.only(left: 8.0, right: 4, top: 20,bottom: 10),
           child: Column(
             children: [
               buildTitle(),
@@ -210,35 +209,36 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               elevation: 0,
                               onPressed: () async {
                                 if (roleApp.value == Role.customerRoleText) {
-                                  Get.parameters["firstName"] =
-                                      firstName.value.toString();
-                                  Get.parameters["lastName"] =
-                                      lastName.value.toString();
-
-                                  Get.parameters["isFromHome"] = "true";
-                                  Get.parameters["isFromFav"] = "false";
-                                  Get.parameters["isFromMenu"] = "false";
+                                  // Get.parameters["firstName"] =
+                                  //     firstName.value.toString();
+                                  // Get.parameters["lastName"] =
+                                  //     lastName.value.toString();
+                                  //
+                                  // Get.parameters["isFromHome"] = "true";
+                                  // Get.parameters["isFromFav"] = "false";
+                                  // Get.parameters["isFromMenu"] = "false";
                                   await Get.to(
-                                    () => const SearchStoreUserScreen(),
+                                    () =>  SearchStoreUserScreen(
+                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                                    ),
                                     id: pageIdApp.value,
-                                    arguments: {
-                                      "firstName": firstName.value,
-                                      "lastName": lastName.value,
-                                    },
+
+                                    // arguments: {
+                                      // },
                                   );
                                 } else {
-                                  Get.parameters["isFromHome"] = 'false';
-                                  Get.parameters["firstName"] =
-                                      firstName.value.toString();
-                                  Get.parameters["lastName"] = lastName.value;
-                                  Get.parameters['storeId'] = "";
+                                  // Get.parameters["isFromHome"] = 'false';
+                                  // Get.parameters["firstName"] =
+                                  //     firstName.value.toString();
+                                  // Get.parameters["lastName"] = lastName.value;
+                                  // Get.parameters['storeId'] = "";
                                   await Get.to(
-                                    () => const OwnerStoresListScreen(),
+                                    () => OwnerStoresListScreen(
+                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                                    ),
                                     id: pageIdApp.value,
-                                    arguments: {
-                                      "firstName": firstName.value,
-                                      "lastName": lastName.value,
-                                    },
                                   );
                                 }
                               },
@@ -280,12 +280,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               onPressed: () async {
                                 if (roleApp.value == Role.customerRoleText) {
                                   await Get.to(
-                                    () => const SearchStoreUserScreen(),
+                                    () =>  SearchStoreUserScreen(
+                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+
+                                    ),
                                     id: pageIdApp.value,
-                                    arguments: {
-                                      "firstName": firstName.value,
-                                      "lastName": lastName.value,
-                                    },
+                                    // arguments: {
+                                    //   "firstName": firstName.value,
+                                    //   "lastName": lastName.value,
+                                    // },
                                   );
                                 }
                               },
@@ -358,10 +362,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       RawMaterialButton(
                           elevation: 0,
                           onPressed: () {
-                            Get.parameters["isFromCart"] = "false";
+                            // Get.parameters["isFromCart"] = "false";
                             Get.to(() => const AccountScreen(),
-                                    id: pageIdApp.value,
-                                    arguments: {"isFromCart": false})
+                                    id: pageIdApp.value,)
                                 ?.then((value) {
                               homeController.isLoading.value = true;
                               homeController.apiGetUserDetail();
@@ -485,9 +488,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                       onTap: () async {
                                         if(homeController.isLoading.value == false){
 
-                                          Get.parameters["storeId"] =
-                                              homeController.storeIdValue?.value;
-                                          await Get.to(() => const CartScreen(), id: pageIdApp.value)
+                                          // Get.parameters["storeId"] =
+                                          //     homeController.storeIdValue?.value;
+                                          await Get.to(() =>  CartScreen(storeId:homeController.storeIdValue?.value), id: pageIdApp.value)
                                               ?.then((value) => homeController.apiActiveCartApi());
                                         }
                                       },
@@ -590,7 +593,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           onTap: () async {
                             if (homeController.isLoading.value == false) {
                               if (roleApp.value == Role.customerRoleText) {
-                                Get.parameters["isFromMenu"] = "true";
+                               /* Get.parameters["isFromMenu"] = "true";
                                 Get.parameters['isFromFav'] = "false";
                                 Get.parameters["isFromHome"] = "false";
                                 Get.parameters["isFromOptions"] = "false";
@@ -604,19 +607,24 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   Get.parameters["invokedIndex"] = "2";
                                 }
 
-                                Get.parameters["storeId"] = item.storeId ?? "";
-                                await Get.to(() => const StoreHomeMainScreen(),
+                                Get.parameters["storeId"] = item.storeId ?? "";*/
+                                await Get.to(() =>  StoreHomeMainScreen(
+                                   args:  StoreHomeMainArgs(
+                                      storeId: item.storeId ?? "",
+                                      productId: homeController.featuredUserProductList[0].productId ?? "",
+                                      invokedIndex: item.isOfferForStore == true?0:2,
+                                      isFromMenu: true,isFromFav: false,
+                                      isFromHome: false, isFromOptions: false,
+                                    )
+                                ),
                                     id: pageIdApp.value);
                               } else {
-                                Get.parameters["isFromHome"] = "false";
-                                Get.parameters["storeId"] =
-                                    item.store!.storeId ?? "";
-                                Get.to(() => const ManageStoreMainScreen(),
-                                    id: pageIdApp.value,
-                                    arguments: {
-                                      "isFromHome": true,
-                                      "storeId": item.store?.storeId ?? "",
-                                    });
+                                // Get.parameters["isFromHome"] = "false";
+                                // Get.parameters["storeId"] =
+                                //     item.store!.storeId ?? "";
+                                Get.to(() => ManageStoreMainScreen(
+                                    storeId:item.store!.storeId ?? ""),
+                                    id: pageIdApp.value,);
                               }
                             }
                           },
@@ -718,7 +726,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       items: featuredProductList
           ?.map(
             (item) => Container(
-              // color: AppColors.red,
+
               width: WidgetConstants.screenWidth * 0.48,
               child: InkWell(
                 highlightColor: Colors.transparent,
@@ -726,41 +734,41 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 onTap: () {
                   if (homeController.isLoading.value == false) {
                     if (roleApp.value == Role.customerRoleText) {
-                      Get.parameters["isFromHome"] = "false";
-                      Get.parameters["isFromFav"] = "false";
-                      Get.parameters["isFromMenu"] = "true";
-                      Get.parameters["isFromOptions"] = "false";
-                      Get.parameters["productId"] =
-                          item.productId ?? "";
-                      Get.parameters["storeId"] =
-                          item.storeId ?? "";
-                      Get.parameters["invokedIndex"] =
-                          "2";
+                      // Get.parameters["isFromHome"] = "false";
+                      // Get.parameters["isFromFav"] = "false";
+                      // Get.parameters["isFromMenu"] = "true";
+                      // Get.parameters["isFromOptions"] = "false";
+                      // Get.parameters["productId"] =
+                      //     item.productId ?? "";
+                      // Get.parameters["storeId"] =
+                      //     item.storeId ?? "";
+                      // Get.parameters["invokedIndex"] =
+                      //     "2";
                       Get.to(
-                            () => const StoreHomeMainScreen(),
+                            () =>  StoreHomeMainScreen(args:
+                                StoreHomeMainArgs(
+                                  storeId: item.storeId ?? "",
+                                  productId: item.productId ?? "",
+                                  invokedIndex: 2,
+                                  isFromMenu: true,isFromFav: false,
+                                  isFromHome: false, isFromOptions: false,
+                                )
+
+                            ),
                         id: pageIdApp.value,
                       );
 
                     } else {
-                      Get.parameters["isFromHome"] = "true";
-                      Get.parameters["storeId"] =
-                          item.storeId;
-                      Get.parameters["productId"] =
-                          item.productId;
-                      Get.parameters["categoryName"] =
-                      item
-                          .productCategories!
-                          .isNotEmpty &&
-                          item
-                              .productCategories !=
-                              null
-                          ? item
-                          .productCategories
-                          ?.first
-                          .category
-                          ?.categoryName ??
-                          ""
-                          : "";
+                      // Get.parameters["isFromHome"] = "true";
+                      // Get.parameters["storeId"] =
+                      //     item.storeId;
+                      // Get.parameters["productId"] =
+                      //     item.productId;
+                      // Get.parameters["categoryName"] = item.productCategories!
+                      //     .isNotEmpty && item.productCategories != null
+                      //     ? item.productCategories?.first.category
+                      //     ?.categoryName ?? ""
+                      //     : "";
                       hasStoreAccess.value &&
                           permissionStoreList.isEmpty ||
                           permissionStoreList.any((element) =>
@@ -771,13 +779,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   ele.controllerKey ==
                                       PermissionKey
                                           .editProduct.statusName))
-                          ? Get.to(() => const EditProductScreen(),
+                          ? Get.to(() =>  EditProductScreen(
+                          isFromHome:true,
+                          storeId: item.storeId,
+                          productId: item.productId,
+                          categoryName: item.productCategories!
+                          .isNotEmpty && item.productCategories
+                          != null ? item.productCategories?.first.category
+                          ?.categoryName ?? ""
+                          : "",
+                      ),
                           id: pageIdApp.value,
-                          arguments: {
-                            "isFromHome": true,
-                            'storeId':
-                            item.storeId
-                          })!
+                          )!
                           .then((value) => homeController.apiGetOwnerFeaturedProducts())
                           : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                     }

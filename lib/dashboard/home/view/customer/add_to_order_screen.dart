@@ -686,12 +686,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               colors: [AppColors.primary, AppColors.primary],
             ),
             onTap: () {
+
               if (storeHomeMainController.isVerifiedStore.value) {
-                Get.parameters['isFromAddProduct'] = "yes";
+                // Get.parameters['isFromAddProduct'] = "yes";
                 if (int.parse(storeHomeMainController.storeIdValue
                     .toString()??"0") ==
                     0) {
                   if (storeHomeMainController.itemsCount.value != 0) {
+                    // print("addToOrderText storeId==========");
+                    // print(storeHomeMainController.storeId.toString());
+
                     storeHomeMainController.apiAddToCart(context);
                   } else {
                     Utility.showAlertMessage(
@@ -705,6 +709,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     storeHomeMainController.discardCartItems(context);
                   } else {
                     if (storeHomeMainController.itemsCount.value != 0) {
+                      print("addToOrderText storeId==========");
+                      print(storeHomeMainController.storeId.toString());
+                      return;
                       storeHomeMainController.apiAddToCart(context);
                     } else {
                       Utility.showAlertMessage(AlertStringConstants

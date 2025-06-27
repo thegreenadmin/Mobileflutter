@@ -135,8 +135,10 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     Categories(id: 6, name: "Saturday", isSelected: false),
     Categories(id: 7, name: "Sunday", isSelected: false),
   ].obs;
-  dynamic lat = 0.0;
-  dynamic lng = 0.0;
+  dynamic currentLat = 0.0;
+  dynamic currentLng = 0.0;
+ dynamic getLat = 0.0;
+  dynamic getLng = 0.0;
 
   RxBool isTermsSelected = false.obs;
   RxBool isDataComing = false.obs;
@@ -147,9 +149,10 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       super.onInit();
+      kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
       storeProductList.value=[];
       getOwnerOfferList.value=[];
-      storeId.value = Get.parameters['storeId'] ?? "";
+      // storeId.value = Get.parameters['storeId'] ?? "";
       selectedIndex.value = 0;
       getCurrentLocation();
       getGkey();
@@ -157,16 +160,11 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   }
 
   getGkey() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
     role?.value = roleApp.value;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+
   }
 
   getCurrentLocation() async {
@@ -177,8 +175,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     }
     getApiData();
     await Utility.fetchCurrentLocation().then((currentLocation) async {
-      lat = currentLocation.latitude;
-      lng = currentLocation.longitude;
+      currentLat = currentLocation.latitude;
+      currentLng = currentLocation.longitude;
       isDataComing.value = false;
       await apiGetUnClaimStoreList();
     });
@@ -552,7 +550,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     };
          UserProvider()
         .getWithHeadersApi(
-            '${ServerCommunicator.baseUrl + ServerCommunicator.unclaimedStoreList}?q&page=1&page_size=10000&latitude=$lat&longitude=$lng&mileage=1000',
+            '${ServerCommunicator.baseUrl + ServerCommunicator.unclaimedStoreList}?q&page=1&page_size=10000&latitude=$currentLat&longitude=$currentLng&mileage=1000',
             headers,
             showLoading: false)
         .then((value) async {
@@ -676,8 +674,6 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                 storeAddresses[i]["address_line_1"] ?? "";
             addressLine2TextController.text =
                 storeAddresses[i]["address_line_2"] ?? "";
-            addressLine1TextController.text =
-                storeAddresses[i]["address_line_1"] ?? "";
             townOrCityTextController.text = storeAddresses[i]["city"] ?? "";
             stateTextController.text =
                 storeAddresses[i]["state"]['state_name'] ?? "";
@@ -693,6 +689,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             storeAddressId!.value = storeAddresses[i]["store_address_id"] ?? "";
             postalCodeTextController.text =
                 storeAddresses[i]["postal_code"] ?? "";
+            getLat =  storeAddresses[i]["latitude"] ?? "";
+            getLng =  storeAddresses[i]["longitude"] ?? "";
           }
         }
         if (storeTimings.isNotEmpty) {
@@ -862,8 +860,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         "state": stateTextController.text.trim(),
         "country": countryTextController.text.trim(),
         "address_name": "home",
-        "longitude": lng,
-        "latitude": lat,
+        "longitude": getLng,
+        "latitude": getLat,
         "postal_code": postalCodeTextController.text.trim(),
         "address_line_1": addressLine1TextController.text.trim(),
         "address_line_2": addressLine2TextController.text.trim(),
@@ -888,6 +886,9 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         }
       ]
     };
+
+    debugPrint("Update Store Details data ******************");
+    debugPrint(data.toString());
 
     UserProvider()
         .putWithHeadersApi(

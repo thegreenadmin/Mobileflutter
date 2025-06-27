@@ -32,9 +32,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           height5SizedBox,
-          InkWell(
-            highlightColor: Colors.transparent,
-            // splashColor: Colors.grey,
+          GestureDetector(
             onTap: () {
               hasStoreAccess.value && permissionStoreList.isEmpty ||
                       permissionStoreList.any((element) =>
@@ -111,24 +109,22 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
               ]),
             ),
           ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            // splashColor: Colors.transparent,
+              GestureDetector(
             onTap: () {
-              Get.parameters["storeId"] = ownerStoresController.storeId.value;
-              Get.parameters["productId"] = "";
-              Get.parameters["storeName"] =
-                  ownerStoresController.storeName.value;
-              Get.parameters["storeLocation"] =
-                  ownerStoresController.storeLocation.value;
-              Get.to(() => const MangeProductScreen(),
+              // Get.parameters["storeId"] = ownerStoresController.storeId.value;
+              // Get.parameters["productId"] = "";
+              // Get.parameters["storeName"] =
+              //     ownerStoresController.storeName.value;
+              // Get.parameters["storeLocation"] =
+              //     ownerStoresController.storeLocation.value;
+              Get.to(() =>  MangeProductScreen(
+                  storeLocation:ownerStoresController.storeLocation.value,
+                  storeName:ownerStoresController.storeName.value,
+                  productId:"",
+                  storeId:ownerStoresController.storeId.value
+              ),
                   id: pageIdApp.value,
-                  arguments: {
-                    "storeId": ownerStoresController.storeId.value,
-                    "storeName": ownerStoresController.storeName.value,
-                    "storeLocation":
-                        ownerStoresController.storeLocation.value,
-                  });
+              );
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4),
@@ -187,23 +183,18 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
               ]),
             ),
           ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            // splashColor: Colors.transparent,
+              GestureDetector(
+
             onTap: () {
-              Get.parameters["storeId"] = ownerStoresController.storeId.value;
-              Get.parameters["storeName"] =
-                  ownerStoresController.storeName.value;
-              // SharedPreferenceStorage.setData("context", context);
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (_) => const RoleAndPermissionScreen(),
-              // ));
-              Get.to(() => const RoleAndPermissionScreen(),
+              // Get.parameters["storeId"] = ownerStoresController.storeId.value;
+              // Get.parameters["storeName"] =
+              //     ownerStoresController.storeName.value;
+              Get.to(() => RoleAndPermissionScreen(
+                  storeId:ownerStoresController.storeId.value,
+                  storeName:ownerStoresController.storeName.value
+              ),
                   id: pageIdApp.value,
-                  arguments: {
-                    "storeId": ownerStoresController.storeId.value,
-                    "storeName": ownerStoresController.storeName.value,
-                  });
+                 );
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4),
@@ -262,14 +253,13 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
               ]),
             ),
           ),
-          InkWell(
-            highlightColor: Colors.transparent,
-            // splashColor: Colors.transparent,
+              GestureDetector(
+
             onTap: () {
 
-              Get.parameters["storeId"] = ownerStoresController.storeId.value;
-              Get.parameters["storeName"] =
-                  ownerStoresController.storeName.value;
+              // Get.parameters["storeId"] = ownerStoresController.storeId.value;
+              // Get.parameters["storeName"] =
+              //     ownerStoresController.storeName.value;
 
               
               hasStoreAccess.value && permissionStoreList.isEmpty ||
@@ -283,12 +273,11 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
                               element.controllers!.any((ele) =>
                                   ele.controllerKey ==
                                   PermissionKey.viewStoreUsers.statusName))
-                  ? Get.to(() => const WorkerListScreen(),
-                      id: pageIdApp.value,
-                      arguments: {
-                          "storeId": ownerStoresController.storeId.value,
-                          "storeName": ownerStoresController.storeName.value,
-                        })
+                  ? Get.to(() =>  WorkerListScreen(
+                storeId: ownerStoresController.storeId.value,
+                storeName: ownerStoresController.storeName.value,
+              ),
+                      id: pageIdApp.value,)
                   : Utility.showAlertMessage(
                       AlertStringConstants.notAuthorizedToStoreText);
             },

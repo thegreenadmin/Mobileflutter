@@ -31,6 +31,7 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
   RxString userSelectedImageOriginalLinkFromServer = "".obs;
   RxString userSelectedImageDynamicLinkFromServer = "".obs;
   RxInt totalCount = 0.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();

@@ -11,7 +11,10 @@ import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class OffersScreen extends StatefulWidget {
-  const OffersScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  final bool? isFromTransaction;
+  const OffersScreen({super.key, this.orderId, this.storeId, this.isFromTransaction});
 
   @override
   State<OffersScreen> createState() => _OffersScreenState();
@@ -25,6 +28,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
 @override
   void initState() {
   getRole();
+  offersController.storeId?.value = widget.storeId??"";
     super.initState();
   }
 
@@ -97,8 +101,8 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                           splashColor: Colors.transparent,
                                           onTap: () {
 
-                                            Get.parameters["isFrom"] =
-                                                StringConstants.addOfferText;
+                                            // Get.parameters["isFrom"] =
+                                            //     StringConstants.addOfferText;
                                             hasStoreAccess.value &&
                                                         permissionStoreList.isEmpty ||
                                                     permissionStoreList.any((element) =>
@@ -107,12 +111,11 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                             ele.controllerKey ==
                                                             PermissionKey
                                                                 .createOffers.statusName))
-                                                ? Get.to(() => const AddOfferScreen(),
+                                                ? Get.to(() =>  AddOfferScreen(
+                                              isFrom: StringConstants.addOfferText,
+                                            ),
                                                     id: pageIdApp.value,
-                                                    arguments: {
-                                                        "isFrom":
-                                                            StringConstants.addOfferText,
-                                                      })?.then((value) {
+                                                   )?.then((value) {
                                                     offersController
                                                         .apiGetOwnerOffersList();
                                                   })
@@ -503,11 +506,11 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                         Flexible(
                                                           child: InkWell(
                                                             onTap: () {
-                                                              Get.parameters["isFrom"] = StringConstants.editOfferText;
-                                                              Get.parameters["storeId"] =
-                                                                  offersController.getOwnerOfferList[index].store!.storeId ?? "";
-                                                              Get.parameters["offerId"] =
-                                                                  offersController.getOwnerOfferList[index].offerId ?? "";
+                                                              // Get.parameters["isFrom"] = StringConstants.editOfferText;
+                                                              // Get.parameters["storeId"] =
+                                                              //     offersController.getOwnerOfferList[index].store!.storeId ?? "";
+                                                              // Get.parameters["offerId"] =
+                                                              //     offersController.getOwnerOfferList[index].offerId ?? "";
 
                                                               hasStoreAccess.value && permissionStoreList.isEmpty ||
                                                                       permissionStoreList.any((element) =>
@@ -516,14 +519,12 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin{
                                                                           element.storeId == offersController.getOwnerOfferList[index].store!.storeId &&
                                                                               element.controllers!.any((ele) =>
                                                                                   ele.controllerKey == PermissionKey.editOffers.statusName))
-                                                                  ? Get.to(() => const EditOfferScreen(),
-                                                                          id: pageIdApp.value,
-                                                                          arguments: {
-                                                                          "isFrom": StringConstants.editOfferText,
-                                                                          "storeId": offersController.getOwnerOfferList[index]
-                                                                                  .store!.storeId ?? "",
-                                                                          "offerId": offersController.getOwnerOfferList[index].offerId ?? ""
-                                                                        })!
+                                                                  ? Get.to(() =>  EditOfferScreen(
+                                                                storeId: offersController.getOwnerOfferList[index]
+                                                                    .store!.storeId ?? "",
+                                                                offerId: offersController.getOwnerOfferList[index].offerId ?? "",
+                                                              ),
+                                                                          id: pageIdApp.value)!
                                                                       .then((value) {
                                                                 offersController.role.value == Role.customerRoleText
                                                                           ? offersController.apiGetUserOffersList()

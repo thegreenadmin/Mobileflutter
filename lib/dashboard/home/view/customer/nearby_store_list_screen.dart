@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../../controller/store_home_main_controller.dart';
+import 'components/store_home_main_args.dart';
 
 class NearbyStoreListScreen extends StatefulWidget {
   const NearbyStoreListScreen({super.key});
@@ -73,14 +74,18 @@ class _NearbyStoreListScreenState extends State<NearbyStoreListScreen> with Glob
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () async {
-                    Get.parameters["storeId"] = searchStoreUserController.storeAddresses[index].store?.storeId ?? "";
-                    Get.parameters["isFromMenu"] = "false";
-                    Get.parameters['isFromFav'] = "false";
-                    Get.parameters["isFromHome"] = "true";
-                    Get.parameters["isFromOptions"] = "false";
-                    storeHomeMainController.onInit();
-                    await Get.to(() => const StoreHomeMainScreen(),
-                        id: pageIdApp.value)?.then((v)=>searchStoreUserController.updateCurrentLocation());
+                    // Get.parameters["storeId"] = searchStoreUserController.storeAddresses[index].store?.storeId ?? "";
+                    // Get.parameters["isFromMenu"] = "false";
+                    // Get.parameters['isFromFav'] = "false";
+                    // Get.parameters["isFromHome"] = "true";
+                    // Get.parameters["isFromOptions"] = "false";
+                    // storeHomeMainController.onInit();
+                    await Get.to(() => StoreHomeMainScreen(args: StoreHomeMainArgs(
+                      storeId: searchStoreUserController.storeAddresses[index].store?.storeId ?? "",
+                      isFromMenu: false,isFromFav: false,isFromHome: true, isFromOptions: false,
+                    ),),id: pageIdApp.value,)?.then((v)=>searchStoreUserController.updateCurrentLocation());
+                    // await Get.to(() => const StoreHomeMainScreen( ),
+                    //     id: pageIdApp.value)?.then((v)=>searchStoreUserController.updateCurrentLocation());
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 6),

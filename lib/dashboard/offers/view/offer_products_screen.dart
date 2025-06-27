@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart' as offer;
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -75,26 +76,37 @@ class OfferProductScreen extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                      Get.parameters["isFromHome"] = "false";
-                      Get.parameters["isFromFav"] = "false";
-                      Get.parameters["isFromMenu"] = "true";
-                      Get.parameters["isFromOptions"] = "false";
-
-                      Get.parameters["storeId"] = storeId ?? "";
-
-                      if(  offerObj?.isOfferForStore == true){
-
-                        Get.parameters["invokedIndex"] = "0";
-                      }else{
-                        Get.parameters["productId"] =
-                            offersController.featuredUserProductList[0].productId ?? "";
-                        Get.parameters["storeId"] =
-                            offersController.featuredUserProductList[0].storeId ?? "";
-                        Get.parameters["invokedIndex"] = "2";
-                      }
+                      // Get.parameters["isFromHome"] = "false";
+                      // Get.parameters["isFromFav"] = "false";
+                      // Get.parameters["isFromMenu"] = "true";
+                      // Get.parameters["isFromOptions"] = "false";
+                      //
+                      // Get.parameters["storeId"] = storeId ?? "";
+                      //
+                      // if(  offerObj?.isOfferForStore == true){
+                      //
+                      //   Get.parameters["invokedIndex"] = "0";
+                      // }else{
+                      //   Get.parameters["productId"] =
+                      //       offersController.featuredUserProductList[0].productId ?? "";
+                      //   Get.parameters["storeId"] =
+                      //       offersController.featuredUserProductList[0].storeId ?? "";
+                      //   Get.parameters["invokedIndex"] = "2";
+                      // }
 
                       await Get.to(
-                        () => const StoreHomeMainScreen(),
+                        () =>  StoreHomeMainScreen(
+                            args:  StoreHomeMainArgs(
+                              storeId: offerObj?.isOfferForStore == true? storeId ?? "" : offersController.featuredUserProductList[0].storeId ?? "",
+
+                              productId: offerObj?.isOfferForStore == true
+                                  ? null
+                                  : offersController.featuredUserProductList[0].productId ?? "",
+                              invokedIndex: offerObj?.isOfferForStore == true?0:2,
+                              isFromMenu: true,isFromFav: false,
+                              isFromHome: false, isFromOptions: false,
+                            )
+                        ),
                         id: pageIdApp.value,
                       );
 
@@ -165,17 +177,26 @@ class OfferProductScreen extends StatelessWidget {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () async {
-                                  Get.parameters["isFromHome"] = "false";
-                                  Get.parameters["isFromFav"] = "false";
-                                  Get.parameters["isFromMenu"] = "true";
-                                  Get.parameters["isFromOptions"] = "false";
-                                  Get.parameters["invokedIndex"] = "2";
-                                  Get.parameters["productId"] =
-                                      offersController.featuredUserProductList[index].productId ?? "";
-                                  Get.parameters["storeId"] =
-                                      offersController.featuredUserProductList[index].storeId ?? "";
+                                  // Get.parameters["isFromHome"] = "false";
+                                  // Get.parameters["isFromFav"] = "false";
+                                  // Get.parameters["isFromMenu"] = "true";
+                                  // Get.parameters["isFromOptions"] = "false";
+                                  // Get.parameters["invokedIndex"] = "2";
+                                  // Get.parameters["productId"] =
+                                  //     offersController.featuredUserProductList[index].productId ?? "";
+                                  // Get.parameters["storeId"] =
+                                  //     offersController.featuredUserProductList[index].storeId ?? "";
                                   await Get.to(
-                                    () => const StoreHomeMainScreen(),
+                                    () => StoreHomeMainScreen(
+                                      args:  StoreHomeMainArgs(
+                                        storeId: offersController.featuredUserProductList[index].storeId ?? "",
+
+                                        productId: offersController.featuredUserProductList[index].productId ?? "",
+                                        invokedIndex: 2,
+                                        isFromMenu: true,isFromFav: false,
+                                        isFromHome: false, isFromOptions: false,
+                                    ),
+                                    ),
                                     id: pageIdApp.value,
                                   );
                                 },

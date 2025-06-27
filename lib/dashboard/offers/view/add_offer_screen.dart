@@ -4,9 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+enum OfferType { store, product }
+enum DiscountType { percentage, amount }
+extension DiscountTypeExtension on DiscountType {
+  String get label {
+    switch (this) {
+      case DiscountType.percentage:
+        return 'Percentage';
+      case DiscountType.amount:
+        return 'Amount';
+    }
+  }
+}
 
 class AddOfferScreen extends StatefulWidget {
-  const AddOfferScreen({super.key});
+  final String? isFrom;
+  const AddOfferScreen({super.key, this.isFrom});
 
   @override
   State<AddOfferScreen> createState() => _AddOfferScreenState();
@@ -19,6 +32,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
   @override
   initState() {
     super.initState();
+    addOffersController.isFrom.value = widget.isFrom ??"";
     addOffersController.offerNameTextController.clear();
     addOffersController.discountOrOfferTextController.clear();
     addOffersController.offerImageDynamicLinkFromServer.value = "";
@@ -251,6 +265,36 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                     ),
                                   ),
                                   Row(
+                                    children: OfferType.values.map((type) {
+                                      return Row(
+                                        children: [
+                                          Obx(() => Radio<OfferType>(
+                                            activeColor: AppColors.primary,
+                                            value: type,
+                                            groupValue: addOffersController.radioValue.value,
+                                            onChanged: (value) {
+                                              if (value != null) {
+                                                addOffersController.radioValue.value = value;
+                                                addOffersController.storeProductList.clear();
+
+                                                if (value == OfferType.product &&
+                                                    addOffersController.storeIdValue.value.isNotEmpty) {
+                                                  addOffersController.apiGetStoreProducts();
+                                                }
+                                              }
+                                            },
+                                          )),
+                                          Text(
+                                            type == OfferType.store
+                                                ? StringConstants.storeText
+                                                : StringConstants.productText,
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+
+                                /*  Row(
                                     children: [
                                       Row(
                                         children: [
@@ -294,7 +338,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                         ],
                                       ),
                                     ],
-                                  )
+                                  )*/
                                 ],
                               ),
                               height12SizedBox,
@@ -375,9 +419,8 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                     onChanged: (value) async {
                                       addOffersController.storeIdValue.value =
                                           value.toString();
-                                      debugPrint(addOffersController.storeIdValue.value);
                                       if (addOffersController.radioValue.value !=
-                                          "store") {
+                                         OfferType.store) {
                                         await addOffersController.apiGetStoreProducts();
                                       }
                                       setState(() {});
@@ -385,7 +428,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   )),
                               height20SizedBox,
                               Obx(
-                                () => addOffersController.radioValue.value == "store"
+                                () => addOffersController.radioValue.value == OfferType.store
                                     ? height0SizedBox
                                     : addOffersController.storeProductList.isEmpty
                                         ? height0SizedBox
@@ -409,14 +452,19 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                                                     .storeProductList[i]
                                                                     .isSelected ==
                                                                 false) {
+
                                                               addOffersController
                                                                   .selectedProducts
                                                                   .add({
                                                                 "product_id":
                                                                     addOffersController
-                                                                        .storeProductList[
-                                                                            i]
-                                                                        .productId
+                                                                        .storeProductList[i]
+                                                                        .productId,
+                                                                 "product_price":
+                                                                    addOffersController
+                                                                        .storeProductList[i]
+                                                                        .productPrice,
+
                                                               });
                                                               addOffersController
                                                                   .storeProductList[i]
@@ -545,7 +593,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                 ),
                               ),
                               height4SizedBox,
-                              Row(
+                             /* Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -649,7 +697,120 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                         },
                                       )),
                                 ],
+                              ),*/
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Obx(() {
+                                      final isStore = addOffersController.radioValue.value == OfferType.store;
+
+                                      return DropdownButtonFormField<DiscountType>(
+                                        value: isStore ? DiscountType.percentage : null,
+                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                        validator: (value) {
+                                          if (!isStore && value == null) {
+                                            return AlertStringConstants.pleaseSelectDiscountType;
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: isStore
+                                            ? null
+                                            : (v) {
+                                          addOffersController.discountType.value = v!;
+                                        },
+                                        decoration: InputDecoration(
+                                          errorMaxLines: 4,
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(color: AppColors.grey, width: 1.0),
+                                          ),
+                                          border: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                          ),
+                                          errorBorder: UnderlineInputBorder(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(color: AppColors.red, width: 2.0),
+                                          ),
+                                        ),
+                                        isExpanded: true,
+                                        hint: Text(
+                                          StringConstants.selectTypeText,
+                                          style: const TextStyle(color: AppColors.grey, fontSize: 14),
+                                        ),
+                                        items: DiscountType.values.map((DiscountType value) {
+                                          return DropdownMenuItem<DiscountType>(
+                                            value: value,
+                                            child: Text(
+                                              value.label,
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      );
+                                    }),
+                                  ),
+                                  width15SizedBox,
+                                  Flexible(
+                                    flex: 5,
+                                    child: CustomInputField(
+                                      isBorderOutline: false,
+                                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(100),
+                                        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}')),
+                                      ],
+                                      textInputAction: TextInputAction.next,
+                                      autofocus: false,
+                                      maxLines: null,
+                                      errorMaxLines: 3,
+                                      hintText: StringConstants.enterValueText,
+                                      textCapitalization: TextCapitalization.none,
+                                      controller: addOffersController.discountOrOfferTextController,
+                                      validator: (value) {
+                                        final v = value?.trim();
+                                        if (v == null || v.isEmpty) {
+                                          return AlertStringConstants.pleaseEnterValueText;
+                                        }
+
+                                        final parsed = double.tryParse(v);
+                                        if (parsed == null || parsed == 0) {
+                                          return AlertStringConstants.invalidAmountText;
+                                        }
+
+                                        final isPercentage = addOffersController.discountType.value == DiscountType.percentage;
+                                        if (isPercentage && parsed >= 100) {
+                                          return "Percentage value must be less than 100%";
+                                        }
+
+
+                                        // Rule 2: For amount, it must not exceed any selected product's price
+                                        if (!isPercentage && addOffersController.selectedProducts.isNotEmpty) {
+                                          for (var product in addOffersController.selectedProducts) {
+                                            final productPrice = double.tryParse(product["product_price"].toString()) ?? 0;
+                                            if (parsed >= productPrice) {
+                                              return "Discount amount must be less than all selected product prices";
+                                            }
+                                          }
+                                        }
+
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
+
                               height35SizedBox,
                               CustomButton(
                                 gradient: const LinearGradient(

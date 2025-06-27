@@ -150,10 +150,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    // SharedPreferenceStorage.setData("context", context);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //   builder: (_) => const ContactUsScreen(),
-                    // ));
+
                     Get.to(() =>  ContactUsScreen(), id: pageIdApp.value);
                   },
                   child: Row(

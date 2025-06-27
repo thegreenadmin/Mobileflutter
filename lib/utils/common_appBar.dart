@@ -113,14 +113,14 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                   children: [
                                     InkWell(
                                       onTap: () async {
-                                        Get.parameters["storeId"] =
-                                            widget.storeId;
+                                        // Get.parameters["storeId"] =
+                                        //     widget.storeId;
                                         storeHomeMainController
                                             .apiGetUserDetailsApi();
                                         storeHomeMainController
                                             .apiGetUserWalletBalance();
 
-                                        await Get.to(() => const CartScreen(),
+                                        await Get.to(() => CartScreen(storeId: widget.storeId,),
                                                 id: pageIdApp.value)
                                             ?.then((value) {
                                           // widget.okayTap;

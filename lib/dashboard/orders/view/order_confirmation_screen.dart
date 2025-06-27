@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -10,7 +11,13 @@ import 'package:thegreenmall/utils/utils.dart';
 import '../view/component/order_status_enum.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
-  const OrderConfirmationScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  final String? orderStatus;
+  final bool? isFromNotification;
+  final bool? isFromTransaction;
+  final bool? isHome;
+  const OrderConfirmationScreen({super.key, this.orderId, this.storeId, this.isFromNotification, this.orderStatus, this.isFromTransaction, this.isHome});
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -24,14 +31,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ordersController.isFromNotification.value =
-          Get.parameters["isFromNotification"] == "true" ? true : false;
-      ordersController.storeId.value = Get.parameters["storeId"] ?? "";
+         widget.isFromNotification??false;
+      ordersController.storeId.value = widget.storeId ?? "";
       ordersController.apiGetStoreDetailsApi();
-      ordersController.orderStatus.value = Get.parameters["orderStatus"] ?? "";
-      if (Get.parameters["isHome"] != null) {
-        ordersController.isHome.value =
-            Get.parameters["isHome"] == "true" ? true : false;
-      }
+      ordersController.orderStatus.value = widget.orderStatus ?? "";
+      // if (Get.parameters["isHome"] != null) {
+        ordersController.isHome.value = widget.isHome ??false;
+      // }
       ordersController.isActiveOrders.value = true;
       ordersController.orderStatusId.value = 2;
 
@@ -561,15 +567,20 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                             colors: [AppColors.primary, AppColors.primary],
                           ),
                           onTap: () async {
-                            Get.parameters["storeId"] =
+                            /*Get.parameters["storeId"] =
                                 ordersController.storeId.value;
                             Get.parameters["isFromMenu"] = "false";
                             Get.parameters["isFromHome"] = "true";
                             Get.parameters["isFromFav"] = "false";
-                            Get.parameters["isFromOptions"] = "false";
-                            // Get.parameters["isAddToOrderScreen"]=="false";
-                            Get.put(StoreHomeMainController()).onInit();
-                            Get.to(() => const StoreHomeMainScreen(),
+                            Get.parameters["isFromOptions"] = "false";*/
+                            // Get.put(StoreHomeMainController()).onInit();
+                            Get.to(() => StoreHomeMainScreen(
+                                args:  StoreHomeMainArgs(
+                                  storeId: ordersController.storeId.value,
+                                  isFromMenu: false,isFromFav: false,
+                                  isFromHome: true, isFromOptions: false,
+                                )
+                            ),
                                 id: pageIdApp.value);
                           },
                           height: 50,

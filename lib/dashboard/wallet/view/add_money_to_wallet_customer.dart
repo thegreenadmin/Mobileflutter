@@ -12,8 +12,9 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'payment_configurations.dart' as payment_configurations;
 
 class AddMoneyToWalletUser extends StatefulWidget {
+  final bool isFromCartScreen;
   const AddMoneyToWalletUser({
-    Key? key,
+    Key? key,  this.isFromCartScreen =false,
   }) : super(key: key);
 
   @override

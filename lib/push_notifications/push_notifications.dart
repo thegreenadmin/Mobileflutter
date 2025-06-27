@@ -141,17 +141,21 @@ class PushNotificationService  with GlobalVarMixin{
         Get.parameters[Role.role] = Role.storeOwnerRoleText;
       }
       Future.delayed(const Duration(milliseconds: 200), () async {
-        Get.parameters["isFromTransaction"] = "false";
-        Get.parameters["storeId"] = notificationData.storeId.toString();
-        Get.parameters["orderId"] = notificationData.orderId.toString();
-        Get.parameters["isFromNotification"] = "true";
+        // Get.parameters["isFromTransaction"] = "false";
+        // Get.parameters["storeId"] = notificationData.storeId.toString();
+        // Get.parameters["orderId"] = notificationData.orderId.toString();
+        // Get.parameters["isFromNotification"] = "true";
         Get.put(OrdersHomeMainController()).onInit();
         print("notificationData pageIdApp before ==============================");
         // print(pageIdApp.value);
 
         print("notificationData pageIdApp MarkOrderStatusScreen==============================");
 
-        await Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value);
+        await Get.to(() =>  MarkOrderStatusScreen(
+          orderId: notificationData.orderId.toString(),
+          storeId: notificationData.storeId.toString(),
+            isFromNotification:true
+        ), id: pageIdApp.value);
       });
     } else if (notificationData.type == StringConstants.orderText.toLowerCase() &&
         notificationData.senderType == StringConstants.userText.toLowerCase()) {
@@ -159,18 +163,24 @@ class PushNotificationService  with GlobalVarMixin{
         await SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
         // roleApp(Role.customerRoleText);
         // roleApp.value = Role.customerRoleText;
-        Get.parameters["orderId"] = "";
-        Get.parameters[Role.role] = Role.customerRoleText;
+        // Get.parameters["orderId"] = "";
+        // Get.parameters[Role.role] = Role.customerRoleText;
       }
 
-      Get.parameters["isFromTransaction"] = "false";
-      Get.parameters["storeId"] = notificationData.storeId.toString();
-      Get.parameters["orderId"] = notificationData.orderId.toString();
-      Get.parameters["isFromNotification"] = "true";
+      // Get.parameters["isFromTransaction"] = "false";
+      // Get.parameters["storeId"] = notificationData.storeId.toString();
+      // Get.parameters["orderId"] = notificationData.orderId.toString();
+      // Get.parameters["isFromNotification"] = "true";
 
       Future.delayed(const Duration(milliseconds: 600), () async {});
 
-      await  Get.to(() => const OrdersScreen(), id: pageIdApp.value);
+      await  Get.to(() =>  OrdersScreen(
+          orderId:
+          roleApp.value == Role.storeOwnerRoleText?"":notificationData.orderId.toString(),
+          isFromTransaction:false,
+          isFromNotification: true,
+          storeId:notificationData.storeId.toString()
+      ), id: pageIdApp.value);
 
     }
     //******************  OFFER ********************
@@ -182,19 +192,23 @@ class PushNotificationService  with GlobalVarMixin{
         SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
         // roleApp(Role.customerRoleText);
         // roleApp.value = Role.customerRoleText;
-        Get.parameters["orderId"] = "";
-        Get.parameters[Role.role] = Role.customerRoleText;
+        // Get.parameters["orderId"] = "";
+        // Get.parameters[Role.role] = Role.customerRoleText;
       }
-      Get.parameters["isFromTransaction"] = "false";
-      Get.parameters["storeId"] = notificationData.storeId.toString();
-      Get.parameters["orderId"] = notificationData.orderId.toString();
+      // Get.parameters["isFromTransaction"] = "false";
+      // Get.parameters["storeId"] = notificationData.storeId.toString();
+      // Get.parameters["orderId"] = notificationData.orderId.toString();
       print("notificationData pageIdApp before ==============================");
       // print(pageIdApp.value);
 
 
       print("notificationData pageIdApp OffersScreen==============================");
       // print(pageIdApp.value);
-      await Get.to(() => const OffersScreen(), id: pageIdApp.value,);
+      await Get.to(() => OffersScreen(orderId:
+      roleApp.value == Role.storeOwnerRoleText?"":notificationData.orderId.toString(),
+          isFromTransaction:false,
+          storeId:notificationData.storeId.toString()
+      ), id: pageIdApp.value,);
 
 
       //******************  MESSAGE  ********************
@@ -209,11 +223,14 @@ class PushNotificationService  with GlobalVarMixin{
         Get.parameters[Role.role] = Role.storeOwnerRoleText;
       }
       Future.delayed(const Duration(seconds: 2), () async {
-        Get.parameters["isFromTransaction"] = "false";
-        Get.parameters["storeId"] = notificationData.storeId.toString();
-        Get.parameters["messageHeadId"] =
-            notificationData.messageHeadId.toString();
-        await  Get.to(() => const OwnerInboxDetailScreen(), id: pageIdApp.value);
+        // Get.parameters["isFromTransaction"] = "false";
+        // Get.parameters["storeId"] = notificationData.storeId.toString();
+        // Get.parameters["messageHeadId"] =
+        //     notificationData.messageHeadId.toString();
+        await  Get.to(() =>  OwnerInboxDetailScreen(
+          storeId: notificationData.storeId.toString(),
+          messageHeadId: notificationData.messageHeadId.toString(),
+        ), id: pageIdApp.value);
       });
     } else if (notificationData.type ==
         StringConstants.messageText.toLowerCase() &&
@@ -226,16 +243,19 @@ class PushNotificationService  with GlobalVarMixin{
         Get.parameters[Role.role] = Role.customerRoleText;
       }
       Future.delayed(const Duration(seconds: 2), () async {
-        Get.parameters["isFromTransaction"] = "false";
-        Get.parameters["storeId"] = notificationData.storeId.toString();
-        Get.parameters["messageHeadId"] =
-            notificationData.messageHeadId.toString();
+        // Get.parameters["isFromTransaction"] = "false";
+        // Get.parameters["storeId"] = notificationData.storeId.toString();
+        // Get.parameters["messageHeadId"] =
+        //     notificationData.messageHeadId.toString();
 
-        await Get.to(() => const UserInboxDetailScreen(), id: pageIdApp.value);
+        await Get.to(() =>  UserInboxDetailScreen(
+          storeId: notificationData.storeId.toString() ??
+              "",
+          messageHeadId: notificationData.messageHeadId.toString() ??
+              "",
+        ), id: pageIdApp.value);
       });
     }
   }
-
-
 }
 

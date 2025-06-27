@@ -6,7 +6,9 @@ import 'package:thegreenmall/utils/utils.dart';
 import '../view/component/order_status_enum.dart';
 
 class MarkReturnOrderScreen extends StatefulWidget {
-  const MarkReturnOrderScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  const MarkReturnOrderScreen({super.key, this.orderId, this.storeId});
 
   @override
   State<MarkReturnOrderScreen> createState() => _MarkReturnOrderScreenState();
@@ -15,6 +17,14 @@ class MarkReturnOrderScreen extends StatefulWidget {
 class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+
+  @override
+  void initState() {
+    ordersHomeMainController.storeId?.value = widget.storeId??"";
+    ordersHomeMainController.orderId?.value = widget.orderId??"";
+     super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -228,11 +228,6 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
               ),
               onTap: () {
                 addCardController.apiGetUserDetailApi();
-                // SharedPreferenceStorage.setData("context", context);
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(
-                //       builder: (_) => const AddCardDetailScreen(),
-                //     ))
                 Get.to(() => const AddCardDetailScreen(), id: pageIdApp.value)!
                     .then((value) => addCardController.apiGetCardList());
               },

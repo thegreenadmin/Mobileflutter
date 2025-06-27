@@ -228,8 +228,6 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                     height12SizedBox,
                                     InkWell(
                                       onTap: () {
-                                        debugPrint(
-                                            "AddMoneyToWallet .pageId.value :------ ${walletController.pageId.value}");
                                         Get.to(
                                           () => const AddMoneyToWalletUser(),
                                           id: pageIdApp.value,
@@ -309,9 +307,6 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                               Utility.showAlertMessage("Please add a store first");
                               return;
                             }
-                            debugPrint(
-                                "ManageWalletScreen .pageId.value :------ ${walletController.pageId.value}");
-
                             Get.to(
                               () => const ManageWalletScreen(),
                               id: pageIdApp.value,

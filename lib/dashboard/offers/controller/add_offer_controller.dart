@@ -8,6 +8,7 @@ import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:image_picker/image_picker.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/offers_model.dart';
+import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -18,14 +19,16 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   SharedPreferenceStorage storage = SharedPreferenceStorage();
 
-  RxString discountValueType = "percentage".obs;
-  RxString discountType = "".obs;
+  // RxString discountType = "".obs;
   RxString storeIdValue = "".obs;
   RxBool isLoading = false.obs;
   RxString? role = "".obs;
   // RxString? firstName = "".obs;
   // RxString? lastName = "".obs;
-  RxString radioValue = "store".obs;
+  // RxString radioValue = "store".obs;
+  final Rx<OfferType> radioValue = OfferType.store.obs;
+  final Rx<DiscountType> discountType = DiscountType.percentage.obs;
+
   RxBool autoValidate = true.obs;
   Rx<XFile> categoryImage = XFile("").obs;
   RxString offerImageOriginalLinkFromServer = "".obs;
@@ -165,13 +168,13 @@ class AddOffersController extends GetxController with GlobalVarMixin{
       try {
         if (offerImageDynamicLinkFromServer.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseUploadImageText);
-        } else if (discountType.value.isEmpty) {
+        } else if (discountType.value.label.isEmpty) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseSelectDiscountType);
-        } else if (radioValue.value != "store" && storeProductList.isEmpty) {
+        } else if (radioValue.value != OfferType.store && storeProductList.isEmpty) {
           Utility.showAlertMessage(
               "There are no product in the store. Please add product first");
-        } else if (radioValue.value != "store" &&
+        } else if (radioValue.value != OfferType.store &&
             (selectedProducts.isEmpty ||
                 selectedProducts
                     .every((element) => element["status"] == "deleted"))) {
@@ -205,11 +208,11 @@ class AddOffersController extends GetxController with GlobalVarMixin{
     }
     addOfferRequestModel.storeId = storeIdValue.value;
     addOfferRequestModel.offerProducts =
-        radioValue.value == "store" ? [] : offerProductList;
-    offer.isOfferForStore = radioValue.value == "store" ? true : false;
+        radioValue.value == OfferType.store ? [] : offerProductList;
+    offer.isOfferForStore = radioValue.value == OfferType.store ? true : false;
     offer.offerName = offerNameTextController.text.trim();
     offer.imageUrl = offerImageOriginalLinkFromServer.value;
-    offer.offerType = discountType.value.toLowerCase();
+    offer.offerType = discountType.value.label.toLowerCase();
     offer.offerValue = double.parse(discountOrOfferTextController.text.trim());
     addOfferRequestModel.offer = offer;
               UserProvider()
@@ -223,7 +226,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        radioValue.value = "";
+        radioValue.value = OfferType.store;
         offerNameTextController.clear();
         storeIdValue.value = "";
         offerImageOriginalLinkFromServer.value = "";
@@ -392,7 +395,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
             ));
           }
         } else {
-          if (storeProductList.isEmpty && radioValue.value == "product") {
+          if (storeProductList.isEmpty && radioValue.value == OfferType.product) {
             Utility.showToast(AlertStringConstants.noProductFoundForThisStore);
           }
         }
@@ -437,9 +440,9 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         offerProductDetail.value =
             getOfferDetailModel.data?.offerProducts ?? [];
         if (getOfferDetailModel.data!.isOfferForStore == true) {
-          radioValue.value = "store";
+          radioValue.value = OfferType.store;
         } else {
-          radioValue.value = "product";
+          radioValue.value = OfferType.product;
 
           for (var product in storeProductList) {
             for (var element in offerProductDetail) {
@@ -458,7 +461,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
 
         storeIdValue.value =
             getOfferDetailModel.data!.store!.storeId.toString();
-        discountType.value = getOfferDetailModel.data!.offerType!;
+        discountType.value = getOfferDetailModel.data!.offerType!.toLowerCase() == DiscountType.amount.label.toLowerCase() ? DiscountType.amount :DiscountType.percentage;
         storeName.value = getOfferDetailModel.data!.store!.storeName!;
 
         update();
@@ -503,7 +506,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        radioValue.value = "";
+        radioValue.value = OfferType.store;
         isLoading.value = false;
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {

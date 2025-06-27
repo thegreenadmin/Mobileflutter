@@ -1,16 +1,15 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoder2/geocoder2.dart';
+import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
 import 'package:get/get.dart';
-import "package:google_maps_webservice/geocoding.dart";
-import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
+import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class PersonalInfoEditScreen extends StatefulWidget {
-  const PersonalInfoEditScreen({super.key});
+  final bool isFromCart;
+  const PersonalInfoEditScreen({super.key,  this.isFromCart=false});
 
   @override
   State<PersonalInfoEditScreen> createState() => _PersonalInfoEditScreenState();
@@ -18,6 +17,12 @@ class PersonalInfoEditScreen extends StatefulWidget {
 
 class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with GlobalVarMixin{
   final AccountController accountController = Get.put(AccountController());
+
+  @override
+  void initState() {
+    accountController.isFromCart.value = widget.isFromCart;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,9 +238,83 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   ),
                                   
                                   height4SizedBox,
-                                  CustomInputField(
+                                  GooglePlaceAutocompleteField(
+                                    apiKey: accountController.kGoogleApiKey,
+                                    validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return AlertStringConstants
+                                            .pleaseEnterAddressText;
+                                      }
+                                      return null;
+                                    },
+                                    controller: accountController.addressLine1TextController,
+                                    onPlaceSelected: (Place place) {
+                                      final components = place.addressComponents ?? [];
+
+                                      String? getComponent(String type) {
+                                        return components
+                                            .firstWhere((c) => c.types.contains(type), orElse: () => AddressComponent( name: '', shortName: '', types: []))
+                                            .name;
+                                      }
+
+                                      accountController.townOrCityTextController.text =
+                                          getComponent('locality') ?? '';
+
+                                      accountController.countryTextController.text =
+                                          getComponent('country') ?? '';
+
+                                      accountController.postalCodeTextController.text =
+                                          getComponent('postal_code') ?? '';
+
+                                      accountController.stateTextController.text =
+                                          getComponent('administrative_area_level_1') ?? '';
+
+                                      accountController.postalCodeTextController.text =
+                                          getComponent('postal_code') ?? '';
+                                      accountController.update();
+                                    },
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor:  AppColors.transparent,
+                                      errorStyle: const TextStyle(color: AppColors.red),
+                                      errorMaxLines: 3,
+                                      errorBorder:  CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color:  AppColors.red),
+                                      focusedErrorBorder:  CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color:  AppColors.primary),
+                                      hintText: StringConstants.addressLine1Text,
+                                      hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+                                      contentPadding:
+                                      EdgeInsets.only(
+                                          left: 0,
+                                          top: WidgetConstants.screenHeight * 0.022,
+                                          bottom: WidgetConstants.screenWidth * 0.034,
+                                          right: 0),
+                                      isDense: true,
+                                      border:  CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color: AppColors.primary),
+                                      enabledBorder: CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color:  AppColors.grey),
+                                      focusedBorder: CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color:  AppColors.primary),
+                                      disabledBorder:CommonWidgets.underlineInputBorder(
+                                          borderRadius:  0.0,
+                                          color:  AppColors.primary),
+                                    ),
+                                    textStyle: TextStyle(fontSize: 16),
+                                    // textInputAction: TextInputAction.next, autofocus: false,
+                                    // maxLines: 5,
+
+                                  ),
+                                /*  CustomInputField(
                                     onTap: () async {
-                                      Prediction? p = await PlacesAutocomplete.show(
+
+                                     *//* Prediction? p = await PlacesAutocomplete.show(
                                           offset: 0,
                                           radius: 1000,
                                           types: [],
@@ -290,7 +369,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       if (addresses.state.isNotEmpty) {
                                         // accountController.stateTextController.text =
                                         //     addresses.state;
-                                      }
+                                      }*//*
                                     },
                                     isBorderOutline: false,
                                     inputFormatters: <TextInputFormatter>[
@@ -313,7 +392,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       }
                                       return null;
                                     },
-                                  ),
+                                  ),*/
                                   height20SizedBox,
                                   Text(
                                     StringConstants.addressLine2Text,

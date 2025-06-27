@@ -1,16 +1,12 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import "package:google_maps_webservice/geocoding.dart";
-import 'package:google_maps_webservice/places.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
+import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class EditStoreDetailScreen extends StatefulWidget {
@@ -479,8 +475,83 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
               
                             height4SizedBox,
                             //ADDRESS LINE 1 TEXT
-              
-                            CustomInputField(
+                            GooglePlaceAutocompleteField(
+                              apiKey: ownerStoreController.kGoogleApiKey,
+                                 validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return AlertStringConstants
+                                            .pleaseEnterAddressText;
+                                      }
+                                      return null;
+                                    },
+                              controller: ownerStoreController.addressLine1TextController,
+                              onPlaceSelected: (Place place) {
+                                ownerStoreController.getLng =
+                                    place.latLng?.lng.toString();
+                                ownerStoreController.getLat =
+                                    place.latLng?.lat.toString();
+                                final components = place.addressComponents ?? [];
+
+                                String? getComponent(String type) {
+                                  return components
+                                      .firstWhere((c) => c.types.contains(type), orElse: () => AddressComponent( name: '', shortName: '', types: [], ))
+                                      .name;
+                                }
+
+                                ownerStoreController.townOrCityTextController.text =
+                                    getComponent('locality') ?? '';
+
+                                ownerStoreController.countryTextController.text =
+                                    getComponent('country') ?? '';
+
+                                ownerStoreController.stateTextController.text =
+                                    getComponent('administrative_area_level_1') ?? '';
+
+                                ownerStoreController.update();
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor:  AppColors.transparent,
+                                errorStyle: const TextStyle(color: AppColors.red),
+                                errorMaxLines: 3,
+                                errorBorder:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.red),
+                                focusedErrorBorder:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                                hintText: StringConstants.addressLine1Text,
+                                hintStyle:
+                                const TextStyle(color: AppColors.grey, fontSize: 14),
+                                contentPadding:
+                                EdgeInsets.only(
+                                    left: 0,
+                                    top: WidgetConstants.screenHeight * 0.022,
+                                    bottom: WidgetConstants.screenWidth * 0.034,
+                                    right: 0),
+                                isDense: true,
+
+                                border:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color: AppColors.primary),
+                                enabledBorder: CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.grey),
+                                focusedBorder: CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                                disabledBorder:CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                              ),
+                              // textCapitalization: TextCapitalization.words,
+                              textStyle: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+
+                            ),
+                           /* CustomInputField(
                               onTap: () async {
                                                         Prediction? p = await PlacesAutocomplete.show(
                                     offset: 0,
@@ -530,69 +601,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                   ownerStoreController.lat =
                                       response.results.first.geometry.location.lat;
                                 }
-              
-                                /*List<geocoding.Location> locations = await geocoding.locationFromAddress(p?.description.toString()??"");
-              
-                                  List<geocoding.Placemark> placeMark = await geocoding.placemarkFromCoordinates(locations.first.latitude, locations.first.longitude);
-                                  String address = "${ placeMark.first.name??""}, ${ placeMark.first.subLocality??""}, ${ placeMark.first.locality??""}, ${ placeMark.first.administrativeArea??""} ${ placeMark.first.postalCode??""}, ${ placeMark.first.country??""}";
-              
-              
-                                  if(placeMark.isNotEmpty){
-                                    ownerStoreController.townOrCityTextController
-                                        .text = placeMark.first.locality??"";
-              
-                                    ownerStoreController.countryTextController.text =
-                                        placeMark.first.country??"";
-              
-                                    ownerStoreController.postalCodeTextController.text =
-                                        placeMark.first.postalCode??"";
-              
-                                    ownerStoreController.stateTextController.text =
-                                        placeMark.first.administrativeArea??"";
-              
-                                  }
-                                  if(locations.isNotEmpty){
-                                    ownerStoreController.lng =
-                                        locations.first.longitude.toString();
-                                    ownerStoreController.lat =
-                                        locations.first.latitude.toString();
-                                  }
-              */
-              
-                                ///--------------------------------------
-                                /*   GeoData addresses =
-                                      await Geocoder2.getDataFromAddress(
-                                          address: p.description.toString(),
-                                          googleMapApiKey:
-                                              ownerStoreController.kGoogleApiKey);
-              
-                                  if (addresses.address != null) {
-                                    if (addresses.city.isNotEmpty) {
-                                      ownerStoreController.townOrCityTextController
-                                          .text = addresses.city;
-                                    }
-                                    if (addresses.country.isNotEmpty) {
-                                      ownerStoreController.countryTextController.text =
-                                          addresses.country;
-                                    }
-              
-                                    if (addresses.postalCode.isNotEmpty) {
-                                      ownerStoreController.postalCodeTextController
-                                          .text = addresses.postalCode;
-                                    }
-                                    if (addresses.state.isNotEmpty) {
-                                      ownerStoreController.stateTextController.text =
-                                          addresses.state;
-                                    }
-                                    if (addresses.latitude != null ||
-                                        addresses.longitude != null) {
-                                      ownerStoreController.lng =
-                                          addresses.longitude.toString();
-                                      ownerStoreController.lat =
-                                          addresses.latitude.toString();
-                                    }
-                                  }
-                                                                                                                                                                                                                                                                              */
+
                               },
                               readOnly: true,
                               textInputAction: TextInputAction.next,
@@ -621,7 +630,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                 }
                                 return null;
                               },
-                            ),
+                            ),*/
                             height20SizedBox,
                             Text(
                               StringConstants.addressLine2Text,

@@ -6,7 +6,11 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/product_list_screen
 import 'package:thegreenmall/utils/utils.dart';
 
 class MangeProductScreen extends StatefulWidget {
-  const MangeProductScreen({super.key});
+  final String? storeId;
+  final String? storeLocation;
+  final String? storeName;
+  final String? productId;
+  const MangeProductScreen({super.key, this.storeId, this.storeLocation, this.storeName, this.productId});
 
   @override
   State<MangeProductScreen> createState() => _MangeProductScreenState();
@@ -15,6 +19,18 @@ class MangeProductScreen extends StatefulWidget {
 class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarMixin{
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
+
+
+  @override
+  initState() {
+    manageStoreController.storeId.value = widget.storeId??"";
+    manageStoreController.storeLocation.value = widget.storeLocation??"";
+    manageStoreController.storeName.value = widget.storeName??"";
+    manageStoreController.productId.value = widget.productId??"";
+    super.initState();
+
+
+  }
 
   Container _horizontalTab() {
     return Container(
@@ -152,16 +168,16 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
                             onTap: () {
-                              Get.parameters["storeId"] =
-                                  manageStoreController.storeId.value;
-                              Get.parameters["isFeaturedSelectedType"] =
-                                  manageStoreController.isFeaturedTypeSelected.value ==
-                                          true
-                                      ? "true"
-                                      : "false";
-                              Get.parameters["IsAddCategory"] = "true";
-              
-                              Get.parameters["categoryId"] = "";
+                              // Get.parameters["storeId"] =
+                              //     manageStoreController.storeId.value;
+                              // Get.parameters["isFeaturedSelectedType"] =
+                              //     manageStoreController.isFeaturedTypeSelected.value ==
+                              //             true
+                              //         ? "true"
+                              //         : "false";
+                              // Get.parameters["IsAddCategory"] = "true";
+                              //
+                              // Get.parameters["categoryId"] = "";
               
                               hasStoreAccess.value && permissionStoreList.isEmpty ||
                                       permissionStoreList.any((element) =>
@@ -174,15 +190,12 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                                   ele.controllerKey ==
                                                   PermissionKey.createProductCategories
                                                       .statusName))
-                                  ? Get.to(() => const AddNewCategoryScreen(),
+                                  ? Get.to(() =>  AddNewCategoryScreen(isAddCategory: true,
+                              categoryId: "",storeId: manageStoreController.storeId.value,
+                                isFeaturedSelectedType: manageStoreController.isFeaturedTypeSelected.value,
+                              ),
                                           id: pageIdApp.value,
-                                          arguments: {
-                                          "storeId":
-                                              manageStoreController.storeId.value,
-                                          "isFeaturedSelectedType":
-                                              manageStoreController
-                                                  .isFeaturedTypeSelected.value,
-                                        })!
+                                         )!
                                       .then((value) {
                                       manageStoreController.apiGetCategoriesList();
                                     })
@@ -394,14 +407,14 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                                             .categoriesList[index]
                                                             .categoryId ??
                                                         "";
-                                                    Get.parameters["storeId"] =
-                                                        manageStoreController
-                                                            .storeId.value;
-                                                    Get.parameters["categoryId"] =
-                                                        manageStoreController
-                                                                .categoriesList[index]
-                                                                .categoryId ??
-                                                            "";
+                                                    // Get.parameters["storeId"] =
+                                                    //     manageStoreController
+                                                    //         .storeId.value;
+                                                    // Get.parameters["categoryId"] =
+                                                    //     manageStoreController
+                                                    //             .categoriesList[index]
+                                                    //             .categoryId ??
+                                                    //         "";
                                                     hasStoreAccess.value && permissionStoreList.isEmpty ||
                                                             permissionStoreList.any((element) =>
                                                                 element.storeId ==
@@ -420,17 +433,13 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                                                         PermissionKey
                                                                             .editProductCategories
                                                                             .statusName))
-                                                        ? Get.to(() => const AddNewCategoryScreen(isEdit: true,), id: pageIdApp.value, arguments: {
-                                                            "storeId":
-                                                                manageStoreController
-                                                                    .storeId.value,
-                                                            "categoryId":
-                                                                manageStoreController
-                                                                        .categoriesList[
-                                                                            index]
-                                                                        .categoryId ??
-                                                                    ""
-                                                          })!
+                                                        ? Get.to(() =>  AddNewCategoryScreen(
+                                                      isEdit: true,
+                                                      storeId:manageStoreController
+                                                            .storeId.value,categoryId: manageStoreController
+                                                          .categoriesList[index]
+                                                          .categoryId,
+                                                    ), id: pageIdApp.value,)!
                                                             .then((value) {
                                                             manageStoreController
                                                                 .apiGetCategoriesList();

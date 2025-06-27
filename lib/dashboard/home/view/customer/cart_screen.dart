@@ -7,7 +7,9 @@ import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.
 import 'package:thegreenmall/utils/utils.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  final bool? isFromAddProduct;
+  final String? storeId;
+  const CartScreen({super.key,  this.isFromAddProduct=false,  this.storeId});
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -21,17 +23,19 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (storeHomeMainController.storeId.value != Get.parameters["storeId"]) {
-        storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
+      if (storeHomeMainController.storeId.value != widget.storeId) {
+        storeHomeMainController.storeId.value = widget.storeId ?? "";
         storeHomeMainController.getCurrentLocation();
       }
-      if (Get.parameters['isFromHome'] != "false") {
-        storeHomeMainController.productId.value =
-            Get.parameters["productId"] == null
-                ? ""
-                : Get.parameters["productId"] ?? "";
-      }
-      if (Get.parameters['isFromAddProduct'] == 'yes') {
+      storeHomeMainController.getCurrentLocation();
+      // if (Get.parameters['isFromHome'] != "false") {
+      //   storeHomeMainController.productId.value =
+      //       Get.parameters["productId"] == null
+      //           ? ""
+      //           : Get.parameters["productId"] ?? "";
+      // }
+      // if (Get.parameters['isFromAddProduct'] == 'yes') {
+      if (widget.isFromAddProduct == true) {
         storeHomeMainController.selectedIndex.value = 0;
         storeHomeMainController.lastSelectedIndex.value = 0;
       }
@@ -659,8 +663,8 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                 flex: 2,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    Get.parameters["isFromCart"] =
-                                                        "true";
+                                                    // Get.parameters["isFromCart"] =
+                                                    //     "true";
                                                     storeHomeMainController
                                                                     .selectedUserAddress
                                                                     .value
@@ -672,11 +676,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                     .city ==
                                                                 null
                                                         ?
-                                                        Get.to(const PersonalInfoEditScreen(),
+                                                        Get.to( PersonalInfoEditScreen(isFromCart : true),
                                                                 id: pageIdApp.value,
-                                                                arguments: ({
+                                                               /* arguments: ({
                                                                   "isFromCart": true
-                                                                }))?.then((value) =>
+                                                                })*/)?.then((value) =>
                                                             storeHomeMainController
                                                                 .apiGetUserDetailsApi())
                                                         : /*storeHomeMainController
@@ -793,7 +797,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                     )),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(() => const AddMoneyToWalletUser(),
+                                    Get.to(() =>  AddMoneyToWalletUser(isFromCartScreen:true),
                                             id: pageIdApp.value)
                                         ?.then((value) {
                                       storeHomeMainController
@@ -856,7 +860,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                       : [AppColors.primary, AppColors.primary],
                                 ),
                                 onTap: () async {
-                                  Get.parameters['isFromAddProduct'] = 'no';
+                                  // Get.parameters['isFromAddProduct'] = 'no';
                                   if (storeHomeMainController
                                           .storeDeliveryServiceId.value !=
                                       "0") {

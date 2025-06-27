@@ -6,7 +6,8 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/my_store_screen.dar
 import 'package:thegreenmall/utils/utils.dart';
 
 class ManageStoreMainScreen extends StatefulWidget {
-  const ManageStoreMainScreen({super.key});
+  final String?  storeId;
+  const ManageStoreMainScreen({super.key, this.storeId});
 
   @override
   State<ManageStoreMainScreen> createState() => _ManageStoreMainScreenState();
@@ -76,6 +77,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
 
    @override
   initState() {
+    ownerStoresController.storeId.value = widget.storeId ??"";
     super.initState();
     getApiData();
   }

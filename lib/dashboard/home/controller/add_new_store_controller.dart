@@ -123,12 +123,13 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
     getGKey();
     getCurrentLocation();
   }
 
   getCurrentLocation() async {
+
     Position currentLocation = await Utility.fetchCurrentLocation();
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
@@ -150,13 +151,12 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
        }
 
   getGKey() async {
-
-
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
   }
 
   bool validateAndSave() {

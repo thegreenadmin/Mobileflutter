@@ -201,7 +201,14 @@ class _ProductListScreenState extends State<ProductListScreen> with GlobalVarMix
                                                 ele.controllerKey ==
                                                 PermissionKey.editProduct
                                                     .statusName))
-                                ? Get.to(() => const EditProductScreen(), id: pageIdApp.value)!.then((value) {
+                                ? Get.to(() =>  EditProductScreen(
+                              storeId: manageStoreController.storeId.value,
+                              productId: manageStoreController
+                                  .storeProductList[index]
+                                  .productId ??
+                                  "",
+                              categoryName: manageStoreController.categoryName.value,
+                            ), id: pageIdApp.value)!.then((value) {
                                     manageStoreController
                                         .apiGetStoreProducts();
                                     manageStoreController.update();

@@ -7,7 +7,9 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/manage_store_main_s
 import 'package:thegreenmall/utils/utils.dart';
 
 class OwnerStoresListScreen extends StatefulWidget {
-  const OwnerStoresListScreen({super.key});
+  final String? firstName;
+  final String? lastName;
+  const OwnerStoresListScreen({super.key, this.firstName, this.lastName});
 
   @override
   State<OwnerStoresListScreen> createState() => _OwnerStoresListScreenState();
@@ -119,11 +121,13 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
             onTap: () async {
               ownerStoresController.storeId.value =
                   ownerStoresController.storeList[index].storeId ?? "";
-              Get.parameters['storeId'] =
-                  ownerStoresController.storeList[index].storeId ?? "";
+              // Get.parameters['storeId'] =
+              //     ownerStoresController.storeList[index].storeId ?? "";
               await ownerStoresController.apiGetParticularStore();
 
-              await Get.to(() => const ManageStoreMainScreen(),
+              await Get.to(() =>  ManageStoreMainScreen(
+                storeId: ownerStoresController.storeList[index].storeId ?? "",
+              ),
                   id: pageIdApp.value);
             },
             child: Container(
@@ -377,7 +381,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             children: [
                               Obx(
                                 () => Text(
-                                  "${StringConstants.hiText}${ownerStoresController.firstName?.value} ${ownerStoresController.lastName?.value}",
+                                  "${StringConstants.hiText}${widget.firstName} ${widget.lastName}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
@@ -445,11 +449,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                     colors: [AppColors.white, AppColors.white],
                   ),
                   onTap: () {
-                    // SharedPreferenceStorage.setData("context", context);
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(
-                    //       builder: (_) => const AddNewStoreScreen(),
-                    //     ))
+
                     Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
                         .then((value) => ownerStoresController.apiGetStoreList());
                   },

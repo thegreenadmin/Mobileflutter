@@ -441,56 +441,42 @@ class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
                                                 RawMaterialButton(
                                                   elevation: 0,
                                                   onPressed: () {
-                                                    Get.parameters["storeName"] =
-                                                        userInboxController
-                                                            .inboxList[index]
-                                                            .store!
-                                                            .storeName ??
-                                                            "";
-                                                    Get.parameters["storeId"] =
-                                                        userInboxController
-                                                            .inboxList[index]
-                                                            .store!
-                                                            .storeId ??
-                                                            "";
-                                                    Get.parameters["messageHeadId"] =
-                                                        userInboxController
-                                                            .inboxList[index]
-                                                            .messageHeadId ??
-                                                            "";
-                                                    // SharedPreferenceStorage.setData(
-                                                    //     "context", context);
-                                                    // Navigator.of(context)
-                                                    //     .push(MaterialPageRoute(
-                                                    //   builder: (_) =>
-                                                    //       const UserInboxDetailScreen(),
-                                                    // ));
+                                                    // Get.parameters["storeName"] =
+                                                    //     userInboxController
+                                                    //         .inboxList[index]
+                                                    //         .store!
+                                                    //         .storeName ??
+                                                    //         "";
+                                                    // Get.parameters["storeId"] =
+                                                    //     userInboxController
+                                                    //         .inboxList[index]
+                                                    //         .store!
+                                                    //         .storeId ??
+                                                    //         "";
+                                                    // Get.parameters["messageHeadId"] =
+                                                    //     userInboxController
+                                                    //         .inboxList[index]
+                                                    //         .messageHeadId ??
+                                                    //         "";
                                                     Get.to(
                                                             () =>
-                                                        const UserInboxDetailScreen(),
-                                                        id: pageIdApp.value,
-                                                        arguments: {
-                                                          "storeName":
-                                                          userInboxController
-                                                              .inboxList[
-                                                          index]
-                                                              .store!
-                                                              .storeName ??
-                                                              "",
-                                                          "storeId":
-                                                          userInboxController
-                                                              .inboxList[
-                                                          index]
-                                                              .store!
-                                                              .storeId ??
-                                                              "",
-                                                          "messageHeadId":
-                                                          userInboxController
-                                                              .inboxList[
-                                                          index]
-                                                              .messageHeadId ??
-                                                              ""
-                                                        })!
+                                                         UserInboxDetailScreen(
+                                                           storeId: userInboxController
+                                                               .inboxList[index]
+                                                               .store!
+                                                               .storeId ??
+                                                               "",storeName: userInboxController
+                                                             .inboxList[index]
+                                                             .store!
+                                                             .storeName ??
+                                                             "",
+                                                           // customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
+                                                           messageHeadId: userInboxController
+                                                               .inboxList[index]
+                                                               .messageHeadId ??
+                                                               "",
+                                                         ),
+                                                        id: pageIdApp.value,)!
                                                         .then((value) =>
                                                         userInboxController
                                                             .apiGetInboxList(

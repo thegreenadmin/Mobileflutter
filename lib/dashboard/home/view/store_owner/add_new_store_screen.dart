@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart' ;
 import 'package:get/get.dart';
-import "package:google_maps_webservice/geocoding.dart";
-import 'package:google_maps_webservice/places.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_store_controller.dart';
+import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
@@ -483,7 +482,81 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             buildText(StringConstants.addressLine1Text, StringConstants.starText,),
                             height4SizedBox,
                             //ADDRESS LINE 1 TEXT
-                            CustomInputField(
+                            GooglePlaceAutocompleteField(
+                              apiKey: addNewStoreController.kGoogleApiKey,
+                              /*   validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return AlertStringConstants
+                                            .pleaseEnterAddressText;
+                                      }
+                                      return null;
+                                    },*/
+                              controller: addNewStoreController.addressLine1TextController,
+                              onPlaceSelected: (Place place) {
+                                addNewStoreController.lng =
+                                    place.latLng?.lng.toString();
+                                addNewStoreController.lat =
+                                    place.latLng?.lat.toString();
+                                final components = place.addressComponents ?? [];
+
+                                String? getComponent(String type) {
+                                  return components
+                                      .firstWhere((c) => c.types.contains(type), orElse: () => AddressComponent( name: '', shortName: '', types: [], ))
+                                      .name;
+                                }
+
+                                addNewStoreController.townOrCityTextController.text =
+                                    getComponent('locality') ?? '';
+
+                                addNewStoreController.countryTextController.text =
+                                    getComponent('country') ?? '';
+
+                                addNewStoreController.stateTextController.text =
+                                    getComponent('administrative_area_level_1') ?? '';
+
+                                addNewStoreController.update();
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor:  AppColors.transparent,
+                                errorStyle: const TextStyle(color: AppColors.red),
+                                errorMaxLines: 3,
+                                errorBorder:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.red),
+                                focusedErrorBorder:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                                hintText: StringConstants.addressLine1Text,
+                                hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+                                contentPadding:
+                                EdgeInsets.only(
+                                    left: 0,
+                                    top: WidgetConstants.screenHeight * 0.022,
+                                    bottom: WidgetConstants.screenWidth * 0.034,
+                                    right: 0),
+                                isDense: true,
+                                border:  CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color: AppColors.primary),
+                                enabledBorder: CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.grey),
+                                focusedBorder: CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                                disabledBorder:CommonWidgets.underlineInputBorder(
+                                    borderRadius:  0.0,
+                                    color:  AppColors.primary),
+                              ),
+                              // textCapitalization: TextCapitalization.words,
+                              textStyle: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+
+                            ),
+                            /*CustomInputField(
                               onTap: () async {
                                 Prediction? p = await PlacesAutocomplete.show(
                                     offset: 0,
@@ -519,13 +592,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     ? response.results.first
                                     : null;
 
-                                debugPrint(
-                                    "ADDRESSES---lat lng ->${jsonEncode(result)}");
-                                debugPrint(
-                                    "ADDRESSES---lat  ->${response.results.first.geometry.location.lat}");
-                                debugPrint(
-                                    "ADDRESSES--- lng ->${response.results.first.geometry.location.lng}");
-
                                 if (result != null) {
                                   addNewStoreController.townOrCityTextController.text =
                                       Utility.extractLocality(result, "locality");
@@ -541,50 +607,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   addNewStoreController.lat =
                                       response.results.first.geometry.location.lat;
                                 }
-                                /*List<geocoding.Location> locations =
-                                      await geocoding.locationFromAddress(
-                                          p?.description.toString() ?? "");
-
-                                  List<geocoding.Placemark> placeMark =
-                                      await geocoding.placemarkFromCoordinates(
-                                          locations.first.latitude,
-                                          locations.first.longitude);
-                                  String address =
-                                      "${placeMark.first.name ?? ""}, ${placeMark.first.subLocality ?? ""}, ${placeMark.first.locality ?? ""}, ${placeMark.first.administrativeArea ?? ""} ${placeMark.first.postalCode ?? ""}, ${placeMark.first.country ?? ""}";
-
-                                  debugPrint("ADDRESSES---->$address");
-
-                                  if (placeMark.isNotEmpty) {
-                                    addNewStoreController.townOrCityTextController
-                                        .text = placeMark.first.locality ?? "";
-
-                                    addNewStoreController.countryTextController.text =
-                                        placeMark.first.country ?? "";
-
-                                    addNewStoreController.zipCodeTextController.text =
-                                        placeMark.first.postalCode ?? "";
-
-                                    // addNewStoreController.stateTextController.text =
-                                    //     placeMark.first.administrativeArea ?? "";
-                                  }
-                                  if (locations.isNotEmpty) {
-                                    addNewStoreController.lng =
-                                        locations.first.longitude.toString();
-                                    addNewStoreController.lat =
-                                        locations.first.latitude.toString();
-                                  }*/
-
-                                ///--------------------------------------
-                                /* GeoData addresses =
-                                      await Geocoder2.getDataFromAddress(
-                                          address: p?.description.toString() ?? "",
-                                          googleMapApiKey:
-                                              addNewStoreController.kGoogleApiKey);
-
-                                  if (addresses.state.isNotEmpty) {
-                                    addNewStoreController.stateTextController.text =
-                                        addresses.state;
-                                  }*/
                               },
                               readOnly: true,
                               textInputAction: TextInputAction.next,
@@ -613,7 +635,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 }
                                 return null;
                               },
-                            ),
+                            ),*/
                             height20SizedBox,
                             Text(
                               StringConstants.addressLine2Text,

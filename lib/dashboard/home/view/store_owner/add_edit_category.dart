@@ -6,8 +6,12 @@ import 'package:thegreenmall/dashboard/home/controller/add_new_category_controll
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewCategoryScreen extends StatefulWidget {
+  final String? storeId;
+  final String? categoryId;
   final bool isEdit;
-  const AddNewCategoryScreen({super.key, this.isEdit = false});
+  final bool isAddCategory;
+  final bool isFeaturedSelectedType;
+  const AddNewCategoryScreen({super.key, this.isEdit = false,  this.storeId, this.isFeaturedSelectedType = false, this.categoryId, this.isAddCategory=false});
 
   @override
   State<AddNewCategoryScreen> createState() => _AddNewCategoryScreenState();
@@ -20,13 +24,12 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
   @override
   initState() {
     super.initState();
-    addNewCategoryController.storeId.value = Get.parameters["storeId"] ?? "";
+    addNewCategoryController.storeId.value = widget.storeId ?? "";
     if(widget.isEdit){
       addNewCategoryController.categoryId.value =
-          Get.parameters["categoryId"] ?? "";
+          widget.categoryId ?? "";
       addNewCategoryController.isFeaturedTypeSelected.value =
-      Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
-
+          widget.isFeaturedSelectedType;
       if (addNewCategoryController.categoryId.value.isNotEmpty) {
         addNewCategoryController.apiGetCategoryDetail();
       }

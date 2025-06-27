@@ -8,8 +8,9 @@ import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewProductScreen extends StatefulWidget {
   final bool isEdit;
-
-  const AddNewProductScreen({super.key, this.isEdit = false});
+  final String? categoryId;
+  final String? categoryName;
+  const AddNewProductScreen({super.key, this.isEdit = false, this.categoryId, this.categoryName});
 
 
   @override
@@ -19,6 +20,14 @@ class AddNewProductScreen extends StatefulWidget {
 class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVarMixin{
   final ManageStoreController manageStoreController =
       Get.put(ManageStoreController());
+
+  @override
+  void initState() {
+    manageStoreController.categoryId.value = widget.categoryId ?? "";
+    manageStoreController.categoryName.value = widget.categoryName ?? "";
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -718,6 +727,32 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                     controller: manageStoreController
                                         .discountOrOfferTextController,
                                     hintText: StringConstants.enterValueText,
+                                    validator: (value) {
+                                      final v = value?.trim();
+                                      if (v == null || v.isEmpty) {
+                                        return AlertStringConstants.pleaseEnterValueText;
+                                      }
+
+                                      final parsed = double.tryParse(v);
+                                      if (parsed == null || parsed == 0) {
+                                        return AlertStringConstants.invalidAmountText;
+                                      }
+
+                                      final isPercentage = manageStoreController.discountType.value.toLowerCase() == "percentage";
+                                      if (isPercentage && parsed >= 100) {
+                                        return "Percentage value must be less than 100%";
+                                      }
+
+
+                                      // Rule 2: For amount, it must not exceed any selected product's price
+                                          final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text.toString()) ?? 0;
+                                          if (parsed >= productPrice) {
+                                            return "Discount amount must be less than product price";
+                                          }
+
+
+                                      return null;
+                                    },
                                   ),
                                 ),
                               ],

@@ -409,18 +409,6 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                       ],
                                                     ),
                                                     onTap: () {
-                                                      /* SharedPreferenceStorage.setData(
-                                                          "context", context);
-                                                      Navigator.of(context)
-                                                          .push(MaterialPageRoute(
-                                                              builder: (_) => WebviewPageScreen(
-                                                                  isFrom:
-                                                                      "connectAccount",
-                                                                  url: Uri.parse(
-                                                                          addCardController
-                                                                              .accountLink
-                                                                              .value)
-                                                                      .toString())))*/
                                                       Get.to(
                                                               WebviewPageScreen(
                                                                   isFrom:

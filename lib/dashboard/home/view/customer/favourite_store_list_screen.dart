@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import 'components/store_home_main_args.dart';
 import 'nearby_store_list_screen.dart';
 
 class FavouriteStoreListScreen extends StatefulWidget {
@@ -44,17 +45,24 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                       searchStoreUserController.favouriteStore.length) {
                     return InkWell(
                       onTap: () async {
-                        Get.parameters["storeId"] =
-                            searchStoreUserController
-                                .favouriteStore[index].storeId ??
-                                "";
-                        Get.parameters["isFromMenu"] = "false";
-                        Get.parameters['isFromFav'] = "false";
-                        Get.parameters["isFromHome"] = "true";
-                        Get.parameters["isFromOptions"] = "false";
-                        // Get.parameters["isAddToOrderScreen"]=="false";
-                        await Get.to(() => const StoreHomeMainScreen(),
-                            id: pageIdApp.value);
+                        // Get.parameters["storeId"] =
+                        //     searchStoreUserController
+                        //         .favouriteStore[index].storeId ??
+                        //         "";
+                        // Get.parameters["isFromMenu"] = "false";
+                        // Get.parameters['isFromFav'] = "false";
+                        // Get.parameters["isFromHome"] = "true";
+                        // Get.parameters["isFromOptions"] = "false";
+                        await Get.to(() =>  StoreHomeMainScreen(
+                            args:  StoreHomeMainArgs(
+                              storeId: searchStoreUserController
+                                  .favouriteStore[index].storeId ??
+                                  "",
+                              isFromMenu: false,isFromFav: false,
+                              isFromHome: true, isFromOptions: false,
+                            )
+                        ),
+                            id: pageIdApp.value)?.then((v)=>searchStoreUserController.updateCurrentLocation());
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 6),

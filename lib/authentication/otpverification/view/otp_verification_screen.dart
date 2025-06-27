@@ -54,7 +54,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       ),
                                     ),
                                   ),
-                                  height40SizedBox,
+                                  height80SizedBox,
                                   Image.asset(
                                     ImageConstants.otpVerification,
                                     scale: 2.4,
@@ -77,7 +77,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                         height: 1.4,
                                         fontWeight: FontWeight.w400),
                                   ),
-                                  height30SizedBox,
+                                  height40SizedBox,
                                   Padding(
                                     padding: const EdgeInsets.only(
                                       left: 35.0,
@@ -134,7 +134,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                       },
                                     ),
                                   ),
-                                  height5SizedBox,
+                                  height20SizedBox,
                                   Center(
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,

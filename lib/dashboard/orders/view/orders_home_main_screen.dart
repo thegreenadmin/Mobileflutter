@@ -10,7 +10,14 @@ import '../view/component/order_status_enum.dart';
 import 'mark_return_order_screen.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
-  const OrdersHomeMainScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  final String? storeName;
+  final String? orderStatus;
+  final bool? isFromNotification;
+  final bool? isFromTransaction;
+  final bool? isHome;
+  const OrdersHomeMainScreen({super.key, this.orderId, this.storeId, this.orderStatus, this.isFromNotification, this.isFromTransaction, this.isHome, this.storeName});
 
   @override
   State<OrdersHomeMainScreen> createState() => _OrdersHomeMainScreenState();
@@ -19,6 +26,16 @@ class OrdersHomeMainScreen extends StatefulWidget {
 class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+
+
+  @override
+  void initState() {
+    ordersHomeMainController.storeId.value = widget.storeId??"";
+    ordersHomeMainController.orderId.value = widget.orderId??"";
+    ordersHomeMainController.isFromNotification.value = widget.isFromNotification??false;
+    // ordersHomeMainController.st?.value = widget.isFromNotification??false;
+    super.initState();
+  }
 
   Padding horizontalTabs() {
     return Padding(
@@ -363,27 +380,13 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                 id: pageIdApp.value)!
                                             .then((value) => ordersHomeMainController.apiGetOwnerOrderHistory())
                                         : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
-                                    /*: ordersHomeMainController
-                                                        .ownerOrderHistoryList![index]
-                                                        .orderHistories!
-                                                        .first
-                                                        .orderStatus!
-                                                        .orderStatusName == //"12"
-                                                        OrderStatus
-                                                            .returnConfirmed
-                                                            .statusName
-                                                        ? Navigator.of(context).push(MaterialPageRoute(
-                                                      builder: (_) => const ReturnConfirmOrderScreen(),
-                                                    ))*/
-                                    /*: ordersHomeMainController
-                                                                    .ownerOrderHistoryList![index]
-                                                                    .orderHistories!
-                                                                    .first
-                                                                    .orderStatus!
-                                                                    .orderStatusName == //7
-                                                                OrderStatusEnum.cancelled.statusName
-                                                            ? null*/
-                                    : Get.to(() => const MarkOrderStatusScreen(), id: pageIdApp.value)?.then((value) {
+                                    : Get.to(() =>  MarkOrderStatusScreen(
+                                  orderId: ordersHomeMainController
+                                      .ownerOrderHistoryList![index]
+                                      .orderId ?? "",storeId: ordersHomeMainController
+                                    .ownerOrderHistoryList![index]
+                                    .storeId ?? "",
+                                ), id: pageIdApp.value)?.then((value) {
                                         ordersHomeMainController.onIndexChange(
                                             ordersHomeMainController
                                                 .selectedIndex.value);

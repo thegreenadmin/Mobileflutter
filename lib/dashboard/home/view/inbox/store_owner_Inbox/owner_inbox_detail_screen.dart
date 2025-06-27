@@ -10,8 +10,12 @@ import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_
 import 'package:thegreenmall/utils/utils.dart';
 
 class OwnerInboxDetailScreen extends StatefulWidget {
+  final String? storeName;
+  final String? storeId;
+  final String? messageHeadId;
+  final String? customerName;
   const OwnerInboxDetailScreen({
-    Key? key,
+    Key? key, this.storeName, this.storeId, this.messageHeadId, this.customerName,
   }) : super(key: key);
 
   @override
@@ -26,6 +30,11 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
   @override
   void initState() {
     getRole();
+
+    ownerInboxDetailController.storeName.value = widget.storeName??"";
+    ownerInboxDetailController.storeId.value = widget.storeId??"";
+    ownerInboxDetailController.messageHeadId.value = widget.messageHeadId??"";
+    ownerInboxDetailController.customerName?.value = widget.customerName??"";
     super.initState();
   }
 

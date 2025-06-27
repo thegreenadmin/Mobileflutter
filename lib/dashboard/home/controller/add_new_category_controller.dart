@@ -45,10 +45,10 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
 
-    storeId.value = Get.parameters["storeId"] ?? "";
-    categoryId.value = Get.parameters["categoryId"] ?? "";
-    isFeaturedTypeSelected.value =
-        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+    // storeId.value = Get.parameters["storeId"] ?? "";
+    // categoryId.value = Get.parameters["categoryId"] ?? "";
+    // isFeaturedTypeSelected.value =
+    //     Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
 
     if (categoryId.value.isNotEmpty) {
       await apiGetCategoryDetail();
@@ -217,15 +217,18 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
-        Get.parameters["categoryName"] = categoryNameTextController.text;
-        Get.parameters["categoryId"] = value?.body['data']['category_id'];
+        // Get.parameters["categoryName"] = categoryNameTextController.text;
+        // Get.parameters["categoryId"] = value?.body['data']['category_id'];
+
+        Get.find<ManageStoreController>().onInit();
+        Get.to(() =>  AddNewProductScreen(
+          categoryId: value?.body['data']['category_id'],categoryName: categoryNameTextController.text,
+        ), id: pageIdApp.value);
         categoryNameTextController.clear();
         categoryImageOriginalLinkFromServer.value = "";
         isFeaturedTypeSelected.value = false;
         categoryImageDynamicLinkFromServer.value = "";
         categoryImage.value = XFile("");
-        Get.find<ManageStoreController>().onInit();
-        Get.to(() => const AddNewProductScreen(), id: pageIdApp.value);
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

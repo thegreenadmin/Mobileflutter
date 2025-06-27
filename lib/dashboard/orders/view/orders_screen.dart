@@ -7,7 +7,12 @@ import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
+  final String? orderId;
+  final String? storeId;
+  final String? orderStatus;
+  final bool? isFromNotification;
+  final bool? isFromTransaction;
+  const OrdersScreen({super.key, this.orderId, this.storeId, this.isFromNotification, this.isFromTransaction, this.orderStatus});
 
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
@@ -18,6 +23,12 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
 
   @override
   initState(){
+    ordersController.isFromNotification.value =
+        widget.isFromNotification??false;
+    ordersController.storeId.value = widget.storeId ?? "";
+    ordersController.apiGetStoreDetailsApi();
+    ordersController.orderStatus.value = widget.orderStatus ?? "";
+
     super.initState();
   }
 
@@ -225,14 +236,20 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                             ordersController.storeId.value = ordersController.orderList[i].storeId ?? "";
                                             ordersController.orderStatus.value = ordersController.orderList[i].orderId ?? "";
                                             ordersController.apiGetStoreDetailsApi();
-                                            Get.parameters["orderStatus"] = ordersController.orderList[i].orderId ?? "";
+                                            // Get.parameters["orderStatus"] = ordersController.orderList[i].orderId ?? "";
                                             ordersController.apiGetOrderDetailsApi();
-                                            Get.parameters["isFromTransaction"] = "false";
-                                            Get.parameters["isHome"] = "false";
-                                            Get.parameters["isFromNotification"] = "false";
-                                            Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
+                                            // Get.parameters["isFromTransaction"] = "false";
+                                            // Get.parameters["isHome"] = "false";
+                                            // Get.parameters["isFromNotification"] = "false";
+                                            // Get.parameters["storeId"] = ordersController.orderList[i].store?.storeId.toString() ?? "";
 
-                                            Get.to(() => const OrderConfirmationScreen(), id: pageIdApp.value)?.then((value) {
+                                            Get.to(() =>  OrderConfirmationScreen(
+                                              orderStatus: ordersController.orderList[i].orderId ?? "",
+                                              isHome: false,
+                                              isFromNotification: false,
+                                              isFromTransaction:false ,
+                                              storeId: ordersController.orderList[i].store?.storeId.toString() ?? ""
+                                            ), id: pageIdApp.value)?.then((value) {
                                               ordersController.apiGetOrderListApi();
                                             });
                                           },

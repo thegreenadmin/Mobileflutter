@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_webservice/geocoding.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dart';
+import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddCardDetailScreen extends StatefulWidget {
@@ -198,8 +196,89 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                       fontWeight: FontWeight.w600),
                                 ),
                                 height20SizedBox,
+                                GooglePlaceAutocompleteField(
+                                  apiKey: addCardController.kGoogleApiKey,
+                                     validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return AlertStringConstants
+                                            .pleaseEnterAddressText;
+                                      }
+                                      return null;
+                                    },
+                                  controller: addCardController.addressLine1TextController,
+                                  onPlaceSelected: (Place place) {
+                                    addCardController.lng =
+                                        place.latLng?.lng.toString();
+                                    addCardController.lat =
+                                        place.latLng?.lat.toString();
+                                    final components = place.addressComponents ?? [];
 
-                                CustomInputField(
+                                    String? getComponent(String type) {
+                                      return components
+                                          .firstWhere((c) => c.types.contains(type), orElse: () => AddressComponent( name: '', shortName: '', types: [], ))
+                                          .name;
+                                    }
+
+                                    addCardController.cityTextController.text =
+                                        getComponent('locality') ?? '';
+
+                                    addCardController.zipCodeTextController.text =
+                                        getComponent('postal_code') ?? '';
+
+                                    addCardController.countryTextController.text =
+                                        getComponent('country') ?? '';
+
+
+                                    addCardController.stateTextController.text =
+                                        getComponent('administrative_area_level_1') ?? '';
+
+                                    addCardController.update();
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        left: 12,
+                                        top: WidgetConstants.screenHeight * 0.022,
+                                        bottom: WidgetConstants.screenWidth * 0.034,
+                                        right: 0),
+                                    labelText: StringConstants.addressLine1Text,
+                                    labelStyle: const TextStyle(
+                                        color: AppColors.black, fontSize: 16),
+                                    filled: true,
+                                    fillColor:  AppColors.transparent,
+                                    errorStyle: const TextStyle(color: AppColors.red),
+                                    errorMaxLines: 3,
+                                    hintText: StringConstants.addressLine1Text,
+                                    hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+                                    isDense: true,
+                                    errorBorder: CommonWidgets.outlineInputBorder(
+                                        borderRadius:  5.0,
+                                        color:  AppColors.red),
+                                    focusedErrorBorder:
+                                        CommonWidgets.outlineInputBorder(
+                                        borderRadius:  5.0,
+                                        color:  AppColors.primary),
+
+                                    border: CommonWidgets.outlineInputBorder(
+                                        borderRadius:  5.0,
+                                        color:  AppColors.primary),
+                                    enabledBorder: CommonWidgets.outlineInputBorder(
+                                        borderRadius:  5.0,
+                                        color:  AppColors.primary),
+                                    focusedBorder: CommonWidgets.outlineInputBorder(
+                                        borderRadius:  5.0,
+                                        color:  AppColors.primary),
+                                    disabledBorder:  CommonWidgets.outlineInputBorder(
+                                        borderRadius: 5.0,
+                                        color: AppColors.primary),
+                                  ),
+                                  // textCapitalization: TextCapitalization.words,
+                                  textStyle: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+
+                                ),
+                               /* CustomInputField(
                                   onTap: () async {
                                     Prediction? p = await PlacesAutocomplete.show(
                                         offset: 0,
@@ -288,7 +367,7 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
                                     }
                                     return null;
                                   },
-                                ),
+                                ),*/
                                 height20SizedBox,
                                 CustomInputField(
                                   isBorderOutline: true,

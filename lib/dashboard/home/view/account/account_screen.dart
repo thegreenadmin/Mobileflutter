@@ -20,7 +20,8 @@ enum _SupportState {
 }
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+  final bool? isFromCart ;
+  const AccountScreen({super.key, this.isFromCart = false});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -87,6 +88,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       accountController.apiGetUserDetailApi();
+      accountController.isFromCart.value = widget.isFromCart??false;
     });
     super.initState();
   }

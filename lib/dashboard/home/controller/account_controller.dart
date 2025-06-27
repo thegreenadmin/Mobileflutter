@@ -105,7 +105,8 @@ class AccountController extends GetxController with GlobalVarMixin {
   @override
   void onInit() {
     super.onInit();
-    isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
+    // isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
          apiGetUserDetailApi();
     getGkey();
   }
@@ -117,7 +118,8 @@ class AccountController extends GetxController with GlobalVarMixin {
   getGkey() async {
 
      secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+
     var val = await SharedPreferenceStorage.getData(StringConstants.authenticatedText.toLowerCase());
     BioMetricAuthentication.isBioMetricAuthenticated.value = val ?? false;
 

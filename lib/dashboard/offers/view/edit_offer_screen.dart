@@ -5,8 +5,12 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
+import 'add_offer_screen.dart';
+
 class EditOfferScreen extends StatefulWidget {
-  const EditOfferScreen({super.key});
+  final String? storeId;
+  final String? offerId;
+  const EditOfferScreen({super.key, this.storeId, this.offerId});
 
   @override
   State<EditOfferScreen> createState() => _EditOfferScreenState();
@@ -234,7 +238,7 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                             ),
                           ),
                           height15SizedBox,
-                          Obx(() => addOffersController.radioValue.value == "store"
+                          Obx(() => addOffersController.radioValue.value == OfferType.store
                               ? Text(StringConstants.storeText,
                                   style: const TextStyle(
                                       color: AppColors.black,
@@ -350,7 +354,7 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                           //       )),
                           height5SizedBox,
                           Obx(
-                            () => addOffersController.radioValue.value == "store"
+                            () => addOffersController.radioValue.value == OfferType.store
                                 ? height0SizedBox
                                 : addOffersController.storeProductList.isEmpty
                                     ? height0SizedBox
@@ -564,7 +568,7 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                             ),
                           ),
                           height4SizedBox,
-                          Row(
+                          /*Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -665,7 +669,118 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                                 ),
                               ),
                             ],
+                          ),*/
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: Obx(() {
+                                  final isStore = addOffersController.radioValue.value == OfferType.store;
+
+                                  if (isStore) {
+                                    // Lock to Percentage when OfferType is Store
+                                    addOffersController.discountType.value = DiscountType.percentage;
+                                  }
+
+                                  return DropdownButtonFormField<DiscountType>(
+                                    value: isStore
+                                        ? DiscountType.percentage
+                                        : addOffersController.discountType.value,
+                                    onChanged: isStore
+                                        ? null
+                                        : (val) {
+                                      addOffersController.discountType.value = val!;
+                                    },
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: (val) {
+                                      if (!isStore && val == null) {
+                                        return AlertStringConstants.pleaseSelectDiscountType;
+                                      }
+                                      return null;
+                                    },
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(color: AppColors.grey, width: 1.0),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                      ),
+                                      errorBorder: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderSide: const BorderSide(color: AppColors.red, width: 2.0),
+                                      ),
+                                    ),
+                                    hint: Text(
+                                      StringConstants.selectTypeText,
+                                      style: const TextStyle(color: AppColors.grey, fontSize: 14),
+                                    ),
+                                    items: DiscountType.values.map((type) {
+                                      return DropdownMenuItem<DiscountType>(
+                                        value: type,
+                                        child: Text(
+                                          type.label,
+                                          style: const TextStyle(
+                                              color: AppColors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
+                              ),
+                              width15SizedBox,
+                              Flexible(
+                                flex: 5,
+                                child: CustomInputField(
+                                  isBorderOutline: false,
+                                  keyboardType:
+                                  const TextInputType.numberWithOptions(decimal: true),
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(100),
+                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                  ],
+                                  textInputAction: TextInputAction.next,
+                                  autofocus: false,
+                                  maxLines: null,
+                                  errorMaxLines: 3,
+                                  hintText: StringConstants.enterValueText,
+                                  textCapitalization: TextCapitalization.none,
+                                  controller:
+                                  addOffersController.discountOrOfferTextController,
+                                  validator: (value) {
+                                    final v = value?.trim();
+                                    if (v == null || v.isEmpty) {
+                                      return AlertStringConstants.pleaseEnterValueText;
+                                    }
+
+                                    final parsed = double.tryParse(v);
+                                    if (parsed == null || parsed == 0) {
+                                      return AlertStringConstants.invalidAmountText;
+                                    }
+
+                                    final isPercentage = addOffersController.discountType.value ==
+                                        DiscountType.percentage;
+                                    if (isPercentage && parsed >= 100) {
+                                      return "Percentage value must be less than 100%";
+                                    }
+
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
+
                           height35SizedBox,
                           CustomButton(
                             gradient: const LinearGradient(

@@ -140,21 +140,27 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                    storeHomeMainController.productId.value =
-                        item.productId.toString();
-                    Get.parameters["productId"] = item.productId.toString();
-                    Get.parameters['isFromFav'] = "false";
-                    Get.parameters["isFromHome"] = "true";
-                    Get.parameters["isFromMenu"] = "false";
-                    Get.parameters["isFromOptions"] = "false";
+                    storeHomeMainController.storeId.value = item.storeId.toString();
+                    storeHomeMainController.productId.value = item.productId.toString();
+                    storeHomeMainController.isFromFav.value = false;
+                    storeHomeMainController.isFromHome.value = true;
+                    storeHomeMainController.isFromMenu.value = false;
+                    storeHomeMainController.isFromOptions.value = false;
+                    // Get.parameters["productId"] = item.productId.toString();
+                    // Get.parameters['isFromFav'] = "false";
+                    // Get.parameters["isFromHome"] = "true";
+                    // Get.parameters["isFromMenu"] = "false";
+                    // Get.parameters["isFromOptions"] = "false";
 
                     await storeHomeMainController.apiGetUserDetailsApi();
-                    if (storeHomeMainController.storeId.value != "" &&
-                        storeHomeMainController.productId.value != "") {
+                    // if (storeHomeMainController.storeId.value != "" &&
+                    //     storeHomeMainController.productId.value != "") {
                       await storeHomeMainController.apiGetShopProductDetailApi();
-                    }
+                    // }
                     await storeHomeMainController.apiGetUserWalletBalance();
                     storeHomeMainController.invokedIndex.value++;
+                    storeHomeMainController.update();
+
                   },
                   child: Container(
                     decoration: const BoxDecoration(
@@ -309,7 +315,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                           offerId: item.offerId.toString(),
                           storeId: item.storeId.toString());
                       storeHomeMainController.offerObj.value = item;
-                      Get.parameters["invokedIndex"] = "2";
+                      storeHomeMainController.invokedIndex.value = 2;
+                      // Get.parameters["invokedIndex"] = "2";
                     },
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),

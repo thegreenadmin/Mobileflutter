@@ -18,7 +18,6 @@ class ServerCommunicator {
   static String get baseUrlWithoutApi => dotenv.env['BASE_URL_WO_API'] ?? 'http://172.24.0.202:8080/';
   static String get baseUrl => '${baseUrlWithoutApi}api/v1/';
   static String get baseUrlWithoutV1 => '${baseUrlWithoutApi}api/';
-
   static String get kGoogleApiKey => dotenv.env['GOOGLE_MAP_KEY'] ?? '';
 
 
@@ -30,7 +29,7 @@ class ServerCommunicator {
 
   // Staging API URL:    https://tfq2tvvrsc.execute-api.us-east-1.amazonaws.com
   // Prod API URL:    https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com
-  // Local API URL:    http://172.24.0.202:8080
+  // Local API URL:    http://172.24.0.53:8080
 //A
 
 //B

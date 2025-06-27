@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:flutter_google_maps_webservices/geocoding.dart';
+import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
-import 'package:google_maps_webservice/geocoding.dart';
+// import 'package:google_maps_webservice/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:pay/pay.dart';
 import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
@@ -103,10 +105,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
   RxBool payouts = false.obs;
   RxString accountLink = "".obs;
   late GlobalConfigs secureData;
+
   @override
   void onInit() {
     super.onInit();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
       getApiData();
     });
 
@@ -115,7 +120,8 @@ class AddCardController extends GetxController with GlobalVarMixin{
   getGKey() async {
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+    // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
+
   }
 
   getApiData() async {
@@ -175,6 +181,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
               final result =
                   response.results.isNotEmpty ? response.results.first : null;
+
               if (result != null) {
                 selectedCountry.value = Utility.extractLocality(
                     result, "country",
