@@ -316,6 +316,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                           storeId: item.storeId.toString());
                       storeHomeMainController.offerObj.value = item;
                       storeHomeMainController.invokedIndex.value = 2;
+                      storeHomeMainController.update();
                       // Get.parameters["invokedIndex"] = "2";
                     },
                     child: ClipRRect(

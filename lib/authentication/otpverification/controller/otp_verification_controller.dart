@@ -29,12 +29,12 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     phoneNumber.value = Get.arguments["phoneNumber"] ?? "";
     countryCode.value = Get.arguments["countryCode"] ?? "";
     isSignUp.value = Get.arguments["signUp"] ?? false;
-    getFcmToken();
+    await getFcmToken();
   }
 
   Future<void> getFcmToken() async {
@@ -43,7 +43,7 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
         fcmToken!.value = v!;
         if (fcmToken?.value != null) {
           // Save or use the token
-          print("FCM Token: $fcmToken!.value");
+          print("FCM Token: $fcmToken");
         } else {
           // Handle null token case
           Utility.showAlertMessage("Unable to retrieve device token. Please try again.");

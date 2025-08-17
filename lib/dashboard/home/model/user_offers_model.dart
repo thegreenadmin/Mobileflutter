@@ -55,7 +55,9 @@ class OffersList {
   Images? image;
   String? offerId;
   String? storeId;
+  String? productId;
   bool? isOfferForStore;
+  bool? autoCreated;
   String? offerName;
   String? offerType;
   dynamic offerValue;
@@ -70,9 +72,11 @@ class OffersList {
       {this.image,
       this.offerId,
       this.storeId,
+      this.productId,
       this.isOfferForStore,
       this.offerName,
       this.offerType,
+      this.autoCreated,
       this.offerValue,
       this.isExpired,
       this.expiredAt,
@@ -84,7 +88,9 @@ class OffersList {
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
     offerId = json['offer_id'];
     storeId = json['store_id'];
+    productId = json['product_id'];
     isOfferForStore = json['is_offer_for_store'];
+    autoCreated = json['auto_created'];
     offerName = json['offer_name'];
     offerType = json['offer_type'];
     offerValue = json['offer_value'];
@@ -103,7 +109,9 @@ class OffersList {
     }
     data['offer_id'] = offerId;
     data['store_id'] = storeId;
+    data['product_id'] = productId;
     data['is_offer_for_store'] = isOfferForStore;
+    data['auto_created'] = autoCreated;
     data['offer_name'] = offerName;
     data['offer_type'] = offerType;
     data['offer_value'] = offerValue;

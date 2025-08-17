@@ -16,15 +16,31 @@ class StoreOfferDetailController extends GetxController with GlobalVarMixin {
   RxBool isLoading = false.obs;
   RxInt pageId = 0.obs;
   SharedPreferenceStorage storage = SharedPreferenceStorage();
+
   @override
   void onInit() {
     super.onInit();
-    storeId.value = Get.parameters["storeId"] ?? "";
-    offerId.value = Get.parameters["offerId"] ?? "";
-    apiGetStoreOffersDetail();
+    _initializeParams();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    _loadOfferDetail();
+  }
+
+  // --- Params Setup ---
+  void _initializeParams() {
+    final params = Get.parameters;
+    storeId.value = params["storeId"] ?? "0";
+    offerId.value = params["offerId"] ?? "0";
     role?.value = roleApp.value;
   }
 
+  // --- Initial Data Load ---
+  Future<void> _loadOfferDetail() async {
+    await apiGetStoreOffersDetail();
+  }
   ///Get store offer detail
   Future apiGetStoreOffersDetail() async {
     isLoading.value = true;

@@ -9,7 +9,8 @@ import 'package:thegreenmall/utils/utils.dart';
 class OwnerStoresListScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
-  const OwnerStoresListScreen({super.key, this.firstName, this.lastName});
+  final bool? isFromHome;
+  const OwnerStoresListScreen({super.key, this.firstName, this.lastName, this.isFromHome});
 
   @override
   State<OwnerStoresListScreen> createState() => _OwnerStoresListScreenState();
@@ -18,6 +19,12 @@ class OwnerStoresListScreen extends StatefulWidget {
 class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
       Get.put(OwnerStoresController());
+
+  @override
+  void initState() {
+    // ownerStoresController.isFromHome.value =widget.isFromHome;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -379,15 +386,14 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Obx(
-                                () => Text(
+                              Text(
                                   "${StringConstants.hiText}${widget.firstName} ${widget.lastName}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
-                              ),
+
                               Text(
                                 StringConstants.searchForStoreText,
                                 style: const TextStyle(

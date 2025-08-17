@@ -30,24 +30,17 @@ class TransactionDetailController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-    // firstName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-    //         "";
-    // lastName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-    //         "";
-
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     storeWalletTransactionId!.value =
         Get.parameters['store_wallet_transaction_id'] ?? "";
-    storeId!.value = Get.parameters['store_id'] ?? "";
+    // storeId!.value = Get.parameters['store_id'] ?? "";
     isCurrentMonthSelected.value = true;
     if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerTransactionDetail();
+      await apiGetOwnerTransactionDetail();
     }
   }
 

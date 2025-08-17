@@ -10,7 +10,8 @@ import 'add_offer_screen.dart';
 class EditOfferScreen extends StatefulWidget {
   final String? storeId;
   final String? offerId;
-  const EditOfferScreen({super.key, this.storeId, this.offerId});
+  final String? isFrom;
+  const EditOfferScreen({super.key, this.storeId, this.offerId, this.isFrom});
 
   @override
   State<EditOfferScreen> createState() => _EditOfferScreenState();
@@ -19,6 +20,15 @@ class EditOfferScreen extends StatefulWidget {
 class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
   final AddOffersController addOffersController =
       Get.put(AddOffersController());
+
+  @override
+  void initState() {
+    addOffersController.isFrom.value = widget.isFrom??"";
+    addOffersController.offerId.value = widget.offerId??"";
+    addOffersController.storeIdValue.value = widget.storeId??"";
+    addOffersController.apiGetStoreProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +49,7 @@ class _EditOfferScreenState extends State<EditOfferScreen>with GlobalVarMixin {
                       Row(
                         children: [
                           IconButton(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(10),
                             constraints: const BoxConstraints(),
                             onPressed: () {
                               Get.back(id: pageIdApp.value);

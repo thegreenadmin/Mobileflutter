@@ -76,13 +76,13 @@ class AddNewWorkerController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      storeName.value = Get.parameters["storeName"] ?? "";
-      apiGetUserStoreList();
-      apiGetWorkerList();
-      apiGetRoleList();
-      apiGetParticularStore();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // storeId.value= Get.parameters["storeId"] ?? "";
+      // storeName.value = Get.parameters["storeName"] ?? "";
+      await  apiGetUserStoreList();
+      await apiGetWorkerList();
+      await apiGetRoleList();
+      await  apiGetParticularStore();
       getPage();
 
     });

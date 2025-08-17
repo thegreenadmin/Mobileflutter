@@ -51,8 +51,8 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
   // RxString? lastName = "".obs;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getPage();
     });
@@ -63,8 +63,8 @@ class AddNewRoleController extends GetxController with GlobalVarMixin{
 
     var roleVal = await SharedPreferenceStorage.getData(strings.Role.role);
     role?.value = roleVal;
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
+    // storeId.value = Get.parameters["storeId"] ?? "";
+    // storeName.value = Get.parameters["storeName"] ?? "";
     await apiGetControllers();
     await apiGetStoreRole();
   }

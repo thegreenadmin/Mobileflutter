@@ -95,8 +95,139 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   ].obs;
 
 
+  final CameraPosition kGooglePlex = const CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  // --- Lifecycle ---
+  @override
+  void onInit() {
+    super.onInit();
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
+
+    _setupScrollControllers();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    _initAfterFirstFrame();
+  }
+
+  @override
+  void onClose() {
+    // Always dispose controllers to prevent leaks
+    nearByStoresScrollController.dispose();
+    previousStoresScrollController.dispose();
+    favouriteStoresScrollController.dispose();
+    super.onClose();
+  }
+
+  // --- Initializers ---
+  void _setupScrollControllers() {
+    nearByStoresScrollController.addListener(_nearbyScrollListener);
+    previousStoresScrollController.addListener(_previousScrollListener);
+    favouriteStoresScrollController.addListener(_favouriteScrollListener);
+  }
+
+  Future<void> _initAfterFirstFrame() async {
+    await _checkPermissionAndInit();
+    await getPage();
+  }
+
+  // --- Scroll Listeners ---
+  Future<void> _nearbyScrollListener() async {
+    if (nearByStoresScrollController.position.pixels >=
+        nearByStoresScrollController.position.maxScrollExtent - 50) {
+      bool hasMore = storeAddresses.length < totalCount.value;
+      bool canLoad = !isClicked.value;
+      int maxPage = (totalCount.value / 5).ceil();
+
+      if (hasMore && canLoad && page.value < maxPage) {
+        isClicked.value = true;
+        page.value++;
+        await apiGetNearByStores();
+        isClicked.value = false; // reset after completion
+      }
+    }
+  }
+
+  Future<void> _previousScrollListener() async {
+    if (previousStoresScrollController.position.pixels >=
+        previousStoresScrollController.position.maxScrollExtent - 10) {
+      if (previousStore.length < totalCount.value && !isLoading.value) {
+        isLoading.value = true;
+        page.value++;
+        await apiGetPreviousStores();
+        isLoading.value = false;
+      }
+    }
+  }
+
+  Future<void> _favouriteScrollListener() async {
+    if (favouriteStoresScrollController.position.pixels >=
+        favouriteStoresScrollController.position.maxScrollExtent - 10) {
+      if (favouriteStore.length < totalCount.value && !isLoading.value) {
+        isLoading.value = true;
+        page.value++;
+        await apiGetFavoriteStores();
+        isLoading.value = false;
+      }
+    }
+  }
+
+  // --- Permissions ---
+  Future<void> _checkPermissionAndInit() async {
+    final status = await permission.Permission.location.request();
+    permissionStatus.value = status;
+
+    if (status.isDenied || status.isPermanentlyDenied) {
+      Utility.showConfirmAlertMessage(
+        AlertStringConstants.alertText,
+        description: Platform.isAndroid
+            ? AlertStringConstants.locationAndroidAlertText
+            : AlertStringConstants.locationAlertText,
+        okay: StringConstants.settingsText,
+        cancelText: StringConstants.notNowText,
+        okayTap: () async {
+          await permission.openAppSettings();
+          await permission.Permission.location.request();
+          await getPage();
+          apiActiveCartApi(); // one-time trigger
+          Get.back();
+        },
+      );
+    } else {
+      // If granted → init location + map
+      await updateCurrentLocation();
+    }
+  }
+
+  // --- Map Updates ---
+  Future<void> updateCurrentLocation() async {
+    final currentLocation = await Utility.fetchCurrentLocation();
+    lat.value = currentLocation.latitude;
+    lng.value = currentLocation.longitude;
+
+    await updateMap(lat.value, lng.value);
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    final data = await rootBundle.load(path);
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    final fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+
+  // --- Page setup ---
+  Future<void> getPage() async {
+    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+  }
+
    setupNearByStoresScrollController() {
-    nearByStoresScrollController.addListener(() {
+    nearByStoresScrollController.addListener(() async {
       if (nearByStoresScrollController.position.pixels >=
           nearByStoresScrollController.position.maxScrollExtent - 50) {
 
@@ -113,32 +244,32 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           }
           isClicked.value = true; // PREVENT DOUBLE API CALLS!
           page.value++;
-          apiGetNearByStores();
+          await apiGetNearByStores();
         }
       }
     });
   }
 
   void setupPreviousStoresScrollController() {
-    previousStoresScrollController.addListener(() {
+    previousStoresScrollController.addListener(() async {
       if (previousStoresScrollController.position.pixels >=
           previousStoresScrollController.position.maxScrollExtent - 10) {
         if (previousStore.length < totalCount.value && !isLoading.value) {
           page.value++;
-          apiGetPreviousStores();
+          await apiGetPreviousStores();
         }
       }
     });
   }
 
   void setupFavoriteStoresScrollController() {
-    favouriteStoresScrollController.addListener(() {
+    favouriteStoresScrollController.addListener(() async {
       log("Favorite scroll position: ${favouriteStoresScrollController.position.pixels}");
       if (favouriteStoresScrollController.position.pixels >=
           favouriteStoresScrollController.position.maxScrollExtent - 10) {
         if (favouriteStore.length < totalCount.value && !isLoading.value) {
           page.value++;
-          apiGetFavoriteStores();
+          await  apiGetFavoriteStores();
         }
       }
     });
@@ -149,14 +280,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
 
-  final CameraPosition kGooglePlex = const CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    // zoom: 14.4746,
-    zoom: 50.4746,
-  );
   RxMap<MarkerId, Marker> markers = <MarkerId, Marker>{}.obs;
 
-  @override
+/*  @override
   void onInit() {
     super.onInit();
     kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
@@ -168,12 +294,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
 
       getPage();
-      log("🧪 type value onInit: ${type.value}");
 
     });
-  }
+  }*/
 
-  void updateMap(latitude, longitude, {isSearchVal = false}) async {
+  Future<void> updateMap(latitude, longitude, {isSearchVal = false}) async {
     CameraPosition kLake =
         CameraPosition(bearing: 192.8334901395799, target: LatLng(latitude, longitude), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await googleMapController.future;
@@ -188,7 +313,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     updateMarker(lat.value, lng.value);
   }
 
-  void updateMarker(latitude, longitude) async {
+  Future<void> updateMarker(latitude, longitude) async {
     const MarkerId markerId = MarkerId("12345");
     final Uint8List markerIcon = await getBytesFromAsset(ImageConstants.marker, 20);
     final Marker marker = Marker(
@@ -201,29 +326,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   late GlobalConfigs secureData;
 
-  void updateCurrentLocation() async {
-    // secureData = await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
-    // kGoogleApiKey = secureData.configs['kGoogleApiKey'];
-    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
 
 
-
-    Position currentLocation = await Utility.fetchCurrentLocation();
-
-    lng.value = currentLocation.longitude;
-    lat.value = currentLocation.latitude;
-    print("updateCurrentLocation-----------------");
-    updateMap(currentLocation.latitude, currentLocation.longitude);
-  }
-
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
-  }
-
-  void _listenForPermissionStatus() async {
+  Future<void> _listenForPermissionStatus() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var status = await permission.Permission.location.request();
       permissionStatus.value = status;
@@ -259,15 +364,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-  getPage() async {
-    firstName?.value = await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value = await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    // if (searchController.hasListeners) {
-    //   searchController.clear(); // or any safe usage
-    // }
-
-  }
-
+ ///---------------------------------------------------------------------------------
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
@@ -919,12 +1016,4 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     });
   }
 
-  @override
-  void onClose() {
-    nearByStoresScrollController.dispose();
-    previousStoresScrollController.dispose();
-    favouriteStoresScrollController.dispose();
-    // searchController.dispose();
-    super.onClose();
-  }
 }

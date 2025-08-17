@@ -221,7 +221,7 @@ class AddNewCategoryController extends GetxController  with GlobalVarMixin{
         // Get.parameters["categoryId"] = value?.body['data']['category_id'];
 
         Get.find<ManageStoreController>().onInit();
-        Get.to(() =>  AddNewProductScreen(
+       await Get.to(() =>  AddNewProductScreen(
           categoryId: value?.body['data']['category_id'],categoryName: categoryNameTextController.text,
         ), id: pageIdApp.value);
         categoryNameTextController.clear();

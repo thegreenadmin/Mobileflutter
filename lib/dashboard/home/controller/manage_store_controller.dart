@@ -108,40 +108,48 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
       apiUploadMultipleImage(imageUrlList.length);
     }
   }
-
   @override
   void onInit() {
     super.onInit();
-    getPage();
-  }
-
-  getPage() async {
+    // local setup only
     role?.value = roleApp.value;
     isFeaturedTypeSelected.value = false;
-    if (Get.parameters["storeId"] != "") {
-      storeId.value = Get.parameters["storeId"] ?? "";
-    }
-    if (Get.parameters["storeName"] != "") {
-      storeName.value = Get.parameters["storeName"] ?? "";
-    }
-    if (Get.parameters["storeLocation"] != "") {
-      storeLocation.value = Get.parameters["storeLocation"] ?? "";
-    }
-    if (Get.parameters["categoryName"] != "") {
-      categoryName.value = Get.parameters["categoryName"] ?? "";
-    }
-    if (Get.parameters["categoryId"] != "") {
-      categoryId.value = Get.parameters["categoryId"] ?? "";
-    }
+  }
 
+  @override
+  void onReady() {
+    super.onReady();
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    role?.value = roleApp.value;
+    isFeaturedTypeSelected.value = false;
+    // if (Get.parameters["storeId"] != "") {
+    //   storeId.value = Get.parameters["storeId"] ?? "";
+    // }
+    // if (Get.parameters["storeName"] != "") {
+    //   storeName.value = Get.parameters["storeName"] ?? "";
+    // }
+    // if (Get.parameters["storeLocation"] != "") {
+    //   storeLocation.value = Get.parameters["storeLocation"] ?? "";
+    // }
+    // if (Get.parameters["categoryName"] != "") {
+    //   categoryName.value = Get.parameters["categoryName"] ?? "";
+    // }
+    // if (Get.parameters["categoryId"] != "") {
+    //   categoryId.value = Get.parameters["categoryId"] ?? "";
+    // }
+
+     /// for edit product -0---
     await apiGetCategoriesList();
-    apiGetQuantityList();
-    if (Get.parameters["productId"] != "" && Get.parameters["storeId"] != "") {
-      storeId.value = Get.parameters["storeId"] ?? "";
-      productId.value = Get.parameters["productId"] ?? "";
+    await apiGetQuantityList();
+    /* if (productId.value != "" && storeId.value != "") {
+    //   storeId.value = Get.parameters["storeId"] ?? "";
+    //   productId.value = Get.parameters["productId"] ?? "";
       apiGetStoreProducts();
       apiGetProductDetails();
-    }
+    }*/
   }
 
   RxList<Map<String, dynamic>> weekDaysList = <Map<String, dynamic>>[
@@ -542,11 +550,16 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
             imagesList2.add(img);
           }
         }
+        print("${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}");
+        print("product details -");
+        print("${value?.body["data"]['product']}");
+
         inputData.productImages = imageUrlList;
         discountOrOfferTextController.text =
             value?.body["data"]['product']["discount_value"].toString()??"";
         quantityValue.value =
             value?.body["data"]['product']["quantity_type_id"].toString()??"";
+
         quantityTextController.text =
             value?.body["data"]['product']["quantity"].toString()??"";
 
@@ -724,9 +737,9 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
 
         resetForm();
 
-        if (Get.parameters['isFromHome'] == "true") {
-          Get.delete<ManageStoreController>();
-        }
+        // if (Get.parameters['isFromHome'] == "true") {
+        //   Get.delete<ManageStoreController>();
+        // }
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

@@ -930,18 +930,17 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                 ordersHomeMainController
                                     .isFromNotification.value,
                             child:
-                            InkWell(
-                              radius: 50,
-                              onTap: () {
+                            IconButton(
+                              splashRadius: 40,
+                              padding: EdgeInsets.all(10),
+                              constraints: const BoxConstraints(),
+                              onPressed: () {
                                 Get.back(id: pageIdApp.value);
                               },
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: AppColors.white,
-                                  size: 24.0,
-                                ),
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: AppColors.white,
+                                size: 26.0,
                               ),
                             ),
 

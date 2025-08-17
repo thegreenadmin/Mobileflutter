@@ -103,8 +103,8 @@ class AccountController extends GetxController with GlobalVarMixin {
 
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
     // isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
          apiGetUserDetailApi();

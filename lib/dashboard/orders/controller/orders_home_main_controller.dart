@@ -41,40 +41,103 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   Rx<GetStoreOrderDetailModel> getStoreOrderDetailModel = GetStoreOrderDetailModel().obs;
   RxList<OrderItem> getOrderItems = <OrderItem>[].obs;
   RxList<OrderHistories> orderHistories = <OrderHistories>[].obs;
+  final scrollController = ScrollController();
 
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-      role!.value = roleData;
+    _initLocalRole();
+    _setupScrollController();
+  }
 
-      if (Get.parameters["isController"] != "no") {
-        isFromNotification.value = Get.parameters["isFromNotification"] == "true" ? true : false;
+  @override
+  void onReady() {
+    super.onReady();
+    _initApiCalls();
+  }
 
-        if (Get.parameters["storeId"] != "" && Get.parameters["storeId"] != null) {
-          storeId.value = Get.parameters["storeId"] ?? "";
+  Future<void> _initLocalRole() async {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role!.value = roleData;
+  }
+
+  Future<void> _initApiCalls() async {
+    if (Get.parameters["isController"] != "no") {
+      // only call if needed
+      if (orderId.value.isNotEmpty) {
+        await apiGetStoreOrderDetail();
+      }
+
+      if (Get.parameters["storeCount"]?.isNotEmpty ?? false) {
+        storeCount.value = Get.parameters["storeCount"]!;
+      }
+
+      if (storeId.value.isNotEmpty) {
+        await apiGetStoreDetails();
+      }
+
+      role!.value = Role.storeOwnerRoleText;
+
+      await apiGetOwnerOrderHistory();
+      await getPage();
+    }
+  }
+
+  void _setupScrollController() {
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 10) {
+        if (!preventCall.value &&
+            ownerOrderHistoryList!.length < totalCount.value) {
+          preventCall.value = true;
+          page.value++;
+          await apiGetOwnerOrderHistory();
+          preventCall.value = false;
         }
-        if (Get.parameters["orderId"] != "" && Get.parameters["orderId"] != null) {
-
-          orderId.value = Get.parameters["orderId"] ?? "";
-          apiGetStoreOrderDetail();
-        }
-        if (Get.parameters["storeCount"] != "" &&
-            Get.parameters["storeCount"] != null) {
-          storeCount.value = Get.parameters["storeCount"] ?? "";
-        }
-
-        apiGetStoreDetails();
-        setupScrollController();
-        role!.value = Role.storeOwnerRoleText;
-        apiGetOwnerOrderHistory();
-        getPage();
       }
     });
   }
 
-  final scrollController = ScrollController();
+  Future<void> getPage() async {
+    firstName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName?.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    role?.value = await SharedPreferenceStorage.getData(Role.role) ?? "";
+  }
+
+/*
+  @override
+  void onInit() {
+    super.onInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+      role!.value = roleData;
+
+      if (Get.parameters["isController"] != "no") {
+        // only call if needed
+        if (orderId.value.isNotEmpty) {
+          await apiGetStoreOrderDetail();  // wait for it to finish
+        }
+
+        if (Get.parameters["storeCount"]?.isNotEmpty ?? false) {
+          storeCount.value = Get.parameters["storeCount"]!;
+        }
+
+        if (storeId.value.isNotEmpty) {
+          await apiGetStoreDetails(); // wait for it to finish
+        }
+
+        setupScrollController();
+
+        role!.value = Role.storeOwnerRoleText;
+
+        await apiGetOwnerOrderHistory(); // sequential
+        getPage(); // only after above APIs finish
+      }
+    });
+  }
+
   setupScrollController() {
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
@@ -99,7 +162,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
-  }
+  }*/
 
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);

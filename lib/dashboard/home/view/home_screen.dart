@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   final AccountController accountController = Get.put(AccountController());
 
   final HomeController homeController = Get.put(HomeController());
+
   Future<void> _pullRefresh() async {
     homeController.onInit();
   }
@@ -46,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
   }
 
   @override
@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -70,31 +69,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     );
   }
 
-   buildBody() {
+  buildBody() {
     return Stack(
       children: [
         RefreshIndicator(
           onRefresh: _pullRefresh,
           child: ListView(/*crossAxisAlignment: CrossAxisAlignment.start,*/ children: [
-              _buildAppbar(), 
-              Padding(
+            _buildAppbar(),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(() => roleApp.value == Role.customerRoleText
+                  Obx(() =>
+                  roleApp.value == Role.customerRoleText
                       ? _buildCarouselSlider(
-                          offersCarouselList: homeController.userCarouselImgList,
-                          featuredProductList:
-                              homeController.featuredUserProductList)
+                      offersCarouselList: homeController.userCarouselImgList,
+                      featuredProductList:
+                      homeController.featuredUserProductList)
                       : _buildCarouselSlider(
-                          offersCarouselList: homeController.getOwnerOfferList ,
-                          featuredProductList:
-                              homeController.ownerFeatureProductList)),
+                      offersCarouselList: homeController.getOwnerOfferList,
+                      featuredProductList:
+                      homeController.ownerFeatureProductList)),
                   height20SizedBox,
                   _buildFeatureProductText(),
                   height20SizedBox,
                   Obx(
-                        () => roleApp.value == Role.customerRoleText
+                        () =>
+                    roleApp.value == Role.customerRoleText
                         ? _buildProductsCarousel(
                         featuredProductList:
                         homeController.featuredUserProductList)
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                   )
                 ],
               ),
-              ),
+            ),
           ]),
 
         ),
@@ -124,24 +125,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
 
   Obx _buildFeatureProductText() {
     return Obx(
-      () => (roleApp.value == Role.customerRoleText && homeController.featuredUserProductList.isEmpty )||
-             (roleApp.value == Role.storeOwnerRoleText &&  homeController.ownerFeatureProductList.isEmpty)
+          () =>
+      (roleApp.value == Role.customerRoleText && homeController.featuredUserProductList.isEmpty) ||
+          (roleApp.value == Role.storeOwnerRoleText && homeController.ownerFeatureProductList.isEmpty)
           ? height0SizedBox
           : Text(
-              StringConstants.featuredProductsText,
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20),
-            ),
+        StringConstants.featuredProductsText,
+        style: const TextStyle(
+            color: AppColors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 20),
+      ),
     );
   }
 
-   _buildAppbar() {
+  _buildAppbar() {
     return Container(
       color: AppColors.primaryLight,
       child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 4, top: 20,bottom: 10),
+          padding: const EdgeInsets.only(left: 8.0, right: 4, top: 20, bottom: 10),
           child: Column(
             children: [
               buildTitle(),
@@ -156,24 +158,24 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         onPressed: () async {
                           roleApp.value == Role.customerRoleText
                               ? Get.to(() => const UserInboxScreen(),
-                                  id: pageIdApp.value)
+                              id: pageIdApp.value)
                               : hasStoreAccess.value &&
-                                          permissionStoreList.isEmpty ||
-                                      permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true ||
-                                          element.controllers!.any((ele) =>
-                                              ele.controllerKey ==
-                                              PermissionKey
-                                                  .manageMessages.statusName))
-                                  ? await Get.to(() => const OwnerInboxScreen(),
-                                      id: pageIdApp.value)
-                                  : Utility.showAlertMessage(
-                                      AlertStringConstants
-                                          .notAuthorizedToStoreText);
+                              permissionStoreList.isEmpty ||
+                              permissionStoreList.any((element) =>
+                              element.isStoreOwner == true ||
+                                  element.controllers!.any((ele) =>
+                                  ele.controllerKey ==
+                                      PermissionKey
+                                          .manageMessages.statusName))
+                              ? await Get.to(() => const OwnerInboxScreen(),
+                              id: pageIdApp.value)
+                              : Utility.showAlertMessage(
+                              AlertStringConstants
+                                  .notAuthorizedToStoreText);
                         },
                         constraints: const BoxConstraints(),
                         padding:
-                            const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
+                        const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
                         shape: RoundedRectangleBorder(
                           side: const BorderSide(
                               width: 1.0, color: AppColors.primary),
@@ -204,128 +206,116 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                         ),
                       ),
                       width8SizedBox,
-                      Obx(() => hasStoreAccess.value
+                      Obx(() =>
+                      hasStoreAccess.value
                           ? RawMaterialButton(
-                              elevation: 0,
-                              onPressed: () async {
-                                if (roleApp.value == Role.customerRoleText) {
-                                  // Get.parameters["firstName"] =
-                                  //     firstName.value.toString();
-                                  // Get.parameters["lastName"] =
-                                  //     lastName.value.toString();
-                                  //
-                                  // Get.parameters["isFromHome"] = "true";
-                                  // Get.parameters["isFromFav"] = "false";
-                                  // Get.parameters["isFromMenu"] = "false";
-                                  await Get.to(
-                                    () =>  SearchStoreUserScreen(
-                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
-                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
-                                    ),
-                                    id: pageIdApp.value,
-
-                                    // arguments: {
-                                      // },
-                                  );
-                                } else {
-                                  // Get.parameters["isFromHome"] = 'false';
-                                  // Get.parameters["firstName"] =
-                                  //     firstName.value.toString();
-                                  // Get.parameters["lastName"] = lastName.value;
-                                  // Get.parameters['storeId'] = "";
-                                  await Get.to(
-                                    () => OwnerStoresListScreen(
-                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
-                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
-                                    ),
-                                    id: pageIdApp.value,
-                                  );
-                                }
-                              },
-                              constraints: const BoxConstraints(),
-                              padding: const EdgeInsets.fromLTRB(
-                                  2.0, 2.0, 10.0, 2.0),
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 1.0, color: AppColors.primary),
-                                borderRadius: BorderRadius.circular(28.0),
-                              ),
-                              fillColor: AppColors.white,
-                              child: Row(
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primary,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Image.asset(
-                                        ImageConstants.storeUnion,
-                                        scale: 2.2,
-                                        color: AppColors.white,
-                                      )),
-                                  width4SizedBox,
-                                  Text(
-                                    StringConstants.storesText,
-                                    style: const TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w500),
+                        elevation: 0,
+                        onPressed: () async {
+                          if (roleApp.value == Role.customerRoleText) {
+                            await Get.to(
+                                  () =>
+                                  SearchStoreUserScreen(
+                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
                                   ),
-                                ],
-                              ),
-                            )
+                              id: pageIdApp.value,
+
+                              // arguments: {
+                              // },
+                            );
+                          } else {
+                            await Get.to(
+                                  () =>
+                                  OwnerStoresListScreen(
+                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    isFromHome: false,
+                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                  ),
+                              id: pageIdApp.value,
+                            );
+                          }
+                        },
+                        constraints: const BoxConstraints(),
+                        padding: const EdgeInsets.fromLTRB(
+                            2.0, 2.0, 10.0, 2.0),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1.0, color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(28.0),
+                        ),
+                        fillColor: AppColors.white,
+                        child: Row(
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius:
+                                  BorderRadius.circular(100),
+                                ),
+                                child: Image.asset(
+                                  ImageConstants.storeUnion,
+                                  scale: 2.2,
+                                  color: AppColors.white,
+                                )),
+                            width4SizedBox,
+                            Text(
+                              StringConstants.storesText,
+                              style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      )
                           : RawMaterialButton(
-                              elevation: 0,
-                              onPressed: () async {
-                                if (roleApp.value == Role.customerRoleText) {
-                                  await Get.to(
-                                    () =>  SearchStoreUserScreen(
-                                      firstName: homeController.getUserDetailModel.data?.user?.firstName ??"",
-                                      lastName: homeController.getUserDetailModel.data?.user?.firstName ??"",
+                        elevation: 0,
+                        onPressed: () async {
+                          if (roleApp.value == Role.customerRoleText) {
+                            await Get.to(
+                                  () =>
+                                  SearchStoreUserScreen(
+                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
 
-                                    ),
-                                    id: pageIdApp.value,
-                                    // arguments: {
-                                    //   "firstName": firstName.value,
-                                    //   "lastName": lastName.value,
-                                    // },
-                                  );
-                                }
-                              },
-                              constraints: const BoxConstraints(),
-                              padding: const EdgeInsets.fromLTRB(
-                                  2.0, 2.0, 10.0, 2.0),
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 1.0, color: AppColors.primary),
-                                borderRadius: BorderRadius.circular(28.0),
-                              ),
-                              fillColor: AppColors.white,
-                              child: Row(
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primary,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Image.asset(
-                                        ImageConstants.storeUnion,
-                                        scale: 2.2,
-                                        color: AppColors.white,
-                                      )),
-                                  width5SizedBox,
-                                  Text(
-                                    StringConstants.storesText,
-                                    style: const TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w500),
                                   ),
-                                ],
-                              ),
-                            ))
+                              id: pageIdApp.value,
+                            );
+                          }
+                        },
+                        constraints: const BoxConstraints(),
+                        padding: const EdgeInsets.fromLTRB(
+                            2.0, 2.0, 10.0, 2.0),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1.0, color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(28.0),
+                        ),
+                        fillColor: AppColors.white,
+                        child: Row(
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius:
+                                  BorderRadius.circular(100),
+                                ),
+                                child: Image.asset(
+                                  ImageConstants.storeUnion,
+                                  scale: 2.2,
+                                  color: AppColors.white,
+                                )),
+                            width5SizedBox,
+                            Text(
+                              StringConstants.storesText,
+                              style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ))
                     ],
                   ),
                   Row(
@@ -334,18 +324,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           elevation: 0,
                           onPressed: () async {
                             hasStoreAccess.value &&
-                                        permissionStoreList.isEmpty ||
-                                    permissionStoreList.any((element) =>
-                                        element.isStoreOwner == true ||
-                                        element.controllers!.any((ele) =>
-                                            ele.controllerKey ==
-                                            PermissionKey.manageTransaction
-                                                .statusName))
-                                ?await  Get.to(() => const TransactionScreen(),
-                                    id: pageIdApp.value)
+                                permissionStoreList.isEmpty ||
+                                permissionStoreList.any((element) =>
+                                element.isStoreOwner == true ||
+                                    element.controllers!.any((ele) =>
+                                    ele.controllerKey ==
+                                        PermissionKey.manageTransaction
+                                            .statusName))
+                                ? await Get.to(() => const TransactionScreen(),
+                                id: pageIdApp.value)
                                 : Utility.showAlertMessage(
-                                    AlertStringConstants
-                                        .notAuthorizedToStoreText);
+                                AlertStringConstants
+                                    .notAuthorizedToStoreText);
                           },
                           constraints: const BoxConstraints(),
                           padding: const EdgeInsets.all(14.0),
@@ -362,9 +352,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       RawMaterialButton(
                           elevation: 0,
                           onPressed: () {
-                            // Get.parameters["isFromCart"] = "false";
                             Get.to(() => const AccountScreen(),
-                                    id: pageIdApp.value,)
+                              id: pageIdApp.value,)
                                 ?.then((value) {
                               homeController.isLoading.value = true;
                               homeController.apiGetUserDetail();
@@ -391,209 +380,243 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     );
   }
 
-   Row buildTitle() {
-     return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Obx(() => Text(
-                            "${StringConstants.hiText}${firstName.value} ${lastName.value}",
-                            style: const TextStyle(
-                                fontSize: 18,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600),
-                          )),
-                      Text.rich(
-                        TextSpan(
+  Row buildTitle() {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(() =>
+                  Text(
+                    "${StringConstants.hiText}${firstName.value} ${lastName.value}",
+                    style: const TextStyle(
+                        fontSize: 18,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600),
+                  )),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: StringConstants.welcomeToText,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' T',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: 'he',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' G',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: 'reen',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' M',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: 'all',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Obx(
+                    () =>
+                    Visibility(
+                      visible: roleApp.value == Role.customerRoleText &&
+                          homeController.cartCount.value != 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TextSpan(
-                              text: StringConstants.welcomeToText,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: ' T',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: 'he',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 17,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: ' G',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: 'reen',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: ' M',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: 'all',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Obx(
-                        () => Visibility(
-                          visible: roleApp.value == Role.customerRoleText &&
-                              homeController.cartCount.value != 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        if(homeController.isLoading.value == false){
-
-                                          // Get.parameters["storeId"] =
-                                          //     homeController.storeIdValue?.value;
-                                          await Get.to(() =>  CartScreen(storeId:homeController.storeIdValue?.value), id: pageIdApp.value)
-                                              ?.then((value) => homeController.apiActiveCartApi());
-                                        }
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 18.0,
-                                            backgroundColor: Colors.white,
-                                            child: Image.asset(
-                                                ImageConstants.cart,
-                                                height: 14),
-                                          ),
-                                          Positioned(
-                                            right: 0,
-                                            top: 0,
-                                            child: Container(
-                                                padding: const EdgeInsets.all(1.5),
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8.5),
-                                                ),
-                                                constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
-                                                child: Obx(
-                                                  () => Text(
+                                InkWell(
+                                  onTap: () async {
+                                    if (homeController.isLoading.value == false) {
+                                      // Get.parameters["storeId"] =
+                                      //     homeController.storeIdValue?.value;
+                                      await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value)
+                                          ?.then((value) => homeController.apiActiveCartApi());
+                                    }
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 18.0,
+                                        backgroundColor: Colors.white,
+                                        child: Image.asset(
+                                            ImageConstants.cart,
+                                            height: 14),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: Container(
+                                            padding: const EdgeInsets.all(1.5),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.red,
+                                              borderRadius:
+                                              BorderRadius.circular(8.5),
+                                            ),
+                                            constraints: const BoxConstraints(minWidth: 15, minHeight: 15,),
+                                            child: Obx(
+                                                  () =>
+                                                  Text(
                                                     homeController.cartCount.toString(),
                                                     style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 8,
                                                     ), textAlign: TextAlign.center,
                                                   ),
-                                                )),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                            )),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          if (homeController.isLoading.value == false) {
-                            Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
-                          }
-                        },
-                        child: const Icon(
-                          Icons.notifications_active,
-                          color: AppColors.primary,
-                          size: 24.0,
-                        ),
-                      ),
-                      width10SizedBox,
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      ),
-                    ],
-                  )
-                ]);
-   }
+                    ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (homeController.isLoading.value == false) {
+                    Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
+                  }
+                },
+                child: const Icon(
+                  Icons.notifications_active,
+                  color: AppColors.primary,
+                  size: 24.0,
+                ),
+              ),
+              width10SizedBox,
+              Image.asset(
+                ImageConstants.homeMall,
+                scale: 4,
+              ),
+            ],
+          )
+        ]);
+  }
 
-  _buildCarouselSlider(
-          {RxList<OffersList>? offersCarouselList,
-          RxList<ProductsList>? featuredProductList}) =>
+  _buildCarouselSlider({RxList<OffersList>? offersCarouselList,
+    RxList<ProductsList>? featuredProductList}) =>
       Column(crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
-        offersCarouselList!.isEmpty
-            ? SizedBox(
-                height:
-                    offersCarouselList.isEmpty && featuredProductList!.isEmpty
-                        ? WidgetConstants.screenHeight * 0.60
-                        : WidgetConstants.screenHeight * 0.30,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      ImageConstants.greenmall420,
-                    ),
-                    Text(
-                      StringConstants.welcomeToGreenMallText,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primary),
-                    )
-                  ],
-                ),
-              )
-            : CarouselSlider(
-                items: offersCarouselList
-                    .take(5)
-                    .map((item) => InkWell(
-                          onTap: () async {
-                            if (homeController.isLoading.value == false) {
-                              if (roleApp.value == Role.customerRoleText) {
-                               /* Get.parameters["isFromMenu"] = "true";
+            offersCarouselList!.isEmpty
+                ? SizedBox(
+              height:
+              offersCarouselList.isEmpty && featuredProductList!.isEmpty
+                  ? WidgetConstants.screenHeight * 0.60
+                  : WidgetConstants.screenHeight * 0.30,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    ImageConstants.greenmall420,
+                  ),
+                  Text(
+                    StringConstants.welcomeToGreenMallText,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.primary),
+                  )
+                ],
+              ),
+            )
+                : CarouselSlider(
+              items: offersCarouselList.take(5)
+                  .map((item) =>
+                  Obx(() {
+                    return InkWell(
+                      onTap: () async {
+                        if (homeController.isLoading.value == false) {
+                          if (roleApp.value == Role.customerRoleText) {
+                            if (item.isOfferForStore == false) {
+                              await Get.to(() =>
+                                    StoreHomeMainScreen(
+                                      args: StoreHomeMainArgs(
+                                        storeId: item.storeId ?? "",
+                                        productId: item.productId ?? "",
+                                        invokedIndex: item.isOfferForStore == true ? 0 : 2,
+                                        isFromMenu: true,
+                                        isFromFav: false,
+                                        isFromHome: false,
+                                        isFromOptions: false,
+                                      ),
+                                    ),
+                                id: pageIdApp.value,
+                              );
+                              }else{
+
+                              await Get.to(() =>
+                                    StoreHomeMainScreen(
+                                      args: StoreHomeMainArgs(
+                                        storeId: item.storeId ?? "",
+                                        invokedIndex: item.isOfferForStore == true ? 0 : 2,
+                                        isFromMenu: false,
+                                        isFromFav: false,
+                                        isFromHome: true,
+                                        isFromOptions: false,
+                                      ),
+                                    ),
+                                id: pageIdApp.value,
+                              );
+                            }
+
+                            /* Get.parameters["isFromMenu"] = "true";
                                 Get.parameters['isFromFav'] = "false";
                                 Get.parameters["isFromHome"] = "false";
                                 Get.parameters["isFromOptions"] = "false";
@@ -608,38 +631,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                 }
 
                                 Get.parameters["storeId"] = item.storeId ?? "";*/
-                                await Get.to(() =>  StoreHomeMainScreen(
-                                   args:  StoreHomeMainArgs(
-                                      storeId: item.storeId ?? "",
-                                      productId: homeController.featuredUserProductList[0].productId ?? "",
-                                      invokedIndex: item.isOfferForStore == true?0:2,
-                                      isFromMenu: true,isFromFav: false,
-                                      isFromHome: false, isFromOptions: false,
-                                    )
-                                ),
-                                    id: pageIdApp.value);
-                              } else {
-                                // Get.parameters["isFromHome"] = "false";
-                                // Get.parameters["storeId"] =
-                                //     item.store!.storeId ?? "";
-                                Get.to(() => ManageStoreMainScreen(
-                                    storeId:item.store!.storeId ?? ""),
-                                    id: pageIdApp.value,);
-                              }
-                            }
-                          },
-                          child: Center(
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  child: Stack(
-                                      children: <Widget>[
+
+                          } else {
+                            // Get.parameters["isFromHome"] = "false";
+                            // Get.parameters["storeId"] =
+                            //     item.store!.storeId ?? "";
+                            Get.to(() =>
+                                ManageStoreMainScreen(
+                                    storeId: item.store!.storeId ?? ""),
+                              id: pageIdApp.value,);
+                          }
+                        }
+                      },
+                      child: Center(
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6.0),
+                              child: Stack(
+                                  children: <Widget>[
                                     CommonWidgets.cachedNetworkImage(
                                         item.image?.dynamicUrl.toString() ?? "",
                                         assetImg: ImageConstants.nopicfound,
                                         height:
-                                            WidgetConstants.screenHeight * 0.28,
+                                        WidgetConstants.screenHeight * 0.28,
                                         width:
-                                            WidgetConstants.screenWidth * 0.85),
+                                        WidgetConstants.screenWidth * 0.85),
                                     Positioned(
                                       bottom: 0.0,
                                       left: 0.0,
@@ -658,7 +673,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
                                         child: Text(
-                                          offersCarouselList.where((p0) => item == p0).first.store?.storeName ?? "",
+                                          offersCarouselList
+                                              .where((p0) => item == p0)
+                                              .first
+                                              .store
+                                              ?.storeName ?? "",
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
@@ -668,26 +687,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                       ),
                                     ),
                                   ]))),
-                        ))
-                    .toList(),
-                carouselController: _controller,
-                options: CarouselOptions(
-                    enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    viewportFraction: 1.2,
-                    enlargeCenterPage: false,
-                    autoPlay: true,
-                    aspectRatio: 1.5,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    }),
-              ),
-        height5SizedBox,
-        Obx(() => offersCarouselList.isEmpty
-            ? height0SizedBox
-            : Row(
+                    );
+                  }))
+                  .toList(),
+              carouselController: _controller,
+              options: CarouselOptions(
+                  enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  viewportFraction: 1.2,
+                  enlargeCenterPage: false,
+                  autoPlay: true,
+                  aspectRatio: 1.5,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
+                  }),
+            ),
+            height5SizedBox,
+            Obx(() =>
+            offersCarouselList.isEmpty
+                ? height0SizedBox
+                : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: offersCarouselList
                   .take(5)
@@ -716,16 +737,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 );
               }).toList(),
             ))
-      ]);
+          ]);
 
-   _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
+  _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
     return featuredProductList!.isEmpty
         ? height5SizedBox
 
         : CarouselSlider(
       items: featuredProductList
           ?.map(
-            (item) => Container(
+            (item) =>
+            Container(
 
               width: WidgetConstants.screenWidth * 0.48,
               child: InkWell(
@@ -745,19 +767,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       // Get.parameters["invokedIndex"] =
                       //     "2";
                       Get.to(
-                            () =>  StoreHomeMainScreen(args:
-                                StoreHomeMainArgs(
-                                  storeId: item.storeId ?? "",
-                                  productId: item.productId ?? "",
-                                  invokedIndex: 2,
-                                  isFromMenu: true,isFromFav: false,
-                                  isFromHome: false, isFromOptions: false,
-                                )
+                            () =>
+                            StoreHomeMainScreen(args:
+                            StoreHomeMainArgs(
+                              storeId: item.storeId ?? "",
+                              productId: item.productId ?? "",
+                              invokedIndex: 2,
+                              isFromMenu: true,
+                              isFromFav: false,
+                              isFromHome: false,
+                              isFromOptions: false,
+                            )
 
                             ),
                         id: pageIdApp.value,
                       );
-
                     } else {
                       // Get.parameters["isFromHome"] = "true";
                       // Get.parameters["storeId"] =
@@ -779,18 +803,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   ele.controllerKey ==
                                       PermissionKey
                                           .editProduct.statusName))
-                          ? Get.to(() =>  EditProductScreen(
-                          isFromHome:true,
-                          storeId: item.storeId,
-                          productId: item.productId,
-                          categoryName: item.productCategories!
-                          .isNotEmpty && item.productCategories
-                          != null ? item.productCategories?.first.category
-                          ?.categoryName ?? ""
-                          : "",
-                      ),
-                          id: pageIdApp.value,
-                          )!
+                          ? Get.to(() =>
+                          EditProductScreen(
+                            isFromHome: true,
+                            storeId: item.storeId,
+                            productId: item.productId,
+                            categoryName: item.productCategories!
+                                .isNotEmpty && item.productCategories
+                                != null ? item.productCategories?.first.category
+                                ?.categoryName ?? ""
+                                : "",
+                          ),
+                        id: pageIdApp.value,
+                      )!
                           .then((value) => homeController.apiGetOwnerFeaturedProducts())
                           : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
                     }

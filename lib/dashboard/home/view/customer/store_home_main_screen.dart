@@ -59,8 +59,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
       storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
       storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+      if (storeHomeMainController.storeId.value!="") {
+        storeHomeMainController.getCurrentLocation();
+      }
 
-      storeHomeMainController.getCurrentLocation();
       if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.apiGetStoreCategoriesApi();

@@ -15,7 +15,9 @@ class ManageStoreMainScreen extends StatefulWidget {
 
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
-      Get.put(OwnerStoresController());
+  Get.isRegistered<OwnerStoresController>()
+      ? Get.find()
+      : Get.put(OwnerStoresController());
 
   RxList horizontalTabList = [
     StringConstants.myStoreText,
@@ -86,10 +88,10 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
     ownerStoresController.selectedIndex.value = 0;
     await ownerStoresController.getApiData();
     ownerStoresController.getGkey();
-    if (Get.parameters['isFromHome'] == "true") {
-      ownerStoresController.storeId.value = Get.parameters['storeId'] ?? "";
+    // if (Get.parameters['isFromHome'] == "true") {
+    //   ownerStoresController.storeId.value = Get.parameters['storeId'] ?? "";
       ownerStoresController.apiGetParticularStore();
-    }
+    // }
 
 
   }

@@ -77,110 +77,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                 buildTabBarView(),
               ],
             ),
-            Positioned(
-              top: 135,
-              left: 18,
-              right: 18,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.5, // cap to 300 if enough room
-                ),
-                child: GooglePlaceAutocompleteField(
-                  apiKey: searchStoreUserController.kGoogleApiKey,
-                    /* validator: (value) {
-                                        if (value!.trim().isEmpty) {
-                                          return AlertStringConstants
-                                              .pleaseEnterAddressText;
-                                        }
-                                        return null;
-                                      },*/
-                  controller: searchController,
-                  onPlaceSelected: (Place place) {
-                    FocusScope.of(context).unfocus();
-                    final components = place.addressComponents ?? [];
-
-                    String? getComponent(String type) {
-                      return components
-                          .firstWhere((c) => c.types.contains(type), orElse: () => AddressComponent( name: '', shortName: '', types: []))
-                          .name;
-                    }
-                    searchStoreUserController.city.value =
-                        getComponent('locality') ?? '';
-
-                    searchStoreUserController.country.value =
-                        getComponent('country') ?? '';
-
-                    searchStoreUserController.state.value =
-                        getComponent('administrative_area_level_1') ?? '';
-
-                    searchStoreUserController.zipCodeTextController.text =
-                        getComponent('postal_code') ?? '';
-                    searchStoreUserController.placeId.value =
-                        place.id.toString() ?? "";
-                    searchStoreUserController.lat.value = place.latLng?.lat??0.0;
-                    searchStoreUserController.lng.value =place.latLng?.lat??0.0;
-                    searchStoreUserController.updateMap(place.latLng?.lat??0.0,
-                        place.latLng?.lng??0.0,isSearchVal: true);
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    isDense: true,
-                    prefixIcon: Image.asset(
-                      ImageConstants.search,
-                      color: AppColors.grey,
-                      scale: 4,
-                    ),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        searchController.clear();
-                        searchStoreUserController.clearNearbyPArms();
-                        searchStoreUserController.updateCurrentLocation();
-                      },
-                      child: Image.asset(
-                        ImageConstants.cross,
-                        scale: 4,
-                      ),
-                    ),
-                    focusColor: AppColors.grey,
-                    hintText: StringConstants.searchText,
-                    hintStyle: const TextStyle(color: AppColors.grey),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: AppColors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
-                  textStyle: const TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-            ),
             //LOADING OVERLAY
             Obx(() {
               return searchStoreUserController.isLoading.value
@@ -327,7 +223,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ],
                     ),
                   ),
-                 /* Positioned(
+                  Positioned(
                     top: 0,
                     left: 18,
                     right: 18,
@@ -337,13 +233,13 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                       ),
                       child: GooglePlaceAutocompleteField(
                         apiKey: searchStoreUserController.kGoogleApiKey,
-                        *//*   validator: (value) {
+                           validator: (value) {
                                         if (value!.trim().isEmpty) {
                                           return AlertStringConstants
                                               .pleaseEnterAddressText;
                                         }
                                         return null;
-                                      },*//*
+                                      },
                         controller: searchController,
                         onPlaceSelected: (Place place) {
 
@@ -431,7 +327,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                  ),*/
+                  ),
 
                  /* Padding(
                     padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 0),
@@ -676,15 +572,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Obx(
-                                            () => Text(
+                                   Text(
                                               'Hi, ${widget.firstName ??""} ${widget.lastName}',
+                                              overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               fontSize: 18,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                      ),
+
                                       Text(
                                         StringConstants.searchForStoreText,
                                         style: const TextStyle(

@@ -36,7 +36,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
   RxString? role = "".obs;
   RxString? currentUserId = "".obs;
   RxString orderStatus = "".obs;
-  RxString storeId = "0".obs;
+  RxString storeId = "".obs;
   RxString productId = "".obs;
   RxString orderType = "".obs;
   RxDouble totalAmount = 0.0.obs;
@@ -75,7 +75,66 @@ class OrdersController extends GetxController with GlobalVarMixin{
     Categories(id: 3, name: "Complete", isSelected: false),
   ].obs;
 
+
   @override
+  void onInit() {
+    super.onInit();
+    // ✅ lightweight setup only
+    _initUserRole();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    // ✅ API calls after UI has rendered
+    _initApiCalls();
+  }
+
+  Future<void> _initUserRole() async {
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role?.value = roleData;
+  }
+
+  Future<void> _initApiCalls() async {
+    // run heavy stuff here
+    if (role?.value == Role.customerRoleText) {
+      page.value = 1;
+      await apiGetOrderListApi();
+    } else {
+      await apiGetStoreList();
+      page.value = 1;
+      await apiGetStoreOrderListApi();
+    }
+
+    if (Get.parameters["isController"] != "no") {
+      if (storeId.value != "") {
+        await apiGetStoreDetailsApi();
+      }
+      if (role?.value == Role.customerRoleText) {
+        searchStoreUserController.onReady(); // careful, this is unusual
+      }
+      isActiveOrders.value = true;
+      orderStatusId.value = 2;
+      orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
+      uerSelectedTab.value = 0;
+
+      await apiGetOrderStatusListApi();
+      await apiGetUserDetail();
+      await setupScrollController();
+    }
+
+    await getPage();
+  }
+
+  Future<void> getPage() async {
+    firstName.value =
+        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+    lastName.value =
+        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+    role?.value = await SharedPreferenceStorage.getData(Role.role) ?? "";
+  }
+
+ /* @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -83,30 +142,29 @@ class OrdersController extends GetxController with GlobalVarMixin{
       role!.value = roleData;
       if (role!.value == Role.customerRoleText) {
         page.value = 1;
-        apiGetOrderListApi();
+        await apiGetOrderListApi();
       } else {
-        apiGetStoreList();
+        await  apiGetStoreList();
         page.value = 1;
-        apiGetStoreOrderListApi();
+        await  apiGetStoreOrderListApi();
       }
       if (Get.parameters["isController"] != "no") {
 
-        isFromNotification.value =
-            Get.parameters["isFromNotification"] == "true" ? true : false;
-        if (Get.parameters['storeId'] != "" &&
-            Get.parameters['storeId'] != null) {
-          storeId.value = Get.parameters["storeId"] ?? "";
-          if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
-            storeId.value = Get.parameters["storeId"] ?? "";
-            apiGetStoreDetailsApi();
-          }
-          apiGetStoreDetailsApi();
+        // isFromNotification.value =
+        //     Get.parameters["isFromNotification"] == "true" ? true : false;
+        if (storeId.value!= "" ) {
+        //   storeId.value = Get.parameters["storeId"] ?? "";
+        //   if (Get.parameters['isFromTransaction'] == "true" ? true : false) {
+        //     storeId.value = Get.parameters["storeId"] ?? "";
+        //     apiGetStoreDetailsApi();
+        //   }
+          await apiGetStoreDetailsApi();
         }
         if (role?.value == Role.customerRoleText) {
           searchStoreUserController.onInit();
         }
-        orderStatus.value = Get.parameters["orderStatus"] ?? "";
-        isHome.value = Get.parameters["isHome"] == "true" ? true : false;
+        // orderStatus.value = Get.parameters["orderStatus"] ?? "";
+        // isHome.value = Get.parameters["isHome"] == "true" ? true : false;
         isActiveOrders.value = true;
         orderStatusId.value = 2;
         orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
@@ -115,24 +173,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
         uerSelectedTab.value = 0;
 
 
-        apiGetOrderStatusListApi();
-        apiGetUserDetail();
+        await apiGetOrderStatusListApi();
+        await apiGetUserDetail();
         getPage();
-        setupScrollController();
+        await setupScrollController();
       }
     });
-  }
+  }*/
 
-  getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-            "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-            "";
-    role?.value = await SharedPreferenceStorage.getData(Role.role) ??
-        "";
-  }
 
   final scrollController = ScrollController();
   final scrollController1 = ScrollController();
@@ -888,7 +936,6 @@ class OrdersController extends GetxController with GlobalVarMixin{
                     ]
                   : []
     };
-
 
          UserProvider()
         .postWithHeadersApi(

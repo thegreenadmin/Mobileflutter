@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/provider/network_service.dart';
+import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
@@ -18,10 +19,42 @@ RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  NetworkService().startMonitoring();
+
+
+  // ✅ Initialize services in sequence to avoid socket spikes
+  await dotenv.load(fileName: 'assets/env/api_key.env');
   await Firebase.initializeApp();
   await GetStorage.init();
-  await dotenv.load(fileName: 'assets/env/api_key.env');
+
+
+  // Start network monitoring (singleton, not recreated each time)
+  NetworkService().startMonitoring();
+
+  // ✅ Notifications
+  await _initNotifications();
+
+  // ✅ Dynamic Links (handled later inside app state)
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // Lock orientation
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Initial push message if app opened from terminated state
+  initialRemoteMessage = await checkForInitialFirebaseMessage();
+
+  runApp(const MyApp());
+
+  // Transparent status bar
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    systemNavigationBarIconBrightness: Brightness.light,
+  ));
+
+/*
+
+  NetworkService().startMonitoring();
+
   PushNotificationService notificationService = PushNotificationService();
   await initialize();
   await notificationPermission();
@@ -62,6 +95,7 @@ Future<void> main() async {
   initialRemoteMessage = (await checkForInitialFirebaseMessage());
   // final PendingDynamicLinkData? initialLink =
   //     await FirebaseDynamicLinks.instance.getInitialLink();
+*/
 
   runApp(const MyApp());
 
@@ -70,6 +104,115 @@ Future<void> main() async {
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light));
 }
+
+Future<void> _initNotifications() async {
+  // Your push notification service
+  PushNotificationService notificationService = PushNotificationService();
+
+  // Firebase messaging permissions
+  await initialize();
+  await notificationPermission();
+
+  // Background handler
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // Local notifications plugin
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  // ✅ Create Android channel
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  // ✅ Foreground notification presentation (iOS / Android)
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  // ✅ Initialization settings
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('notification_icon');
+
+  const DarwinInitializationSettings initializationSettingsIOS =
+  DarwinInitializationSettings();
+
+  const InitializationSettings initializationSettings =
+  InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+
+  // ✅ Register callbacks
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveBackgroundNotificationResponse:
+    PushNotificationService.handleNotification,
+    onDidReceiveNotificationResponse:
+    PushNotificationService.handleNotification,
+  );
+
+  // ✅ Keep your custom notification handlers
+  getNotificationOpenedApp();
+  getNotification();
+}
+
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    // ✅ Don’t clear storage blindly at startup (optional)
+    clearData();
+  }
+
+  clearData() async {
+    SharedPreferenceStorage.getData('onboardingCompleted');
+    SharedPreferenceStorage storage = SharedPreferenceStorage();
+
+    storage.clearData();
+    Get.parameters.clear();
+  }
+
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    // ✅ Cleanup global clients to avoid leaks
+    UserProvider.disposeClient(); // <-- close IOClient safely
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: StringConstants.theGreenMallTitleText,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: StringConstants.interFamilyText,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const SplashScreen(),
+      getPages: Routers.route,
+      themeMode: ThemeMode.system,
+      initialRoute: '/splashView',
+    );
+  }
+}
+/*
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -125,6 +268,17 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     Get.parameters.clear();
   }
 
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    // ✅ Cleanup global clients to avoid leaks
+    UserProvider.disposeClient(); // <-- close IOClient safely
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -143,3 +297,4 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 }
+*/

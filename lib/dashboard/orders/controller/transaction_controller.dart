@@ -28,22 +28,15 @@ class TransactionController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
-    // firstName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-    //         "";
-    // lastName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-    //         "";
-
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
     isCurrentMonthSelected.value = true;
     if (roleVal == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetUserOrderTransactionHistory();
+      await apiGetUserOrderTransactionHistory();
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetOwnerOrderTransactionHistory();
+      await  apiGetOwnerOrderTransactionHistory();
     }
   }
 

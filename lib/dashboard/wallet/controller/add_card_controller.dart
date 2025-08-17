@@ -765,8 +765,10 @@ class AddCardController extends GetxController with GlobalVarMixin{
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {
-        userWalletBalance!.value =
-            value?.body['data']['balance'].toStringAsFixed(2);
+               final balance = value?.body['data']['balance'];
+               userWalletBalance!.value = balance != null
+                   ? balance.toStringAsFixed(2)
+                   : "0.00"; // or handle however you want
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

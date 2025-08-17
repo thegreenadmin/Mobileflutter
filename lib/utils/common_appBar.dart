@@ -119,7 +119,6 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                             .apiGetUserDetailsApi();
                                         storeHomeMainController
                                             .apiGetUserWalletBalance();
-
                                         await Get.to(() => CartScreen(storeId: widget.storeId,),
                                                 id: pageIdApp.value)
                                             ?.then((value) {

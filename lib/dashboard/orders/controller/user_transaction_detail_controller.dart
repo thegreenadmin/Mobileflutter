@@ -18,24 +18,27 @@ class UserTransactionDetailController extends GetxController with GlobalVarMixin
   RxString? storeImage = "".obs;
   // RxString? firstName = "".obs;
   // RxString? lastName = "".obs;
-
   @override
   void onInit() {
     super.onInit();
     userStripeCardId!.value = Get.parameters['user_stripe_card_id'] ?? "";
-    apiGetUserOrderTransactionHistory();
-    getPage();
   }
 
-  getPage() async {
-    // firstName?.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-    //         "";
-    // lastName?.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-    //         "";
+  @override
+  void onReady() {
+    super.onReady();
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    await apiGetUserOrderTransactionHistory();
+    await getPage();
+  }
+
+  Future<void> getPage() async {
     role?.value = roleApp.value;
   }
+
 
   RxList horizontalTabList = [
     StringConstants.janText,

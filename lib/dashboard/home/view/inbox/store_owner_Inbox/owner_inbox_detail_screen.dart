@@ -47,8 +47,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
     return SizedBox(
         height: 120,
         child:
-
-
             Stack(
           alignment: Alignment.topRight,
           children: [

@@ -67,8 +67,8 @@ class OffersController extends GetxController with GlobalVarMixin{
         if (role.value == Role.customerRoleText) {
           searchStoreUserController.apiActiveCartApi();
         }
-        isFromNotification.value =
-            Get.parameters["isFromNotification"] == "true" ? true : false;
+        // isFromNotification.value =
+        //     Get.parameters["isFromNotification"] == "true" ? true : false;
         getData();
       }
     });
@@ -85,10 +85,11 @@ class OffersController extends GetxController with GlobalVarMixin{
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     role.value = roleData;
     if (role.value == Role.customerRoleText) {
-      getCurrentLocation();
+      await getCurrentLocation();
     } else {
-      apiGetOwnerOffersList();
-      setupScrollController();
+      page.value = 1;
+      await apiGetOwnerOffersList();
+      await setupScrollController();
     }
   }
 
@@ -126,7 +127,6 @@ class OffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
-
     if (page.value == 1) {
       isLoading.value = true;
       getOwnerOfferList.clear();
@@ -166,7 +166,7 @@ class OffersController extends GetxController with GlobalVarMixin{
           }
           getOwnerOfferList.addAll(offerListNewList);
         }
-        getOwnerOfferList.toSet().toList();
+        getOwnerOfferList.value = getOwnerOfferList.toSet().toList();
         isLoading.value = false;
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -307,7 +307,8 @@ class OffersController extends GetxController with GlobalVarMixin{
             UserFeaturedProductModel.fromJson(value?.body);
         isLoading.value = false;
         featuredUserProductList.value =
-            userFeaturedProductModel.data!.products!;
+            userFeaturedProductModel.data?.products ??[];
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();

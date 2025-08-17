@@ -33,7 +33,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
       ordersController.isFromNotification.value =
          widget.isFromNotification??false;
       ordersController.storeId.value = widget.storeId ?? "";
-      ordersController.apiGetStoreDetailsApi();
+      if(ordersController.storeId.value !=""){
+        ordersController.apiGetStoreDetailsApi();
+      }
+
       ordersController.orderStatus.value = widget.orderStatus ?? "";
       // if (Get.parameters["isHome"] != null) {
         ordersController.isHome.value = widget.isHome ??false;

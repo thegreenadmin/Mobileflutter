@@ -17,6 +17,7 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
+  RxString? offerProductId = "".obs;
   RxString? storeIdValue = "".obs;
   RxInt pageId = 0.obs;
   RxInt cartCount = 0.obs;
@@ -45,6 +46,8 @@ class HomeController extends GetxController with GlobalVarMixin {
   UserFeaturedProductModel userFeaturedProductModel =
       UserFeaturedProductModel();
   RxList<ProductsList> featuredUserProductList = <ProductsList>[].obs;
+  RxList<ProductsList> offerProductList = <ProductsList>[].obs;
+
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   // final SearchStoreUserController searchStoreUserController =
@@ -53,8 +56,8 @@ class HomeController extends GetxController with GlobalVarMixin {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      apiGetUserDetail();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await apiGetUserDetail();
     });
   }
 
@@ -81,6 +84,58 @@ class HomeController extends GetxController with GlobalVarMixin {
     }
   }
 
+
+  ///Api Get offers products
+   apiGetOffersProducts(
+      {String storeId = "", String offerId = ""}) async {
+    isLoading.value = true;
+    offerProductList.clear();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+    Map data = {
+      "q": "",
+      "store_id": storeId,
+      "page": 1,
+      "page_size": 1000,
+      "order_by": "product_id",
+      "order_type": "DESC",
+      "category_id": null,
+      "is_favourite_products": null,
+      "is_previous_products": null,
+      "offer_id": offerId,
+      "filters": []
+    };
+    UserProvider()
+        .postWithHeadersApi(
+        data,
+        ServerCommunicator.baseUrl +
+            ServerCommunicator.storeFeatureProductList,
+        headers,
+        showLoading: false)
+        .then((value) async {
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
+          value?.body["status"] == ApiConstants.statusCode200) {
+        userFeaturedProductModel = UserFeaturedProductModel.fromJson(value?.body);
+        isLoading.value = false;
+        offerProductId?.value = userFeaturedProductModel.data?.products?[0].productId ??"";
+        offerProductList.value = userFeaturedProductModel.data?.products ??[];
+        update();
+      } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        Utility.showAlertMessage(value?.body['message']);
+        storage.clearData();
+        Get.parameters.clear(); isLoading.value = false;
+        Get.offAll(const StartJourneyScreen());
+      } else { isLoading.value = false;
+      if (value?.body['message'] != null) {
+        Utility.showAlertMessage(value?.body['message']);
+      }
+
+      }
+    });
+  }
 
   List<PopupMenuEntry<String>>? userTypeOptionsPopUpList(context) {
     return List.generate(2, (index) {
@@ -157,9 +212,10 @@ class HomeController extends GetxController with GlobalVarMixin {
         headers,
         showLoading: false)
         .then((value) async {
-      isLoading.value = false;
+
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
+               isLoading.value = false;
         activeCartModel = ActiveCartModel.fromJson(value?.body);
         cartCount.value = activeCartModel.data!.cartItems!.length;
         storeIdValue?.value = activeCartModel.data!.storeId.toString();
@@ -171,10 +227,10 @@ class HomeController extends GetxController with GlobalVarMixin {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
+        storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {
+      } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

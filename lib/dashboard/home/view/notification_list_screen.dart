@@ -73,7 +73,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                   notificationListController.notificationList.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
-                                  onTap: () {
+                                /*  onTap: () {
                                     Get.parameters["storeId"] =
                                         notificationListController
                                                 .notificationList[index].storeId ??
@@ -169,9 +169,9 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                         )
                                     ),
                                                 id: pageIdApp.value,
-                                                /*arguments: {
+                                                *//*arguments: {
                                                     "isFromNotification": true,
-                                                  }*/)
+                                                  }*//*)
                                             : notificationListController
                                                         .notificationList[index]
                                                         .messageHeadId !=
@@ -223,8 +223,85 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                         id: pageIdApp.value,
                                                         )
                                                 : null;
-                                  },
-                                  child: Container(
+                                  },*/
+
+                                    onTap: () {
+                                      final notification = notificationListController.notificationList[index];
+                                      final storeId = notification.storeId ?? "";
+                                      final storeName = notification.store?.storeName ?? "";
+                                      final orderId = notification.orderId ?? "";
+                                      final messageHeadId = notification.messageHeadId ?? "";
+                                      final offerId = notification.offerId;
+
+                                      // Role check
+                                      final isStoreNotification = notification.isNotificationForStore == true;
+                                      final isCustomer = roleApp.value == Role.customerRoleText;
+
+                                      // Role assignment
+                                      roleApp(isStoreNotification ? Role.storeOwnerRoleText : Role.customerRoleText);
+
+                                      // Navigation Logic
+                                      if (orderId.isNotEmpty) {
+                                        if (isStoreNotification) {
+                                          Get.to(
+                                                () => OrdersHomeMainScreen(
+                                              isFromTransaction: false,
+                                              isFromNotification: true,
+                                              orderId: orderId,
+                                              orderStatus: orderId,
+                                              storeId: storeId,
+                                              isHome: false,
+                                              storeName: storeName,
+                                            ),
+                                            id: pageIdApp.value,
+                                          );
+                                        } else {
+                                          Get.to(
+                                                () => OrderConfirmationScreen(
+                                              isFromTransaction: false,
+                                              isFromNotification: true,
+                                              orderId: orderId,
+                                              orderStatus: orderId,
+                                              storeId: storeId,
+                                              isHome: false,
+                                            ),
+                                            id: pageIdApp.value,
+                                          );
+                                        }
+                                      } else if (offerId != null) {
+                                        Get.to(
+                                              () => StoreHomeMainScreen(
+                                            args: StoreHomeMainArgs(
+                                              storeId: storeId,
+                                              isFromMenu: false,
+                                              isFromFav: false,
+                                              isFromHome: true,
+                                              isFromOptions: false,
+                                            ),
+                                          ),
+                                          id: pageIdApp.value,
+                                        );
+                                      } else if (messageHeadId.isNotEmpty) {
+                                        Get.to(
+                                              () => isCustomer
+                                              ? UserInboxDetailScreen(
+                                            storeId: storeId,
+                                            storeName: storeName,
+                                            messageHeadId: messageHeadId,
+                                          )
+                                              : OwnerInboxDetailScreen(
+                                            storeId: storeId,
+                                            storeName: storeName,
+                                            messageHeadId: messageHeadId,
+                                          ),
+                                          id: pageIdApp.value,
+                                        );
+                                      } else {
+                                        Utility.showAlertMessage("Unable to process notification.");
+                                      }
+                                    },
+
+                                    child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     decoration: const BoxDecoration(

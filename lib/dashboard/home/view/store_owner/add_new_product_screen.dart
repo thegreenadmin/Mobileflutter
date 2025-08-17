@@ -23,9 +23,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
 
   @override
   void initState() {
-    manageStoreController.categoryId.value = widget.categoryId ?? "";
-    manageStoreController.categoryName.value = widget.categoryName ?? "";
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      manageStoreController.categoryId.value = widget.categoryId ?? "";
+      manageStoreController.categoryName.value = widget.categoryName ?? "";
+      manageStoreController.apiGetCategoriesList();
+    });
     super.initState();
   }
 
@@ -65,15 +67,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           ),
                         ),
                         width10SizedBox,
-                        Obx(
-                          () => Text(
-                            manageStoreController.categoryName.value,
+                        Text(
+                            widget.categoryName??"",
                             style: const TextStyle(
                                 fontSize: 22,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
                           ),
-                        )
                       ],
                     ),
                     Image.asset(
@@ -330,7 +330,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                   ),
                                 ),
                                 child: Text(
-                                  manageStoreController.categoryName.value,
+                                  widget.categoryName??"",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 12,
@@ -728,30 +728,35 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                                         .discountOrOfferTextController,
                                     hintText: StringConstants.enterValueText,
                                     validator: (value) {
-                                      final v = value?.trim();
-                                      if (v == null || v.isEmpty) {
-                                        return AlertStringConstants.pleaseEnterValueText;
-                                      }
+                                      final input = value?.trim() ?? "";
+                                      final discountType = manageStoreController.discountType.value.toLowerCase();
+                                      final isPercentage = discountType == "percentage";
+                                       if (discountType.isNotEmpty) {
+                                         if (input.isEmpty && discountType.isNotEmpty) {
+                                           return AlertStringConstants.pleaseEnterValueText;
+                                         }
 
-                                      final parsed = double.tryParse(v);
-                                      if (parsed == null || parsed == 0) {
-                                        return AlertStringConstants.invalidAmountText;
-                                      }
+                                         final parsed = double.tryParse(input);
+                                         if (parsed == null || parsed == 0 ) {
+                                           return AlertStringConstants.invalidAmountText;
+                                         }
 
-                                      final isPercentage = manageStoreController.discountType.value.toLowerCase() == "percentage";
-                                      if (isPercentage && parsed >= 100) {
-                                        return "Percentage value must be less than 100%";
-                                      }
+                                         if (isPercentage && parsed >= 100) {
+                                           return "Percentage value must be less than 100%";
+                                         }
 
-
-                                      // Rule 2: For amount, it must not exceed any selected product's price
-                                          final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text.toString()) ?? 0;
-                                          if (parsed >= productPrice) {
-                                            return "Discount amount must be less than product price";
-                                          }
+                                         if (!isPercentage) {
+                                           final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text) ?? 0;
+                                           if (parsed >= productPrice) {
+                                             return "Discount amount must be less than product price";
+                                           }
+                                         }
+                                         return null;
+                                       }
 
 
                                       return null;
+
                                     },
                                   ),
                                 ),

@@ -16,7 +16,10 @@ class ManageStoreScreen extends StatefulWidget {
 
 class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
-      Get.put(OwnerStoresController());
+  Get.isRegistered<OwnerStoresController>()
+      ? Get.find()
+      : Get.put(OwnerStoresController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,29 +32,26 @@ class _ManageStoreScreenState extends State<ManageStoreScreen> with GlobalVarMix
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           height5SizedBox,
           GestureDetector(
             onTap: () {
-              hasStoreAccess.value && permissionStoreList.isEmpty ||
-                      permissionStoreList.any((element) =>
-                          element.storeId ==
-                                  ownerStoresController.storeId.value &&
-                              element.isStoreOwner == true ||
-                          element.storeId ==
-                                  ownerStoresController.storeId.value
-                                      .toString() &&
-                              element.controllers!.any((ele) =>
-                                  ele.controllerKey ==
-                                  PermissionKey.editStore.statusName))
-                  ? Get.to(() => const EditStoreDetailScreen(),
-                          id: pageIdApp.value)
-                      ?.then((value) =>
-                          ownerStoresController.apiGetParticularStore())
-                  : Utility.showAlertMessage(
-                      AlertStringConstants.notAuthorizedToStoreText);
+              final storeId = ownerStoresController.storeId.value;
+
+              final hasEditPermission = permissionStoreList.any((element) =>
+              (element.storeId == storeId && element.isStoreOwner == true) ||
+                  (element.storeId == storeId.toString() &&
+                      element.controllers?.any((c) =>
+                      c.controllerKey == PermissionKey.editStore.statusName) == true));
+
+              if ((hasStoreAccess.value && permissionStoreList.isEmpty) || hasEditPermission) {
+                Get.to(() => const EditStoreDetailScreen(), id: pageIdApp.value)
+                    ?.then((_) => ownerStoresController.apiGetParticularStore());
+              } else {
+                Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
+              }
             },
+
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 4),
               padding:

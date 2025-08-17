@@ -35,13 +35,13 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
   @override
   Future<void> onInit() async {
     super.onInit();
-    storeId.value = Get.parameters["storeId"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
+    // storeId.value = Get.parameters["storeId"] ?? "";
+    // storeName.value = Get.parameters["storeName"] ?? "";
+    // messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     page.value = 1;
     role?.value =  await SharedPreferenceStorage.getData(Role.role) ??
         "";
-    apiGetMessagesList();
+    await apiGetMessagesList();
     role?.value = roleApp.value;
     if (roleApp.value == Role.customerRoleText) {
       setupScrollController();
@@ -49,12 +49,12 @@ class UserInboxDetailController extends GetxController with GlobalVarMixin{
   }
 
   setupScrollController() {
-    scrollController.addListener(() {
+    scrollController.addListener(() async {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent - 10) {
         if (messageList.length < totalCount.value) {
           page.value++;
-          apiGetMessagesList();
+          await   apiGetMessagesList();
         }
       }
     });

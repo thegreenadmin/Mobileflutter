@@ -80,7 +80,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxBool showLoading = true.obs;
   RxBool isPlaceOrder = true.obs;
   RxBool isFromOptions = false.obs;
-  RxString storeId = "".obs;
+  RxBool isFromAddProduct = false.obs;
+  RxString storeId = "0".obs;
   RxString selectedDeliveryService = "".obs;
   RxString storeAddressId = "".obs;
   RxString? role = "".obs;
@@ -91,6 +92,173 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ActiveCartModel activeCartModel = ActiveCartModel();
   RxList<ProductImage>? productIm = <ProductImage>[].obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    _initializeParams();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    _loadInitialData();
+  }
+
+  // --- Params Setup ---
+  void _initializeParams() {
+    storeId.value = Get.parameters["storeId"] ?? "";
+    invokedIndex.value = int.tryParse(Get.parameters["invokedIndex"] ?? "0") ?? 0;
+    isFromHome.value = Get.parameters["isFromHome"] == "true";
+    isFromFav.value = Get.parameters["isFromFav"] == "true";
+    isFromMenu.value = Get.parameters["isFromMenu"] == "true";
+    isFromOptions.value = Get.parameters["isFromOptions"] == "true";
+  }
+
+  // --- Initial Data Load ---
+  Future<void> _loadInitialData() async {
+    if (isFromAddProduct.value) {
+      selectedIndex.value = 0;
+      lastSelectedIndex.value = 0;
+    }
+    showLoading.value = true;
+
+    if (_hasStore) {
+      await getCurrentLocation();
+    }
+
+    await apiGetUserDetailsApi();
+
+    if (_hasStore) {
+      await apiGetShopProductDetailApi();
+    }
+
+    // handle navigation cases
+    if (isFromMenu.value) {
+      _handleFromMenu();
+    } else if (isFromFav.value) {
+      await _handleFromFav();
+    } else if (isFromHome.value) {
+      await _handleFromHome();
+    } else if (isFromOptions.value) {
+      _handleFromOptions();
+    }
+
+    await apiGetUserWalletBalance();
+  }
+
+  // --- Location ---
+  Future<void> getCurrentLocation() async {
+    final currentLocation = await Utility.fetchCurrentLocation();
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+
+    if (_hasStore) {
+      await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+    }
+  }
+
+  // --- Index Change ---
+  Future<void> onIndexChange(int i) async {
+    selectedIndex.value = i;
+    lastSelectedIndex.value = i;
+
+    if (invokedIndex.value > 0) {
+      invokedIndex.value = 0;
+    }
+
+    switch (i) {
+      case 0:
+        await apiGetStoreOffersApi();
+        await apiFeatureProductListApi(isFeaturedProduct: true);
+        break;
+      case 1:
+        await apiGetStoreCategoriesApi();
+        if (categoryId.value.isNotEmpty) {
+          await apiFeatureProductListApi(categoryId: categoryId.value);
+        }
+        break;
+      case 2:
+        await apiFeatureProductListApi(isFavouriteProducts: true);
+        break;
+      case 3:
+        await apiGetPreviousOrders();
+        break;
+    }
+  }
+
+  // --- Popup Menu ---
+  Future<void> popUpMenuChange(int i) async {
+    popUpIndex.value = i;
+    isFromOptions.value = false;
+
+    switch (i) {
+      case 0:
+        await apiGetPreviousOrders();
+        break;
+      case 1:
+        await apiGetStoreCategoriesApi();
+        if (Get.parameters["categoryId"]?.isNotEmpty == true) {
+          await apiFeatureProductListApi(categoryId: Get.parameters["categoryId"] ?? "0");
+        }
+        break;
+      case 2:
+        _checkStorePage("privacy", StringConstants.noPrivacyFoundText);
+        break;
+      case 3:
+        _checkStorePage("terms", StringConstants.noTermsFoundText);
+        break;
+    }
+  }
+
+  // --- Navigation Cases ---
+  void _handleFromMenu() {
+    selectedIndex.value = 1;
+    invokedIndex.value = 2;
+    lastSelectedIndex.value = 1;
+  }
+
+  Future<void> _handleFromFav() async {
+    selectedIndex.value = 2;
+    lastSelectedIndex.value = 2;
+    showLoading.value = false;
+    if (_hasStore) {
+      await apiFeatureProductListApi(isFavouriteProducts: true);
+    }
+  }
+
+  Future<void> _handleFromHome() async {
+    selectedIndex.value = 0;
+    lastSelectedIndex.value = 0;
+    invokedIndex.value = 0;
+    showLoading.value = false;
+    if (_hasStore) {
+      await apiGetStoreOffersApi();
+      await apiFeatureProductListApi(isFeaturedProduct: true);
+    }
+  }
+
+  void _handleFromOptions() {
+    selectedIndex.value = 3;
+    lastSelectedIndex.value = 3;
+    showLoading.value = false;
+  }
+
+  // --- Store Page Checks ---
+  void _checkStorePage(String type, String noResultMessage) {
+    final pages = storeDetailsResponse.value.data?.store?.storePages ?? [];
+
+    final hasPage = pages.any((page) => page.storePageType == type);
+
+    if (!hasPage) {
+      Utility.showToast(noResultMessage);
+    } else {
+      // TODO: Navigate to privacy/terms page if needed
+    }
+  }
+
+  // --- Helpers ---
+  bool get _hasStore => storeId.value.isNotEmpty && storeId.value != "0";
+/*
   @override
   void onInit() {
     super.onInit();
@@ -105,10 +273,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       // isFromFav.value = Get.parameters["isFromFav"] == "true";
       // isFromMenu.value = Get.parameters["isFromMenu"] == "true";
 
+      if (storeId.value != "0" && storeId.value != ""  ) {
         getCurrentLocation();
+      }
         apiGetUserDetailsApi();
-        if (storeId.value != "" && productId.value != "") {
-          apiGetShopProductDetailApi();
+        if (storeId.value != "0" && storeId.value != "" ) {
+
+          await apiGetShopProductDetailApi();
         }
 
       if (isFromMenu.value) {
@@ -120,8 +291,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           selectedIndex.value = 2;
           lastSelectedIndex.value = 2;
           showLoading.value = false;
-          if(storeId.value != "") {
-            apiFeatureProductListApi(isFavouriteProducts: true);
+          if(storeId.value != "0" && storeId.value != "") {
+            await  apiFeatureProductListApi(isFavouriteProducts: true);
           }
         }
         if (isFromHome.value) {
@@ -129,9 +300,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           lastSelectedIndex.value = 0;
           showLoading.value = false;
           invokedIndex.value = 0;
-          if(storeId.value != ""){
-            apiGetStoreOffersApi();
-            apiFeatureProductListApi(isFeaturedProduct: true);
+          if(storeId.value != "0" && storeId.value != ""){
+            await apiGetStoreOffersApi();
+            await  apiFeatureProductListApi(isFeaturedProduct: true);
           }
         }
         if (isFromOptions.value) {
@@ -139,8 +310,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           lastSelectedIndex.value = 3;
           showLoading.value = false;
         }
-       apiGetUserWalletBalance();
-
+      await apiGetUserWalletBalance();
     });
   }
 
@@ -149,8 +319,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
 
-    if (storeId.value != "") {
-       apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+    if (storeId.value != "0" && storeId.value != "") {
+     await  apiGetStoreDetailsApi(latitude: lat, longitude: lng);
     }
   }
 
@@ -163,17 +333,17 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     }
 
     if (i == 0) {
-       apiGetStoreOffersApi();
-       apiFeatureProductListApi(isFeaturedProduct: true);
+      await   apiGetStoreOffersApi();
+      await   apiFeatureProductListApi(isFeaturedProduct: true);
     } else if (i == 1) {
       await apiGetStoreCategoriesApi();
       if (categoryId.value.isNotEmpty) {
-        apiFeatureProductListApi(categoryId: categoryId.value);
+        await  apiFeatureProductListApi(categoryId: categoryId.value);
       }
     } else if (i == 2) {
-       apiFeatureProductListApi(isFavouriteProducts: true);
+      await apiFeatureProductListApi(isFavouriteProducts: true);
     } else if (i == 3) {
-       apiGetPreviousOrders();
+      await  apiGetPreviousOrders();
     }
   }
 
@@ -215,7 +385,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 "terms") {}
       }
     }
-  }
+  }*/
 
   void termsAndPrivacyDialog(BuildContext context,
       {String content = "", String contentType = ""}) {
@@ -362,13 +532,29 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 InkWell(
                   onTap: () async {
                     Get.back();
-                    if (isPlaceOrder.value == true ) {
+                    if (isPlaceOrder.value == true) {
+
+                      bool isDeliveryService2 = selectedDeliveryService.value.toString() == "2";
+                      bool isDeliverable = cartData.value.isOrderDeliverable == true;
+
+                      if (!isDeliveryService2 || (isDeliveryService2 && isDeliverable)) {
+                        await apiPlaceOrder();
+                      }
+                    }
+
+                   /* if (isPlaceOrder.value == true ) {
+                      if(cartData.value.cartTotalPrice !=0 ){
+                        await apiPlaceOrder();
+                      }
+                      else{
+                        Utility.showAlertMessage("Please check pay amount.");
+                      }
                       if(selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == true){
                         await apiPlaceOrder();
                       }else if (selectedDeliveryService.value.toString() != "2"){
                         await apiPlaceOrder();
                       }
-                    }
+                    }*/
                   },
                   child: Container(
                     height: 50.0,
@@ -515,6 +701,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
+          // storeId.value = activeCartModel.data!.storeId.toString();
         } else {
           cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
           if (cartListResponse.data?.cartTotalPrice is int ||
@@ -564,18 +751,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           value?.body["status"] == ApiConstants.statusCode200) {
         Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
-        Get.parameters["storeId"] = storeId.value ?? "";
+        Get.parameters["storeId"] = storeId.value;
         // Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
         Get.parameters["messageHeadId"] =
             value?.body["data"]["message_head_id"] ?? "";
         // SharedPreferenceStorage.setData("context", ctx);
         await Get.to(() =>  UserInboxDetailScreen(
-          storeId: storeId.value ??
-              "",storeName: value?.body["data"]["store_name"] ??
-            "",
+          storeId: storeId.value,storeName: value?.body["data"]["store_name"] ?? "",
           // customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
-          messageHeadId: value?.body["data"]["message_head_id"] ??
-              "",
+          messageHeadId: value?.body["data"]["message_head_id"] ?? "",
 
         ), id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
@@ -666,7 +850,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Cart List Api
   Future apiGetCartListApi({bool isShowLoading = false}) async {
     isLoading.value = true;
-     
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -1041,8 +1224,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 InkWell(
                   onTap: () async {
                     Get.back();
-                    apiGetUserWalletBalance();
-                    Get.to(() => const CartScreen(isFromAddProduct:true),
+                    await apiGetUserWalletBalance();
+                   await Get.to(() =>  CartScreen(
+                        storeId: storeId.value,
+                        isFromAddProduct:true),
                         id: pageIdApp.value)?.then((value) =>  onInit());
                   },
                   child: Container(
@@ -1132,9 +1317,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                    } else if (value?.body["data"]["balance"] is double) {
           walletBalance.value = value?.body["data"]["balance"] ?? 0.0;
                    }
-        if (storeId.value != "") {
+        await apiActiveCartApi();
+        if (storeId.value != "0" && storeId.value != "" ) {
 
-          await apiActiveCartApi();
+
           await apiGetCartListApi(isShowLoading: true);
         }
         update();
@@ -1170,6 +1356,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         storeDetailsResponse.value = StoreDetailsResponse.fromJson(value?.body);
+
+        storeDeliveryServiceId.value = storeDetailsResponse
+            .value
+            .data
+            ?.store
+            ?.storeDeliveryServices
+            ?.firstWhere(
+              (e) => e.deliveryServiceId == "1",
+          orElse: () => StoreDeliveryService(),
+        )
+            .storeDeliveryServiceId
+            ?.toString() ?? "";
         storeLocation.value =
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";

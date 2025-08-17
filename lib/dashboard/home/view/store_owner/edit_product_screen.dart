@@ -33,10 +33,10 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
   void initState() {
       manageStoreController.storeId.value = widget.storeId ??"";
       manageStoreController.productId.value =  widget.productId ??"";
-      manageStoreController.storeName.value = Get.parameters["storeName"] ?? "";
-      manageStoreController.storeLocation.value = Get.parameters["storeLocation"] ?? "";
       manageStoreController.categoryName.value = widget.categoryName ??"";
-      // manageStoreController.categoryId.value =widget.categoryName;
+       manageStoreController.apiGetCategoriesList();
+       manageStoreController.apiGetQuantityList();
+      manageStoreController.apiGetProductDetails();
     super.initState();
   }
 
@@ -84,17 +84,17 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                             ),
                           ),
                           width10SizedBox,
-                          Obx(() => SizedBox(
+                          SizedBox(
                                 width: 200,
                                 child: Text(
-                                  manageStoreController.categoryName.value,
+                                  widget.categoryName??"",
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontSize: 22,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
-                              )),
+                              ),
                         ],
                       ),
                       Image.asset(
@@ -450,18 +450,12 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                             }
                                             return null;
                                           },
-                                          value: manageStoreController
-                                                          .quantityValue.value !=
-                                                      "" &&
-                                                  manageStoreController
-                                                      .quantityTypeList.isNotEmpty
-                                              ? manageStoreController.quantityTypeList
-                                                  .firstWhere((element) =>
-                                                      element.quantityTypeId ==
-                                                      manageStoreController
-                                                          .quantityValue.value)
-                                                  .quantityTypeId
-                                              : null,
+                                      value: manageStoreController.quantityValue.value.isNotEmpty &&
+                                          manageStoreController.quantityTypeList.isNotEmpty &&
+                                          manageStoreController.quantityTypeList
+                                              .any((e) => e.quantityTypeId == manageStoreController.quantityValue.value)
+                                          ? manageStoreController.quantityValue.value
+                                          : null,
                                           isExpanded: true,
                                           decoration: InputDecoration(
                                             errorMaxLines: 3,
@@ -749,30 +743,35 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                       controller: manageStoreController
                                           .discountOrOfferTextController,
                                       validator: (value) {
-                                        final v = value?.trim();
-                                        if (v == null || v.isEmpty) {
-                                          return AlertStringConstants.pleaseEnterValueText;
-                                        }
+                                        final input = value?.trim() ?? "";
+                                        final discountType = manageStoreController.discountType.value.toLowerCase();
+                                        final isPercentage = discountType == "percentage";
+                                        if (discountType.isNotEmpty) {
+                                          if (input.isEmpty && discountType.isNotEmpty) {
+                                            return AlertStringConstants.pleaseEnterValueText;
+                                          }
 
-                                        final parsed = double.tryParse(v);
-                                        if (parsed == null || parsed == 0) {
-                                          return AlertStringConstants.invalidAmountText;
-                                        }
+                                          final parsed = double.tryParse(input);
+                                          if (parsed == null || parsed == 0 ) {
+                                            return AlertStringConstants.invalidAmountText;
+                                          }
 
-                                        final isPercentage = manageStoreController.discountType.value.toLowerCase() == "percentage";
-                                        if (isPercentage && parsed >= 100) {
-                                          return "Percentage value must be less than 100%";
-                                        }
+                                          if (isPercentage && parsed >= 100) {
+                                            return "Percentage value must be less than 100%";
+                                          }
 
-
-                                        // Rule 2: For amount, it must not exceed any selected product's price
-                                        final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text.toString()) ?? 0;
-                                        if (parsed >= productPrice) {
-                                          return "Discount amount must be less than product price";
+                                          if (!isPercentage) {
+                                            final productPrice = double.tryParse(manageStoreController.pricePerUnitTextController.text) ?? 0;
+                                            if (parsed >= productPrice) {
+                                              return "Discount amount must be less than product price";
+                                            }
+                                          }
+                                          return null;
                                         }
 
 
                                         return null;
+
                                       },
                                     ),
                                   ),

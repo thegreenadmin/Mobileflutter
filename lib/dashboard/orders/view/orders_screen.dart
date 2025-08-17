@@ -26,7 +26,11 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
     ordersController.isFromNotification.value =
         widget.isFromNotification??false;
     ordersController.storeId.value = widget.storeId ?? "";
-    ordersController.apiGetStoreDetailsApi();
+
+    if(ordersController.storeId.value !=""){
+      ordersController.apiGetStoreDetailsApi();
+    }
+
     ordersController.orderStatus.value = widget.orderStatus ?? "";
 
     super.initState();

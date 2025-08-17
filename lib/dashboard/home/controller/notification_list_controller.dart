@@ -27,19 +27,19 @@ class NotificationListController extends GetxController with GlobalVarMixin {
   }
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   getPage() async {
-    firstName?.value =
+    firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
-    lastName?.value =
+    lastName.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
     role?.value = roleApp.value;
     if (role?.value == Role.customerRoleText) {
       role!.value = Role.customerRoleText;
-      apiGetNotificationList(false);
+      await apiGetNotificationList(false);
     } else {
       role!.value = Role.storeOwnerRoleText;
-      apiGetNotificationList(true);
+      await apiGetNotificationList(true);
     }
   }
 

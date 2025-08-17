@@ -27,9 +27,19 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
     manageStoreController.storeLocation.value = widget.storeLocation??"";
     manageStoreController.storeName.value = widget.storeName??"";
     manageStoreController.productId.value = widget.productId??"";
+    getApiData();
     super.initState();
 
 
+  }
+
+  getApiData() async {
+    await manageStoreController.apiGetCategoriesList();
+    await manageStoreController.apiGetQuantityList();
+    if (manageStoreController.productId.value != "" && manageStoreController.storeId.value != "") {
+      manageStoreController.apiGetStoreProducts();
+      manageStoreController.apiGetProductDetails();
+    }
   }
 
   Container _horizontalTab() {

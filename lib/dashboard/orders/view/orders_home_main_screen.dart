@@ -135,21 +135,19 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                       1 ||
                                       ordersHomeMainController
                                           .isFromNotification.value,
-                                  child: IconButton(
+                                  child:
+                                  IconButton(
                                     splashRadius: 40,
-                                    padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.all(10),
                                     constraints: const BoxConstraints(),
                                     onPressed: () {
                                       Get.back(id: pageIdApp.value);
                                       Get.delete<OrdersHomeMainController>();
                                     },
-                                    icon: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: AppColors.white,
-                                        size: 26.0,
-                                      ),
+                                    icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: AppColors.white,
+                                      size: 26.0,
                                     ),
                                   ),
                                 ),
@@ -341,7 +339,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                             .ownerOrderHistoryList?[index]
                                             .storeId ?? "";
                                 ordersHomeMainController.orderAmount.value=
-                                ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2);                             ordersHomeMainController.orderId.value =
+                                ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0";                             ordersHomeMainController.orderId.value =
                                     ordersHomeMainController
                                             .ownerOrderHistoryList?[index]
                                             .orderId ?? "";
@@ -690,7 +688,8 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
-                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2)}",
+                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0"}",
+                                                    // "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:

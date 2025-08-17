@@ -15,7 +15,7 @@ class ServerCommunicator {
   // String baseUrlWithoutApi = "http://18.224.191.88:3520/";
 
   // ********************** PRODUCTION SERVER *************
-  static String get baseUrlWithoutApi => dotenv.env['BASE_URL_WO_API'] ?? 'http://172.24.0.202:8080/';
+  static String get baseUrlWithoutApi => dotenv.env['BASE_URL_WO_API'] ?? 'http://172.24.0.53:8080/';
   static String get baseUrl => '${baseUrlWithoutApi}api/v1/';
   static String get baseUrlWithoutV1 => '${baseUrlWithoutApi}api/';
   static String get kGoogleApiKey => dotenv.env['GOOGLE_MAP_KEY'] ?? '';

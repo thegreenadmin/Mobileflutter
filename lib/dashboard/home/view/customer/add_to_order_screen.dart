@@ -935,9 +935,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   }
 
   Widget _buildProductDiscount() {
+    var isOfferForStore = storeHomeMainController.productDetailResponse.value.data?.product?.offer?.isOfferForStore ?? false;
     var product = storeHomeMainController.productDetailResponse.value.data?.product;
-    var discountText = product?.offer?.offerValue != null
-        ? "${StringConstants.offersText} ${StringConstants.discountText.toLowerCase()}:"
+
+    var discountText = isOfferForStore
+        ? "${StringConstants.storeText} ${StringConstants.discountText.toLowerCase()}:"
         : "${StringConstants.productText} ${StringConstants.discountText.toLowerCase()}:";
     var discountValue = product?.offer?.offerValue != null
         ? product!.offer!.offerType!.contains("percentage")
@@ -946,12 +948,16 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         : product?.discountType?.contains("percentage") ?? false
         ? ' ${product!.discountValue}%'
         : ' \$${product?.discountValue ?? "0"}';
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(text: discountText, style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-          TextSpan(text: discountValue, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
-        ],
+    return Visibility(
+      visible: product?.offer?.offerValue!=null || isOfferForStore,
+      replacement: SizedBox.shrink(),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: discountText, style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+            TextSpan(text: discountValue, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
+          ],
+        ),
       ),
     );
   }

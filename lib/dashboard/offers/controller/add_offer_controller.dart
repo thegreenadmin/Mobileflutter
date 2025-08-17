@@ -122,33 +122,10 @@ class AddOffersController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-
-
-    isFrom.value = Get.parameters["isFrom"] ?? "";
-    if (isFrom.value == StringConstants.addOfferText) {
-    } else {
-      storeIdValue.value = Get.parameters["storeId"] ?? "";
-      offerId.value = Get.parameters["offerId"] ?? "";
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (storeIdValue.value.isNotEmpty && offerId.value.isNotEmpty) {
-
-          apiGetStoreProducts();
-
-
-      }
-      });
-    }
     getPage();
   }
 
   getPage() async {
-    // firstName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-    //         "";
-    // lastName.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-    //         "";
-
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
   }
@@ -508,6 +485,7 @@ class AddOffersController extends GetxController with GlobalVarMixin{
         Utility.showToast(value?.body['message']);
         radioValue.value = OfferType.store;
         isLoading.value = false;
+
         Get.back(id: pageIdApp.value);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

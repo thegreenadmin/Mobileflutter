@@ -222,7 +222,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                                       strokeWidth: 1,
                                       dashPattern: const [4, 4],
                                       child: Container(
-                                        width: WidgetConstants.screenWidth * 0.8,
+                                        width: WidgetConstants.screenWidth * 0.85,
                                         padding: const EdgeInsets.only(
                                             top: 35, bottom: 35),
                                         color: AppColors.primaryLight,
@@ -257,28 +257,27 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                                       color: AppColors.blackLight,
                                       strokeWidth: 1,
                                       dashPattern: const [4, 4],
-                                      child: Container(
-                                        width: WidgetConstants.screenWidth * 0.8,
+                                      child: CommonWidgets.cachedNetworkImage(
                                         height:
-                                        WidgetConstants.screenHeight * 0.2,
-                                        color: AppColors.primaryLight,
-                                        child: CommonWidgets.cachedNetworkImage(
-                                          addNewCategoryController
-                                              .categoryImageDynamicLinkFromServer
-                                              .value,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => SizedBox(
-                                              height:
-                                              WidgetConstants.screenHeight *
-                                                  0.2,
-                                              width:
-                                              WidgetConstants.screenHeight *
-                                                  0.8,
-                                              child: const Center(
-                                                  child:
-                                                  CircularProgressIndicator())),
-                                        ),
-
+                                        WidgetConstants.screenHeight *
+                                            0.2,
+                                        width:
+                                        WidgetConstants.screenWidth *
+                                            0.85,
+                                        addNewCategoryController
+                                            .categoryImageDynamicLinkFromServer
+                                            .value,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => SizedBox(
+                                            height:
+                                            WidgetConstants.screenHeight *
+                                                0.2,
+                                            width:
+                                            WidgetConstants.screenWidth *
+                                                0.85,
+                                            child: const Center(
+                                                child:
+                                                CircularProgressIndicator())),
                                       ),
                                     ),
                                   ],

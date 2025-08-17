@@ -145,21 +145,33 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   RxString privacyOriginalLinkFromServer = "".obs;
   RxString termsOriginalLinkFromServer = "".obs;
 
+
   @override
   void onInit() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      super.onInit();
-      kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
-      storeProductList.value=[];
-      getOwnerOfferList.value=[];
-      // storeId.value = Get.parameters['storeId'] ?? "";
-      selectedIndex.value = 0;
-      getCurrentLocation();
-      getGkey();
+    super.onInit();
+
+    // light setup only
+    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
+    storeProductList.clear();
+    getOwnerOfferList.clear();
+    selectedIndex.value = 0;
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await getGkey();
+    await getCurrentLocation();
     });
   }
 
-  getGkey() async {
+
+  Future<void> getGkey() async {
     role?.value = roleApp.value;
     secureData =
         await GlobalConfigs().loadJsonFromdir('assets/config_keys.json');
@@ -167,13 +179,13 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   }
 
-  getCurrentLocation() async {
+  Future<void> getCurrentLocation() async {
 
-    apiGetDeliveryServices();
+    await apiGetDeliveryServices();
     if (storeId.value != "") {
       await apiGetParticularStore();
     }
-    getApiData();
+    await getApiData();
     await Utility.fetchCurrentLocation().then((currentLocation) async {
       currentLat = currentLocation.latitude;
       currentLng = currentLocation.longitude;
@@ -182,7 +194,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     });
   }
 
-  getApiData() async {
+  Future<void> getApiData() async {
     await apiGetUserDetail();
     await apiGetFeaturedProducts();
     await apiGetOwnerOffersList();

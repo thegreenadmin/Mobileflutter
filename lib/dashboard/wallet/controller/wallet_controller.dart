@@ -143,10 +143,10 @@ class WalletController extends GetxController with GlobalVarMixin{
     role?.value = roleApp.value;
     autoChargeType.value = "threshold";
     if (role?.value == Role.customerRoleText) {
-      if (Get.parameters['isFromCartScreen'] != "false") {
-        isFromCartScreen.value =
-            Get.parameters["isFromCartScreen"] == "true" ? true : false;
-      }
+      // if (Get.parameters['isFromCartScreen'] != "false") {
+      //   isFromCartScreen.value =
+      //       Get.parameters["isFromCartScreen"] == "true" ? true : false;
+      // }
       getApiData();
     } else {
       await apiGetCardList();
@@ -573,8 +573,11 @@ class WalletController extends GetxController with GlobalVarMixin{
 
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {isLoading.value = false;
-        userWalletBalance!.value =
-            value?.body['data']['balance'].toStringAsFixed(2);
+
+             final balance = value?.body['data']['balance'];
+             userWalletBalance!.value = balance != null
+                 ? balance.toStringAsFixed(2)
+                 : "0.00"; // or handle however you want
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -646,9 +649,11 @@ class WalletController extends GetxController with GlobalVarMixin{
 
              if (value?.body["status"] == ApiConstants.statusCode200 ||
           value?.body["status"] == ApiConstants.statusCode201) {  isLoading.value = false;
-        ownerWalletBalance!.value =
-            value?.body['data']['balance'].toStringAsFixed(2);
-        update();
+             final balance = value?.body['data']['balance'];
+             ownerWalletBalance!.value =
+             balance != null ? balance.toStringAsFixed(2) : '0.00';
+
+             update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();

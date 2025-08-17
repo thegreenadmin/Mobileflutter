@@ -42,32 +42,25 @@ class OwnerInboxDetailController extends GetxController with GlobalVarMixin {
   }
 
   getPage() async {
-    // firstName?.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
-    //         "";
-    // lastName?.value =
-    //     await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
-    //         "";
-    var roleVal = await SharedPreferenceStorage.getData(Role.role);
-    role?.value = roleApp.value;
-    storeId.value = Get.parameters["storeId"] ?? "";
-    customerName?.value = Get.parameters["customerName"] ?? "";
-    storeName.value = Get.parameters["storeName"] ?? "";
-    messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
+   role?.value = roleApp.value;
+    // storeId.value = Get.parameters["storeId"] ?? "";
+    // customerName?.value = Get.parameters["customerName"] ?? "";
+    // storeName.value = Get.parameters["storeName"] ?? "";
+    // messageHeadId.value = Get.parameters["messageHeadId"] ?? "";
     page.value = 1;
     await apiGetMessagesList();
     if (roleApp.value == Role.customerRoleText) {
-      setupScrollController();
+        setupScrollController();
     }
   }
 
   setupScrollController() {
-    scrollController.addListener(() {
+    scrollController.addListener(() async {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent - 10) {
         if (messageList.length < totalCount.value) {
           page.value++;
-          apiGetMessagesList();
+          await  apiGetMessagesList();
         }
       }
     });

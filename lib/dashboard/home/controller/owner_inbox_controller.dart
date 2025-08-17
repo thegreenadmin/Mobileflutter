@@ -16,8 +16,6 @@ class OwnerInboxController extends GetxController with GlobalVarMixin {
   late OwnerInboxModel inboxModel = OwnerInboxModel();
   RxList<MessageHead> inboxList = <MessageHead>[].obs;
   RxString? role = "".obs;
-  // RxString? firstName = "".obs;
-  // RxString? lastName = "".obs;
   RxBool showPreviousMessages = false.obs;
   final scrollController = ScrollController();
   RxInt page = 1.obs;

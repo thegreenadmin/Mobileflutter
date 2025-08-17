@@ -103,7 +103,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                                                   storeHomeMainController
                                                       .apiGetUserWalletBalance();
                                                   await Get.to(
-                                                          const CartScreen(),
+                                                           CartScreen(storeId: storeHomeMainController.storeId.value,),
                                                           id: pageIdApp.value)
                                                       ?.then((value) async =>
                                                       storeHomeMainController

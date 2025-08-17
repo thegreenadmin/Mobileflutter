@@ -968,8 +968,8 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                               .ownerOrderTransactionList![
                                                                                   index]
                                                                               .orderTransaction !=
-                                                                          null
-                                                                      ? "\$${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount!.toStringAsFixed(2)}"
+                                                                          null && transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount!=null
+                                                                      ? "\$${transactionController.ownerOrderTransactionList![index].orderTransaction?.storeReceivedAmount.toStringAsFixed(2)}"
                                                                       : transactionController
                                                                                   .ownerOrderTransactionList![
                                                                                       index]
@@ -995,7 +995,7 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                                                                   : transactionController.ownerOrderTransactionList![index].transaction !=
                                                                                           null
                                                                                       ? "\$${transactionController.ownerOrderTransactionList![index].transaction!.transactionAmount!.toStringAsFixed(2)}"
-                                                                                      : "",
+                                                                                      : "\$0.00",
                                                                   style: const TextStyle(
                                                                       color: AppColors
                                                                           .primary,

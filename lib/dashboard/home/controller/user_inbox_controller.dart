@@ -23,11 +23,11 @@ class UserInboxController extends GetxController with GlobalVarMixin{
   RxInt pageId = 0.obs;
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     isInboxSelected.value = true;
     showPreviousMessages.value = false;
-    apiGetInboxList();
+    await apiGetInboxList();
     role?.value = roleApp.value;
   }
 

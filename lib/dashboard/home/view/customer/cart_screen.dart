@@ -15,19 +15,34 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
-  final StoreHomeMainController storeHomeMainController =
-      Get.put(StoreHomeMainController());
+  // final StoreHomeMainController storeHomeMainController =
+  //     Get.put(StoreHomeMainController());
 
+  late final StoreHomeMainController storeHomeMainController;
 
+  @override
+  void initState() {
+    super.initState();
+    storeHomeMainController = Get.put(StoreHomeMainController());
+
+    // Just set params here (no API calls!)
+    storeHomeMainController.storeId.value = widget.storeId ?? "0";
+    storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
+  }
+ /*
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (storeHomeMainController.storeId.value != widget.storeId) {
-        storeHomeMainController.storeId.value = widget.storeId ?? "";
+      debugPrint("CartScreen storeId--- ${widget.storeId}");
+      debugPrint("CartScreen storeId--- ${storeHomeMainController.storeId.value != widget.storeId}");
+      // if (storeHomeMainController.storeId.value != widget.storeId) {
+      //   debugPrint("CartScreen compare--- ${storeHomeMainController.storeId.value != widget.storeId}");
+        storeHomeMainController.storeId.value = widget.storeId ?? "0";
         storeHomeMainController.getCurrentLocation();
-      }
-      storeHomeMainController.getCurrentLocation();
+
+      // }
+
       // if (Get.parameters['isFromHome'] != "false") {
       //   storeHomeMainController.productId.value =
       //       Get.parameters["productId"] == null
@@ -43,12 +58,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
       storeHomeMainController.showLoading.value = true;
       // storeHomeMainController.apiGetUserWalletBalance();
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         body: Stack(
           children: [
             Column(
@@ -415,26 +429,19 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                     .value = storeHomeMainController
                                                         .storeDetailsResponse
                                                         .value
-                                                        .data
-                                                        ?.store
-                                                        ?.storeDeliveryServices?[i]
-                                                        .storeDeliveryServiceId
-                                                        .toString() ??
-                                                    "0";
+                                                        .data?.store?.storeDeliveryServices?[i]
+                                                        .storeDeliveryServiceId.toString() ?? "0";
                                                 storeHomeMainController
                                                         .selectedDeliveryService
                                                         .value =
                                                     storeHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
+                                                        .storeDetailsResponse.value
                                                         .data?.store?.storeDeliveryServices![i]
                                                         .deliveryServiceId?.toString()??"";
                   
                                                 storeHomeMainController
                                                         .storeAddressId.value =
-                                                    storeHomeMainController
-                                                        .storeDetailsResponse
-                                                        .value
+                                                    storeHomeMainController.storeDetailsResponse.value
                                                         .data?.store?.storeAddresses?.first.storeAddressId
                                                         .toString()??"";
                   
@@ -775,7 +782,8 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                 right: 0,
                 child: Column(
                   children: [
-                    Obx(() => Visibility(
+                    Obx(() =>
+                        Visibility(
                           visible: storeHomeMainController
                                       .cartData.value.cartTotalPrice !=
                                   null &&
@@ -788,13 +796,18 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Obx(() => Text(
-                                      "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.walletBalance.value.toStringAsFixed(2)})",
-                                      style: const TextStyle(
-                                          color: AppColors.red,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                Expanded(
+                                  child: Obx(() => Text(
+                                        "${StringConstants.inSufficientFundText}(\$${storeHomeMainController.walletBalance.value.toStringAsFixed(2)})",
+                                        // "Cart Total Price- ${storeHomeMainController
+                                        //     .cartData.value.cartTotalPrice} Wallet Balance- (\$${storeHomeMainController.walletBalance.value})",
+                                    overflow: TextOverflow.visible,
+                                    style: const TextStyle(
+                                            color: AppColors.red,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                ),
                                 InkWell(
                                   onTap: () {
                                     Get.to(() =>  AddMoneyToWalletUser(isFromCartScreen:true),
@@ -860,6 +873,13 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                       : [AppColors.primary, AppColors.primary],
                                 ),
                                 onTap: () async {
+                                  if (storeHomeMainController.cartData.value.cartTotalPrice == null  || storeHomeMainController.cartData.value.cartTotalPrice == 0) {
+                                    Utility.showConfirmAlertMessage("Order can not be proceed, Order amount is \$0",okayTap: (){
+                                      Get.back(id: pageIdApp.value);
+                                    });
+                                    return;
+                                  }
+
                                   // Get.parameters['isFromAddProduct'] = 'no';
                                   if (storeHomeMainController
                                           .storeDeliveryServiceId.value !=

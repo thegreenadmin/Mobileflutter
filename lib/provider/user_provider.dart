@@ -11,6 +11,16 @@ import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
 class UserProvider extends GetConnect {
+  static final HttpClient _httpClient = HttpClient()
+    ..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+
+  static final IOClient _ioClient = IOClient(_httpClient);
+
+
+  static void disposeClient() {
+    _ioClient.close();
+    _httpClient.close(force: true);
+  }
 
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async
@@ -36,12 +46,12 @@ class UserProvider extends GetConnect {
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      HttpClient httpClient = HttpClient()
+      /*HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+      IOClient ioClient = IOClient(httpClient);*/
       try {
-      final res = await ioClient.get(Uri.parse(url), headers: headers);
+      final res = await _ioClient.get(Uri.parse(url), headers: headers)  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
 
@@ -76,9 +86,6 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    } finally {
-      ioClient.close();
-      httpClient.close(force: true);
     }
   }
 
@@ -102,14 +109,14 @@ class UserProvider extends GetConnect {
               barrierDismissible: false);
         }
 
-      HttpClient httpClient = HttpClient()
+      /*HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+      IOClient ioClient = IOClient(httpClient);*/
       try {
-      final res = await ioClient.post(Uri.parse(url),
+      final res = await _ioClient.post(Uri.parse(url),
           body: json.encode(data),
-          headers: {"Content-Type": "application/json"});
+          headers: {"Content-Type": "application/json"})  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
       final mData = json.decode(res.body) as Map<String, dynamic>;
@@ -147,10 +154,7 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    }finally {
-        ioClient.close();
-        httpClient.close(force: true);
-      }
+    }
   }
 
   // Signup request
@@ -178,12 +182,12 @@ class UserProvider extends GetConnect {
               barrierDismissible: false);
         }
 
-      HttpClient httpClient = HttpClient()
+      /*HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+      IOClient ioClient = IOClient(httpClient);*/
       try {
-      final res = await ioClient.put(Uri.parse(url));
+      final res = await _ioClient.put(Uri.parse(url))  .timeout(const Duration(seconds: 30));
 
       if (showLoading) Get.back();
 
@@ -216,10 +220,7 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    } finally {
-        ioClient.close();
-        httpClient.close(force: true);
-      }
+    }
   }
 
   // Post with header request
@@ -227,7 +228,7 @@ class UserProvider extends GetConnect {
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
 
-    headers.putIfAbsent('Connection', () => 'keep-alive');
+
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
     log("API URL********** $url");
     log("API headers ********** $headers");
@@ -249,13 +250,13 @@ class UserProvider extends GetConnect {
               barrierDismissible: false);
         }
 
-      HttpClient httpClient = HttpClient()
+     /* HttpClient httpClient = HttpClient()
         ..badCertificateCallback =
             ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+      IOClient ioClient = IOClient(httpClient);*/
       try {
-      final res = await ioClient.post(Uri.parse(url),
-          body: jsonEncode(data), headers: headers);
+      final res = await _ioClient.post(Uri.parse(url),
+          body: jsonEncode(data), headers: headers)  .timeout(const Duration(seconds: 30));
 
       if (showLoading) Get.back();
 
@@ -296,17 +297,14 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    } finally {
-        ioClient.close();
-        httpClient.close(force: true);
-      }
+    }
   }
 
   // Post with header request
   Future<Response?> putWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    headers.putIfAbsent('Connection', () => 'keep-alive');
+
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
     log("API URL********** $url");
     log("API data ********** $data");
@@ -327,13 +325,10 @@ class UserProvider extends GetConnect {
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
-      HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+
       try {
-      final res = await ioClient.put(Uri.parse(url),
-          body: json.encode(data), headers: headers);
+      final res = await _ioClient.put(Uri.parse(url),
+          body: json.encode(data), headers: headers)  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
       final mData = json.decode(res.body) as Map<String, dynamic>;
@@ -374,17 +369,14 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    }finally {
-        ioClient.close();
-        httpClient.close(force: true);
-      }
+    }
   }
 
   // Post with header request
   Future<Response?> putWithHeadersApi1(
       Map data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    headers.putIfAbsent('Connection', () => 'keep-alive');
+
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
     log("API URL********** $url");
     log("API data ********** $data");
@@ -406,13 +398,10 @@ class UserProvider extends GetConnect {
               barrierDismissible: false);
         }
 
-      HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
+
       try {
-      final res = await ioClient.put(Uri.parse(url),
-          body: json.encode(data), headers: headers);
+      final res = await _ioClient.put(Uri.parse(url),
+          body: json.encode(data), headers: headers)  .timeout(const Duration(seconds: 30));
       if (showLoading) Get.back();
 
       final mData = json.decode(res.body) as Map<String, dynamic>;
@@ -451,9 +440,6 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    } finally {
-      ioClient.close();
-      httpClient.close(force: true);
     }
   }
 
@@ -461,7 +447,7 @@ class UserProvider extends GetConnect {
   Future<Response?> deleteWithHeadersApi(
       data, String url, Map<String, String> headers,
       {bool showLoading = false}) async {
-    headers.putIfAbsent('Connection', () => 'keep-alive');
+    // headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
     log("API URL********** $url");
     log("API data ********** $data");
@@ -483,13 +469,9 @@ class UserProvider extends GetConnect {
               barrierDismissible: false);
         }
 
-      HttpClient httpClient = HttpClient()
-        ..badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
-      IOClient ioClient = IOClient(httpClient);
       try {
-      final res = await ioClient.delete(Uri.parse(url),
-          body: jsonEncode(data), headers: headers);
+      final res = await _ioClient.delete(Uri.parse(url),
+          body: jsonEncode(data), headers: headers)  .timeout(const Duration(seconds: 30));
 
       if (showLoading) Get.back();
 
@@ -528,15 +510,18 @@ class UserProvider extends GetConnect {
         );
 
       return null;
-    } finally {
-      ioClient.close();
-      httpClient.close(force: true);
     }
   }
 
 // Chat Socket
   GetSocket userMessages(String url) {
     return socket(url);
+  }
+
+  @override
+  void onClose() {
+    UserProvider.disposeClient();
+    super.onClose();
   }
 
   Future<Response> updateAvatar(List<int> img, String filename) async {

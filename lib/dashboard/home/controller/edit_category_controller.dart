@@ -42,10 +42,10 @@ class EditNewCategoryController extends GetxController with GlobalVarMixin{
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
 
-    storeId.value = Get.parameters["storeId"] ?? "";
-    categoryId.value = Get.parameters["categoryId"] ?? "";
-    isFeaturedTypeSelected.value =
-        Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
+    // storeId.value = Get.parameters["storeId"] ?? "";
+    // categoryId.value = Get.parameters["categoryId"] ?? "";
+    // isFeaturedTypeSelected.value =
+    //     Get.parameters["isFeaturedSelectedType"] == "true" ? true : false;
          if (categoryId.value.isNotEmpty) {
       await apiGetCategoryDetail();
     }

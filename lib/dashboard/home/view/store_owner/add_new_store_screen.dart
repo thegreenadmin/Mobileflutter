@@ -246,28 +246,24 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                             color: AppColors.blackLight,
                                             strokeWidth: 1,
                                             dashPattern: const [4, 4],
-                                            child: Container(
-                                                width:
-                                                    WidgetConstants.screenWidth * 0.80,
-                                                height:
-                                                    WidgetConstants.screenHeight * 0.2,
-                                                color: AppColors.primaryLight,
-                                                child: CommonWidgets.cachedNetworkImage(
-                                                  addNewStoreController
-                                                      .storeImageDynamicLinkFromServer
-                                                      .value,
-                                                  fit: BoxFit.cover,
-                                                  placeholder: (context, url) => SizedBox(
-                                                      width:
-                                                          WidgetConstants.screenWidth *
-                                                              0.85,
-                                                      height:
-                                                          WidgetConstants.screenHeight *
-                                                              0.2,
-                                                      child: const Center(
-                                                          child:
-                                                              CircularProgressIndicator())),
-                                                )),
+                                            child: CommonWidgets.cachedNetworkImage(
+                                              width: WidgetConstants.screenWidth * 0.85,
+                                              height: WidgetConstants.screenHeight * 0.2,
+                                              addNewStoreController
+                                                  .storeImageDynamicLinkFromServer
+                                                  .value,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) => SizedBox(
+                                                  width:
+                                                      WidgetConstants.screenWidth *
+                                                          0.85,
+                                                  height:
+                                                      WidgetConstants.screenHeight *
+                                                          0.2,
+                                                  child: const Center(
+                                                      child:
+                                                          CircularProgressIndicator())),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -510,6 +506,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
 
                                 addNewStoreController.countryTextController.text =
                                     getComponent('country') ?? '';
+                                addNewStoreController.zipCodeTextController.text =
+                                    getComponent('postal_code') ?? '';
 
                                 addNewStoreController.stateTextController.text =
                                     getComponent('administrative_area_level_1') ?? '';

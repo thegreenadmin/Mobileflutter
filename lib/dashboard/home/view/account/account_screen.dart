@@ -169,8 +169,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                     Get.parameters["orderId"] = "";
                                     Get.parameters[Role.role] =
                                         Role.storeOwnerRoleText;
-
-                                    // roleApp(Role.storeOwnerRoleText);
                                     roleApp.value = Role.storeOwnerRoleText;
                                     Get.find<BottomNavController>().onReady();
                                     Get.until((route) => route.isFirst,
@@ -178,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   } else {
                                     SharedPreferenceStorage.setData(
                                         Role.role, Role.customerRoleText);
-                                    // roleApp( Role.customerRoleText);
+
                                     roleApp.value = Role.customerRoleText;
                                     accountController.roleId?.value =
                                         Role.customerRoleText;
