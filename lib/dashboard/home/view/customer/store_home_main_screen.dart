@@ -12,7 +12,6 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
-import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'components/store_home_main_args.dart';

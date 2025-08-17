@@ -690,7 +690,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               if (storeHomeMainController.isVerifiedStore.value) {
                 // Get.parameters['isFromAddProduct'] = "yes";
                 if (int.parse(storeHomeMainController.storeIdValue
-                    .toString()??"0") ==
+                    .toString()) ==
                     0) {
                   if (storeHomeMainController.itemsCount.value != 0) {
                     // print("addToOrderText storeId==========");
@@ -711,7 +711,6 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                     if (storeHomeMainController.itemsCount.value != 0) {
                       print("addToOrderText storeId==========");
                       print(storeHomeMainController.storeId.toString());
-                      return;
                       storeHomeMainController.apiAddToCart(context);
                     } else {
                       Utility.showAlertMessage(AlertStringConstants

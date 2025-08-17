@@ -21,9 +21,9 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
 
   @override
   void initState() {
-    ordersHomeMainController.storeId?.value = widget.storeId??"";
-    ordersHomeMainController.orderId?.value = widget.orderId??"";
-    ordersHomeMainController.isFromNotification?.value = widget.isFromNotification??false;
+    ordersHomeMainController.storeId.value = widget.storeId??"";
+    ordersHomeMainController.orderId.value = widget.orderId??"";
+    ordersHomeMainController.isFromNotification.value = widget.isFromNotification??false;
     super.initState();
   }
 

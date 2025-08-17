@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
-import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:get/get.dart';
 import 'package:global_configs/global_configs.dart';
 // import 'package:google_maps_webservice/geocoding.dart';

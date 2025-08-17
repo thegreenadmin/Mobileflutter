@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/user_featured_product_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_offers_model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
@@ -111,13 +110,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         ),
         //LOADING OVERLAY
         Obx(() {
-          return homeController.isLoading.value
-              ? Container(
+          if (homeController.isLoading.value) {
+            return Container(
             color: Colors.black.withOpacity(0.2),
             child: const Center(
               child: CircularProgressIndicator(color: AppColors.primary),
-            ),)
-              : const SizedBox.shrink();
+            ),);
+          } else {
+            return const SizedBox.shrink();
+          }
         }),
       ],
     );
@@ -745,7 +746,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
 
         : CarouselSlider(
       items: featuredProductList
-          ?.map(
+          .map(
             (item) =>
             Container(
 
