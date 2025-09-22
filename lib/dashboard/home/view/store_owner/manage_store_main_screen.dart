@@ -125,11 +125,14 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
         //LOADING OVERLAY
         Obx(() {
           return ownerStoresController.isLoading.value
-              ? Container(
-                            color: Colors.black.withOpacity(0.2),
-                            child: const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
-                            ),)
+              ? IgnorePointer(
+            ignoring: false, // tap blocked only when loading
+                child: Container(
+                              color: Colors.black.withOpacity(0.2),
+                              child: const Center(
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                              ),),
+              )
               : const SizedBox.shrink();
         }),
       ],
