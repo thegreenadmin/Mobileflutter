@@ -86,6 +86,15 @@ class UserProvider extends GetConnect {
         );
 
       return null;
+    } catch (e) {
+      if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          e.toString(),
+          title:  AlertStringConstants.alertText,
+        );
+
+      return null;
     }
   }
 
@@ -187,12 +196,22 @@ class UserProvider extends GetConnect {
             ((X509Certificate cert, String host, int port) => true);
       IOClient ioClient = IOClient(httpClient);*/
       try {
-      final res = await _ioClient.put(Uri.parse(url))  .timeout(const Duration(seconds: 30));
+        final res = await _ioClient.put(Uri.parse(url)).timeout(const Duration(seconds: 30));
 
-      if (showLoading) Get.back();
+        if (showLoading) Get.back();
 
-      log("API Response********** ${json.decode(res.body)}");
-      return Response(statusCode: res.statusCode, body: json.decode(res.body));
+        log("API Response********** ${json.decode(res.body)}");
+        return Response(statusCode: res.statusCode, body: json.decode(res.body));
+      } on SocketException catch (e) {
+        if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          "Server error",
+          title:  AlertStringConstants.alertText,
+        );
+
+        return null;
+
     }  on TimeoutException {
       if (showLoading) Get.back();
 
@@ -270,6 +289,17 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
+      } on SocketException catch (e) {
+        if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          "Server error",
+          title:  AlertStringConstants.alertText,
+        );
+
+        return null;
+
+
     }  on TimeoutException {
       if (showLoading) Get.back();
 
@@ -342,7 +372,17 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    }  on TimeoutException {
+      } on SocketException catch (e) {
+        if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          "Server error",
+          title:  AlertStringConstants.alertText,
+        );
+
+        return null;
+
+      }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -413,7 +453,16 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    }  on TimeoutException {
+      } on SocketException catch (e) {
+        if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          "Server error",
+          title:  AlertStringConstants.alertText,
+        );
+
+        return null;
+      }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(
@@ -471,7 +520,7 @@ class UserProvider extends GetConnect {
 
       try {
       final res = await _ioClient.delete(Uri.parse(url),
-          body: jsonEncode(data), headers: headers)  .timeout(const Duration(seconds: 30));
+          body: jsonEncode(data), headers: headers).timeout(const Duration(seconds: 30));
 
       if (showLoading) Get.back();
 
@@ -484,7 +533,17 @@ class UserProvider extends GetConnect {
           statusCode: res.statusCode,
           body: json.decode(res.body),
           headers: headers);
-    }  on TimeoutException {
+      } on SocketException catch (e) {
+        if (showLoading) Get.back();
+
+        Utility.showAlertMessage(
+          "Server error",
+          title:  AlertStringConstants.alertText,
+        );
+
+        return null;
+
+      }  on TimeoutException {
       if (showLoading) Get.back();
 
         Utility.showAlertMessage(

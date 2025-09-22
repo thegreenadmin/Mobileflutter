@@ -142,6 +142,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     }
 
     await apiGetUserWalletBalance();
+    await apiActiveCartApi();
   }
 
   // --- Location ---
@@ -701,6 +702,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           storeIdValue.value = activeCartModel.data!.storeId.toString();
           // storeId.value = activeCartModel.data!.storeId.toString();
         } else {
+          storeIdValue.value = activeCartModel.data!.storeId.toString();
           cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
           if (cartListResponse.data?.cartTotalPrice is int ||
               cartListResponse.data?.cartTotalPrice is String) {
@@ -712,8 +714,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
                      isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
-          storeId.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi();
+          // storeId.value = activeCartModel.data!.storeId.toString();
+          await apiGetCartListApi(existingStoreId:activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -846,7 +848,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   ///Get Cart List Api
-  Future apiGetCartListApi({bool isShowLoading = false}) async {
+  Future apiGetCartListApi({bool isShowLoading = false,String? existingStoreId}) async {
     isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -859,11 +861,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         .getWithHeadersApi(
             storeDeliveryServiceId.value.toString() == "0" &&
                     selectedUserAddress.value.userAddressId == null
-                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}"
+                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}"
                 : storeDeliveryServiceId.value.toString() != "0" &&
                         selectedUserAddress.value.userAddressId == null
-                    ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                    : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+                    ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
+                    : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
             headers,
             showLoading: false)
         .then((value) async {

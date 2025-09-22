@@ -237,54 +237,34 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                               ),
                               Row(
                                 children: [
-                                  searchStoreUserController
-                                      .previousStore[index]
-                                      .isFavouriteStore!.value ==
-                                      true
-                                      ? InkWell(
-                                    onTap: () {
-                                      searchStoreUserController
-                                          .previousStore[index].isFavouriteStore!.value =
-                                      false;
-                                      if (searchStoreUserController
-                                          .isLoading.value ==
-                                          false) {
-                                        searchStoreUserController
-                                            .apiRemoveFavouriteStore(
-                                          searchStoreUserController
-                                              .previousStore[index]
-                                              .storeId,
-                                        );
-                                      }
-                                    },
-                                    radius: 20,
-                                    child: Image.asset(
-                                      ImageConstants.liked,
-                                      scale: 3.2,
-                                    ),
-                                  )
-                                      : InkWell(
-                                    onTap: () {
-                                      searchStoreUserController
-                                          .previousStore[index].isFavouriteStore!.value =
-                                      true;
-                                      if (searchStoreUserController
-                                          .isLoading.value ==
-                                          false) {
-                                        searchStoreUserController
-                                            .apiCreateFavouriteStore(
-                                          searchStoreUserController
-                                              .previousStore[index]
-                                              .storeId,
-                                        );
-                                      }
-                                    },
-                                    radius: 20,
-                                    child: Image.asset(
-                                      ImageConstants.fav,
-                                      scale: 3.2,
-                                    ),
-                                  ),
+                                  Obx(() {
+                                    final store = searchStoreUserController.previousStore[index]!;
+
+                                    store.isFavouriteStore?.value = store.isFavouriteStore?.value ?? false;
+
+                                    final isFav = store.isFavouriteStore?.value ?? false;
+
+                                    return InkWell(
+                                      onTap: () {
+                                        if (searchStoreUserController.isLoading.value) return;
+
+                                        if (isFav) {
+                                          // Un-favourite
+                                          store.isFavouriteStore?.value = false;
+                                          searchStoreUserController.apiRemoveFavouriteStore(store.storeId);
+                                        } else {
+                                          // Favourite
+                                          store.isFavouriteStore?.value = true;
+                                          searchStoreUserController.apiCreateFavouriteStore(store.storeId);
+                                        }
+                                      },
+                                      radius: 20,
+                                      child: Image.asset(
+                                        isFav ? ImageConstants.liked : ImageConstants.fav,
+                                        scale: 3.2,
+                                      ),
+                                    );
+                                  }),
                                   width10SizedBox,
                                   Image.asset(
                                     ImageConstants.info,

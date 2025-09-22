@@ -310,14 +310,27 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                   .map((item) =>
                   InkWell(
                     onTap: () async {
-                      storeHomeMainController.offersController
-                          .apiGetOffersProducts(
-                          offerId: item.offerId.toString(),
-                          storeId: item.storeId.toString());
-                      storeHomeMainController.offerObj.value = item;
-                      storeHomeMainController.invokedIndex.value = 2;
-                      storeHomeMainController.update();
-                      // Get.parameters["invokedIndex"] = "2";
+                      if (storeHomeMainController.isLoading.value == false) {
+                        storeHomeMainController.storeId.value = item.storeId.toString();
+                        storeHomeMainController.offerObj.value = item;
+                        storeHomeMainController.invokedIndex.value = item.isOfferForStore == true ? 0 : 2;
+                          if (item.isOfferForStore == false) {
+                             await storeHomeMainController.offersController.apiGetOffersProducts(
+                                offerId: item.offerId.toString(),
+                                storeId: item.storeId.toString()).then((v){
+                              storeHomeMainController.productId.value = storeHomeMainController.offersController.featuredUserProductList.first.productId ??"0";
+
+                            });
+                            storeHomeMainController.selectedIndex.value = 1;
+                            if (storeHomeMainController.storeId.value != "" &&
+                                storeHomeMainController.productId.value != "") {
+                              storeHomeMainController.apiGetShopProductDetailApi();
+                            }
+                          }else{
+                            storeHomeMainController.selectedIndex.value = 1;
+                            storeHomeMainController.apiGetStoreCategoriesApi();
+                          }
+                      }
                     },
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),

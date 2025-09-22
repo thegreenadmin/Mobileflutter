@@ -550,9 +550,6 @@ class ManageStoreController extends GetxController with GlobalVarMixin{
             imagesList2.add(img);
           }
         }
-        print("${ServerCommunicator.baseUrl}${ServerCommunicator.storeProductDetail}?store_id=${storeId.value}&product_id=${productId.value}");
-        print("product details -");
-        print("${value?.body["data"]['product']}");
 
         inputData.productImages = imageUrlList;
         discountOrOfferTextController.text =

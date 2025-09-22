@@ -21,44 +21,15 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
   late final StoreHomeMainController storeHomeMainController;
 
   @override
-  void initState() {
+   initState()  {
     super.initState();
     storeHomeMainController = Get.put(StoreHomeMainController());
 
     // Just set params here (no API calls!)
     storeHomeMainController.storeId.value = widget.storeId ?? "0";
     storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
+
   }
- /*
-  @override
-  initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint("CartScreen storeId--- ${widget.storeId}");
-      debugPrint("CartScreen storeId--- ${storeHomeMainController.storeId.value != widget.storeId}");
-      // if (storeHomeMainController.storeId.value != widget.storeId) {
-      //   debugPrint("CartScreen compare--- ${storeHomeMainController.storeId.value != widget.storeId}");
-        storeHomeMainController.storeId.value = widget.storeId ?? "0";
-        storeHomeMainController.getCurrentLocation();
-
-      // }
-
-      // if (Get.parameters['isFromHome'] != "false") {
-      //   storeHomeMainController.productId.value =
-      //       Get.parameters["productId"] == null
-      //           ? ""
-      //           : Get.parameters["productId"] ?? "";
-      // }
-      // if (Get.parameters['isFromAddProduct'] == 'yes') {
-      if (widget.isFromAddProduct == true) {
-        storeHomeMainController.selectedIndex.value = 0;
-        storeHomeMainController.lastSelectedIndex.value = 0;
-      }
-      // storeHomeMainController.apiGetUserDetailsApi();
-      storeHomeMainController.showLoading.value = true;
-      // storeHomeMainController.apiGetUserWalletBalance();
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {

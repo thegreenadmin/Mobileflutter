@@ -28,21 +28,23 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
    buildSingleChildScrollView(BuildContext context) {
     return Stack(
       children: [
-
-        Column(
-          children: [
-            buildPreferredSize(),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: buildColumn(context),
+        GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: Column(
+            children: [
+              buildPreferredSize(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                    child: buildColumn(context),
+                  ),
                 ),
               ),
-            ),
 
-          ],
+            ],
+          ),
         ),
         //LOADING OVERLAY
         Obx(() {

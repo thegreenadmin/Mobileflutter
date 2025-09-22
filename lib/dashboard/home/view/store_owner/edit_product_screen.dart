@@ -752,7 +752,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                           }
 
                                           final parsed = double.tryParse(input);
-                                          if (parsed == null || parsed == 0 ) {
+                                          if (parsed == null ) {
                                             return AlertStringConstants.invalidAmountText;
                                           }
 

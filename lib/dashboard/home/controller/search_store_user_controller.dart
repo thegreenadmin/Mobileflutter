@@ -579,8 +579,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       Utility.showAlertMessage("Location or postal code is required.");
       return;
     }
-/*
-     if(zipCodeTextController.text == "" || (lng.value ==0.0 && lat.value == 0.0)){
+
+/* if(zipCodeTextController.text == "" || (lng.value ==0.0 && lat.value == 0.0)){
        Utility.showAlertMessage("Location permissions are permanently denied, we cannot request permissions.");
      }*/
 

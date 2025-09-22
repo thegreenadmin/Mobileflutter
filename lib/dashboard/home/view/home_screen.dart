@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   () =>
                                   SearchStoreUserScreen(
                                     firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
                                   ),
                               id: pageIdApp.value,
 
@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   OwnerStoresListScreen(
                                     firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
                                     isFromHome: false,
-                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
                                   ),
                               id: pageIdApp.value,
                             );
@@ -277,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   () =>
                                   SearchStoreUserScreen(
                                     firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
+                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
 
                                   ),
                               id: pageIdApp.value,

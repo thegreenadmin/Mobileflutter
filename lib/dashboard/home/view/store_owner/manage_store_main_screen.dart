@@ -126,10 +126,10 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
         Obx(() {
           return ownerStoresController.isLoading.value
               ? Container(
-            color: Colors.black.withOpacity(0.2),
-            child: const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
-            ),)
+                            color: Colors.black.withOpacity(0.2),
+                            child: const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+                            ),)
               : const SizedBox.shrink();
         }),
       ],

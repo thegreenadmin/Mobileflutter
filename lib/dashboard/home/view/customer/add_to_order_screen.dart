@@ -20,6 +20,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
   final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
 
+
+  @override
+  initState()  {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callApi();
+    });
+    super.initState();
+  }
+
+  callApi()async{
+  await  storeHomeMainController.apiActiveCartApi();
+  }
 /*  @override
   initState() {
     super.initState();
@@ -685,13 +697,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               end: Alignment.bottomCenter,
               colors: [AppColors.primary, AppColors.primary],
             ),
-            onTap: () {
+
+           /* onTap: () {
 
               if (storeHomeMainController.isVerifiedStore.value) {
                 // Get.parameters['isFromAddProduct'] = "yes";
+
+                final currentStoreId = int.parse(storeHomeMainController.storeId.toString());
+                final storedStoreId = int.parse(storeHomeMainController.storeIdValue.toString());
+                final hasItems = storeHomeMainController.itemsCount.value > 0;
+
                 if (int.parse(storeHomeMainController.storeIdValue
-                    .toString()) ==
-                    0) {
+                    .toString()) == 0) {
                   if (storeHomeMainController.itemsCount.value != 0) {
                     // print("addToOrderText storeId==========");
                     // print(storeHomeMainController.storeId.toString());
@@ -702,6 +719,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                         AlertStringConstants.pleaseAddAtLeastOneItemText);
                   }
                 } else {
+                  print("addToOrderText storeId==========");
+                  print(storeHomeMainController.storeId.toString());
                   if ((int.parse(storeHomeMainController.storeIdValue
                       .toString()) !=
                       int.parse(
@@ -716,6 +735,38 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                       Utility.showAlertMessage(AlertStringConstants
                           .pleaseAddAtLeastOneItemText);
                     }
+                  }
+                }
+              }
+            },*/
+            onTap: () {
+              if (!storeHomeMainController.isVerifiedStore.value) return;
+
+              final currentStoreId = int.parse(storeHomeMainController.storeId.toString());
+              final storedStoreId = int.parse(storeHomeMainController.storeIdValue.toString());
+              final hasItems = storeHomeMainController.itemsCount.value > 0;
+
+              if (storedStoreId == 0) {
+                // First time adding items
+                if (hasItems) {
+                  storeHomeMainController.apiAddToCart(context);
+                } else {
+                  Utility.showAlertMessage(AlertStringConstants.pleaseAddAtLeastOneItemText);
+                }
+              } else {
+                // Already have a storeId
+                if (storedStoreId != currentStoreId) {
+                  // Cart belongs to another store
+                  if (hasItems) {
+                    // cart not empty → show alert before discarding
+                    storeHomeMainController.discardCartItems(context);
+                  }
+                } else {
+                  // Same store
+                  if (hasItems) {
+                    storeHomeMainController.apiAddToCart(context);
+                  } else {
+                    Utility.showAlertMessage(AlertStringConstants.pleaseAddAtLeastOneItemText);
                   }
                 }
               }
