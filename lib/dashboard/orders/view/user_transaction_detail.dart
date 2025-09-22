@@ -19,10 +19,12 @@ class _UserTransactionDetailScreenState
   @override
   void initState() {
     super.initState();
-    userTransactionDetailController.userStripeCardId!.value =
-        Get.parameters['user_stripe_card_id'] ?? "";
-    // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
-    userTransactionDetailController.apiGetUserOrderTransactionHistory();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userTransactionDetailController.userStripeCardId!.value =
+          Get.parameters['user_stripe_card_id'] ?? "";
+      // userStripeCardId!.value = Get.arguments['user_stripe_card_id'] ?? "";
+      userTransactionDetailController.apiGetUserOrderTransactionHistory();
+    });
   }
 
   @override

@@ -23,17 +23,19 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
 
   @override
   initState(){
-    ordersController.isFromNotification.value =
-        widget.isFromNotification??false;
-    ordersController.storeId.value = widget.storeId ?? "";
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ordersController.isFromNotification.value =
+          widget.isFromNotification ?? false;
+      ordersController.storeId.value = widget.storeId ?? "";
 
-    if(ordersController.storeId.value !=""){
-      ordersController.apiGetStoreDetailsApi();
-    }
+      if (ordersController.storeId.value != "") {
+        ordersController.apiGetStoreDetailsApi();
+      }
 
-    ordersController.orderStatus.value = widget.orderStatus ?? "";
+      ordersController.orderStatus.value = widget.orderStatus ?? "";
+    });
+      super.initState();
 
-    super.initState();
   }
 
   Container userOrdersTab() {

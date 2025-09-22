@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/notification_list_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/store_owner_Inbox/owner_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
+import 'package:thegreenmall/dashboard/orders/view/mark_return_order_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -72,163 +76,12 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                   notificationListController.notificationList.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
-                                /*  onTap: () {
-                                    Get.parameters["storeId"] =
-                                        notificationListController
-                                                .notificationList[index].storeId ??
-                                            "";
-                                    Get.parameters["storeName"] =
-                                        notificationListController
-                                                .notificationList[index]
-                                                .store
-                                                ?.storeName ??
-                                            "";
-                                    Get.parameters["messageHeadId"] =
-                                        notificationListController
-                                                .notificationList[index]
-                                                .messageHeadId ??
-                                            "";
-
-                                    Get.parameters["orderStatus"] =
-                                        notificationListController
-                                                .notificationList[index].orderId ??
-                                            "";
-                                    Get.parameters["orderId"] =
-                                        notificationListController
-                                                .notificationList[index].orderId ??
-                                            "";
-                                    Get.parameters["isController"] = "yes";
-                                    Get.parameters["isFromNotification"] = "true";
-
-                                    notificationListController.notificationList[index]
-                                        .isNotificationForStore!
-                                        ? roleApp(Role.storeOwnerRoleText)
-                                        : roleApp(Role.customerRoleText);
-                                    notificationListController
-                                                    .notificationList[index].orderId !=
-                                                null &&
-                                            notificationListController
-                                                .notificationList[index]
-                                                .isNotificationForStore!
-                                        ? Get.put(OrdersHomeMainController()).onInit()
-                                        : null;
-                                    notificationListController
-                                                .notificationList[index].orderId !=
-                                            null
-                                        ? notificationListController
-                                                .notificationList[index]
-                                                .isNotificationForStore!
-                                            ? Get.to(
-                                                () =>  OrdersHomeMainScreen(
-                                                  isFromTransaction: false,
-                                                  isFromNotification: true,
-                                                  orderId: notificationListController
-                                                      .notificationList[index].orderId ??
-                                                      "",
-                                                  orderStatus: notificationListController
-                                                      .notificationList[index].orderId ??
-                                                      "",
-                                                  storeId: notificationListController
-                                                      .notificationList[index].storeId ??
-                                                      "",
-                                                  isHome: false,
-                                                    storeName:notificationListController
-                                                        .notificationList[index].storeId ??
-                                                        ""
-                                                ),
-                                                id: pageIdApp.value,
-                                              )
-                                            : Get.to(
-                                                () =>  OrderConfirmationScreen(
-                                                  isFromTransaction: false,
-                                                  isFromNotification: true,
-                                                  orderId: notificationListController
-                                                      .notificationList[index].orderId ??
-                                                      "",
-                                                  orderStatus: notificationListController
-                                                      .notificationList[index].orderId ??
-                                                      "",
-                                                  storeId: notificationListController
-                                                      .notificationList[index].storeId ??
-                                                      "",
-                                                  isHome: false,
-                                                ),
-                                                id: pageIdApp.value,
-                                              )
-                                        : notificationListController
-                                                    .notificationList[index].offerId !=
-                                                null
-                                            ? Get.to(() =>  StoreHomeMainScreen(
-                                        args:  StoreHomeMainArgs(
-                                          storeId: notificationListController
-                                              .notificationList[index].storeId ??
-                                              "",
-                                          isFromMenu: false,isFromFav: false,
-                                          isFromHome: true, isFromOptions: false,
-                                        )
-                                    ),
-                                                id: pageIdApp.value,
-                                                *//*arguments: {
-                                                    "isFromNotification": true,
-                                                  }*//*)
-                                            : notificationListController
-                                                        .notificationList[index]
-                                                        .messageHeadId !=
-                                                    null
-                                                ? roleApp.value == Role.customerRoleText
-                                                    ? Get.to(
-                                                        () =>
-                                                            UserInboxDetailScreen(
-                                                              storeId: notificationListController
-                                                                  .notificationList[
-                                                              index]
-                                                                  .storeId ??
-                                                                  "",storeName: notificationListController
-                                                                .notificationList[
-                                                            index]
-                                                                .store!
-                                                                .storeName ??
-                                                                "",
-
-                                                              // customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
-                                                              messageHeadId: notificationListController
-                                                                  .notificationList[
-                                                              index]
-                                                                  .messageHeadId ??
-                                                                  "",
-                                                            ),
-                                                        id: pageIdApp.value,)
-                                                    : Get.to(
-                                                        () =>
-                                                             OwnerInboxDetailScreen(
-                                                               storeId: notificationListController
-                                                                   .notificationList[
-                                                               index]
-                                                                   .storeId ??
-                                                                   "",storeName: notificationListController
-                                                                 .notificationList[
-                                                             index]
-                                                                 .store!
-                                                                 .storeName ??
-                                                                 "",
-
-                                                               // customerName:  " ${ownerInboxController.inboxList[index].user?.firstName} ${ownerInboxController.inboxList[index].user?.lastName ?? ""}",
-                                                               messageHeadId: notificationListController
-                                                                   .notificationList[
-                                                               index]
-                                                                   .messageHeadId ??
-                                                                   "",
-                                                             ),
-                                                        id: pageIdApp.value,
-                                                        )
-                                                : null;
-                                  },*/
-
                                     onTap: () {
                                       final notification = notificationListController.notificationList[index];
                                       final storeId = notification.storeId ?? "";
                                       final storeName = notification.store?.storeName ?? "";
                                       final orderId = notification.orderId ?? "";
+
                                       final messageHeadId = notification.messageHeadId ?? "";
                                       final offerId = notification.offerId;
 
@@ -238,22 +91,43 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
 
                                       // Role assignment
                                       roleApp(isStoreNotification ? Role.storeOwnerRoleText : Role.customerRoleText);
-
+                                      // return;
                                       // Navigation Logic
                                       if (orderId.isNotEmpty) {
                                         if (isStoreNotification) {
-                                          Get.to(
-                                                () => OrdersHomeMainScreen(
-                                              isFromTransaction: false,
+                                          // Redirect to order detail
+
+                                          final orderStatus = notification.title!.toLowerCase().contains("received a new order") ? "received"
+                                              : notification.title!.toLowerCase().contains("received a return request") ? "returnRequest"
+                                              : notification.title!.toLowerCase().contains("reached the store for pickup the Order") ? "pickup"
+                                              :"delivered";
+                                         /* if(orderStatus == "received"){
+                                            Get.to(() =>  MarkOrderStatusScreen(
+                                              orderId: orderId, storeId: storeId,
+                                              orderStatus: orderStatus,
                                               isFromNotification: true,
-                                              orderId: orderId,
-                                              orderStatus: orderId,
-                                              storeId: storeId,
-                                              isHome: false,
-                                              storeName: storeName,
-                                            ),
-                                            id: pageIdApp.value,
-                                          );
+                                            ), id: pageIdApp.value);
+
+                                          }else if (orderStatus == "returnRequest"){
+                                            // Get.to(() =>  MarkReturnOrderScreen(
+                                            //   orderId: orderId, storeId: storeId,
+                                            // ), id: pageIdApp.value);
+
+                                          }else if (orderStatus == "pickup"){
+                                            Get.to(() =>  MarkOrderStatusScreen(
+                                              orderId: orderId, storeId: storeId,
+                                              orderStatus: orderStatus,
+                                              isFromNotification: true,
+                                            ), id: pageIdApp.value);
+
+                                          }else{*/
+                                            Get.to(() =>  MarkOrderStatusScreen(
+                                              orderId: orderId, storeId: storeId,
+                                              orderStatus: "delivered", //orderStatus
+                                              isFromNotification: true,
+                                            ), id: pageIdApp.value);
+
+                                          // }
                                         } else {
                                           Get.to(
                                                 () => OrderConfirmationScreen(
@@ -313,7 +187,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Flexible(
-                                            flex: 2,
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
@@ -348,7 +221,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                           .store!
                                                           .storeName ??
                                                       "",
-                                                  textAlign: TextAlign.justify,
                                                   style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
@@ -360,7 +232,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                           .notificationList[index]
                                                           .title ??
                                                       "",
-                                                  textAlign: TextAlign.justify,
+
                                                   style: const TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
@@ -377,7 +249,7 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                     ),
                                                     secFormat: '',
                                                   ).toString(),
-                                                  textAlign: TextAlign.justify,
+
                                                   style: TextStyle(
                                                       fontSize: 12.0,
                                                       color: AppColors.blackLight,

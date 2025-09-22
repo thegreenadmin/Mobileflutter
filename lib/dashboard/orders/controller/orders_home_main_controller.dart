@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart' as store;
@@ -26,6 +28,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   RxString storeId = "".obs;
   RxString orderStatusId = "".obs;
   RxString orderId = "".obs;
+  RxString orderStatus = "".obs;
   RxString customerName = "".obs;
   RxString orderDate = "".obs;
   RxString orderAmount = "".obs;
@@ -42,12 +45,15 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   RxList<OrderHistories> orderHistories = <OrderHistories>[].obs;
   final scrollController = ScrollController();
 
+/*
   @override
   void onInit() {
     super.onInit();
     _initLocalRole();
     _setupScrollController();
+    _initApiCalls();
   }
+*/
 
   @override
   void onReady() {
@@ -96,16 +102,15 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       }
     });
   }
+  //
+  // Future<void> getPage() async {
+  //   firstName?.value =
+  //       await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
+  //   lastName?.value =
+  //       await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
+  //   role?.value = await SharedPreferenceStorage.getData(Role.role) ?? "";
+  // }
 
-  Future<void> getPage() async {
-    firstName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.firstNameText) ?? "";
-    lastName?.value =
-        await SharedPreferenceStorage.getData(StringConstants.lastNameText) ?? "";
-    role?.value = await SharedPreferenceStorage.getData(Role.role) ?? "";
-  }
-
-/*
   @override
   void onInit() {
     super.onInit();
@@ -161,7 +166,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
 
     var roleVal = await SharedPreferenceStorage.getData(Role.role);
     role?.value = roleVal;
-  }*/
+  }
 
   int daysInMonth(DateTime date) {
     var firstDayThisMonth = DateTime(date.year, date.month, date.day);
@@ -176,27 +181,27 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
     switch (i) {
       case 0: //Active Orders
         {
-                                await apiGetOwnerOrderHistory();
+       await apiGetOwnerOrderHistory();
         }
         break;
       case 1: //In-progress Orders
         {
-                                await apiGetOwnerOrderHistory();
+         await apiGetOwnerOrderHistory();
         }
         break;
       case 2: //Pickup Orders
         {
-                                await apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       case 3: //Completed Orders
         {
-                                await apiGetOwnerOrderHistory();
+          await apiGetOwnerOrderHistory();
         }
         break;
       default:
         {
-                                await apiGetOwnerOrderHistory();
+         await apiGetOwnerOrderHistory();
         }
         break;
     }
@@ -212,7 +217,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Get Store Details Api
   Future apiGetStoreDetails() async {
     isLoading.value = true;
-     
+    if (storeId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
@@ -249,6 +256,10 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       {String startDateOfMonth = "",
       String endDateOfMonth = "",
       orderStatus = Map<String, String>}) async {
+    log("apiGetOwnerOrderHistory = ${storeId.value}");
+    if (storeId.value == "" ) {
+      return;
+    }
 
     if (page.value == 1) {
       isLoading.value = true;
@@ -332,7 +343,6 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
 
       isLoading.value = false;
       isDataLoading.value = false;
-
               if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOrderHistoryModel =
@@ -365,6 +375,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
          UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOrderDetail}?store_id=${storeId.value}&order_id=${orderId.value}",
@@ -439,7 +452,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Confirm Return Request
   Future apiConfirmReturnRequest() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -481,7 +496,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Complete Return Request
   Future apiCompleteReturnRequest() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -532,7 +549,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Reject Return Request
   Future apiRejectReturnRequest() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -571,7 +590,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Cancel order ready
   Future apiCancelOrder() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -620,7 +641,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready
   Future apiMarkOrderReady() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -670,7 +693,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready for Shipped
   Future apiMarkReadyForShipping() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -723,7 +748,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order ready for Pick
   Future apiMarkReadyForPickUp() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -776,7 +803,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   ///Mark store order delivered
   Future apiMarkDelivered() async {
     isLoading.value = true;
-     
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:

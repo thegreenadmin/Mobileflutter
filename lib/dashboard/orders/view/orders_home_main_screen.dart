@@ -30,10 +30,11 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
 
   @override
   void initState() {
-    ordersHomeMainController.storeId.value = widget.storeId??"";
-    ordersHomeMainController.orderId.value = widget.orderId??"";
-    ordersHomeMainController.isFromNotification.value = widget.isFromNotification??false;
-    // ordersHomeMainController.st?.value = widget.isFromNotification??false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ordersHomeMainController.storeId.value = widget.storeId ?? "";
+      ordersHomeMainController.orderId.value = widget.orderId ?? "";
+      ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
+    });
     super.initState();
   }
 
@@ -380,9 +381,9 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                         : Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText)
                                     : Get.to(() =>  MarkOrderStatusScreen(
                                   orderId: ordersHomeMainController
-                                      .ownerOrderHistoryList![index]
+                                      .ownerOrderHistoryList?[index]
                                       .orderId ?? "",storeId: ordersHomeMainController
-                                    .ownerOrderHistoryList![index]
+                                    .ownerOrderHistoryList?[index]
                                     .storeId ?? "",
                                 ), id: pageIdApp.value)?.then((value) {
                                         ordersHomeMainController.onIndexChange(

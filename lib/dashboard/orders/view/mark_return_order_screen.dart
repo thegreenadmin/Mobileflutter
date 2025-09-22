@@ -20,8 +20,10 @@ class _MarkReturnOrderScreenState extends State<MarkReturnOrderScreen> with Glob
 
   @override
   void initState() {
-    ordersHomeMainController.storeId?.value = widget.storeId??"";
-    ordersHomeMainController.orderId?.value = widget.orderId??"";
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ordersHomeMainController.storeId?.value = widget.storeId ?? "";
+      ordersHomeMainController.orderId?.value = widget.orderId ?? "";
+    });
      super.initState();
   }
 

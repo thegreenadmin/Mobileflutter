@@ -19,13 +19,14 @@ class _OwnerTransactionDetailScreenState
   @override
   void initState() {
     super.initState();
-    transactionDetailController.storeWalletTransactionId!.value =
-        Get.parameters['store_wallet_transaction_id'] ?? "";
-    transactionDetailController.storeId!.value =
-        Get.parameters['store_id'] ?? "";
-    transactionDetailController.isCurrentMonthSelected.value = true;
-    getRole();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      transactionDetailController.storeWalletTransactionId!.value =
+          Get.parameters['store_wallet_transaction_id'] ?? "";
+      transactionDetailController.storeId!.value =
+          Get.parameters['store_id'] ?? "";
+      transactionDetailController.isCurrentMonthSelected.value = true;
+      getRole();
+    });
   }
 
   getRole() async {
