@@ -85,10 +85,26 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxString? role = "".obs;
   RxDouble cartTotalPrice = 0.0.obs;
 
+  RxList horizontalTabList = [
+    StringConstants.storeText,
+    StringConstants.menuText,
+    StringConstants.favoriteText,
+    StringConstants.optionsText,
+  ].obs;
   dynamic lat = 0.0;
   dynamic lng = 0.0;
   ActiveCartModel activeCartModel = ActiveCartModel();
   RxList<ProductImage>? productIm = <ProductImage>[].obs;
+
+  bool get hasPrivacyPage => storeDetailsResponse.value.data?.store != null && storeDetailsResponse.value.data!.store!.storePages!.any((element) =>
+  element.storePageType == "privacy" &&
+      element.storePageContent?.dynamicUrl != null &&
+      listIndex.value < 4);
+  bool get hasTermsPage => storeDetailsResponse.value.data?.store != null && storeDetailsResponse.value.data!.store!.storePages!
+      .any((element) =>
+  element.storePageType == "terms" &&
+      element.storePageContent?.dynamicUrl != null &&
+      listIndex.value < 4);
 
   @override
   void onInit() {
@@ -101,6 +117,31 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     super.onReady();
     _loadInitialData();
   }
+
+  void openProductFromFav(int index) async {
+    final product = featureProductList[index];
+
+    productId.value = product.productId.toString();
+    Get.parameters['productId'] = productId.value;
+
+    Get.parameters['isFromFav'] = "true";
+    Get.parameters["isFromHome"] = "false";
+    Get.parameters["isFromMenu"] = "false";
+    Get.parameters["isFromOptions"] = "false";
+
+    await apiGetShopProductDetailApi();
+    await apiGetCartListApi();
+    await apiGetUserDetailsApi();
+
+    if (storeId.value.isNotEmpty && productId.value.isNotEmpty) {
+      await apiGetShopProductDetailApi();
+    }
+
+    await apiGetUserWalletBalance();
+    invokedIndex.value++;
+  }
+
+
 
   // --- Params Setup ---
   void _initializeParams() {
@@ -1782,6 +1823,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
       }
     });
+  }
+  void toggleFavProduct(int index) {
+    final product = featureProductList[index];
+    final isFav = product.isFavouriteProduct?.value ?? false;
+
+    product.isFavouriteProduct?.value = !isFav;
+
+    if (isFav) {
+      apiRemoveFavouriteProduct(product.productId, isFromFavS: true);
+    }
   }
 
   ///Remove Favourite Product Api

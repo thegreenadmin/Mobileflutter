@@ -13,7 +13,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'package:thegreenmall/welcome/onboard/controller/on_board_controller.dart';
 
 class OnBoardMainScreen extends StatefulWidget {
-  const OnBoardMainScreen({Key? key}) : super(key: key);
+  const OnBoardMainScreen({super.key});
 
   @override
   OnBoardMainScreenState createState() => OnBoardMainScreenState();

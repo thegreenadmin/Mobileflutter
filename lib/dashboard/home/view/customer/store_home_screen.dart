@@ -14,8 +14,10 @@ class StoreHomeScreen extends StatefulWidget {
 }
 
 class _StoreHomeScreenState extends State<StoreHomeScreen> {
-  final StoreHomeMainController storeHomeMainController =
-  Get.put(StoreHomeMainController());
+  final storeHomeMainController =
+  Get.isRegistered<StoreHomeMainController>()
+      ? Get.find()
+      : Get.put(StoreHomeMainController());
 
   final CarouselSliderController _controller = CarouselSliderController();
   final CarouselSliderController _controllerProducts = CarouselSliderController();

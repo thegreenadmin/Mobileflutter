@@ -62,7 +62,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                               isFromHome: true, isFromOptions: false,
                             )
                         ),
-                            id: pageIdApp.value)?.then((v)=>searchStoreUserController.updateCurrentLocation());
+                            id: pageIdApp.value)?.then((v)=> searchStoreUserController.updateCurrentLocation());
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 6),
@@ -163,9 +163,9 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
                                 ],
                               ),
                               Row(
-                                children: [
+                                children: <Widget>[
                                   Obx(() {
-                                    final store = searchStoreUserController.favouriteStore[index]!;
+                                    final store = searchStoreUserController.favouriteStore[index];
 
                                     store.isFavouriteStore?.value = store.isFavouriteStore?.value ?? false;
 
@@ -318,6 +318,7 @@ class _FavouriteStoreListScreenState extends State<FavouriteStoreListScreen> wit
       ]),
     );
   }
+
   SingleChildScrollView noDataWidget() {
     return SingleChildScrollView(
       child: Column(

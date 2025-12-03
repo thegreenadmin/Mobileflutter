@@ -238,7 +238,7 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
                               Row(
                                 children: [
                                   Obx(() {
-                                    final store = searchStoreUserController.previousStore[index]!;
+                                    final store = searchStoreUserController.previousStore[index];
 
                                     store.isFavouriteStore?.value = store.isFavouriteStore?.value ?? false;
 

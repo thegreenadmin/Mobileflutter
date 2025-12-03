@@ -5,7 +5,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 
 class OnBoardFour extends StatefulWidget {
-  const OnBoardFour({Key? key}) : super(key: key);
+  const OnBoardFour({super.key});
 
   @override
   OnBoardFourState createState() => OnBoardFourState();

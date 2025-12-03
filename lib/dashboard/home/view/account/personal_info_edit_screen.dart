@@ -16,7 +16,7 @@ class PersonalInfoEditScreen extends StatefulWidget {
 }
 
 class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with GlobalVarMixin{
-  final AccountController accountController = Get.put(AccountController());
+  final AccountController accountController = Get.isRegistered() ? Get.find() : Get.put(AccountController());
 
   @override
   void initState() {
@@ -93,129 +93,29 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    StringConstants.personalDetailText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20),
-                                  ),
-                                  height15SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: StringConstants.firstNameText,
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.firstNameText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller: accountController.firstNameTextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterFirstNameText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  sectionTitle(StringConstants.personalDetailText),
+                                  formFields(StringConstants.firstNameText,true, controller: accountController.firstNameTextController,hint:StringConstants.firstNameText,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return AlertStringConstants
+                                          .pleaseEnterFirstNameText;
+                                    }
+                                    return null;
+                                  }),
+                                  formFields(StringConstants.lastNameText,true, controller: accountController.lastNameTextController,hint:StringConstants.lastNameText,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterLastNameText;
+                                        }
+                                        return null;
+                                      }),
+
+                                  formFields(StringConstants.nickNameText,false, controller: accountController.nickNameTextController,hint:StringConstants.nickNameText,),
+
                                   height20SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: StringConstants.lastNameText,
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.lastNameText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller: accountController.lastNameTextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterLastNameText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  height20SizedBox,
-                                  Text(
-                                    StringConstants.nickNameText,
-                                    style: TextStyle(
-                                        color: AppColors.blackLight,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.nickNameText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller: accountController.nickNameTextController,
-                                    keyboardType: TextInputType.text,
-                                  ),
-                                  height20SizedBox,
-                                  Text(
-                                    StringConstants.addressText,
-                                    style: const TextStyle(
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20),
-                                  ),
+
+                                  sectionTitle(StringConstants.addressText),
                                   height20SizedBox,
                                   Text.rich(
                                     TextSpan(
@@ -236,7 +136,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       ],
                                     ),
                                   ),
-                                  
                                   height4SizedBox,
                                   GooglePlaceAutocompleteField(
                                     apiKey: accountController.kGoogleApiKey,
@@ -311,247 +210,46 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                     // maxLines: 5,
 
                                   ),
-                                /*  CustomInputField(
-                                    onTap: () async {
 
-                                     *//* Prediction? p = await PlacesAutocomplete.show(
-                                          offset: 0,
-                                          radius: 1000,
-                                          types: [],
-                                          strictbounds: false,
-                                          context: context,
-                                          apiKey: accountController.kGoogleApiKey,
-                                          mode: Mode.overlay,
-                                          language: "en",
-                                          components: []);
-                                  
-                                      if (p?.description != null) {
-                                        int idx = p?.description?.indexOf(",") ?? 0;
-                                        List parts = [
-                                          p?.description?.substring(0, idx).trim() ?? '',
-                                          p?.description?.substring(idx + 1).trim()
-                                        ];
-                                        accountController.addressLine1TextController
-                                            .text = parts[0].toString();
-                                      }
-                                  
-                                      ///ADDRESSES BY google_maps_webservice: ^0.0.19 COZ GEOCODING ios issues
-                                  
-                                      final geocoding = GoogleMapsGeocoding(
-                                          apiKey: accountController.kGoogleApiKey);
-                                  
-                                      GeocodingResponse response =
-                                          await geocoding.searchByAddress(
-                                              p?.description.toString() ?? "");
-                                      final result = response.results.isNotEmpty
-                                          ? response.results.first
-                                          : null;
-                                      if (result != null) {
-                                        accountController.townOrCityTextController.text =
-                                            Utility.extractLocality(result, "locality");
-                                        accountController.countryTextController.text =
-                                            Utility.extractLocality(result, "country");
-                                        accountController.postalCodeTextController.text =
-                                            Utility.extractLocality(
-                                                result, "postal_code");
-                                        accountController.stateTextController.text =
-                                            Utility.extractLocality(
-                                                result, "administrative_area_level_1");
-                                      }
-                                  
-                                  
-                                      GeoData addresses =
-                                          await Geocoder2.getDataFromAddress(
-                                              address: p?.description.toString() ?? "",
-                                              googleMapApiKey:
-                                                  accountController.kGoogleApiKey);
-                                  
-                                      if (addresses.state.isNotEmpty) {
-                                        // accountController.stateTextController.text =
-                                        //     addresses.state;
-                                      }*//*
-                                    },
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(500),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    readOnly: true,
-                                    maxLines: 5,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.addressLine1Text,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller:
-                                        accountController.addressLine1TextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterAddressText;
-                                      }
-                                      return null;
-                                    },
-                                  ),*/
-                                  height20SizedBox,
-                                  Text(
-                                    StringConstants.addressLine2Text,
-                                    style: TextStyle(
-                                        color: AppColors.blackLight,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(500),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.addressLine2Text,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller:
-                                        accountController.addressLine2TextController,
-                                    keyboardType: TextInputType.text,
-                                  ),
-                                  height20SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: StringConstants.townOrCityText
-                                                .toTitleCase(),
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(500),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.townOrCityText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller:
-                                        accountController.townOrCityTextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterTownOrCityText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  height20SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text:
-                                                StringConstants.zipCodeText.toTitleCase(),
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(100),
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.zipCodeText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller:
-                                        accountController.postalCodeTextController,
-                                    keyboardType: TextInputType.phone,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterZipCodeText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  height20SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text:
-                                                StringConstants.countryText.toTitleCase(),
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  
-                                  height4SizedBox,
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(500),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.countryText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller: accountController.countryTextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants
-                                            .pleaseEnterCountryText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  formFields(StringConstants.addressLine2Text,false, controller: accountController.addressLine2TextController,hint:StringConstants.addressLine2Text,),
+                                  formFields(StringConstants.townOrCityText,true, controller: accountController.townOrCityTextController,hint:StringConstants.townOrCityText,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterTownOrCityText;
+                                        }
+                                        return null;
+                                      }),
+                                  formFields(StringConstants.zipCodeText,true, controller: accountController.postalCodeTextController,hint:StringConstants.zipCodeText,
+                                      action: TextInputAction.next,
+                                      digitsOnly: true,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterZipCodeText;
+                                        }
+                                        return null;
+                                      }),
+
+                                  formFields(StringConstants.countryText,true, controller: accountController.countryTextController,hint:StringConstants.countryText,
+                                      action: TextInputAction.next,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterCountryText;
+                                        }
+                                        return null;
+                                      },),
+                                  formFields(StringConstants.stateText,true, controller: accountController.stateTextController,hint:StringConstants.stateText,
+                                      action: TextInputAction.next,
+                                      validator: (value) {
+                                        if (value!.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseEnterStateText;
+                                        }
+                                        return null;
+                                      },),
+
                                   // Obx(() => DropdownButtonFormField<CountriesList>(
                                   //       isExpanded: true,
                                   //       value: accountController.countriesList.isEmpty
@@ -603,110 +301,14 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                   //             newValue!.countryName.toString();
                                   //         accountController.countryId!.value =
                                   //             newValue.countryId.toString();
-                                  
+
                                   //         accountController.stateId.value = "";
-                                  
+
                                   //         accountController.apiGetStates();
                                   //         print(accountController.countryId!.value);
                                   //       },
                                   //     )),
-                                  height20SizedBox,
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: StringConstants.stateText.toTitleCase(),
-                                            style: TextStyle(
-                                                color: AppColors.blackLight,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400)),
-                                        TextSpan(
-                                          text: StringConstants.starText,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  
-                                  height4SizedBox,
-                                  // Obx(() => DropdownButtonFormField<StatesList>(
-                                  //       isExpanded: true,
-                                  //       value: accountController.statesList.isEmpty
-                                  //           ? StatesList()
-                                  //           : accountController.statesList[
-                                  //               accountController.stateIndex.value],
-                                  //       decoration: InputDecoration(
-                                  //         enabledBorder: UnderlineInputBorder(
-                                  //           borderRadius: BorderRadius.circular(5.0),
-                                  //           borderSide: const BorderSide(
-                                  //             color: AppColors.grey,
-                                  //             width: 1.0,
-                                  //           ),
-                                  //         ),
-                                  //         border: UnderlineInputBorder(
-                                  //           borderRadius: BorderRadius.circular(5.0),
-                                  //           borderSide: const BorderSide(
-                                  //             color: AppColors.primary,
-                                  //             width: 1.0,
-                                  //           ),
-                                  //         ),
-                                  //         focusedBorder: UnderlineInputBorder(
-                                  //           borderRadius: BorderRadius.circular(5.0),
-                                  //           borderSide: const BorderSide(
-                                  //             color: AppColors.primary,
-                                  //             width: 1.0,
-                                  //           ),
-                                  //         ),
-                                  //         errorBorder: UnderlineInputBorder(
-                                  //           borderRadius: BorderRadius.circular(5.0),
-                                  //           borderSide: const BorderSide(
-                                  //             color: AppColors.primary,
-                                  //             width: 1.0,
-                                  //           ),
-                                  //         ),
-                                  //         hintText: StringConstants.stateText,
-                                  //         errorStyle: const TextStyle(color: Colors.red),
-                                  //       ),
-                                  //       items: accountController.statesList
-                                  //           .map<DropdownMenuItem<StatesList>>(
-                                  //               (StatesList value) {
-                                  //         return DropdownMenuItem<StatesList>(
-                                  //           value: value,
-                                  //           child: Text(value.stateName.toString()),
-                                  //         );
-                                  //       }).toList(),
-                                  //       onChanged: (StatesList? newValue) {
-                                  //         accountController.stateDropdownValue.value =
-                                  //             newValue!.stateName.toString();
-                                  //         accountController.stateId.value =
-                                  //             newValue.stateId.toString();
-                                  //         print(accountController.stateId.value);
-                                  //       },
-                                  //     )),
-                                  
-                                  CustomInputField(
-                                    isBorderOutline: false,
-                                    inputFormatters: <TextInputFormatter>[
-                                      LengthLimitingTextInputFormatter(500),
-                                    ],
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: false,
-                                    maxLines: null,
-                                    errorMaxLines: 3,
-                                    hintText: StringConstants.stateText,
-                                    textCapitalization: TextCapitalization.words,
-                                    controller: accountController.stateTextController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      if (value!.trim().isEmpty) {
-                                        return AlertStringConstants.pleaseEnterStateText;
-                                      }
-                                      return null;
-                                    },
-                                  ),
+
                                   height15SizedBox,
                                   Text(
                                     StringConstants.collectTheIdentityInfoText,
@@ -832,9 +434,9 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                                         },
                                                         style: ButtonStyle(
                                                             foregroundColor:
-                                                                MaterialStateProperty.all<Color>(
+                                                                WidgetStateProperty.all<Color>(
                                                                     AppColors.primary),
-                                                            shape: MaterialStateProperty.all<
+                                                            shape: WidgetStateProperty.all<
                                                                     RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
                                                                     borderRadius:
@@ -855,7 +457,7 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                           ),
                                   ),
                                   height20SizedBox,
-                                  
+
                                   height40SizedBox,
                                   CustomButton(
                                     gradient: const LinearGradient(
@@ -896,5 +498,68 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
             ],
           ),
         ));
+  }
+
+  Text sectionTitle(String label) {
+    return Text(
+      label,
+      style: const TextStyle(
+          color: AppColors.black,
+          fontWeight: FontWeight.w600,
+          fontSize: 20),
+    );
+  }
+
+   formFields(String label, isRequired ,{
+     required final TextEditingController controller,
+     required final String hint,
+     final FormFieldValidator<String>? validator,
+     final TextInputAction? action,
+    bool digitsOnly = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        height20SizedBox,
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                  text: label,
+                  style: TextStyle(
+                      color: AppColors.blackLight,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400)),
+              if (isRequired)
+              TextSpan(
+                text: StringConstants.starText,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: AppColors.red,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        height4SizedBox,
+        CustomInputField(
+          isBorderOutline: false,
+          inputFormatters: <TextInputFormatter>[
+            LengthLimitingTextInputFormatter(100),
+            if (digitsOnly)
+             FilteringTextInputFormatter.digitsOnly,
+          ],
+          textInputAction: TextInputAction.next,
+          autofocus: false,
+          maxLines: null,
+          errorMaxLines: 3,
+          hintText: hint,
+          textCapitalization: TextCapitalization.words,
+          controller: controller,
+          keyboardType: TextInputType.text,
+          validator: validator,
+        ),
+      ],
+    );
   }
 }

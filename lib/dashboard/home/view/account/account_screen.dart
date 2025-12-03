@@ -28,7 +28,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
-  final AccountController accountController = Get.put(AccountController());
+  final AccountController accountController = Get.isRegistered() ? Get.find() : Get.put(AccountController());
 
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState supportState = _SupportState.unknown;
@@ -54,8 +54,8 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
       authenticated = authenticatedBiometric.value;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
-      debugPrint("PlatformException:************** ${e.toString()}");
-      debugPrint(e.toString());
+      // debugPrint("PlatformException:************** ${e.toString()}");
+      // debugPrint(e.toString());
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
       SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);
@@ -396,7 +396,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                 ],
                               ),
                             ),
-                            Obx(
+                          Obx(
                               () => roleApp.value == Role.customerRoleText
                                   ? height0SizedBox
                                   : const Divider(
@@ -404,7 +404,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       thickness: 1,
                                     ),
                             ),
-                            Obx(
+                            /*  Obx(
                               () => roleApp.value == Role.customerRoleText
                                   ? height0SizedBox
                                   : InkWell(
@@ -455,7 +455,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             const Divider(
                               height: 40,
                               thickness: 1,
-                            ),
+                            ),*/
                             Text(
                               StringConstants.securityText,
                               style: const TextStyle(

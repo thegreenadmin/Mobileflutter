@@ -26,7 +26,10 @@ class StoreHomeMainScreen extends StatefulWidget {
 
 class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
   final StoreHomeMainController storeHomeMainController =
-      Get.put(StoreHomeMainController());
+  Get.isRegistered<StoreHomeMainController>()
+      ? Get.find<StoreHomeMainController>()
+      : Get.put(StoreHomeMainController());
+
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -34,6 +37,18 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.favoriteText,
     StringConstants.optionsText,
   ].obs;
+
+  void _applyArgs() {
+    storeHomeMainController
+      ..storeId.value = widget.args.storeId ?? ""
+      ..invokedIndex.value = widget.args.invokedIndex ?? 0
+      ..productId.value = widget.args.productId ?? ""
+      ..categoryName.value = widget.args.categoryName ?? ""
+      ..categoryId.value = widget.args.categoryId ?? ""
+      ..isFromHome.value = widget.args.isFromHome ?? false
+      ..isFromFav.value = widget.args.isFromFav ?? false
+      ..isFromMenu.value = widget.args.isFromMenu ?? false;
+  }
 
   @override
   void initState() {
@@ -50,14 +65,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       //     Get.parameters["isFromMenu"] == "true";
       // storeHomeMainController.apiGetUserDetailsApi();
       // storeHomeMainController.storeId.value = Get.parameters["storeId"] ?? "";
-      storeHomeMainController.storeId.value = widget.args.storeId ??"";
-      storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
-      storeHomeMainController.productId.value = widget.args.productId ??"";
-      storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
-      storeHomeMainController.categoryId.value = widget.args.categoryId??"";
-      storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
-      storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
-      storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+      _applyArgs();
       if (storeHomeMainController.storeId.value!="") {
         storeHomeMainController.getCurrentLocation();
       }
@@ -257,14 +265,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    storeHomeMainController.storeId.value = widget.args.storeId ??"";
-                    storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
-                    storeHomeMainController.productId.value = widget.args.productId ??"";
-                    storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
-                    storeHomeMainController.categoryId.value = widget.args.categoryId??"";
-                    storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
-                    storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
-                    storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+                    _applyArgs();
 
                     storeHomeMainController.onIndexChange(i);
                   },
@@ -407,14 +408,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
           onTap: () {
-            storeHomeMainController.storeId.value = widget.args.storeId ??"";
-            storeHomeMainController.invokedIndex.value = widget.args.invokedIndex??0;
-            storeHomeMainController.productId.value = widget.args.productId ??"";
-            storeHomeMainController.categoryName.value = widget.args.categoryName ??"";
-            storeHomeMainController.categoryId.value = widget.args.categoryId??"";
-            storeHomeMainController.isFromHome.value = widget.args.isFromHome??false;
-            storeHomeMainController.isFromFav.value = widget.args.isFromFav??false;
-            storeHomeMainController. isFromMenu.value = widget.args.isFromMenu??false;
+            _applyArgs();
 
             contactAlertDialog(ctx);
           },
@@ -586,6 +580,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const UserStoreOrderAppBar(),
+                    // StoreTabs(
+                    //   controller: storeHomeMainController,
+                    //   onTabSelected: storeHomeMainController.onIndexChange,
+                    // ),
                     horizontalTabs(),
                     const Divider(
                       thickness: 1,

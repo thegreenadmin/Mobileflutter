@@ -12,7 +12,10 @@ class StoreFavouriteScreen extends StatefulWidget {
 
 class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
   final StoreHomeMainController storeHomeMainController =
-      Get.put(StoreHomeMainController());
+  Get.isRegistered<StoreHomeMainController>()
+      ? Get.find<StoreHomeMainController>()
+      : Get.put(StoreHomeMainController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,73 +36,66 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
           ),
           height15SizedBox,
           Expanded(
-              child: Obx(
-            () => storeHomeMainController.featureProductList.isEmpty
-                ?  Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: WidgetConstants.screenHeight *0.09,),
-                          Center(
-                            child: Image.asset(
-                              ImageConstants.nodata,
-                              scale: 8,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          height4SizedBox,
-                          Center(
-                            child: Text(
-                              StringConstants.noFavouriteProductFoundText,
-                              style: const TextStyle(
-                                  fontStyle: FontStyle.italic, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      )
-                : GridView.builder(
-              padding: EdgeInsets.zero,
-                    itemCount:
-                        storeHomeMainController.featureProductList.length,
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
-                              WidgetConstants.screenHeight * 0.22) /
-                          WidgetConstants.screenHeight,
-                      mainAxisSpacing: 0.0,
-                      crossAxisSpacing: 10.0,
-                      crossAxisCount: 2,
-                    ),
-                    itemBuilder: (BuildContext context, int i) {
-                      return buildProductCard(i);
-                    },
-                  ),
-          )),
+            child: Obx(() => _buildBody()),
+          ),
         ]),
       ),
     );
   }
 
+  GridView _buildGrid() {
+    return GridView.builder(
+            padding: EdgeInsets.zero,
+                  itemCount:
+                      storeHomeMainController.featureProductList.length,
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: (WidgetConstants.screenHeight * 0.47 +
+                            WidgetConstants.screenHeight * 0.22) /
+                        WidgetConstants.screenHeight,
+                    mainAxisSpacing: 0.0,
+                    crossAxisSpacing: 10.0,
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (BuildContext context, int i) {
+                    return buildProductCard(i);
+                  },
+                );
+  }
+
+  Column _buildNoData() {
+    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: WidgetConstants.screenHeight *0.09,),
+                        Center(
+                          child: Image.asset(
+                            ImageConstants.nodata,
+                            scale: 8,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        height4SizedBox,
+                        Center(
+                          child: Text(
+                            StringConstants.noFavouriteProductFoundText,
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    );
+  }
+
+  Widget _buildBody() {
+    if (storeHomeMainController.featureProductList.isEmpty) return _buildNoData();
+    return _buildGrid();
+  }
+
+
   InkWell buildProductCard(int i) {
-    return InkWell(
-                      onTap: () async {
-                        storeHomeMainController.productId.value = Get.parameters['productId']=  storeHomeMainController
-                            .featureProductList[i].productId
-                            .toString();
-                        storeHomeMainController.apiGetShopProductDetailApi();
-                        storeHomeMainController.apiGetCartListApi();
-                        Get.parameters['isFromFav'] = "true";
-                        Get.parameters["isFromHome"] = "false";
-                        Get.parameters["isFromMenu"] = "false";
-                        Get.parameters["isFromOptions"] = "false";
-                        await storeHomeMainController.apiGetUserDetailsApi();
-                        if (storeHomeMainController.storeId.value != "" &&
-                            storeHomeMainController.productId.value != "") {
-                          await  storeHomeMainController.apiGetShopProductDetailApi();
-                        }
-                        await storeHomeMainController.apiGetUserWalletBalance();
-                        storeHomeMainController.invokedIndex.value++;
-                      },
+    return InkWell(onTap: () => storeHomeMainController.openProductFromFav(i),
                       child: Card(
                         shape: BeveledRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -175,21 +171,7 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                         .isFavouriteProduct!.value ==
                                         true
                                         ? InkWell(
-                                      onTap: () {
-                                        storeHomeMainController
-                                            .featureProductList[i]
-                                            .isFavouriteProduct!.value= false;
-                                        if (storeHomeMainController
-                                            .isLoading.value ==
-                                            false) {
-                                          storeHomeMainController
-                                              .apiRemoveFavouriteProduct(
-                                              storeHomeMainController
-                                                  .featureProductList[
-                                              i]
-                                                  .productId,isFromFavS: true);
-                                        }
-                                      },
+                                      onTap: () => storeHomeMainController.toggleFavProduct(i),
                                       child: Image.asset(
                                         ImageConstants.liked,
                                         scale: 3,

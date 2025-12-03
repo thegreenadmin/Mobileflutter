@@ -73,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       children: [
         RefreshIndicator(
           onRefresh: _pullRefresh,
-          child: ListView(/*crossAxisAlignment: CrossAxisAlignment.start,*/ children: [
+          child: ListView(
+            /*crossAxisAlignment: CrossAxisAlignment.start,*/
+              children: [
             _buildAppbar(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
