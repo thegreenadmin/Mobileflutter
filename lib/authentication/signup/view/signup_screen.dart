@@ -201,7 +201,6 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-
   /// Date of Birth Input Field (Date Picker Unchanged)
   Widget _buildDateField() {
     return CustomInputField(
