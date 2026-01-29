@@ -16,7 +16,7 @@ class ManageStoreMainScreen extends StatefulWidget {
 class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with GlobalVarMixin{
   final OwnerStoresController ownerStoresController =
   Get.isRegistered<OwnerStoresController>()
-      ? Get.find()
+      ? Get.find<OwnerStoresController>()
       : Get.put(OwnerStoresController());
 
   RxList horizontalTabList = [

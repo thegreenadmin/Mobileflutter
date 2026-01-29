@@ -243,7 +243,7 @@ class _SignupScreenState extends State<SignupScreen> {
       children: [
         Obx(
               () => Checkbox(
-                side: MaterialStateBorderSide.resolveWith(
+                side: WidgetStateBorderSide.resolveWith(
                       (states) => BorderSide(
                       width: 1.0,
                       color:

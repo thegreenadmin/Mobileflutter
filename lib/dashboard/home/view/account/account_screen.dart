@@ -28,7 +28,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
-  final AccountController accountController = Get.isRegistered() ? Get.find() : Get.put(AccountController());
+  final AccountController accountController = Get.isRegistered() ? Get.find<AccountController>() : Get.put(AccountController());
 
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState supportState = _SupportState.unknown;

@@ -14,9 +14,9 @@ class StoreHomeScreen extends StatefulWidget {
 }
 
 class _StoreHomeScreenState extends State<StoreHomeScreen> {
-  final storeHomeMainController =
+  final StoreHomeMainController storeHomeMainController =
   Get.isRegistered<StoreHomeMainController>()
-      ? Get.find()
+      ? Get.find<StoreHomeMainController>()
       : Get.put(StoreHomeMainController());
 
   final CarouselSliderController _controller = CarouselSliderController();
@@ -39,30 +39,32 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
               height5SizedBox,
               Obx(
                     () =>
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: StringConstants.welcomeToText,
-                                  style: TextStyle(
-                                      color: AppColors.blackLight,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18)),
-                              TextSpan(
-                                text:
-                                " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    color: AppColors.primary),
-                              ),
-                            ],
-                          ),
+                    Center(
+                      child: Text.rich(
+                       textAlign: TextAlign.center,
+                        overflow: TextOverflow.visible,
+                        maxLines: 2,
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                                text: StringConstants.welcomeToText,
+                                style: TextStyle(
+                                    color: AppColors.blackLight,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18)),
+                            TextSpan(
+                              text:
+                              " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
+                              style: const TextStyle(
+
+                                overflow: TextOverflow.visible,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: AppColors.primary),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
               ),
               height20SizedBox,
@@ -436,26 +438,30 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
             ))
           ]));
 
-  Column _buildNoOffers() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Center(
-          child: Image.asset(
-            ImageConstants.nodata,
-            scale: 8,
-            color: AppColors.primary,
+   _buildNoOffers() {
+    return SizedBox(
+      height: WidgetConstants.screenHeight *
+          0.28,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Image.asset(
+              ImageConstants.nodata,
+              scale: 8,
+              color: AppColors.primary,
+            ),
           ),
-        ),
-        height4SizedBox,
-        Center(
-          child: Text(
-            StringConstants.noOffersFoundText,
-            style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+          height4SizedBox,
+          Center(
+            child: Text(
+              StringConstants.noOffersFoundText,
+              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

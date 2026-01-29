@@ -16,7 +16,7 @@ class PersonalInfoEditScreen extends StatefulWidget {
 }
 
 class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with GlobalVarMixin{
-  final AccountController accountController = Get.isRegistered() ? Get.find() : Get.put(AccountController());
+  final AccountController accountController = Get.isRegistered() ?  Get.find<AccountController>() : Get.put(AccountController());
 
   @override
   void initState() {
