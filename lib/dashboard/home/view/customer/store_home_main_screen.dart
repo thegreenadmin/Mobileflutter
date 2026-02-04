@@ -38,9 +38,26 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
     StringConstants.optionsText,
   ].obs;
 
+
+
+  late final StoreHomeMainController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = Get.find<StoreHomeMainController>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.applyArgs(widget.args);
+      controller.handleInitialFlow();
+    });
+  }
+
+  /*
   void _applyArgs() {
     storeHomeMainController
-      ..storeId.value = widget.args.storeId ?? ""
+      ..storeId.value = widget.args.storeId ?? "0"
       ..invokedIndex.value = widget.args.invokedIndex ?? 0
       ..productId.value = widget.args.productId ?? ""
       ..categoryName.value = widget.args.categoryName ?? ""
@@ -49,8 +66,10 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       ..isFromFav.value = widget.args.isFromFav ?? false
       ..isFromMenu.value = widget.args.isFromMenu ?? false;
   }
+*/
 
-  @override
+
+/*  @override
   void initState() {
      super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -103,7 +122,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
       storeHomeMainController.apiGetUserWalletBalance();
       // storeHomeMainController.invokedIndex.value = argument;
     });
-  }
+  }*/
 
   void contactAlertDialog(
     context,
@@ -265,8 +284,9 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   onTap: () {
-                    _applyArgs();
+                    // _applyArgs();
 
+                    storeHomeMainController.applyArgs(widget.args);
                     storeHomeMainController.onIndexChange(i);
                   },
                   child: Row(
@@ -408,7 +428,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
             ),
           ),
           onTap: () {
-            _applyArgs();
+            storeHomeMainController.applyArgs(widget.args);
 
             contactAlertDialog(ctx);
           },

@@ -48,7 +48,7 @@ class SharedPreferenceStorage with GlobalVarMixin{
     // return storage.read(key);
   }
 
-   void clearData() async {
+    clearData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     forFirstTimeCustomer(false);

@@ -112,6 +112,52 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     _initializeParams();
   }
 
+
+
+  String? _lastArgsKey;
+
+  void applyArgs(StoreHomeMainArgs args) {
+    final newKey =
+        '${args.storeId}_${args.productId}_${args.invokedIndex}_${args.categoryId}';
+
+    if (_lastArgsKey == newKey) return;
+
+    _lastArgsKey = newKey;
+
+    storeId.value = args.storeId ?? "0";
+    invokedIndex.value = args.invokedIndex ?? 0;
+    productId.value = args.productId ?? "";
+    categoryName.value = args.categoryName ?? "";
+    categoryId.value = args.categoryId ?? "";
+    isFromHome.value = args.isFromHome ?? false;
+    isFromFav.value = args.isFromFav ?? false;
+    isFromMenu.value = args.isFromMenu ?? false;
+  }
+
+
+  void handleInitialFlow() {
+    if (storeId.value.isNotEmpty) {
+      getCurrentLocation();
+    }
+
+    if (isFromMenu.value) {
+      selectedIndex.value = 1;
+      apiGetStoreCategoriesApi();
+    } else if (isFromFav.value) {
+      selectedIndex.value = 2;
+      apiFeatureProductListApi(isFeaturedProduct: true);
+    } else if (isFromHome.value) {
+      selectedIndex.value = 0;
+      apiGetStoreOffersApi();
+      apiFeatureProductListApi(isFeaturedProduct: true);
+    } else {
+      onIndexChange(0);
+    }
+
+    apiGetUserWalletBalance();
+  }
+
+
   @override
   void onReady() {
     super.onReady();
@@ -1434,8 +1480,105 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       }
     });
   }
+  void _prepareImages() {
+    productIm?.clear();
 
-  ///Get Shop  Product Detail Api
+    final images =
+        productDetailResponse.value.data?.product?.productImages ?? [];
+
+    for (int i = 0; i < images.length && i < 5; i++) {
+      productIm?.add(
+        ProductImage(
+          image: Images(dynamicUrl: images[i].image?.dynamicUrl ?? ""),
+        ),
+      );
+    }
+  }
+
+  Future<void> apiGetShopProductDetailApi() async {
+    isLoading.value = true;
+
+    final headers = {
+      StringConstants.authorizationText:
+      "${StringConstants.bearerText} ${authToken.value}",
+    };
+
+    try {
+      final response = await UserProvider().getWithHeadersApi(
+        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopProductDetails}"
+            "?store_id=${storeId.value}"
+            "&product_id=${productId.value}"
+            "&latitude=$lat"
+            "&longitude=$lng",
+        headers,
+        showLoading: false,
+      );
+
+      isLoading.value = false;
+
+      if (response == null || response.body == null) {
+        Utility.showAlertMessage("Something went wrong");
+        return;
+      }
+
+      final status = response.body["status"];
+      final message = response.body["message"];
+
+      switch (status) {
+        case ApiConstants.statusCode200:
+        case ApiConstants.statusCode201:
+          _handleSuccess(response.body);
+          break;
+
+        case ApiConstants.statusCode401:
+          _handleUnauthorized(message);
+          break;
+
+        case ApiConstants.statusCode409:
+        // handle conflict if needed
+          if (message != null) {
+            Utility.showAlertMessage(message);
+          }
+          break;
+
+        default:
+          if (message != null) {
+            Utility.showAlertMessage(message);
+          }
+          break;
+      }
+    } catch (e, s) {
+      isLoading.value = false;
+      debugPrint("apiGetShopProductDetailApi error: $e");
+      debugPrintStack(stackTrace: s);
+      Utility.showAlertMessage("Something went wrong");
+    }
+  }
+
+  void _handleSuccess(Map<String, dynamic> body) {
+    productDetailResponse.value =
+        ShopProductDetailResponse.fromJson(body);
+
+    _prepareImages();
+
+    isFavouriteProduct.value =
+        productDetailResponse.value.data?.product?.isFavouriteProduct ?? false;
+
+    update(); // 🔥 single update
+  }
+   _handleUnauthorized(String? message) async {
+    if (message != null) {
+      Utility.showAlertMessage(message);
+    }
+
+    await storage.clearData();
+    Get.parameters.clear();
+
+    Get.offAll(const StartJourneyScreen());
+  }
+
+
+/*  ///Get Shop  Product Detail Api
   Future apiGetShopProductDetailApi() async {
     isLoading.value = true;
      
@@ -1496,7 +1639,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         }
       }
     });
-  }
+  }*/
 
   ///Feature ProductList Store Api
   Future apiFeatureProductListApi(
@@ -1529,7 +1672,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           ? [
               {
                 "filter_by": "is_featured_product",
-                "filter_value": isFeaturedProduct,
+                "filter_value": true,
                 "operation": "eq"
               }
             ]
@@ -1551,6 +1694,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             FeatureProductListResponse.fromJson(value?.body);
         featureProductList.value =
             featureProductListResponse.data?.products ?? [];
+        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

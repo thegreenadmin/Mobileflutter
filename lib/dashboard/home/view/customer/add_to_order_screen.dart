@@ -22,16 +22,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
 
   @override
-  initState()  {
+  initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       callApi();
     });
     super.initState();
   }
 
-  callApi()async{
-  await  storeHomeMainController.apiActiveCartApi();
+  callApi() async {
+    await storeHomeMainController.apiActiveCartApi();
   }
+
+
 /*  @override
   initState() {
     super.initState();
@@ -55,7 +57,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
       storeHomeMainController.apiGetUserDetailsApi();
 
-      */ /*if (storeHomeMainController.isFromMenu.value) {
+      */
+  /*if (storeHomeMainController.isFromMenu.value) {
         storeHomeMainController.selectedIndex.value = 1;
         storeHomeMainController.lastSelectedIndex.value = 1;
         storeHomeMainController.showLoading.value = false;
@@ -103,27 +106,30 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              child: Obx(() {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      StringConstants.orderText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: AppColors.black),
-                    ),
-                    height15SizedBox,
-                    Row(
+              child:
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    StringConstants.orderText,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColors.black),
+                  ),
+                  height15SizedBox,
+                  Obx(() {
+                    return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Flexible(flex: 4, child: _buildProductImagesSection()),
                         width10SizedBox,
                         Flexible(flex: 7, child: _buildProductDetailsSection()),
                       ],
-                    ),
-                    Column(
+                    );
+                  }),
+                  Obx(() {
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         storeHomeMainController.productDetailResponse.value.data
@@ -363,9 +369,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           ),
                         ),
                       ],
-                    ),
-                    height10SizedBox,
-                    storeHomeMainController.productDetailResponse.value.data !=
+                    );
+                  }),
+                  height10SizedBox,
+                  Obx(() {
+                    return storeHomeMainController.productDetailResponse.value.data !=
                         null
                         ? storeHomeMainController.productDetailResponse.value
                         .data!.product!.description ==
@@ -380,9 +388,12 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           fontSize: 18,
                           color: AppColors.black),
                     )
-                        : height0SizedBox,
-                    height10SizedBox,
-                    storeHomeMainController.productDetailResponse.value.data
+                        : height0SizedBox;
+                  }
+                  ),
+                  height10SizedBox,
+                  Obx(() {
+                    return storeHomeMainController.productDetailResponse.value.data
                         ?.product?.description ==
                         null ||
                         storeHomeMainController.productDetailResponse.value
@@ -396,23 +407,29 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
                           color: AppColors.blackLight),
-                    ),
-                    storeHomeMainController.productDetailResponse.value.data
+                    );
+                  }
+                  ),
+                  Obx(() {
+                    return storeHomeMainController.productDetailResponse.value.data
                         ?.product?.description ==
                         null ||
                         storeHomeMainController.productDetailResponse.value
                             .data!.product!.description!.isEmpty
                         ? height0SizedBox
-                        : height20SizedBox,
-                    Text(
-                      StringConstants.otherDetailsText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: AppColors.black),
-                    ),
-                    height15SizedBox,
-                    _buildRowOtherDetail(
+                        : height20SizedBox;
+                  }
+                  ),
+                  Text(
+                    StringConstants.otherDetailsText,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColors.black),
+                  ),
+                  height15SizedBox,
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.categoryNameText,
                         textData: storeHomeMainController.productDetailResponse
                             .value.data?.product?.productCategories != null &&
@@ -425,49 +442,65 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                             ?.productCategories
                             ?.first
                             .category
-                            ?.categoryName ?? "" : "NA"),
+                            ?.categoryName ?? "" : "NA");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.quantityUnitText,
                         textData:
                         "${storeHomeMainController.productDetailResponse.value.data?.product?.quantity.toString() ??
                             ""} ${storeHomeMainController.productDetailResponse.value.data?.product?.quantityType?.quantityTypeName
-                            .toString() ?? "NA"}"),
+                            .toString() ?? "NA"}");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.featuredProductText,
                         textData: storeHomeMainController.productDetailResponse
                             .value.data?.product?.isFeaturedProduct == true
-                            ? "Yes" : "No"),
+                            ? "Yes" : "No");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.lengthText,
                         textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                        "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.breadthText,
                         textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                        "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.heightText,
                         textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                        "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.weightText,
                         textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces"),
+                        "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces");
+                  }),
 
-                    _buildRowOtherDetail(
+                  Obx(() {
+                    return _buildRowOtherDetail(
                         title: StringConstants.returnAvailableText,
                         textData: storeHomeMainController.productDetailResponse
                             .value.data?.product?.isProductReturnable ==
                             true
                             ? "Yes"
-                            : "No"),
-                    Visibility(
+                            : "No");
+                  }),
+                  Obx(() {
+                    return Visibility(
                       visible: storeHomeMainController.productDetailResponse.value
                           .data?.product?.isProductReturnable ==
                           true,
@@ -481,16 +514,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ?.returnDaysCount
                               .toString() ??
                               "0"),
-                    ),
-                    Text(
-                      StringConstants.ratingReviewText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: AppColors.black),
-                    ),
-                    height20SizedBox,
-                    Row(
+                    );
+                  }),
+                  Text(
+                    StringConstants.ratingReviewText,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: AppColors.black),
+                  ),
+                  height20SizedBox,
+                  Obx(() {
+                    return Row(
                       children: [
                         Text(
                           storeHomeMainController.productDetailResponse.value.data
@@ -548,9 +583,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                           ],
                         ),
                       ],
-                    ),
-                    height20SizedBox,
-                    ListView.separated(
+                    );
+                  }),
+                  height20SizedBox,
+                  Obx(() {
+                    return ListView.separated(
                         padding: EdgeInsets.zero,
                         separatorBuilder: (BuildContext context, int index) {
                           return height12SizedBox;
@@ -668,19 +705,23 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
                               ),
                             ]),
                           );
-                        }),
-                    height30SizedBox,
-                    storeHomeMainController
-                        .productDetailResponse.value.data?.product !=
-                        null &&
-                        storeHomeMainController.productDetailResponse.value
-                            .data!.product!.cartItems!.isNotEmpty
-                        ? height80SizedBox
-                        : height15SizedBox,
-                    height20SizedBox,
-                  ],
-                );
-              }),
+                        });
+                  }),
+                  height30SizedBox,
+                  Obx(() {
+                      return storeHomeMainController
+                          .productDetailResponse.value.data?.product !=
+                          null &&
+                          storeHomeMainController.productDetailResponse.value
+                              .data!.product!.cartItems!.isNotEmpty
+                          ? height80SizedBox
+                          : height15SizedBox;
+                    }
+                  ),
+                  height20SizedBox,
+                ],
+              ),
+
             ),
           ),
         ),
@@ -698,7 +739,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               colors: [AppColors.primary, AppColors.primary],
             ),
 
-           /* onTap: () {
+            /* onTap: () {
 
               if (storeHomeMainController.isVerifiedStore.value) {
                 // Get.parameters['isFromAddProduct'] = "yes";
@@ -999,7 +1040,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         ? ' ${product!.discountValue}%'
         : ' \$${product?.discountValue ?? "0"}';
     return Visibility(
-      visible: product?.offer?.offerValue!=null || isOfferForStore,
+      visible: product?.offer?.offerValue != null || isOfferForStore,
       replacement: SizedBox.shrink(),
       child: Text.rich(
         TextSpan(

@@ -759,16 +759,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 onTap: () {
                   if (homeController.isLoading.value == false) {
                     if (roleApp.value == Role.customerRoleText) {
-                      // Get.parameters["isFromHome"] = "false";
-                      // Get.parameters["isFromFav"] = "false";
-                      // Get.parameters["isFromMenu"] = "true";
-                      // Get.parameters["isFromOptions"] = "false";
-                      // Get.parameters["productId"] =
-                      //     item.productId ?? "";
-                      // Get.parameters["storeId"] =
-                      //     item.storeId ?? "";
-                      // Get.parameters["invokedIndex"] =
-                      //     "2";
+                    /*  Get.parameters["isFromHome"] = "false";
+                      Get.parameters["isFromFav"] = "false";
+                      Get.parameters["isFromMenu"] = "true";
+                      Get.parameters["isFromOptions"] = "false";
+                      Get.parameters["productId"] =
+                          item.productId ?? "";
+                      Get.parameters["storeId"] =
+                          item.storeId ?? "";
+                      Get.parameters["invokedIndex"] =
+                          "2";*/
+                      print("StoreHomeMainScreen storeId--" "${item.storeId}" );
+                      print(item.storeId ?? "");
                       Get.to(
                             () =>
                             StoreHomeMainScreen(args:

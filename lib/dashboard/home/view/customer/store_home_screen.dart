@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart' ;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart'
 as offer;
@@ -14,10 +14,7 @@ class StoreHomeScreen extends StatefulWidget {
 }
 
 class _StoreHomeScreenState extends State<StoreHomeScreen> {
-  final StoreHomeMainController storeHomeMainController =
-  Get.isRegistered<StoreHomeMainController>()
-      ? Get.find<StoreHomeMainController>()
-      : Get.put(StoreHomeMainController());
+  final StoreHomeMainController storeHomeMainController = Get.put(StoreHomeMainController());
 
   final CarouselSliderController _controller = CarouselSliderController();
   final CarouselSliderController _controllerProducts = CarouselSliderController();
@@ -41,7 +38,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     () =>
                     Center(
                       child: Text.rich(
-                       textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
                         overflow: TextOverflow.visible,
                         maxLines: 2,
                         TextSpan(
@@ -57,7 +54,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                               " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
                               style: const TextStyle(
 
-                                overflow: TextOverflow.visible,
+                                  overflow: TextOverflow.visible,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
                                   color: AppColors.primary),
@@ -94,119 +91,117 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
     );
   }
 
-  GetX _buildFeatureProducts() {
-    return GetX<StoreHomeMainController>(
-      builder: (controller) =>
-          Visibility(
-            visible: controller.featureProductList.isNotEmpty,
-            child: SizedBox(
-              height: 280,
-              child: controller.featureProductList.isEmpty
-                  ? controller.isLoading.value == true
-                  ? height0SizedBox
-                  : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      ImageConstants.nodata,
-                      scale: 8,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  height4SizedBox,
-                  Center(
-                    child: Text(
-                      StringConstants.noProductFoundText,
-                      style: const TextStyle(
-                          fontStyle: FontStyle.italic, fontSize: 16),
-                    ),
-                  ),
-                ],
-              )
-                  :
-              _buildProductsCarousel(controller),
-            ),
+
+  Widget _buildFeatureProducts() {
+    return Obx(() {
+      if (storeHomeMainController.isLoading.value) {
+        return const SizedBox.shrink();
+      }
+
+      if (storeHomeMainController.featureProductList.isEmpty) {
+        return SizedBox(
+          height: 280,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(ImageConstants.nodata, scale: 8),
+              height4SizedBox,
+               Text(
+                StringConstants.noProductFoundText,
+                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+              ),
+            ],
           ),
-    );
+        );
+      }
+
+      return SizedBox(
+        height: 280,
+        child: _buildProductsCarousel(),
+      );
+    });
   }
 
-  CarouselSlider _buildProductsCarousel(StoreHomeMainController storeHomeMainController) {
-    return CarouselSlider(
-      key: UniqueKey(),
-      items: storeHomeMainController.featureProductList
-          .map(
-            (item) =>
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                InkWell(
-                  onTap: () async {
-                    storeHomeMainController.storeId.value = item.storeId.toString();
-                    storeHomeMainController.productId.value = item.productId.toString();
-                    storeHomeMainController.isFromFav.value = false;
-                    storeHomeMainController.isFromHome.value = true;
-                    storeHomeMainController.isFromMenu.value = false;
-                    storeHomeMainController.isFromOptions.value = false;
-                    // Get.parameters["productId"] = item.productId.toString();
-                    // Get.parameters['isFromFav'] = "false";
-                    // Get.parameters["isFromHome"] = "true";
-                    // Get.parameters["isFromMenu"] = "false";
-                    // Get.parameters["isFromOptions"] = "false";
+  _buildProductsCarousel() {
+    return Obx(() {
+      return CarouselSlider(
+        key: UniqueKey(),
+        items: storeHomeMainController.featureProductList
+            .map(
+              (item) =>
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () async {
+                      storeHomeMainController.storeId.value = item.storeId.toString();
+                      storeHomeMainController.productId.value = item.productId.toString();
+                      storeHomeMainController.isFromFav.value = false;
+                      storeHomeMainController.isFromHome.value = true;
+                      storeHomeMainController.isFromMenu.value = false;
+                      storeHomeMainController.isFromOptions.value = false;
+                      Get.parameters["productId"] = item.productId.toString();
+                      Get.parameters['isFromFav'] = "false";
+                      Get.parameters["isFromHome"] = "true";
+                      Get.parameters["isFromMenu"] = "false";
+                      Get.parameters["isFromOptions"] = "false";
 
-                    await storeHomeMainController.apiGetUserDetailsApi();
-                    // if (storeHomeMainController.storeId.value != "" &&
-                    //     storeHomeMainController.productId.value != "") {
-                      await storeHomeMainController.apiGetShopProductDetailApi();
-                    // }
-                    await storeHomeMainController.apiGetUserWalletBalance();
-                    storeHomeMainController.invokedIndex.value++;
-                    storeHomeMainController.update();
+                      debugPrint("STORE HOME SCREEN PRODUCT DETAIL------------------------------");
+                      debugPrint("productId.value ==== ${item.productId.toString()}");
+                      debugPrint("storeId.value ==== ${item.storeId.toString()}");
+                      debugPrint("PRODUCT ==== ${item.productName.toString()}");
 
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          CommonWidgets.cachedNetworkImage(
-                            item.productImages!.isNotEmpty &&
-                                item.productImages?.first.image
-                                    ?.dynamicUrl !=
-                                    null
-                                ? item.productImages?.first.image?.dynamicUrl ??
-                                ""
-                                : "",
-                            fit: BoxFit.fill,
-                            height: WidgetConstants.screenHeight * 0.20,
-                            width: WidgetConstants.screenWidth * 0.4,
-                          ),
+                      await storeHomeMainController.apiGetUserDetailsApi();
+                      if (storeHomeMainController.storeId.value != "" &&
+                          storeHomeMainController.productId.value != "") {
+                        await storeHomeMainController.apiGetShopProductDetailApi();
+                      }
+                      await storeHomeMainController.apiGetUserWalletBalance();
+                      storeHomeMainController.invokedIndex.value++;
+                      storeHomeMainController.update();
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            CommonWidgets.cachedNetworkImage(
+                              item.productImages!.isNotEmpty &&
+                                  item.productImages?.first.image
+                                      ?.dynamicUrl !=
+                                      null
+                                  ? item.productImages?.first.image?.dynamicUrl ??
+                                  ""
+                                  : "",
+                              fit: BoxFit.fill,
+                              height: WidgetConstants.screenHeight * 0.20,
+                              width: WidgetConstants.screenWidth * 0.4,
+                            ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child:
+                                padding: const EdgeInsets.all(8.0),
+                                child:
 
-                             InkWell(
-                              onTap: () {
-                                item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
-                                  if (!storeHomeMainController.isLoading.value) {
-                                    if (item.isFavouriteProduct!.value) {
-                                      storeHomeMainController.apiCreateFavouriteProduct(item.productId);
-                                    } else {
-                                      storeHomeMainController.apiRemoveFavouriteProduct(item.productId);
+                                InkWell(
+                                  onTap: () {
+                                    item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
+                                    if (!storeHomeMainController.isLoading.value) {
+                                      if (item.isFavouriteProduct!.value) {
+                                        storeHomeMainController.apiCreateFavouriteProduct(item.productId);
+                                      } else {
+                                        storeHomeMainController.apiRemoveFavouriteProduct(item.productId);
+                                      }
                                     }
-                                  }
-                                },
-                                child: Image.asset(
-                                  item.isFavouriteProduct!.value
-                                  ? ImageConstants.liked : ImageConstants.fav,
-                                  scale: 3,
-                                ),
-                              )
+                                  },
+                                  child: Image.asset(
+                                    item.isFavouriteProduct!.value
+                                        ? ImageConstants.liked : ImageConstants.fav,
+                                    scale: 3,
+                                  ),
+                                )
                               /*item.isFavouriteProduct!.value == true
                                   ? InkWell(
                                 onTap: () {
@@ -241,64 +236,65 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                                 ),
                               ),*/
                             )
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                height8SizedBox,
-                SizedBox(
-                  width: WidgetConstants.screenWidth * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.productName ?? "",
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      item.description!.isEmpty
-                          ? height0SizedBox
-                          : height4SizedBox,
-                      item.description!.isEmpty
-                          ? height0SizedBox
-                          : Text(
-                        item.description ?? "",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: TextStyle(
-                            color: AppColors.blackLight,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      height4SizedBox,
-                      Text(
-                        "${StringConstants.unitPriceText}: \$${item.productPrice ?? ""}",
-                        style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+                  height8SizedBox,
+                  SizedBox(
+                    width: WidgetConstants.screenWidth * 0.4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.productName ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        item.description!.isEmpty
+                            ? height0SizedBox
+                            : height4SizedBox,
+                        item.description!.isEmpty
+                            ? height0SizedBox
+                            : Text(
+                          item.description ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: TextStyle(
+                              color: AppColors.blackLight,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        height4SizedBox,
+                        Text(
+                          "${StringConstants.unitPriceText}: \$${item.productPrice ?? ""}",
+                          style: const TextStyle(
+                              color: AppColors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-      ).toList(),
-      carouselController: _controllerProducts,
-      options: CarouselOptions(
-        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        viewportFraction: 0.5,
-        enlargeCenterPage: false,
-        autoPlay: true,
-        aspectRatio: 1.5,
-      ),
-    );
+                ],
+              ),
+        ).toList(),
+        carouselController: _controllerProducts,
+        options: CarouselOptions(
+          enlargeStrategy: CenterPageEnlargeStrategy.scale,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          viewportFraction: 0.5,
+          enlargeCenterPage: false,
+          autoPlay: true,
+          aspectRatio: 1.5,
+        ),
+      );
+    });
   }
 
   _buildCarouselSlider({RxList<offer.Offer>? offersCarouselList}) =>
@@ -318,22 +314,22 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                         storeHomeMainController.storeId.value = item.storeId.toString();
                         storeHomeMainController.offerObj.value = item;
                         storeHomeMainController.invokedIndex.value = item.isOfferForStore == true ? 0 : 2;
-                          if (item.isOfferForStore == false) {
-                             await storeHomeMainController.offersController.apiGetOffersProducts(
-                                offerId: item.offerId.toString(),
-                                storeId: item.storeId.toString()).then((v){
-                              storeHomeMainController.productId.value = storeHomeMainController.offersController.featuredUserProductList.first.productId ??"0";
-
-                            });
-                            storeHomeMainController.selectedIndex.value = 1;
-                            if (storeHomeMainController.storeId.value != "" &&
-                                storeHomeMainController.productId.value != "") {
-                              storeHomeMainController.apiGetShopProductDetailApi();
-                            }
-                          }else{
-                            storeHomeMainController.selectedIndex.value = 1;
-                            storeHomeMainController.apiGetStoreCategoriesApi();
+                        if (item.isOfferForStore == false) {
+                          await storeHomeMainController.offersController.apiGetOffersProducts(
+                              offerId: item.offerId.toString(),
+                              storeId: item.storeId.toString()).then((v) {
+                            storeHomeMainController.productId.value =
+                                storeHomeMainController.offersController.featuredUserProductList.first.productId ?? "0";
+                          });
+                          storeHomeMainController.selectedIndex.value = 1;
+                          if (storeHomeMainController.storeId.value != "" &&
+                              storeHomeMainController.productId.value != "") {
+                            storeHomeMainController.apiGetShopProductDetailApi();
                           }
+                        } else {
+                          storeHomeMainController.selectedIndex.value = 1;
+                          storeHomeMainController.apiGetStoreCategoriesApi();
+                        }
                       }
                     },
                     child: ClipRRect(
@@ -438,7 +434,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
             ))
           ]));
 
-   _buildNoOffers() {
+  _buildNoOffers() {
     return SizedBox(
       height: WidgetConstants.screenHeight *
           0.28,
