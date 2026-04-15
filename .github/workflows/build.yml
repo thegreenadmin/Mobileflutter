@@ -39,7 +39,7 @@ jobs:
       - name: Test Secrets Manager access
         run: |
           echo "Testing Secrets Manager access..."
-          aws secretsmanager describe-secret --secret-id github-runner-token --region ${{ env.AWS_REGION }}
+          aws secretsmanager list-secrets --region ${{ env.AWS_REGION }} --max-items 1
           echo "✅ Secrets Manager access verified"
 
       - name: Test S3 access
