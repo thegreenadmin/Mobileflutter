@@ -6,7 +6,7 @@ phases:
       xcode: 15.0
     commands:
       - echo "Installing Flutter..."
-      - git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter
+      - if [ -d "/tmp/flutter" ]; then echo "Flutter already exists, skipping clone"; else git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter; fi
       - export PATH="$PATH:/tmp/flutter/bin"
       - flutter --version
       - flutter doctor -v
