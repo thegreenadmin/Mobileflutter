@@ -124,6 +124,11 @@ jobs:
 
       - name: Build Android app (build only, no deployment)
         working-directory: android
+        env:
+          KEYSTORE_FILE: "keystore.jks"
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: bundle exec fastlane build_bundle
 
       - name: Upload Android build artifacts

@@ -32,6 +32,18 @@
 //apply plugin: 'kotlin-android'
 //apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+// Read from environment variables (for CI) or use defaults
+def KEYSTORE_FILE = System.getenv("KEYSTORE_FILE") != null ? System.getenv("KEYSTORE_FILE") : (keystoreProperties['storeFile'] ?: "keystore.jks")
+def KEYSTORE_PASSWORD = System.getenv("KEYSTORE_PASSWORD") != null ? System.getenv("KEYSTORE_PASSWORD") : (keystoreProperties['storePassword'] ?: "")
+def KEY_ALIAS = System.getenv("KEY_ALIAS") != null ? System.getenv("KEY_ALIAS") : (keystoreProperties['keyAlias'] ?: "")
+def KEY_PASSWORD = System.getenv("KEY_PASSWORD") != null ? System.getenv("KEY_PASSWORD") : (keystoreProperties['keyPassword'] ?: "")
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
