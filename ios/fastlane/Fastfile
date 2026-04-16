@@ -70,7 +70,8 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       clean: true,
-      export_method: "development",
+      skip_codesigning: true,
+      skip_package_ipa: false,
       configuration: "Release"
     )
   end
