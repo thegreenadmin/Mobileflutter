@@ -1,4 +1,4 @@
-name: Build Flutter App with Fastlane
+name: Flutter Mobile CI/CD Pipeline
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ permissions:
   id-token: write
 
 env:
-  FLUTTER_VERSION: '3.24.0'
+  FLUTTER_VERSION: '3.27.0'
   RUBY_VERSION: '3.2'
 
 jobs:
