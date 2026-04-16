@@ -33,7 +33,7 @@ permissions:
   id-token: write
 
 env:
-  FLUTTER_VERSION: '3.29.0'
+  FLUTTER_VERSION: '3.41.6'
   RUBY_VERSION: '3.2'
 
 jobs:
