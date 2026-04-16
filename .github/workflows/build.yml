@@ -69,7 +69,8 @@ jobs:
           cd ..
 
       - name: Build iOS app (build only, no deployment)
-        run: bundle exec fastlane ios adhoc
+        working-directory: ios
+        run: bundle exec fastlane adhoc
 
       - name: Upload iOS build artifacts
         if: always()
@@ -122,7 +123,8 @@ jobs:
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
 
       - name: Build Android app (build only, no deployment)
-        run: bundle exec fastlane android build_bundle
+        working-directory: android
+        run: bundle exec fastlane build_bundle
 
       - name: Upload Android build artifacts
         if: always()
