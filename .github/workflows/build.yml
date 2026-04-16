@@ -70,7 +70,7 @@ jobs:
 
       - name: Build iOS app (build only, no deployment)
         working-directory: ios
-        run: bundle exec fastlane adhoc
+        run: bundle exec fastlane build_only
 
       - name: Upload iOS build artifacts
         if: always()

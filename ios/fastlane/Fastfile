@@ -64,6 +64,18 @@ platform :ios do
     )
   end
 
+  desc "Build only (no code signing) for CI testing"
+  lane :build_only do
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      clean: true,
+      skip_codesigning: true,
+      skip_archive: true,
+      configuration: "Release"
+    )
+  end
+
   desc "Register new devices for ad-hoc testing"
   lane :register_devices do |options|
     register_devices(
