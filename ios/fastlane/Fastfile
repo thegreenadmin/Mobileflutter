@@ -1,0 +1,114 @@
+# Fastfile for iOS deployment
+# This file contains all the lanes for building and deploying the iOS app
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci)
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      clean: true
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+
+  desc "Build and release a new version to the App Store"
+  lane :release do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci)
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      clean: true
+    )
+    upload_to_app_store(
+      submit_for_review: false,
+      automatic_release: false,
+      force: true,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+
+  desc "Build a development build"
+  lane :dev do
+    match(type: "development", readonly: is_ci)
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "development",
+      clean: true
+    )
+  end
+
+  desc "Build an ad-hoc build for testing"
+  lane :adhoc do
+    match(type: "adhoc", readonly: is_ci)
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "ad-hoc",
+      clean: true
+    )
+  end
+
+  desc "Register new devices for ad-hoc testing"
+  lane :register_devices do |options|
+    register_devices(
+      devices_file: "./fastlane/devices.txt"
+    )
+    match(type: "adhoc", force_for_new_devices: true)
+  end
+
+  desc "Sync signing certificates"
+  lane :sync_signing do
+    match(type: "development", readonly: is_ci)
+    match(type: "adhoc", readonly: is_ci)
+    match(type: "appstore", readonly: is_ci)
+  end
+
+  desc "Run tests"
+  lane :test do
+    run_tests(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      devices: ["iPhone 15"]
+    )
+  end
+
+  desc "Take screenshots"
+  lane :screenshots do
+    capture_screenshots(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner"
+    )
+  end
+
+  desc "Download dSYM files from App Store Connect"
+  lane :download_dsyms do
+    download_dsyms(
+      version: "latest"
+    )
+    upload_symbols_to_crashlytics(
+      dsym_path: "./Runner.app.dSYM.zip",
+      gsp_path: "./Runner/GoogleService-Info.plist"
+    )
+  end
+
+  # Error block
+  error do |lane, exception|
+    UI.error("Error in lane #{lane}: #{exception.message}")
+  end
+end

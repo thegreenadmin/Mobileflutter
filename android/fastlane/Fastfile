@@ -1,0 +1,168 @@
+# Fastfile for Android deployment
+# This file contains all the lanes for building and deploying the Android app
+
+default_platform(:android)
+
+platform :android do
+  desc "Build a debug APK"
+  lane :debug do
+    gradle(
+      task: "assemble",
+      build_type: "Debug",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Build a release APK"
+  lane :release do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Build and upload a beta APK to Google Play Internal Testing"
+  lane :beta do
+    # Increment version code
+    increment_version_code(
+      gradle_file_path: "app/build.gradle"
+    )
+    
+    # Build the release APK
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+    
+    # Upload to Google Play Internal Testing
+    upload_to_play_store_internal(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Deploy a new version to Google Play Production"
+  lane :deploy do
+    # Increment version code
+    increment_version_code(
+      gradle_file_path: "app/build.gradle"
+    )
+    
+    # Build the release bundle
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+    
+    # Upload to Google Play Production
+    upload_to_play_store(
+      track: "production",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      release_status: "completed",
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Deploy to Google Play Alpha track"
+  lane :alpha do
+    increment_version_code(
+      gradle_file_path: "app/build.gradle"
+    )
+    
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+    
+    upload_to_play_store(
+      track: "alpha",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Deploy to Google Play Beta track"
+  lane :beta_track do
+    increment_version_code(
+      gradle_file_path: "app/build.gradle"
+    )
+    
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+    
+    upload_to_play_store(
+      track: "beta",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Upload metadata to Google Play Store"
+  lane :upload_metadata do
+    upload_to_play_store(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  desc "Run unit tests"
+  lane :test do
+    gradle(
+      task: "test",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Build APK for distribution"
+  lane :build_apk do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Build App Bundle for distribution"
+  lane :build_bundle do
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Supply screenshots to Google Play Store"
+  lane :screenshots do
+    upload_to_play_store(
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+
+  # Error block
+  error do |lane, exception|
+    UI.error("Error in lane #{lane}: #{exception.message}")
+  end
+end
