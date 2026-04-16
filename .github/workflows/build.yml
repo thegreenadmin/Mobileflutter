@@ -1,55 +1,141 @@
-name: Test AWS Connectivity
+name: Build Flutter App with Fastlane
 
 on:
   workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build (ios, android, or both)'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - ios
+          - android
+          - both
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+          - beta
+          - release
   push:
     branches: [ main, develop ]
+    paths:
+      - 'lib/**'
+      - 'android/**'
+      - 'ios/**'
+      - 'pubspec.yaml'
 
 permissions:
-  id-token: write
   contents: read
+  id-token: write
 
 env:
-  AWS_REGION: us-east-1
+  FLUTTER_VERSION: '3.19.0'
+  RUBY_VERSION: '3.2'
 
 jobs:
-  test-aws-connectivity:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+  build-ios:
+    if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    runs-on: macos-latest
+    timeout-minutes: 120
     
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          role-to-assume: arn:aws:iam::960156297716:role/github-actions-devops-role
-          aws-region: ${{ env.AWS_REGION }}
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: ios
 
-      - name: Test AWS connectivity
-        run: |
-          echo "Testing AWS connectivity..."
-          aws sts get-caller-identity
-          echo "✅ AWS connectivity successful"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
 
-      - name: Test EC2 permissions
-        run: |
-          echo "Testing EC2 permissions..."
-          aws ec2 describe-instances --region ${{ env.AWS_REGION }} --max-items 1
-          echo "✅ EC2 permissions verified"
+      - name: Install Flutter dependencies
+        run: flutter pub get
 
-      - name: Test Secrets Manager access
+      - name: Install CocoaPods dependencies
         run: |
-          echo "Testing Secrets Manager access..."
-          aws secretsmanager list-secrets --region ${{ env.AWS_REGION }} --max-items 1
-          echo "✅ Secrets Manager access verified"
+          cd ios
+          pod install
+          cd ..
 
-      - name: Test S3 access
+      - name: Build iOS app (build only, no deployment)
         run: |
-          echo "Testing S3 access..."
-          aws s3 ls --region ${{ env.AWS_REGION }}
-          echo "✅ S3 access verified"
+          cd ios
+          fastlane adhoc
 
-      - name: Verify IAM role details
+      - name: Upload iOS build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-artifacts
+          path: |
+            ios/build/*.ipa
+            ios/**/*.dSYM.zip
+          retention-days: 30
+
+  build-android:
+    if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
+    runs-on: macos-latest
+    timeout-minutes: 90
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: android
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          echo "IAM Role details:"
-          aws iam get-role --role-name github-actions-devops-role
-          echo "✅ IAM role verified"
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+
+      - name: Build Android app (build only, no deployment)
+        run: |
+          cd android
+          fastlane build_bundle
+
+      - name: Upload Android build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build-artifacts
+          path: |
+            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/release/*.apk
+          retention-days: 30
