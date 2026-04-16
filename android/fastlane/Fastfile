@@ -5,11 +5,11 @@ default_platform(:android)
 
 platform :android do
   desc "Build a debug APK"
-  lane :debug do
+  lane :build_debug do
     gradle(
       task: "assemble",
       build_type: "Debug",
-      project_dir: "android/"
+      project_dir: "./"
     )
   end
 
@@ -18,7 +18,7 @@ platform :android do
     gradle(
       task: "assemble",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
   end
 
@@ -33,7 +33,7 @@ platform :android do
     gradle(
       task: "bundle",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
     
     # Upload to Google Play Internal Testing
@@ -57,7 +57,7 @@ platform :android do
     gradle(
       task: "bundle",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
     
     # Upload to Google Play Production
@@ -80,7 +80,7 @@ platform :android do
     gradle(
       task: "bundle",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
     
     upload_to_play_store(
@@ -101,7 +101,7 @@ platform :android do
     gradle(
       task: "bundle",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
     
     upload_to_play_store(
@@ -128,7 +128,7 @@ platform :android do
   lane :test do
     gradle(
       task: "test",
-      project_dir: "android/"
+      project_dir: "./"
     )
   end
 
@@ -137,7 +137,7 @@ platform :android do
     gradle(
       task: "assemble",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
   end
 
@@ -146,7 +146,7 @@ platform :android do
     gradle(
       task: "bundle",
       build_type: "Release",
-      project_dir: "android/"
+      project_dir: "./"
     )
   end
 
