@@ -46,12 +46,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Ruby
+      - name: Setup Ruby and Fastlane
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          working-directory: ios
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -70,9 +69,7 @@ jobs:
           cd ..
 
       - name: Build iOS app (build only, no deployment)
-        run: |
-          cd ios
-          fastlane adhoc
+        run: bundle exec fastlane ios adhoc
 
       - name: Upload iOS build artifacts
         if: always()
@@ -93,12 +90,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Ruby
+      - name: Setup Ruby and Fastlane
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          working-directory: android
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -126,9 +122,7 @@ jobs:
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
 
       - name: Build Android app (build only, no deployment)
-        run: |
-          cd android
-          fastlane build_bundle
+        run: bundle exec fastlane android build_bundle
 
       - name: Upload Android build artifacts
         if: always()
