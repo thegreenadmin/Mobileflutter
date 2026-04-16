@@ -64,14 +64,13 @@ platform :ios do
     )
   end
 
-  desc "Build only (no code signing) for CI testing"
+  desc "Build only for CI testing"
   lane :build_only do
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       clean: true,
-      skip_codesigning: true,
-      skip_archive: true,
+      export_method: "development",
       configuration: "Release"
     )
   end
