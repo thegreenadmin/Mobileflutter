@@ -89,26 +89,22 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(KEYSTORE_FILE)
-            storePassword = KEYSTORE_PASSWORD
-            keyAlias = KEY_ALIAS
-            keyPassword = KEY_PASSWORD
+            if (file(KEYSTORE_FILE).exists()) {
+                storeFile file(KEYSTORE_FILE)
+                storePassword = KEYSTORE_PASSWORD
+                keyAlias = KEY_ALIAS
+                keyPassword = KEY_PASSWORD
+            }
         }
     }
 
-
-//    signingConfigs {
-//        release {
-//            keyAlias keystoreProperties['keyAlias']
-//            keyPassword keystoreProperties['keyPassword']
-//            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-//            storePassword keystoreProperties['storePassword']
-//        }
-//    }
     buildTypes {
         release {
-            
-            signingConfig signingConfigs.release
+            if (file(KEYSTORE_FILE).exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig null
+            }
         }
     }
 
