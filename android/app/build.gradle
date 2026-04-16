@@ -32,6 +32,13 @@
 //apply plugin: 'kotlin-android'
 //apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "com.google.gms.google-services"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -43,13 +50,6 @@ def KEYSTORE_FILE = System.getenv("KEYSTORE_FILE") != null ? System.getenv("KEYS
 def KEYSTORE_PASSWORD = System.getenv("KEYSTORE_PASSWORD") != null ? System.getenv("KEYSTORE_PASSWORD") : (keystoreProperties['storePassword'] ?: "")
 def KEY_ALIAS = System.getenv("KEY_ALIAS") != null ? System.getenv("KEY_ALIAS") : (keystoreProperties['keyAlias'] ?: "")
 def KEY_PASSWORD = System.getenv("KEY_PASSWORD") != null ? System.getenv("KEY_PASSWORD") : (keystoreProperties['keyPassword'] ?: "")
-
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "com.google.gms.google-services"
-    id "dev.flutter.flutter-gradle-plugin"
-}
 
 
 
