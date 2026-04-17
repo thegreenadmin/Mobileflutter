@@ -76,6 +76,7 @@ jobs:
         run: |
           mkdir -p ~/private_keys
           echo "$APP_STORE_CONNECT_API_KEY_KEY" | base64 --decode > ~/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_KEY_ID}.p8
+          chmod 600 ~/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_KEY_ID}.p8
 
       - name: Setup code signing with Match
         env:
