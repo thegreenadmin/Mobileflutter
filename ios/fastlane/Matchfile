@@ -3,7 +3,7 @@ storage_mode("git")
 
 type("appstore") # The default type, can be: appstore, adhoc, development, enterprise
 
-app_identifier(["com.app.thegreenmall"])
+app_identifier(["com.thegreenmall"])
 username(ENV["FASTLANE_USER"] || ENV["APPLE_ID"])
 
 # For more information about the Matchfile, see:
