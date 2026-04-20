@@ -159,12 +159,12 @@ jobs:
 
       - name: List build outputs
         run: |
-          echo "=== Listing android/app/build/outputs ==="
-          find android/app/build/outputs -type f -name "*.aab" -o -name "*.apk" || echo "No AAB or APK files found"
-          echo "=== Full directory structure ==="
-          ls -la android/app/build/outputs/ || echo "outputs directory not found"
-          ls -la android/app/build/outputs/bundle/ || echo "bundle directory not found"
-          ls -la android/app/build/outputs/apk/ || echo "apk directory not found"
+          echo "=== Listing entire android/app/build directory ==="
+          find android/app/build -type f -name "*.aab" -o -name "*.apk" 2>/dev/null || echo "No AAB or APK files found in build/"
+          echo "=== Full build directory structure ==="
+          ls -la android/app/build/ 2>/dev/null || echo "build directory not found"
+          echo "=== All directories in android/ ==="
+          find android -type d -name "build" | head -20
 
       - name: Upload Android build artifacts
         if: always()
