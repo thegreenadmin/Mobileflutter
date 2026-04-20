@@ -29,7 +29,7 @@ on:
       - 'pubspec.yaml'
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 env:
@@ -100,6 +100,15 @@ jobs:
         working-directory: ios
         run: bundle exec fastlane beta
 
+      - name: Commit and push updated build number
+        if: github.event.inputs.environment == 'beta'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios/Runner.xcodeproj/project.pbxproj
+          git diff --staged --quiet || git commit -m "chore: increment iOS build number [skip ci]"
+          git push
+
       - name: Build iOS app for release (App Store)
         if: github.event.inputs.environment == 'release'
         env:
@@ -115,6 +124,15 @@ jobs:
           OPENSSL_CONF: /dev/null
         working-directory: ios
         run: bundle exec fastlane build_only
+
+      - name: Commit and push updated build number
+        if: github.event.inputs.environment == 'release'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios/Runner.xcodeproj/project.pbxproj
+          git diff --staged --quiet || git commit -m "chore: increment iOS build number [skip ci]"
+          git push
 
       - name: Upload iOS build artifacts
         if: always()
