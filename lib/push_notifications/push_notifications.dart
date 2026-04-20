@@ -13,7 +13,7 @@ import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart
 import 'package:thegreenmall/dashboard/orders/view/orders_screen.dart';
 import 'package:thegreenmall/push_notifications/model/realtime_notification_model.dart';
 import 'package:thegreenmall/utils/utils.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 
 
   final FirebaseMessaging messaging = FirebaseMessaging.instance;

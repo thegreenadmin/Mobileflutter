@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomnavigation/bottom_nav_controller.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/more_screen.dart';
