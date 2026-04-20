@@ -42,6 +42,8 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
+    env:
+      BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
     
     steps:
       - name: Checkout code
@@ -88,7 +90,7 @@ jobs:
         run: bundle exec fastlane sync_signing
 
       - name: Build iOS app for beta (TestFlight)
-        if: github.event.inputs.environment == 'beta'
+        if: env.BUILD_ENVIRONMENT == 'beta'
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
@@ -104,7 +106,7 @@ jobs:
         run: bundle exec fastlane beta
 
       - name: Commit and push updated build number
-        if: github.event.inputs.environment == 'beta'
+        if: env.BUILD_ENVIRONMENT == 'beta'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -113,7 +115,7 @@ jobs:
           git push
 
       - name: Build iOS app for release (App Store)
-        if: github.event.inputs.environment == 'release'
+        if: env.BUILD_ENVIRONMENT == 'release'
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
@@ -129,7 +131,7 @@ jobs:
         run: bundle exec fastlane build_only
 
       - name: Commit and push updated build number
-        if: github.event.inputs.environment == 'release'
+        if: env.BUILD_ENVIRONMENT == 'release'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -151,7 +153,9 @@ jobs:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    environment: ${{ github.event.inputs.environment == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
+    environment: ${{ (github.event.inputs.environment || 'beta') == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
+    env:
+      BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
     
     steps:
       - name: Checkout code
@@ -184,7 +188,7 @@ jobs:
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
 
       - name: Build Android release AAB
-        if: github.event.inputs.environment == 'release'
+        if: env.BUILD_ENVIRONMENT == 'release'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -194,7 +198,7 @@ jobs:
         run: bundle exec fastlane build_bundle
 
       - name: Commit and push updated Android version code
-        if: github.event.inputs.environment == 'release'
+        if: env.BUILD_ENVIRONMENT == 'release'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -203,7 +207,7 @@ jobs:
           git push
 
       - name: Build Android release APK
-        if: github.event.inputs.environment == 'beta'
+        if: env.BUILD_ENVIRONMENT == 'beta'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -213,7 +217,7 @@ jobs:
         run: bundle exec fastlane build_apk
 
       - name: Commit and push updated Android version code
-        if: github.event.inputs.environment == 'beta'
+        if: env.BUILD_ENVIRONMENT == 'beta'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
