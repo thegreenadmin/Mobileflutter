@@ -104,9 +104,13 @@ platform :ios do
 
   desc "Sync signing certificates"
   lane :sync_signing do
-    match(type: "development", readonly: is_ci)
-    match(type: "adhoc", readonly: is_ci)
-    match(type: "appstore", readonly: is_ci)
+    if is_ci
+      match(type: "appstore", readonly: true)
+    else
+      match(type: "development", readonly: false)
+      match(type: "adhoc", readonly: false)
+      match(type: "appstore", readonly: false)
+    end
   end
 
   desc "Run tests"

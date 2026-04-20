@@ -1,0 +1,5 @@
+# Pluginfile for Fastlane
+# Add any plugins you need here
+
+# Uncomment and add plugins as needed:
+# gem 'fastlane-plugin-firebase_app_distribution'

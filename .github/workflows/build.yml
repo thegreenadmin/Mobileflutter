@@ -71,11 +71,12 @@ jobs:
 
       - name: Setup code signing with Match
         env:
-          MATCH_PASSWORD: ${{ vars.MATCH_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ vars.MATCH_GIT_BASIC_AUTHORIZATION }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
           FASTLANE_USER: ${{ vars.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
@@ -83,15 +84,37 @@ jobs:
         working-directory: ios
         run: bundle exec fastlane sync_signing
 
-      - name: Build iOS app (build only, no deployment)
+      - name: Build and deploy iOS beta to TestFlight
+        if: github.event.inputs.environment == 'beta' || github.event.inputs.environment == ''
         env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
           OPENSSL_CONF: /dev/null
         working-directory: ios
-        run: bundle exec fastlane build_only
+        run: bundle exec fastlane beta
+
+      - name: Build and deploy iOS release to App Store
+        if: github.event.inputs.environment == 'release'
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          OPENSSL_CONF: /dev/null
+        working-directory: ios
+        run: bundle exec fastlane release
 
       - name: Upload iOS build artifacts
         if: always()
@@ -107,7 +130,6 @@ jobs:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    environment: ${{ github.event.inputs.environment == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
     
     steps:
       - name: Checkout code
@@ -158,15 +180,6 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         working-directory: android
         run: bundle exec fastlane build_apk
-
-      - name: List build outputs
-        run: |
-          echo "=== Searching for all .aab and .apk files in project ==="
-          find . -type f -name "*.aab" -o -name "*.apk" 2>/dev/null || echo "No AAB or APK files found"
-          echo "=== Listing all build directories ==="
-          find . -type d -name "build" 2>/dev/null
-          echo "=== Listing android directory contents ==="
-          ls -la android/
 
       - name: Upload Android build artifacts
         if: always()

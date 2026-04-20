@@ -1,0 +1,55 @@
+name: Test AWS Connectivity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  test-aws-connectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::960156297716:role/github-actions-devops-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Test AWS connectivity
+        run: |
+          echo "Testing AWS connectivity..."
+          aws sts get-caller-identity
+          echo "✅ AWS connectivity successful"
+
+      - name: Test EC2 permissions
+        run: |
+          echo "Testing EC2 permissions..."
+          aws ec2 describe-instances --region ${{ env.AWS_REGION }} --max-items 1
+          echo "✅ EC2 permissions verified"
+
+      - name: Test Secrets Manager access
+        run: |
+          echo "Testing Secrets Manager access..."
+          aws secretsmanager list-secrets --region ${{ env.AWS_REGION }} --max-items 1
+          echo "✅ Secrets Manager access verified"
+
+      - name: Test S3 access
+        run: |
+          echo "Testing S3 access..."
+          aws s3 ls --region ${{ env.AWS_REGION }}
+          echo "✅ S3 access verified"
+
+      - name: Verify IAM role details
+        run: |
+          echo "IAM Role details:"
+          aws iam get-role --role-name github-actions-devops-role
+          echo "✅ IAM role verified"
