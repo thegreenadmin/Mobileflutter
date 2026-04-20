@@ -104,9 +104,14 @@ platform :ios do
 
   desc "Sync signing certificates"
   lane :sync_signing do
-    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
-    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
+  desc "Create signing certificates (run once to initialize, not for CI)"
+  lane :create_signing do
+    match(type: "development", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "adhoc", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "appstore", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 
   desc "Run tests"
