@@ -75,6 +75,7 @@ jobs:
           MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ vars.MATCH_GIT_BASIC_AUTHORIZATION }}
           FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
@@ -84,6 +85,7 @@ jobs:
 
       - name: Build iOS app (build only, no deployment)
         env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
@@ -105,6 +107,7 @@ jobs:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ github.event.inputs.environment == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
     
     steps:
       - name: Checkout code
@@ -132,14 +135,34 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build Android app (build only, no deployment)
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
+
+      - name: Build Android release AAB
+        env:
+          KEYSTORE_FILE: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         working-directory: android
         run: bundle exec fastlane build_bundle
+
+      - name: Build Android release APK
+        env:
+          KEYSTORE_FILE: keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        working-directory: android
+        run: bundle exec fastlane build_apk
 
       - name: Upload Android build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: android-build-artifacts
-          path: app/build/outputs/bundle/release/*.aab
+          path: |
+            app/build/outputs/bundle/release/*.aab
+            app/build/outputs/apk/release/*.apk
           retention-days: 30
