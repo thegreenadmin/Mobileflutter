@@ -39,7 +39,7 @@ env:
 jobs:
   build-ios:
     if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: macos-latest
+    runs-on: [self-hosted, macos]
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
     
@@ -128,7 +128,7 @@ jobs:
 
   build-android:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     timeout-minutes: 60
     environment: ${{ github.event.inputs.environment == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
     
