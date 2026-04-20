@@ -3,9 +3,8 @@ storage_mode("git")
 
 type("appstore") # The default type, can be: appstore, adhoc, development, enterprise
 
-app_identifier(["com.thegreenmall"])
+app_identifier(["com.app.thegreenmall"])
 username(ENV["FASTLANE_USER"] || ENV["APPLE_ID"])
-team_id(ENV["APPLE_TEAM_ID"]) if ENV["APPLE_TEAM_ID"]
 
 # For more information about the Matchfile, see:
 # https://docs.fastlane.tools/actions/match/
