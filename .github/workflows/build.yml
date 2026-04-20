@@ -140,6 +140,7 @@ jobs:
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
 
       - name: Build Android release AAB
+        if: github.event.inputs.environment == 'release'
         env:
           KEYSTORE_FILE: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -149,6 +150,7 @@ jobs:
         run: bundle exec fastlane build_bundle
 
       - name: Build Android release APK
+        if: github.event.inputs.environment == 'beta'
         env:
           KEYSTORE_FILE: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -172,6 +174,6 @@ jobs:
         with:
           name: android-build-artifacts
           path: |
-            android/app/build/outputs/bundle/release/*.aab
-            android/app/build/outputs/apk/release/*.apk
+            build/app/outputs/bundle/release/*.aab
+            build/app/outputs/flutter-apk/*.apk
           retention-days: 30
