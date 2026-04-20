@@ -190,6 +190,15 @@ jobs:
         working-directory: android
         run: bundle exec fastlane build_bundle
 
+      - name: Commit and push updated Android version code
+        if: github.event.inputs.environment == 'release'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add android/app/build.gradle
+          git diff --staged --quiet || git commit -m "chore: increment Android version code [skip ci]"
+          git push
+
       - name: Build Android release APK
         if: github.event.inputs.environment == 'beta'
         env:
@@ -199,6 +208,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         working-directory: android
         run: bundle exec fastlane build_apk
+
+      - name: Commit and push updated Android version code
+        if: github.event.inputs.environment == 'beta'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add android/app/build.gradle
+          git diff --staged --quiet || git commit -m "chore: increment Android version code [skip ci]"
+          git push
 
       - name: List build outputs
         run: |
