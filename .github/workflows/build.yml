@@ -50,7 +50,8 @@ jobs:
       - name: Install bundler and gems (self-hosted)
         run: |
           ruby --version
-          gem install bundler
+          gem install --user-install bundler
+          export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
           cd ios && bundle install
 
       - name: Setup Flutter
@@ -139,7 +140,8 @@ jobs:
       - name: Install bundler and gems (self-hosted)
         run: |
           ruby --version
-          gem install bundler
+          gem install --user-install bundler
+          export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
           bundle install
 
       - name: Setup Flutter
