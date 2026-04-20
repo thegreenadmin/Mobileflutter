@@ -1,7 +1,7 @@
 # Appfile for iOS
 # Contains app-specific information for Fastlane
 
-app_identifier("com.app.thegreenmall") # The bundle identifier of your app
+app_identifier("com.thegreenmall") # The bundle identifier of your app
 apple_id("[YOUR_APPLE_ID]") # Your Apple email address
 team_id("[YOUR_TEAM_ID]") # Your Apple Developer Team ID
 
