@@ -30,7 +30,15 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       export_method: "app-store",
-      clean: true
+      clean: true,
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='match AppStore com.thegreenmall' CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID']
+      }
     )
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
@@ -47,7 +55,15 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       export_method: "app-store",
-      clean: true
+      clean: true,
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='match AppStore com.thegreenmall' CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID']
+      }
     )
     upload_to_app_store(
       submit_for_review: false,
@@ -90,7 +106,15 @@ platform :ios do
       scheme: "Runner",
       clean: true,
       export_method: "app-store",
-      configuration: "Release"
+      configuration: "Release",
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='match AppStore com.thegreenmall' CODE_SIGN_IDENTITY='Apple Distribution'",
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.thegreenmall" => "match AppStore com.thegreenmall"
+        },
+        teamID: ENV['APPLE_TEAM_ID']
+      }
     )
   end
 
