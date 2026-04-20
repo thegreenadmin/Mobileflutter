@@ -39,7 +39,7 @@ env:
 jobs:
   build-ios:
     if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: [self-hosted, macos]
+    runs-on: macos-latest
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
     
@@ -47,12 +47,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install bundler and gems (self-hosted)
-        run: |
-          ruby --version
-          gem install --user-install bundler
-          export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
-          cd ios && bundle install
+      - name: Setup Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -129,7 +128,7 @@ jobs:
 
   build-android:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     environment: ${{ github.event.inputs.environment == 'release' && 'ANDROID_RELEASE_CONFIG' || 'ANDROID_BETA_CONFIG' }}
     
@@ -137,12 +136,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install bundler and gems (self-hosted)
-        run: |
-          ruby --version
-          gem install --user-install bundler
-          export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
-          bundle install
+      - name: Setup Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
