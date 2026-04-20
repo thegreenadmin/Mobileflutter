@@ -24,7 +24,7 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     setup_ci if ENV['CI']
-    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     increment_build_number(xcodeproj: "Runner.xcodeproj")
     build_app(
       workspace: "Runner.xcworkspace",
@@ -41,7 +41,7 @@ platform :ios do
   desc "Build and release a new version to the App Store"
   lane :release do
     setup_ci if ENV['CI']
-    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     increment_build_number(xcodeproj: "Runner.xcodeproj")
     build_app(
       workspace: "Runner.xcworkspace",
@@ -61,7 +61,7 @@ platform :ios do
 
   desc "Build a development build"
   lane :dev do
-    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -72,7 +72,7 @@ platform :ios do
 
   desc "Build an ad-hoc build for testing"
   lane :adhoc do
-    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -84,7 +84,7 @@ platform :ios do
   desc "Build only for CI testing"
   lane :build_only do
     setup_ci if ENV['CI']
-    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -99,14 +99,14 @@ platform :ios do
     register_devices(
       devices_file: "./fastlane/devices.txt"
     )
-    match(type: "adhoc", force_for_new_devices: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "adhoc", force_for_new_devices: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 
   desc "Sync signing certificates"
   lane :sync_signing do
-    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
-    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
-    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'], clone_branch_directly: true)
+    match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "adhoc", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+    match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 
   desc "Run tests"
