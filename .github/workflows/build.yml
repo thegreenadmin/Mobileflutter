@@ -47,11 +47,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Ruby and Fastlane
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
+      - name: Install bundler and gems (self-hosted)
+        run: |
+          ruby --version
+          gem install bundler
+          cd ios && bundle install
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
