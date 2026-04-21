@@ -42,7 +42,8 @@ platform :android do
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
-      skip_upload_screenshots: true
+      skip_upload_screenshots: true,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 
@@ -67,7 +68,8 @@ platform :android do
       release_status: "completed",
       skip_upload_metadata: false,
       skip_upload_images: false,
-      skip_upload_screenshots: false
+      skip_upload_screenshots: false,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 
@@ -88,7 +90,8 @@ platform :android do
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
-      skip_upload_screenshots: true
+      skip_upload_screenshots: true,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 
@@ -109,7 +112,8 @@ platform :android do
       aab: "../build/app/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
-      skip_upload_screenshots: true
+      skip_upload_screenshots: true,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 
@@ -120,7 +124,8 @@ platform :android do
       skip_upload_aab: true,
       skip_upload_metadata: false,
       skip_upload_images: false,
-      skip_upload_screenshots: false
+      skip_upload_screenshots: false,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 
@@ -157,7 +162,8 @@ platform :android do
       skip_upload_aab: true,
       skip_upload_metadata: true,
       skip_upload_images: false,
-      skip_upload_screenshots: false
+      skip_upload_screenshots: false,
+      json_key_data: ENV['GOOGLE_PLAY_JSON_KEY_DATA']
     )
   end
 

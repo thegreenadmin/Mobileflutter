@@ -21,7 +21,7 @@ on:
           - beta
           - release
   push:
-    branches: [ main, develop, devops/dev ]
+    branches: [ main]
     paths:
       - 'lib/**'
       - 'android/**'
@@ -189,18 +189,23 @@ jobs:
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
 
-      - name: Build Android release AAB
-        if: env.BUILD_ENVIRONMENT == 'release'
+      - name: Decode Google Play Service Account key
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
+
+      - name: Deploy to Google Play Internal Testing (beta)
+        if: env.BUILD_ENVIRONMENT == 'beta'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_PLAY_JSON_KEY_DATA: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         working-directory: android
-        run: bundle exec fastlane build_bundle
+        run: bundle exec fastlane beta
 
       - name: Commit and push updated Android version code
-        if: env.BUILD_ENVIRONMENT == 'release'
+        if: env.BUILD_ENVIRONMENT == 'beta'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -208,18 +213,19 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: increment Android version code [skip ci]"
           git push
 
-      - name: Build Android release APK
-        if: env.BUILD_ENVIRONMENT == 'beta'
+      - name: Deploy to Google Play Production
+        if: env.BUILD_ENVIRONMENT == 'release'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          GOOGLE_PLAY_JSON_KEY_DATA: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         working-directory: android
-        run: bundle exec fastlane build_apk
+        run: bundle exec fastlane deploy
 
       - name: Commit and push updated Android version code
-        if: env.BUILD_ENVIRONMENT == 'beta'
+        if: env.BUILD_ENVIRONMENT == 'release'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
