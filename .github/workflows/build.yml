@@ -186,21 +186,16 @@ jobs:
           java-version: '17'
 
       - name: Decode keystore
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
-
-      - name: Convert keystore to JKS format for BouncyCastle compatibility
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
         run: |
-          keytool -importkeystore \
-            -srckeystore android/keystore.jks \
-            -destkeystore android/keystore_compat.jks \
-            -deststoretype JKS \
-            -srcstorepass "${KEYSTORE_PASSWORD}" \
-            -deststorepass "${KEYSTORE_PASSWORD}" \
-            -noprompt
-          mv android/keystore_compat.jks android/keystore.jks
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "ANDROID_KEYSTORE_BASE64 is not set"
+            exit 1
+          fi
+
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/keystore.jks
+          chmod 600 android/keystore.jks
 
       - name: Decode Google Play Service Account key
         run: |
@@ -241,6 +236,6 @@ jobs:
         with:
           name: android-build-artifacts
           path: |
-            build/app/outputs/bundle/release/*.aab
-            build/app/outputs/flutter-apk/*.apk
+            android/build/app/outputs/bundle/release/*.aab
+            android/build/app/outputs/flutter-apk/*.apk
           retention-days: 30
