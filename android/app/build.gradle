@@ -45,25 +45,20 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-// Read from environment variables (for CI), Gradle properties, or legacy key.properties values
-def resolveSigningValue = { String envName, String projectPropertyName, String legacyPropertyName, String defaultValue ->
+// Read from environment variables (for CI) or legacy key.properties values
+def resolveSigningValue = { String envName, String legacyPropertyName, String defaultValue ->
     def envValue = System.getenv(envName)
     if (envValue != null && envValue.toString().trim()) {
         return envValue.toString()
     }
 
-    def projectValue = project.findProperty(projectPropertyName)
-    if (projectValue != null && projectValue.toString().trim()) {
-        return projectValue.toString()
-    }
-
     return (keystoreProperties[legacyPropertyName] ?: defaultValue).toString()
 }
 
-def KEYSTORE_FILE = resolveSigningValue("KEYSTORE_FILE", "KEYSTORE_FILE", "storeFile", "keystore.jks")
-def KEYSTORE_PASSWORD = resolveSigningValue("KEYSTORE_PASSWORD", "KEYSTORE_PASSWORD", "storePassword", "")
-def KEY_ALIAS = resolveSigningValue("KEY_ALIAS", "KEY_ALIAS", "keyAlias", "")
-def KEY_PASSWORD = resolveSigningValue("KEY_PASSWORD", "KEY_PASSWORD", "keyPassword", "")
+def KEYSTORE_FILE = resolveSigningValue("KEYSTORE_FILE", "storeFile", "keystore.jks")
+def KEYSTORE_PASSWORD = resolveSigningValue("KEYSTORE_PASSWORD", "storePassword", "")
+def KEY_ALIAS = resolveSigningValue("KEY_ALIAS", "keyAlias", "")
+def KEY_PASSWORD = resolveSigningValue("KEY_PASSWORD", "keyPassword", "")
 
 
 
