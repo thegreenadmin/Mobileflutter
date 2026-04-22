@@ -22,9 +22,8 @@ platform :android do
     )
   end
 
-  desc "Build and upload a beta APK to Google Play Internal Testing"
+  desc "Build and upload a beta AAB to Google Play Internal Testing"
   lane :beta do
-    # Build the release AAB
     gradle(
       task: "bundle",
       build_type: "Release",
