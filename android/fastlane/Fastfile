@@ -32,9 +32,9 @@ platform :android do
     )
     
     # Upload to Google Play Internal Testing
-    upload_to_play_store_internal(
+    upload_to_play_store(
       track: "internal",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
@@ -54,7 +54,7 @@ platform :android do
     # Upload to Google Play Production
     upload_to_play_store(
       track: "production",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
       release_status: "completed",
       skip_upload_metadata: false,
       skip_upload_images: false,
@@ -73,7 +73,7 @@ platform :android do
     
     upload_to_play_store(
       track: "alpha",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
@@ -91,7 +91,7 @@ platform :android do
     
     upload_to_play_store(
       track: "beta",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,

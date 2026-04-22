@@ -271,6 +271,5 @@ jobs:
         with:
           name: android-build-artifacts
           path: |
-            android/build/app/outputs/bundle/release/*.aab
-            android/build/app/outputs/flutter-apk/*.apk
+            android/app/build/outputs/bundle/release/*.aab
           retention-days: 30
