@@ -204,15 +204,6 @@ jobs:
         working-directory: android
         run: bundle exec fastlane beta
 
-      - name: Commit and push updated Android version code
-        if: env.BUILD_ENVIRONMENT == 'beta'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add android/app/build.gradle
-          git diff --staged --quiet || git commit -m "chore: increment Android version code [skip ci]"
-          git push
-
       - name: Deploy to Google Play Production
         if: env.BUILD_ENVIRONMENT == 'release'
         env:
@@ -223,15 +214,6 @@ jobs:
           GOOGLE_PLAY_JSON_KEY_DATA: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         working-directory: android
         run: bundle exec fastlane deploy
-
-      - name: Commit and push updated Android version code
-        if: env.BUILD_ENVIRONMENT == 'release'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add android/app/build.gradle
-          git diff --staged --quiet || git commit -m "chore: increment Android version code [skip ci]"
-          git push
 
       - name: List build outputs
         run: |
