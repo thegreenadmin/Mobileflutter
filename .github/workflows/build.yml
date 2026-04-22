@@ -205,9 +205,6 @@ jobs:
         if: env.BUILD_ENVIRONMENT == 'beta'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         working-directory: android
         run: bundle exec fastlane beta
 
@@ -215,9 +212,6 @@ jobs:
         if: env.BUILD_ENVIRONMENT == 'release'
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         working-directory: android
         run: bundle exec fastlane deploy
 
