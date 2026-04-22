@@ -158,7 +158,7 @@ jobs:
     environment: ANDROID_BETA_CONFIG
     env:
       BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
-      KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
+      KEYSTORE_FILE: keystore.jks
       KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -201,6 +201,8 @@ jobs:
           chmod 600 android/keystore.jks
 
       - name: Preflight keystore verification
+        env:
+          KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
         run: |
           set -euo pipefail
 
