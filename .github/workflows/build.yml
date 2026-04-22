@@ -189,6 +189,19 @@ jobs:
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/keystore.jks
 
+      - name: Convert keystore to JKS format for BouncyCastle compatibility
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          keytool -importkeystore \
+            -srckeystore android/keystore.jks \
+            -destkeystore android/keystore_compat.jks \
+            -deststoretype JKS \
+            -srcstorepass "${KEYSTORE_PASSWORD}" \
+            -deststorepass "${KEYSTORE_PASSWORD}" \
+            -noprompt
+          mv android/keystore_compat.jks android/keystore.jks
+
       - name: Decode Google Play Service Account key
         run: |
           echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
