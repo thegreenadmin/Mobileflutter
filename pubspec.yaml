@@ -128,8 +128,6 @@ flutter:
     - assets/
     - assets/icons/
     - assets/env/api_key.env
-    - assets/env/development.env
-    - assets/env/staging.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
