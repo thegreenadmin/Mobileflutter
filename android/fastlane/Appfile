@@ -1,8 +1,8 @@
 # Appfile for Android
 # Contains app-specific information for Fastlane
 
-package_name("com.app.thegreenmall") # e.g. com.yourcompany.yourapp
-json_key_file("./fastlane/service-account.json") # Path to the json secret file
+package_name("com.thegreenmall") # e.g. com.yourcompany.yourapp
+
 
 # For more information about the Appfile, see:
 # https://docs.fastlane.tools/advanced/#appfile
