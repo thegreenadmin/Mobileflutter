@@ -57,7 +57,9 @@ platform :android do
     bundle_files.each { |file| UI.important("  - #{file}") }
     
     # Try to find the AAB file in multiple possible locations (Flutter generates in build/app/outputs/)
+    # The key fix: Flutter builds from project root, not android directory
     aab_path = Dir.glob(File.join(project_root, "build/app/outputs/bundle/release/*.aab")).first ||
+               Dir.glob(File.join(project_root, "**/*.aab")).first ||
                Dir.glob("build/app/outputs/bundle/release/*.aab").first ||
                Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
                Dir.glob("**/outputs/bundle/release/*.aab").first ||
@@ -90,14 +92,19 @@ platform :android do
       sh("flutter", "build", "appbundle", "--release")
     end
     
+    # Get the project root directory
+    project_root = File.expand_path("..")
+    
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
-    aab_files = Dir.glob("**/*.aab")
+    UI.important("Project root: #{project_root}")
+    aab_files = Dir.glob(File.join(project_root, "**/*.aab"))
     UI.important("Found #{aab_files.length} AAB files:")
     aab_files.each { |file| UI.important("  - #{file}") }
     
     # Try to find the AAB file
-    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    aab_path = Dir.glob(File.join(project_root, "build/app/outputs/bundle/release/*.aab")).first ||
+               Dir.glob(File.join(project_root, "**/*.aab")).first
     
     if aab_path.nil?
       UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
@@ -135,7 +142,8 @@ platform :android do
     aab_files.each { |file| UI.important("  - #{file}") }
     
     # Try to find the AAB file
-    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
+               Dir.glob("**/*.aab").first
     
     if aab_path.nil?
       UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
@@ -171,7 +179,8 @@ platform :android do
     aab_files.each { |file| UI.important("  - #{file}") }
     
     # Try to find the AAB file
-    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
+               Dir.glob("**/*.aab").first
     
     if aab_path.nil?
       UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
