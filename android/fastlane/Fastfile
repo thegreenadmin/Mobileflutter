@@ -30,10 +30,31 @@ platform :android do
       project_dir: "./"
     )
     
+    # Debug: Find all AAB files in the build directory
+    UI.important("=== Searching for AAB files ===")
+    aab_files = Dir.glob("**/*.aab")
+    UI.important("Found #{aab_files.length} AAB files:")
+    aab_files.each { |file| UI.important("  - #{file}") }
+    
+    UI.important("=== Listing build directory structure ===")
+    Dir.glob("app/build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
+    
+    # Try to find the AAB file
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    
+    if aab_path.nil?
+      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
+      UI.error("Available AAB files:")
+      aab_files.each { |file| UI.error("  - #{file}") }
+      raise "No AAB file found"
+    end
+    
+    UI.success("Found AAB file: #{aab_path}")
+    
     # Upload to Google Play Internal Testing
     upload_to_play_store(
       track: "internal",
-      aab: "app/build/outputs/bundle/release/app-release.aab",
+      aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
@@ -50,10 +71,28 @@ platform :android do
       project_dir: "./"
     )
     
+    # Debug: Find all AAB files in the build directory
+    UI.important("=== Searching for AAB files ===")
+    aab_files = Dir.glob("**/*.aab")
+    UI.important("Found #{aab_files.length} AAB files:")
+    aab_files.each { |file| UI.important("  - #{file}") }
+    
+    # Try to find the AAB file
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    
+    if aab_path.nil?
+      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
+      UI.error("Available AAB files:")
+      aab_files.each { |file| UI.error("  - #{file}") }
+      raise "No AAB file found"
+    end
+    
+    UI.success("Found AAB file: #{aab_path}")
+    
     # Upload to Google Play Production
     upload_to_play_store(
       track: "production",
-      aab: "app/build/outputs/bundle/release/app-release.aab",
+      aab: aab_path,
       release_status: "completed",
       skip_upload_metadata: false,
       skip_upload_images: false,
@@ -70,9 +109,27 @@ platform :android do
       project_dir: "./"
     )
     
+    # Debug: Find all AAB files in the build directory
+    UI.important("=== Searching for AAB files ===")
+    aab_files = Dir.glob("**/*.aab")
+    UI.important("Found #{aab_files.length} AAB files:")
+    aab_files.each { |file| UI.important("  - #{file}") }
+    
+    # Try to find the AAB file
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    
+    if aab_path.nil?
+      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
+      UI.error("Available AAB files:")
+      aab_files.each { |file| UI.error("  - #{file}") }
+      raise "No AAB file found"
+    end
+    
+    UI.success("Found AAB file: #{aab_path}")
+    
     upload_to_play_store(
       track: "alpha",
-      aab: "app/build/outputs/bundle/release/app-release.aab",
+      aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
@@ -88,9 +145,27 @@ platform :android do
       project_dir: "./"
     )
     
+    # Debug: Find all AAB files in the build directory
+    UI.important("=== Searching for AAB files ===")
+    aab_files = Dir.glob("**/*.aab")
+    UI.important("Found #{aab_files.length} AAB files:")
+    aab_files.each { |file| UI.important("  - #{file}") }
+    
+    # Try to find the AAB file
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    
+    if aab_path.nil?
+      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
+      UI.error("Available AAB files:")
+      aab_files.each { |file| UI.error("  - #{file}") }
+      raise "No AAB file found"
+    end
+    
+    UI.success("Found AAB file: #{aab_path}")
+    
     upload_to_play_store(
       track: "beta",
-      aab: "app/build/outputs/bundle/release/app-release.aab",
+      aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
