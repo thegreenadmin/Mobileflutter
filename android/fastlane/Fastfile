@@ -121,6 +121,8 @@ platform :android do
     
     # Commit and push version change
     Dir.chdir(project_root) do
+      sh("git", "config", "user.email", "ci-bot@github.com")
+      sh("git", "config", "user.name", "GitHub Actions")
       sh("git", "add", "pubspec.yaml")
       sh("git", "commit", "-m", "chore: increment version code to #{new_version_code} [skip ci]")
       sh("git", "push")
