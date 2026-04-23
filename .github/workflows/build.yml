@@ -197,12 +197,12 @@ jobs:
             exit 1
           fi
 
-          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/keystore.jks
-          chmod 600 android/keystore.jks
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          chmod 600 android/app/keystore.jks
 
       - name: Preflight keystore verification
         env:
-          KEYSTORE_FILE: ${{ github.workspace }}/android/keystore.jks
+          KEYSTORE_FILE: ${{ github.workspace }}/android/app/keystore.jks
         run: |
           set -euo pipefail
 
