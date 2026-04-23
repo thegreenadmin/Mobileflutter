@@ -71,9 +71,9 @@ platform :android do
     
     UI.success("Found AAB file: #{aab_path}")
     
-    # Upload to Google Play Internal Testing
+    # Upload to Google Play Draft (for first-time app submission)
     upload_to_play_store(
-      track: "internal",
+      track: "draft",
       aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
