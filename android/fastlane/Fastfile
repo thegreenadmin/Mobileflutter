@@ -36,11 +36,22 @@ platform :android do
     UI.important("Found #{aab_files.length} AAB files:")
     aab_files.each { |file| UI.important("  - #{file}") }
     
-    UI.important("=== Listing build directory structure ===")
+    UI.important("=== Listing all build output directories ===")
+    Dir.glob("app/build/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
+    
+    UI.important("=== Listing all files in build directory ===")
     Dir.glob("app/build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     
-    # Try to find the AAB file
-    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first
+    UI.important("=== Searching for any bundle files ===")
+    bundle_files = Dir.glob("**/*bundle*")
+    UI.important("Found #{bundle_files.length} bundle files:")
+    bundle_files.each { |file| UI.important("  - #{file}") }
+    
+    # Try to find the AAB file in multiple possible locations
+    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
+               Dir.glob("app/build/outputs/bundle/**/*.aab").first ||
+               Dir.glob("build/outputs/bundle/release/*.aab").first ||
+               Dir.glob("**/*.aab").first
     
     if aab_path.nil?
       UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
