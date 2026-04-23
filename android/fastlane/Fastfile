@@ -24,11 +24,10 @@ platform :android do
 
   desc "Build and upload a beta AAB to Google Play Internal Testing"
   lane :beta do
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      project_dir: "./"
-    )
+    # Build Flutter app bundle
+    Dir.chdir("..") do
+      sh("flutter", "build", "appbundle", "--release")
+    end
     
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
@@ -37,9 +36,11 @@ platform :android do
     aab_files.each { |file| UI.important("  - #{file}") }
     
     UI.important("=== Listing all build output directories ===")
+    Dir.glob("build/**/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
     Dir.glob("app/build/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
     
     UI.important("=== Listing all files in build directory ===")
+    Dir.glob("build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     Dir.glob("app/build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     
     UI.important("=== Searching for any bundle files ===")
@@ -47,14 +48,14 @@ platform :android do
     UI.important("Found #{bundle_files.length} bundle files:")
     bundle_files.each { |file| UI.important("  - #{file}") }
     
-    # Try to find the AAB file in multiple possible locations
-    aab_path = Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
-               Dir.glob("app/build/outputs/bundle/**/*.aab").first ||
-               Dir.glob("build/outputs/bundle/release/*.aab").first ||
+    # Try to find the AAB file in multiple possible locations (Flutter generates in build/app/outputs/)
+    aab_path = Dir.glob("build/app/outputs/bundle/release/*.aab").first ||
+               Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
+               Dir.glob("**/outputs/bundle/release/*.aab").first ||
                Dir.glob("**/*.aab").first
     
     if aab_path.nil?
-      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
+      UI.error("Could not find any AAB file in expected locations")
       UI.error("Available AAB files:")
       aab_files.each { |file| UI.error("  - #{file}") }
       raise "No AAB file found"
@@ -75,12 +76,10 @@ platform :android do
 
   desc "Deploy a new version to Google Play Production"
   lane :deploy do
-    # Build the release bundle
-    gradle(
-      task: "bundle",
-      build_type: "Release",
-      project_dir: "./"
-    )
+    # Build Flutter app bundle
+    Dir.chdir("..") do
+      sh("flutter", "build", "appbundle", "--release")
+    end
     
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
