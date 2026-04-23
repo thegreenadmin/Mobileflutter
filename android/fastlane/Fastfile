@@ -73,11 +73,13 @@ platform :android do
     
     # Upload to Google Play (first-time app submission)
     upload_to_play_store(
+      track: 'internal',
       aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
       json_key: "./google-play-service-account.json"
+      release_status: 'draft' # Add this line
     )
   end
 
