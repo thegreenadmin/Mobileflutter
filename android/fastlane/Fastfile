@@ -29,29 +29,35 @@ platform :android do
       sh("flutter", "build", "appbundle", "--release")
     end
     
+    # Get the project root directory
+    project_root = File.expand_path("..")
+    
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
-    aab_files = Dir.glob("../**/*.aab") + Dir.glob("**/*.aab")
+    UI.important("Project root: #{project_root}")
+    UI.important("Current directory: #{Dir.pwd}")
+    
+    aab_files = Dir.glob(File.join(project_root, "**/*.aab"))
     UI.important("Found #{aab_files.length} AAB files:")
     aab_files.each { |file| UI.important("  - #{file}") }
     
     UI.important("=== Listing all build output directories ===")
-    Dir.glob("../build/**/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
+    Dir.glob(File.join(project_root, "build/**/outputs/**/*")).select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
     Dir.glob("build/**/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
     Dir.glob("app/build/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
     
     UI.important("=== Listing all files in build directory ===")
-    Dir.glob("../build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
+    Dir.glob(File.join(project_root, "build/**/*")).select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     Dir.glob("build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     Dir.glob("app/build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
     
     UI.important("=== Searching for any bundle files ===")
-    bundle_files = Dir.glob("../**/*bundle*") + Dir.glob("**/*bundle*")
+    bundle_files = Dir.glob(File.join(project_root, "**/*bundle*"))
     UI.important("Found #{bundle_files.length} bundle files:")
     bundle_files.each { |file| UI.important("  - #{file}") }
     
-    # Try to find the AAB file in multiple possible locations (Flutter generates in ../build/app/outputs/)
-    aab_path = Dir.glob("../build/app/outputs/bundle/release/*.aab").first ||
+    # Try to find the AAB file in multiple possible locations (Flutter generates in build/app/outputs/)
+    aab_path = Dir.glob(File.join(project_root, "build/app/outputs/bundle/release/*.aab")).first ||
                Dir.glob("build/app/outputs/bundle/release/*.aab").first ||
                Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
                Dir.glob("**/outputs/bundle/release/*.aab").first ||
