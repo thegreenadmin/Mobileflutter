@@ -98,22 +98,16 @@ android {
     }
     signingConfigs {
         release {
-            if (file(KEYSTORE_FILE).exists()) {
-                storeFile file(KEYSTORE_FILE)
-                storePassword = KEYSTORE_PASSWORD
-                keyAlias = KEY_ALIAS
-                keyPassword = KEY_PASSWORD
-            }
+            storeFile file(KEYSTORE_FILE)
+            storePassword = KEYSTORE_PASSWORD
+            keyAlias = KEY_ALIAS
+            keyPassword = KEY_PASSWORD
         }
     }
 
     buildTypes {
         release {
-            if (file(KEYSTORE_FILE).exists()) {
-                signingConfig signingConfigs.release
-            } else {
-                signingConfig null
-            }
+            signingConfig signingConfigs.release
         }
     }
 
