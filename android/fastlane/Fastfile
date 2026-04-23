@@ -29,8 +29,8 @@ platform :android do
       sh("flutter", "build", "appbundle", "--release")
     end
     
-    # Get the project root directory
-    project_root = File.expand_path("..")
+    # Get the project root directory (go up two levels from android/fastlane to project root)
+    project_root = File.expand_path("../..")
     
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
@@ -92,8 +92,8 @@ platform :android do
       sh("flutter", "build", "appbundle", "--release")
     end
     
-    # Get the project root directory
-    project_root = File.expand_path("..")
+    # Get the project root directory (go up two levels from android/fastlane to project root)
+    project_root = File.expand_path("../..")
     
     # Debug: Find all AAB files in the build directory
     UI.important("=== Searching for AAB files ===")
