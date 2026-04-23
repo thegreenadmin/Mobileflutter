@@ -22,12 +22,9 @@ platform :android do
     )
   end
 
-  desc "Build and upload a beta AAB to Google Play Internal Testing"
+  desc "Upload a pre-built beta AAB to Google Play Internal Testing"
   lane :beta do
-    # Build Flutter app bundle
-    Dir.chdir("..") do
-      sh("flutter", "build", "appbundle", "--release")
-    end
+    # Note: Flutter app bundle is now built in the CI pipeline before this step
     
     # Get the project root directory (go up two levels from android/fastlane to project root)
     project_root = File.expand_path("../..")
@@ -87,10 +84,7 @@ platform :android do
 
   desc "Deploy a new version to Google Play Production"
   lane :deploy do
-    # Build Flutter app bundle
-    Dir.chdir("..") do
-      sh("flutter", "build", "appbundle", "--release")
-    end
+    # Note: Flutter app bundle is now built in the CI pipeline before this step
     
     # Get the project root directory (go up two levels from android/fastlane to project root)
     project_root = File.expand_path("../..")

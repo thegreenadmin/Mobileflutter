@@ -153,8 +153,8 @@ jobs:
 
   build-android:
     if: github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    runs-on: ubuntu-latest-4-cores
+    timeout-minutes: 90
     environment: ANDROID_BETA_CONFIG
     env:
       BUILD_ENVIRONMENT: ${{ github.event.inputs.environment || 'beta' }}
@@ -248,6 +248,18 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
 
+      - name: Build Flutter app bundle
+        run: |
+          echo "Building Flutter app bundle with optimized settings..."
+          flutter build appbundle --release --verbose
+          
+      - name: Verify build output
+        run: |
+          echo "=== Verifying build output ==="
+          find . -name "*.aab" -type f -exec ls -la {} \;
+          echo "=== Build directory structure ==="
+          find build/app/outputs -type f 2>/dev/null || echo "No build outputs found"
+
       - name: Deploy to Google Play Internal Testing (beta)
         if: env.BUILD_ENVIRONMENT == 'beta'
         working-directory: android
@@ -266,6 +278,11 @@ jobs:
           find . -type d -name "build" 2>/dev/null
           echo "=== Listing android directory contents ==="
           ls -la android/
+          echo "=== Checking specific build output paths ==="
+          ls -la build/app/outputs/bundle/release/ 2>/dev/null || echo "Flutter build output directory not found"
+          ls -la android/app/build/outputs/bundle/release/ 2>/dev/null || echo "Android build output directory not found"
+          echo "=== File sizes and permissions ==="
+          find . -name "*.aab" -exec ls -la {} \; 2>/dev/null || echo "No AAB files to check"
 
       - name: Upload Android build artifacts
         if: always()
@@ -273,5 +290,7 @@ jobs:
         with:
           name: android-build-artifacts
           path: |
+            build/app/outputs/bundle/release/*.aab
             android/app/build/outputs/bundle/release/*.aab
+            **/*.aab
           retention-days: 30
