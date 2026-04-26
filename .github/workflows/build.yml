@@ -138,7 +138,7 @@ jobs:
           FASTLANE_USER: ${{ vars.FASTLANE_USER }}
           OPENSSL_CONF: /dev/null
         working-directory: ios
-        run: bundle exec fastlane build_only
+        run: bundle exec fastlane release
 
       - name: Commit and push updated build number
         if: env.BUILD_ENVIRONMENT == 'release'
