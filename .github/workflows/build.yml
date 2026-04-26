@@ -39,7 +39,7 @@ env:
 jobs:
   build-ios:
     if: github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both' || github.event.inputs.platform == ''
-    runs-on: macos-15-xlarge
+    runs-on: macos-26
     timeout-minutes: 120
     environment: APP_STORE_CONFIG
     env:
