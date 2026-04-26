@@ -158,9 +158,9 @@ platform :android do
     
     UI.success("Found AAB file: #{aab_path}")
     
-    # Upload to Google Play (use internal track for draft apps, can be promoted later)
+    # Upload to Google Play Production track
     upload_to_play_store(
-      track: "internal",
+      track: "production",
       aab: aab_path,
       release_status: "draft",
       skip_upload_metadata: true,
@@ -168,6 +168,9 @@ platform :android do
       skip_upload_screenshots: true,
       json_key: "./google-play-service-account.json"
     )
+
+    # Increment version code after successful upload
+    increment_version_code
   end
 
   desc "Deploy to Google Play Alpha track"
