@@ -125,6 +125,7 @@ platform :android do
       sh("git", "config", "user.name", "GitHub Actions")
       sh("git", "add", "pubspec.yaml")
       sh("git", "commit", "-m", "chore: increment version code to #{new_version_code} [skip ci]")
+      sh("git", "pull", "--rebase")
       sh("git", "push")
     end
     
