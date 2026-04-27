@@ -158,9 +158,9 @@ platform :android do
     
     UI.success("Found AAB file: #{aab_path}")
     
-    # Upload to Google Play Production track
+    # Upload to Google Play Internal track (app is still in draft status)
     upload_to_play_store(
-      track: "production",
+      track: "internal",
       aab: aab_path,
       release_status: "draft",
       skip_upload_metadata: true,
