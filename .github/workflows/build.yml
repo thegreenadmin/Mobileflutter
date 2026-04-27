@@ -122,6 +122,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ios/Runner.xcodeproj/project.pbxproj
           git diff --staged --quiet || git commit -m "chore: increment iOS build number [skip ci]"
+          git pull --rebase --autostash
           git push
 
       - name: Build iOS app for release (App Store)
@@ -147,6 +148,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ios/Runner.xcodeproj/project.pbxproj
           git diff --staged --quiet || git commit -m "chore: increment iOS build number [skip ci]"
+          git pull --rebase --autostash
           git push
 
       - name: Upload iOS build artifacts
