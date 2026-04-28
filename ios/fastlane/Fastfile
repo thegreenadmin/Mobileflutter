@@ -169,6 +169,150 @@ platform :ios do
     )
   end
 
+  desc "Increment build number only (for manual version bump)"
+  lane :increment_build_number_only do
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    UI.success("iOS build number incremented")
+  end
+
+  desc "Bump major version (e.g., 1.0.0 -> 2.0.0)"
+  lane :bump_major_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump major version, reset minor and patch to 0, reset build to 1
+    new_major = major + 1
+    new_minor = 0
+    new_patch = 0
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "major"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS major version bumped")
+  end
+
+  desc "Bump minor version (e.g., 1.0.0 -> 1.1.0)"
+  lane :bump_minor_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump minor version, reset patch to 0, reset build to 1
+    new_major = major
+    new_minor = minor + 1
+    new_patch = 0
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "minor"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS minor version bumped")
+  end
+
+  desc "Bump patch version (e.g., 1.0.0 -> 1.0.1)"
+  lane :bump_patch_version do
+    # Get project root directory
+    project_root = File.expand_path("../..")
+    pubspec_path = File.join(project_root, "pubspec.yaml")
+
+    # Read current pubspec.yaml
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract current version
+    version_line = pubspec_content.match(/^version:\s*(\d+)\.(\d+)\.(\d+)\+(\d+)/)
+    if version_line.nil?
+      UI.error("Could not find version line in pubspec.yaml")
+      return
+    end
+
+    major = version_line[1].to_i
+    minor = version_line[2].to_i
+    patch = version_line[3].to_i
+    build = version_line[4].to_i
+
+    # Bump patch version, reset build to 1
+    new_major = major
+    new_minor = minor
+    new_patch = patch + 1
+    new_build = 1
+
+    # Update version line
+    new_version_line = "version: #{new_major}.#{new_minor}.#{new_patch}+#{new_build}"
+    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
+
+    # Write back to pubspec.yaml
+    File.write(pubspec_path, updated_content)
+
+    UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
+
+    # Update Xcode project
+    increment_version_number(
+      xcodeproj: "Runner.xcodeproj",
+      bump_type: "patch"
+    )
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+
+    UI.success("iOS patch version bumped")
+  end
+
   # Error block
   error do |lane, exception|
     UI.error("Error in lane #{lane}: #{exception.message}")
