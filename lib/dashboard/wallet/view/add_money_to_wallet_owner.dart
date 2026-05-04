@@ -51,28 +51,16 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
 
   Future<void> _checkIfApplePayInstalled() async {
     _hasApplePay = await _payClient.userCanPay(PayProvider.apple_pay);
-    if (_hasApplePay) {
-      debugPrint('Apple Pay is available on this device!');
-    } else {
-      debugPrint('Apple Pay is not available on this device!');
-    }
   }
 
   Future<void> _checkIfGooglePayInstalled() async {
     _hasGooglePay = await _payClient.userCanPay(PayProvider.google_pay);
-    if (_hasGooglePay) {
-      debugPrint('Google Pay is available on this device!');
-    } else {
-      debugPrint('Google Pay is not available on this device!');
-    }
   }
 
   void onApplePayResult(paymentResult) {
-    debugPrint("APPLE PAYMENT RESULT *************$paymentResult");
     try {
       //final token = paymentResult['token'];
       //final tokenJson = Map.castFrom(json.decode(token));
-      //debugPrint("transactionIdentifierJson *************$tokenJson");
       addCardController.apiPaymentIntent("Apple pay");
       //final transactionId = paymentResult['token']['transactionId'];
       //  final transactionIdentifierJson =
@@ -80,29 +68,19 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
 
       // final tokenJson = Map.castFrom(json.decode(token));
       //final transactionIdJson = Map.castFrom(json.decode(transactionId));
-      //debugPrint("tokenJson *************$tokenJson");
-      // debugPrint(
-      //  "transactionIdentifierJson *************$transactionIdentifierJson");
-      // debugPrint(
-      //     "transactionIdJson *************$transactionIdJson");
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
-      debugPrint("APPLE PAYMENT error *************${e.toString()}");
       Utility.showAlertMessage(e.toString());
     }
   }
 
   Future<void> onGooglePayResult(paymentResult) async {
-    debugPrint("GOOGLE PAYMENT RESULT *************000000");
-    debugPrint("GOOGLE PAYMENT RESULT *************$paymentResult");
     try {
       final token =
           paymentResult['paymentMethodData']['tokenizationData']['token'];
       final tokenJson = Map.castFrom(json.decode(token));
-      debugPrint("GOOGLE PAYMENT RESULT tokenJson *************$tokenJson");
       //Send token to a server or to Google or Apple for confirmation
     } catch (e) {
-      debugPrint("GOOGLE PAYMENT error *************${e.toString()}");
       //An error has occurred
     }
   }
@@ -412,9 +390,6 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                     StringConstants.gPayText
                                 ? GooglePayButton(
                                     onError: (Object? error) {
-                                      debugPrint(
-                                          "GooglePayButton error:*****************");
-                                      debugPrint(error.toString());
                                     },
                                     paymentConfiguration:
                                         PaymentConfiguration.fromJsonString(
@@ -572,10 +547,6 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                                         .cardList[index]
                                                                         .userStripeCardId
                                                                         .toString();
-                                                                debugPrint(
-                                                                    addCardController
-                                                                        .userStripeCardId!
-                                                                        .value);
                                                               });
                                                             },
                                                             child: Row(

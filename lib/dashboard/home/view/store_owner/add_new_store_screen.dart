@@ -565,8 +565,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     mode: Mode.overlay,
                                     language: "en",
                                     components: []);
-                                debugPrint(
-                                    "ADDRESSES---description->${p?.description}");
                                 if (p?.description != null) {
                                   int idx = p?.description?.indexOf(",") ?? 0;
                                   List parts = [
@@ -1300,8 +1298,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
       ))!;
       controller.text = date.format(context).toString();
       timeValue.value = "${date.hour}:${date.minute}:00";
-
-      debugPrint("${date.hour}:${date.minute}:00");
 
       if (addNewStoreController.weekDaysList.isNotEmpty) {
         for (int i = 0; i < addNewStoreController.weekDaysList.length; i++) {

@@ -898,9 +898,6 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
       ]
     };
 
-    debugPrint("Update Store Details data ******************");
-    debugPrint(data.toString());
-
     UserProvider()
         .putWithHeadersApi(
             data,

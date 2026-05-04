@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
@@ -657,8 +656,14 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   /// Add Money to stripe wallet
   apiAddMoneyToWallet() {
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
          Map body = {
-      "user_stripe_card_id": userStripeCardId!.value,
+      "user_stripe_card_id": finalStripeCardId,
       "amount": amountTextController.text.trim()
     };
          isLoading.value= true;
@@ -702,9 +707,22 @@ class AddCardController extends GetxController with GlobalVarMixin{
   }
 
   apiAddMoneyToOwnerWallet({String ownerStoreId = ""}) {
+    final String finalStoreId = ownerStoreId.toString().trim();
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+
+    if (finalStoreId.isEmpty || finalStoreId == "0") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
          Map body = {
-      "store_id": int.parse(ownerStoreId),
-      "user_stripe_card_id": userStripeCardId!.value,
+      "store_id": int.parse(finalStoreId),
+      "user_stripe_card_id": finalStripeCardId,
       "amount": ownerAmountTextController.text.trim()
     };isLoading.value= true;
     Map<String, String> headers = {
@@ -1031,18 +1049,6 @@ class AddCardController extends GetxController with GlobalVarMixin{
       "payment_service_name": type,
       "amount": double.parse(amountTextController.text) * 100
     };
-
-    if (amountTextController.text.split(".").length == 1) {
-      if (kDebugMode) {
-               }
-    } else {
-      if (amountTextController.text.split(".")[1].length == 1) {
-                          if (kDebugMode) {}
-      } else {
-        if (kDebugMode) {
-                   }
-      }
-    }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:

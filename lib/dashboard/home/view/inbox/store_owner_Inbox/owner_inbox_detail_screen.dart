@@ -181,7 +181,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  debugPrint("C2 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -190,7 +189,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                         .isEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  debugPrint("C3 *****");
                 } else if (ownerInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     ownerInboxDetailController
@@ -199,7 +197,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await ownerInboxDetailController.apiSendMessage();
-                  debugPrint("C4 *****");
                 }
               },
               child: const Center(

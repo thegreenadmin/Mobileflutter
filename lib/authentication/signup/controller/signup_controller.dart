@@ -193,15 +193,11 @@ class SignupController extends GetxController {
       "has_store_access": isFromOwner,
       "is_store_owner": isFromOwner,
     };
-    debugPrint("CREATE USER BODY********** ${jsonEncode(data)}");
-    debugPrint(
-        "CREATE USER URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.createUser}");
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.createUser,
             showLoading: false)
         .then((value) async {
-      debugPrint("CREATE USER RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         isLoading.value = false;
@@ -222,15 +218,11 @@ class SignupController extends GetxController {
   ///Login Api
   Future apiGenerateOtp() async {
     Map data = {"phone": phoneNumber.value, "phone_code": countryCode.value};
-    debugPrint("LOGIN BODY********** $data");
-    debugPrint(
-        "LOGIN URL**********${ServerCommunicator.baseUrl}${ServerCommunicator.generateOtp}");
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.generateOtp,
             showLoading: false)
         .then((value) async {
-      debugPrint("LOGIN RESPONSE *******${value?.body}");
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         phoneNumberTextController.clear();

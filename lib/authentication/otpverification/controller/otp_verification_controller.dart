@@ -43,7 +43,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
         fcmToken!.value = v!;
         if (fcmToken?.value != null) {
           // Save or use the token
-          print("FCM Token: $fcmToken");
         } else {
           // Handle null token case
           Utility.showAlertMessage("Unable to retrieve device token. Please try again.");
@@ -52,7 +51,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
     } catch (e) {
       // Handle error gracefully
-      print("FCM Token Error: $e");
       Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
     }
   }

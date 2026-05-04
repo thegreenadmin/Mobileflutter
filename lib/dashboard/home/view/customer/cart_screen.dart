@@ -26,7 +26,7 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
     storeHomeMainController = Get.put(StoreHomeMainController());
 
     // Just set params here (no API calls!)
-    storeHomeMainController.storeId.value = widget.storeId ?? "0";
+    storeHomeMainController.storeId.value = (widget.storeId != null && widget.storeId!.isNotEmpty) ? widget.storeId! : "0";
     storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
 
   }
@@ -239,10 +239,11 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                                     !storeHomeMainController
                                                                         .isLoading.value
                                                                 ? storeHomeMainController.apiUpdateCart(
-                                                                    cartItemId: int.parse(
-                                                                        storeHomeMainController
+                                                                    cartItemId: (storeHomeMainController
                                                                                 .cartItems[i]
-                                                                                .cartItemId ?? "0"),
+                                                                                .cartItemId?.isNotEmpty == true)
+                                                                            ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                            : 0,
                                                                     quantity: storeHomeMainController
                                                                             .cartItems[i].itemsCount! - 1)
                                                                 : null;
@@ -279,12 +280,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                           !storeHomeMainController
                                                                   .isLoading.value
                                                               ? storeHomeMainController.apiUpdateCart(
-                                                                  cartItemId: int.parse(
-                                                                      storeHomeMainController
+                                                                  cartItemId: (storeHomeMainController
                                                                               .cartItems[
                                                                                   i]
-                                                                              .cartItemId ??
-                                                                          "0"),
+                                                                              .cartItemId?.isNotEmpty == true)
+                                                                          ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                          : 0,
                                                                   quantity: storeHomeMainController
                                                                           .cartItems[
                                                                               i]
@@ -312,12 +313,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
                                                           .deleteText, okayTap: () {
                                                     storeHomeMainController
                                                         .apiDeleteCart(
-                                                            cartItemId: int.parse(
-                                                                storeHomeMainController
+                                                            cartItemId: (storeHomeMainController
                                                                         .cartItems[
                                                                             i]
-                                                                        .cartItemId ??
-                                                                    "0"));
+                                                                        .cartItemId?.isNotEmpty == true)
+                                                                    ? int.parse(storeHomeMainController.cartItems[i].cartItemId!)
+                                                                    : 0);
                                                   });
                                                 },
                                                 child: Image.asset(

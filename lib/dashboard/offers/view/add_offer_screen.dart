@@ -469,15 +469,6 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                                               addOffersController
                                                                   .storeProductList[i]
                                                                   .isSelected = true;
-                                                              debugPrint(
-                                                                  addOffersController
-                                                                      .storeProductList[i]
-                                                                      .isSelected
-                                                                      .toString());
-                                                              debugPrint(
-                                                                  addOffersController
-                                                                      .selectedProducts
-                                                                      .toString());
                                                             } else {
                                                               addOffersController
                                                                   .selectedProducts
@@ -491,15 +482,6 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                                               addOffersController
                                                                   .storeProductList[i]
                                                                   .isSelected = false;
-                                                              debugPrint(
-                                                                  addOffersController
-                                                                      .storeProductList[i]
-                                                                      .isSelected
-                                                                      .toString());
-                                                              debugPrint(
-                                                                  addOffersController
-                                                                      .selectedProducts
-                                                                      .toString());
                                                             }
                                                           },
                                                           child: Container(

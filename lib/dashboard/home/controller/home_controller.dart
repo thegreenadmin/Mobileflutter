@@ -15,6 +15,7 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxString? productId = "".obs;
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
+  RxString? currentUserPhone = "".obs;
   RxString? offerProductId = "".obs;
   RxString? storeIdValue = "".obs;
   RxInt pageId = 0.obs;
@@ -61,9 +62,15 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   getCurrentLocation() async {
     try {
-      Position currentLocation = await Utility.fetchCurrentLocation();
-      lat = currentLocation.latitude;
-      lng = currentLocation.longitude;
+      // Check if user is 0000000000, use Nashville, Tennessee coordinates
+      if (currentUserPhone!.value == "0000000000") {
+        lat = 36.1627; // Nashville, Tennessee latitude
+        lng = -86.7816; // Nashville, Tennessee longitude
+      } else {
+        Position currentLocation = await Utility.fetchCurrentLocation();
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      }
 
       if (roleApp.value == Role.customerRoleText) {
         await apiGetUserOffersList();
@@ -202,21 +209,16 @@ class HomeController extends GetxController with GlobalVarMixin {
          Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
-      "${StringConstants.bearerText} ${authToken.value}",
+          "${StringConstants.bearerText} ${authToken.value}",
     };
          UserProvider()
-        .getWithHeadersApi(
-        "${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}",
-        headers,
-        showLoading: false)
+        .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}", headers,
+            showLoading: false)
         .then((value) async {
-
+      isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-               isLoading.value = false;
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        cartCount.value = activeCartModel.data!.cartItems!.length;
-        storeIdValue?.value = activeCartModel.data!.storeId.toString();
         if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
@@ -225,14 +227,18 @@ class HomeController extends GetxController with GlobalVarMixin {
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();  isLoading.value = false;
+        storage.clearData();
+        isLoading.value = false;
         Get.parameters.clear();
         Get.offAll(const StartJourneyScreen());
-      } else {  isLoading.value = false;
+      } else {
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
   }
   ///Get User Detail Info Api
@@ -253,6 +259,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
+        currentUserPhone!.value = getUserDetailModel.data?.user?.phone ?? "";
         SharedPreferenceStorage
             .setData("userData", getUserDetailModel.data);
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
@@ -263,6 +270,7 @@ class HomeController extends GetxController with GlobalVarMixin {
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
             StringConstants.currentUserIdText, currentUserId!.value);
+        SharedPreferenceStorage.setData("userPhone", currentUserPhone!.value);
         firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
         lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
 

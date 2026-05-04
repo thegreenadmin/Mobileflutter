@@ -456,8 +456,6 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                   addCardController
                                                       .bankAccountList[0].userStripeBankId
                                                       .toString();
-                                              debugPrint(addCardController
-                                                  .userStripeBankId!.value);
                                             }
                                             return Container(
                                               padding: const EdgeInsets.only(
@@ -484,9 +482,6 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                             .bankAccountList[index]
                                                             .userStripeBankId
                                                             .toString();
-
-                                                    debugPrint(addCardController
-                                                        .userStripeCardId!.value);
                                                   });
                                                 },
                                                 child: Row(

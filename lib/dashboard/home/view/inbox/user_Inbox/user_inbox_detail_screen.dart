@@ -170,7 +170,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C1 *****");
                 } else if (userInboxDetailController
                     .messageTextController.text.isEmpty) {
                   Fluttertoast.showToast(
@@ -180,7 +179,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.white,
                       fontSize: 14.0);
-                  debugPrint("C2 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -189,7 +187,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C3 *****");
                 } else if (userInboxDetailController
                         .messageTextController.text.isNotEmpty &&
                     userInboxDetailController
@@ -198,7 +195,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                         .isNotEmpty) {
                   // FocusScope.of(context).requestFocus(FocusNode());
                   await userInboxDetailController.apiSendMessage();
-                  debugPrint("C4 *****");
                 }
               },
               child: const Center(

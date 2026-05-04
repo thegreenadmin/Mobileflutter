@@ -147,11 +147,6 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                       Get.parameters["isFromMenu"] = "false";
                       Get.parameters["isFromOptions"] = "false";
 
-                      debugPrint("STORE HOME SCREEN PRODUCT DETAIL------------------------------");
-                      debugPrint("productId.value ==== ${item.productId.toString()}");
-                      debugPrint("storeId.value ==== ${item.storeId.toString()}");
-                      debugPrint("PRODUCT ==== ${item.productName.toString()}");
-
                       await storeHomeMainController.apiGetUserDetailsApi();
                       if (storeHomeMainController.storeId.value != "" &&
                           storeHomeMainController.productId.value != "") {

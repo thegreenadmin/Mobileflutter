@@ -481,8 +481,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                 InkWell(
                                   onTap: () async {
                                     if (homeController.isLoading.value == false) {
-                                      // Get.parameters["storeId"] =
-                                      //     homeController.storeIdValue?.value;
                                       await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value)
                                           ?.then((value) => homeController.apiActiveCartApi());
                                     }

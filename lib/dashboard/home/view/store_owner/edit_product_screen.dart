@@ -362,9 +362,6 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                               //             .categoriesList[i]
                                               //             .categoryId) {
                                               //       item['status'] = "deleted";
-                                              //       debugPrint(manageStoreController
-                                              //           .selectedCategories
-                                              //           .toString());
                                               //     }
                                               //   }
                                               // } else {
@@ -377,9 +374,6 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                               //             .categoriesList[i]
                                               //             .categoryId) {
                                               //       item['status'] = "active";
-                                              //       debugPrint(manageStoreController
-                                              //           .selectedCategories
-                                              //           .toString());
                                               //     }
                                               //   }
                                               // }

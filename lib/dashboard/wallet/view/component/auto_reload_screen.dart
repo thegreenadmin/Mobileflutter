@@ -684,8 +684,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                           addCardController
                                               .cardList[0].userStripeCardId
                                               .toString();
-                                      debugPrint(addCardController
-                                          .userStripeCardId!.value);
                                     }
                                     return Container(
                                       padding: const EdgeInsets.only(
@@ -716,8 +714,6 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                                     .cardList[index]
                                                     .userStripeCardId
                                                     .toString();
-                                            debugPrint(
-                                                "USER STRIPE CARD ID${addCardController.userStripeCardId!.value}");
                                           });
                                         },
                                         child: Row(

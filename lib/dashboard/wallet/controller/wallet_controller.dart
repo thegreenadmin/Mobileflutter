@@ -509,9 +509,15 @@ class WalletController extends GetxController with GlobalVarMixin{
 
   /// Add Money to stripe wallet
   Future apiAddMoneyToWallet() async {
+    final String finalStripeCardId = userStripeCardId?.value.toString().trim() ?? "";
+    if (finalStripeCardId.isEmpty) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectCardText);
+      return;
+    }
+
     isLoading.value = true;
          Map body = {
-      "user_stripe_card_id": userStripeCardId!.value,
+      "user_stripe_card_id": finalStripeCardId,
       "amount": amountTextController.text.trim()
     };
 

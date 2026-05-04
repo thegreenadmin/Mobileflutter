@@ -160,10 +160,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                                 .membershipList[index]
                                                                 .selectedPlan =
                                                             StringConstants.plan30Text;
-                                                        debugPrint(index.toString());
-                                                        debugPrint(accountController
-                                                            .membershipList[index]
-                                                            .selectedPlan);
                                                         setState(() {});
                                                       },
                                                       child: Column(
@@ -216,10 +212,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                                 .membershipList[index]
                                                                 .selectedPlan =
                                                             StringConstants.plan90Text;
-                                                        debugPrint(index.toString());
-                                                        debugPrint(accountController
-                                                            .membershipList[index]
-                                                            .selectedPlan);
                                                         setState(() {});
                                                       },
                                                       child: Column(
@@ -279,10 +271,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                                 .membershipList[index]
                                                                 .selectedPlan =
                                                             StringConstants.plan180Text;
-                                                        debugPrint(index.toString());
-                                                        debugPrint(accountController
-                                                            .membershipList[index]
-                                                            .selectedPlan);
                                                         setState(() {});
                                                       },
                                                       child: Column(
@@ -335,10 +323,6 @@ class SelectMembershipPlanState extends State<SelectMembershipPlan> with GlobalV
                                                                 .membershipList[index]
                                                                 .selectedPlan =
                                                             StringConstants.plan365Text;
-                                                        debugPrint(index.toString());
-                                                        debugPrint(accountController
-                                                            .membershipList[index]
-                                                            .selectedPlan);
                                                         setState(() {});
                                                       },
                                                       child: Column(

@@ -81,6 +81,8 @@ class OffersController extends GetxController with GlobalVarMixin{
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
+    phone?.value =
+        await SharedPreferenceStorage.getData("userPhone") ?? "";
 
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     role.value = roleData;
@@ -94,9 +96,14 @@ class OffersController extends GetxController with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    if (phone?.value == "0000000000") {
+      lat = 36.1627; // Nashville, Tennessee latitude
+      lng = -86.7816; // Nashville, Tennessee longitude
+    } else {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    }
     apiGetUserOffersList();
     setupScrollController1();
   }

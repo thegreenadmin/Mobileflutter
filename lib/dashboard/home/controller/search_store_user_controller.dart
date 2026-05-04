@@ -373,7 +373,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}", headers,
             showLoading: false)
         .then((value) async {
-
+      isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
                           cartCount.value = activeCartModel.data!.cartItems!.length;
@@ -385,7 +385,6 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
         }
-        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
@@ -398,6 +397,8 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
   }
 

@@ -54,8 +54,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
       authenticated = authenticatedBiometric.value;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
-      // debugPrint("PlatformException:************** ${e.toString()}");
-      // debugPrint(e.toString());
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
       SharedPreferenceStorage.setData(StringConstants.authenticatedText, false);

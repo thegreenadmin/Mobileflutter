@@ -40,8 +40,6 @@ class _SplashScreenState extends State<SplashScreen>
     //     ? SharedPreferenceStorage.getData(StringConstants.authenticatedText)
     //         as bool
     //     : false;
-    debugPrint(
-        "BIOMETRIC AUTHENTICATION ******* ${BioMetricAuthentication.isBioMetricAuthenticated.value}");
     var duration = const Duration(seconds: 2);
     return Timer(
         duration,
@@ -76,7 +74,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    debugPrint("_authenticateWithBiometrics:***** called");
     bool authenticated = false;
     try {
       isAuthenticating = true;
@@ -91,8 +88,6 @@ class _SplashScreenState extends State<SplashScreen>
       isAuthenticating = false;
       authorized = 'Authenticating';
     } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      debugPrint(e.message);
       isAuthenticating = false;
       authorized = 'Error - ${e.message}';
       if (Platform.isAndroid) {
@@ -100,7 +95,6 @@ class _SplashScreenState extends State<SplashScreen>
           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
         }
       } else {
-        debugPrint("Platform.ios");
       }
 
       return;

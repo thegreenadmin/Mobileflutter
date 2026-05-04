@@ -78,7 +78,6 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
             itemCount: introWidgetsList.length,
             onPageChanged: (int page) {
               onboardController.page.value = page;
-              debugPrint("object $page");
               getChangedPageAndMoveBar(page);
               setState(() {});
             },

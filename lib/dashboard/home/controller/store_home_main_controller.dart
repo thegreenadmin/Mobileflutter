@@ -766,7 +766,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
@@ -782,8 +782,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-                           
-        if (int.parse(activeCartModel.data?.storeId.toString() ?? "0") == 0 &&
+        final String activeStoreId = activeCartModel.data?.storeId.toString().trim() ?? "";
+        final int parsedActiveStoreId = int.tryParse(activeStoreId) ?? 0;
+
+        if (parsedActiveStoreId == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
           storeIdValue.value = activeCartModel.data!.storeId.toString();
@@ -815,11 +817,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
   }
 
   ///Api Contact store
   Future apiContactStore() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      return;
+    }
+
     isLoading.value = true;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -829,7 +838,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.messageStore}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
@@ -864,6 +873,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Get Categories Api
   Future apiGetStoreCategoriesApi() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -874,7 +889,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeCategoryList}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
@@ -943,16 +958,33 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
+    // Ensure storeId is not empty
+    String finalStoreId = (existingStoreId?.isNotEmpty == true) ? existingStoreId! : (storeId.value.isNotEmpty ? storeId.value : "0");
+    if (finalStoreId.toLowerCase() == "null" || finalStoreId == "0") {
+      isLoading.value = false;
+      return;
+    }
+
+    // Ensure storeDeliveryServiceId is not empty
+    String finalDeliveryServiceId = storeDeliveryServiceId.value.isNotEmpty ? storeDeliveryServiceId.value : "0";
+    // Ensure userAddressId is not empty
+    String? finalUserAddressId = (selectedUserAddress.value.userAddressId != null && selectedUserAddress.value.userAddressId.toString().isNotEmpty)
+        ? selectedUserAddress.value.userAddressId.toString()
+        : null;
+
+    // Build URL with conditional parameters
+    String apiUrl = "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=$finalStoreId";
+    if (finalDeliveryServiceId != "0") {
+      apiUrl += "&store_delivery_service_id=$finalDeliveryServiceId";
+    }
+    if (finalUserAddressId != null && finalUserAddressId.isNotEmpty) {
+      apiUrl += "&user_address_id=$finalUserAddressId";
+    }
+
      try{
     UserProvider()
         .getWithHeadersApi(
-            storeDeliveryServiceId.value.toString() == "0" &&
-                    selectedUserAddress.value.userAddressId == null
-                ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}"
-                : storeDeliveryServiceId.value.toString() != "0" &&
-                        selectedUserAddress.value.userAddressId == null
-                    ? "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}"
-                    : "${ServerCommunicator.baseUrl}${ServerCommunicator.cartList}?store_id=${existingStoreId ?? storeId.value}&store_delivery_service_id=${storeDeliveryServiceId.value.toString()}&user_address_id=${selectedUserAddress.value.userAddressId.toString()}",
+            apiUrl,
             headers,
             showLoading: false)
         .then((value) async {
@@ -1000,6 +1032,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
     });
      }catch(e){
        Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
@@ -1008,6 +1042,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Place Order Api
   Future apiPlaceOrder() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+
+    final String finalStoreDeliveryServiceId = storeDeliveryServiceId.value.toString().trim();
+    if (finalStoreDeliveryServiceId.isEmpty || finalStoreDeliveryServiceId == "0" || finalStoreDeliveryServiceId.toLowerCase() == "null") {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectOrderTypeText);
+      return;
+    }
+
     isPlaceOrder.value = false;
     isLoading.value = true;
 
@@ -1020,18 +1066,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     List selectedItems = [];
     for (var element in cartItems) {
       selectedItems.add({
-        "cart_item_id": int.parse(element.cartItemId.toString()),
+        "cart_item_id": element.cartItemId?.isNotEmpty == true ? int.parse(element.cartItemId.toString()) : 0,
         "items_count": element.itemsCount,
       });
     }
 
     Map<String, dynamic> data = {
-      "store_id": int.parse(storeId.value.toString()),
-      "store_delivery_service_id": int.parse(storeDeliveryServiceId.value),
-      "user_address_id": selectedDeliveryService.value == "1" &&
+      "store_id": int.parse(finalStoreId),
+      "store_delivery_service_id": int.parse(finalStoreDeliveryServiceId),
+      "user_address_id": selectedDeliveryService.value == "1" ||
               selectedDeliveryService.value == "3"
-          ? int.parse(storeAddressId.value)
-          : selectedUserAddress.value.userAddressId != null
+          ? (storeAddressId.value.isNotEmpty ? int.parse(storeAddressId.value) : 0)
+          : selectedUserAddress.value.userAddressId != null &&
+                  selectedUserAddress.value.userAddressId.toString().trim().isNotEmpty &&
+                  selectedUserAddress.value.userAddressId.toString().toLowerCase() != "null"
               ? int.parse(selectedUserAddress.value.userAddressId.toString())
               : null,
       "cart_items": selectedItems
@@ -1100,16 +1148,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     BuildContext context,
   ) async {
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
+    String productId = productDetailResponse.value.data?.product?.productId ?? "";
     Map<String, dynamic> data = {
-      "product_id": int.parse(
-          productDetailResponse.value.data?.product?.productId ?? "0"),
+      "product_id": productId.isNotEmpty ? int.parse(productId) : 0,
       "items_count": itemsCount.value
     };
 
@@ -1348,6 +1396,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   ///Get Store Offers Api
   Future apiGetStoreOffersApi() async {
     offersList.clear();
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -1357,7 +1411,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersList}?store_id=${storeId.value}",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOffersList}?store_id=$finalStoreId",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1410,9 +1464,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
           await apiGetCartListApi(isShowLoading: true);
         }
-        update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
+
         storage.clearData();
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
@@ -1421,11 +1475,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    }); 
   }
 
   ///Get Store Details Api
   Future apiGetStoreDetailsApi({dynamic latitude = 0.0, dynamic longitude = 0.0}) async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0") {
+      isLoading.value = false;
+      showLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -1434,7 +1495,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     };
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=${storeId.value}&latitude=$latitude&longitude=$longitude",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=$finalStoreId&latitude=$latitude&longitude=$longitude",
             headers,
             showLoading: false)
         .then((value) async {
@@ -1496,6 +1557,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   Future<void> apiGetShopProductDetailApi() async {
+    final String finalStoreId = storeId.value.toString().trim();
+    final String finalProductId = productId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null" || finalProductId.isEmpty || finalProductId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     isLoading.value = true;
 
     final headers = {
@@ -1506,8 +1574,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     try {
       final response = await UserProvider().getWithHeadersApi(
         "${ServerCommunicator.baseUrl}${ServerCommunicator.shopProductDetails}"
-            "?store_id=${storeId.value}"
-            "&product_id=${productId.value}"
+            "?store_id=$finalStoreId"
+            "&product_id=$finalProductId"
             "&latitude=$lat"
             "&longitude=$lng",
         headers,
@@ -1549,8 +1617,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       }
     } catch (e, s) {
       isLoading.value = false;
-      debugPrint("apiGetShopProductDetailApi error: $e");
-      debugPrintStack(stackTrace: s);
       Utility.showAlertMessage("Something went wrong");
     }
   }
@@ -1648,6 +1714,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       String orderBy = "1",
       String orderType = "1",
       String categoryId = "0"}) async {
+    final String finalStoreId = storeId.value.toString().trim();
+    if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
+      isLoading.value = false;
+      return;
+    }
+
     featureProductList.clear();
     isLoading.value = true;
      
@@ -1659,13 +1731,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     Map data = {
       "q": "",
-      "store_id": storeId.value,
+      "store_id": int.parse(finalStoreId),
       "page": 1,
       "page_size": 100,
       "order_by": orderBy == "1" ? "product_id" : "selling_price",
       "order_type": orderType == "1" ? "DESC" : "ASC",
       "category_id": isFeaturedProduct == false && categoryId != "0"
-          ? int.parse(categoryId)
+          ? int.tryParse(categoryId) ?? 0
           : null,
       "is_favourite_products": isFavouriteProducts,
       "filters": isFeaturedProduct
