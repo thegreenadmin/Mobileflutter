@@ -40,8 +40,6 @@ Future<void> main() async {
   // Initial push message if app opened from terminated state
   initialRemoteMessage = await checkForInitialFirebaseMessage();
 
-  runApp(const MyApp());
-
   // Transparent status bar
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -49,13 +47,7 @@ Future<void> main() async {
     systemNavigationBarIconBrightness: Brightness.light,
   ));
 
-
   runApp(const MyApp());
-
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarIconBrightness: Brightness.light));
 }
 
 Future<void> _initNotifications() async {
