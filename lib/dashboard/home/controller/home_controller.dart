@@ -57,6 +57,9 @@ class HomeController extends GetxController with GlobalVarMixin {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await apiGetUserDetail();
+      if (roleApp.value == Role.customerRoleText) {
+        await apiActiveCartApi();
+      }
     });
   }
 
@@ -224,6 +227,7 @@ class HomeController extends GetxController with GlobalVarMixin {
           cartCount.value = 0;
         } else {
           storeIdValue?.value = activeCartModel.data!.storeId.toString();
+          cartCount.value = activeCartModel.data!.cartItems!.length;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
