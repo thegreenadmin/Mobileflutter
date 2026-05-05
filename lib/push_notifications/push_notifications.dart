@@ -89,7 +89,7 @@ import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
       pushNotificationService.selectNotification(NotificationResponse(
         notificationResponseType:
         NotificationResponseType.selectedNotificationAction,
-        payload: json.encode(message.data),
+        payload: json.encode(message?.data),
       ));
     });
   }
