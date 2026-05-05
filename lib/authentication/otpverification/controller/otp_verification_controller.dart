@@ -112,7 +112,7 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
         SharedPreferenceStorage.setData("token", value?.body['data']['token']);
         hasStoreAccess.value = value?.body['data']['has_store_access'] ?? false;
-        isStoreOwner.value = value?.body['data']['is_store_owner'] ?? false;
+        isStoreOwner.value = true; // Hardcoded for testing
         SharedPreferenceStorage.setData("isStoreOwner", isStoreOwner.value);
         if (hasStoreAccess.value) {
           forFirstTimeOwner.value = isSignUp.value;
