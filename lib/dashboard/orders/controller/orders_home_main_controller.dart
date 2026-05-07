@@ -258,6 +258,8 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       orderStatus = Map<String, String>}) async {
     log("apiGetOwnerOrderHistory = ${storeId.value}");
     if (storeId.value == "" ) {
+      isLoading.value = false;
+      isDataLoading.value = false;
       return;
     }
 

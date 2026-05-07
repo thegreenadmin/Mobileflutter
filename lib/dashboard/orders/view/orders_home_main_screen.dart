@@ -31,7 +31,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ordersHomeMainController.storeId.value = widget.storeId ?? "";
+      ordersHomeMainController.storeId.value = widget.storeId ?? Get.parameters["storeId"] ?? "";
       ordersHomeMainController.orderId.value = widget.orderId ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
     });

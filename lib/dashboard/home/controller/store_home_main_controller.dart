@@ -2025,7 +2025,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         // isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isFavouriteProduct.value = false;
-        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
+        final matchingProducts = featureProductList.where((p0) => p0.storeId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
@@ -2033,7 +2036,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         Get.parameters.clear();
         await Get.offAll(const StartJourneyScreen());
       } else { isFavouriteProduct.value = false;
-        featureProductList.where((p0) => p0.storeId == id ).first.isFavouriteProduct?.value= false;
+        final matchingProducts = featureProductList.where((p0) => p0.storeId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
