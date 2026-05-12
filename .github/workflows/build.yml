@@ -51,7 +51,7 @@ jobs:
 
       - name: Create environment file from GitHub Secrets
         env:
-          BASE_URL: ${{ secrets.BASE_URL }}
+          BASE_URL_WO_API: ${{ secrets.BASE_URL_WO_API }}
           GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
           STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
           STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
@@ -60,7 +60,7 @@ jobs:
         run: |
           cat > assets/env/api_key.env << EOF
           # Base URL for the backend API without the /api/v1/ suffix
-          BASE_URL_WO_API=${BASE_URL}
+          BASE_URL_WO_API=${BASE_URL_WO_API}
 
           # API version identifier
           VERSION=v1
@@ -204,7 +204,7 @@ jobs:
 
       - name: Create environment file from GitHub Secrets
         env:
-          BASE_URL: ${{ secrets.BASE_URL }}
+          BASE_URL_WO_API: ${{ secrets.BASE_URL_WO_API }}
           GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
           STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
           STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
@@ -213,7 +213,7 @@ jobs:
         run: |
           cat > assets/env/api_key.env << EOF
           # Base URL for the backend API without the /api/v1/ suffix
-          BASE_URL_WO_API=${BASE_URL}
+          BASE_URL_WO_API=${BASE_URL_WO_API}
 
           # API version identifier
           VERSION=v1
