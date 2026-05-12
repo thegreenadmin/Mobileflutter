@@ -209,8 +209,6 @@ class AddCardController extends GetxController with GlobalVarMixin{
     });
   }
 
-  String token1 =
-      "Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6";
 
   bool validateAndSave() {
     final form = formKey1.currentState;
@@ -465,7 +463,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
     try {
       isLoading.value = true;
       var headers = {
-        StringConstants.authorizationText: token1,
+        StringConstants.authorizationText: 'Basic ${ServerCommunicator.stripeCardBasicAuth}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(

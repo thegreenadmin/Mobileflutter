@@ -19,6 +19,9 @@ class ServerCommunicator {
   static String get baseUrl => '${baseUrlWithoutApi}api/v1/';
   static String get baseUrlWithoutV1 => '${baseUrlWithoutApi}api/';
   static String get kGoogleApiKey => dotenv.env['GOOGLE_MAP_KEY'] ?? '';
+  static String get stripeCardBasicAuth => dotenv.env['STRIPE_CARD_BASIC_AUTH'] ?? '';
+  static String get stripeBankBasicAuth => dotenv.env['STRIPE_BANK_BASIC_AUTH'] ?? '';
+  static String get stripePublishableKey => dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
 
 
   // String baseUrl = "https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com/api/v1/";
@@ -48,9 +51,9 @@ class ServerCommunicator {
   static const createFavouriteStore = 'user/store/favourite/create';
   static const createFavouriteProduct = 'user/product/favourite/create';
   static const cancelOrder = 'order/cancel/create';
-  static const createStripeToken = 'https://api.stripe.com/v1/tokens';
+  static String get createStripeToken => dotenv.env['STRIPE_API_URL'] ?? 'https://api.stripe.com/v1/tokens';
   static const createCard = 'user/stripe/card/create';
-  static const createBankToken = 'https://api.stripe.com/v1/tokens';
+  static String get createBankToken => dotenv.env['STRIPE_API_URL'] ?? 'https://api.stripe.com/v1/tokens';
   static const claimStoreRequest = "shop/store/claim/create";
 
 //D

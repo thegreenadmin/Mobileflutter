@@ -49,13 +49,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy environment file based on build environment
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
+          STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
         run: |
-          if [ "${{ env.BUILD_ENVIRONMENT }}" == "beta" ]; then
-            cp assets/env/api_key_beta.env assets/env/api_key.env
-          elif [ "${{ env.BUILD_ENVIRONMENT }}" == "release" ]; then
-            cp assets/env/api_key_release.env assets/env/api_key.env
-          fi
+          cat > assets/env/api_key.env << EOF
+          # Base URL for the backend API without the /api/v1/ suffix
+          BASE_URL_WO_API=${BASE_URL}
+
+          # API version identifier
+          VERSION=v1
+
+          # Google Maps API key for map and geocoding functionality
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+
+          # Stripe API endpoint for creating payment tokens
+          STRIPE_API_URL=${STRIPE_API_URL}
+
+          # Stripe Basic auth token for card-related operations
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+
+          # Stripe Basic auth token for bank account operations
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+
+          # Stripe publishable key for client-side payment operations (Google Pay, Apple Pay)
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
 
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
@@ -178,13 +202,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy environment file based on build environment
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
+          STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
         run: |
-          if [ "${{ env.BUILD_ENVIRONMENT }}" == "beta" ]; then
-            cp assets/env/api_key_beta.env assets/env/api_key.env
-          elif [ "${{ env.BUILD_ENVIRONMENT }}" == "release" ]; then
-            cp assets/env/api_key_release.env assets/env/api_key.env
-          fi
+          cat > assets/env/api_key.env << EOF
+          # Base URL for the backend API without the /api/v1/ suffix
+          BASE_URL_WO_API=${BASE_URL}
+
+          # API version identifier
+          VERSION=v1
+
+          # Google Maps API key for map and geocoding functionality
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+
+          # Stripe API endpoint for creating payment tokens
+          STRIPE_API_URL=${STRIPE_API_URL}
+
+          # Stripe Basic auth token for card-related operations
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+
+          # Stripe Basic auth token for bank account operations
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+
+          # Stripe publishable key for client-side payment operations (Google Pay, Apple Pay)
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
 
       - name: Setup Ruby and Fastlane
         uses: ruby/setup-ruby@v1

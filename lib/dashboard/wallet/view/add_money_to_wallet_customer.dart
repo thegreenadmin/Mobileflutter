@@ -37,7 +37,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
       addCardController.apiGetCardList();
       _payClient = Pay({
         PayProvider.google_pay: PaymentConfiguration.fromJsonString(
-            payment_configurations.defaultGooglePay),
+            payment_configurations.defaultGooglePay()),
         PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
             payment_configurations.defaultApplePay),
       });
@@ -392,7 +392,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                     },
                                     paymentConfiguration:
                                         PaymentConfiguration.fromJsonString(
-                                            payment_configurations.defaultGooglePay),
+                                            payment_configurations.defaultGooglePay()),
                                     paymentItems: addCardController.paymentItems,
                                     type: GooglePayButtonType.pay,
                                     margin: const EdgeInsets.only(top: 15.0),

@@ -412,7 +412,7 @@ class WalletController extends GetxController with GlobalVarMixin{
     try {
       var headers = {
         StringConstants.authorizationText:
-            'Basic cGtfdGVzdF81MU1uYUpkRlZuTW1IaGtHWW55ZFp2bENoMVhXMlhzNUllczhVc3hiajdNWVhQcUdQTkRuV3BBaDIzR1cyTUg3WUcxRnhjM0p6M2pUYjZkZlRuMjRsSjE0VTAwU3hETEJwSnI6',
+            'Basic ${ServerCommunicator.stripeCardBasicAuth}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
@@ -683,7 +683,7 @@ class WalletController extends GetxController with GlobalVarMixin{
     try {
       var headers = {
         StringConstants.authorizationText:
-            'Basic c2tfdGVzdF81MU1uYUpkRlZuTW1IaGtHWTFQU3dCRkZGakdGT29EWUt0Z2Z0aVNtUkdKdDJzY0lTSlBaT1o2YXkyeWlMSmlMMW5Kb2cyaEFpZDRDNU5SNGFTMVZVZmZvNDAwN3hBVG03eU46',
+            'Basic ${ServerCommunicator.stripeBankBasicAuth}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request =

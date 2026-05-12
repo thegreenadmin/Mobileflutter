@@ -11,6 +11,8 @@
 /// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
+import 'package:thegreenmall/utils/server_communicator.dart';
+
 /// This file contain sample payment configurations that can be used with the
 /// payment providers in this library.
 ///
@@ -58,7 +60,8 @@ const String defaultApplePay = '''{
 
 /// Sample configuration for Google Pay. Contains the same content as the file
 /// under `assets/default_payment_profile_google_pay.json`.
-const String defaultGooglePay = '''{
+String defaultGooglePay() {
+  return '''{
   "provider": "google_pay",
   "data": {
     "environment": "TEST",
@@ -72,7 +75,7 @@ const String defaultGooglePay = '''{
           "parameters": {
             "gateway": "stripe",
             "stripe:version": "2018-10-31",
-            "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+            "stripe:publishableKey": "${ServerCommunicator.stripePublishableKey}"
           }
         },
         "parameters": {
@@ -96,6 +99,7 @@ const String defaultGooglePay = '''{
     }
   }
 }''';
+}
 
 const String basicGooglePayIsReadyToPay = '''{ "provider": "google_pay",
   "apiVersion": 2,
@@ -115,7 +119,8 @@ const String basicGooglePayIsReadyToPay = '''{ "provider": "google_pay",
     }
 }''';
 
-const String basicGooglePayLoadPaymentData = '''{
+String basicGooglePayLoadPaymentData() {
+  return '''{
   "apiVersion": 2,
   "apiVersionMinor": 0,
   "merchantInfo": {
@@ -133,7 +138,7 @@ const String basicGooglePayLoadPaymentData = '''{
         "parameters": {
           "gateway": "stripe",
               "stripe:version": "2018-10-31",
-              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+              "stripe:publishableKey": "${ServerCommunicator.stripePublishableKey}"
          
         }
       }
@@ -145,6 +150,7 @@ const String basicGooglePayLoadPaymentData = '''{
     "currencyCode": "USD"
   }
 }''';
+}
 
 const String invalidGooglePayIsReadyToPay = '''{
   "apiVersion": 2,
@@ -157,7 +163,8 @@ const String invalidGooglePayIsReadyToPay = '''{
   ]
 }''';
 
-const String invalidGooglePayLoadPaymentData = '''{
+String invalidGooglePayLoadPaymentData() {
+  return '''{
   "apiVersion": 2,
   "apiVersionMinor": 0,
   "merchantInfo": {
@@ -175,7 +182,7 @@ const String invalidGooglePayLoadPaymentData = '''{
         "parameters": {
          "gateway": "stripe",
               "stripe:version": "2018-10-31",
-              "stripe:publishableKey": "pk_test_51MnaJdFVnMmHhkGYnydZvlCh1XW2Xs5Ies8Usxbj7MYXPqGPNDnWpAh23GW2MH7YG1Fxc3Jz3jTb6dfTn24lJ14U00SxDLBpJr"
+              "stripe:publishableKey": "${ServerCommunicator.stripePublishableKey}"
          
         }
       }
@@ -187,3 +194,4 @@ const String invalidGooglePayLoadPaymentData = '''{
     "currencyCode": "USD"
   }
 }''';
+}
