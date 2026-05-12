@@ -51,12 +51,12 @@ jobs:
 
       - name: Create environment file from GitHub Secrets
         env:
-          BASE_URL_WO_API: ${{ secrets.BASE_URL_WO_API }}
-          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
-          STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
-          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
-          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH }}
-          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          BASE_URL_WO_API: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.BASE_URL_WO_API_BETA || secrets.BASE_URL_WO_API_RELEASE }}
+          GOOGLE_MAP_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.GOOGLE_MAP_KEY_BETA || secrets.GOOGLE_MAP_KEY_RELEASE }}
+          STRIPE_API_URL: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.STRIPE_API_URL_BETA || secrets.STRIPE_API_URL_RELEASE }}
+          STRIPE_CARD_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_CARD_BASIC_AUTH_BETA || secrets.STRIPE_CARD_BASIC_AUTH_RELEASE }}
+          STRIPE_BANK_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_BANK_BASIC_AUTH_BETA || secrets.STRIPE_BANK_BASIC_AUTH_RELEASE }}
+          STRIPE_PUBLISHABLE_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_PUBLISHABLE_KEY_BETA || secrets.STRIPE_PUBLISHABLE_KEY_RELEASE }}
         run: |
           cat > assets/env/api_key.env << EOF
           # Base URL for the backend API without the /api/v1/ suffix
@@ -204,12 +204,12 @@ jobs:
 
       - name: Create environment file from GitHub Secrets
         env:
-          BASE_URL_WO_API: ${{ secrets.BASE_URL_WO_API }}
-          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
-          STRIPE_API_URL: ${{ secrets.STRIPE_API_URL }}
-          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH }}
-          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH }}
-          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          BASE_URL_WO_API: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.BASE_URL_WO_API_BETA || secrets.BASE_URL_WO_API_RELEASE }}
+          GOOGLE_MAP_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.GOOGLE_MAP_KEY_BETA || secrets.GOOGLE_MAP_KEY_RELEASE }}
+          STRIPE_API_URL: ${{ env.BUILD_ENVIRONMENT == 'beta' && vars.STRIPE_API_URL_BETA || secrets.STRIPE_API_URL_RELEASE }}
+          STRIPE_CARD_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_CARD_BASIC_AUTH_BETA || secrets.STRIPE_CARD_BASIC_AUTH_RELEASE }}
+          STRIPE_BANK_BASIC_AUTH: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_BANK_BASIC_AUTH_BETA || secrets.STRIPE_BANK_BASIC_AUTH_RELEASE }}
+          STRIPE_PUBLISHABLE_KEY: ${{ env.BUILD_ENVIRONMENT == 'beta' && secrets.STRIPE_PUBLISHABLE_KEY_BETA || secrets.STRIPE_PUBLISHABLE_KEY_RELEASE }}
         run: |
           cat > assets/env/api_key.env << EOF
           # Base URL for the backend API without the /api/v1/ suffix
