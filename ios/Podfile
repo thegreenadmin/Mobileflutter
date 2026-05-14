@@ -41,6 +41,21 @@ post_install do |installer|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
 
+    # Fix for DKPhotoGallery asset catalog issue with Xcode 26.5
+    if target.name == 'DKPhotoGallery-DKPhotoGallery'
+      target.build_configurations.each do |config|
+        config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
+        config.build_settings['ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME'] = 'AccentColor'
+      end
+    end
+
+    # Exclude simulator architectures for release builds
+    target.build_configurations.each do |config|
+      if config.name == 'Release'
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+      end
+    end
+
     # Start of the permission_handler configuration
     target.build_configurations.each do |config|
 
