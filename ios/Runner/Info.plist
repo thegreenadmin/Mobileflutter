@@ -42,7 +42,7 @@
 		<string>_dartobservatory._tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>The app needs permission for image selection</string>
+	<string>The Green Mall uses the camera to scan product barcodes for quick checkout, take photos of items to add to your wishlist, and upload your profile picture.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>The app needs permission for location</string>
 	<key>NSFaceIDUsageDescription</key>
