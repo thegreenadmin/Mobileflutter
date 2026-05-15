@@ -263,164 +263,169 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                   ),
                                 ),
                                 width20SizedBox,
-                                Platform.isAndroid
-                                    ? Flexible(
-                                        flex: 2,
-                                        child: InkWell(
-                                          onTap: () {
-                                            addCardController.paymentType!.value =
-                                                StringConstants.gPayText;
+                                // Google Pay and Apple Pay buttons disabled
+                                // Platform.isAndroid
+                                //     ? Flexible(
+                                //         flex: 2,
+                                //         child: InkWell(
+                                //           onTap: () {
+                                //             addCardController.paymentType!.value =
+                                //                 StringConstants.gPayText;
                   
-                                            addCardController.selectPaymentType.value =
-                                                StringConstants.gPayText;
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
-                                                color: AppColors.white,
-                                                border: Border.all(
-                                                  color: addCardController
-                                                              .paymentType!.value ==
-                                                          StringConstants.gPayText
-                                                      ? AppColors.primary
-                                                      : AppColors.blackLight,
-                                                )),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 0, vertical: 12),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                addCardController.paymentType!.value ==
-                                                        StringConstants.gPayText
-                                                    ? Stack(
-                                                        alignment: Alignment.center,
-                                                        children: [
-                                                          Image.asset(
-                                                            ImageConstants.circleunfill,
-                                                            scale: 4,
-                                                          ),
-                                                          Image.asset(
-                                                            ImageConstants.circle,
-                                                            scale: 7,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Image.asset(
-                                                        ImageConstants
-                                                            .circleBlackUnFill,
-                                                        scale: 2.8,
-                                                      ),
-                                                width8SizedBox,
-                                                Text(
-                                                  StringConstants.gPayText,
-                                                  style: const TextStyle(fontSize: 16),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Flexible(
-                                        flex: 2,
-                                        child: InkWell(
-                                          onTap: () {
-                                            addCardController.paymentType!.value =
-                                                StringConstants.applePaysText;
-                                            addCardController.selectPaymentType.value =
-                                                StringConstants.applePaysText;
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
-                                                color: AppColors.white,
-                                                border: Border.all(
-                                                  color: addCardController
-                                                              .paymentType!.value ==
-                                                          StringConstants.applePaysText
-                                                      ? AppColors.primary
-                                                      : AppColors.blackLight,
-                                                )),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 0, vertical: 12),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                addCardController.paymentType!.value ==
-                                                        StringConstants.applePaysText
-                                                    ? Stack(
-                                                        alignment: Alignment.center,
-                                                        children: [
-                                                          Image.asset(
-                                                            ImageConstants.circleunfill,
-                                                            scale: 4,
-                                                          ),
-                                                          Image.asset(
-                                                            ImageConstants.circle,
-                                                            scale: 7,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Image.asset(
-                                                        ImageConstants
-                                                            .circleBlackUnFill,
-                                                        scale: 2.8,
-                                                      ),
-                                                width8SizedBox,
-                                                Text(
-                                                  StringConstants.applePayText,
-                                                  style: const TextStyle(fontSize: 16),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                //             addCardController.selectPaymentType.value =
+                                //                 StringConstants.gPayText;
+                                //           },
+                                //           child: Container(
+                                //             decoration: BoxDecoration(
+                                //                 borderRadius: BorderRadius.circular(10),
+                                //                 color: AppColors.white,
+                                //                 border: Border.all(
+                                //                   color: addCardController
+                                //                               .paymentType!.value ==
+                                //                           StringConstants.gPayText
+                                //                       ? AppColors.primary
+                                //                       : AppColors.blackLight,
+                                //                 )),
+                                //             padding: const EdgeInsets.symmetric(
+                                //                 horizontal: 0, vertical: 12),
+                                //             child: Row(
+                                //               mainAxisAlignment:
+                                //                   MainAxisAlignment.center,
+                                //               crossAxisAlignment:
+                                //                   CrossAxisAlignment.start,
+                                //               children: [
+                                //                 addCardController.paymentType!.value ==
+                                //                         StringConstants.gPayText
+                                //                     ? Stack(
+                                //                         alignment: Alignment.center,
+                                //                         children: [
+                                //                           Image.asset(
+                                //                             ImageConstants.circleunfill,
+                                //                             scale: 4,
+                                //                           ),
+                                //                           Image.asset(
+                                //                             ImageConstants.circle,
+                                //                             scale: 7,
+                                //                           ),
+                                //                         ],
+                                //                       )
+                                //                     : Image.asset(
+                                //                         ImageConstants
+                                //                             .circleBlackUnFill,
+                                //                         scale: 2.8,
+                                //                       ),
+                                //                 width8SizedBox,
+                                //                 Text(
+                                //                   StringConstants.gPayText,
+                                //                   style: const TextStyle(fontSize: 16),
+                                //                 ),
+                                //               ],
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       )
+                                //     : Flexible(
+                                //         flex: 2,
+                                //         child: InkWell(
+                                //           onTap: () {
+                                //             addCardController.paymentType!.value =
+                                //                 StringConstants.applePaysText;
+                                //             addCardController.selectPaymentType.value =
+                                //                 StringConstants.applePaysText;
+                                //           },
+                                //           child: Container(
+                                //             decoration: BoxDecoration(
+                                //                 borderRadius: BorderRadius.circular(10),
+                                //                 color: AppColors.white,
+                                //                 border: Border.all(
+                                //                   color: addCardController
+                                //                               .paymentType!.value ==
+                                //                           StringConstants.applePaysText
+                                //                       ? AppColors.primary
+                                //                       : AppColors.blackLight,
+                                //                 )),
+                                //             padding: const EdgeInsets.symmetric(
+                                //                 horizontal: 0, vertical: 12),
+                                //             child: Row(
+                                //               mainAxisAlignment:
+                                //                   MainAxisAlignment.center,
+                                //               crossAxisAlignment:
+                                //                   CrossAxisAlignment.start,
+                                //               children: [
+                                //                 addCardController.paymentType!.value ==
+                                //                         StringConstants.applePaysText
+                                //                     ? Stack(
+                                //                         alignment: Alignment.center,
+                                //                         children: [
+                                //                           Image.asset(
+                                //                             ImageConstants.circleunfill,
+                                //                             scale: 4,
+                                //                           ),
+                                //                           Image.asset(
+                                //                             ImageConstants.circle,
+                                //                             scale: 7,
+                                //                           ),
+                                //                         ],
+                                //                       )
+                                //                     : Image.asset(
+                                //                         ImageConstants
+                                //                             .circleBlackUnFill,
+                                //                         scale: 2.8,
+                                //                       ),
+                                //                 width8SizedBox,
+                                //                 Text(
+                                //                   StringConstants.applePayText,
+                                //                   style: const TextStyle(fontSize: 16),
+                                //                 ),
+                                //               ],
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
                               ],
                             ),
                           ),
                           height15SizedBox,
+                          // Google Pay and Apple Pay buttons disabled
+                          // Obx(
+                          //   () => addCardController.selectPaymentType.value ==
+                          //           StringConstants.gPayText
+                          //       ? GooglePayButton(
+                          //           onError: (Object? error) {
+                          //           },
+                          //           paymentConfiguration:
+                          //               PaymentConfiguration.fromJsonString(
+                          //                   payment_configurations.defaultGooglePay()),
+                          //           paymentItems: addCardController.paymentItems,
+                          //           type: GooglePayButtonType.pay,
+                          //           margin: const EdgeInsets.only(top: 15.0),
+                          //           onPaymentResult: onGooglePayResult,
+                          //           loadingIndicator: const Center(
+                          //             child: CircularProgressIndicator(),
+                          //           ),
+                          //         )
+                          //       : addCardController.selectPaymentType.value ==
+                          //               StringConstants.applePaysText
+                          //           ? ApplePayButton(
+                          //               width: WidgetConstants.screenWidth,
+                          //               height: 45,
+                          //               paymentConfiguration:
+                          //                   PaymentConfiguration.fromJsonString(
+                          //                       payment_configurations.defaultApplePay),
+                          //               paymentItems: addCardController.paymentItems,
+                          //               style: ApplePayButtonStyle.black,
+                          //               type: ApplePayButtonType.buy,
+                          //               margin: const EdgeInsets.only(top: 0.0),
+                          //               onPaymentResult: onApplePayResult,
+                          //               loadingIndicator: const Center(
+                          //                 child: CircularProgressIndicator(),
+                          //               ),
+                          //             )
+                          //           : addCardController.selectPaymentType.value ==
+                          //                   StringConstants.cardText.toLowerCase()
                           Obx(
                             () => addCardController.selectPaymentType.value ==
-                                    StringConstants.gPayText
-                                ? GooglePayButton(
-                                    onError: (Object? error) {
-                                    },
-                                    paymentConfiguration:
-                                        PaymentConfiguration.fromJsonString(
-                                            payment_configurations.defaultGooglePay()),
-                                    paymentItems: addCardController.paymentItems,
-                                    type: GooglePayButtonType.pay,
-                                    margin: const EdgeInsets.only(top: 15.0),
-                                    onPaymentResult: onGooglePayResult,
-                                    loadingIndicator: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )
-                                : addCardController.selectPaymentType.value ==
-                                        StringConstants.applePaysText
-                                    ? ApplePayButton(
-                                        width: WidgetConstants.screenWidth,
-                                        height: 45,
-                                        paymentConfiguration:
-                                            PaymentConfiguration.fromJsonString(
-                                                payment_configurations.defaultApplePay),
-                                        paymentItems: addCardController.paymentItems,
-                                        style: ApplePayButtonStyle.black,
-                                        type: ApplePayButtonType.buy,
-                                        margin: const EdgeInsets.only(top: 0.0),
-                                        onPaymentResult: onApplePayResult,
-                                        loadingIndicator: const Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      )
-                                    : addCardController.selectPaymentType.value ==
-                                            StringConstants.cardText.toLowerCase()
+                                    StringConstants.cardText.toLowerCase()
                                         ? Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 30),
