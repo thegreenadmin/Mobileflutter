@@ -57,7 +57,7 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (_) => const StartJourneyScreen(),
                 ));
-                // Get.offAll(const StartJourneyScreen());
+                // Utility.handle401Error();
               },
               style: ElevatedButton.styleFrom(
                 elevation: 0.0,
@@ -146,7 +146,7 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (_) => const StartJourneyScreen(),
                     ));
-                    // Get.offAll(const StartJourneyScreen());
+                    // Utility.handle401Error();
                   }
                 },
                 child: const Padding(
@@ -177,7 +177,7 @@ class OnBoardMainScreenState extends State<OnBoardMainScreen> {
       //         //     await SharedPreferences.getInstance();
       //         // prefs.setBool("onBoard", true);
 
-      //         Get.offAll(const StartJourneyScreen());
+      //         Utility.handle401Error();
       //       }
       //     },
       //     child: const Icon(Icons.arrow_forward_ios, size: 20),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_owner.dart';
@@ -20,6 +21,14 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
   final WalletController walletController = Get.put(WalletController());
   var roleVal = "";
   String storeName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    // NOTE: Don't auto-redirect guests from initState because this screen is
+    // pre-built inside the BottomNavigation IndexedStack. Guest guards are
+    // enforced via the bottom-nav tap handler instead.
+  }
 
   @override
   Widget build(BuildContext context) {

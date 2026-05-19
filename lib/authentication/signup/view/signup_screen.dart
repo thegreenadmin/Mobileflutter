@@ -125,9 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _buildCustomInputField(signupController.emailTextController,
             StringConstants.emailText, ImageConstants.email,
             validator: (value) {
-              if (value!.trim().isEmpty) {
-                return AlertStringConstants.pleaseEnterEmailText;
-              } else if (!GetUtils.isEmail(value.trim())) {
+              if (value!.trim().isNotEmpty && !GetUtils.isEmail(value.trim())) {
                 return AlertStringConstants.pleaseEnterValidEmailText;
               }
               return null;
@@ -201,7 +199,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  /// Date of Birth Input Field (Date Picker Unchanged)
+  /// Date of Birth Input Field (Date Picker - Optional)
   Widget _buildDateField() {
     return CustomInputField(
       isBorderOutline: true,
@@ -209,8 +207,7 @@ class _SignupScreenState extends State<SignupScreen> {
       hintText: StringConstants.dobText,
       labelText: StringConstants.dobText,
       prefixIcon: Image.asset(ImageConstants.calendar, scale: 2.8),
-      validator: (value) =>
-      value!.trim().isEmpty ? AlertStringConstants.pleaseSelectDateText : null,
+      validator: (value) => null, // Date of birth is now optional
       onTap: () async {
         FocusScope.of(context).unfocus();
         DateTime? date = await showDatePicker(

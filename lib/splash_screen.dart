@@ -61,14 +61,14 @@ class _SplashScreenState extends State<SplashScreen>
       roleApp(role ?? "");
       // roleApp.value = role ?? "";
 
-      if (onboardingCompleted == "yes") {
-        Get.offAll(() => const StartJourneyScreen());
-      } else if (token != null) {
+      if (token != null) {
         isStoreOwner.value = wasStoreOwner;
         authToken.value = token;
         Get.offAll(() => const BottomNavigation());
       } else {
-        Get.offNamed('/onboardView');
+        // For new users or those without token, go to StartJourneyScreen
+        // where they can choose to login, signup, or continue as guest
+        Get.offAll(() => const StartJourneyScreen());
       }
     });
   }

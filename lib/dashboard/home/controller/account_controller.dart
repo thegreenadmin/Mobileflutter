@@ -104,10 +104,15 @@ class AccountController extends GetxController with GlobalVarMixin {
   @override
   void onReady() {
     super.onReady();
-    kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
-    // isFromCart.value = Get.parameters["isFromCart"] == "true" ? true : false;
-         apiGetUserDetailApi();
-    getGkey();
+    // Skip initialization for guest users
+    Future.delayed(Duration.zero, () async {
+      if (isGuest.value == true) {
+        return;
+      }
+      kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
+      apiGetUserDetailApi();
+      getGkey();
+    });
   }
 
   updatePlan(index, String plan) {
@@ -391,6 +396,10 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get User Detail Info Api
   Future apiGetUserDetailApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -475,7 +484,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -654,6 +663,10 @@ class AccountController extends GetxController with GlobalVarMixin {
 
   ///Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
@@ -963,6 +976,6 @@ class AccountController extends GetxController with GlobalVarMixin {
   clearData() async {
     storage.clearData();
     Get.parameters.clear();
-    await Get.offAll(const StartJourneyScreen());
+    Utility.handle401Error();
   }
 }

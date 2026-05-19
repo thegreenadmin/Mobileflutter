@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/view/signup_screen.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/custom_button.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/startjourney/controller/start_journey_controller.dart';
 
 class StartJourneyScreen extends StatefulWidget {
@@ -19,6 +22,21 @@ class StartJourneyScreen extends StatefulWidget {
 class _StartJourneyScreenState extends State<StartJourneyScreen> {
   final StartJourneyController startJourneyController =
       Get.put(StartJourneyController());
+
+  void _browseAsGuest() async {
+    print("DEBUG: _browseAsGuest called");
+    // Set user as guest (session-only, not persisted)
+    roleApp.value = Role.customerRoleText;
+    isGuest.value = true;
+    firstName.value = "Guest";
+    lastName.value = "";
+    print("DEBUG: Guest state set - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}");
+
+    // Navigate to home screen using named route
+    print("DEBUG: Navigating to BottomNavigation");
+    Get.offAllNamed('/bottomNavigation');
+    print("DEBUG: Navigation called");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +112,22 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                     fontWeight: FontWeight.w500,
                     iconL: false,
                   ),
-                  height30SizedBox,
+                  height15SizedBox,
+                  TextButton(
+                    onPressed: () {
+                      _browseAsGuest();
+                    },
+                    child: Text(
+                      StringConstants.continueAsGuestText,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  height15SizedBox,
                   InkWell(
                     onTap: () {
                       Get.to(

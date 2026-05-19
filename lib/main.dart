@@ -12,17 +12,29 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/app_logger.dart';
+import 'package:thegreenmall/utils/navigation_observer.dart';
 
 RemoteMessage? initialRemoteMessage;
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  // ✅ Global error handling
+  FlutterError.onError = (details) {
+    AppLogger.fatal('Flutter Error', error: details.exception, stackTrace: details.stack);
+    FlutterError.presentError(details);
+  };
+
 
   // ✅ Initialize services in sequence to avoid socket spikes
   await dotenv.load(fileName: 'assets/env/api_key.env');
   await Firebase.initializeApp();
   await GetStorage.init();
+
+  // Test logging
+  AppLogger.info('App initialized successfully');
+  AppLogger.debug('Debug mode enabled');
 
 
   // Start network monitoring (singleton, not recreated each time)
@@ -154,6 +166,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       getPages: Routers.route,
       themeMode: ThemeMode.system,
       initialRoute: '/splashView',
+      navigatorObservers: [NavigationObserver()],
     );
   }
 }

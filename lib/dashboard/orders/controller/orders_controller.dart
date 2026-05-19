@@ -94,6 +94,10 @@ class OrdersController extends GetxController with GlobalVarMixin{
   }
 
   Future<void> _initApiCalls() async {
+    // Skip API calls for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     // run heavy stuff here
     if (role?.value == Role.customerRoleText) {
       page.value = 1;
@@ -705,7 +709,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -738,7 +742,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       }
     });
   }
@@ -773,7 +777,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -824,7 +828,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else if (value?.body["status"] == ApiConstants.statusCode409) { isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         Get.back(id: pageIdApp.value);
@@ -861,7 +865,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -965,7 +969,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) { isLoading.value = false;
           Utility.showAlertMessage(value?.body['message']);
@@ -976,6 +980,10 @@ class OrdersController extends GetxController with GlobalVarMixin{
 
   ///Get Store Order List Api
   Future apiGetStoreOrderListApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     if (pageStore.value == 1) {
       isLoading.value = true;
       storeOrderList.value = [];
@@ -1036,7 +1044,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1073,7 +1081,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {    isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1108,7 +1116,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1189,7 +1197,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']); isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1234,7 +1242,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1278,7 +1286,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1318,7 +1326,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1356,7 +1364,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData(); isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1394,7 +1402,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

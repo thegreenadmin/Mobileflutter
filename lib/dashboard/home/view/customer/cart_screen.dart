@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/account/personal_info_edit_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
@@ -23,6 +24,15 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
   @override
    initState()  {
     super.initState();
+    
+    // Check if user is guest - redirect to login for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.off(() => const LoginScreen());
+      });
+      return;
+    }
+    
     storeHomeMainController = Get.put(StoreHomeMainController());
 
     // Just set params here (no API calls!)

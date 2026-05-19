@@ -112,6 +112,7 @@ class StringConstants {
   static String createAnAccountText = "Create an account";
   static String createAccountDetailText =
       "Enter your details to create an\naccount";
+  static String continueAsGuestText = "Continue as Guest";
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
   static String contactUsRequestText = "Contact us request";

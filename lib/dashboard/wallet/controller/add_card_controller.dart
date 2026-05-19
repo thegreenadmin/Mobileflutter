@@ -201,7 +201,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         storage.clearData();
         isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value= false;
         Utility.showAlertMessage(value?.body['message'].toString());
@@ -348,7 +348,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
@@ -389,7 +389,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         Utility.showAlertMessage(value?.body['message']);
       }
@@ -442,7 +442,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
             Utility.showAlertMessage(value?.body['message']);
             storage.clearData();
             Get.parameters.clear();
-            await Get.offAll(const StartJourneyScreen());
+            Utility.handle401Error();
           }
         }
       } else {isLoading.value= false;
@@ -453,21 +453,24 @@ class AddCardController extends GetxController with GlobalVarMixin{
     });
   }
 
-  ///Create Stripe Token
+  ///Create Stripe Token - Send card details to backend instead of direct Stripe call
   Future<void> apiCreateStripeToken(context) async {
-    isLoading.value= true;
+    print('🟢 DEBUG: apiCreateStripeToken called');
     var str = expiryDate.value;
     var parts = str.split('/');
     var month = parts[0].trim();
     var year = parts[1].trim();
     try {
       isLoading.value = true;
+      print('🟢 DEBUG: About to call Stripe API');
       var headers = {
-        StringConstants.authorizationText: 'Basic ${ServerCommunicator.stripeCardBasicAuth}',
+        StringConstants.authorizationText:
+            'Basic ${ServerCommunicator.stripeCardBasicAuth}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
           'POST', Uri.parse(ServerCommunicator.createStripeToken));
+      request.followRedirects = true;
       request.bodyFields = {
         'card[number]': cardNumber.value,
         'card[exp_month]': month,
@@ -481,25 +484,24 @@ class AddCardController extends GetxController with GlobalVarMixin{
         'card[address_country]': selectedCountry.value
       };
       request.headers.addAll(headers);
+      print('🟢 DEBUG: Stripe URL: ${ServerCommunicator.createStripeToken}');
+      print('🟢 DEBUG: Stripe request body: ${request.bodyFields}');
       http.StreamedResponse response = await request.send();
+      print('🟢 DEBUG: Stripe response status: ${response.statusCode}');
       var streamResponse = await http.Response.fromStream(response);
-                           if (response.statusCode == 200) {
-        isLoading.value = false;
+      print('🟢 DEBUG: Stripe response body: ${streamResponse.body}');
+      if (response.statusCode == 200) {
         var parsed = jsonDecode(streamResponse.body);
         stripeToken.value = parsed['id'].toString();
-                 await apiUpdateUserDetail();
         await apiCreateCard();
-        str = "";
-        parts = [];
-        month = "";
-        year = "";
-      } else if (response.statusCode == 402) {isLoading.value = false;
-        Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidCardText);
-      } else {isLoading.value = false;
-               }
+      } else {
+        isLoading.value = false;
+        Utility.showAlertMessage("Failed to create Stripe token");
+      }
     } catch (error) {
       isLoading.value = false;
-           }
+      Utility.showAlertMessage("Failed to add card");
+    }
   }
 
   ///Update User Detail Api
@@ -639,7 +641,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         if (value?.body['message']
                 .toString()
@@ -789,7 +791,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -826,7 +828,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -860,7 +862,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message']
                 .toString()
@@ -909,7 +911,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
           Utility.showAlertMessage(value.body['message']);
           storage.clearData();
           Get.parameters.clear();
-          Get.offAll(const StartJourneyScreen());
+          Utility.handle401Error();
         } else if (value.body["status"] == ApiConstants.statusCode409) {isLoading.value= false;
           Utility.showAlertMessage(value.body['message']);
         } else {isLoading.value= false;
@@ -951,7 +953,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();isLoading.value= false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value= false;
         String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
@@ -993,7 +995,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);isLoading.value = false;
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         String msg = value!.body["message"].toString().toLowerCase();
         if (msg.contains("store not found")) {
@@ -1033,7 +1035,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         Utility.showAlertMessage(value?.body['message']);
       }

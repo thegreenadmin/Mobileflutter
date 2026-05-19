@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
 class Utility {
 
@@ -48,6 +49,16 @@ class Utility {
 
   static String loadImageUrl(String url) {
     return ServerCommunicator.baseUrlWithoutV1 + url;
+  }
+
+  /// Handle 401 unauthorized errors - skip redirect for guest users
+  static void handle401Error() {
+    // Skip redirect for guest users by checking reactive variable
+    if (isGuest.value == true) {
+      return;
+    }
+    // Redirect to login for authenticated users
+    Get.offAll(() => const StartJourneyScreen());
   }
 
   static void showConfirmAlertMessage(title,

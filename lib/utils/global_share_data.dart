@@ -121,6 +121,7 @@ RxBool hasStoreAccess = false.obs;
 RxBool isStoreOwner = false.obs;
 RxBool forFirstTimeCustomer = false.obs;
 RxBool forFirstTimeOwner = false.obs;
+RxBool isGuest = false.obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 

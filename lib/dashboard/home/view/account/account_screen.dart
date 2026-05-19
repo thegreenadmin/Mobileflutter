@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/account_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/controller.dart';
@@ -36,7 +37,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
   List<BiometricType>? availableBiometrics;
   String authorized = 'Not Authorized';
   bool isAuthenticating = false;
-
 
   Future<void> _authenticateWithBiometrics() async {
     bool authenticated = false;

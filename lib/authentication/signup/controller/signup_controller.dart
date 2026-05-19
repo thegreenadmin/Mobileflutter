@@ -163,12 +163,12 @@ class SignupController extends GetxController {
           StringConstants.firstNameText, firstName.value.trim());
       SharedPreferenceStorage.setData(
           StringConstants.lastNameText, lastName.value.trim());
-      SharedPreferenceStorage.setData(
-          StringConstants.emailText, email.value.trim());
+      if (email.value.trim().isNotEmpty) {
+        SharedPreferenceStorage.setData(
+            StringConstants.emailText, email.value.trim());
+      }
       try {
-        if (dateTextController.text.isEmpty) {
-          Utility.showAlertMessage(AlertStringConstants.pleaseSelectAge);
-        } else if (isTermsAccepted.value == false) {
+        if (isTermsAccepted.value == false) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseEnterTermsAndConditions);
         } else {
@@ -186,13 +186,22 @@ class SignupController extends GetxController {
     Map data = {
       "first_name": firstNameTextController.text.trim(),
       "last_name": lastNameTextController.text.trim(),
-      "email": emailTextController.text.trim(),
       "phone": phoneNumber.value.trim(),
       "phone_code": countryCode.value.trim(),
-      "dob": dateTextController.text.trim(),
       "has_store_access": isFromOwner,
       "is_store_owner": isFromOwner,
     };
+
+    // Only include email if provided
+    if (emailTextController.text.trim().isNotEmpty) {
+      data["email"] = emailTextController.text.trim();
+    }
+
+    // Only include dob if provided
+    if (dateTextController.text.trim().isNotEmpty) {
+      data["dob"] = dateTextController.text.trim();
+    }
+
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.createUser,

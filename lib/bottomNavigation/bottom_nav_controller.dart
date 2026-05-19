@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
@@ -41,7 +42,11 @@ class BottomNavController extends GetxController with GlobalVarMixin{
           Get.parameters["currentIndex"] != null
               ? int.parse(Get.parameters["currentIndex"].toString())
               : 0;
-      Future.delayed(Duration.zero, () {
+      Future.delayed(Duration.zero, () async {
+        // Skip initialization for guest users
+        if (isGuest.value == true) {
+          return;
+        }
         getRole();
         apiGetPermissions();
       });
@@ -52,6 +57,11 @@ class BottomNavController extends GetxController with GlobalVarMixin{
   getRole() async {
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     roleApp.value = roleData;
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      storeList.clear();
+      return;
+    }
     if (roleData == Role.customerRoleText) {
       storeList.clear();
     } else {
@@ -62,6 +72,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///Get Store List Api
   apiGetStoreList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
           isLoading.value = true;
           Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -90,7 +104,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -101,6 +115,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   ///GET STORE PERMISSIONS
   Future apiGetPermissions() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
           Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}"
@@ -117,6 +135,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         getPermissionsModel = GetPermissionsModel.fromJson(value?.body);
         permissionStoreList.value = getPermissionsModel.data!.stores!;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        // Skip alert and redirect for guest users
+        if (isGuest.value == true) {
+          return;
+        }
         Utility.showAlertMessage(value?.body['message']);
       } else {
         if (value?.body['message'] != null) {
@@ -128,6 +150,12 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
 
   onItemTapped(int index) async {
+    // Block account-restricted tabs (Wallet/Orders/More) for guest users
+    if (isGuest.value == true && (index == 1 || index == 2 || index == 4)) {
+      Utility.showAlertMessage("Please login to access this feature");
+      Get.to(() => const LoginScreen());
+      return;
+    }
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     roleApp.value = roleData;
     Get.delete<StoreHomeMainController>();

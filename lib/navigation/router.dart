@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
+import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
@@ -18,6 +19,10 @@ class Routers {
     GetPage(
       name: '/startJourneyScreen',
       page: () => const StartJourneyScreen(),
+    ),
+    GetPage(
+      name: '/bottomNavigation',
+      page: () => const BottomNavigation(),
     ),
     GetPage(
       name: '/otpVerificationView',

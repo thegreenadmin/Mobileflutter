@@ -56,6 +56,10 @@ class HomeController extends GetxController with GlobalVarMixin {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Skip API calls for guest users
+      if (isGuest.value == true) {
+        return;
+      }
       await apiGetUserDetail();
       if (roleApp.value == Role.customerRoleText) {
         await apiActiveCartApi();
@@ -135,7 +139,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear(); isLoading.value = false;
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
       if (value?.body['message'] != null) {
         Utility.showAlertMessage(value?.body['message']);
@@ -208,6 +212,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
          Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -234,7 +242,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         storage.clearData();
         isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         isLoading.value = false;
         if (value?.body['message'] != null) {
@@ -247,6 +255,10 @@ class HomeController extends GetxController with GlobalVarMixin {
   }
   ///Get User Detail Info Api
   Future apiGetUserDetail() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
      
     Map<String, String> headers = {
       StringConstants.authorizationText:
@@ -283,7 +295,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       }
     });
   }
@@ -325,6 +337,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     userCarouselImgList.clear();
     userOfferList.clear();
     isLoading.value = true;
@@ -359,7 +375,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();  isLoading.value = false;
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -370,6 +386,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [USER OLD]
   Future apiGetUserFeaturedProductsOLD() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -414,7 +434,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();  isLoading.value = false;
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {  isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -425,6 +445,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     featuredUserProductList.clear();
     isLoading.value = true;
     String url =
@@ -467,7 +491,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear(); isLoading.value = false;
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -478,6 +502,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     getOwnerOfferList.clear();
     isLoading.value = true;
     ownerCarouselImgList.clear();
@@ -520,7 +548,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         storage.clearData();
         Get.parameters.clear();
         isLoading.value = false;
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                        isLoading.value = false;
         if (value?.body['message'] != null) {
@@ -532,6 +560,10 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     ownerFeatureProductList.clear();
     isLoading.value = true;
      
@@ -577,7 +609,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();isLoading.value = false;
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

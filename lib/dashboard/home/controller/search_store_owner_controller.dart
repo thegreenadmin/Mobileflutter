@@ -362,7 +362,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        await Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       }
     });
   }
@@ -402,7 +402,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -452,7 +452,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -541,7 +541,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -581,7 +581,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -619,7 +619,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -932,7 +932,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1045,7 +1045,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -1209,7 +1209,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
           storage.clearData();
           Get.parameters.clear();
-          Get.offAll(const StartJourneyScreen());
+          Utility.handle401Error();
         } else if (value?.body["status"] == ApiConstants.statusCode409) {
           Utility.showAlertMessage(value?.body['message']);
           einNumberTextController.clear();

@@ -390,7 +390,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         storage.clearData();
         isLoading.value = false;
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                isLoading.value = false;
         if (value?.body['message'] != null) {
@@ -425,7 +425,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -710,7 +710,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
                 isClicked.value = false;
                 isLoading.value = false;
@@ -778,7 +778,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         isClicked.value = false;
         if (value?.body['message'] != null) {
@@ -837,7 +837,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         isClicked.value = false;
         if (value?.body['message'] != null) {
@@ -884,7 +884,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (type.value == 2) {
           favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = false;
@@ -945,7 +945,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (type.value == 2) {
           favouriteStore.where((p0) => p0.storeId == id).first.isFavouriteStore?.value = true;
@@ -1005,7 +1005,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);

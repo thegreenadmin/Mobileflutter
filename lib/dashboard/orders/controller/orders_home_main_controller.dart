@@ -67,6 +67,10 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   }
 
   Future<void> _initApiCalls() async {
+    // Skip API calls for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     if (Get.parameters["isController"] != "no") {
       // only call if needed
       if (orderId.value.isNotEmpty) {
@@ -242,7 +246,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
         Utility.showToast(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
@@ -442,7 +446,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
-        Get.offAll(const StartJourneyScreen());
+        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
