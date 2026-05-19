@@ -18,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'customer/components/store_home_main_args.dart';
 import 'store_owner/manage_store_main_screen.dart';
@@ -169,6 +170,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       RawMaterialButton(
                         elevation: 0,
                         onPressed: () async {
+                          // Check if user is guest - show modal for account-based features
+                          if (isGuest.value == true) {
+                            GuestAccessModal.show(
+                              title: "Login Required",
+                              message: "Please login to access inbox",
+                              onContinueAsGuest: () {
+                                // Allow guest to continue - just close modal
+                              },
+                            );
+                            return;
+                          }
+                          
                           roleApp.value == Role.customerRoleText
                               ? Get.to(() => const UserInboxScreen(),
                               id: pageIdApp.value)

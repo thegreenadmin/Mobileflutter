@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/user_inbox_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class UserInboxScreen extends StatefulWidget {
@@ -14,6 +16,26 @@ class UserInboxScreen extends StatefulWidget {
 class _UserInboxScreenState extends State<UserInboxScreen> with GlobalVarMixin{
   final UserInboxController userInboxController =
       Get.put(UserInboxController());
+
+  @override
+  void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: "Login Required",
+          message: "Please login to access inbox",
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    super.initState();
+  }
 
   Container _messageTab() {
     return Container(

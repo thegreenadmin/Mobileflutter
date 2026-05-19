@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/owner_inbox_detail_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/owner_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class OwnerInboxDetailScreen extends StatefulWidget {
@@ -29,6 +30,22 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
 
   @override
   void initState() {
+    // Check if user is guest - show modal for account-based features
+    if (isGuest.value == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GuestAccessModal.show(
+          title: "Login Required",
+          message: "Please login to access inbox",
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
+        );
+      });
+      super.initState();
+      return;
+    }
+    
     getRole();
 
     ownerInboxDetailController.storeName.value = widget.storeName??"";
