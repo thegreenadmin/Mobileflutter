@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,10 +25,14 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   @override
   initState() {
-    // Check if user is guest - redirect to login for account-based features
+    // Check if user is guest - show modal for account-based features
     if (isGuest.value == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.off(() => const LoginScreen());
+        GuestAccessModal.show(
+          title: "Login Required",
+          message: "Please login to access this feature",
+          onContinueAsGuest: null, // Block access for this feature
+        );
       });
       super.initState();
       return;

@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/main.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -153,8 +154,11 @@ class BottomNavController extends GetxController with GlobalVarMixin{
   onItemTapped(int index) async {
     // Block account-restricted tabs (Wallet/Orders/More) for guest users
     if (isGuest.value == true && (index == 1 || index == 2 || index == 4)) {
-      Utility.showAlertMessage("Please login to access this feature");
-      Get.to(() => const LoginScreen());
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to access this feature",
+        onContinueAsGuest: null, // Block access for these tabs
+      );
       return;
     }
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";

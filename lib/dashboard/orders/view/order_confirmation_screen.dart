@@ -6,6 +6,7 @@ import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
@@ -29,10 +30,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
 
   @override
   void initState() {
-    // Check if user is guest - redirect to login for account-based features
+    // Check if user is guest - show modal for account-based features
     if (isGuest.value == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.off(() => const LoginScreen());
+        GuestAccessModal.show(
+          title: "Login Required",
+          message: "Please login to access order history",
+          onContinueAsGuest: null, // Block access for this feature
+        );
       });
       super.initState();
       return;
