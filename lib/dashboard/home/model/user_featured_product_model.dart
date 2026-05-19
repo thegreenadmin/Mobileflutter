@@ -113,9 +113,9 @@ class ProductsList {
       this.offer});
 
   ProductsList.fromJson(Map<String, dynamic> json) {
-    productId = json['product_id'];
+    productId = json['product_id']?.toString();
     isFavouriteProduct = json['is_favourite_product'];
-    storeId = json['store_id'];
+    storeId = json['store_id']?.toString();
     quantity = json['quantity'];
     isFeaturedProduct = json['is_featured_product'];
     productName = json['product_name'];

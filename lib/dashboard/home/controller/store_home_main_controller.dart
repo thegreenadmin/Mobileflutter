@@ -110,9 +110,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    // Skip initialization for guest users
+    // Allow guests to load public data (store details, products)
     Future.delayed(Duration.zero, () async {
       if (isGuest.value == true) {
+        // Guests can initialize but will skip user-specific data in _loadInitialData
+        _initializeParams();
         return;
       }
       _initializeParams();
@@ -208,8 +210,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   // --- Initial Data Load ---
   Future<void> _loadInitialData() async {
-    // Skip initial data load for guest users
+    // For guest users, load only public data (skip user-specific data)
     if (isGuest.value == true) {
+      if (isFromAddProduct.value) {
+        selectedIndex.value = 0;
+        lastSelectedIndex.value = 0;
+      }
+      // Guests can load store details and public products
+      if (_hasStore) {
+        await getCurrentLocation();
+        await apiGetStoreDetailsApi();
+        await apiGetStoreCategoriesApi();
+      }
       return;
     }
     if (isFromAddProduct.value) {

@@ -81,29 +81,39 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(() =>
-                  roleApp.value == Role.customerRoleText
-                      ? _buildCarouselSlider(
-                      offersCarouselList: homeController.userCarouselImgList,
-                      featuredProductList:
-                      homeController.featuredUserProductList)
-                      : _buildCarouselSlider(
-                      offersCarouselList: homeController.getOwnerOfferList,
-                      featuredProductList:
-                      homeController.ownerFeatureProductList)),
+                  Obx(() {
+                    final isCustomer = roleApp.value == Role.customerRoleText;
+                    final offersCarouselList = isCustomer
+                        ? homeController.userCarouselImgList
+                        : homeController.getOwnerOfferList;
+                    final featuredProductList = isCustomer
+                        ? homeController.featuredUserProductList
+                        : homeController.ownerFeatureProductList;
+
+                    // Explicitly observe list changes so the widget rebuilds when API data arrives.
+                    offersCarouselList.length;
+                    featuredProductList.length;
+
+                    return _buildCarouselSlider(
+                      offersCarouselList: offersCarouselList,
+                      featuredProductList: featuredProductList,
+                    );
+                  }),
                   height20SizedBox,
                   _buildFeatureProductText(),
                   height20SizedBox,
-                  Obx(
-                        () =>
-                    roleApp.value == Role.customerRoleText
-                        ? _buildProductsCarousel(
-                        featuredProductList:
-                        homeController.featuredUserProductList)
-                        : _buildProductsCarousel(
-                        featuredProductList:
-                        homeController.ownerFeatureProductList),
-                  )
+                  Obx(() {
+                    final isCustomer = roleApp.value == Role.customerRoleText;
+                    final featuredProductList = isCustomer
+                        ? homeController.featuredUserProductList
+                        : homeController.ownerFeatureProductList;
+
+                    featuredProductList.length;
+
+                    return _buildProductsCarousel(
+                      featuredProductList: featuredProductList,
+                    );
+                  })
                 ],
               ),
             ),

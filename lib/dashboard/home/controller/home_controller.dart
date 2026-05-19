@@ -49,15 +49,27 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   dynamic lat = 0.0;
   dynamic lng = 0.0;
+  bool _isInitialized = false;
   // final SearchStoreUserController searchStoreUserController =
   //     Get.put(SearchStoreUserController());
   ActiveCartModel activeCartModel = ActiveCartModel();
   @override
   void onInit() {
     super.onInit();
+    if (_isInitialized) {
+      return; // Prevent duplicate initialization
+    }
+    _isInitialized = true;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Skip API calls for guest users
+      // Set location before making API calls
+      await getCurrentLocation();
+      
+      // Skip user-specific API calls for guest users
       if (isGuest.value == true) {
+        // Guests can still load public data (offers, featured products)
+        // but skip user-specific data (user details, cart)
+        await apiGetUserOffersList();
+        await apiGetUserFeaturedProducts();
         return;
       }
       await apiGetUserDetail();
@@ -73,16 +85,22 @@ class HomeController extends GetxController with GlobalVarMixin {
       if (currentUserPhone!.value == "0000000000") {
         lat = 36.1627; // Nashville, Tennessee latitude
         lng = -86.7816; // Nashville, Tennessee longitude
+      } else if (isGuest.value == true) {
+        // For guests, use Nashville coordinates as default for testing
+        lat = 36.1627; // Nashville, Tennessee latitude
+        lng = -86.7816; // Nashville, Tennessee longitude
       } else {
         Position currentLocation = await Utility.fetchCurrentLocation();
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;
       }
 
-      if (roleApp.value == Role.customerRoleText) {
+      if (isGuest.value == true) {
+        // Guests use public APIs without authentication
+        // API calls already made in onInit, only set location here
+      } else if (roleApp.value == Role.customerRoleText) {
         await apiGetUserOffersList();
         await apiGetUserFeaturedProducts();
-
         await apiActiveCartApi();
       } else {
         await apiGetOwnerOffersList();
@@ -337,19 +355,18 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Nearby Stores Api [USER]
   Future apiGetUserOffersList() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
     userCarouselImgList.clear();
     userOfferList.clear();
     isLoading.value = true;
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header if token exists (not for guests)
+    if (authToken.value != null && authToken.value!.isNotEmpty) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
          UserProvider()
         .getWithHeadersApi(
@@ -365,7 +382,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         for (int i = 0; i < userOfferList.length; i++) {
           storeId!.value = userOfferList[i].storeId.toString();
           if (i >= 5) {
-            return;
+            break;
           }
           userCarouselImgList.add(userOfferList[i]);
         }
@@ -386,17 +403,16 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [USER OLD]
   Future apiGetUserFeaturedProductsOLD() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
     isLoading.value = true;
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header if token exists (not for guests)
+    if (authToken.value != null && authToken.value!.isNotEmpty) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
     Map data = {
       "q": "",
       "store_id": null,
@@ -445,10 +461,6 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [USER NEW]
   Future apiGetUserFeaturedProducts() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
     featuredUserProductList.clear();
     isLoading.value = true;
     String url =
@@ -456,9 +468,12 @@ class HomeController extends GetxController with GlobalVarMixin {
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header if token exists (not for guests)
+    if (authToken.value != null && authToken.value!.isNotEmpty) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
     Map data = {
       "q": "",
       "store_id": null,
@@ -502,19 +517,18 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
     getOwnerOfferList.clear();
     isLoading.value = true;
     ownerCarouselImgList.clear();
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header if token exists (not for guests)
+    if (authToken.value != null && authToken.value!.isNotEmpty) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          Map body = {
       "store_id": null,
       "page": 1,
@@ -560,18 +574,17 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Feature ProductList Store Api [Owner]
   Future apiGetOwnerFeaturedProducts() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
     ownerFeatureProductList.clear();
     isLoading.value = true;
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header if token exists (not for guests)
+    if (authToken.value != null && authToken.value!.isNotEmpty) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
      
     Map<String, dynamic> body = {
       "q": "",

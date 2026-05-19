@@ -56,12 +56,13 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
   getRole() async {
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    roleApp.value = roleData;
     // Skip API call for guest users
     if (isGuest.value == true) {
+      roleApp.value = Role.customerRoleText;
       storeList.clear();
       return;
     }
+    roleApp.value = roleData;
     if (roleData == Role.customerRoleText) {
       storeList.clear();
     } else {
@@ -157,7 +158,11 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       return;
     }
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    roleApp.value = roleData;
+    if (isGuest.value == true) {
+      roleApp.value = Role.customerRoleText;
+    } else {
+      roleApp.value = roleData;
+    }
     Get.delete<StoreHomeMainController>();
     if (!isLoading.value) {
       getRole();
@@ -181,7 +186,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 0;
-            Get.put(HomeController()).onInit();
+            Get.find<HomeController>();
           });
 
       } else if (selectedIndex.value == 1) {

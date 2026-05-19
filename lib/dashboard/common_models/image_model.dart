@@ -312,7 +312,7 @@ class ProductImages {
   ProductImages({this.productImageId, this.order, this.status, this.image});
 
   ProductImages.fromJson(Map<String, dynamic> json) {
-    productImageId = json['product_image_id'];
+    productImageId = json['product_image_id']?.toString();
     order = json['order'];
     status = json['status'];
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
@@ -488,7 +488,7 @@ class Store {
         logo: json["logo"] == null ? null : Images.fromJson(json["logo"]),
         isFavouriteStore: json["is_favourite_store"],
     taxValue: json["tax_value"],
-        storeId: json["store_id"],
+        storeId: json["store_id"]?.toString(),
         storeName: json["store_name"],
         storeEin: json["store_ein"],
         storeNickName: json["store_nick_name"],

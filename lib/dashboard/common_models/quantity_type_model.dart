@@ -6,7 +6,7 @@ class QuantityType {
   QuantityType({this.quantityTypeId, this.quantityTypeName, this.status});
 
   QuantityType.fromJson(Map<String, dynamic> json) {
-    quantityTypeId = json['quantity_type_id'];
+    quantityTypeId = json['quantity_type_id']?.toString();
     quantityTypeName = json['quantity_type_name'];
     status = json['status'];
   }

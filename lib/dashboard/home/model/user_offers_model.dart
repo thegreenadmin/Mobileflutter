@@ -86,9 +86,9 @@ class OffersList {
 
   OffersList.fromJson(Map<String, dynamic> json) {
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
-    offerId = json['offer_id'];
-    storeId = json['store_id'];
-    productId = json['product_id'];
+    offerId = json['offer_id']?.toString();
+    storeId = json['store_id']?.toString();
+    productId = json['product_id']?.toString();
     isOfferForStore = json['is_offer_for_store'];
     autoCreated = json['auto_created'];
     offerName = json['offer_name'];
