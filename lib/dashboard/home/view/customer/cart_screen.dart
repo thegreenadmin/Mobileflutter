@@ -32,7 +32,10 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
         GuestAccessModal.show(
           title: "Login Required",
           message: "Please login to access your cart",
-          onContinueAsGuest: null, // Block access for this feature
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
         );
       });
       return;

@@ -36,7 +36,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
         GuestAccessModal.show(
           title: "Login Required",
           message: "Please login to access order history",
-          onContinueAsGuest: null, // Block access for this feature
+          onContinueAsGuest: () {
+            // Allow guest to continue - just close modal and go back
+            Get.back();
+          },
         );
       });
       super.initState();

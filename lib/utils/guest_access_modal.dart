@@ -133,30 +133,29 @@ class _GuestAccessDialog extends StatelessWidget {
             ),
             height15SizedBox,
             // Continue as Guest Button
-            if (onContinueAsGuest != null)
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: TextButton(
-                  onPressed: () {
-                    Get.back();
-                    onContinueAsGuest!();
-                  },
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: TextButton(
+                onPressed: () {
+                  Get.back();
+                  onContinueAsGuest?.call();
+                },
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    "Continue as Guest",
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                ),
+                child: const Text(
+                  "Continue as Guest",
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
+            ),
           ],
         ),
       ),

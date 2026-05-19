@@ -157,7 +157,10 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       GuestAccessModal.show(
         title: "Login Required",
         message: "Please login to access this feature",
-        onContinueAsGuest: null, // Block access for these tabs
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal and stay on current tab
+          // Don't navigate to the restricted tab
+        },
       );
       return;
     }
