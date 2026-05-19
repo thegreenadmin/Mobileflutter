@@ -152,8 +152,9 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
 
   onItemTapped(int index) async {
-    // Block account-restricted tabs (Wallet/Orders/More) for guest users
-    if (isGuest.value == true && (index == 1 || index == 2 || index == 4)) {
+    // Block account-restricted tabs (Wallet/Orders) for guest users
+    // Allow guests to access More tab
+    if (isGuest.value == true && (index == 1 || index == 2)) {
       GuestAccessModal.show(
         title: "Login Required",
         message: "Please login to access this feature",
