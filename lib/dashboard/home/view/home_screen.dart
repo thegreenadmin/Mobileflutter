@@ -349,6 +349,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       RawMaterialButton(
                           elevation: 0,
                           onPressed: () async {
+                            // Check if user is guest - show modal for account-based features
+                            if (isGuest.value == true) {
+                              GuestAccessModal.show(
+                                title: "Login Required",
+                                message: "Please login to access transaction history",
+                                onContinueAsGuest: () {
+                                  // Allow guest to continue - just close modal
+                                },
+                              );
+                              return;
+                            }
+                            
                             hasStoreAccess.value &&
                                 permissionStoreList.isEmpty ||
                                 permissionStoreList.any((element) =>
