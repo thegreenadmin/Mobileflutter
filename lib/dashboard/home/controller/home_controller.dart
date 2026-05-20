@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -178,6 +179,18 @@ class HomeController extends GetxController with GlobalVarMixin {
                 width: 130,
                 child: GestureDetector(
                   onTap: () async {
+                    // Check if user is guest - show modal for account-based features
+                    if (isGuest.value == true) {
+                      GuestAccessModal.show(
+                        title: "Login Required",
+                        message: "Please login to access account settings",
+                        onContinueAsGuest: () {
+                          // Allow guest to continue - just close modal
+                        },
+                      );
+                      return;
+                    }
+                    
                     Get.back(id: pageIdApp.value);
                     await Get.to(() => const AccountScreen(),
                         id: int.parse(SharedPreferenceStorage.getData("pageId")
@@ -205,6 +218,18 @@ class HomeController extends GetxController with GlobalVarMixin {
             width: 130,
             child: GestureDetector(
               onTap: () async {
+                // Check if user is guest - show modal for account-based features
+                if (isGuest.value == true) {
+                  GuestAccessModal.show(
+                    title: "Login Required",
+                    message: "Please login to access account settings",
+                    onContinueAsGuest: () {
+                      // Allow guest to continue - just close modal
+                    },
+                  );
+                  return;
+                }
+                
                 Get.back(id: pageIdApp.value);
                 await Get.to(() => const AccountScreen(),
                     id: int.parse(

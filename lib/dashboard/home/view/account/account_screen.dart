@@ -85,22 +85,6 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
 
   @override
   void initState() {
-    // Check if user is guest - show modal for account-based features
-    if (isGuest.value == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        GuestAccessModal.show(
-          title: "Login Required",
-          message: "Please login to access account settings",
-          onContinueAsGuest: () {
-            // Allow guest to continue - just close modal and go back
-            Get.back();
-          },
-        );
-      });
-      super.initState();
-      return;
-    }
-    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       accountController.apiGetUserDetailApi();
       accountController.isFromCart.value = widget.isFromCart??false;

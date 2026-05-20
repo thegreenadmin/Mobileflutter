@@ -390,6 +390,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       RawMaterialButton(
                           elevation: 0,
                           onPressed: () {
+                            // Check if user is guest - show modal for account-based features
+                            if (isGuest.value == true) {
+                              GuestAccessModal.show(
+                                title: "Login Required",
+                                message: "Please login to access account settings",
+                                onContinueAsGuest: () {
+                                  // Allow guest to continue - just close modal
+                                },
+                              );
+                              return;
+                            }
+                            
                             Get.to(() => const AccountScreen(),
                               id: pageIdApp.value,)
                                 ?.then((value) {
