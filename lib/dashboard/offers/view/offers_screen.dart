@@ -132,7 +132,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                 fontSize: 20),
           ),
         ),
-        Row(
+        Obx(() => isGuest.value ? const SizedBox.shrink() : Row(
           children: [
             const Icon(
               Icons.add,
@@ -175,7 +175,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                       color: AppColors.primary)),
             ),
           ],
-        ),
+        )),
       ],
     );
   }

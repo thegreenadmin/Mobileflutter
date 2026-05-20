@@ -142,9 +142,12 @@ class OffersController extends GetxController with GlobalVarMixin{
 
          Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only add authorization header if not guest user
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          Map body = {
       "store_id": null,
       "page": page.value,
@@ -201,9 +204,12 @@ class OffersController extends GetxController with GlobalVarMixin{
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only add authorization header if not guest user
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.shopOffersList}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",

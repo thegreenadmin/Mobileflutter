@@ -27,6 +27,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
     print("DEBUG: _browseAsGuest called");
     // Set user as guest (session-only, not persisted)
     roleApp.value = Role.customerRoleText;
+    await SharedPreferenceStorage.setData(Role.role, Role.customerRoleText);
     isGuest.value = true;
     firstName.value = "Guest";
     lastName.value = "";
@@ -76,6 +77,21 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               bottom: 60,
               child: Column(
                 children: [
+                  TextButton(
+                    onPressed: () {
+                      _browseAsGuest();
+                    },
+                    child: Text(
+                      StringConstants.continueAsGuestText,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  height20SizedBox,
                   CustomButton(
                     gradient: const LinearGradient(
                       begin: Alignment.topCenter,
@@ -111,21 +127,6 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     iconL: false,
-                  ),
-                  height15SizedBox,
-                  TextButton(
-                    onPressed: () {
-                      _browseAsGuest();
-                    },
-                    child: Text(
-                      StringConstants.continueAsGuestText,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w400,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
                   ),
                   height15SizedBox,
                   InkWell(
