@@ -51,3 +51,6 @@ assets/env/*.env
 *.env
 .env.local
 
+assets/env/api_key_beta.env
+assets/env/api_key_release.env
+assets/env/api_key.env
