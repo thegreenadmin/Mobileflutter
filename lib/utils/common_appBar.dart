@@ -123,8 +123,10 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                                 id: pageIdApp.value)
                                             ?.then((value) {
                                           // widget.okayTap;
-                                          storeHomeMainController
-                                              .apiActiveCartApi();
+                                          if (!isGuest.value) {
+                                            storeHomeMainController
+                                                .apiActiveCartApi();
+                                          }
                                         });
                                       },
                                       child: Stack(

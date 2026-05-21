@@ -64,7 +64,7 @@ class OffersController extends GetxController with GlobalVarMixin{
       var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
       role.value = roleData;
       if (Get.parameters["isController"] != "no") {
-        if (role.value == Role.customerRoleText) {
+        if (role.value == Role.customerRoleText && !isGuest.value) {
           searchStoreUserController.apiActiveCartApi();
         }
         // isFromNotification.value =
@@ -86,6 +86,8 @@ class OffersController extends GetxController with GlobalVarMixin{
 
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     role.value = roleData;
+    print("DEBUG: OffersController.getData - role from shared prefs: $roleData");
+    print("DEBUG: OffersController.getData - isGuest.value: ${isGuest.value}");
     if (role.value == Role.customerRoleText) {
       await getCurrentLocation();
     } else {

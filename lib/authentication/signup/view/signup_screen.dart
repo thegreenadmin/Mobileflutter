@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
@@ -21,9 +20,6 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final SignupController signupController = Get.put(SignupController());
 
-  String? formattedDate;
-  String? formattedDateToCompare;
-  TimeOfDay selectedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +128,6 @@ class _SignupScreenState extends State<SignupScreen> {
             }),
         height15SizedBox,
         _buildPhoneField(),
-        height8SizedBox,
-        _buildDateField(),
       ],
     );
   }
@@ -196,40 +190,6 @@ class _SignupScreenState extends State<SignupScreen> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(color: color, width: 1.0),
-    );
-  }
-
-  /// Date of Birth Input Field (Date Picker - Optional)
-  Widget _buildDateField() {
-    return CustomInputField(
-      isBorderOutline: true,
-      controller: signupController.dateTextController,
-      hintText: StringConstants.dobText,
-      labelText: StringConstants.dobText,
-      prefixIcon: Image.asset(ImageConstants.calendar, scale: 2.8),
-      validator: (value) => null, // Date of birth is now optional
-      onTap: () async {
-        FocusScope.of(context).unfocus();
-        DateTime? date = await showDatePicker(
-          context: Get.context!,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.utc(1200, 1, 1),
-          lastDate: DateTime.now(),
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
-              data: ThemeData.light().copyWith(
-                colorScheme: const ColorScheme.light(primary: AppColors.primary),
-              ),
-              child: child!,
-            );
-          },
-        );
-
-        if (date != null) {
-          final DateFormat formatter = DateFormat('yyyy-MM-dd');
-          signupController.dateTextController.text = formatter.format(date);
-        }
-      },
     );
   }
 

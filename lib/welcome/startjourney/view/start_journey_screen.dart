@@ -32,6 +32,10 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
     firstName.value = "Guest";
     lastName.value = "";
     print("DEBUG: Guest state set - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}");
+    
+    // Verify role was saved
+    String savedRole = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    print("DEBUG: Verified saved role from shared prefs: $savedRole");
 
     // Navigate to home screen using named route
     print("DEBUG: Navigating to BottomNavigation");

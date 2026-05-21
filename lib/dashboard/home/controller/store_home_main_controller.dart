@@ -149,6 +149,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       getCurrentLocation();
     }
 
+    // Skip JWT-required API calls for guest users
+    if (isGuest.value == true) {
+      return;
+    }
+
     if (isFromMenu.value) {
       selectedIndex.value = 1;
       apiGetStoreCategoriesApi();

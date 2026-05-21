@@ -110,7 +110,9 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
               labelText: StringConstants.offersText,
               lastName: offersController.lastName!.value,
               okayTap: () {
-                offersController.searchStoreUserController.apiActiveCartApi();
+                if (!isGuest.value) {
+                  offersController.searchStoreUserController.apiActiveCartApi();
+                }
               },
               isFromNotification: false)),
     );

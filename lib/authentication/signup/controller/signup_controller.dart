@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:thegreenmall/authentication/otpverification/view/otp_verification_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/utils.dart';
@@ -14,7 +13,6 @@ class SignupController extends GetxController {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController ageTextController = TextEditingController();
-  TextEditingController dateTextController = TextEditingController();
 
   RxString firstName = "".obs;
   RxString lastName = "".obs;
@@ -26,125 +24,12 @@ class SignupController extends GetxController {
   Rx<Locale> cL = const Locale("en", "IN").obs;
 
   RxBool isTermsAccepted = false.obs;
-  late RxString dateOfEvent = "".obs;
-  late RxString timeOfEvent = "".obs;
-  var date = DateTime(2022, 5, 6);
-  var today = DateTime.now();
 
   RxString selectedCountryCode = "".obs;
   RxString selectedRegion = "".obs;
-  String? formattedDate;
   RxBool autoValidate = false.obs;
   RxBool isLoading = false.obs;
   RxBool isFromOwner = false.obs;
-
-  void ageAlertDailogue(
-    context,
-  ) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            height10SizedBox,
-            Image.asset("assets/greenmall420.png"),
-            height10SizedBox,
-            Text(
-              "${StringConstants.alertText}!",
-              style: const TextStyle(
-                  color: AppColors.primaryDark,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              AlertStringConstants.above18Text,
-              style: TextStyle(
-                  color: AppColors.blackLight,
-                  fontSize: 16,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.start,
-            ),
-            height25SizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        StringConstants.okayText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    height: 50.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      border: Border.all(color: AppColors.primary),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        StringConstants.cancelText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: AppColors.primary),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: const <Widget>[],
-      ),
-    );
-  }
-
-  /// Method to check user above 18 or not!
-  bool isAdultCheck(String dob) {
-    final dateOfBirth = DateFormat("yyyy-MM-dd").parse(dob);
-    final now = DateTime.now();
-    final eighteenYearsAgo = DateTime(
-      now.year - 18,
-      now.month,
-      now.day + 1, // add day to return true on birthday
-    );
-    return dateOfBirth.isBefore(eighteenYearsAgo);
-  }
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -197,11 +82,6 @@ class SignupController extends GetxController {
       data["email"] = emailTextController.text.trim();
     }
 
-    // Only include dob if provided
-    if (dateTextController.text.trim().isNotEmpty) {
-      data["dob"] = dateTextController.text.trim();
-    }
-
     UserProvider()
         .postApi(data,
             ServerCommunicator.baseUrl + ServerCommunicator.createUser,
@@ -245,7 +125,6 @@ class SignupController extends GetxController {
         firstNameTextController.clear();
         lastNameTextController.clear();
         emailTextController.clear();
-        dateTextController.clear();
         isTermsAccepted.value = false;
         isFromOwner.value = false;
         phoneNumberTextController.clear();

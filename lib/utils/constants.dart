@@ -185,7 +185,6 @@ class StringConstants {
   static String deleteText = "Delete";
   static String didNotGetACodeText = "Didn’t get a code?";
   static String decText = "December";
-  static String dobText = "Date of Birth";
   static String detailText = "Detail";
   static String debitMoneyFromWalletText = "Debit money from my wallet";
   static String descriptionOftheIssueText = "Description of the issue/question";
@@ -193,7 +192,7 @@ class StringConstants {
   //E
   static String enterCategoryNameText = "Enter category name";
   static String enableStoreText = "Enable Store";
-  static String emailText = "Email";
+  static String emailText = "Email (Optional)";
   static String estimatedDeliveryDateText = "Estimated Delivery Date";
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
@@ -745,12 +744,12 @@ class AlertStringConstants {
   static String pleaseSelectDiscountTypeText = "Please select discount type";
   static String pleaseEnterFirstNameText = "Please enter first name";
   static String pleaseEnterMobileNoText = "Please enter mobile number";
+  static String pleaseEnterPhoneText = "Please enter phone number";
   static String pleaseEnterNickNameText = "Please enter nick name";
   static String pleaseEnterLastNameText = "Please enter last name";
   static String pleaseEnterEmployeeNameText = "Please enter employee name";
   static String pleaseEnterMileageText = "Please enter mileage";
   static String pleaseEnterEmailText = "Please enter email";
-  static String pleaseEnterPhoneText = "Please enter phone number";
   static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
   static String pleaseEnterValidPhoneText = "Please enter valid Phone number";

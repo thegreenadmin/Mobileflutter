@@ -74,7 +74,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         return;
       }
       await apiGetUserDetail();
-      if (roleApp.value == Role.customerRoleText) {
+      if (roleApp.value == Role.customerRoleText && !isGuest.value) {
         await apiActiveCartApi();
       }
     });
@@ -99,7 +99,7 @@ class HomeController extends GetxController with GlobalVarMixin {
       if (isGuest.value == true) {
         // Guests use public APIs without authentication
         // API calls already made in onInit, only set location here
-      } else if (roleApp.value == Role.customerRoleText) {
+      } else if (roleApp.value == Role.customerRoleText && !isGuest.value) {
         await apiGetUserOffersList();
         await apiGetUserFeaturedProducts();
         await apiActiveCartApi();
