@@ -64,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (token != null) {
         isStoreOwner.value = wasStoreOwner;
         authToken.value = token;
+        isGuest.value = false; // Ensure guest flag is false when token exists
         Get.offAll(() => const BottomNavigation());
       } else {
         // For new users or those without token, go to StartJourneyScreen

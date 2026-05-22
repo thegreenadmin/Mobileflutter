@@ -11,6 +11,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/filter_option_screen.d
 import 'package:thegreenmall/dashboard/home/view/customer/nearby_store_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/previous_store_list_screen.dart';
 import 'package:thegreenmall/utils/google_place_autocompleted.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class SearchStoreUserScreen extends StatefulWidget {
@@ -120,6 +121,17 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                   labelStyle: const TextStyle(fontWeight: FontWeight.w600),
                   isScrollable: false,
                   onTap: (i) async {
+                    // Restrict access to Previous and Favorite tabs for guest users
+                    if (isGuest.value == true && (i == 1 || i == 2)) {
+                      // Reset tab index to current tab to prevent navigation
+                      _tabController?.animateTo(_tabController!.index);
+                      GuestAccessModal.show(
+                        title: "Login Required",
+                        message: "Please login to access Previous and Favorite stores",
+                      );
+                      return;
+                    }
+                    
                     searchStoreUserController.storeAddresses.clear();
                     searchStoreUserController.previousStore.clear();
                     searchStoreUserController.favouriteStore.clear();

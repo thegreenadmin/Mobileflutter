@@ -50,17 +50,29 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   dynamic lat = 0.0;
   dynamic lng = 0.0;
-  bool _isInitialized = false;
   // final SearchStoreUserController searchStoreUserController =
   //     Get.put(SearchStoreUserController());
   ActiveCartModel activeCartModel = ActiveCartModel();
+  
   @override
   void onInit() {
     super.onInit();
-    if (_isInitialized) {
-      return; // Prevent duplicate initialization
-    }
-    _isInitialized = true;
+    // Listen to authentication state changes
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus && authToken.value.isNotEmpty && roleApp.value.isNotEmpty) {
+        // User just logged in and role is set, refresh data
+        await refreshUserData();
+      }
+    });
+    
+    // Also listen to role changes to ensure data refreshes when role is set
+    ever(roleApp, (String role) async {
+      if (!isGuest.value && authToken.value.isNotEmpty && role.isNotEmpty) {
+        // Role is set for authenticated user, refresh data
+        await refreshUserData();
+      }
+    });
+    
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Set location before making API calls
       await getCurrentLocation();
@@ -78,6 +90,23 @@ class HomeController extends GetxController with GlobalVarMixin {
         await apiActiveCartApi();
       }
     });
+  }
+
+  // Method to refresh user data after login
+  Future<void> refreshUserData() async {
+    print("DEBUG: refreshUserData called - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
+    await getCurrentLocation();
+    await apiGetUserDetail();
+    if (roleApp.value == Role.customerRoleText) {
+      print("DEBUG: Loading customer data");
+      await apiGetUserOffersList();
+      await apiGetUserFeaturedProducts();
+      await apiActiveCartApi();
+    } else {
+      print("DEBUG: Loading owner data");
+      await apiGetOwnerOffersList();
+      await apiGetOwnerFeaturedProducts();
+    }
   }
 
   getCurrentLocation() async {
@@ -545,6 +574,8 @@ class HomeController extends GetxController with GlobalVarMixin {
     getOwnerOfferList.clear();
     isLoading.value = true;
     ownerCarouselImgList.clear();
+    
+    print("DEBUG: apiGetOwnerOffersList called - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
      
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -569,11 +600,13 @@ class HomeController extends GetxController with GlobalVarMixin {
             headers,
             showLoading: false)
         .then((value) async {
+      print("DEBUG: apiGetOwnerOffersList response status: ${value?.body["status"]}");
 
                      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
+        print("DEBUG: apiGetOwnerOffersList success - offers count: ${getOwnerOfferList.length}");
         if (getOwnerOfferList.isNotEmpty) {
           for (int i = 0; i < getOwnerOfferList.length; i++) {
             if (i >= 5) {
@@ -583,17 +616,22 @@ class HomeController extends GetxController with GlobalVarMixin {
           }
         }    isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
+        print("DEBUG: apiGetOwnerOffersList 401 error");
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         isLoading.value = false;
         Utility.handle401Error();
       } else {
+        print("DEBUG: apiGetOwnerOffersList error: ${value?.body['message']}");
                        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      print("DEBUG: apiGetOwnerOffersList exception: $error");
+      isLoading.value = false;
     });
   }
 

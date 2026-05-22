@@ -191,10 +191,13 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       Get.until((route) => route.isFirst, id: pageIdApp.value);
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
-
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 0;
-            Get.find<HomeController>();
+            // Ensure HomeController is fresh when navigating to home
+            if (Get.isRegistered<HomeController>()) {
+              Get.delete<HomeController>();
+            }
+            Get.put(HomeController());
           });
 
       } else if (selectedIndex.value == 1) {
