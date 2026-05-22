@@ -558,8 +558,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(8.0),
                                         child: CommonWidgets.cachedNetworkImage(
-                                          offersController.getUserOfferList[index].offers![i].image!
-                                              .dynamicUrl!.toString(),
+                                          offersController.getUserOfferList[index].offers?[i]?.image?.dynamicUrl ?? '',
                                           fit: BoxFit.fill,
                                           width: WidgetConstants.screenWidth * 0.8,
                                           assetImg: ImageConstants.nopicfound,

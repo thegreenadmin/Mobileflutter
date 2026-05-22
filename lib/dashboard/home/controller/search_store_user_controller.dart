@@ -364,6 +364,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
  ///---------------------------------------------------------------------------------
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
          Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -587,8 +591,11 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText: "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] = "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     Map data = {
       "q": "",
@@ -703,14 +710,23 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           initialIndex.value = 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-                isClicked.value = false;
-                isLoading.value = false;
-                isFavLoading.value = false;
-                isDataLoading.value = false;
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear();
-        Utility.handle401Error();
+        if (!isGuest.value) {
+          isClicked.value = false;
+          isLoading.value = false;
+          isFavLoading.value = false;
+          isDataLoading.value = false;
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          Utility.handle401Error();
+        } else {
+          isClicked.value = false;
+          isLoading.value = false;
+          isFavLoading.value = false;
+          isDataLoading.value = false;
+          // Log 401 error for guests for debugging
+          print('Guest user received 401 error in nearby stores search: ${value?.body['message']}');
+        }
       } else {
                 isClicked.value = false;
                 isLoading.value = false;
@@ -849,6 +865,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   ///Create Favourite Store Api
   Future apiCreateFavouriteStore(String? id) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -902,6 +922,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   ///Remove Favourite Store Api
   Future apiRemoveFavouriteStore(String? id) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
      
     Map<String, String> headers = {

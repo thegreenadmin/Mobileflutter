@@ -696,6 +696,7 @@ class AlertStringConstants {
       "Are you sure you want to accept return request?";
   static String above18Text =
       "The Green mall application is available for 18 years and above only!";
+  static String pleaseConfirmAgeVerification = "Please confirm you are 18 or older";
   //C
   static String closingTimeAlertText =
       "Closing time cannot be same as opening time";

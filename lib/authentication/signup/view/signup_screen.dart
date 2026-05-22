@@ -45,6 +45,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       height25SizedBox,
                       _buildInputFields(),
                       height20SizedBox,
+                      _buildAgeVerification(),
+                      height15SizedBox,
                       _buildTermsAndConditions(),
                       height30SizedBox,
                       _buildSignupButton(),
@@ -238,6 +240,39 @@ class _SignupScreenState extends State<SignupScreen> {
         fontWeight: FontWeight.w600,
         decoration: TextDecoration.underline,
       ),
+    );
+  }
+
+  /// Age Verification Checkbox
+  Widget _buildAgeVerification() {
+    return Row(
+      children: [
+        Obx(
+          () => Checkbox(
+            side: WidgetStateBorderSide.resolveWith(
+              (states) => BorderSide(
+                width: 1.0,
+                color: AppColors.primary.withOpacity(0.5),
+              ),
+            ),
+            value: signupController.isAgeVerified.value,
+            onChanged: (value) => signupController.isAgeVerified.value = value!,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            activeColor: AppColors.primary,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "Are you 18 or older",
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

@@ -136,6 +136,10 @@ class OffersController extends GetxController with GlobalVarMixin{
 
   ///Get Offers List Api [OWNER]
   Future apiGetOwnerOffersList() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     if (page.value == 1) {
       isLoading.value = true;
       getOwnerOfferList.clear();

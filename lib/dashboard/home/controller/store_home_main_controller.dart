@@ -149,8 +149,21 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       getCurrentLocation();
     }
 
-    // Skip JWT-required API calls for guest users
+    // Skip JWT-required API calls for guest users, but allow public data
     if (isGuest.value == true) {
+      if (isFromMenu.value) {
+        selectedIndex.value = 1;
+        apiGetStoreCategoriesApi();
+      } else if (isFromFav.value) {
+        selectedIndex.value = 2;
+        apiFeatureProductListApi(isFeaturedProduct: true);
+      } else if (isFromHome.value) {
+        selectedIndex.value = 0;
+        apiGetStoreOffersApi();
+        apiFeatureProductListApi(isFeaturedProduct: true);
+      } else {
+        onIndexChange(0);
+      }
       return;
     }
 
@@ -221,11 +234,43 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         selectedIndex.value = 0;
         lastSelectedIndex.value = 0;
       }
-      // Guests can load store details and public products
-      if (_hasStore) {
-        await getCurrentLocation();
-        await apiGetStoreDetailsApi();
-        await apiGetStoreCategoriesApi();
+      // Respect navigation flags for guests, same as handleInitialFlow
+      try {
+        if (isFromMenu.value) {
+          selectedIndex.value = 1;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreCategoriesApi();
+          }
+        } else if (isFromFav.value) {
+          selectedIndex.value = 2;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+        } else if (isFromHome.value) {
+          selectedIndex.value = 0;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreOffersApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+        } else {
+          // Default: load store home tab
+          selectedIndex.value = 0;
+          if (_hasStore) {
+            await getCurrentLocation();
+            await apiGetStoreDetailsApi();
+            await apiGetStoreOffersApi();
+            await apiFeatureProductListApi(isFeaturedProduct: true);
+          }
+        }
+      } catch (e) {
+        // Log error for debugging but don't crash the app
+        print('Error loading initial data for guest user: $e');
       }
       return;
     }
@@ -1445,11 +1490,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     }
 
     isLoading.value = true;
-     
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
+
+    Map<String, String> headers = {};
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
          UserProvider()
         .getWithHeadersApi(
@@ -1463,15 +1510,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         offersListResponse = StoreOffersListResponse.fromJson(value?.body);
         offersList.value = offersListResponse.data?.offers ?? [];
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear(); isLoading.value = false;
-        Utility.handle401Error();
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear(); isLoading.value = false;
+          Utility.handle401Error();
+        }
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
+      print('Error fetching offers: $error');
     });
   }
 
@@ -1534,11 +1586,13 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     }
 
     isLoading.value = true;
-     
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
+
+    Map<String, String> headers = {};
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
          UserProvider()
         .getWithHeadersApi(
             "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreDetails}?store_id=$finalStoreId&latitude=$latitude&longitude=$longitude",
@@ -1565,26 +1619,32 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         storeLocation.value =
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.addressLine1 ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.city ?? ""},"
             "${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.stateName ?? ""},${storeDetailsResponse.value.data?.store?.storeAddresses?.first.state?.country?.countryName ?? ""}";
-         
-         
+
+
                  isVerifiedStore.value =
             storeDetailsResponse.value.data?.store?.isVerified ?? false;
         isFavouriteStore.value =
             storeDetailsResponse.value.data?.store?.isFavouriteStore ?? false;
 
-         
+
                } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (!isGuest.value) {
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
+          }
+          storage.clearData();
+          Get.parameters.clear();
+          Utility.handle401Error();
         }
-        storage.clearData();
-        Get.parameters.clear();
-        Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
+    }).catchError((error, stackTrace) {
+      isLoading.value = false;
+      showLoading.value = false;
+      print('Error fetching store details: $error');
     });
   }
   void _prepareImages() {
@@ -1768,12 +1828,15 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     featureProductList.clear();
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     Map data = {
       "q": "",

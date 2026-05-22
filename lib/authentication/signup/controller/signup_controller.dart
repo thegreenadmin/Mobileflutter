@@ -24,6 +24,7 @@ class SignupController extends GetxController {
   Rx<Locale> cL = const Locale("en", "IN").obs;
 
   RxBool isTermsAccepted = false.obs;
+  RxBool isAgeVerified = false.obs;
 
   RxString selectedCountryCode = "".obs;
   RxString selectedRegion = "".obs;
@@ -56,6 +57,8 @@ class SignupController extends GetxController {
         if (isTermsAccepted.value == false) {
           Utility.showAlertMessage(
               AlertStringConstants.pleaseEnterTermsAndConditions);
+        } else if (isAgeVerified.value == false) {
+          Utility.showAlertMessage(AlertStringConstants.pleaseConfirmAgeVerification);
         } else {
           apiCreateUser(isFromOwner: isFromOwner);
         }
@@ -75,6 +78,7 @@ class SignupController extends GetxController {
       "phone_code": countryCode.value.trim(),
       "has_store_access": isFromOwner,
       "is_store_owner": isFromOwner,
+      "is_age_verified": isAgeVerified.value,
     };
 
     // Only include email if provided
@@ -126,6 +130,7 @@ class SignupController extends GetxController {
         lastNameTextController.clear();
         emailTextController.clear();
         isTermsAccepted.value = false;
+        isAgeVerified.value = false;
         isFromOwner.value = false;
         phoneNumberTextController.clear();
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
