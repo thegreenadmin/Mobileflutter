@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   final HomeController homeController = Get.put(HomeController());
 
   Future<void> _pullRefresh() async {
-    homeController.onInit();
+    await homeController.refreshUserData();
   }
 
   @override

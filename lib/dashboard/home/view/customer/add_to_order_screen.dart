@@ -25,26 +25,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
 
   @override
   initState() {
-    // Check if user is guest - show modal for account-based features
+    super.initState();
     if (isGuest.value == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        GuestAccessModal.show(
-          title: "Login Required",
-          message: "Please login to access this feature",
-          onContinueAsGuest: () {
-            // Allow guest to continue - just close modal and go back
-            Get.back();
-          },
-        );
-      });
-      super.initState();
       return;
     }
-    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       callApi();
     });
-    super.initState();
   }
 
   callApi() async {
@@ -799,6 +786,13 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
               }
             },*/
             onTap: () {
+              if (isGuest.value == true) {
+                GuestAccessModal.show(
+                  title: "Login Required",
+                  message: "Please login to add items to cart",
+                );
+                return;
+              }
               if (!storeHomeMainController.isVerifiedStore.value) return;
 
               final currentStoreId = int.parse(storeHomeMainController.storeId.toString());

@@ -107,32 +107,34 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       element.storePageContent?.dynamicUrl != null &&
       listIndex.value < 4);
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Allow guests to load public data (store details, products)
-    Future.delayed(Duration.zero, () async {
-      if (isGuest.value == true) {
-        // Guests can initialize but will skip user-specific data in _loadInitialData
-        _initializeParams();
-        return;
-      }
-      _initializeParams();
-    });
-  }
-
-
-
   String? _lastArgsKey;
 
   void applyArgs(StoreHomeMainArgs args) {
     final newKey =
         '${args.storeId}_${args.productId}_${args.invokedIndex}_${args.categoryId}';
 
-    if (_lastArgsKey == newKey) return;
+    // Debug logging
+    print("=== APPLY ARGS DEBUG ===");
+    print("New storeId from args: ${args.storeId}");
+    print("New productId from args: ${args.productId}");
+    print("New invokedIndex from args: ${args.invokedIndex}");
+    print("Current storeId: ${storeId.value}");
+    print("Current productId: ${productId.value}");
+    print("Last args key: $_lastArgsKey");
+    print("New args key: $newKey");
+    print("Is switching stores: ${storeId.value != (args.storeId ?? "0")}");
+    print("========================");
+
+    if (_lastArgsKey == newKey) {
+      print("Returning early - same args key");
+      return;
+    }
 
     _lastArgsKey = newKey;
 
+    final bool isSwitchingStore = storeId.value != (args.storeId ?? "0");
+
+    // Assign new values first
     storeId.value = args.storeId ?? "0";
     invokedIndex.value = args.invokedIndex ?? 0;
     productId.value = args.productId ?? "";
@@ -141,43 +143,88 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     isFromHome.value = args.isFromHome ?? false;
     isFromFav.value = args.isFromFav ?? false;
     isFromMenu.value = args.isFromMenu ?? false;
+    isFromOptions.value = args.isFromOptions ?? false;
+
+    // Clear old store data if switched (API will be called by handleInitialFlow)
+    if (isSwitchingStore) {
+      print("Clearing old store data for: ${storeId.value}");
+      storeDetailsResponse.value = StoreDetailsResponse();
+      listIndex.value = 2;
+    }
   }
 
 
   void handleInitialFlow() {
+    print("=== HANDLE INITIAL FLOW DEBUG ===");
+    print("storeId: ${storeId.value}");
+    print("isGuest: ${isGuest.value}");
+    print("isFromMenu: ${isFromMenu.value}");
+    print("isFromFav: ${isFromFav.value}");
+    print("isFromHome: ${isFromHome.value}");
+    print("===================================");
+
     if (storeId.value.isNotEmpty) {
       getCurrentLocation();
     }
 
     // Skip JWT-required API calls for guest users, but allow public data
     if (isGuest.value == true) {
+      print("Guest user flow");
       if (isFromMenu.value) {
         selectedIndex.value = 1;
         apiGetStoreCategoriesApi();
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from menu, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
       } else if (isFromFav.value) {
         selectedIndex.value = 2;
         apiFeatureProductListApi(isFeaturedProduct: true);
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from fav, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
       } else if (isFromHome.value) {
         selectedIndex.value = 0;
         apiGetStoreOffersApi();
         apiFeatureProductListApi(isFeaturedProduct: true);
+        if (productId.value.isNotEmpty && productId.value != "0") {
+          print("Calling product detail API for guest from home, productId: ${productId.value}");
+          apiGetShopProductDetailApi();
+        }
       } else {
+        print("No navigation flags set, calling onIndexChange(0)");
         onIndexChange(0);
       }
       return;
     }
 
+    print("Authenticated user flow");
     if (isFromMenu.value) {
       selectedIndex.value = 1;
       apiGetStoreCategoriesApi();
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from menu flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else if (isFromFav.value) {
       selectedIndex.value = 2;
       apiFeatureProductListApi(isFeaturedProduct: true);
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from fav flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else if (isFromHome.value) {
       selectedIndex.value = 0;
+      print("Calling store offers and featured products APIs");
       apiGetStoreOffersApi();
       apiFeatureProductListApi(isFeaturedProduct: true);
+      if (productId.value.isNotEmpty && productId.value != "0") {
+        print("Calling product detail API from home flow, productId: ${productId.value}");
+        apiGetShopProductDetailApi();
+      }
     } else {
+      print("No navigation flags set, calling onIndexChange(0)");
       onIndexChange(0);
     }
 
@@ -185,11 +232,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
 
-  @override
-  void onReady() {
-    super.onReady();
-    _loadInitialData();
-  }
 
   void openProductFromFav(int index) async {
     final product = featureProductList[index];
@@ -219,6 +261,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   // --- Params Setup ---
   void _initializeParams() {
     storeId.value = Get.parameters["storeId"] ?? "";
+    productId.value = Get.parameters["productId"] ?? "";
     invokedIndex.value = int.tryParse(Get.parameters["invokedIndex"] ?? "0") ?? 0;
     isFromHome.value = Get.parameters["isFromHome"] == "true";
     isFromFav.value = Get.parameters["isFromFav"] == "true";
@@ -228,6 +271,17 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   // --- Initial Data Load ---
   Future<void> _loadInitialData() async {
+    print("=== LOAD INITIAL DATA DEBUG ===");
+    print("isGuest: ${isGuest.value}");
+    print("isFromMenu: ${isFromMenu.value}");
+    print("isFromHome: ${isFromHome.value}");
+    print("isFromFav: ${isFromFav.value}");
+    print("productId: ${productId.value}");
+    print("storeId: ${storeId.value}");
+    print("_hasStore: $_hasStore");
+    print("invokedIndex: ${invokedIndex.value}");
+    print("=============================");
+
     // For guest users, load only public data (skip user-specific data)
     if (isGuest.value == true) {
       if (isFromAddProduct.value) {
@@ -242,6 +296,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             await getCurrentLocation();
             await apiGetStoreDetailsApi();
             await apiGetStoreCategoriesApi();
+            if (productId.value.isNotEmpty && productId.value != "0") {
+              print("Calling product detail API for guest from menu");
+              await apiGetShopProductDetailApi();
+            }
           }
         } else if (isFromFav.value) {
           selectedIndex.value = 2;
@@ -257,6 +315,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             await apiGetStoreDetailsApi();
             await apiGetStoreOffersApi();
             await apiFeatureProductListApi(isFeaturedProduct: true);
+            if (productId.value.isNotEmpty && productId.value != "0") {
+              print("Calling product detail API for guest from home");
+              await apiGetShopProductDetailApi();
+            }
           }
         } else {
           // Default: load store home tab
@@ -287,6 +349,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     await apiGetUserDetailsApi();
 
     if (_hasStore) {
+      print("Calling product detail API for authenticated user");
       await apiGetShopProductDetailApi();
     }
 
@@ -354,12 +417,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       case 0:
         await apiGetPreviousOrders();
         break;
-      case 1:
-        await apiGetStoreCategoriesApi();
-        if (Get.parameters["categoryId"]?.isNotEmpty == true) {
-          await apiFeatureProductListApi(categoryId: Get.parameters["categoryId"] ?? "0");
-        }
-        break;
       case 2:
         _checkStorePage("privacy", StringConstants.noPrivacyFoundText);
         break;
@@ -410,9 +467,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     if (!hasPage) {
       Utility.showToast(noResultMessage);
-    } else {
-      // TODO: Navigate to privacy/terms page if needed
     }
+    // Note: Navigation to PDF view is handled reactively in build() based on popUpIndex
   }
 
   // --- Helpers ---
@@ -1672,10 +1728,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
     isLoading.value = true;
 
-    final headers = {
-      StringConstants.authorizationText:
-      "${StringConstants.bearerText} ${authToken.value}",
-    };
+    final Map<String, String> headers = {};
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
 
     try {
       final response = await UserProvider().getWithHeadersApi(

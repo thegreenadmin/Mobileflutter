@@ -26,6 +26,10 @@ class NotificationListController extends GetxController with GlobalVarMixin {
   }
   SharedPreferenceStorage storage = SharedPreferenceStorage();
   getPage() async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     firstName.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
@@ -44,8 +48,12 @@ class NotificationListController extends GetxController with GlobalVarMixin {
 
   ///Get Notification List Api
   Future apiGetNotificationList(bool isForStore) async {
+    // Skip API call for guest users
+    if (isGuest.value == true) {
+      return;
+    }
     isLoading.value = true;
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:

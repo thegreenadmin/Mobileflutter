@@ -59,24 +59,36 @@ class HomeController extends GetxController with GlobalVarMixin {
     super.onInit();
     // Listen to authentication state changes
     ever(isGuest, (bool guestStatus) async {
-      if (!guestStatus && authToken.value.isNotEmpty && roleApp.value.isNotEmpty) {
-        // User just logged in and role is set, refresh data
+      print("DEBUG: isGuest changed to: $guestStatus, authToken: ${authToken.value.isNotEmpty}, roleApp: ${roleApp.value}");
+      if (!guestStatus && authToken.value.isNotEmpty) {
+        // User just logged in, refresh data (role might still be loading)
         await refreshUserData();
       }
     });
-    
+
     // Also listen to role changes to ensure data refreshes when role is set
     ever(roleApp, (String role) async {
+      print("DEBUG: roleApp changed to: $role, isGuest: ${isGuest.value}, authToken: ${authToken.value.isNotEmpty}");
       if (!isGuest.value && authToken.value.isNotEmpty && role.isNotEmpty) {
         // Role is set for authenticated user, refresh data
         await refreshUserData();
       }
     });
-    
+
+    // Also listen to auth token changes
+    ever(authToken, (String token) async {
+      print("DEBUG: authToken changed, isGuest: ${isGuest.value}, roleApp: ${roleApp.value}");
+      if (!isGuest.value && token.isNotEmpty && roleApp.value.isNotEmpty) {
+        // Token is set for authenticated user, refresh data
+        await refreshUserData();
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print("DEBUG: onInit postFrameCallback - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
       // Set location before making API calls
       await getCurrentLocation();
-      
+
       // Skip user-specific API calls for guest users
       if (isGuest.value == true) {
         // Guests can still load public data (offers, featured products)
@@ -85,9 +97,18 @@ class HomeController extends GetxController with GlobalVarMixin {
         await apiGetUserFeaturedProducts();
         return;
       }
+
+      // User is authenticated (not a guest)
       await apiGetUserDetail();
-      if (roleApp.value == Role.customerRoleText && !isGuest.value) {
+
+      // Load role-specific data
+      if (roleApp.value == Role.customerRoleText) {
+        await apiGetUserOffersList();
+        await apiGetUserFeaturedProducts();
         await apiActiveCartApi();
+      } else if (roleApp.value == Role.storeOwnerRoleText) {
+        await apiGetOwnerOffersList();
+        await apiGetOwnerFeaturedProducts();
       }
     });
   }

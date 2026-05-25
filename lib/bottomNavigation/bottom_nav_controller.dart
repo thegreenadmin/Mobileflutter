@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
-import 'package:thegreenmall/dashboard/home/controller/home_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/get_store_list_model.dart';
 import 'package:thegreenmall/dashboard/more/controller/more_controller.dart';
@@ -193,11 +192,6 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       if (selectedIndex.value == 0) {
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 0;
-            // Ensure HomeController is fresh when navigating to home
-            if (Get.isRegistered<HomeController>()) {
-              Get.delete<HomeController>();
-            }
-            Get.put(HomeController());
           });
 
       } else if (selectedIndex.value == 1) {
