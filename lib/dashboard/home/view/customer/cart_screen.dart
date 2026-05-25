@@ -43,9 +43,12 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
     
     storeHomeMainController = Get.put(StoreHomeMainController());
 
-    // Just set params here (no API calls!)
     storeHomeMainController.storeId.value = (widget.storeId != null && widget.storeId!.isNotEmpty) ? widget.storeId! : "0";
     storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await storeHomeMainController.apiActiveCartApi();
+    });
 
   }
 

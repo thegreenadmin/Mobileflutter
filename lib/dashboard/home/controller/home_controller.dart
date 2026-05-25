@@ -57,35 +57,22 @@ class HomeController extends GetxController with GlobalVarMixin {
   @override
   void onInit() {
     super.onInit();
-    // Listen to authentication state changes
+
+    // Fires only once: when user logs in from guest mode (isGuest: true → false)
     ever(isGuest, (bool guestStatus) async {
-      print("DEBUG: isGuest changed to: $guestStatus, authToken: ${authToken.value.isNotEmpty}, roleApp: ${roleApp.value}");
       if (!guestStatus && authToken.value.isNotEmpty) {
-        // User just logged in, refresh data (role might still be loading)
         await refreshUserData();
       }
     });
 
-    // Also listen to role changes to ensure data refreshes when role is set
-    ever(roleApp, (String role) async {
-      print("DEBUG: roleApp changed to: $role, isGuest: ${isGuest.value}, authToken: ${authToken.value.isNotEmpty}");
-      if (!isGuest.value && authToken.value.isNotEmpty && role.isNotEmpty) {
-        // Role is set for authenticated user, refresh data
-        await refreshUserData();
-      }
-    });
-
-    // Also listen to auth token changes
-    ever(authToken, (String token) async {
-      print("DEBUG: authToken changed, isGuest: ${isGuest.value}, roleApp: ${roleApp.value}");
-      if (!isGuest.value && token.isNotEmpty && roleApp.value.isNotEmpty) {
-        // Token is set for authenticated user, refresh data
-        await refreshUserData();
+    // Refresh cart count whenever home tab becomes active (pageIdApp == 0)
+    ever(pageIdApp, (int page) async {
+      if (page == 0 && !isGuest.value && authToken.value.isNotEmpty) {
+        await apiActiveCartApi();
       }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      print("DEBUG: onInit postFrameCallback - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
       // Set location before making API calls
       await getCurrentLocation();
 
@@ -115,18 +102,20 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   // Method to refresh user data after login
   Future<void> refreshUserData() async {
-    print("DEBUG: refreshUserData called - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
-    await getCurrentLocation();
-    await apiGetUserDetail();
-    if (roleApp.value == Role.customerRoleText) {
-      print("DEBUG: Loading customer data");
-      await apiGetUserOffersList();
-      await apiGetUserFeaturedProducts();
-      await apiActiveCartApi();
-    } else {
-      print("DEBUG: Loading owner data");
-      await apiGetOwnerOffersList();
-      await apiGetOwnerFeaturedProducts();
+    isLoading.value = true;
+    try {
+      await getCurrentLocation();
+      await apiGetUserDetail();
+      if (roleApp.value == Role.customerRoleText) {
+        await apiGetUserOffersList();
+        await apiGetUserFeaturedProducts();
+        await apiActiveCartApi();
+      } else {
+        await apiGetOwnerOffersList();
+        await apiGetOwnerFeaturedProducts();
+      }
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -146,22 +135,9 @@ class HomeController extends GetxController with GlobalVarMixin {
         lng = currentLocation.longitude;
       }
 
-      if (isGuest.value == true) {
-        // Guests use public APIs without authentication
-        // API calls already made in onInit, only set location here
-      } else if (roleApp.value == Role.customerRoleText && !isGuest.value) {
-        await apiGetUserOffersList();
-        await apiGetUserFeaturedProducts();
-        await apiActiveCartApi();
-      } else {
-        await apiGetOwnerOffersList();
-        await apiGetOwnerFeaturedProducts();
-      }
     } catch (e) {
       // Handle denied permission
       Utility.showToast('Please enable location permission in settings.');
-    } finally {
-      isLoading.value = false; // Stop loader in any case
     }
   }
 
@@ -305,46 +281,34 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   ///Get Active Cart Api
   Future apiActiveCartApi() async {
-    // Skip API call for guest users
-    if (isGuest.value == true) {
-      return;
-    }
-    isLoading.value = true;
-         Map<String, String> headers = {
+    if (isGuest.value == true || authToken.value.isEmpty) return;
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-         UserProvider()
-        .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}", headers,
-            showLoading: false)
-        .then((value) async {
-      isLoading.value = false;
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+    try {
+      final value = await UserProvider()
+          .getWithHeadersApi("${ServerCommunicator.baseUrl}${ServerCommunicator.shopCartActive}", headers,
+              showLoading: false);
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         activeCartModel = ActiveCartModel.fromJson(value?.body);
-        if (int.parse(activeCartModel.data!.storeId.toString()) == 0 &&
-            activeCartModel.data!.cartItems!.isEmpty) {
+        final int parsedStoreId = int.tryParse(activeCartModel.data?.storeId?.toString() ?? "0") ?? 0;
+        if (parsedStoreId == 0 && (activeCartModel.data?.cartItems?.isEmpty ?? true)) {
           cartCount.value = 0;
         } else {
           storeIdValue?.value = activeCartModel.data!.storeId.toString();
-          cartCount.value = activeCartModel.data!.cartItems!.length;
+          cartCount.value = activeCartModel.data?.cartItems?.length ?? 0;
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        isLoading.value = false;
         Get.parameters.clear();
         Utility.handle401Error();
-      } else {
-        isLoading.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
-        }
       }
-    }).catchError((error, stackTrace) {
-      isLoading.value = false;
-    });
+    } catch (error) {
+      // silent
+    }
   }
   ///Get User Detail Info Api
   Future apiGetUserDetail() async {
@@ -352,25 +316,22 @@ class HomeController extends GetxController with GlobalVarMixin {
     if (isGuest.value == true) {
       return;
     }
-     
     Map<String, String> headers = {
       StringConstants.authorizationText:
           "${StringConstants.bearerText} ${authToken.value}",
     };
-         UserProvider()
-        .getWithHeadersApi(
-            ServerCommunicator.baseUrl + ServerCommunicator.userDetail,
-            headers,
-            showLoading: false)
-        .then((value) async {
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+    try {
+      final value = await UserProvider().getWithHeadersApi(
+          ServerCommunicator.baseUrl + ServerCommunicator.userDetail,
+          headers,
+          showLoading: false);
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getUserDetailModel = GetUserDetailModel.fromJson(value?.body);
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
         currentUserPhone!.value = getUserDetailModel.data?.user?.phone ?? "";
-        SharedPreferenceStorage
-            .setData("userData", getUserDetailModel.data);
+        SharedPreferenceStorage.setData("userData", getUserDetailModel.data);
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
@@ -382,15 +343,15 @@ class HomeController extends GetxController with GlobalVarMixin {
         SharedPreferenceStorage.setData("userPhone", currentUserPhone!.value);
         firstName.value = getUserDetailModel.data?.user?.firstName ?? "";
         lastName.value = getUserDetailModel.data?.user?.lastName ?? "";
-
-        await getCurrentLocation();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         Utility.handle401Error();
       }
-    });
+    } catch (e) {
+      // handle error silently
+    }
   }
 
   ///logout user account

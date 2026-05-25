@@ -925,19 +925,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           // storeId.value = activeCartModel.data!.storeId.toString();
         } else {
           storeIdValue.value = activeCartModel.data!.storeId.toString();
-          cartCount.value = cartListResponse.data?.cartItems?.length ?? 0;
-          if (cartListResponse.data?.cartTotalPrice is int ||
-              cartListResponse.data?.cartTotalPrice is String) {
-            cartTotalPrice.value = double.parse(
-                cartListResponse.data?.cartTotalPrice.toString() ?? "0.0");
-          } else {
-            cartTotalPrice.value = cartListResponse.data?.cartTotalPrice ?? 0.0;
-          }
-
-                     isValidAddress.value = activeCartModel.data!.isValidAddress!;
+          isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
-          // storeId.value = activeCartModel.data!.storeId.toString();
-          await apiGetCartListApi(existingStoreId:activeCartModel.data!.storeId.toString());
+          await apiGetCartListApi(existingStoreId: activeCartModel.data!.storeId.toString());
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1096,8 +1086,10 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     };
 
     // Ensure storeId is not empty
-    String finalStoreId = (existingStoreId?.isNotEmpty == true) ? existingStoreId! : (storeId.value.isNotEmpty ? storeId.value : "0");
-    if (finalStoreId.toLowerCase() == "null" || finalStoreId == "0") {
+    String finalStoreId = (existingStoreId != null && existingStoreId.isNotEmpty && existingStoreId.toLowerCase() != "null" && existingStoreId != "0")
+        ? existingStoreId
+        : (storeId.value.isNotEmpty && storeId.value.toLowerCase() != "null" && storeId.value != "0" ? storeId.value : "0");
+    if (finalStoreId == "0") {
       isLoading.value = false;
       return;
     }

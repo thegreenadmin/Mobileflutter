@@ -249,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               // arguments: {
                               // },
                             );
+                            await homeController.apiActiveCartApi();
                           } else {
                             await Get.to(
                                   () =>
@@ -307,6 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                   ),
                               id: pageIdApp.value,
                             );
+                            await homeController.apiActiveCartApi();
                           }
                         },
                         constraints: const BoxConstraints(),
@@ -405,9 +407,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                             Get.to(() => const AccountScreen(),
                               id: pageIdApp.value,)
                                 ?.then((value) {
-                              homeController.isLoading.value = true;
-                              homeController.apiGetUserDetail();
-                              homeController.getCurrentLocation();
+                              homeController.refreshUserData();
                             });
                           },
                           constraints: const BoxConstraints(),
@@ -528,8 +528,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                 InkWell(
                                   onTap: () async {
                                     if (homeController.isLoading.value == false) {
-                                      await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value)
-                                          ?.then((value) => homeController.apiActiveCartApi());
+                                      await Get.to(() => CartScreen(storeId: homeController.storeIdValue?.value), id: pageIdApp.value);
+                                      await homeController.apiActiveCartApi();
                                     }
                                   },
                                   child: Stack(
@@ -647,6 +647,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                     ),
                                 id: pageIdApp.value,
                               );
+                              await homeController.apiActiveCartApi();
                               }else{
 
                               await Get.to(() =>
@@ -662,6 +663,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                     ),
                                 id: pageIdApp.value,
                               );
+                              await homeController.apiActiveCartApi();
                             }
 
                             /* Get.parameters["isFromMenu"] = "true";
@@ -801,7 +803,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               child: InkWell(
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
-                onTap: () {
+                onTap: () async {
                   if (homeController.isLoading.value == false) {
                     if (roleApp.value == Role.customerRoleText) {
                     /*  Get.parameters["isFromHome"] = "false";
@@ -816,7 +818,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           "2";*/
                       print("StoreHomeMainScreen storeId--" "${item.storeId}" );
                       print(item.storeId ?? "");
-                      Get.to(
+                      await Get.to(
                             () =>
                             StoreHomeMainScreen(args:
                             StoreHomeMainArgs(
@@ -832,6 +834,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                             ),
                         id: pageIdApp.value,
                       );
+                      await homeController.apiActiveCartApi();
                     } else {
                       // Get.parameters["isFromHome"] = "true";
                       // Get.parameters["storeId"] =
