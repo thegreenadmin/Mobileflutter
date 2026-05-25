@@ -102,15 +102,19 @@ class HomeController extends GetxController with GlobalVarMixin {
 
   // Method to refresh user data after login
   Future<void> refreshUserData() async {
+    print("DEBUG: refreshUserData called - roleApp: ${roleApp.value}, isGuest: ${isGuest.value}");
     isLoading.value = true;
     try {
       await getCurrentLocation();
       await apiGetUserDetail();
+      print("DEBUG: After apiGetUserDetail - roleApp: ${roleApp.value}");
       if (roleApp.value == Role.customerRoleText) {
+        print("DEBUG: Loading customer data (offers, featured, cart)");
         await apiGetUserOffersList();
         await apiGetUserFeaturedProducts();
         await apiActiveCartApi();
       } else {
+        print("DEBUG: Loading owner data (offers, featured)");
         await apiGetOwnerOffersList();
         await apiGetOwnerFeaturedProducts();
       }
@@ -335,7 +339,7 @@ class HomeController extends GetxController with GlobalVarMixin {
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");
         SharedPreferenceStorage.setData(
-            StringConstants.lastNameText, lastName.value);
+            StringConstants.lastNameText, getUserDetailModel.data?.user?.lastName ?? "");
         SharedPreferenceStorage.setData(
             StringConstants.emailText, email!.value);
         SharedPreferenceStorage.setData(
