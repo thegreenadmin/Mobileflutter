@@ -192,7 +192,7 @@ class StringConstants {
   //E
   static String enterCategoryNameText = "Enter category name";
   static String enableStoreText = "Enable Store";
-  static String emailText = "Email (Optional)";
+  static String emailText = "Email";
   static String estimatedDeliveryDateText = "Estimated Delivery Date";
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
