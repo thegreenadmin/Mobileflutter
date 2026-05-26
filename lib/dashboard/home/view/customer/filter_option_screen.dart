@@ -211,7 +211,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                             Utility.formatDateTime(
                                     searchStoreUserController
                                         .openingTimeTextController.text,
-                                    firstFormat: "hh:mm",
+                                    firstFormat: "HH:mm",
                                     secFormat: "HH:mm:ss")
                                 .toString();
                       },

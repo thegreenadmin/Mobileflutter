@@ -615,10 +615,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
               ? true
               : false,
       "opening_time": openingTimeTextController.text != ""
-          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "closing_time": closingTimeTextController.text != ""
-          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       // "is_favourite_store": type.value == 2 ? true : null,
       // "show_previous_stores": type.value == 1 ? true : null,
@@ -646,10 +646,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
               ? true
               : false,
       "opening_time": openingTimeTextController.text != ""
-          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(openingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "closing_time": closingTimeTextController.text != ""
-          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "hh:mm a", secFormat: "HH:mm:ss")
+          ? Utility.formatDateTime(closingTimeTextController.text, firstFormat: "HH:mm", secFormat: "HH:mm:ss")
           : null,
       "is_favourite_store": type.value == 2 ? true : null,
       "show_previous_stores": type.value == 1 ? true : null,
