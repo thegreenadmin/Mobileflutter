@@ -60,17 +60,22 @@ class OffersController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
+
+    // Sync local firstName/lastName with global variables
+    if (firstName != null) {
+      ever(firstName!, (String val) => this.firstName?.value = val);
+    }
+    if (lastName != null) {
+      ever(lastName!, (String val) => this.lastName?.value = val);
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
       role.value = roleData;
-      if (Get.parameters["isController"] != "no") {
-        if (role.value == Role.customerRoleText && !isGuest.value) {
-          searchStoreUserController.apiActiveCartApi();
-        }
-        // isFromNotification.value =
-        //     Get.parameters["isFromNotification"] == "true" ? true : false;
-        getData();
+      if (role.value == Role.customerRoleText && !isGuest.value) {
+        searchStoreUserController.apiActiveCartApi();
       }
+      getData();
     });
   }
 

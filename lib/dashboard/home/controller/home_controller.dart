@@ -73,36 +73,59 @@ class HomeController extends GetxController with GlobalVarMixin {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print("HOME_DEBUG: postFrameCallback START");
+      // Load role from shared preferences
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+      roleApp.value = roleData;
+      print("HOME_DEBUG: role=$roleData, isGuest=${isGuest.value}, authToken empty=${authToken.value.isEmpty}");
+
       // Set location before making API calls
       await getCurrentLocation();
+      print("HOME_DEBUG: location done lat=$lat lng=$lng");
 
       // Skip user-specific API calls for guest users
       if (isGuest.value == true) {
-        // Guests can still load public data (offers, featured products)
-        // but skip user-specific data (user details, cart)
+        print("HOME_DEBUG: guest path - loading public data");
         await apiGetUserOffersList();
         await apiGetUserFeaturedProducts();
+        print("HOME_DEBUG: guest data loaded - offers=${userCarouselImgList.length} products=${featuredUserProductList.length}");
         return;
       }
 
       // User is authenticated (not a guest)
+      print("HOME_DEBUG: authenticated path - calling apiGetUserDetail");
       await apiGetUserDetail();
+      print("HOME_DEBUG: userDetail done, firstName=${firstName.value}, roleApp=${roleApp.value}");
 
       // Load role-specific data
       if (roleApp.value == Role.customerRoleText) {
+        print("HOME_DEBUG: customer path");
         await apiGetUserOffersList();
+        print("HOME_DEBUG: customer offers loaded: ${userCarouselImgList.length}");
         await apiGetUserFeaturedProducts();
+        print("HOME_DEBUG: customer products loaded: ${featuredUserProductList.length}");
         await apiActiveCartApi();
       } else if (roleApp.value == Role.storeOwnerRoleText) {
+        print("HOME_DEBUG: owner path");
         await apiGetOwnerOffersList();
+        print("HOME_DEBUG: owner offers loaded: ${getOwnerOfferList.length}");
         await apiGetOwnerFeaturedProducts();
+        print("HOME_DEBUG: owner products loaded: ${ownerFeatureProductList.length}");
+      } else {
+        print("HOME_DEBUG: UNKNOWN ROLE - no data loaded! roleApp='${roleApp.value}'");
       }
+      print("HOME_DEBUG: postFrameCallback DONE");
     });
   }
 
   // Method to refresh user data after login
   Future<void> refreshUserData() async {
     print("DEBUG: refreshUserData called - roleApp: ${roleApp.value}, isGuest: ${isGuest.value}");
+    // Load role from shared preferences
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    roleApp.value = roleData;
+    print("DEBUG: Loaded role from shared prefs: $roleData");
+    
     isLoading.value = true;
     try {
       await getCurrentLocation();
@@ -408,14 +431,14 @@ class HomeController extends GetxController with GlobalVarMixin {
           "${StringConstants.bearerText} ${authToken.value}";
     }
 
-         UserProvider()
-        .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
-            headers,
-            showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider()
+          .getWithHeadersApi(
+              "${ServerCommunicator.baseUrl}${ServerCommunicator.shopStoreHomeOffers}?longitude=$lng&latitude=$lat&mileage=1000&page=1&page_size=20",
+              headers,
+              showLoading: false);
 
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value?.body);
         userOfferList.value = userOffersModel.data!.offers!;
@@ -438,7 +461,9 @@ class HomeController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 
   ///Feature ProductList Store Api [USER OLD]
@@ -532,16 +557,17 @@ class HomeController extends GetxController with GlobalVarMixin {
       ]
     };
 
-              UserProvider()
-        .getWithHeadersApi(url, headers, showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider()
+          .getWithHeadersApi(url, headers, showLoading: false);
 
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userFeaturedProductModel =
             UserFeaturedProductModel.fromJson(value?.body);
         featuredUserProductList.value =
-            userFeaturedProductModel.data?.products ??[]; isLoading.value = false;
+            userFeaturedProductModel.data?.products ?? [];
+        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
@@ -552,7 +578,9 @@ class HomeController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 
   ///Get Offers List Api [OWNER]
@@ -579,16 +607,16 @@ class HomeController extends GetxController with GlobalVarMixin {
       "order_type": "DESC",
       "filters": []
     };
-    UserProvider()
-        .postWithHeadersApi(
-            body,
-            ServerCommunicator.baseUrl + ServerCommunicator.storeOfferList,
-            headers,
-            showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider()
+          .postWithHeadersApi(
+              body,
+              ServerCommunicator.baseUrl + ServerCommunicator.storeOfferList,
+              headers,
+              showLoading: false);
       print("DEBUG: apiGetOwnerOffersList response status: ${value?.body["status"]}");
 
-                     if (value?.body["status"] == ApiConstants.statusCode201 ||
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
@@ -600,7 +628,8 @@ class HomeController extends GetxController with GlobalVarMixin {
             }
             ownerCarouselImgList.add(getOwnerOfferList[i].image!.dynamicUrl!);
           }
-        }    isLoading.value = false;
+        }
+        isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         print("DEBUG: apiGetOwnerOffersList 401 error");
         Utility.showAlertMessage(value?.body['message']);
@@ -610,15 +639,15 @@ class HomeController extends GetxController with GlobalVarMixin {
         Utility.handle401Error();
       } else {
         print("DEBUG: apiGetOwnerOffersList error: ${value?.body['message']}");
-                       isLoading.value = false;
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    }).catchError((error, stackTrace) {
+    } catch (error, stackTrace) {
       print("DEBUG: apiGetOwnerOffersList exception: $error");
       isLoading.value = false;
-    });
+    }
   }
 
   ///Feature ProductList Store Api [Owner]
@@ -651,16 +680,16 @@ class HomeController extends GetxController with GlobalVarMixin {
         }
       ]
     };
-    UserProvider()
-        .postWithHeadersApi(
-            body,
-            ServerCommunicator.baseUrl +
-                ServerCommunicator.storeProductList,
-            headers,
-            showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider()
+          .postWithHeadersApi(
+              body,
+              ServerCommunicator.baseUrl +
+                  ServerCommunicator.storeProductList,
+              headers,
+              showLoading: false);
 
-             if (value?.body["status"] == ApiConstants.statusCode201 ||
+      if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         ownerFeaturedProductModel =
             OwnerFeaturedProductModel.fromJson(value?.body);
@@ -670,13 +699,15 @@ class HomeController extends GetxController with GlobalVarMixin {
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
-        Get.parameters.clear();isLoading.value = false;
+        Get.parameters.clear(); isLoading.value = false;
         Utility.handle401Error();
-      } else {isLoading.value = false;
+      } else { isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 }

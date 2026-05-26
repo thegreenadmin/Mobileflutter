@@ -121,18 +121,24 @@ class WalletController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
+
+    // Sync local firstName/lastName with global variables
+    if (firstName != null) {
+      ever(firstName!, (String val) => this.firstName?.value = val);
+    }
+    if (lastName != null) {
+      ever(lastName!, (String val) => this.lastName?.value = val);
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Skip API calls for guest users
       if (isGuest.value == true) {
         return;
       }
-      if (Get.parameters["isController"] != "no") {
-        if (roleApp.value == Role.customerRoleText) {
-          searchStoreUserController.apiActiveCartApi();
-        }
-
-        getPage();
+      if (roleApp.value == Role.customerRoleText) {
+        searchStoreUserController.apiActiveCartApi();
       }
+      getPage();
     });
   }
 
