@@ -968,7 +968,6 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       isLoading.value = false;
              if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
-        Get.back(id: pageIdApp.value);
         Get.parameters["storeName"] = value?.body["data"]["store_name"] ?? "";
         Get.parameters["storeId"] = storeId.value;
         // Get.parameters["storeId"] = value?.body["data"]["store_id"] ?? "";
