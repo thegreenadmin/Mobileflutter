@@ -35,9 +35,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   final CarouselSliderController _controllerProducts = CarouselSliderController();
   int _current = 0;
   final CarouselSliderController _controller = CarouselSliderController();
-  final AccountController accountController = Get.put(AccountController());
 
-  final HomeController homeController = Get.put(HomeController());
+  late final AccountController accountController;
+  late final HomeController homeController;
 
   Future<void> _pullRefresh() async {
     await homeController.refreshUserData();
@@ -46,6 +46,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   @override
   void initState() {
     super.initState();
+    // Force-delete any stale cached instance so Get.put always creates a fresh
+    // controller and calls onInit()/_loadHomeData() after every Get.offAll login.
+    Get.delete<HomeController>(force: true);
+    homeController = Get.put(HomeController());
+    accountController = Get.put(AccountController());
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -596,11 +601,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   }
 
   _buildCarouselSlider({RxList<OffersList>? offersCarouselList,
-    RxList<ProductsList>? featuredProductList}) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center,
+    RxList<ProductsList>? featuredProductList}) {
+    print("CAROUSEL_DEBUG: isEmpty=${offersCarouselList!.isEmpty}, length=${offersCarouselList.length}, hashCode=${offersCarouselList.hashCode}");
+    return Column(crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
-            offersCarouselList!.isEmpty
+            offersCarouselList.isEmpty
                 ? SizedBox(
               height:
               offersCarouselList.isEmpty && featuredProductList!.isEmpty
@@ -788,6 +794,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               }).toList(),
             ))
           ]);
+  }
 
   _buildProductsCarousel({RxList<ProductsList>? featuredProductList}) {
     return featuredProductList!.isEmpty

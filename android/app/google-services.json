@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:454165179084:android:dd3419f251cc1505ee7069",
         "android_client_info": {
-          "package_name": "com.thegreenmall"
+          "package_name": "com.app.thegreenmall"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "454165179084-a7qdc7vqu6s1b4i8dmite83m8hlckloi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.thegreenmall",
+            "package_name": "com.app.thegreenmall",
             "certificate_hash": "2eab53972c38f16a403853ca75ee5b6be6535205"
           }
         },

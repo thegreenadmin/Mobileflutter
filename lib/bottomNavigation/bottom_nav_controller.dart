@@ -62,8 +62,12 @@ class BottomNavController extends GetxController with GlobalVarMixin{
       storeList.clear();
       return;
     }
-    roleApp.value = roleData;
-    if (roleData == Role.customerRoleText) {
+    // Only update roleApp if we got a valid non-empty role from SharedPrefs
+    // Avoids overwriting the correctly-set global roleApp during a race condition
+    if (roleData.isNotEmpty) {
+      roleApp.value = roleData;
+    }
+    if ((roleData.isNotEmpty ? roleData : roleApp.value) == Role.customerRoleText) {
       storeList.clear();
     } else {
       isLoading.value = true;
@@ -167,7 +171,8 @@ class BottomNavController extends GetxController with GlobalVarMixin{
     var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
     if (isGuest.value == true) {
       roleApp.value = Role.customerRoleText;
-    } else {
+    } else if (roleData.isNotEmpty) {
+      // Only update if non-empty to avoid overwriting during SharedPrefs write race condition
       roleApp.value = roleData;
     }
     Get.delete<StoreHomeMainController>();
