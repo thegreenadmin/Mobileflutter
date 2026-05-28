@@ -81,6 +81,9 @@ jobs:
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
 
+      - name: Print api_key.env contents
+        run: cat assets/env/api_key.env
+
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
