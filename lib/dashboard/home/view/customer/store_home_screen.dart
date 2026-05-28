@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/common_models/store_addresses_model.dart'
 as offer;
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class StoreHomeScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class StoreHomeScreen extends StatefulWidget {
   State<StoreHomeScreen> createState() => _StoreHomeScreenState();
 }
 
-class _StoreHomeScreenState extends State<StoreHomeScreen> {
+class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController = Get.put(StoreHomeMainController());
 
   final CarouselSliderController _controller = CarouselSliderController();
@@ -182,6 +183,18 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
 
                                 InkWell(
                                   onTap: () {
+                                    // Check if user is guest - show modal and prevent API call
+                                    if (isGuest.value == true) {
+                                      GuestAccessModal.show(
+                                        title: "Login Required",
+                                        message: "Please login to add products to favourites",
+                                        onContinueAsGuest: () {
+                                          // Allow guest to continue - just close modal
+                                        },
+                                      );
+                                      return; // Don't toggle or make API call
+                                    }
+
                                     item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
                                     if (!storeHomeMainController.isLoading.value) {
                                       if (item.isFavouriteProduct!.value) {

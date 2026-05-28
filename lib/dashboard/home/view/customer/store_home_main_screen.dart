@@ -12,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_screen.dart
 import 'package:thegreenmall/dashboard/home/view/customer/store_menu_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/view_pdf_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'components/store_home_main_args.dart';
@@ -24,12 +25,11 @@ class StoreHomeMainScreen extends StatefulWidget {
   State<StoreHomeMainScreen> createState() => _StoreHomeMainScreenState();
 }
 
-class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
+class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController =
   Get.isRegistered<StoreHomeMainController>()
       ? Get.find<StoreHomeMainController>()
       : Get.put(StoreHomeMainController());
-
 
   RxList horizontalTabList = [
     StringConstants.storeText,
@@ -294,6 +294,18 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
                   onTap: () {
                     // _applyArgs();
 
+                    // Check if user is guest trying to access favourites (index 2)
+                    if (i == 2 && isGuest.value == true) {
+                      GuestAccessModal.show(
+                        title: "Login Required",
+                        message: "Please login to view favourite products",
+                        onContinueAsGuest: () {
+                          // Allow guest to continue - just close modal
+                        },
+                      );
+                      return; // Don't change the tab index
+                    }
+
                     storeHomeMainController.applyArgs(widget.args);
                     storeHomeMainController.onIndexChange(i);
                   },
@@ -404,6 +416,17 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> {
           ],
         ),
         onTap: () async {
+          // Check if user is guest - show modal and prevent navigation
+          if (isGuest.value == true) {
+            GuestAccessModal.show(
+              title: "Login Required",
+              message: "Please login to view previous orders",
+              onContinueAsGuest: () {
+                // Allow guest to continue - just close modal
+              },
+            );
+            return; // Don't navigate
+          }
           storeHomeMainController.popUpMenuChange(0);
         },
       ),

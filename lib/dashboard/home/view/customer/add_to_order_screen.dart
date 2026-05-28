@@ -16,7 +16,7 @@ class AddToOrderScreen extends StatefulWidget {
   State<AddToOrderScreen> createState() => _AddToOrderScreenState();
 }
 
-class _AddToOrderScreenState extends State<AddToOrderScreen> {
+class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController =
   Get.put(StoreHomeMainController());
   final CarouselSliderController _controller = CarouselSliderController();
@@ -998,6 +998,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> {
         ),
         InkWell(
           onTap: () {
+            // Check if user is guest - show modal and prevent state change
+            if (isGuest.value == true) {
+              GuestAccessModal.show(
+                title: "Login Required",
+                message: "Please login to add products to favourites",
+                onContinueAsGuest: () {
+                  // Allow guest to continue - just close modal
+                },
+              );
+              return; // Don't toggle or make API call
+            }
+
             var isFavorite = storeHomeMainController.isFavouriteProduct.value;
             storeHomeMainController.isFavouriteProduct.value = !isFavorite;
             if (!storeHomeMainController.isLoading.value) {

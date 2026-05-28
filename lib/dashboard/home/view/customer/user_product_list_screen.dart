@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class UserProductListScreen extends StatefulWidget {
@@ -204,6 +205,18 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                               true
                                           ? InkWell(
                                               onTap: () {
+                                                // Check if user is guest - show modal and prevent state change
+                                                if (isGuest.value == true) {
+                                                  GuestAccessModal.show(
+                                                    title: "Login Required",
+                                                    message: "Please login to manage favourites",
+                                                    onContinueAsGuest: () {
+                                                      // Allow guest to continue - just close modal
+                                                    },
+                                                  );
+                                                  return; // Don't toggle or make API call
+                                                }
+
                                                 storeHomeMainController
                                                     .featureProductList[i]
                                                     .isFavouriteProduct!.value= false;
@@ -225,6 +238,18 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                             )
                                           : InkWell(
                                               onTap: () {
+                                                // Check if user is guest - show modal and prevent state change
+                                                if (isGuest.value == true) {
+                                                  GuestAccessModal.show(
+                                                    title: "Login Required",
+                                                    message: "Please login to add products to favourites",
+                                                    onContinueAsGuest: () {
+                                                      // Allow guest to continue - just close modal
+                                                    },
+                                                  );
+                                                  return; // Don't toggle or make API call
+                                                }
+
                                                 storeHomeMainController
                                                     .featureProductList[i]
                                                     .isFavouriteProduct!.value= true;

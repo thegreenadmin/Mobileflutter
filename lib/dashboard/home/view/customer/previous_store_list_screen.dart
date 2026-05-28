@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'components/store_home_main_args.dart';
@@ -246,6 +247,18 @@ class _PreviousStoreListScreenState extends State<PreviousStoreListScreen> with 
 
                                     return InkWell(
                                       onTap: () {
+                                        // Check if user is guest - show modal and prevent state change
+                                        if (isGuest.value == true) {
+                                          GuestAccessModal.show(
+                                            title: "Login Required",
+                                            message: "Please login to manage favourite stores",
+                                            onContinueAsGuest: () {
+                                              // Allow guest to continue - just close modal
+                                            },
+                                          );
+                                          return; // Don't toggle or make API call
+                                        }
+
                                         if (searchStoreUserController.isLoading.value) return;
 
                                         if (isFav) {

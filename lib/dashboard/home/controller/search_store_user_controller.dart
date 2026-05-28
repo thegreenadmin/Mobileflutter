@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -808,6 +809,18 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   Future apiGetFavoriteStores({
     bool isFilter = false,
   }) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to view favourite stores",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isClicked.value = true;
     if (page.value == 1) {
       favouriteStore.clear();

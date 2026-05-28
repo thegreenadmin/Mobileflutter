@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart' show Position;
+import 'package:geolocator/geolocator.dart' show Geolocator, Position;
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
@@ -53,6 +54,7 @@ class HomeController extends GetxController with GlobalVarMixin {
   // final SearchStoreUserController searchStoreUserController =
   //     Get.put(SearchStoreUserController());
   ActiveCartModel activeCartModel = ActiveCartModel();
+  bool _roleDataPending = false;
   
   @override
   void onInit() {
@@ -65,6 +67,19 @@ class HomeController extends GetxController with GlobalVarMixin {
       }
     });
 
+    // Fallback: fires when roleApp becomes available after an async SharedPrefs read
+    // (race condition where _loadHomeData ran before roleApp was set from prefs).
+    // _roleDataPending gates this so changes from other controllers (BottomNavController,
+    // SplashScreen, OtpVerificationController) don't trigger spurious loads.
+    ever(roleApp, (String role) async {
+      print("DEBUG: ever(roleApp) fired - role=$role, _roleDataPending=$_roleDataPending, isGuest=${isGuest.value}, authToken empty=${authToken.value.isEmpty}");
+      if (_roleDataPending && role.isNotEmpty && !isGuest.value && authToken.value.isNotEmpty) {
+        print("DEBUG: ever(roleApp) conditions met, calling _loadRoleSpecificData");
+        _roleDataPending = false;
+        await _loadRoleSpecificData();
+      }
+    });
+
     // Refresh cart count whenever home tab becomes active (pageIdApp == 0)
     ever(pageIdApp, (int page) async {
       if (page == 0 && !isGuest.value && authToken.value.isNotEmpty) {
@@ -72,74 +87,67 @@ class HomeController extends GetxController with GlobalVarMixin {
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      print("HOME_DEBUG: postFrameCallback START");
-      // Load role from shared preferences
-      var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
-      roleApp.value = roleData;
-      print("HOME_DEBUG: role=$roleData, isGuest=${isGuest.value}, authToken empty=${authToken.value.isEmpty}");
+    _loadHomeData();
+  }
 
-      // Set location before making API calls
-      await getCurrentLocation();
-      print("HOME_DEBUG: location done lat=$lat lng=$lng");
+  Future<void> _loadHomeData() async {
+    print("DEBUG: _loadHomeData starting... isGuest=${isGuest.value}, roleApp=${roleApp.value}");
 
-      // Skip user-specific API calls for guest users
-      if (isGuest.value == true) {
-        print("HOME_DEBUG: guest path - loading public data");
-        await apiGetUserOffersList();
-        await apiGetUserFeaturedProducts();
-        print("HOME_DEBUG: guest data loaded - offers=${userCarouselImgList.length} products=${featuredUserProductList.length}");
-        return;
-      }
+    // Set location before making API calls
+    await getCurrentLocation();
+    print("DEBUG: _loadHomeData location loaded lat=$lat, lng=$lng");
 
-      // User is authenticated (not a guest)
-      print("HOME_DEBUG: authenticated path - calling apiGetUserDetail");
-      await apiGetUserDetail();
-      print("HOME_DEBUG: userDetail done, firstName=${firstName.value}, roleApp=${roleApp.value}");
+    // Skip user-specific API calls for guest users
+    if (isGuest.value == true) {
+      await apiGetUserOffersList();
+      await apiGetUserFeaturedProducts();
+      return;
+    }
 
-      // Load role-specific data
-      if (roleApp.value == Role.customerRoleText) {
-        print("HOME_DEBUG: customer path");
-        await apiGetUserOffersList();
-        print("HOME_DEBUG: customer offers loaded: ${userCarouselImgList.length}");
-        await apiGetUserFeaturedProducts();
-        print("HOME_DEBUG: customer products loaded: ${featuredUserProductList.length}");
-        await apiActiveCartApi();
-      } else if (roleApp.value == Role.storeOwnerRoleText) {
-        print("HOME_DEBUG: owner path");
-        await apiGetOwnerOffersList();
-        print("HOME_DEBUG: owner offers loaded: ${getOwnerOfferList.length}");
-        await apiGetOwnerFeaturedProducts();
-        print("HOME_DEBUG: owner products loaded: ${ownerFeatureProductList.length}");
-      } else {
-        print("HOME_DEBUG: UNKNOWN ROLE - no data loaded! roleApp='${roleApp.value}'");
-      }
-      print("HOME_DEBUG: postFrameCallback DONE");
-    });
+    // User is authenticated (not a guest)
+    await apiGetUserDetail();
+
+    // Load role-specific data if role is already available.
+    // If roleApp is still empty (SharedPrefs write race condition), the
+    // ever(roleApp, ...) listener in onInit() will trigger this once role arrives.
+    if (roleApp.value.isNotEmpty) {
+      await _loadRoleSpecificData();
+    } else {
+      _roleDataPending = true;
+      print("DEBUG: _loadHomeData roleApp empty, will reload via ever(roleApp) when it arrives");
+    }
+  }
+
+  Future<void> _loadRoleSpecificData() async {
+    print("DEBUG: _loadRoleSpecificData role=${roleApp.value}");
+    if (roleApp.value == Role.customerRoleText) {
+      await apiGetUserOffersList();
+      await apiGetUserFeaturedProducts();
+      await apiActiveCartApi();
+    } else if (roleApp.value == Role.storeOwnerRoleText) {
+      await apiGetOwnerOffersList();
+      await apiGetOwnerFeaturedProducts();
+    }
   }
 
   // Method to refresh user data after login
   Future<void> refreshUserData() async {
-    print("DEBUG: refreshUserData called - roleApp: ${roleApp.value}, isGuest: ${isGuest.value}");
-    // Load role from shared preferences
-    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
-    roleApp.value = roleData;
-    print("DEBUG: Loaded role from shared prefs: $roleData");
-    
     isLoading.value = true;
     try {
       await getCurrentLocation();
+      if (roleApp.value.isEmpty) {
+        final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+        if (roleData.isNotEmpty) roleApp.value = roleData;
+      }
       await apiGetUserDetail();
-      print("DEBUG: After apiGetUserDetail - roleApp: ${roleApp.value}");
-      if (roleApp.value == Role.customerRoleText) {
-        print("DEBUG: Loading customer data (offers, featured, cart)");
-        await apiGetUserOffersList();
-        await apiGetUserFeaturedProducts();
-        await apiActiveCartApi();
-      } else {
-        print("DEBUG: Loading owner data (offers, featured)");
-        await apiGetOwnerOffersList();
-        await apiGetOwnerFeaturedProducts();
+      await _loadRoleSpecificData();
+
+      // Refresh store details if StoreHomeMainController is registered
+      if (Get.isRegistered<StoreHomeMainController>()) {
+        final storeController = Get.find<StoreHomeMainController>();
+        if (storeController.storeId.value.isNotEmpty && storeController.storeId.value != "0") {
+          await storeController.getCurrentLocation();
+        }
       }
     } finally {
       isLoading.value = false;
@@ -147,24 +155,27 @@ class HomeController extends GetxController with GlobalVarMixin {
   }
 
   getCurrentLocation() async {
+    // Nashville is the safe default — APIs start immediately without waiting for GPS.
+    lat = 36.1627;
+    lng = -86.7816;
     try {
-      // Check if user is 0000000000, use Nashville, Tennessee coordinates
       if (currentUserPhone!.value == "0000000000") {
-        lat = 36.1627; // Nashville, Tennessee latitude
-        lng = -86.7816; // Nashville, Tennessee longitude
+        // Nashville already set above
       } else if (isGuest.value == true) {
-        // For guests, use Nashville coordinates as default for testing
-        lat = 36.1627; // Nashville, Tennessee latitude
-        lng = -86.7816; // Nashville, Tennessee longitude
+        // Nashville already set above
       } else {
-        Position currentLocation = await Utility.fetchCurrentLocation();
+        Position currentLocation = await Utility.fetchCurrentLocation()
+            .timeout(const Duration(seconds: 5), onTimeout: () {
+          print("DEBUG: getCurrentLocation timed out, using Nashville default");
+          throw Exception("Location timeout");
+        });
         lat = currentLocation.latitude;
         lng = currentLocation.longitude;
       }
 
     } catch (e) {
-      // Handle denied permission
-      Utility.showToast('Please enable location permission in settings.');
+      // Fall back to Nashville default on any error (denied permission, timeout, etc.)
+      print("DEBUG: getCurrentLocation error: $e, using Nashville default");
     }
   }
 
@@ -441,7 +452,27 @@ class HomeController extends GetxController with GlobalVarMixin {
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         userOffersModel = GetUserOfferModel.fromJson(value?.body);
-        userOfferList.value = userOffersModel.data!.offers!;
+        if (userOffersModel.data?.offers != null) {
+          userOfferList.value = userOffersModel.data!.offers!;
+        } else {
+          final List<OffersList> extractedOffers = [];
+          final storesJson = value?.body["data"]?["stores"];
+          if (storesJson != null && storesJson is List) {
+            for (var storeJson in storesJson) {
+              final offersJson = storeJson["offers"];
+              if (offersJson != null && offersJson is List) {
+                for (var offerJson in offersJson) {
+                  if (offerJson["store"] == null && storeJson != null) {
+                    offerJson["store"] = storeJson;
+                  }
+                  extractedOffers.add(OffersList.fromJson(offerJson));
+                }
+              }
+            }
+          }
+          userOfferList.value = extractedOffers;
+        }
+
         for (int i = 0; i < userOfferList.length; i++) {
           storeId!.value = userOfferList[i].storeId.toString();
           if (i >= 5) {
@@ -461,7 +492,8 @@ class HomeController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("ERROR: apiGetUserOffersList failed: $e\n$stackTrace");
       isLoading.value = false;
     }
   }
@@ -578,7 +610,8 @@ class HomeController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("ERROR: apiGetUserFeaturedProducts failed: $e\n$stackTrace");
       isLoading.value = false;
     }
   }
@@ -588,9 +621,7 @@ class HomeController extends GetxController with GlobalVarMixin {
     getOwnerOfferList.clear();
     isLoading.value = true;
     ownerCarouselImgList.clear();
-    
-    print("DEBUG: apiGetOwnerOffersList called - isGuest: ${isGuest.value}, roleApp: ${roleApp.value}, authToken: ${authToken.value.isNotEmpty}");
-     
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -614,13 +645,11 @@ class HomeController extends GetxController with GlobalVarMixin {
               ServerCommunicator.baseUrl + ServerCommunicator.storeOfferList,
               headers,
               showLoading: false);
-      print("DEBUG: apiGetOwnerOffersList response status: ${value?.body["status"]}");
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         getOwnerOffersListModel = GetOwnerOffersListModel.fromJson(value?.body);
         getOwnerOfferList.value = getOwnerOffersListModel.data!.offers!;
-        print("DEBUG: apiGetOwnerOffersList success - offers count: ${getOwnerOfferList.length}");
         if (getOwnerOfferList.isNotEmpty) {
           for (int i = 0; i < getOwnerOfferList.length; i++) {
             if (i >= 5) {
@@ -631,21 +660,19 @@ class HomeController extends GetxController with GlobalVarMixin {
         }
         isLoading.value = false;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        print("DEBUG: apiGetOwnerOffersList 401 error");
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
         Get.parameters.clear();
         isLoading.value = false;
         Utility.handle401Error();
       } else {
-        print("DEBUG: apiGetOwnerOffersList error: ${value?.body['message']}");
         isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
     } catch (error, stackTrace) {
-      print("DEBUG: apiGetOwnerOffersList exception: $error");
+      print("ERROR: apiGetOwnerOffersList failed: $error\n$stackTrace");
       isLoading.value = false;
     }
   }
@@ -706,7 +733,8 @@ class HomeController extends GetxController with GlobalVarMixin {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("ERROR: apiGetOwnerFeaturedProducts failed: $e\n$stackTrace");
       isLoading.value = false;
     }
   }

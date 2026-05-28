@@ -246,7 +246,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
           body: IndexedStack(
             index: bottomNavigationPageController.selectedIndex.value,
             children: [
-              const _TabNav(0, HomeScreen()),
+              _TabNav(0, HomeScreen()),
               const _TabNav(1, WalletScreen()),
               roleApp.value == Role.storeOwnerRoleText
                   ? bottomNavigationPageController.storeList.length > 1 ||
@@ -275,7 +275,12 @@ class _TabNav extends GetView<BottomNavController> {
   Widget build(BuildContext context) {
     return Navigator(
       key: Get.nestedKey(navKey),
-      onGenerateRoute: (settings) => MaterialPageRoute(builder: (_) => tab),
+      pages: [
+        MaterialPage(child: tab),
+      ],
+      onPopPage: (route, result) {
+        return route.didPop(result);
+      },
     );
   }
 }

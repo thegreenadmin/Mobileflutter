@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_detail_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -150,6 +151,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       print("Clearing old store data for: ${storeId.value}");
       storeDetailsResponse.value = StoreDetailsResponse();
       listIndex.value = 2;
+    }
+
+    // Refresh store details for authenticated users when navigating to store
+    if (!isGuest.value && storeId.value.isNotEmpty && storeId.value != "0") {
+      getCurrentLocation();
     }
   }
 
@@ -473,6 +479,24 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   // --- Helpers ---
   bool get _hasStore => storeId.value.isNotEmpty && storeId.value != "0";
+
+  StoreHomeMainController() {
+    // Reload store details when user switches from guest to authenticated mode
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus && _hasStore) {
+        // User just logged in from guest mode, reload store details
+        await getCurrentLocation();
+      }
+    });
+
+    // Reload store details when user switches role (e.g., store owner to customer)
+    ever(roleApp, (String role) async {
+      if (_hasStore) {
+        // Role changed, reload store details
+        await getCurrentLocation();
+      }
+    });
+  }
 /*
   @override
   void onInit() {
@@ -947,6 +971,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Api Contact store
   Future apiContactStore() async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to contact stores",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     final String finalStoreId = storeId.value.toString().trim();
     if (finalStoreId.isEmpty || finalStoreId == "0" || finalStoreId.toLowerCase() == "null") {
       return;
@@ -2156,6 +2192,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Create Favourite Product Api
   Future apiCreateFavouriteProduct(String? id) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to add products to favourites",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -2216,6 +2264,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Remove Favourite Product Api
   Future apiRemoveFavouriteProduct(String? id,{bool isFromFavS = false}) async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to manage favourites",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {
@@ -2259,6 +2319,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   ///Previous orders ProductList Api
   Future apiGetPreviousOrders() async {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to view previous orders",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isLoading.value = true;
      
     Map<String, String> headers = {

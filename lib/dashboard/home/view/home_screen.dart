@@ -46,10 +46,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   @override
   void initState() {
     super.initState();
+    print("DEBUG: HomeScreen initState - before Get.delete");
     // Force-delete any stale cached instance so Get.put always creates a fresh
     // controller and calls onInit()/_loadHomeData() after every Get.offAll login.
     Get.delete<HomeController>(force: true);
+    print("DEBUG: HomeScreen initState - after Get.delete, before Get.put");
     homeController = Get.put(HomeController());
+    print("DEBUG: HomeScreen initState - after Get.put HomeController");
     accountController = Get.put(AccountController());
     WidgetsBinding.instance.addObserver(this);
   }

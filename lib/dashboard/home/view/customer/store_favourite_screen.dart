@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
+import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class StoreFavouriteScreen extends StatefulWidget {
@@ -10,12 +11,11 @@ class StoreFavouriteScreen extends StatefulWidget {
   State<StoreFavouriteScreen> createState() => _StoreFavouriteScreenState();
 }
 
-class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
+class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> with GlobalVarMixin {
   final StoreHomeMainController storeHomeMainController =
   Get.isRegistered<StoreHomeMainController>()
       ? Get.find<StoreHomeMainController>()
       : Get.put(StoreHomeMainController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +171,20 @@ class _StoreFavouriteScreenState extends State<StoreFavouriteScreen> {
                                         .isFavouriteProduct!.value ==
                                         true
                                         ? InkWell(
-                                      onTap: () => storeHomeMainController.toggleFavProduct(i),
+                                      onTap: () {
+                                        // Check if user is guest - show modal and prevent API call
+                                        if (isGuest.value == true) {
+                                          GuestAccessModal.show(
+                                            title: "Login Required",
+                                            message: "Please login to manage favourites",
+                                            onContinueAsGuest: () {
+                                              // Allow guest to continue - just close modal
+                                            },
+                                          );
+                                          return; // Don't toggle or make API call
+                                        }
+                                        storeHomeMainController.toggleFavProduct(i);
+                                      },
                                       child: Image.asset(
                                         ImageConstants.liked,
                                         scale: 3,
