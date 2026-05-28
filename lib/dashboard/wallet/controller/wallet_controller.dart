@@ -149,7 +149,10 @@ class WalletController extends GetxController with GlobalVarMixin{
     lastName?.value =
         await SharedPreferenceStorage.getData(StringConstants.lastNameText) ??
             "";
-    role?.value = roleApp.value;
+    // Read role directly from SharedPrefs — roleApp.value may still be ""
+    // on real devices when this runs (slower SharedPrefs vs simulator).
+    final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role?.value = roleData.isNotEmpty ? roleData : roleApp.value;
     autoChargeType.value = "threshold";
     if (role?.value == Role.customerRoleText) {
       // if (Get.parameters['isFromCartScreen'] != "false") {

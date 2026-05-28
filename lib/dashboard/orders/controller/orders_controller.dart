@@ -77,8 +77,6 @@ class OrdersController extends GetxController with GlobalVarMixin{
   @override
   void onInit() {
     super.onInit();
-    // ✅ lightweight setup only
-    _initUserRole();
   }
 
   @override
@@ -88,12 +86,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
     _initApiCalls();
   }
 
-  Future<void> _initUserRole() async {
-    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
-    role?.value = roleData;
-  }
-
   Future<void> _initApiCalls() async {
+    // Read role directly from SharedPrefs here so we don't race with the
+    // async write from login/splash. On real devices SharedPrefs reads are
+    // slower and role?.value set in onInit() may still be "" by the time
+    // onReady() fires.
+    final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role?.value = roleData.isNotEmpty ? roleData : roleApp.value;
+
     // Skip API calls for guest users
     if (isGuest.value == true) {
       return;
