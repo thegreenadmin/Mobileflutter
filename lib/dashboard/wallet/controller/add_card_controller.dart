@@ -465,7 +465,7 @@ class AddCardController extends GetxController with GlobalVarMixin{
       print('🟢 DEBUG: About to call Stripe API');
       var headers = {
         StringConstants.authorizationText:
-            'Basic ${ServerCommunicator.stripeCardBasicAuth}',
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(

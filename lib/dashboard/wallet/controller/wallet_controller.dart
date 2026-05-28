@@ -423,7 +423,7 @@ class WalletController extends GetxController with GlobalVarMixin{
       isLoading.value = true;
       var headers = {
         StringConstants.authorizationText:
-            'Basic ${ServerCommunicator.stripeCardBasicAuth}',
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request = http.Request(
@@ -700,7 +700,7 @@ class WalletController extends GetxController with GlobalVarMixin{
     try {
       var headers = {
         StringConstants.authorizationText:
-            'Basic ${ServerCommunicator.stripeBankBasicAuth}',
+            'Bearer ${ServerCommunicator.stripePublishableKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       };
       var request =
