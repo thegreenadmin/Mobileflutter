@@ -795,8 +795,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
               }
               if (!storeHomeMainController.isVerifiedStore.value) return;
 
-              final currentStoreId = int.parse(storeHomeMainController.storeId.toString());
-              final storedStoreId = int.parse(storeHomeMainController.storeIdValue.toString());
+              final currentStoreId = int.tryParse(storeHomeMainController.storeId.value) ?? 0;
+              final storedStoreId = int.tryParse(storeHomeMainController.storeIdValue.value) ?? 0;
               final hasItems = storeHomeMainController.itemsCount.value > 0;
 
               if (storedStoreId == 0) {

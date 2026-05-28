@@ -55,6 +55,9 @@ class _GooglePlaceAutocompleteFieldState
     _removeOverlay();
     _focusNode.dispose();
     _debounce?.cancel();
+    if (widget.controller != null) {
+      widget.controller!.removeListener(_onTextChanged);
+    }
     super.dispose();
   }
   bool _suppressInputChange = false;

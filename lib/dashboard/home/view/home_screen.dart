@@ -891,25 +891,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: CommonWidgets.cachedNetworkImage(
-                        item.productImages ==
-                            null ||
-                            item
-                                .productImages!
-                                .isEmpty ||
-                            item
-                                .productImages![0]
-                                .image!
-                                .dynamicUrl ==
-                                null ||
-                            item
-                                .productImages!
-                                .isEmpty
-                            ? ""
-                            : item
-                            .productImages![0]
-                            .image!
-                            .dynamicUrl
-                            .toString(),
+                        item.productImages?.isNotEmpty == true
+                            ? item.productImages![0].image?.dynamicUrl ?? ""
+                            : "",
                         height: WidgetConstants.screenHeight * 0.25,
                         width: WidgetConstants.screenWidth * 0.5,
                       ),

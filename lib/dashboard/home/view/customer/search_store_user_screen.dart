@@ -26,6 +26,8 @@ class SearchStoreUserScreen extends StatefulWidget {
 class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver, GlobalVarMixin{
   TabController? _tabController;
+  // Tracks the last tab index that a guest is allowed to be on (always 0).
+  int _lastAllowedTabIndex = 0;
   SearchStoreUserController searchStoreUserController =
   Get.isRegistered<SearchStoreUserController>()
       ? Get.find<SearchStoreUserController>()
@@ -121,17 +123,19 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                   labelStyle: const TextStyle(fontWeight: FontWeight.w600),
                   isScrollable: false,
                   onTap: (i) async {
-                    // Restrict access to Previous and Favorite tabs for guest users
+                    // Flutter calls animateTo(i) before onTap fires, so
+                    // _tabController!.index is already i at this point.
+                    // We counter-animate back to _lastAllowedTabIndex instead.
                     if (isGuest.value == true && (i == 1 || i == 2)) {
-                      // Reset tab index to current tab to prevent navigation
-                      _tabController?.animateTo(_tabController!.index);
+                      _tabController?.animateTo(_lastAllowedTabIndex);
                       GuestAccessModal.show(
                         title: "Login Required",
                         message: "Please login to access Previous and Favorite stores",
                       );
                       return;
                     }
-                    
+
+                    _lastAllowedTabIndex = i;
                     searchStoreUserController.storeAddresses.clear();
                     searchStoreUserController.previousStore.clear();
                     searchStoreUserController.favouriteStore.clear();

@@ -945,10 +945,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         if (parsedActiveStoreId == 0 &&
             activeCartModel.data!.cartItems!.isEmpty) {
           cartCount.value = 0;
-          storeIdValue.value = activeCartModel.data!.storeId.toString();
-          // storeId.value = activeCartModel.data!.storeId.toString();
+          storeIdValue.value = activeCartModel.data?.storeId?.toString() ?? "0";
         } else {
-          storeIdValue.value = activeCartModel.data!.storeId.toString();
+          storeIdValue.value = activeCartModel.data?.storeId?.toString() ?? "0";
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           await apiGetCartListApi(existingStoreId: activeCartModel.data!.storeId.toString());
@@ -1308,16 +1307,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   /// Add To CartApi
-  Future apiAddToCart(
-    BuildContext context,
-  ) async {
-    // Check if user is guest - prevent adding to cart
+  Future apiAddToCart(BuildContext context) async {
     if (isGuest.value == true) {
       Utility.showAlertMessage("Please login to add items to cart");
       Get.to(() => LoginScreen());
       return;
     }
-    
+
+    final productIdStr = productDetailResponse.value.data?.product?.productId ?? "";
+    final parsedProductId = int.tryParse(productIdStr) ?? 0;
+    if (parsedProductId == 0) {
+      Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
+      return;
+    }
+
     isLoading.value = true;
 
     Map<String, String> headers = {
@@ -1326,38 +1329,39 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           "${StringConstants.bearerText} ${authToken.value}",
     };
 
-    String productId = productDetailResponse.value.data?.product?.productId ?? "";
     Map<String, dynamic> data = {
-      "product_id": productId.isNotEmpty ? int.parse(productId) : 0,
-      "items_count": itemsCount.value
+      "product_id": parsedProductId,
+      "items_count": itemsCount.value,
     };
 
-              UserProvider()
-        .postWithHeadersApi(
-            data,
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
-            headers,
-            showLoading: false)
-        .then((value) async {
+    try {
+      final value = await UserProvider().postWithHeadersApi(
+          data,
+          "${ServerCommunicator.baseUrl}${ServerCommunicator.createCart}",
+          headers,
+          showLoading: false);
       isLoading.value = false;
 
-       
       if (value?.body["status"] == ApiConstants.statusCode201 ||
           value?.body["status"] == ApiConstants.statusCode200) {
         itemsCount.value = 1;
-        addToCartDialog(context);
+        // Use overlayContext so the dialog always has a valid context regardless
+        // of widget rebuilds triggered by the isLoading toggle above.
+        addToCartDialog(Get.overlayContext!);
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
-
         storage.clearData();
-        Get.parameters.clear(); isLoading.value = false;
+        Get.parameters.clear();
         Utility.handle401Error();
       } else {
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
+    } catch (e) {
+      isLoading.value = false;
+      Utility.showAlertMessage(AlertStringConstants.somethingWentWrongText);
+    }
   }
 
   ///Update Cart Api

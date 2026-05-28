@@ -328,27 +328,43 @@ class Utility {
   }
 
   static Future<Position> fetchCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    try {
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          return Future.error('Location permissions are denied');
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      }
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
 
-      return await Geolocator.getCurrentPosition();
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied.');
+    }
+
+    // Use the cached position if it's fresh enough (under 2 minutes).
+    // On simulator this is instant; on a real device it avoids a GPS cold-start.
+    final lastKnown = await Geolocator.getLastKnownPosition();
+    if (lastKnown != null) {
+      final age = DateTime.now().difference(lastKnown.timestamp);
+      if (age <= const Duration(minutes: 2)) {
+        return lastKnown;
+      }
+    }
+
+    // Request a fresh GPS fix with a generous timeout (covers simulator + real device cold-start).
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        timeLimit: const Duration(seconds: 10),
+      );
+      return position;
     } catch (e) {
+      // If fresh fix fails but we have a stale cache, use it rather than Nashville.
+      if (lastKnown != null) {
+        return lastKnown;
+      }
       return Future.error(e.toString());
     }
   }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' show Geolocator, Position;
 import 'package:get/get.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
-import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/model.dart';
 import 'package:thegreenmall/dashboard/home/view/account/account_screen.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_owner_offers_model.dart';
@@ -93,19 +92,21 @@ class HomeController extends GetxController with GlobalVarMixin {
   Future<void> _loadHomeData() async {
     print("DEBUG: _loadHomeData starting... isGuest=${isGuest.value}, roleApp=${roleApp.value}");
 
-    // Set location before making API calls
-    await getCurrentLocation();
-    print("DEBUG: _loadHomeData location loaded lat=$lat, lng=$lng");
-
-    // Skip user-specific API calls for guest users
+    // Guest: use Nashville default and skip user detail fetch.
     if (isGuest.value == true) {
+      await getCurrentLocation();
       await apiGetUserOffersList();
       await apiGetUserFeaturedProducts();
       return;
     }
 
-    // User is authenticated (not a guest)
+    // Authenticated: fetch user detail first so getCurrentLocation() has the
+    // phone number and can skip GPS for the Apple review account (0000000000).
     await apiGetUserDetail();
+
+    // Resolve location after user detail — phone number is now populated.
+    await getCurrentLocation();
+    print("DEBUG: _loadHomeData location resolved: lat=$lat, lng=$lng");
 
     // Load role-specific data if role is already available.
     // If roleApp is still empty (SharedPrefs write race condition), the
@@ -134,48 +135,41 @@ class HomeController extends GetxController with GlobalVarMixin {
   Future<void> refreshUserData() async {
     isLoading.value = true;
     try {
-      await getCurrentLocation();
       if (roleApp.value.isEmpty) {
         final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
         if (roleData.isNotEmpty) roleApp.value = roleData;
       }
+      // Fetch user detail first so getCurrentLocation() can detect the
+      // Apple review account (0000000000) and skip GPS if needed.
       await apiGetUserDetail();
+      await getCurrentLocation();
       await _loadRoleSpecificData();
-
-      // Refresh store details if StoreHomeMainController is registered
-      if (Get.isRegistered<StoreHomeMainController>()) {
-        final storeController = Get.find<StoreHomeMainController>();
-        if (storeController.storeId.value.isNotEmpty && storeController.storeId.value != "0") {
-          await storeController.getCurrentLocation();
-        }
-      }
     } finally {
       isLoading.value = false;
     }
   }
 
-  getCurrentLocation() async {
-    // Nashville is the safe default — APIs start immediately without waiting for GPS.
+  Future<void> getCurrentLocation() async {
+    // Nashville default — used for guests, the Apple review account, and GPS failures.
     lat = 36.1627;
     lng = -86.7816;
-    try {
-      if (currentUserPhone!.value == "0000000000") {
-        // Nashville already set above
-      } else if (isGuest.value == true) {
-        // Nashville already set above
-      } else {
-        Position currentLocation = await Utility.fetchCurrentLocation()
-            .timeout(const Duration(seconds: 5), onTimeout: () {
-          print("DEBUG: getCurrentLocation timed out, using Nashville default");
-          throw Exception("Location timeout");
-        });
-        lat = currentLocation.latitude;
-        lng = currentLocation.longitude;
-      }
 
+    // Skip GPS for guests or the Apple review account (phone 0000000000).
+    // The review account is used when the backend has no stores near the tester's
+    // location; Nashville data is pre-seeded so the app always shows content.
+    if (isGuest.value == true) return;
+    if (currentUserPhone?.value == "0000000000") {
+      print("DEBUG: Apple review account detected, using Nashville default");
+      return;
+    }
+
+    try {
+      final position = await Utility.fetchCurrentLocation();
+      lat = position.latitude;
+      lng = position.longitude;
+      print("DEBUG: GPS resolved: $lat, $lng");
     } catch (e) {
-      // Fall back to Nashville default on any error (denied permission, timeout, etc.)
-      print("DEBUG: getCurrentLocation error: $e, using Nashville default");
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
     }
   }
 
