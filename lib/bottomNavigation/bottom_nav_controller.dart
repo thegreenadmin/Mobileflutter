@@ -192,7 +192,19 @@ class BottomNavController extends GetxController with GlobalVarMixin{
         selectedIndex.value = index;
       }
 
-      Get.until((route) => route.isFirst, id: pageIdApp.value);
+      // Reset the previously-active nested navigator back to its root before
+      // switching tabs. This can throw "Route id not found" / a contextless
+      // navigation error when the nested navigator for `pageIdApp` has no
+      // GetX-registered route yet (e.g. right after a guest is converted to a
+      // store-owner and the nav stack is rebuilt). If it throws here it aborts
+      // the rest of this method, so the tapped tab's `pageIdApp` and its
+      // controllers never get initialised and the tab renders a blank/white
+      // screen. Guard it so tab setup always proceeds.
+      try {
+        Get.until((route) => route.isFirst, id: pageIdApp.value);
+      } catch (e) {
+        AppLogger.error("onItemTapped Get.until skipped: $e");
+      }
       SharedPreferenceStorage.removeData("pageId");
       if (selectedIndex.value == 0) {
           Future.delayed(Duration.zero, () {

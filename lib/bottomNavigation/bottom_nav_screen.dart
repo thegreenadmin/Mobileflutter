@@ -247,15 +247,15 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
             index: bottomNavigationPageController.selectedIndex.value,
             children: [
               _TabNav(0, HomeScreen()),
-              const _TabNav(1, WalletScreen()),
+              _TabNav(1, const WalletScreen()),
               roleApp.value == Role.storeOwnerRoleText
                   ? bottomNavigationPageController.storeList.length > 1 ||
                           bottomNavigationPageController.storeList.isEmpty
-                      ? const _TabNav(2, OrderStoresListScreen())
-                      : const _TabNav(3, OrdersHomeMainScreen())
-                  : const _TabNav(4, OrdersScreen()),
-              const _TabNav(5, OffersScreen()),
-              const _TabNav(6, MoreScreen()),
+                      ? _TabNav(2, const OrderStoresListScreen())
+                      : _TabNav(3, const OrdersHomeMainScreen())
+                  : _TabNav(4, const OrdersScreen()),
+              _TabNav(5, const OffersScreen()),
+              _TabNav(6, const MoreScreen()),
             ],
           ),
 
@@ -269,7 +269,14 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
 class _TabNav extends GetView<BottomNavController> {
   final int navKey;
   final Widget tab;
-  const _TabNav(this.navKey, this.tab);
+  // Key the widget by its navKey. The Orders slot can change its navKey in
+  // place (e.g. 4 = customer OrdersScreen -> 2 = OrderStoresListScreen) when a
+  // guest is converted to a store owner and roleApp updates. Without a Key,
+  // Flutter reuses the same _TabNav element and merely swaps the inner
+  // Navigator's GlobalKey (Get.nestedKey), which leaves the new nested
+  // Navigator mounted with no visible route -> permanently blank/white screen.
+  // A ValueKey forces a fresh element + Navigator when the navKey changes.
+  _TabNav(this.navKey, this.tab) : super(key: ValueKey('tabNav_$navKey'));
 
   @override
   Widget build(BuildContext context) {
