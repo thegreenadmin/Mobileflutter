@@ -142,6 +142,26 @@ class WalletController extends GetxController with GlobalVarMixin{
     });
   }
 
+  /// Reliable entry point used by the bottom-nav tap handler to (re)load
+  /// wallet data whenever the Wallet tab is selected.
+  ///
+  /// Previously the tap handler called [onInit] manually, which deferred the
+  /// fetch to a post-frame callback, re-checked the (already-cleared) guest
+  /// flag, and re-registered the `ever` listeners on every tap. After a guest
+  /// was converted to a customer/store-owner this raced and the balance often
+  /// stayed at the default "0.00" until the user opened Add Money and returned
+  /// (that flow calls the balance API directly). Fetching here unconditionally
+  /// keeps the displayed balance consistent on the very first visit.
+  Future<void> refreshWallet() async {
+    if (isGuest.value == true) {
+      return;
+    }
+    if (roleApp.value == Role.customerRoleText) {
+      searchStoreUserController.apiActiveCartApi();
+    }
+    await getPage();
+  }
+
   getPage() async {
     firstName?.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??

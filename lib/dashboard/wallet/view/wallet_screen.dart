@@ -18,7 +18,15 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
-  final WalletController walletController = Get.put(WalletController());
+  // Use a getter (not a cached field) so the screen always binds to the
+  // currently-registered WalletController instance. GetX can dispose and
+  // recreate the controller (e.g. after a guest is converted to a real role
+  // and the nav stack is rebuilt). A cached `final` reference would keep
+  // pointing at a stale, disposed instance, so the balance fetched by
+  // refreshWallet would land on a different instance than the one this Obx
+  // observes — leaving the UI stuck at "0.00" until Add Money forced a fetch
+  // on the stale instance.
+  WalletController get walletController => Get.put(WalletController());
   var roleVal = "";
   String storeName = "";
 

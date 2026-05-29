@@ -204,7 +204,7 @@ class BottomNavController extends GetxController with GlobalVarMixin{
 
           Future.delayed(Duration.zero, () {
             pageIdApp.value = 1;
-            Get.put(WalletController()).onInit();
+            Get.put(WalletController()).refreshWallet();
           });
 
       } else if (selectedIndex.value == 2) {
