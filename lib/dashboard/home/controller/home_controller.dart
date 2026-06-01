@@ -122,17 +122,12 @@ class HomeController extends GetxController with GlobalVarMixin {
   Future<void> _loadRoleSpecificData() async {
     print("DEBUG: _loadRoleSpecificData role=${roleApp.value}");
     if (roleApp.value == Role.customerRoleText) {
-      
-  await Future.wait([
-    apiGetUserOffersList().catchError((e) { print('Offers error: $e'); return null; }),
-    apiGetUserFeaturedProducts().catchError((e) { print('Products error: $e'); return null; }),
-    apiActiveCartApi().catchError((e) { print('Cart error: $e'); return null; }),
-  ]);
+      await apiGetUserOffersList();
+      await apiGetUserFeaturedProducts();
+      await apiActiveCartApi();      
     } else if (roleApp.value == Role.storeOwnerRoleText) {
-      await Future.wait([
-        apiGetOwnerOffersList().catchError((e) { print('Owner offers error: $e'); return null; }),
-        apiGetOwnerFeaturedProducts().catchError((e) { print('Owner products error: $e'); return null; }),
-      ]);
+ await apiGetOwnerOffersList();
+      await apiGetOwnerFeaturedProducts();
     }
   }
 
