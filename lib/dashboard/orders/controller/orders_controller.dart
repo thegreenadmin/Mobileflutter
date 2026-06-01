@@ -74,9 +74,34 @@ class OrdersController extends GetxController with GlobalVarMixin{
   ].obs;
 
 
+  // Guards against the eager onReady() load and a transition-triggered reload
+  // running concurrently and firing duplicate /order/list requests.
+  bool _initInFlight = false;
+
+  // BottomNavController calls onInit() MANUALLY on the (already-registered)
+  // instance on every Orders-tab tap, so guard listener registration to avoid
+  // attaching a duplicate ever(isGuest) worker each time.
+  bool _listenersInitialized = false;
+
   @override
   void onInit() {
     super.onInit();
+    if (_listenersInitialized) return;
+    _listenersInitialized = true;
+
+    // The Orders tab is built eagerly inside the BottomNavigation IndexedStack,
+    // so this controller is created (and its onReady() load runs) while the user
+    // may still be a guest — at which point _initApiCalls() bails on the guest
+    // guard and leaves orderList empty. When the guest logs in (isGuest: true →
+    // false) nothing re-triggers the load on this already-created instance, so
+    // the screen stays on "No orders found" even though /order/list has data.
+    // Mirror HomeController's ever(isGuest) pattern and reload on transition.
+    ever(isGuest, (bool guestStatus) async {
+      if (!guestStatus && authToken.value.isNotEmpty) {
+        page.value = 1;
+        await _initApiCalls();
+      }
+    });
   }
 
   @override
@@ -87,6 +112,18 @@ class OrdersController extends GetxController with GlobalVarMixin{
   }
 
   Future<void> _initApiCalls() async {
+    // Dedupe concurrent loads (e.g. eager onReady() + ever(isGuest) transition
+    // reload, or a tab-tap reload arriving while the first load is in flight).
+    if (_initInFlight) return;
+    _initInFlight = true;
+    try {
+      await _runInitApiCalls();
+    } finally {
+      _initInFlight = false;
+    }
+  }
+
+  Future<void> _runInitApiCalls() async {
     // Read role directly from SharedPrefs here so we don't race with the
     // async write from login/splash. On real devices SharedPrefs reads are
     // slower and role?.value set in onInit() may still be "" by the time
