@@ -120,8 +120,11 @@ class OrdersController extends GetxController with GlobalVarMixin{
       orderStatusName.value = OrderStatusEnum.receivedOrder.statusName;
       uerSelectedTab.value = 0;
 
-      await apiGetOrderStatusListApi();
-      await apiGetUserDetail();
+      // Both are independent — run in parallel
+      await Future.wait([
+        apiGetOrderStatusListApi(),
+        apiGetUserDetail(),
+      ]);
       await setupScrollController();
     }
 
@@ -939,14 +942,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
                   : []
     };
 
-         UserProvider()
+    final value = await UserProvider()
         .postWithHeadersApi(
             data,
             "${ServerCommunicator.baseUrl}${ServerCommunicator.orderList}",
             headers,
-            showLoading: false)
-        .then((value) async {
-             isLoading.value = false;
+            showLoading: false);
+
+      isLoading.value = false;
       isDataLoading.value = false;
 
       if (value?.body["status"] == ApiConstants.statusCode201 ||
@@ -975,7 +978,6 @@ class OrdersController extends GetxController with GlobalVarMixin{
           Utility.showAlertMessage(value?.body['message']);
         }
       }
-    });
   }
 
   ///Get Store Order List Api

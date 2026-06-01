@@ -298,11 +298,14 @@ class OffersController extends GetxController with GlobalVarMixin{
   Future apiGetOffersProducts(
       {String storeId = "", String offerId = ""}) async {
     isLoading.value = true;
-         Map<String, String> headers = {
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
     Map data = {
       "q": "",
       "store_id": storeId,
@@ -334,11 +337,16 @@ class OffersController extends GetxController with GlobalVarMixin{
             userFeaturedProductModel.data?.products ??[];
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear(); isLoading.value = false;
-        Utility.handle401Error();
-      } else { isLoading.value = false;
+        // Guest users should never hit 401 — only clear session for logged-in users
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          isLoading.value = false;
+          Utility.handle401Error();
+        }
+      } else {
+        isLoading.value = false;
         if (value?.body['message'] != null) {
           Utility.showAlertMessage(value?.body['message']);
         }

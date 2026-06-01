@@ -181,18 +181,24 @@ class WalletController extends GetxController with GlobalVarMixin{
       // }
       getApiData();
     } else {
-      await apiGetCardList();
-      await apiGetBankAccountList();
-      await apiGetStoreList();
-      await apiGetAccountDetails();
+      // All four are independent — run in parallel
+      await Future.wait([
+        apiGetCardList(),
+        apiGetBankAccountList(),
+        apiGetStoreList(),
+        apiGetAccountDetails(),
+      ]);
     }
     update();
   }
 
   getApiData() async {
-    await apiGetCardList();
-    await apiGetUserWalletBalance();
-    await apiGetAutoRechargeDetail();
+    // All three are independent — run in parallel
+    await Future.wait([
+      apiGetCardList(),
+      apiGetUserWalletBalance(),
+      apiGetAutoRechargeDetail(),
+    ]);
   }
 
   monthDays() {

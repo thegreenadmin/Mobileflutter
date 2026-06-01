@@ -122,12 +122,17 @@ class HomeController extends GetxController with GlobalVarMixin {
   Future<void> _loadRoleSpecificData() async {
     print("DEBUG: _loadRoleSpecificData role=${roleApp.value}");
     if (roleApp.value == Role.customerRoleText) {
-      await apiGetUserOffersList();
-      await apiGetUserFeaturedProducts();
-      await apiActiveCartApi();
+      
+  await Future.wait([
+    apiGetUserOffersList().catchError((e) { print('Offers error: $e'); return null; }),
+    apiGetUserFeaturedProducts().catchError((e) { print('Products error: $e'); return null; }),
+    apiActiveCartApi().catchError((e) { print('Cart error: $e'); return null; }),
+  ]);
     } else if (roleApp.value == Role.storeOwnerRoleText) {
-      await apiGetOwnerOffersList();
-      await apiGetOwnerFeaturedProducts();
+      await Future.wait([
+        apiGetOwnerOffersList().catchError((e) { print('Owner offers error: $e'); return null; }),
+        apiGetOwnerFeaturedProducts().catchError((e) { print('Owner products error: $e'); return null; }),
+      ]);
     }
   }
 
@@ -181,9 +186,12 @@ class HomeController extends GetxController with GlobalVarMixin {
     offerProductList.clear();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      StringConstants.authorizationText:
-      "${StringConstants.bearerText} ${authToken.value}",
     };
+    // Only include authorization header for authenticated users
+    if (!isGuest.value) {
+      headers[StringConstants.authorizationText] =
+          "${StringConstants.bearerText} ${authToken.value}";
+    }
     Map data = {
       "q": "",
       "store_id": storeId,
@@ -213,15 +221,19 @@ class HomeController extends GetxController with GlobalVarMixin {
         offerProductList.value = userFeaturedProductModel.data?.products ??[];
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
-        Utility.showAlertMessage(value?.body['message']);
-        storage.clearData();
-        Get.parameters.clear(); isLoading.value = false;
-        Utility.handle401Error();
-      } else { isLoading.value = false;
-      if (value?.body['message'] != null) {
-        Utility.showAlertMessage(value?.body['message']);
-      }
-
+        // Guest users should never hit 401 — only clear session for logged-in users
+        if (!isGuest.value) {
+          Utility.showAlertMessage(value?.body['message']);
+          storage.clearData();
+          Get.parameters.clear();
+          isLoading.value = false;
+          Utility.handle401Error();
+        }
+      } else {
+        isLoading.value = false;
+        if (value?.body['message'] != null) {
+          Utility.showAlertMessage(value?.body['message']);
+        }
       }
     });
   }
