@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
@@ -938,20 +939,19 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                   fit: BoxFit.cover,
                   colorFilter: const ColorFilter.mode(
                       Colors.black45, BlendMode.darken),
-                  image: ordersHomeMainController.storeDetailsResponse.value
-                      .data?.store?.image?.dynamicUrl ==
-                      null ||
-                      ordersHomeMainController.storeDetailsResponse
-                          .value.data!.store!.image!.dynamicUrl!.isEmpty
-                      ? const AssetImage(ImageConstants.storeicon)
-                  as ImageProvider
-                      : NetworkImage(ordersHomeMainController
-                      .storeDetailsResponse
-                      .value
-                      .data!
-                      .store!
-                      .image!
-                      .dynamicUrl!),
+                  image: () {
+                    final url = ordersHomeMainController
+                        .storeDetailsResponse
+                        .value
+                        .data
+                        ?.store
+                        ?.image
+                        ?.dynamicUrl;
+                    return (url == null || url.isEmpty)
+                        ? const AssetImage(ImageConstants.storeicon)
+                            as ImageProvider
+                        : CachedNetworkImageProvider(url);
+                  }(),
                 ),
               ),
               child: Column(

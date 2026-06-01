@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,7 +78,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(userInboxDetailController
+                  image: CachedNetworkImageProvider(userInboxDetailController
                       .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),

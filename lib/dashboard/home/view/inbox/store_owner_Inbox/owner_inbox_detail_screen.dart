@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,7 +78,7 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(ownerInboxDetailController
+                  image: CachedNetworkImageProvider(ownerInboxDetailController
                       .userSelectedImageDynamicLinkFromServer.value),
                 ),
               ),

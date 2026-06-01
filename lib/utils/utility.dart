@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +8,7 @@ import 'package:get/get.dart';
 // import "package:google_maps_webservice/geocoding.dart";
 import 'package:intl/intl.dart';
 import 'package:thegreenmall/dashboard/home/model/get_user_detail_model.dart';
+import 'package:thegreenmall/utils/app_logger.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -327,6 +330,23 @@ class Utility {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
+  // ---------------------------------------------------------------------------
+  // In-process location cache — survives controller recreation (Get.delete/put).
+  // Eliminates the 1-2 second GPS cold-start on every store navigation.
+  // ---------------------------------------------------------------------------
+  static Position? _cachedPosition;
+  static Stopwatch? _cacheStopwatch; // monotonic clock — immune to system-time changes
+  static const Duration _cacheMaxAge = Duration(minutes: 3);
+
+  // Completer-based lock: non-null while a background refresh is in flight.
+  // All callers that arrive while a refresh is running share the SAME Completer
+  // future, guaranteeing exactly one GPS request regardless of how many
+  // controllers call _refreshLocationCache() simultaneously.
+  static Completer<void>? _refreshCompleter;
+
+  /// Returns a position immediately if the in-process cache is fresh, otherwise
+  /// waits for GPS. After returning, refreshes the cache in the background so
+  /// the *next* navigation is instant too.
   static Future<Position> fetchCurrentLocation() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -344,29 +364,79 @@ class Utility {
       return Future.error('Location permissions are permanently denied.');
     }
 
-    // Use the cached position if it's fresh enough (under 2 minutes).
-    // On simulator this is instant; on a real device it avoids a GPS cold-start.
+    // 1. Return in-process cache immediately if fresh.
+    //    Uses a Stopwatch (monotonic) so device-clock changes don't corrupt the age.
+    if (_cachedPosition != null &&
+        _cacheStopwatch != null &&
+        _cacheStopwatch!.elapsed <= _cacheMaxAge) {
+      _refreshLocationCache(); // warm next fix in background — idempotent
+      return _cachedPosition!;
+    }
+
+    // 2. Fall back to OS last-known position (usually instant).
     final lastKnown = await Geolocator.getLastKnownPosition();
     if (lastKnown != null) {
-      final age = DateTime.now().difference(lastKnown.timestamp);
-      if (age <= const Duration(minutes: 2)) {
+      final osAge = DateTime.now().difference(lastKnown.timestamp);
+      if (osAge <= _cacheMaxAge) {
+        _updateCache(lastKnown);
+        _refreshLocationCache(); // warm fresh fix in background
         return lastKnown;
       }
     }
 
-    // Request a fresh GPS fix with a generous timeout (covers simulator + real device cold-start).
+    // 3. No usable cache — must await a fresh GPS fix.
     try {
       final position = await Geolocator.getCurrentPosition(
         timeLimit: const Duration(seconds: 10),
       );
+      _updateCache(position);
       return position;
     } catch (e) {
-      // If fresh fix fails but we have a stale cache, use it rather than Nashville.
-      if (lastKnown != null) {
-        return lastKnown;
-      }
+      if (lastKnown != null) return lastKnown;
       return Future.error(e.toString());
     }
+  }
+
+  /// Writes a position into the cache and resets the monotonic stopwatch.
+  static void _updateCache(Position position) {
+    _cachedPosition = position;
+    _cacheStopwatch = Stopwatch()..start();
+  }
+
+  /// Silently fetches a fresh GPS fix in the background.
+  ///
+  /// Uses a [Completer]-based lock: if a refresh is already in flight, this
+  /// call is a no-op — the existing Completer already owns the GPS request.
+  /// The Completer is completed (and nulled) only after the GPS Future fully
+  /// resolves, so no second caller can slip past the guard mid-flight.
+  static void _refreshLocationCache() {
+    if (_refreshCompleter != null) return; // already in flight — skip
+    _refreshCompleter = Completer<void>();
+
+    Geolocator.getCurrentPosition(
+      timeLimit: const Duration(seconds: 15),
+    )
+    // Outer timeout: defense-in-depth in case the Geolocator plugin's
+    // internal timeLimit doesn't fire (e.g. plugin bug or frozen GPS stack).
+    // Ensures _refreshCompleter is always cleared within 20 seconds.
+    .timeout(
+      const Duration(seconds: 20),
+      onTimeout: () => throw TimeoutException('Location refresh timed out'),
+    )
+    .then((pos) {
+      _updateCache(pos);
+      AppLogger.debug('Location cache refreshed in background: '
+          '${pos.latitude}, ${pos.longitude}');
+    }).catchError((Object error) {
+      // Stale cache is acceptable — the next foreground call will retry.
+      // Log so developers can diagnose persistent GPS failures.
+      AppLogger.warning(
+          'Background location refresh failed: $error. '
+          'Stale cache will be used until next foreground fetch.');
+    }).whenComplete(() {
+      _refreshCompleter!.complete(); // signal completion
+      _refreshCompleter = null;      // release lock for next refresh cycle
+    });
   }
 
   static alertDialog(context,

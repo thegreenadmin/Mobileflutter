@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
@@ -55,7 +56,7 @@ class _UserStoreOrderAppBarState extends State<UserStoreOrderAppBar> with Global
                           storeHomeMainController.storeDetailsResponse.value
                               .data!.store!.image!.dynamicUrl!.isEmpty
                       ? const AssetImage(ImageConstants.storeicon) as ImageProvider
-                      : NetworkImage(storeHomeMainController
+                      : CachedNetworkImageProvider(storeHomeMainController
                           .storeDetailsResponse
                           .value
                           .data!

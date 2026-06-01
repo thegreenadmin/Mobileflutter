@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -99,20 +100,19 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           fit: BoxFit.cover,
                           colorFilter: const ColorFilter.mode(
                               Colors.black45, BlendMode.darken),
-                          image: ordersController.storeDetailsResponse.value
-                                          .data!.store!.image!.dynamicUrl ==
-                                      null ||
-                                  ordersController.storeDetailsResponse.value
-                                      .data!.store!.image!.dynamicUrl!.isEmpty
-                              ? const AssetImage(ImageConstants.storeicon)
-                                  as ImageProvider
-                              : NetworkImage(ordersController
-                                  .storeDetailsResponse
-                                  .value
-                                  .data!
-                                  .store!
-                                  .image!
-                                  .dynamicUrl!),
+                          image: () {
+                                final url = ordersController
+                                    .storeDetailsResponse
+                                    .value
+                                    .data
+                                    ?.store
+                                    ?.image
+                                    ?.dynamicUrl;
+                                return (url == null || url.isEmpty)
+                                    ? const AssetImage(ImageConstants.storeicon)
+                                        as ImageProvider
+                                    : CachedNetworkImageProvider(url);
+                              }(),
                         ),
                       ),
                       child: Padding(

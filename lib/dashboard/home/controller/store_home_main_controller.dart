@@ -78,6 +78,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxString storeIdValue = "0".obs;
   RxBool isLoading = false.obs;
   RxBool showLoading = true.obs;
+  bool _isFetchingLocation = false; // guard against concurrent getCurrentLocation calls
   RxBool isPlaceOrder = true.obs;
   RxBool isFromOptions = false.obs;
   RxBool isFromAddProduct = false.obs;
@@ -375,12 +376,20 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
   // --- Location ---
   Future<void> getCurrentLocation() async {
-    final currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    // Prevent concurrent duplicate location fetches (e.g. called from both
+    // applyArgs() and handleInitialFlow() in the same frame).
+    if (_isFetchingLocation) return;
+    _isFetchingLocation = true;
+    try {
+      final currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
 
-    if (_hasStore) {
-      await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+      if (_hasStore) {
+        await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
+      }
+    } finally {
+      _isFetchingLocation = false;
     }
   }
 

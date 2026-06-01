@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -155,7 +156,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                       ? const AssetImage(
                           ImageConstants.nopicfound,
                         ) as ImageProvider
-                      : NetworkImage(ownerStoresController
+                      : CachedNetworkImageProvider(ownerStoresController
                           .editStoreImageDynamicLinkFromServer.value),
                 ),
               ),
