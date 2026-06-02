@@ -260,7 +260,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
       await loadData();
       invokedIndex.value = targetInvokedIndex;
     } catch (e) {
-      Utility.showToast(StringConstants.somethingWentWrongText);
+      Utility.showToast(AlertStringConstants.somethingWentWrongText);
     } finally {
       _isOpeningProduct = false;
     }
