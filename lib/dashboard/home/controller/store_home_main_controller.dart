@@ -256,6 +256,9 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }) async {
     if (_isOpeningProduct) return;
     _isOpeningProduct = true;
+    // Always reset quantity to 1 when opening a new product so the count
+    // from a previously viewed product doesn't carry over.
+    itemsCount.value = 1;
     try {
       await loadData();
       invokedIndex.value = targetInvokedIndex;
