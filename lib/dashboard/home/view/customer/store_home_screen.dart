@@ -148,13 +148,19 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                       Get.parameters["isFromMenu"] = "false";
                       Get.parameters["isFromOptions"] = "false";
 
-                      await storeHomeMainController.apiGetUserDetailsApi();
-                      if (storeHomeMainController.storeId.value != "" &&
-                          storeHomeMainController.productId.value != "") {
-                        await storeHomeMainController.apiGetShopProductDetailApi();
-                      }
-                      await storeHomeMainController.apiGetUserWalletBalance();
-                      storeHomeMainController.invokedIndex.value++;
+                      await storeHomeMainController.openProductDetail(
+                        targetInvokedIndex: 1,
+                        loadData: () async {
+                          await storeHomeMainController.apiGetUserDetailsApi();
+                          if (storeHomeMainController.storeId.value != "" &&
+                              storeHomeMainController.productId.value != "") {
+                            await storeHomeMainController
+                                .apiGetShopProductDetailApi();
+                          }
+                          await storeHomeMainController
+                              .apiGetUserWalletBalance();
+                        },
+                      );
                       storeHomeMainController.update();
                     },
                     child: Container(

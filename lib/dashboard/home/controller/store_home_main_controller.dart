@@ -54,6 +54,12 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   RxInt selectedIndex = 0.obs;
   RxInt invokedIndex = 0.obs;
   RxInt lastSelectedIndex = 0.obs;
+
+  // Guards against re-entrant product taps. The tap handlers await network
+  // calls before showing the detail screen; without this guard a second tap
+  // (or a double-fired InkWell) during those awaits would advance invokedIndex
+  // past the detail screen into build()'s default branch (StoreHomeScreen).
+  bool _isOpeningProduct = false;
   RxInt popUpIndex = 1.obs;
   RxInt activeStep = 0.obs;
   RxInt pageId = 0.obs;
@@ -240,6 +246,26 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
 
 
 
+  // Loads product detail data then shows the AddToOrder screen by setting
+  // invokedIndex to an ABSOLUTE target (never ++), and ignores re-entrant
+  // taps while the network calls are in flight. Both prevent invokedIndex
+  // from overshooting into build()'s default branch (StoreHomeScreen).
+  Future<void> openProductDetail({
+    required int targetInvokedIndex,
+    required Future<void> Function() loadData,
+  }) async {
+    if (_isOpeningProduct) return;
+    _isOpeningProduct = true;
+    try {
+      await loadData();
+      invokedIndex.value = targetInvokedIndex;
+    } catch (e) {
+      Utility.showToast(StringConstants.somethingWentWrongText);
+    } finally {
+      _isOpeningProduct = false;
+    }
+  }
+
   void openProductFromFav(int index) async {
     final product = featureProductList[index];
 
@@ -251,14 +277,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     Get.parameters["isFromMenu"] = "false";
     Get.parameters["isFromOptions"] = "false";
 
-    // Run all independent calls in parallel (removed duplicate apiGetShopProductDetailApi)
-    await Future.wait([
-      apiGetShopProductDetailApi(),
-      apiGetCartListApi(),
-      apiGetUserDetailsApi(),
-      apiGetUserWalletBalance(),
-    ]);
-    invokedIndex.value++;
+    await openProductDetail(
+      targetInvokedIndex: 1,
+      // Run all independent calls in parallel (removed duplicate apiGetShopProductDetailApi)
+      loadData: () => Future.wait([
+        apiGetShopProductDetailApi(),
+        apiGetCartListApi(),
+        apiGetUserDetailsApi(),
+        apiGetUserWalletBalance(),
+      ]),
+    );
   }
 
 

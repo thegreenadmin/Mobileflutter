@@ -121,13 +121,19 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                           Get.parameters["isFromHome"] = "false";
                           Get.parameters['isFromMenu'] = "true";
                           Get.parameters["isFromOptions"] = "false";
-                          storeHomeMainController.apiGetUserDetailsApi();
-                          if (storeHomeMainController.storeId.value != "" &&
-                              storeHomeMainController.productId.value != "") {
-                            await  storeHomeMainController.apiGetShopProductDetailApi();
-                          }
-                          await storeHomeMainController.apiGetUserWalletBalance();
-                          storeHomeMainController.invokedIndex.value++;
+                          await storeHomeMainController.openProductDetail(
+                            targetInvokedIndex: 2,
+                            loadData: () async {
+                              storeHomeMainController.apiGetUserDetailsApi();
+                              if (storeHomeMainController.storeId.value != "" &&
+                                  storeHomeMainController.productId.value != "") {
+                                await storeHomeMainController
+                                    .apiGetShopProductDetailApi();
+                              }
+                              await storeHomeMainController
+                                  .apiGetUserWalletBalance();
+                            },
+                          );
                         },
                         child: Card(
                           elevation: 0,
