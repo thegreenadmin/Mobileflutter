@@ -23,6 +23,23 @@ class UserProvider extends GetConnect {
     _httpClient.close(force: true);
   }
 
+  /// Safely convert a request payload into a Map for logging.
+  ///
+  /// `data` is sometimes a plain Map (most endpoints) and sometimes a typed
+  /// model object such as InputAddProduct (e.g. product create/edit). The model
+  /// objects are not Maps, so `Map<String, dynamic>.from(data)` threw
+  /// `type 'X' is not a subtype of type 'Map<dynamic, dynamic>'`. Prefer the
+  /// model's toJson(); fall back to a string so logging never crashes the call.
+  static dynamic _loggable(dynamic data) {
+    if (data == null) return null;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    try {
+      return (data as dynamic).toJson();
+    } catch (_) {
+      return data.toString();
+    }
+  }
+
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
       {bool showLoading = false}) async
   {
@@ -83,7 +100,7 @@ class UserProvider extends GetConnect {
   }
 
   Future<Response?> postApi(Map data, String url, {bool showLoading = false}) async {
-    AppLogger.logApiRequest('POST', url, Map<String, dynamic>.from(data));
+    AppLogger.logApiRequest('POST', url, _loggable(data));
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -150,7 +167,7 @@ class UserProvider extends GetConnect {
   Future<Response?> putApi(Map data, String url,
       {bool showLoading = false}) async
   {
-    AppLogger.logApiRequest('PUT', url, Map<String, dynamic>.from(data));
+    AppLogger.logApiRequest('PUT', url, _loggable(data));
 
     // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -222,7 +239,7 @@ class UserProvider extends GetConnect {
 
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    AppLogger.logApiRequest('POST (with headers)', url, {'headers': headers, 'data': Map<String, dynamic>.from(data)});
+    AppLogger.logApiRequest('POST (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -301,7 +318,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    AppLogger.logApiRequest('PUT (with headers)', url, {'headers': headers, 'data': Map<String, dynamic>.from(data)});
+    AppLogger.logApiRequest('PUT (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -376,7 +393,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    AppLogger.logApiRequest('PUT (with headers 1)', url, {'headers': headers, 'data': Map<String, dynamic>.from(data)});
+    AppLogger.logApiRequest('PUT (with headers 1)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
@@ -451,7 +468,7 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     // headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
-    AppLogger.logApiRequest('DELETE (with headers)', url, {'headers': headers, 'data': Map<String, dynamic>.from(data)});
+    AppLogger.logApiRequest('DELETE (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
