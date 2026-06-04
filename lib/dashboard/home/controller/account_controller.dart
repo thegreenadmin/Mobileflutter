@@ -579,6 +579,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         "first_name": firstNameTextController.text.trim(),
         "last_name": lastNameTextController.text.trim(),
         "nick_name": nickNameTextController.text.trim(),
+        "email": emailTextController.text.trim(),
       },
       "address": {
         "user_address_id": getUserDetailModel.data?.user?.userAddresses != null &&
@@ -600,6 +601,11 @@ class AccountController extends GetxController with GlobalVarMixin {
         .then((value) async {
              if (value?.body["status"] == ApiConstants.statusCode201 || value?.body["status"] == ApiConstants.statusCode200) {
         Utility.showToast(value?.body['message']);
+        // Keep the locally cached email in sync so the wallet email gate clears
+        // immediately after the user adds/updates it here.
+        final updatedEmail = emailTextController.text.trim();
+        email.value = updatedEmail;
+        SharedPreferenceStorage.setData(StringConstants.emailText, updatedEmail);
         firstNameTextController.clear();
         lastNameTextController.clear();
         nickNameTextController.clear();

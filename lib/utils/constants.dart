@@ -197,6 +197,11 @@ class StringConstants {
   static String endTimeText = "End Time";
   static String emailIdText = "Email ID";
   static String emailUsText = "Email us";
+  static String emailRequiredTitle = "Email Required";
+  static String emailRequiredMessage =
+      "Please add an email address to your profile to use wallet features. You can add it now or finish later.";
+  static String updateEmailText = "Update Email";
+  static String maybeLaterText = "Maybe Later";
   static String editText = "Edit";
   static String enterMobileNumberText =
       "Enter mobile number to login your\naccount";

@@ -21,6 +21,13 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
   @override
   void initState() {
     accountController.isFromCart.value = widget.isFromCart;
+    // When opened directly (e.g. from the wallet email-required modal) the
+    // AccountController may not have been populated yet. Pre-fill from the
+    // backend so existing name/address aren't blanked on save.
+    if (accountController.userId == null ||
+        accountController.userId!.value.isEmpty) {
+      accountController.apiGetUserDetailApi();
+    }
     super.initState();
   }
 
@@ -112,6 +119,17 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       }),
 
                                   formFields(StringConstants.nickNameText,false, controller: accountController.nickNameTextController,hint:StringConstants.nickNameText,),
+
+                                  formFields(StringConstants.emailText,false, controller: accountController.emailTextController,hint:StringConstants.emailText,
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.trim().isNotEmpty &&
+                                            !GetUtils.isEmail(value.trim())) {
+                                          return AlertStringConstants
+                                              .pleaseEnterValidEmailText;
+                                        }
+                                        return null;
+                                      }),
 
                                   height20SizedBox,
 

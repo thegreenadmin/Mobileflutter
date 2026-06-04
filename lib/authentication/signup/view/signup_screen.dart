@@ -121,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 : null),
         height15SizedBox,
         _buildCustomInputField(signupController.emailTextController,
-            StringConstants.emailText, ImageConstants.email,
+            "${StringConstants.emailText} (Optional)", ImageConstants.email,
             validator: (value) {
               if (value!.trim().isNotEmpty && !GetUtils.isEmail(value.trim())) {
                 return AlertStringConstants.pleaseEnterValidEmailText;

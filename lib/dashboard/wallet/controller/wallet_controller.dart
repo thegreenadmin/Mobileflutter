@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/dashboard/home/model/categories_model.dart';
 import 'package:thegreenmall/dashboard/home/model/user_store_details_response.dart'
     as store;
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/email_required_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -22,6 +24,9 @@ class WalletController extends GetxController with GlobalVarMixin{
   RxString? nickName = "".obs;
   RxString? role = "".obs;
   RxString email = "".obs;
+  // Whether the logged-in user has an email on file (backend-driven). Wallet /
+  // Stripe features are gated until this is true for the no-email user.
+  RxBool hasEmail = true.obs;
   RxString phone = "".obs;
   RxString day = "".obs;
   RxInt amount = 0.obs;
@@ -163,6 +168,32 @@ class WalletController extends GetxController with GlobalVarMixin{
   }
 
   getPage() async {
+    // Gate: a logged-in user without an email cannot use wallet/Stripe features
+    // (Stripe rejects an empty email). Block here — the single choke point for
+    // both customer and store-owner data loads — and prompt them to add an email.
+    if (!await _userHasEmail()) {
+      hasEmail.value = false;
+      update();
+      // Only prompt while the Wallet tab is actually active. The email check is
+      // async, so if the user already moved on (e.g. tapped "Maybe Later" which
+      // returns Home) a stale callback must not pop the modal over another tab.
+      if (_isWalletTabActive()) {
+        // Re-run the gate when the user returns from the profile edit form so the
+        // wallet loads immediately once an email has been saved. "Maybe Later"
+        // sends them back to Home — wallet stays inaccessible until email added.
+        EmailRequiredModal.show(
+          onUpdated: () => getPage(),
+          onLater: () {
+            if (Get.isRegistered<BottomNavController>()) {
+              Get.find<BottomNavController>().onItemTapped(0);
+            }
+          },
+        );
+      }
+      return;
+    }
+    hasEmail.value = true;
+
     firstName?.value =
         await SharedPreferenceStorage.getData(StringConstants.firstNameText) ??
             "";
@@ -190,6 +221,24 @@ class WalletController extends GetxController with GlobalVarMixin{
       ]);
     }
     update();
+  }
+
+  /// Whether the logged-in user has an email on file. Uses the value already
+  /// cached locally from the Home user-details fetch (and refreshed when the
+  /// user saves their profile) — no extra backend call is made here, and no
+  /// wallet/Stripe APIs are hit while the email is missing. Guests are treated
+  /// as "has email" so the existing guest gate — not this one — handles them.
+  Future<bool> _userHasEmail() async {
+    if (isGuest.value == true) return true;
+    final cached =
+        await SharedPreferenceStorage.getData(StringConstants.emailText);
+    return cached != null && cached.toString().trim().isNotEmpty;
+  }
+
+  /// True only when the Wallet tab is the currently selected bottom-nav tab.
+  bool _isWalletTabActive() {
+    if (!Get.isRegistered<BottomNavController>()) return true;
+    return Get.find<BottomNavController>().selectedIndex.value == 1;
   }
 
   getApiData() async {
