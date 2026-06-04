@@ -371,19 +371,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               return;
                             }
                             
-                            hasStoreAccess.value &&
-                                permissionStoreList.isEmpty ||
-                                permissionStoreList.any((element) =>
-                                element.isStoreOwner == true ||
-                                    element.controllers!.any((ele) =>
-                                    ele.controllerKey ==
-                                        PermissionKey.manageTransaction
-                                            .statusName))
-                                ? await Get.to(() => const TransactionScreen(),
-                                id: pageIdApp.value)
-                                : Utility.showAlertMessage(
-                                AlertStringConstants
-                                    .notAuthorizedToStoreText);
+                            // Customers always have access to their OWN
+                            // transaction history — TransactionScreen is role
+                            // aware and calls apiGetUserOrderTransactionHistory()
+                            // for them. Only the store-owner/worker view is gated
+                            // behind store permissions.
+                            if (roleApp.value == Role.customerRoleText) {
+                              await Get.to(() => const TransactionScreen(),
+                                  id: pageIdApp.value);
+                            } else {
+                              (hasStoreAccess.value &&
+                                          permissionStoreList.isEmpty) ||
+                                      permissionStoreList.any((element) =>
+                                          element.isStoreOwner == true ||
+                                          element.controllers!.any((ele) =>
+                                              ele.controllerKey ==
+                                              PermissionKey.manageTransaction
+                                                  .statusName))
+                                  ? await Get.to(
+                                      () => const TransactionScreen(),
+                                      id: pageIdApp.value)
+                                  : Utility.showAlertMessage(
+                                      AlertStringConstants
+                                          .notAuthorizedToStoreText);
+                            }
                           },
                           constraints: const BoxConstraints(),
                           padding: const EdgeInsets.all(14.0),

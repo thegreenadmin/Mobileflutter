@@ -107,9 +107,18 @@ class OffersController extends GetxController with GlobalVarMixin{
       lat = 36.1627; // Nashville, Tennessee latitude
       lng = -86.7816; // Nashville, Tennessee longitude
     } else {
-      Position currentLocation = await Utility.fetchCurrentLocation();
-      lat = currentLocation.latitude;
-      lng = currentLocation.longitude;
+      // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+      // service, or a timed-out fix) so offers still load instead of the fetch
+      // throwing an unhandled TimeoutException and skipping the call.
+      lat = 36.1627;
+      lng = -86.7816;
+      try {
+        Position currentLocation = await Utility.fetchCurrentLocation();
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      } catch (e) {
+        print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+      }
     }
     apiGetUserOffersList();
     setupScrollController1();

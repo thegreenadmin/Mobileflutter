@@ -129,11 +129,18 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
-
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the map pin has usable coordinates instead
+    // of leaving the call to throw an unhandled TimeoutException.
+    lat = 36.1627;
+    lng = -86.7816;
+    try {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
   }
 
   Future<void> createDynamicLink() async {

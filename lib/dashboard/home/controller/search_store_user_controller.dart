@@ -204,9 +204,20 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
   // --- Map Updates ---
   Future<void> updateCurrentLocation() async {
-    final currentLocation = await Utility.fetchCurrentLocation();
-    lat.value = currentLocation.latitude;
-    lng.value = currentLocation.longitude;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the nearby-stores call always has usable
+    // coordinates instead of falling through to the "Location or postal code is
+    // required." guard. Mirrors HomeController.getCurrentLocation().
+    lat.value = 36.1627;
+    lng.value = -86.7816;
+
+    try {
+      final currentLocation = await Utility.fetchCurrentLocation();
+      lat.value = currentLocation.latitude;
+      lng.value = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: updateCurrentLocation fallback to Nashville: $e");
+    }
 
     await updateMap(lat.value, lng.value);
   }
@@ -609,7 +620,10 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
       "state":  state.value,
       "country":  country.value,
       "postal_code":  zipCodeTextController.text != "" ? zipCodeTextController.text : null,
-      "mileage": miles.value,
+      // Fall back to the default radius when the Miles field is blank so the
+      // distance filter is always applied (an empty mileage makes the backend
+      // return every store nationwide).
+      "mileage": miles.value.trim().isEmpty ? "50" : miles.value.trim(),
       "is_open_now": isOpenNow.value == ""
           ? null
           : isOpenNow.value == "Open Now"

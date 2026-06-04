@@ -185,12 +185,20 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
       await apiGetParticularStore();
     }
     await getApiData();
-    await Utility.fetchCurrentLocation().then((currentLocation) async {
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so the unclaimed-store list still loads and
+    // the loader is always cleared, instead of the .then callback never firing.
+    currentLat = 36.1627;
+    currentLng = -86.7816;
+    try {
+      final currentLocation = await Utility.fetchCurrentLocation();
       currentLat = currentLocation.latitude;
       currentLng = currentLocation.longitude;
-      isDataComing.value = false;
-      await apiGetUnClaimStoreList();
-    });
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
+    isDataComing.value = false;
+    await apiGetUnClaimStoreList();
   }
 
   Future<void> getApiData() async {

@@ -411,10 +411,19 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     // applyArgs() and handleInitialFlow() in the same frame).
     if (_isFetchingLocation) return;
     _isFetchingLocation = true;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so store details still load instead of the
+    // fetch throwing an unhandled TimeoutException and skipping the call.
+    lat = 36.1627;
+    lng = -86.7816;
     try {
-      final currentLocation = await Utility.fetchCurrentLocation();
-      lat = currentLocation.latitude;
-      lng = currentLocation.longitude;
+      try {
+        final currentLocation = await Utility.fetchCurrentLocation();
+        lat = currentLocation.latitude;
+        lng = currentLocation.longitude;
+      } catch (e) {
+        print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+      }
 
       if (_hasStore) {
         await apiGetStoreDetailsApi(latitude: lat, longitude: lng);
@@ -593,9 +602,18 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-    Position currentLocation = await Utility.fetchCurrentLocation();
-    lat = currentLocation.latitude;
-    lng = currentLocation.longitude;
+    // Nashville default — used when GPS is unavailable (e.g. simulator, denied
+    // service, or a timed-out fix) so store details still load instead of the
+    // fetch throwing an unhandled TimeoutException and skipping the call.
+    lat = 36.1627;
+    lng = -86.7816;
+    try {
+      Position currentLocation = await Utility.fetchCurrentLocation();
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    } catch (e) {
+      print("DEBUG: getCurrentLocation fallback to Nashville: $e");
+    }
 
     if (storeId.value != "0" && storeId.value != "") {
      await  apiGetStoreDetailsApi(latitude: lat, longitude: lng);
