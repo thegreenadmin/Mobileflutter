@@ -273,6 +273,8 @@ class StringConstants {
   //I
   static String interFamilyText = "Inter";
   static String inboxText = "Inbox";
+  static String payAPersonText = "P2P";
+  static String payABusinessText = "P2B";
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";

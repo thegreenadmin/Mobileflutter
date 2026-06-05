@@ -20,6 +20,7 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_s
 import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
 import 'customer/components/store_home_main_args.dart';
 import 'store_owner/manage_store_main_screen.dart';
 
@@ -444,8 +445,73 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                   )
                 ],
               ),
+              height8SizedBox,
+              // P2P / P2B barcode payment launchers
+              Row(
+                children: [
+                  _payPill(
+                    icon: Icons.person_outline,
+                    label: StringConstants.payAPersonText,
+                    onTap: () => _launchPayment('p2p'),
+                  ),
+                  width8SizedBox,
+                  _payPill(
+                    icon: Icons.storefront_outlined,
+                    label: StringConstants.payABusinessText,
+                    onTap: () => _launchPayment('p2b'),
+                  ),
+                ],
+              ),
             ],
           )),
+    );
+  }
+
+  void _launchPayment(String type) {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to send or receive payments",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+    Get.toNamed(PaymentRoutes.scanner, arguments: {'type': type});
+  }
+
+  Widget _payPill({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return RawMaterialButton(
+      elevation: 0,
+      onPressed: onTap,
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(width: 1.0, color: AppColors.primary),
+        borderRadius: BorderRadius.circular(28.0),
+      ),
+      fillColor: AppColors.white,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Icon(icon, size: 18, color: AppColors.white),
+          ),
+          width5SizedBox,
+          Text(
+            label,
+            style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
 

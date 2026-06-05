@@ -5,6 +5,15 @@ import 'package:thegreenmall/dashboard/home/view/home_screen.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 import 'package:thegreenmall/welcome/onboard/view/on_board_main_screen.dart';
+import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
+import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
+import 'package:thegreenmall/dashboard/payments/view/payments_home_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/barcode_scanner_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_details_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/review_pay_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_processing_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_success_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/merchant_barcode_display_screen.dart';
 
 class Routers {
   static final route = [
@@ -31,6 +40,42 @@ class Routers {
     GetPage(
       name: '/homeView',
       page: () => const HomeScreen(),
+    ),
+    // P2P & P2B barcode payments — share one PaymentController across the flow.
+    GetPage(
+      name: PaymentRoutes.home,
+      page: () => const PaymentsHomeScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.scanner,
+      page: () => const BarcodeScannerScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.details,
+      page: () => const PaymentDetailsScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.review,
+      page: () => const ReviewPayScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.processing,
+      page: () => const PaymentProcessingScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.success,
+      page: () => const PaymentSuccessScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.merchantCode,
+      page: () => const MerchantBarcodeDisplayScreen(),
+      binding: PaymentBinding(),
     ),
   ];
 }

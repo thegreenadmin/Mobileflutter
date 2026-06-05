@@ -211,6 +211,15 @@ class ServerCommunicator {
   static const userStripeConnectedAccountDetails = 'user/stripe/connected/account/details';
   static const userPaymentMethod = "user/wallet/recharge/paymentMethod";
 
+  // P2P & P2B barcode payments
+  static const paymentRecipientLookup = 'user/payment/recipient/lookup';
+  static const paymentQrGenerate = 'user/payment/qr/generate';
+  static const paymentQrDecode = 'user/payment/qr/decode';
+  static const paymentCreate = 'user/payment/create';
+  static const paymentConfirm = 'user/payment/confirm';
+  static const paymentCancel = 'user/payment/cancel';
+  static const paymentStatus = 'user/payment/status';
+
 //V
 //W
   static const workerList = 'store/user/list';

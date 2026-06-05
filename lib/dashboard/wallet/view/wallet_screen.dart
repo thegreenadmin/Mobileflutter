@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
+import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_owner.dart';
 import 'package:thegreenmall/dashboard/wallet/view/manage_wallet_screen.dart';
@@ -338,6 +339,38 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                               Text(
                                 StringConstants.manageText,
                                 style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            Get.toNamed(PaymentRoutes.home);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 34,
+                                width: 34,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary.withOpacity(0.12),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.qr_code_scanner,
+                                    size: 20, color: AppColors.primary),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                "Pay / Send",
+                                style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w500),
