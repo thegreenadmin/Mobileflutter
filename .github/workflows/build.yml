@@ -259,6 +259,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-33" "platforms;android-36" "build-tools;34.0.0"
+
       - name: Decode keystore
         run: |
           if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
