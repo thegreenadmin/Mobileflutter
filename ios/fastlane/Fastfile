@@ -42,8 +42,7 @@ platform :ios do
     )
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
-      distribute_external: false,
-      tool_args: "--use-old-altool"
+      distribute_external: false
     )
   end
 
