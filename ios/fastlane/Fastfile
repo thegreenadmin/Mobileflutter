@@ -5,6 +5,12 @@ default_platform(:ios)
 
 platform :ios do
   before_all do
+    # Xcode 26's altool rewrote its upload pipeline (--upload-app -> --upload-package),
+    # which fails to read the exported IPA and reports Cocoa error 259
+    # ("isn't in the correct format"). Force the legacy uploader until Apple/fastlane fix it.
+    # See: https://github.com/fastlane/fastlane/issues/29743
+    ENV['DELIVER_ALTOOL_ADDITIONAL_UPLOAD_PARAMETERS'] ||= '--use-old-altool'
+
     # Setup App Store Connect API Key for authentication
     key_id = ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']
     key_content = ENV['APP_STORE_CONNECT_API_KEY_KEY']
