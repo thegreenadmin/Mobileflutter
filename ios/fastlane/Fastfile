@@ -67,22 +67,28 @@ platform :ios do
       ENV.delete('APP_STORE_CONNECT_API_KEY_KEY_ID')
       ENV.delete('APP_STORE_CONNECT_API_KEY_ISSUER_ID')
 
-      # Directly create and set the Spaceship token using the validated PEM.
-      # We avoid calling the `app_store_connect_api_key` action because it can
-      # internally re-process the key and surface "invalid curve name" even when
-      # our local validation (OpenSSL::PKey::EC.new) succeeds. Manually creating
-      # the token bypasses that and ensures the already-validated key bytes are
-      # used for JWT signing.
-      require 'spaceship'
-      token = Spaceship::ConnectAPI::Token.create(
+      # Build the api_key configuration Hash (the same shape returned/set by the
+      # app_store_connect_api_key action). We set this Hash into the lane context
+      # so that downstream actions like `match` see a proper Hash for `api_key`
+      # instead of a Token object. We also create the Token from this hash using
+      # our already-validated canonical PEM and activate it for Spaceship.
+      # This avoids calling the app_store_connect_api_key action (which can still
+      # surface "invalid curve name" if it ever sees the raw secret) while keeping
+      # full compatibility with the rest of fastlane's ASC key handling.
+      api_key = {
         key_id: key_id,
         issuer_id: issuer_id,
         key: pem,
+        is_key_content_base64: false,
         in_house: false
-      )
+      }
+
+      require 'spaceship'
+      token = Spaceship::ConnectAPI::Token.create(**api_key)
       Spaceship::ConnectAPI.token = token
+
       if defined?(Actions) && defined?(SharedValues)
-        Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY] = token
+        Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY] = api_key
       end
     end
   end
