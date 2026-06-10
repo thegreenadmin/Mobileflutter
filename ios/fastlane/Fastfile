@@ -39,16 +39,28 @@ platform :ios do
                        "Store it as the raw contents of AuthKey_#{key_id}.p8 " \
                        "(or its base64 encoding via `base64 -i AuthKey_#{key_id}.p8`).")
       end
-      b64 = body.gsub(/\s+/, '')
+      # Keep ONLY valid base64 characters before re-wrapping. A plain /\s+/ strip
+      # leaves non-breaking spaces, zero-width spaces and other invisible bytes that
+      # GitHub's secret editor can silently introduce. OpenSSL's lenient PEM decoder
+      # may tolerate those bytes when parsing the in-memory string yet choke on the
+      # same content once it is written out and read back, which surfaces downstream
+      # as the cryptic "invalid curve name".
+      b64 = body.gsub(%r{[^A-Za-z0-9+/=]}, '')
       pem = "-----BEGIN PRIVATE KEY-----\n#{b64.scan(/.{1,64}/).join("\n")}\n-----END PRIVATE KEY-----\n"
 
-      # Fail fast (and clearly) if the reconstructed key still won't parse, instead
-      # of letting Spaceship/altool die with a cryptic "invalid curve name".
+      # Re-emit the key through OpenSSL itself so the file handed to spaceship/altool
+      # is OpenSSL's own canonical PKCS#8 output, not our hand-assembled string. This
+      # removes any lingering encoding/wrapping subtlety. spaceship's token.rb parses
+      # the key with OpenSSL::PKey::EC.new, so we validate with that exact call on the
+      # exact bytes we are about to write before handing it off.
       begin
+        key_obj = OpenSSL::PKey.read(pem)
+        pem = key_obj.private_to_pem if key_obj.respond_to?(:private_to_pem)
         OpenSSL::PKey::EC.new(pem)
-      rescue OpenSSL::PKey::ECError => e
+      rescue OpenSSL::PKey::PKeyError, OpenSSL::PKey::ECError => e
         UI.user_error!("App Store Connect .p8 key failed to parse as an EC key (#{e.message}). " \
-                       "Re-export AuthKey_#{key_id}.p8 from App Store Connect and re-store the secret.")
+                       "Re-export AuthKey_#{key_id}.p8 from App Store Connect and re-store the secret " \
+                       "as its raw contents (or `base64 -i AuthKey_#{key_id}.p8`).")
       end
 
       key_path = File.expand_path("AuthKey_#{key_id}.p8", Dir.pwd)
