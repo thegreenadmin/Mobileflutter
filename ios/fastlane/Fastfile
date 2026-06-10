@@ -17,11 +17,16 @@ platform :ios do
     issuer_id = ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']
 
     if key_id && !key_id.empty? && key_content && !key_content.empty?
+      # The secret may hold either the raw .p8 PEM or its base64 encoding.
+      # If we decode a base64 value when it's actually raw PEM (or vice versa),
+      # altool ends up with a malformed key and fails JWT generation with
+      # NSCocoaErrorDomain Code=259 ("isn't in the correct format"). Detect the form.
+      is_base64 = !key_content.include?('BEGIN PRIVATE KEY')
       app_store_connect_api_key(
         key_id: key_id,
         issuer_id: issuer_id,
         key_content: key_content,
-        is_key_content_base64: true,
+        is_key_content_base64: is_base64,
         in_house: false
       )
     end
