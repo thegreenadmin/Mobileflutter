@@ -31,13 +31,17 @@ platform :ios do
       scheme: "Runner",
       export_method: "app-store",
       clean: true,
+      output_directory: "./build",
+      output_name: "Runner",
       xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution'",
       export_options: {
         signingStyle: "manual",
         provisioningProfiles: {
           "com.thegreenmall" => "match AppStore com.thegreenmall"
         },
-        teamID: ENV['APPLE_TEAM_ID']
+        teamID: ENV['APPLE_TEAM_ID'],
+        uploadBitcode: false,
+        uploadSymbols: true
       }
     )
     upload_to_testflight(
