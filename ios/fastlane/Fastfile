@@ -5,38 +5,54 @@ default_platform(:ios)
 
 platform :ios do
   before_all do
-    # Xcode 26's altool authenticates by reading the App Store Connect .p8 key and
-    # generating a JWT. If the key file isn't valid PEM it fails JWT generation with
-    # NSCocoaErrorDomain Code=259 ("isn't in the correct format"). The previous brittle
-    # base64-vs-PEM heuristic could hand altool a malformed key, so we now decode,
-    # normalize and *validate* the key ourselves, then pass it as a real file path.
+    # App Store Connect authentication reads the .p8 EC key (P-256, PKCS#8) and
+    # signs a JWT. The brittle part is the PEM formatting of the secret:
+    #   * Spaceship calls OpenSSL::PKey::EC.new(key); OpenSSL 3.x (on current CI
+    #     runner images) throws "invalid curve name" when the base64 body isn't
+    #     wrapped at 64 columns, has literal "\n", or is otherwise flattened.
+    #   * altool likewise reports NSCocoaErrorDomain Code=259 on a malformed key.
+    # So we rebuild a canonical PEM from the base64 body and parse-test it locally
+    # before handing it off, turning silent downstream failures into clear errors.
     key_id = ENV['APP_STORE_CONNECT_API_KEY_KEY_ID']
     key_content = ENV['APP_STORE_CONNECT_API_KEY_KEY']
     issuer_id = ENV['APP_STORE_CONNECT_API_KEY_ISSUER_ID']
 
     if key_id && !key_id.empty? && key_content && !key_content.empty?
       require 'base64'
+      require 'openssl'
 
       raw = key_content.strip
-      # The secret may hold raw PEM or its base64 encoding. Decode only when it
-      # doesn't already look like PEM, so we never double-decode or mis-decode.
+      # The secret may hold raw PEM, PEM with literal "\n", or base64 of the whole
+      # .p8 file. Normalize literal escapes first, then decode if it isn't yet PEM.
+      raw = raw.gsub('\\n', "\n") if raw.include?('\\n') && !raw.include?("\n")
       unless raw.include?('BEGIN PRIVATE KEY')
         decoded = Base64.decode64(raw)
         raw = decoded if decoded.include?('BEGIN PRIVATE KEY')
       end
 
-      # Repair secrets stored with literal "\n" instead of real newlines, which is a
-      # common GitHub-secret pitfall that yields a key altool cannot parse.
-      raw = raw.gsub('\\n', "\n") unless raw.include?("\n")
-
-      unless raw.include?('-----BEGIN PRIVATE KEY-----') && raw.include?('-----END PRIVATE KEY-----')
-        UI.user_error!("APP_STORE_CONNECT_API_KEY_KEY is not a valid .p8 PEM key after decoding. " \
-                       "Re-store the secret as the raw contents of AuthKey_#{key_id}.p8 " \
+      # Pull out just the base64 body between the PKCS#8 markers and re-wrap it at
+      # 64 columns so OpenSSL 3.x parses the curve correctly regardless of how the
+      # secret was stored (single line, unwrapped, stray whitespace, etc.).
+      body = raw[/-----BEGIN PRIVATE KEY-----(.+?)-----END PRIVATE KEY-----/m, 1]
+      if body.nil?
+        UI.user_error!("APP_STORE_CONNECT_API_KEY_KEY is not a valid .p8 PEM key. " \
+                       "Store it as the raw contents of AuthKey_#{key_id}.p8 " \
                        "(or its base64 encoding via `base64 -i AuthKey_#{key_id}.p8`).")
+      end
+      b64 = body.gsub(/\s+/, '')
+      pem = "-----BEGIN PRIVATE KEY-----\n#{b64.scan(/.{1,64}/).join("\n")}\n-----END PRIVATE KEY-----\n"
+
+      # Fail fast (and clearly) if the reconstructed key still won't parse, instead
+      # of letting Spaceship/altool die with a cryptic "invalid curve name".
+      begin
+        OpenSSL::PKey::EC.new(pem)
+      rescue OpenSSL::PKey::ECError => e
+        UI.user_error!("App Store Connect .p8 key failed to parse as an EC key (#{e.message}). " \
+                       "Re-export AuthKey_#{key_id}.p8 from App Store Connect and re-store the secret.")
       end
 
       key_path = File.expand_path("AuthKey_#{key_id}.p8", Dir.pwd)
-      File.write(key_path, raw.end_with?("\n") ? raw : "#{raw}\n")
+      File.write(key_path, pem)
 
       app_store_connect_api_key(
         key_id: key_id,
