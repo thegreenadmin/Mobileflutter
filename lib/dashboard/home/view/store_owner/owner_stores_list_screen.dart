@@ -10,7 +10,10 @@ class OwnerStoresListScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
   final bool? isFromHome;
-  const OwnerStoresListScreen({super.key, this.firstName, this.lastName, this.isFromHome});
+  // Optional store category filter (e.g. Munchies / Herbs) selected from the
+  // home screen pills. Null means show all stores.
+  final String? category;
+  const OwnerStoresListScreen({super.key, this.firstName, this.lastName, this.isFromHome, this.category});
 
   @override
   State<OwnerStoresListScreen> createState() => _OwnerStoresListScreenState();

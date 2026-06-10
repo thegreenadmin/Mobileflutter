@@ -40,7 +40,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     final result = await c.createPayment();
     if (!mounted) return;
     if (result == 'OK') {
-      Get.toNamed(PaymentRoutes.review);
+      Get.toNamed(PaymentRoutes.review, id: PaymentRoutes.navId);
     } else if (result == 'KYC_REQUIRED') {
       showKycRequiredSheet(context, message: c.errorMessage.value);
     } else {

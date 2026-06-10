@@ -275,6 +275,9 @@ class StringConstants {
   static String inboxText = "Inbox";
   static String payAPersonText = "P2P";
   static String payABusinessText = "P2B";
+  static String munchiesText = "Munchies";
+  static String herbsText = "Herbs";
+  static String paymentsText = "Payments";
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";

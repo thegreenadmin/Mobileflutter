@@ -7,6 +7,7 @@ import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart
 import 'package:thegreenmall/welcome/onboard/view/on_board_main_screen.dart';
 import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
 import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/payments_home_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/barcode_scanner_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_details_screen.dart';
@@ -42,6 +43,13 @@ class Routers {
       page: () => const HomeScreen(),
     ),
     // P2P & P2B barcode payments — share one PaymentController across the flow.
+    // The shell owns the static bottom nav and hosts the screens below in a
+    // nested navigator (id: PaymentRoutes.navId).
+    GetPage(
+      name: PaymentRoutes.flow,
+      page: () => const PaymentShell(),
+      binding: PaymentBinding(),
+    ),
     GetPage(
       name: PaymentRoutes.home,
       page: () => const PaymentsHomeScreen(),

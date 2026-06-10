@@ -76,7 +76,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
     if (!mounted) return;
     if (recipient != null) {
       await _scanner.stop();
-      Get.toNamed(PaymentRoutes.details);
+      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
       // Allow re-scanning if the user returns.
       if (mounted) {
         setState(() => _handling = false);
@@ -347,7 +347,7 @@ class _MobileEntryState extends State<_MobileEntry> {
     if (!mounted) return;
     setState(() => _loading = false);
     if (r != null) {
-      Get.toNamed(PaymentRoutes.details);
+      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(c.errorMessage.value),
@@ -431,7 +431,7 @@ class _MerchantIdEntryState extends State<_MerchantIdEntry> {
     if (!mounted) return;
     setState(() => _loading = false);
     if (r != null) {
-      Get.toNamed(PaymentRoutes.details);
+      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(c.errorMessage.value),

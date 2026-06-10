@@ -17,7 +17,10 @@ import 'package:thegreenmall/utils/utils.dart';
 class SearchStoreUserScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
-  const SearchStoreUserScreen({Key? key, this.firstName, this.lastName}) : super(key: key);
+  // Optional store category filter (e.g. Munchies / Herbs) selected from the
+  // home screen pills. Null means show all stores.
+  final String? category;
+  const SearchStoreUserScreen({Key? key, this.firstName, this.lastName, this.category}) : super(key: key);
 
   @override
   State<SearchStoreUserScreen> createState() => _SearchStoreUserScreenState();

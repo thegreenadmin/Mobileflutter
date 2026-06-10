@@ -66,11 +66,6 @@ class ReviewPayScreen extends StatelessWidget {
                   const Text('Payment Method', style: PayTheme.label),
                   const SizedBox(height: 10),
                   const _WalletMethod(),
-                  const SizedBox(height: 10),
-                  const _ComingSoonMethod(icon: Icons.apple, label: 'Apple Pay'),
-                  const _ComingSoonMethod(icon: Icons.credit_card, label: 'Card'),
-                  const _ComingSoonMethod(
-                      icon: Icons.account_balance_outlined, label: 'Bank Account'),
                   const SizedBox(height: PayTheme.itemGap),
                   PayCard(
                     color: const Color(0xFFEFF8FB),
@@ -147,40 +142,6 @@ class _WalletMethod extends StatelessWidget {
           ),
           const Icon(Icons.check_circle, color: PayTheme.success),
         ],
-      ),
-    );
-  }
-}
-
-class _ComingSoonMethod extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  const _ComingSoonMethod({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Opacity(
-        opacity: 0.55,
-        child: PayCard(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              Icon(icon, color: PayTheme.secondaryText),
-              const SizedBox(width: 12),
-              Expanded(child: Text(label, style: PayTheme.body)),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: PayTheme.background,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text('Coming soon', style: PayTheme.caption),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

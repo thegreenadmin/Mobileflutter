@@ -171,303 +171,46 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               buildTitle(),
               height12SizedBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          // Check if user is guest - show modal for account-based features
-                          if (isGuest.value == true) {
-                            GuestAccessModal.show(
-                              title: "Login Required",
-                              message: "Please login to access inbox",
-                              onContinueAsGuest: () {
-                                // Allow guest to continue - just close modal
-                              },
-                            );
-                            return;
-                          }
-                          
-                          roleApp.value == Role.customerRoleText
-                              ? Get.to(() => const UserInboxScreen(),
-                              id: pageIdApp.value)
-                              : hasStoreAccess.value &&
-                              permissionStoreList.isEmpty ||
-                              permissionStoreList.any((element) =>
-                              element.isStoreOwner == true ||
-                                  element.controllers!.any((ele) =>
-                                  ele.controllerKey ==
-                                      PermissionKey
-                                          .manageMessages.statusName))
-                              ? await Get.to(() => const OwnerInboxScreen(),
-                              id: pageIdApp.value)
-                              : Utility.showAlertMessage(
-                              AlertStringConstants
-                                  .notAuthorizedToStoreText);
-                        },
-                        constraints: const BoxConstraints(),
-                        padding:
-                        const EdgeInsets.fromLTRB(2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.message,
-                                  scale: 2.5,
-                                  color: AppColors.white,
-                                )),
-                            width5SizedBox,
-                            Text(
-                              StringConstants.inboxText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                      width8SizedBox,
-                      Obx(() =>
-                      hasStoreAccess.value
-                          ? RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          if (roleApp.value == Role.customerRoleText) {
-                            await Get.to(
-                                  () =>
-                                  SearchStoreUserScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-                                  ),
-                              id: pageIdApp.value,
-
-                              // arguments: {
-                              // },
-                            );
-                            await homeController.apiActiveCartApi();
-                          } else {
-                            await Get.to(
-                                  () =>
-                                  OwnerStoresListScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    isFromHome: false,
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-                                  ),
-                              id: pageIdApp.value,
-                            );
-                          }
-                        },
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.fromLTRB(
-                            2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius:
-                                  BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.storeUnion,
-                                  scale: 2.2,
-                                  color: AppColors.white,
-                                )),
-                            width4SizedBox,
-                            Text(
-                              StringConstants.storesText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      )
-                          : RawMaterialButton(
-                        elevation: 0,
-                        onPressed: () async {
-                          if (roleApp.value == Role.customerRoleText) {
-                            await Get.to(
-                                  () =>
-                                  SearchStoreUserScreen(
-                                    firstName: homeController.getUserDetailModel.data?.user?.firstName ?? "",
-                                    lastName: homeController.getUserDetailModel.data?.user?.lastName ?? "",
-
-                                  ),
-                              id: pageIdApp.value,
-                            );
-                            await homeController.apiActiveCartApi();
-                          }
-                        },
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.fromLTRB(
-                            2.0, 2.0, 10.0, 2.0),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1.0, color: AppColors.primary),
-                          borderRadius: BorderRadius.circular(28.0),
-                        ),
-                        fillColor: AppColors.white,
-                        child: Row(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius:
-                                  BorderRadius.circular(100),
-                                ),
-                                child: Image.asset(
-                                  ImageConstants.storeUnion,
-                                  scale: 2.2,
-                                  color: AppColors.white,
-                                )),
-                            width5SizedBox,
-                            Text(
-                              StringConstants.storesText,
-                              style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                          elevation: 0,
-                          onPressed: () async {
-                            // Check if user is guest - show modal for account-based features
-                            if (isGuest.value == true) {
-                              GuestAccessModal.show(
-                                title: "Login Required",
-                                message: "Please login to access transaction history",
-                                onContinueAsGuest: () {
-                                  // Allow guest to continue - just close modal
-                                },
-                              );
-                              return;
-                            }
-                            
-                            // Customers always have access to their OWN
-                            // transaction history — TransactionScreen is role
-                            // aware and calls apiGetUserOrderTransactionHistory()
-                            // for them. Only the store-owner/worker view is gated
-                            // behind store permissions.
-                            if (roleApp.value == Role.customerRoleText) {
-                              await Get.to(() => const TransactionScreen(),
-                                  id: pageIdApp.value);
-                            } else {
-                              (hasStoreAccess.value &&
-                                          permissionStoreList.isEmpty) ||
-                                      permissionStoreList.any((element) =>
-                                          element.isStoreOwner == true ||
-                                          element.controllers!.any((ele) =>
-                                              ele.controllerKey ==
-                                              PermissionKey.manageTransaction
-                                                  .statusName))
-                                  ? await Get.to(
-                                      () => const TransactionScreen(),
-                                      id: pageIdApp.value)
-                                  : Utility.showAlertMessage(
-                                      AlertStringConstants
-                                          .notAuthorizedToStoreText);
-                            }
-                          },
-                          constraints: const BoxConstraints(),
-                          padding: const EdgeInsets.all(14.0),
-                          shape: const CircleBorder(
-                            side: BorderSide(
-                                width: 1.0, color: AppColors.primary),
-                          ),
-                          fillColor: AppColors.white,
-                          child: Image.asset(
-                            ImageConstants.union,
-                            scale: 2.4,
-                          )),
-                      width5SizedBox,
-                      RawMaterialButton(
-                          elevation: 0,
-                          onPressed: () {
-                            // Check if user is guest - show modal for account-based features
-                            if (isGuest.value == true) {
-                              GuestAccessModal.show(
-                                title: "Login Required",
-                                message: "Please login to access account settings",
-                                onContinueAsGuest: () {
-                                  // Allow guest to continue - just close modal
-                                },
-                              );
-                              return;
-                            }
-                            
-                            Get.to(() => const AccountScreen(),
-                              id: pageIdApp.value,)
-                                ?.then((value) {
-                              homeController.refreshUserData();
-                            });
-                          },
-                          constraints: const BoxConstraints(),
-                          padding: const EdgeInsets.all(14.0),
-                          shape: const CircleBorder(
-                            side: BorderSide(
-                                width: 1.0, color: AppColors.primary),
-                          ),
-                          fillColor: AppColors.white,
-                          child: Image.asset(
-                            ImageConstants.user,
-                            scale: 2.5,
-                          )),
-                    ],
-                  )
-                ],
-              ),
-              height8SizedBox,
-              // P2P / P2B barcode payment launchers
-              Row(
-                children: [
-                  _payPill(
-                    icon: Icons.person_outline,
-                    label: StringConstants.payAPersonText,
-                    onTap: () => _launchPayment('p2p'),
-                  ),
-                  width8SizedBox,
-                  _payPill(
-                    icon: Icons.storefront_outlined,
-                    label: StringConstants.payABusinessText,
-                    onTap: () => _launchPayment('p2b'),
-                  ),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    // Store category shortcuts. Munchies / Herbs reuse the same
+                    // store screens as Stores, scoped by a category filter.
+                    _payPill(
+                      icon: Icons.storefront_outlined,
+                      label: StringConstants.storesText,
+                      onTap: () => _openStores(),
+                    ),
+                    width8SizedBox,
+                    _payPill(
+                      icon: Icons.lunch_dining_outlined,
+                      label: StringConstants.munchiesText,
+                      onTap: () => _openStores(category: StringConstants.munchiesText),
+                    ),
+                    width8SizedBox,
+                    _payPill(
+                      icon: Icons.local_florist_outlined,
+                      label: StringConstants.herbsText,
+                      onTap: () => _openStores(category: StringConstants.herbsText),
+                    ),
+                    width8SizedBox,
+                    // Opens the dedicated Payments screen (P2P / P2B live there).
+                    _payPill(
+                      icon: Icons.payments_outlined,
+                      label: StringConstants.paymentsText,
+                      onTap: () => _openPaymentsHome(),
+                    ),
+                  ],
+                ),
               ),
             ],
           )),
     );
   }
 
-  void _launchPayment(String type) {
+  // Opens the Payments hub (Pay/Send + Receive, P2P/P2B live inside).
+  void _openPaymentsHome() {
     if (isGuest.value == true) {
       GuestAccessModal.show(
         title: "Login Required",
@@ -476,7 +219,71 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       );
       return;
     }
-    Get.toNamed(PaymentRoutes.scanner, arguments: {'type': type});
+    Get.toNamed(PaymentRoutes.flow);
+  }
+
+  // Role-aware inbox navigation, shared by the title-row inbox action.
+  Future<void> _openInbox() async {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to access inbox",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    roleApp.value == Role.customerRoleText
+        ? Get.to(() => const UserInboxScreen(), id: pageIdApp.value)
+        : hasStoreAccess.value && permissionStoreList.isEmpty ||
+                permissionStoreList.any((element) =>
+                    element.isStoreOwner == true ||
+                    element.controllers!.any((ele) =>
+                        ele.controllerKey ==
+                        PermissionKey.manageMessages.statusName))
+            ? await Get.to(() => const OwnerInboxScreen(), id: pageIdApp.value)
+            : Utility.showAlertMessage(
+                AlertStringConstants.notAuthorizedToStoreText);
+  }
+
+  // Role-aware store navigation. [category] (e.g. Munchies / Herbs) is passed
+  // through to the store screen so the listing can be scoped to that category.
+  Future<void> _openStores({String? category}) async {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to browse stores",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    final firstName =
+        homeController.getUserDetailModel.data?.user?.firstName ?? "";
+    final lastName =
+        homeController.getUserDetailModel.data?.user?.lastName ?? "";
+
+    if (roleApp.value == Role.customerRoleText) {
+      await Get.to(
+        () => SearchStoreUserScreen(
+          firstName: firstName,
+          lastName: lastName,
+          category: category,
+        ),
+        id: pageIdApp.value,
+      );
+      await homeController.apiActiveCartApi();
+    } else {
+      await Get.to(
+        () => OwnerStoresListScreen(
+          firstName: firstName,
+          isFromHome: false,
+          lastName: lastName,
+          category: category,
+        ),
+        id: pageIdApp.value,
+      );
+    }
   }
 
   Widget _payPill({
@@ -515,24 +322,135 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     );
   }
 
+  // A single circular action button used for the title-row icon cluster
+  // (transaction history, account, notifications). Keeping one shared style
+  // makes the three icons read as one cohesive group.
+  Widget _circleAction({required Widget icon, required VoidCallback onTap}) {
+    return RawMaterialButton(
+      elevation: 0,
+      onPressed: onTap,
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.all(9.0),
+      shape: const CircleBorder(
+        side: BorderSide(width: 1.0, color: AppColors.primary),
+      ),
+      fillColor: AppColors.white,
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: Center(child: icon),
+      ),
+    );
+  }
+
+  // Transaction-history, account and notification action buttons, rendered as
+  // one consistent cluster in the title row.
+  List<Widget> _buildAccountActions() {
+    return [
+      // Inbox first, matching the header icon row.
+      _circleAction(
+        icon: Image.asset(ImageConstants.message, height: 20),
+        onTap: _openInbox,
+      ),
+      width8SizedBox,
+      // Transaction history.
+      _circleAction(
+        icon: Image.asset(ImageConstants.union, height: 20),
+        onTap: _openTransactionHistory,
+      ),
+      width8SizedBox,
+      // Account.
+      _circleAction(
+        icon: Image.asset(ImageConstants.user, height: 20),
+        onTap: _openAccount,
+      ),
+      width8SizedBox,
+      // Notifications.
+      _circleAction(
+        icon: const Icon(
+          Icons.notifications_active,
+          color: AppColors.primary,
+          size: 20.0,
+        ),
+        onTap: () {
+          if (homeController.isLoading.value == false) {
+            Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
+          }
+        },
+      ),
+      width8SizedBox,
+    ];
+  }
+
+  // Role-aware account navigation.
+  void _openAccount() {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to access account settings",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    Get.to(() => const AccountScreen(), id: pageIdApp.value)?.then((value) {
+      homeController.refreshUserData();
+    });
+  }
+
+  // Role-aware transaction-history navigation (shared by the profile sheet).
+  // TransactionScreen is role aware; only the owner/worker view is gated behind
+  // store permissions.
+  Future<void> _openTransactionHistory() async {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to access transaction history",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    if (roleApp.value == Role.customerRoleText) {
+      await Get.to(() => const TransactionScreen(), id: pageIdApp.value);
+    } else {
+      (hasStoreAccess.value && permissionStoreList.isEmpty) ||
+              permissionStoreList.any((element) =>
+                  element.isStoreOwner == true ||
+                  element.controllers!.any((ele) =>
+                      ele.controllerKey ==
+                      PermissionKey.manageTransaction.statusName))
+          ? await Get.to(() => const TransactionScreen(), id: pageIdApp.value)
+          : Utility.showAlertMessage(
+              AlertStringConstants.notAuthorizedToStoreText);
+    }
+  }
+
   Row buildTitle() {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
+          Expanded(
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Obx(() =>
                   Text(
                     "${StringConstants.hiText}${firstName.value} ${lastName.value}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                         fontSize: 18,
                         color: AppColors.black,
                         fontWeight: FontWeight.w600),
                   )),
-              Text.rich(
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text.rich(
+                maxLines: 1,
                 TextSpan(
                   children: [
                     TextSpan(
@@ -593,9 +511,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     ),
                   ],
                 ),
+              ),
               )
             ],
-          ),
+          )),
           Row(
             children: [
               Obx(
@@ -658,19 +577,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       ),
                     ),
               ),
-              GestureDetector(
-                onTap: () {
-                  if (homeController.isLoading.value == false) {
-                    Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
-                  }
-                },
-                child: const Icon(
-                  Icons.notifications_active,
-                  color: AppColors.primary,
-                  size: 24.0,
-                ),
-              ),
-              width10SizedBox,
+              ..._buildAccountActions(),
               Image.asset(
                 ImageConstants.homeMall,
                 scale: 4,

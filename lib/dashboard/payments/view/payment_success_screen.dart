@@ -101,8 +101,11 @@ class PaymentSuccessScreen extends StatelessWidget {
                         text: 'Done',
                         onTap: () {
                           c.resetFlow();
+                          // Leave the whole payments flow (success + the shell)
+                          // and return to the main app shell.
                           Get.until((route) =>
-                              route.settings.name == '/paymentsHome' || route.isFirst);
+                              route.settings.name == '/bottomNavigation' ||
+                              route.isFirst);
                         },
                       ),
                     ),

@@ -106,7 +106,8 @@ class _PayTab extends StatelessWidget {
             onTap: () {
               c.paymentType.value = 'p2p';
               c.resetFlow();
-              Get.toNamed(PaymentRoutes.scanner, arguments: {'type': 'p2p'});
+              Get.toNamed(PaymentRoutes.scanner,
+                  id: PaymentRoutes.navId, arguments: {'type': 'p2p'});
             },
           ),
           const SizedBox(height: PayTheme.itemGap),
@@ -117,7 +118,8 @@ class _PayTab extends StatelessWidget {
             onTap: () {
               c.paymentType.value = 'p2b';
               c.resetFlow();
-              Get.toNamed(PaymentRoutes.scanner, arguments: {'type': 'p2b'});
+              Get.toNamed(PaymentRoutes.scanner,
+                  id: PaymentRoutes.navId, arguments: {'type': 'p2b'});
             },
           ),
           const SizedBox(height: PayTheme.sectionGap),
@@ -166,7 +168,7 @@ class _ReceiveTab extends StatelessWidget {
             title: 'Show my code',
             subtitle: 'Let another TGM user scan to pay you',
             onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
-                arguments: {'actor_type': 'user'}),
+                id: PaymentRoutes.navId, arguments: {'actor_type': 'user'}),
           ),
           const SizedBox(height: PayTheme.itemGap),
           _OptionCard(
@@ -174,7 +176,7 @@ class _ReceiveTab extends StatelessWidget {
             title: 'Merchant payment code',
             subtitle: 'Display a code for customers to scan',
             onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
-                arguments: {'actor_type': 'merchant'}),
+                id: PaymentRoutes.navId, arguments: {'actor_type': 'merchant'}),
           ),
         ],
       ),

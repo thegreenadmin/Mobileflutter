@@ -26,7 +26,18 @@ class PayAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back, color: PayTheme.primaryText),
-              onPressed: onBack ?? () => Navigator.of(context).maybePop(),
+              // Pop within the payments flow's nested navigator when possible;
+              // at the flow root (Payments home) fall back to the root navigator
+              // so back exits the payments shell instead of dead-ending.
+              onPressed: onBack ??
+                  () {
+                    final nav = Navigator.of(context);
+                    if (nav.canPop()) {
+                      nav.pop();
+                    } else {
+                      Navigator.of(context, rootNavigator: true).maybePop();
+                    }
+                  },
             ),
             Expanded(
               child: Column(
