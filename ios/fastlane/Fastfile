@@ -132,6 +132,8 @@ platform :ios do
       scheme: "Runner",
       export_method: "app-store",
       clean: true,
+      output_directory: "./build",
+      output_name: "Runner",
       xcargs: "DEVELOPMENT_TEAM=#{ENV['APPLE_TEAM_ID']} CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution'",
       export_options: {
         signingStyle: "manual",
@@ -207,6 +209,7 @@ platform :ios do
 
   desc "Sync signing certificates"
   lane :sync_signing do
+    setup_ci if ENV['CI']
     match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 

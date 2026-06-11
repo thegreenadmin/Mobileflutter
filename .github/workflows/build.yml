@@ -21,7 +21,7 @@ on:
           - beta
           - release
   push:
-    branches: [ main]
+    branches: [main]
     paths:
       - 'lib/**'
       - 'android/**'
@@ -32,9 +32,15 @@ permissions:
   contents: write
   id-token: write
 
+# Serialize runs per ref so the post-build "increment build number" commit/push
+# steps don't race each other on the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   FLUTTER_VERSION: '3.41.6'
-  RUBY_VERSION: '3.2'
+  RUBY_VERSION: '3.3'
 
 jobs:
   build-ios:
@@ -81,9 +87,6 @@ jobs:
           STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
           EOF
 
-      - name: Print api_key.env contents
-        run: cat assets/env/api_key.env
-
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -105,26 +108,17 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Install CocoaPods dependencies
-        run: |
-          cd ios
-          pod install
-          cd ..
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-      - name: Setup code signing with Match
-        env:
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
-          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
-          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
-          OPENSSL_CONF: /dev/null
+      - name: Install CocoaPods dependencies
         working-directory: ios
-        run: bundle exec fastlane sync_signing
+        run: pod install
 
       - name: Build iOS app for beta (TestFlight)
         if: env.BUILD_ENVIRONMENT == 'beta'
@@ -141,16 +135,6 @@ jobs:
           OPENSSL_CONF: /dev/null
         working-directory: ios
         run: bundle exec fastlane beta
-
-      - name: Commit and push updated build number
-        if: env.BUILD_ENVIRONMENT == 'beta'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ios/Runner.xcodeproj/project.pbxproj
-          git diff --staged --quiet || git commit -m "chore: increment iOS build number [skip ci]"
-          git pull --rebase --autostash
-          git push
 
       - name: Build iOS app for release (App Store)
         if: env.BUILD_ENVIRONMENT == 'release'
@@ -169,7 +153,6 @@ jobs:
         run: bundle exec fastlane release
 
       - name: Commit and push updated build number
-        if: env.BUILD_ENVIRONMENT == 'release'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -258,6 +241,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -265,7 +249,7 @@ jobs:
       - name: Install required Android SDK components
         run: |
           yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platforms;android-33" "platforms;android-36" "build-tools;34.0.0"
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
       - name: Decode keystore
         run: |
@@ -326,16 +310,10 @@ jobs:
           echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
 
       - name: Build Flutter app bundle
-        run: |
-          echo "Building Flutter app bundle with optimized settings..."
-          flutter build appbundle --release --verbose
-          
+        run: flutter build appbundle --release
+
       - name: Verify build output
-        run: |
-          echo "=== Verifying build output ==="
-          find . -name "*.aab" -type f -exec ls -la {} \;
-          echo "=== Build directory structure ==="
-          find build/app/outputs -type f 2>/dev/null || echo "No build outputs found"
+        run: ls -la build/app/outputs/bundle/release/*.aab
 
       - name: Deploy to Google Play Internal Testing (beta)
         if: env.BUILD_ENVIRONMENT == 'beta'
@@ -347,27 +325,10 @@ jobs:
         working-directory: android
         run: bundle exec fastlane deploy
 
-      - name: List build outputs
-        run: |
-          echo "=== Searching for all .aab and .apk files in project ==="
-          find . -type f -name "*.aab" -o -name "*.apk" 2>/dev/null || echo "No AAB or APK files found"
-          echo "=== Listing all build directories ==="
-          find . -type d -name "build" 2>/dev/null
-          echo "=== Listing android directory contents ==="
-          ls -la android/
-          echo "=== Checking specific build output paths ==="
-          ls -la build/app/outputs/bundle/release/ 2>/dev/null || echo "Flutter build output directory not found"
-          ls -la android/app/build/outputs/bundle/release/ 2>/dev/null || echo "Android build output directory not found"
-          echo "=== File sizes and permissions ==="
-          find . -name "*.aab" -exec ls -la {} \; 2>/dev/null || echo "No AAB files to check"
-
       - name: Upload Android build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: android-build-artifacts
-          path: |
-            build/app/outputs/bundle/release/*.aab
-            android/app/build/outputs/bundle/release/*.aab
-            **/*.aab
+          path: build/app/outputs/bundle/release/*.aab
           retention-days: 30
