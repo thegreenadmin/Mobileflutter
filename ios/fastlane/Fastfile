@@ -93,11 +93,28 @@ platform :ios do
     end
   end
 
+  # Derive the next build number from App Store Connect instead of the local
+  # project.pbxproj. The committed pbxproj value drifts out of sync across
+  # branches/runners, which causes altool to reject the upload with
+  # "bundle version ... has already been used". Querying the latest TestFlight
+  # build (which reflects every uploaded build for the app) and adding 1
+  # guarantees a strictly higher, conflict-free build number on every run.
+  def set_next_build_number
+    latest = latest_testflight_build_number(
+      app_identifier: "com.thegreenmall",
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+    )
+    increment_build_number(
+      build_number: latest + 1,
+      xcodeproj: "Runner.xcodeproj"
+    )
+  end
+
   desc "Push a new beta build to TestFlight"
   lane :beta do
     setup_ci if ENV['CI']
     match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
-    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    set_next_build_number
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -125,7 +142,7 @@ platform :ios do
   desc "Build and release a new version to the App Store"
   lane :release do
     setup_ci if ENV['CI']
-    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    set_next_build_number
     match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     build_app(
       workspace: "Runner.xcworkspace",
