@@ -17,7 +17,6 @@ import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/user_inbox_scr
 import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
-import 'package:thegreenmall/dashboard/orders/view/transaction_screen.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
@@ -171,8 +170,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               buildTitle(),
               height12SizedBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+              // The whole row scales down as one unit, so all four pills fit
+              // on screen (no scrolling) and every label keeps the same
+              // font size relative to the others.
+              FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Row(
                   children: [
                     // Store category shortcuts. Munchies / Herbs reuse the same
@@ -182,19 +184,19 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       label: StringConstants.storesText,
                       onTap: () => _openStores(),
                     ),
-                    width8SizedBox,
+                    width5SizedBox,
                     _payPill(
                       icon: Icons.lunch_dining_outlined,
                       label: StringConstants.munchiesText,
                       onTap: () => _openStores(category: StringConstants.munchiesText),
                     ),
-                    width8SizedBox,
+                    width5SizedBox,
                     _payPill(
                       icon: Icons.local_florist_outlined,
                       label: StringConstants.herbsText,
                       onTap: () => _openStores(category: StringConstants.herbsText),
                     ),
-                    width8SizedBox,
+                    width5SizedBox,
                     // Opens the dedicated Payments screen (P2P / P2B live there).
                     _payPill(
                       icon: Icons.payments_outlined,
@@ -315,6 +317,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           width5SizedBox,
           Text(
             label,
+            maxLines: 1,
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
           ),
         ],
@@ -351,12 +354,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       _circleAction(
         icon: Image.asset(ImageConstants.message, height: 20),
         onTap: _openInbox,
-      ),
-      width8SizedBox,
-      // Transaction history.
-      _circleAction(
-        icon: Image.asset(ImageConstants.union, height: 20),
-        onTap: _openTransactionHistory,
       ),
       width8SizedBox,
       // Account.
@@ -396,34 +393,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     Get.to(() => const AccountScreen(), id: pageIdApp.value)?.then((value) {
       homeController.refreshUserData();
     });
-  }
-
-  // Role-aware transaction-history navigation (shared by the profile sheet).
-  // TransactionScreen is role aware; only the owner/worker view is gated behind
-  // store permissions.
-  Future<void> _openTransactionHistory() async {
-    if (isGuest.value == true) {
-      GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to access transaction history",
-        onContinueAsGuest: () {},
-      );
-      return;
-    }
-
-    if (roleApp.value == Role.customerRoleText) {
-      await Get.to(() => const TransactionScreen(), id: pageIdApp.value);
-    } else {
-      (hasStoreAccess.value && permissionStoreList.isEmpty) ||
-              permissionStoreList.any((element) =>
-                  element.isStoreOwner == true ||
-                  element.controllers!.any((ele) =>
-                      ele.controllerKey ==
-                      PermissionKey.manageTransaction.statusName))
-          ? await Get.to(() => const TransactionScreen(), id: pageIdApp.value)
-          : Utility.showAlertMessage(
-              AlertStringConstants.notAuthorizedToStoreText);
-    }
   }
 
   Row buildTitle() {
@@ -577,11 +546,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       ),
                     ),
               ),
-              ..._buildAccountActions(),
               Image.asset(
                 ImageConstants.homeMall,
                 scale: 4,
               ),
+              width8SizedBox,
+              ..._buildAccountActions(),
             ],
           )
         ]);
