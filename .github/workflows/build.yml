@@ -305,8 +305,12 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" | base64 --decode > android/google-play-service-account.json
 
+      - name: Compute next Android version code
+        working-directory: android
+        run: bundle exec fastlane set_version_code
+
       - name: Build Flutter app bundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=${ANDROID_VERSION_CODE}
 
       - name: Verify build output
         run: ls -la build/app/outputs/bundle/release/*.aab

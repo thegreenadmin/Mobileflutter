@@ -3,7 +3,42 @@
 
 default_platform(:android)
 
+PACKAGE_NAME = "com.thegreenmall"
+PLAY_JSON_KEY = "./google-play-service-account.json"
+
 platform :android do
+  # Highest version code currently on Google Play across all tracks. The AAB's
+  # versionCode is baked in from pubspec.yaml at flutter-build time and drifts
+  # out of sync, causing "Version code N has already been used". We compute the
+  # next code from Play and export it to GITHUB_ENV so the build step can pass
+  # it to `flutter build --build-number`, guaranteeing a strictly higher code.
+  lane :set_version_code do
+    codes = []
+    %w[internal alpha beta production].each do |track|
+      begin
+        codes.concat(Array(google_play_track_version_codes(
+          package_name: PACKAGE_NAME,
+          track: track,
+          json_key: PLAY_JSON_KEY
+        )))
+      rescue => e
+        UI.important("Could not read version codes for track '#{track}': #{e.message}")
+      end
+    end
+    next_code = (codes.compact.max || 0) + 1
+    UI.success("Next Android version code: #{next_code}")
+    File.open(ENV['GITHUB_ENV'], 'a') { |f| f.puts("ANDROID_VERSION_CODE=#{next_code}") } if ENV['GITHUB_ENV']
+  end
+
+  # Locate the AAB produced by `flutter build appbundle` (always emitted to the
+  # Flutter project root, not the android/ dir).
+  def find_aab
+    path = Dir.glob(File.join(File.expand_path("../.."), "build/app/outputs/bundle/release/*.aab")).first
+    UI.user_error!("No AAB found at build/app/outputs/bundle/release/*.aab") if path.nil?
+    UI.success("Found AAB file: #{path}")
+    path
+  end
+
   desc "Build a debug APK"
   lane :build_debug do
     gradle(
@@ -24,66 +59,16 @@ platform :android do
 
   desc "Upload a pre-built beta AAB to Google Play Internal Testing"
   lane :beta do
-    # Note: Flutter app bundle is now built in the CI pipeline before this step
-    
-    # Get the project root directory (go up two levels from android/fastlane to project root)
-    project_root = File.expand_path("../..")
-    
-    # Debug: Find all AAB files in the build directory
-    UI.important("=== Searching for AAB files ===")
-    UI.important("Project root: #{project_root}")
-    UI.important("Current directory: #{Dir.pwd}")
-    
-    aab_files = Dir.glob(File.join(project_root, "**/*.aab"))
-    UI.important("Found #{aab_files.length} AAB files:")
-    aab_files.each { |file| UI.important("  - #{file}") }
-    
-    UI.important("=== Listing all build output directories ===")
-    Dir.glob(File.join(project_root, "build/**/outputs/**/*")).select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
-    Dir.glob("build/**/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
-    Dir.glob("app/build/outputs/**/*").select { |f| File.directory?(f) }.each { |dir| UI.important("  Directory: #{dir}") }
-    
-    UI.important("=== Listing all files in build directory ===")
-    Dir.glob(File.join(project_root, "build/**/*")).select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
-    Dir.glob("build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
-    Dir.glob("app/build/**/*").select { |f| File.file?(f) }.each { |file| UI.important("  - #{file}") }
-    
-    UI.important("=== Searching for any bundle files ===")
-    bundle_files = Dir.glob(File.join(project_root, "**/*bundle*"))
-    UI.important("Found #{bundle_files.length} bundle files:")
-    bundle_files.each { |file| UI.important("  - #{file}") }
-    
-    # Try to find the AAB file in multiple possible locations (Flutter generates in build/app/outputs/)
-    # The key fix: Flutter builds from project root, not android directory
-    aab_path = Dir.glob(File.join(project_root, "build/app/outputs/bundle/release/*.aab")).first ||
-               Dir.glob(File.join(project_root, "**/*.aab")).first ||
-               Dir.glob("build/app/outputs/bundle/release/*.aab").first ||
-               Dir.glob("app/build/outputs/bundle/release/*.aab").first ||
-               Dir.glob("**/outputs/bundle/release/*.aab").first ||
-               Dir.glob("**/*.aab").first
-    
-    if aab_path.nil?
-      UI.error("Could not find any AAB file in expected locations")
-      UI.error("Available AAB files:")
-      aab_files.each { |file| UI.error("  - #{file}") }
-      raise "No AAB file found"
-    end
-    
-    UI.success("Found AAB file: #{aab_path}")
-    
-    # Upload to Google Play (first-time app submission)
+    # The AAB is built in the CI pipeline (with a Play-derived versionCode) before this step.
     upload_to_play_store(
       track: 'internal',
-      aab: aab_path,
+      aab: find_aab,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      json_key: "./google-play-service-account.json",
+      json_key: PLAY_JSON_KEY,
       release_status: 'draft'
     )
-    
-    # Increment version code after successful upload
-    increment_version_code
   end
 
   desc "Increment version code only (for manual version bump)"
@@ -231,92 +216,18 @@ platform :android do
     UI.success("Version bumped from #{major}.#{minor}.#{patch}+#{build} to #{new_major}.#{new_minor}.#{new_patch}+#{new_build}")
   end
 
-  # Increment version code in pubspec.yaml
-  private_lane :increment_version_code do
-    # Get project root directory
-    project_root = File.expand_path("../..")
-    pubspec_path = File.join(project_root, "pubspec.yaml")
-    
-    # Read current pubspec.yaml
-    pubspec_content = File.read(pubspec_path)
-    
-    # Extract current version code
-    version_line = pubspec_content.match(/^version:\s*\d+\.\d+\.\d+\+(\d+)/)
-    if version_line.nil?
-      UI.error("Could not find version line in pubspec.yaml")
-      return
-    end
-    
-    current_version_code = version_line[1].to_i
-    new_version_code = current_version_code + 1
-    
-    # Extract version name
-    version_name_match = pubspec_content.match(/^version:\s*(\d+\.\d+\.\d+)/)
-    version_name = version_name_match ? version_name_match[1] : "1.0.0"
-    
-    # Update version line
-    new_version_line = "version: #{version_name}+#{new_version_code}"
-    updated_content = pubspec_content.sub(/^version:\s*\d+\.\d+\.\d+\+\d+/, new_version_line)
-    
-    # Write back to pubspec.yaml
-    File.write(pubspec_path, updated_content)
-    
-    UI.success("Version code incremented from #{current_version_code} to #{new_version_code}")
-    UI.success("New version: #{version_name}+#{new_version_code}")
-    
-    # Commit and push version change
-    Dir.chdir(project_root) do
-      sh("git", "config", "user.email", "ci-bot@github.com")
-      sh("git", "config", "user.name", "GitHub Actions")
-      sh("git", "add", "pubspec.yaml")
-      sh("git", "commit", "-m", "chore: increment version code to #{new_version_code} [skip ci]")
-      sh("git", "pull", "--rebase", "--autostash")
-      sh("git", "push")
-    end
-    
-    UI.success("Version change committed and pushed")
-  end
-
   desc "Deploy a new version to Google Play Production"
   lane :deploy do
-    # Note: Flutter app bundle is now built in the CI pipeline before this step
-    
-    # Get the project root directory (go up two levels from android/fastlane to project root)
-    project_root = File.expand_path("../..")
-    
-    # Debug: Find all AAB files in the build directory
-    UI.important("=== Searching for AAB files ===")
-    UI.important("Project root: #{project_root}")
-    aab_files = Dir.glob(File.join(project_root, "**/*.aab"))
-    UI.important("Found #{aab_files.length} AAB files:")
-    aab_files.each { |file| UI.important("  - #{file}") }
-    
-    # Try to find the AAB file
-    aab_path = Dir.glob(File.join(project_root, "build/app/outputs/bundle/release/*.aab")).first ||
-               Dir.glob(File.join(project_root, "**/*.aab")).first
-    
-    if aab_path.nil?
-      UI.error("Could not find any AAB file in app/build/outputs/bundle/release/")
-      UI.error("Available AAB files:")
-      aab_files.each { |file| UI.error("  - #{file}") }
-      raise "No AAB file found"
-    end
-    
-    UI.success("Found AAB file: #{aab_path}")
-    
-    # Upload to Google Play Internal track (app is still in draft status)
+    # The AAB is built in the CI pipeline (with a Play-derived versionCode) before this step.
     upload_to_play_store(
       track: "internal",
-      aab: aab_path,
+      aab: find_aab,
       release_status: "draft",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      json_key: "./google-play-service-account.json"
+      json_key: PLAY_JSON_KEY
     )
-
-    # Increment version code after successful upload
-    increment_version_code
   end
 
   desc "Deploy to Google Play Alpha track"
