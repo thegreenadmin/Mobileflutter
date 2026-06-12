@@ -25,9 +25,12 @@ class AppConfigService {
             "${StringConstants.bearerText} ${authToken.value}";
       }
 
+      // Background refresh: never surface network/parse errors to the user
+      // (e.g. an HTML error page from the gateway would otherwise alert).
       final response = await UserProvider().getWithHeadersApi(
         ServerCommunicator.baseUrl + ServerCommunicator.appConfig,
         headers,
+        showError: false,
       );
 
       final data = response?.body?['data'];

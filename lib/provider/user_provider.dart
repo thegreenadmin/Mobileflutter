@@ -42,7 +42,7 @@ class UserProvider extends GetConnect {
   }
 
   Future<Response?> getWithHeadersApi(String url, Map<String, String> headers,
-      {bool showLoading = false}) async
+      {bool showLoading = false, bool showError = true}) async
   {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
@@ -56,10 +56,12 @@ class UserProvider extends GetConnect {
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
     if ( connectivityResult.contains(ConnectivityResult.none)) {
-      Utility.showAlertMessage(
-        "Please check your network connection.",
-        title: "No Internet Connection!",
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          "Please check your network connection.",
+          title: "No Internet Connection!",
+        );
+      }
       return null;
     }
         if (showLoading) {
@@ -81,26 +83,32 @@ class UserProvider extends GetConnect {
     } on TimeoutException catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Connection timed out', error: e);
-      Utility.showAlertMessage(
-        "Connection timed out.",
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          "Connection timed out.",
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Exception in getWithHeadersApi', error: e);
-      Utility.showAlertMessage(
-        e.toString(),
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          e.toString(),
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     } catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Error in getWithHeadersApi', error: e);
-      Utility.showAlertMessage(
-        e.toString(),
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          e.toString(),
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     }
   }
