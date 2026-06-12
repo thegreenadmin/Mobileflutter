@@ -56,6 +56,11 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                 children: [
                                   Row(
                                     children: [
+                                      Image.asset(
+                                        ImageConstants.homeMall,
+                                        scale: 4,
+                                      ),
+                                      width10SizedBox,
                                       IconButton(
                                         padding: EdgeInsets.zero,
                                         constraints: const BoxConstraints(),
@@ -80,10 +85,6 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
                                       ),
                                     ],
                                   ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 5,
-                                  )
                                 ]),
                           ],
                         )),

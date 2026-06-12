@@ -372,6 +372,11 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          ),
+                          width10SizedBox,
                           IconButton(
                             padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
@@ -390,7 +395,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                  "${StringConstants.hiText}${widget.firstName} ${widget.lastName}",
+                                  "${StringConstants.hiText}${widget.firstName}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
@@ -408,10 +413,6 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                           ),
                         ],
                       ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
                     ]),
                 height15SizedBox,
               ],

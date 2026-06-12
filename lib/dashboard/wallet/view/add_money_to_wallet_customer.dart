@@ -106,6 +106,11 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                           Expanded(
                             child:  Row(
                               children: [
+                                Image.asset(
+                                  ImageConstants.homeMall,
+                                  scale: 4,
+                                ),
+                                width10SizedBox,
                                 IconButton(
                                   padding: EdgeInsets.all(5),
                                   constraints: const BoxConstraints(),
@@ -132,11 +137,6 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                               ],
                             ),
                           ),
-                          width4SizedBox,
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ),
                   Form(

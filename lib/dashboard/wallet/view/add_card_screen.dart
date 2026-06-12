@@ -49,6 +49,11 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -72,10 +77,6 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ])),
               ),
                 Expanded(

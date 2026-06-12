@@ -36,6 +36,11 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -59,10 +64,6 @@ class ActiveMembershipScreenState extends State<ActiveMembershipScreen> with Glo
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ])),
               ),
               Expanded(

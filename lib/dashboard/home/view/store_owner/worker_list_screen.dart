@@ -483,6 +483,11 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          ),
+                          width10SizedBox,
                           IconButton(
                             padding: EdgeInsets.all(5),
                             constraints: const BoxConstraints(),
@@ -510,10 +515,6 @@ class _WorkerListScreenState extends State<WorkerListScreen> with GlobalVarMixin
                           ),
                         ],
                       ),
-                      Image.asset(
-                        ImageConstants.homeMall,
-                        scale: 4,
-                      )
                     ]),
                 height20SizedBox,
               ],

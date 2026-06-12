@@ -19,7 +19,8 @@ import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
-import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
+import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
+import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
 import 'customer/components/store_home_main_args.dart';
 import 'store_owner/manage_store_main_screen.dart';
 
@@ -221,7 +222,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
       );
       return;
     }
-    Get.toNamed(PaymentRoutes.flow);
+    // Push inside the home tab's nested navigator (like every other screen)
+    // so the flow lives in the same container and keeps the dashboard's
+    // bottom bar, instead of a full-screen root route with its own bar.
+    // The binding must come along explicitly: it used to run via the
+    // /paymentsFlow named route, which is no longer the entry point.
+    Get.to(
+      () => const PaymentShell(),
+      id: pageIdApp.value,
+      binding: PaymentBinding(),
+    );
   }
 
   // Role-aware inbox navigation, shared by the title-row inbox action.
@@ -346,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     );
   }
 
-  // Transaction-history, account and notification action buttons, rendered as
+  // Inbox, account and notification action buttons, rendered as
   // one consistent cluster in the title row.
   List<Widget> _buildAccountActions() {
     return [
@@ -355,13 +365,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         icon: Image.asset(ImageConstants.message, height: 20),
         onTap: _openInbox,
       ),
-      width8SizedBox,
+      width2SizedBox,
       // Account.
       _circleAction(
         icon: Image.asset(ImageConstants.user, height: 20),
         onTap: _openAccount,
       ),
-      width8SizedBox,
+      width2SizedBox,
       // Notifications.
       _circleAction(
         icon: const Icon(
@@ -375,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           }
         },
       ),
-      width8SizedBox,
+      width2SizedBox,
     ];
   }
 
@@ -400,6 +410,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // TGM logo leads the title header.
+          Image.asset(
+            ImageConstants.homeMall,
+            scale: 4,
+          ),
+          width8SizedBox,
           Expanded(
             child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,7 +423,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               Obx(() =>
                   Text(
-                    "${StringConstants.hiText}${firstName.value} ${lastName.value}",
+                    "${StringConstants.hiText}${firstName.value}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -546,11 +562,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                       ),
                     ),
               ),
-              Image.asset(
-                ImageConstants.homeMall,
-                scale: 4,
-              ),
-              width8SizedBox,
               ..._buildAccountActions(),
             ],
           )

@@ -151,6 +151,11 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                   children: [
                                     Row(
                                       children: [
+                                        Image.asset(
+                                          ImageConstants.homeMall,
+                                          scale: 4,
+                                        ),
+                                        width10SizedBox,
                                         IconButton(
                                           padding: EdgeInsets.all(10),
                                           constraints: const BoxConstraints(),
@@ -173,10 +178,6 @@ class _OwnerInboxScreenState extends State<OwnerInboxScreen> with GlobalVarMixin
                                         ),
                                       ],
                                     ),
-                                    Image.asset(
-                                      ImageConstants.homeMall,
-                                      scale: 4,
-                                    )
                                   ]),
                             ],
                           )),

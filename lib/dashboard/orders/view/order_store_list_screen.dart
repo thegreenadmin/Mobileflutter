@@ -73,13 +73,19 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
+                          Image.asset(
+                            ImageConstants.homeMall,
+                            scale: 4,
+                          ),
+                          width10SizedBox,
+                          Expanded(
+                            child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Obx(
                                     () => Text(
-                                  'Hi, ${firstName.value} ${lastName.value}',
+                                  'Hi, ${firstName.value}',
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: AppColors.black,
@@ -96,10 +102,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
+                          ),
                         ]),
                   ],
                 )),

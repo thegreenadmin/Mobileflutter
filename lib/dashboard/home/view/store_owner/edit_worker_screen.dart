@@ -829,6 +829,11 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                       children: [
                         Row(
                           children: [
+                            Image.asset(
+                              ImageConstants.homeMall,
+                              scale: 4,
+                            ),
+                            width10SizedBox,
                             IconButton(
                               padding: EdgeInsets.all(5),
                               constraints: const BoxConstraints(),
@@ -854,10 +859,6 @@ class _EditWorkerScreenState extends State<EditWorkerScreen> with GlobalVarMixin
                             ),
                           ],
                         ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
                       ]),
                 ],
               )),

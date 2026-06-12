@@ -55,7 +55,14 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
+                    // TGM logo leads the title header.
+                    Image.asset(
+                      ImageConstants.homeMall,
+                      scale: 4,
+                    ),
+                    width10SizedBox,
+                    Expanded(
+                      child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -80,7 +87,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                 ? width10SizedBox
                                 : height0SizedBox,
                             Text(
-                              "${StringConstants.hiText}${widget.firstName} ${widget.lastName}",
+                              "${StringConstants.hiText}${widget.firstName}",
                               style: const TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
@@ -97,6 +104,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                               fontWeight: FontWeight.w600),
                         )
                       ],
+                    ),
                     ),
                     Row(
                       children: [
@@ -173,10 +181,6 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                             ),
                           ),
                         ),
-                        Image.asset(
-                          ImageConstants.homeMall,
-                          scale: 4,
-                        )
                       ],
                     ),
                   ]),

@@ -1651,6 +1651,11 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -1673,10 +1678,6 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }

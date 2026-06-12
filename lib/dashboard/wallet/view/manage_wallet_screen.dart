@@ -78,6 +78,11 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.all(10),
                                 constraints: const BoxConstraints(),
@@ -100,10 +105,6 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ])),
               ),
               Container(

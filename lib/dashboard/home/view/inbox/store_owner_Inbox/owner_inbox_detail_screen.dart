@@ -661,6 +661,11 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                 children: [
                                   Row(
                                     children: [
+                                      Image.asset(
+                                        ImageConstants.homeMall,
+                                        scale: 4,
+                                      ),
+                                      width10SizedBox,
                                       IconButton(
                                         padding: EdgeInsets.all(10),
                                         constraints: const BoxConstraints(),
@@ -684,10 +689,6 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                                       )),
                                     ],
                                   ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 4,
-                                  )
                                 ]),
                           ],
                         )),

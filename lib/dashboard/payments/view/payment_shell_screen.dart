@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/app_bottom_nav_bar.dart';
 
 import '../payment_routes.dart';
 import 'barcode_scanner_screen.dart';
@@ -12,11 +11,10 @@ import 'review_pay_screen.dart';
 
 /// Persistent shell for the payments flow.
 ///
-/// The bottom navigation bar lives here, on a single Scaffold, while the
-/// individual payment screens render inside a nested [Navigator]. Because the
-/// bar is mounted once on this Scaffold (and the Scaffold does not resize for
-/// the keyboard), it stays perfectly static as inner screens push/pop and as
-/// the keyboard opens — instead of re-animating with every full-screen route.
+/// Pushed inside the home tab's nested navigator (`id: pageIdApp.value`) like
+/// every other screen, so the dashboard's own bottom bar stays visible and
+/// static while the individual payment screens render inside a nested
+/// [Navigator] here.
 ///
 /// Inner navigation uses GetX's nested navigation (`id: PaymentRoutes.navId`),
 /// e.g. `Get.toNamed(PaymentRoutes.scanner, id: PaymentRoutes.navId)`.
@@ -36,14 +34,18 @@ class PaymentShell extends StatelessWidget {
         if (nav != null && nav.canPop()) {
           nav.pop(); // step back through the inner flow first
         } else {
-          Get.back(); // at the flow root -> leave the shell entirely
+          // At the flow root -> pop the shell off whichever navigator hosts
+          // it (the home tab's nested navigator, or root when deep-linked).
+          // Plain pop(): maybePop() would re-consult this PopScope
+          // (canPop: false) and recurse forever.
+          final host = Navigator.of(context);
+          if (host.canPop()) {
+            host.pop();
+          }
         }
       },
       child: Scaffold(
         backgroundColor: PayTheme.background,
-        // Bar is owned here and must not be pushed up by the keyboard.
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: const AppBottomNavBar(),
         body: Navigator(
           key: Get.nestedKey(PaymentRoutes.navId),
           initialRoute: PaymentRoutes.home,

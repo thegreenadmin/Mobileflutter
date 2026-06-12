@@ -35,6 +35,11 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                           children: [
                             Row(
                               children: [
+                                Image.asset(
+                                  ImageConstants.homeMall,
+                                  scale: 4,
+                                ),
+                                width10SizedBox,
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
@@ -58,10 +63,6 @@ class _AccountIdScreenState extends State<AccountIdScreen> with GlobalVarMixin{
                                 ),
                               ],
                             ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 5,
-                            )
                           ]),
                     ],
                   )),

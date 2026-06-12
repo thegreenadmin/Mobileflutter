@@ -645,6 +645,11 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                   children: [
                                     Row(
                                       children: [
+                                        Image.asset(
+                                          ImageConstants.homeMall,
+                                          scale: 4,
+                                        ),
+                                        width10SizedBox,
                                         IconButton(
                                           padding: EdgeInsets.all(5),
                                           constraints: const BoxConstraints(),
@@ -667,10 +672,6 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                         )),
                                       ],
                                     ),
-                                    Image.asset(
-                                      ImageConstants.homeMall,
-                                      scale: 4,
-                                    )
                                   ]),
                             ],
                           )),

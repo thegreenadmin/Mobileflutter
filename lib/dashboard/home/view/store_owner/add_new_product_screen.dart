@@ -52,6 +52,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.all(5),
                           constraints: const BoxConstraints(),
@@ -76,10 +81,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                           ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }

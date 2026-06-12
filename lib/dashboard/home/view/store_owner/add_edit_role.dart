@@ -382,6 +382,11 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.all(10),
                           constraints: const BoxConstraints(),
@@ -404,10 +409,6 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }

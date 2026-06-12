@@ -37,6 +37,11 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> with GlobalVarM
                           children: [
                             Row(
                               children: [
+                                Image.asset(
+                                  ImageConstants.homeMall,
+                                  scale: 4,
+                                ),
+                                width10SizedBox,
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
@@ -59,10 +64,6 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> with GlobalVarM
                                 ),
                               ],
                             ),
-                            Image.asset(
-                              ImageConstants.homeMall,
-                              scale: 4,
-                            )
                           ]),
                     ],
                   )),

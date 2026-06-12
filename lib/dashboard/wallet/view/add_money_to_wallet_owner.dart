@@ -108,6 +108,11 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                               Expanded(
                                 child: Row(
                                   children: [
+                                    Image.asset(
+                                      ImageConstants.homeMall,
+                                      scale: 4,
+                                    ),
+                                    width10SizedBox,
                                     IconButton(
                                       padding: EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -134,10 +139,6 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                   ],
                                 ),
                               ),
-                              Image.asset(
-                                ImageConstants.homeMall,
-                                scale: 4,
-                              )
                             ])),
                   ),
                   Form(

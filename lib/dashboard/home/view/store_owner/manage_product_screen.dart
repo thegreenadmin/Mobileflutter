@@ -537,6 +537,11 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -564,10 +569,6 @@ class _MangeProductScreenState extends State<MangeProductScreen> with GlobalVarM
                                   )),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ],
                 )),

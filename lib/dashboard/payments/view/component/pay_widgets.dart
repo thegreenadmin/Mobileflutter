@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:thegreenmall/utils/image_constants.dart';
 
 import 'pay_theme.dart';
 
@@ -24,18 +25,33 @@ class PayAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // TGM logo leads the header, matching the rest of the app.
+            Padding(
+              padding: const EdgeInsets.only(left: 4, top: 4),
+              child: Image.asset(ImageConstants.homeMall, scale: 4),
+            ),
             IconButton(
               icon: const Icon(Icons.arrow_back, color: PayTheme.primaryText),
               // Pop within the payments flow's nested navigator when possible;
-              // at the flow root (Payments home) fall back to the root navigator
-              // so back exits the payments shell instead of dead-ending.
+              // at the flow root (Payments home) pop the navigator that hosts
+              // the shell (the home tab's nested navigator, or root when
+              // deep-linked) so back exits the payments shell.
               onPressed: onBack ??
                   () {
                     final nav = Navigator.of(context);
                     if (nav.canPop()) {
                       nav.pop();
                     } else {
-                      Navigator.of(context, rootNavigator: true).maybePop();
+                      // findAncestorStateOfType skips the inner navigator
+                      // itself (Navigator.of(nav.context) would match it
+                      // again) and finds the one hosting the shell. Use a
+                      // plain pop(): maybePop() would consult the shell's
+                      // PopScope(canPop: false) and loop forever.
+                      final host = nav.context
+                          .findAncestorStateOfType<NavigatorState>();
+                      if (host != null && host.canPop()) {
+                        host.pop();
+                      }
                     }
                   },
             ),

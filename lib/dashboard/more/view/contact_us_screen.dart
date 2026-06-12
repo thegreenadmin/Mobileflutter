@@ -52,6 +52,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
             children: [
               Row(
                 children: [
+                  Image.asset(ImageConstants.homeMall, scale: 4),
+                  width10SizedBox,
                   IconButton(
                     onPressed: () => Get.back(id: pageIdApp.value),
                     icon: const Icon(Icons.arrow_back, color: AppColors.black, size: 24.0),
@@ -63,7 +65,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                   ),
                 ],
               ),
-              Image.asset(ImageConstants.homeMall, scale: 4),
             ],
           ),
           height10SizedBox,

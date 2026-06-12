@@ -63,6 +63,11 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.all(5),
                           constraints: const BoxConstraints(),
@@ -86,10 +91,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }

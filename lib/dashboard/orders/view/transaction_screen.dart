@@ -208,6 +208,11 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                             children: [
                               Row(
                                 children: [
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  ),
+                                  width10SizedBox,
                                   IconButton(
                                     padding: EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -230,10 +235,6 @@ class _TransactionScreenState extends State<TransactionScreen>  with GlobalVarMi
                                   ),
                                 ],
                               ),
-                              Image.asset(
-                                ImageConstants.homeMall,
-                                scale: 4,
-                              )
                             ]),
                       ],
                     )),

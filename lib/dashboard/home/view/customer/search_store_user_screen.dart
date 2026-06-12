@@ -573,6 +573,11 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Image.asset(
+                                    ImageConstants.homeMall,
+                                    scale: 4,
+                                  ),
+                                  width10SizedBox,
                                   IconButton(
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
@@ -592,7 +597,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                    Text(
-                                              'Hi, ${widget.firstName ??""} ${widget.lastName}',
+                                              'Hi, ${widget.firstName ??""}',
                                               overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                               fontSize: 18,
@@ -693,10 +698,6 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Image.asset(
-                                    ImageConstants.homeMall,
-                                    scale: 4,
                                   ),
                                 ],
                               )

@@ -59,6 +59,11 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMix
                         children: [
                           Row(
                             children: [
+                              Image.asset(
+                                ImageConstants.homeMall,
+                                scale: 4,
+                              ),
+                              width10SizedBox,
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
@@ -95,10 +100,6 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMix
                               ),
                             ],
                           ),
-                          Image.asset(
-                            ImageConstants.homeMall,
-                            scale: 4,
-                          )
                         ]),
                   ],
                 )),

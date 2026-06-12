@@ -1243,6 +1243,11 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                   children: [
                     Row(
                       children: [
+                        Image.asset(
+                          ImageConstants.homeMall,
+                          scale: 4,
+                        ),
+                        width10SizedBox,
                         IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -1267,10 +1272,6 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                         ),
                       ],
                     ),
-                    Image.asset(
-                      ImageConstants.homeMall,
-                      scale: 4,
-                    )
                   ])),
         ));
   }
