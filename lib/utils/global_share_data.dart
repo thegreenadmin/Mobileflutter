@@ -122,6 +122,18 @@ RxBool isStoreOwner = false.obs;
 RxBool forFirstTimeCustomer = false.obs;
 RxBool forFirstTimeOwner = false.obs;
 RxBool isGuest = false.obs;
+// Session-only: set true once the guest confirms they are 18+ on the home
+// screen, so the age gate is shown only once per guest session.
+RxBool guestAgeVerified = false.obs;
+
+// Country feature gating, resolved server-side from call metadata via
+// GET utils/app/config (refreshed on startup, login and app resume).
+// Defaults match the backend's fail-closed policy for unresolved countries:
+// herbs hidden, everything else available.
+RxBool munchiesEnabled = true.obs;
+RxBool herbsEnabled = false.obs;
+RxBool paymentsEnabled = true.obs;
+RxBool isHerbsLicensee = false.obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 

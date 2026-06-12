@@ -278,6 +278,8 @@ class StringConstants {
   static String munchiesText = "Munchies";
   static String herbsText = "Herbs";
   static String paymentsText = "Payments";
+  static String storeTypeText = "Store Type";
+  static String generalStoreTypeText = "General";
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";

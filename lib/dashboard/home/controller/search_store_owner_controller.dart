@@ -88,6 +88,9 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   late GetStoreListModel getStoreListModel = GetStoreListModel();
   RxList<Stores> storeList = <Stores>[].obs;
+  // Store vertical scope (munchies / herbs) from the home pills; empty
+  // shows all of the owner's stores.
+  RxString ownerStoreTypeFilter = "".obs;
 
   late UnclaimedStoresModel unclaimedStoresModel = UnclaimedStoresModel();
   RxList<UnclaimedStoreList> unclaimedStoreList = <UnclaimedStoreList>[].obs;
@@ -544,6 +547,10 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
         getStoreListModel = GetStoreListModel.fromJson(value?.body);
         storeList.clear();
         storeList.addAll(getStoreListModel.data!.stores as Iterable<Stores>);
+        if (ownerStoreTypeFilter.value.isNotEmpty) {
+          storeList.removeWhere(
+              (s) => (s.storeType ?? "general") != ownerStoreTypeFilter.value);
+        }
         Get.parameters["storeCount"] = storeList.length.toString();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);

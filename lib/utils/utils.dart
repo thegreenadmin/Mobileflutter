@@ -1,6 +1,7 @@
 //GENERATED BARREL FILE
 export 'api_constants.dart';
 export 'app_colors.dart';
+export 'app_config_service.dart';
 export 'app_logger.dart';
 export 'common_widgets.dart';
 export 'constants.dart';

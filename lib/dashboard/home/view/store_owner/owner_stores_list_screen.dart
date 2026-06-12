@@ -27,6 +27,15 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
   void initState() {
     // ownerStoresController.isFromHome.value =widget.isFromHome;
     super.initState();
+    // Scope the list to the vertical picked on the home pills (if any) and
+    // re-fetch so the filter is applied to fresh data.
+    ownerStoresController.ownerStoreTypeFilter.value =
+        widget.category == StringConstants.munchiesText
+            ? "munchies"
+            : widget.category == StringConstants.herbsText
+                ? "herbs"
+                : "";
+    ownerStoresController.apiGetStoreList();
   }
 
   @override

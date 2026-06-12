@@ -133,6 +133,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // ✅ Don’t clear storage blindly at startup (optional)
     clearData();
+
+    // Country feature flags (munchies/herbs/payments availability).
+    AppConfigService.refresh();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Re-fetch on resume so an admin kill switch reaches live users without
+    // an app restart.
+    if (state == AppLifecycleState.resumed) {
+      AppConfigService.refresh();
+    }
   }
 
   clearData() async {

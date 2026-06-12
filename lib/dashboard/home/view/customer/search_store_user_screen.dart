@@ -49,6 +49,15 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
     searchStoreUserController.miles.value = "50";
     searchStoreUserController.clearNearbyPArms();
+    // Map the home pill label to the backend store_type filter; always set
+    // (not just when present) so a previous category doesn't leak into a
+    // plain Stores visit.
+    searchStoreUserController.storeTypeFilter.value =
+        widget.category == StringConstants.munchiesText
+            ? "munchies"
+            : widget.category == StringConstants.herbsText
+                ? "herbs"
+                : "";
     searchStoreUserController.updateCurrentLocation();
     searchStoreUserController.apiActiveCartApi();
   }

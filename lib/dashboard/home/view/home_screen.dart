@@ -18,6 +18,7 @@ import 'package:thegreenmall/dashboard/home/view/notification_list_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/edit_product_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/store_owner/owner_stores_list_screen.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
+import 'package:thegreenmall/utils/guest_age_verification_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
@@ -56,6 +57,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
     print("DEBUG: HomeScreen initState - after Get.put HomeController");
     accountController = Get.put(AccountController());
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isGuest.value && !guestAgeVerified.value) {
+        GuestAgeVerificationModal.show();
+      }
+    });
   }
 
   @override
@@ -174,37 +180,48 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
               // The whole row scales down as one unit, so all four pills fit
               // on screen (no scrolling) and every label keeps the same
               // font size relative to the others.
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Row(
-                  children: [
-                    // Store category shortcuts. Munchies / Herbs reuse the same
-                    // store screens as Stores, scoped by a category filter.
-                    _payPill(
-                      icon: Icons.storefront_outlined,
-                      label: StringConstants.storesText,
-                      onTap: () => _openStores(),
-                    ),
-                    width5SizedBox,
-                    _payPill(
-                      icon: Icons.lunch_dining_outlined,
-                      label: StringConstants.munchiesText,
-                      onTap: () => _openStores(category: StringConstants.munchiesText),
-                    ),
-                    width5SizedBox,
-                    _payPill(
-                      icon: Icons.local_florist_outlined,
-                      label: StringConstants.herbsText,
-                      onTap: () => _openStores(category: StringConstants.herbsText),
-                    ),
-                    width5SizedBox,
-                    // Opens the dedicated Payments screen (P2P / P2B live there).
-                    _payPill(
-                      icon: Icons.payments_outlined,
-                      label: StringConstants.paymentsText,
-                      onTap: () => _openPaymentsHome(),
-                    ),
-                  ],
+              // Munchies / Herbs / Payments are country-gated: the flags come
+              // from utils/app/config and the backend enforces them again on
+              // every API call, hiding a pill here is cosmetic only.
+              Obx(
+                () => FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    children: [
+                      // Store category shortcuts. Munchies / Herbs reuse the same
+                      // store screens as Stores, scoped by a category filter.
+                      _payPill(
+                        icon: Icons.storefront_outlined,
+                        label: StringConstants.storesText,
+                        onTap: () => _openStores(),
+                      ),
+                      if (munchiesEnabled.value) ...[
+                        width5SizedBox,
+                        _payPill(
+                          icon: Icons.lunch_dining_outlined,
+                          label: StringConstants.munchiesText,
+                          onTap: () => _openStores(category: StringConstants.munchiesText),
+                        ),
+                      ],
+                      if (herbsEnabled.value) ...[
+                        width5SizedBox,
+                        _payPill(
+                          icon: Icons.local_florist_outlined,
+                          label: StringConstants.herbsText,
+                          onTap: () => _openStores(category: StringConstants.herbsText),
+                        ),
+                      ],
+                      if (paymentsEnabled.value) ...[
+                        width5SizedBox,
+                        // Opens the dedicated Payments screen (P2P / P2B live there).
+                        _payPill(
+                          icon: Icons.payments_outlined,
+                          label: StringConstants.paymentsText,
+                          onTap: () => _openPaymentsHome(),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -261,19 +278,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
   // Role-aware store navigation. [category] (e.g. Munchies / Herbs) is passed
   // through to the store screen so the listing can be scoped to that category.
   Future<void> _openStores({String? category}) async {
-    if (isGuest.value == true) {
-      GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to browse stores",
-        onContinueAsGuest: () {},
-      );
-      return;
-    }
-
-    final firstName =
-        homeController.getUserDetailModel.data?.user?.firstName ?? "";
-    final lastName =
-        homeController.getUserDetailModel.data?.user?.lastName ?? "";
+    // Guests can browse stores; restricted actions (favourites, cart, etc.)
+    // are gated inside the store screens themselves.
+    final firstName = isGuest.value
+        ? "Guest"
+        : homeController.getUserDetailModel.data?.user?.firstName ?? "";
+    final lastName = isGuest.value
+        ? ""
+        : homeController.getUserDetailModel.data?.user?.lastName ?? "";
 
     if (roleApp.value == Role.customerRoleText) {
       await Get.to(
@@ -379,14 +391,27 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
           color: AppColors.primary,
           size: 20.0,
         ),
-        onTap: () {
-          if (homeController.isLoading.value == false) {
-            Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
-          }
-        },
+        onTap: _openNotifications,
       ),
       width2SizedBox,
     ];
+  }
+
+  // Notifications need a session, so guests get the login modal here just
+  // like inbox and account.
+  void _openNotifications() {
+    if (isGuest.value == true) {
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to view notifications",
+        onContinueAsGuest: () {},
+      );
+      return;
+    }
+
+    if (homeController.isLoading.value == false) {
+      Get.to(() => const NotificationListScreen(), id: pageIdApp.value);
+    }
   }
 
   // Role-aware account navigation.

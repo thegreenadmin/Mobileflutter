@@ -34,6 +34,7 @@ class ServerCommunicator {
   // Prod API URL:    https://cn3m3t9wyd.execute-api.us-east-1.amazonaws.com
   // Local API URL:    http://172.24.0.53:8080
 //A
+  static const appConfig = 'utils/app/config';
 
 //B
 //C

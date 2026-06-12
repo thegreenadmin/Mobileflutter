@@ -56,6 +56,9 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   late GetStatesModel getStateModel = GetStatesModel();
   RxList<StatesList> statesList = <StatesList>[].obs;
 
+  // Business vertical of the new store; 'herbs' is only offered to the
+  // country's licensed provider (isHerbsLicensee).
+  RxString storeType = "general".obs;
   RxString countryDropdownValue = "".obs;
   RxString? countryId = "".obs;
   RxString storeIdValue = "".obs;
@@ -364,7 +367,10 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
         "store_nick_name": storeNickNameTextController.text.trim(),
         "store_email": storeEmailTextController.text.trim(),
         "store_phone": phoneNumber.value,
-        "store_phone_code": countryCode.value
+        "store_phone_code": countryCode.value,
+        // herbs is rejected server-side unless the owner is the country's
+        // licensed provider
+        "store_type": storeType.value
       },
       "store_address": {
         "state": stateTextController.text.trim(),

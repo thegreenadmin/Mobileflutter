@@ -25,6 +25,9 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
   // TextEditingController searchController = TextEditingController();
   TextEditingController deliveryServicesController = TextEditingController();
   TextEditingController einNumberTextController = TextEditingController();
+  // Store vertical filter (munchies / herbs) coming from the home pills;
+  // empty means all verticals the caller's country allows.
+  RxString storeTypeFilter = "".obs;
   late NearbyStoreListResponse nearbyStoreListResponse = NearbyStoreListResponse();
   late PreviousStoreResponse previousStoreListResponse = PreviousStoreResponse();
   late FavouriteStoreResponse favouriteStoreListResponse = FavouriteStoreResponse();
@@ -637,6 +640,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
           : null,
       // "is_favourite_store": type.value == 2 ? true : null,
       // "show_previous_stores": type.value == 1 ? true : null,
+      "store_type": storeTypeFilter.value.isEmpty ? null : storeTypeFilter.value,
       "delivery_services": deliveryServicesList
     };
 

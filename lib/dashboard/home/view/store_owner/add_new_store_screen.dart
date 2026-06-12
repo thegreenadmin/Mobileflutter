@@ -299,6 +299,40 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                               },
                             ),
                             height20SizedBox,
+                            buildText(StringConstants.storeTypeText, StringConstants.starText,),
+
+                            height4SizedBox,
+                            //STORE TYPE FIELD (herbs only for the country's
+                            //licensed provider; backend re-validates)
+                            Obx(
+                              () => DropdownButtonFormField<String>(
+                                value: addNewStoreController.storeType.value,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                ),
+                                style: const TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                                items: [
+                                  DropdownMenuItem(
+                                      value: "general",
+                                      child: Text(StringConstants.generalStoreTypeText)),
+                                  if (munchiesEnabled.value)
+                                    DropdownMenuItem(
+                                        value: "munchies",
+                                        child: Text(StringConstants.munchiesText)),
+                                  if (herbsEnabled.value && isHerbsLicensee.value)
+                                    DropdownMenuItem(
+                                        value: "herbs",
+                                        child: Text(StringConstants.herbsText)),
+                                ],
+                                onChanged: (value) => addNewStoreController
+                                    .storeType.value = value ?? "general",
+                              ),
+                            ),
+
+                            height20SizedBox,
                             buildText(StringConstants.einBusinessId, StringConstants.starText,),
 
 

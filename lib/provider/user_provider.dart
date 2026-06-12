@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,6 +46,11 @@ class UserProvider extends GetConnect {
   {
     headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
 
     AppLogger.logApiRequest('GET', url, {'headers': headers});
 // ✅ Check Internet Before Proceeding
@@ -239,6 +245,11 @@ class UserProvider extends GetConnect {
 
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
     AppLogger.logApiRequest('POST (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -318,6 +329,11 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
     AppLogger.logApiRequest('PUT (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -393,6 +409,11 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
     AppLogger.logApiRequest('PUT (with headers 1)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();
@@ -468,6 +489,11 @@ class UserProvider extends GetConnect {
       {bool showLoading = false}) async {
     // headers.putIfAbsent('Connection', () => 'keep-alive');
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
+    // Device region hint for server-side country resolution (feature gating).
+    final deviceCountry = ui.PlatformDispatcher.instance.locale.countryCode;
+    if (deviceCountry != null && deviceCountry.isNotEmpty) {
+      headers.putIfAbsent('X-Device-Country', () => deviceCountry);
+    }
     AppLogger.logApiRequest('DELETE (with headers)', url, {'headers': headers, 'data': _loggable(data)});
 // ✅ Check Internet Before Proceeding
     var connectivityResult = await Connectivity().checkConnectivity();

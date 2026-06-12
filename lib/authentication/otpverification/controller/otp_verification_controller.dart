@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
+import 'package:thegreenmall/utils/app_config_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
@@ -126,6 +127,9 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
           roleApp.value = Role.customerRoleText;
         }
         isGuest.value = false; // Clear guest flag after roleApp is set so ever(isGuest) fires with role already populated
+        // Re-resolve feature flags with the session token (licensee status
+        // is only known for authenticated users).
+        AppConfigService.refresh();
         isLoading.value = false;
         Get.offAll(() => const BottomNavigation());
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
