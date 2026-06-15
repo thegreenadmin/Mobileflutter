@@ -89,11 +89,24 @@ class OffersController extends GetxController with GlobalVarMixin{
           await getData();
         }
       });
+
+      // Profile switch (customer <-> store owner) only flips the global
+      // roleApp.value synchronously; the SharedPrefs write isn't awaited and,
+      // on real devices, lags. The Offers tab lives in the BottomNavigation
+      // IndexedStack and isn't rebuilt on switch, so without this worker the
+      // controller keeps the previous role's data and view — making both
+      // profiles show the same offers screen. Reload for the new role.
+      ever(roleApp, (String newRole) async {
+        if (newRole.isEmpty) return;
+        role.value = newRole;
+        page.value = 1;
+        await getData();
+      });
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-      role.value = roleData;
+      var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+      role.value = roleApp.value.isNotEmpty ? roleApp.value : roleData;
       if (role.value == Role.customerRoleText && !isGuest.value) {
         searchStoreUserController.apiActiveCartApi();
       }
@@ -111,10 +124,11 @@ class OffersController extends GetxController with GlobalVarMixin{
     phone?.value =
         await SharedPreferenceStorage.getData("userPhone") ?? "";
 
-    var roleData = await SharedPreferenceStorage.getData(Role.role) ??"";
-    role.value = roleData;
-    print("DEBUG: OffersController.getData - role from shared prefs: $roleData");
-    print("DEBUG: OffersController.getData - isGuest.value: ${isGuest.value}");
+    // Prefer the global roleApp.value (set synchronously on login / profile
+    // switch) over the SharedPrefs read, which lags on real devices and can
+    // otherwise load the previous profile's offers.
+    var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
+    role.value = roleApp.value.isNotEmpty ? roleApp.value : roleData;
     if (role.value == Role.customerRoleText) {
       await getCurrentLocation();
     } else {

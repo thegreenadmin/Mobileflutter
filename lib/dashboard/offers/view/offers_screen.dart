@@ -35,7 +35,8 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
 
   getRole() async {
     var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
-    offersController.role.value = roleData;
+    offersController.role.value =
+        roleApp.value.isNotEmpty ? roleApp.value : roleData;
   }
 
 
@@ -56,7 +57,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
 
                         Obx(
                               () =>
-                          offersController.role.value == Role.customerRoleText
+                          roleApp.value == Role.customerRoleText
                               ? height0SizedBox
                               : buildActiveOffers(),
                         ),
@@ -64,7 +65,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                         Expanded(
                           child: Obx(
                                   () =>
-                              offersController.role.value == Role.customerRoleText
+                              roleApp.value == Role.customerRoleText
                                   ? offersController.getUserOfferList.isEmpty
                                   ? buildNoData()
                                   : buildUserListView()
@@ -99,7 +100,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
       child: Obx(() =>
           CommonAppBar(
               showActiveCart: true,
-              role: offersController.role.value,
+              role: roleApp.value,
               cartCount:
               offersController.searchStoreUserController.cartCount.value,
               storeId:
