@@ -266,7 +266,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                   decoration: BoxDecoration(shape: BoxShape.circle,
                                       border: Border.all(color: AppColors.white, width: 1)),
                                   child: CommonWidgets.circleCachedNetworkImage(
-                                    offersController.getOwnerOfferList[index].store!.logo!.dynamicUrl!,
+                                    offersController.getOwnerOfferList[index].store?.logo?.dynamicUrl ?? "",
                                     fit: BoxFit.contain,
                                     radius: 24.0,
                                     assetImg: ImageConstants.nopicfound,
@@ -277,7 +277,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      offersController.getOwnerOfferList[index].store!.storeName ?? "",
+                                      offersController.getOwnerOfferList[index].store?.storeName ?? "",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: const TextStyle(
@@ -290,7 +290,9 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                       children: [
                                         Image.asset(ImageConstants.loc, scale: 3,),
                                         width6SizedBox,
-                                        Text(offersController.getOwnerOfferList[index].store!.storeAddresses![0].city ?? "",
+                                        Text((offersController.getOwnerOfferList[index].store?.storeAddresses?.isNotEmpty ?? false)
+                                              ? offersController.getOwnerOfferList[index].store!.storeAddresses![0].city ?? ""
+                                              : "",
                                           overflow: TextOverflow.fade,
                                           style: TextStyle(
                                               fontSize: 14.0,
@@ -349,7 +351,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                     ClipRRect(borderRadius: BorderRadius.circular(8.0),
                                       child: CommonWidgets.cachedNetworkImage(
                                         offersController
-                                            .getOwnerOfferList[index].image!.dynamicUrl.toString(),
+                                            .getOwnerOfferList[index].image?.dynamicUrl?.toString() ?? "",
                                         fit: BoxFit.fill,
                                         width: WidgetConstants.screenWidth * 0.8,
                                         assetImg: ImageConstants.nopicfound,
@@ -376,7 +378,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                offersController.getOwnerOfferList[index].offerName!,
+                                                offersController.getOwnerOfferList[index].offerName ?? "",
                                                 style: const TextStyle(
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w500,
@@ -452,9 +454,10 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                             .circleCachedNetworkImage(
                           offersController
                               .getUserOfferList[index]
-                              .logo!
-                              .dynamicUrl
-                              .toString(),
+                              .logo
+                              ?.dynamicUrl
+                              ?.toString() ??
+                              "",
                           fit: BoxFit.contain,
                           radius: 24.0,
                           assetImg: ImageConstants.nopicfound,
@@ -485,12 +488,13 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                               ),
                               width6SizedBox,
                               Text(
-                                offersController
-                                    .getUserOfferList[
-                                index]
+                                (offersController.getUserOfferList[index].storeAddresses?.isNotEmpty ?? false)
+                                    ? offersController
+                                    .getUserOfferList[index]
                                     .storeAddresses![0]
                                     .city ??
-                                    "",
+                                    ""
+                                    : "",
                                 overflow: TextOverflow.fade,
                                 style: TextStyle(
                                     fontSize: 14.0,

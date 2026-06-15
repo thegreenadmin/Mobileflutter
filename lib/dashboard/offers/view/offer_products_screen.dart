@@ -7,19 +7,43 @@ import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen
 import 'package:thegreenmall/dashboard/offers/controller/offers_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-class OfferProductScreen extends StatelessWidget {
+class OfferProductScreen extends StatefulWidget {
   final bool isFromStore;
   final offer.Offer? offerObj;
   final String? storeId;
 
-   OfferProductScreen({
+  const OfferProductScreen({
     super.key,
     this.isFromStore = false,
     this.offerObj,
     this.storeId,
   });
 
+  @override
+  State<OfferProductScreen> createState() => _OfferProductScreenState();
+}
+
+class _OfferProductScreenState extends State<OfferProductScreen> {
   final OffersController offersController = Get.put(OffersController());
+
+  bool get isFromStore => widget.isFromStore;
+  offer.Offer? get offerObj => widget.offerObj;
+  String? get storeId => widget.storeId;
+
+  @override
+  void initState() {
+    super.initState();
+    // Safety net: ensure offer products load even if the pre-fetch from the
+    // offers list didn't populate them (e.g. guest -> customer transition, or
+    // the screen is reached with a stale/empty controller instance).
+    if (offerObj?.isOfferForStore != true &&
+        offersController.featuredUserProductList.isEmpty) {
+      offersController.apiGetOffersProducts(
+        offerId: offerObj?.offerId?.toString() ?? "",
+        storeId: storeId ?? "",
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
