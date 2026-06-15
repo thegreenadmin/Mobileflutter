@@ -328,7 +328,7 @@ class OffersController extends GetxController with GlobalVarMixin{
       "offer_id": offerId,
       "filters": []
     };
-              UserProvider()
+              return UserProvider()
         .postWithHeadersApi(
             data,
             ServerCommunicator.baseUrl +

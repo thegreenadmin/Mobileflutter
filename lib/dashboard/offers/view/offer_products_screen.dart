@@ -78,23 +78,22 @@ class OfferProductScreen extends StatelessWidget {
                 InkWell(
                   onTap: () async {
                       final bool isStoreOffer = offerObj?.isOfferForStore == true;
-
-                      // For product offers, navigation depends on the first
-                      // product in the list — bail out if it hasn't loaded yet
-                      // to avoid a RangeError on an empty list.
-                      if (!isStoreOffer && offersController.featuredUserProductList.isEmpty) {
-                        return;
-                      }
+                      final products = offersController.featuredUserProductList;
+                      // For a product offer we deep-link to the first product,
+                      // but fall back to the store view if the product list
+                      // hasn't loaded (guards against a RangeError on an empty list).
+                      final bool hasProduct = !isStoreOffer && products.isNotEmpty;
 
                       await Get.to(
                         () =>  StoreHomeMainScreen(
                             args:  StoreHomeMainArgs(
-                              storeId: isStoreOffer ? storeId ?? "" : offersController.featuredUserProductList[0].storeId ?? "",
-
-                              productId: isStoreOffer
-                                  ? null
-                                  : offersController.featuredUserProductList[0].productId ?? "",
-                              invokedIndex: isStoreOffer ? 0 : 2,
+                              storeId: hasProduct
+                                  ? products[0].storeId ?? ""
+                                  : storeId ?? "",
+                              productId: hasProduct
+                                  ? products[0].productId ?? ""
+                                  : null,
+                              invokedIndex: hasProduct ? 2 : 0,
                               isFromMenu: true,isFromFav: false,
                               isFromHome: false, isFromOptions: false,
                             )
