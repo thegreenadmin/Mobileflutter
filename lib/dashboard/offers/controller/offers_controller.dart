@@ -57,16 +57,38 @@ class OffersController extends GetxController with GlobalVarMixin{
   RxInt pageCustomer = 1.obs;
   ScrollController scrollController1 = ScrollController();
 
+  // BottomNavController calls onInit() MANUALLY on the (already-registered)
+  // instance on every Offers-tab tap, so guard listener registration to avoid
+  // attaching duplicate workers each time.
+  bool _listenersInitialized = false;
+
   @override
   void onInit() {
     super.onInit();
 
-    // Sync local firstName/lastName with global variables
-    if (firstName != null) {
-      ever(firstName!, (String val) => this.firstName?.value = val);
-    }
-    if (lastName != null) {
-      ever(lastName!, (String val) => this.lastName?.value = val);
+    if (!_listenersInitialized) {
+      _listenersInitialized = true;
+
+      // Sync local firstName/lastName with global variables
+      if (firstName != null) {
+        ever(firstName!, (String val) => this.firstName?.value = val);
+      }
+      if (lastName != null) {
+        ever(lastName!, (String val) => this.lastName?.value = val);
+      }
+
+      // The Offers tab is built eagerly inside the BottomNavigation IndexedStack,
+      // so this controller is created (and getData() runs) while the user may
+      // still be a guest. When the guest logs in (isGuest: true → false) nothing
+      // re-triggers the load on this already-created instance, so the offers /
+      // offer-products stay stale (or empty). Mirror HomeController/OrdersController
+      // and reload on the guest → authenticated transition.
+      ever(isGuest, (bool guestStatus) async {
+        if (!guestStatus && authToken.value.isNotEmpty) {
+          page.value = 1;
+          await getData();
+        }
+      });
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
