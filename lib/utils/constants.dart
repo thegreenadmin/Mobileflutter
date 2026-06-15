@@ -115,6 +115,7 @@ class StringConstants {
   static String continueAsGuestText = "Continue as Guest";
   static String cardAndPaymentsText = "Cards & Payments";
   static String contactUsText = "Contact us";
+  static String contactTgmText = "Contact The Green Mall";
   static String contactUsRequestText = "Contact us request";
   static String countryText = "Country";
   static String closingTimeText = "Closing Time";
@@ -131,7 +132,7 @@ class StringConstants {
   static String categoryNameText = "Category Name";
   static String categoriesText = "Categories";
   static String completedOrders = "Completed Orders";
-  static String contactText = "Contact";
+  static String contactText = "Contact Store";
   static String currentMonthText = "Current Month";
   static String contentsAndStrainsText = "Contents and Strains";
   static String customTimeText = "Custom Time";

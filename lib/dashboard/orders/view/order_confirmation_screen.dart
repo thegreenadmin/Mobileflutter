@@ -1092,6 +1092,28 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .orderItems[i]
                                                     .returnOrderItems!
                                                     .isEmpty &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancelled.statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancellationRequest
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .cancelRequest
+                                                        .statusName &&
+                                                ordersController
+                                                        .orderStatusTypeName
+                                                        .value !=
+                                                    OrderStatusEnum
+                                                        .failed.statusName &&
                                                 (ordersController
                                                             .orderStatusTypeName
                                                             .value !=

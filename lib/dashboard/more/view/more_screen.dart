@@ -164,7 +164,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                             scale: 2.5,
                           ),
                           width18SizedBox,
-                          Text(StringConstants.contactUsText,
+                          Text(StringConstants.contactTgmText,
                               style: const TextStyle(
                                   fontSize: 16,
                                   color: AppColors.black,

@@ -77,33 +77,24 @@ class OfferProductScreen extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                      // Get.parameters["isFromHome"] = "false";
-                      // Get.parameters["isFromFav"] = "false";
-                      // Get.parameters["isFromMenu"] = "true";
-                      // Get.parameters["isFromOptions"] = "false";
-                      //
-                      // Get.parameters["storeId"] = storeId ?? "";
-                      //
-                      // if(  offerObj?.isOfferForStore == true){
-                      //
-                      //   Get.parameters["invokedIndex"] = "0";
-                      // }else{
-                      //   Get.parameters["productId"] =
-                      //       offersController.featuredUserProductList[0].productId ?? "";
-                      //   Get.parameters["storeId"] =
-                      //       offersController.featuredUserProductList[0].storeId ?? "";
-                      //   Get.parameters["invokedIndex"] = "2";
-                      // }
+                      final bool isStoreOffer = offerObj?.isOfferForStore == true;
+
+                      // For product offers, navigation depends on the first
+                      // product in the list — bail out if it hasn't loaded yet
+                      // to avoid a RangeError on an empty list.
+                      if (!isStoreOffer && offersController.featuredUserProductList.isEmpty) {
+                        return;
+                      }
 
                       await Get.to(
                         () =>  StoreHomeMainScreen(
                             args:  StoreHomeMainArgs(
-                              storeId: offerObj?.isOfferForStore == true? storeId ?? "" : offersController.featuredUserProductList[0].storeId ?? "",
+                              storeId: isStoreOffer ? storeId ?? "" : offersController.featuredUserProductList[0].storeId ?? "",
 
-                              productId: offerObj?.isOfferForStore == true
+                              productId: isStoreOffer
                                   ? null
                                   : offersController.featuredUserProductList[0].productId ?? "",
-                              invokedIndex: offerObj?.isOfferForStore == true?0:2,
+                              invokedIndex: isStoreOffer ? 0 : 2,
                               isFromMenu: true,isFromFav: false,
                               isFromHome: false, isFromOptions: false,
                             )
