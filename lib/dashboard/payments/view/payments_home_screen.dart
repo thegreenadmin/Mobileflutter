@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
+
 import '../controller/payment_controller.dart';
 import '../payment_routes.dart';
 import 'component/pay_theme.dart';
@@ -101,7 +104,7 @@ class _PayTab extends StatelessWidget {
           const SizedBox(height: PayTheme.itemGap),
           _OptionCard(
             icon: Icons.people_alt_rounded,
-            title: 'P2P – Pay a Person',
+            title: 'Pay to a Person',
             subtitle: 'Send money to friends and family',
             onTap: () {
               c.paymentType.value = 'p2p';
@@ -113,7 +116,7 @@ class _PayTab extends StatelessWidget {
           const SizedBox(height: PayTheme.itemGap),
           _OptionCard(
             icon: Icons.storefront_rounded,
-            title: 'P2B – Pay a Business',
+            title: 'Pay to a Business',
             subtitle: 'Pay at stores and businesses',
             onTap: () {
               c.paymentType.value = 'p2b';
@@ -166,18 +169,31 @@ class _ReceiveTab extends StatelessWidget {
           _OptionCard(
             icon: Icons.qr_code_2_rounded,
             title: 'Show my code',
-            subtitle: 'Let another TGM user scan to pay you',
+            subtitle: roleApp.value == Role.storeOwnerRoleText
+                ? 'Show your personal or a store-specific code'
+                : 'Let another TGM user scan to pay you',
             onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
-                id: PaymentRoutes.navId, arguments: {'actor_type': 'user'}),
+                id: PaymentRoutes.navId,
+                arguments: {
+                  'actor_type': 'user',
+                  // Owners pick which business (or personal) the code is for.
+                  'pick_store': roleApp.value == Role.storeOwnerRoleText,
+                }),
           ),
-          const SizedBox(height: PayTheme.itemGap),
-          _OptionCard(
-            icon: Icons.storefront_rounded,
-            title: 'Merchant payment code',
-            subtitle: 'Display a code for customers to scan',
-            onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
-                id: PaymentRoutes.navId, arguments: {'actor_type': 'merchant'}),
-          ),
+          if (roleApp.value == Role.storeOwnerRoleText) ...[
+            const SizedBox(height: PayTheme.itemGap),
+            _OptionCard(
+              icon: Icons.storefront_rounded,
+              title: 'Receive to my business',
+              subtitle: 'Generate a payment code for a store and amount',
+              onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
+                  id: PaymentRoutes.navId,
+                  arguments: {
+                    'actor_type': 'merchant',
+                    'require_amount': true,
+                  }),
+            ),
+          ],
         ],
       ),
     );

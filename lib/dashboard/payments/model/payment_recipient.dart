@@ -12,6 +12,10 @@ class PaymentRecipient {
   /// Session id carried from a scanned dynamic QR (replay-guarded server side).
   final String? sessionId;
 
+  /// Fixed amount baked into a merchant "request" code, if any. When set, the
+  /// payer cannot change the amount (it is enforced server side).
+  final double? fixedAmount;
+
   PaymentRecipient({
     required this.type,
     this.userId,
@@ -21,15 +25,25 @@ class PaymentRecipient {
     this.phoneCode,
     this.image,
     this.sessionId,
+    this.fixedAmount,
   });
 
   bool get isMerchant => type == 'p2b';
+
+  /// True when the merchant baked a positive amount into the code.
+  bool get hasFixedAmount => fixedAmount != null && fixedAmount! > 0;
 
   // Backend may return ids as either String or int.
   static int? _toInt(dynamic v) {
     if (v == null) return null;
     if (v is int) return v;
     return int.tryParse(v.toString());
+  }
+
+  static double? _toDouble(dynamic v) {
+    if (v == null) return null;
+    if (v is num) return v.toDouble();
+    return double.tryParse(v.toString());
   }
 
   factory PaymentRecipient.fromJson(Map<String, dynamic> json) {
@@ -42,6 +56,7 @@ class PaymentRecipient {
       phoneCode: json['phone_code'],
       image: json['image'],
       sessionId: json['session_id'],
+      fixedAmount: _toDouble(json['amount']),
     );
   }
 }

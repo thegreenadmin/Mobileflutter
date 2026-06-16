@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
 
 import '../controller/payment_controller.dart';
 import '../model/qr_payload_model.dart';
@@ -22,22 +25,49 @@ class MerchantBarcodeDisplayScreen extends StatefulWidget {
 class _MerchantBarcodeDisplayScreenState
     extends State<MerchantBarcodeDisplayScreen> {
   final PaymentController c = Get.find<PaymentController>();
-  late final String _actorType;
+
+  /// Base intent of the screen, set from route args:
+  /// - `_pickStore`: show the "Select business" form before generating.
+  /// - `_requireAmount`: include the "Amount to receive" field (merchant request).
+  /// - `_allowPersonal`: offer "My personal code" alongside the stores.
+  late final bool _pickStore;
+  late final bool _requireAmount;
+  late final bool _allowPersonal;
+
   int? _storeId;
-  final _storeIdCtrl = TextEditingController();
+  UserStoresList? _selectedStore; // null => personal (when allowed)
+  double? _amount;
+  final _amountCtrl = TextEditingController();
 
   QrPayloadModel? _qr;
   bool _loading = false;
   int _remaining = 0;
   Timer? _timer;
+  bool _initialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    final args = (Get.arguments as Map?) ?? {};
-    _actorType = args['actor_type'] ?? 'user';
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
+    // Read from the route settings (reliable inside the nested navigator) and
+    // fall back to Get.arguments for safety.
+    final args = (ModalRoute.of(context)?.settings.arguments as Map?) ??
+        (Get.arguments as Map?) ??
+        {};
+    final actorType = args['actor_type'] ?? 'user';
+    _requireAmount = args['require_amount'] == true;
+    _pickStore = args['pick_store'] == true || _requireAmount;
+    // "Show my code" (user actor) can also fall back to a personal code.
+    _allowPersonal = actorType != 'merchant';
     _storeId = args['store_id'];
-    if (_actorType == 'user' || _storeId != null) {
+
+    if (_pickStore) {
+      // Load the owner's businesses so they can pick one in the form.
+      c.fetchOwnerStores();
+    }
+    // Generate immediately only when there is nothing to pick.
+    if (!_pickStore || _storeId != null) {
       _generate();
     }
   }
@@ -45,15 +75,19 @@ class _MerchantBarcodeDisplayScreenState
   @override
   void dispose() {
     _timer?.cancel();
-    _storeIdCtrl.dispose();
+    _amountCtrl.dispose();
     super.dispose();
   }
 
-  bool get _isMerchant => _actorType == 'merchant';
+  /// True once a generated code exists for a store (vs a personal code).
+  bool get _showingStoreCode => _qr != null && _selectedStore != null;
 
   Future<void> _generate() async {
+    // A selected store => merchant code; otherwise a personal (user) code.
+    final actorType = _selectedStore != null ? 'merchant' : 'user';
     setState(() => _loading = true);
-    final qr = await c.generateMyCode(actorType: _actorType, storeId: _storeId);
+    final qr = await c.generateMyCode(
+        actorType: actorType, storeId: _storeId, amount: _amount);
     if (!mounted) return;
     setState(() {
       _qr = qr;
@@ -82,12 +116,14 @@ class _MerchantBarcodeDisplayScreenState
       body: Column(
         children: [
           PayAppBar(
-            title: _isMerchant ? 'Merchant Payment Code' : 'My Payment Code',
-            subtitle: _isMerchant ? 'Let customers scan to pay' : 'Let others scan to pay you',
+            title: _requireAmount ? 'Generate a payment code' : 'My Payment Code',
+            subtitle: _requireAmount
+                ? 'Let customers scan to pay'
+                : 'Let others scan to pay you',
           ),
           Expanded(
-            child: _isMerchant && _storeId == null && _qr == null
-                ? _buildStoreIdPrompt()
+            child: _pickStore && _qr == null
+                ? _buildPickerForm()
                 : _buildCode(),
           ),
         ],
@@ -95,39 +131,144 @@ class _MerchantBarcodeDisplayScreenState
     );
   }
 
-  Widget _buildStoreIdPrompt() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: PayTheme.hPad),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Enter your Store / Merchant ID to generate a payment code',
-              style: PayTheme.bodyMuted, textAlign: TextAlign.center),
-          const SizedBox(height: PayTheme.itemGap),
-          TextField(
-            controller: _storeIdCtrl,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              hintText: 'Store ID',
-              filled: true,
-              fillColor: PayTheme.cardSurface,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+  Widget _buildPickerForm() {
+    return Obx(() {
+      if (c.storesLoading.value && c.ownerStores.isEmpty) {
+        return const Center(
+            child: CircularProgressIndicator(color: PayTheme.accent));
+      }
+      // Stores are mandatory only when there is no personal-code fallback.
+      if (c.ownerStores.isEmpty && !_allowPersonal) {
+        return PayMessageView(
+          icon: Icons.storefront_outlined,
+          title: 'No businesses found',
+          message: "We couldn't find any stores linked to your account.",
+          actionText: 'Retry',
+          onAction: c.fetchOwnerStores,
+        );
+      }
+      // Keep the selection valid if the list reloads.
+      if (_selectedStore != null &&
+          !c.ownerStores.any((s) => s.storeId == _selectedStore!.storeId)) {
+        _selectedStore = null;
+        _storeId = null;
+      }
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+            horizontal: PayTheme.hPad, vertical: PayTheme.sectionGap),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Select business', style: PayTheme.label),
+            const SizedBox(height: 8),
+            PayCard(
+              padding: const EdgeInsets.symmetric(horizontal: PayTheme.itemGap),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<UserStoresList?>(
+                  isExpanded: true,
+                  value: _selectedStore,
+                  hint: const Text('Choose a store', style: PayTheme.bodyMuted),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                      color: PayTheme.secondaryText),
+                  items: [
+                    if (_allowPersonal)
+                      const DropdownMenuItem<UserStoresList?>(
+                        value: null,
+                        child: Row(
+                          children: [
+                            Icon(Icons.person_rounded,
+                                color: PayTheme.accent, size: 22),
+                            SizedBox(width: 12),
+                            Text('My personal code', style: PayTheme.body),
+                          ],
+                        ),
+                      ),
+                    ...c.ownerStores.map((s) => DropdownMenuItem<UserStoresList?>(
+                          value: s,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.storefront_rounded,
+                                  color: PayTheme.accent, size: 22),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  s.storeName ?? 'Store',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: PayTheme.body,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ],
+                  onChanged: (s) => setState(() {
+                    _selectedStore = s;
+                    _storeId = s == null ? null : int.tryParse(s.storeId ?? '');
+                  }),
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: PayTheme.sectionGap),
-          PayButton(
-            text: 'Generate Code',
-            loading: _loading,
-            onTap: () {
-              final id = int.tryParse(_storeIdCtrl.text.trim());
-              if (id == null) return;
-              setState(() => _storeId = id);
-              _generate();
-            },
-          ),
-        ],
-      ),
-    );
+            if (_requireAmount) ...[
+              const SizedBox(height: PayTheme.sectionGap),
+              const Text('Amount to receive', style: PayTheme.label),
+              const SizedBox(height: 8),
+              PayCard(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: PayTheme.itemGap, vertical: 4),
+                child: TextField(
+                  controller: _amountCtrl,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                  ],
+                  style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: PayTheme.primaryText),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    prefixText: '\$ ',
+                    prefixStyle: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: PayTheme.primaryText),
+                    hintText: '0.00',
+                  ),
+                  onChanged: (_) => setState(() {}),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'This amount will be encoded in the barcode along with your Merchant Store ID.',
+                style: PayTheme.caption,
+              ),
+            ],
+            const SizedBox(height: PayTheme.sectionGap),
+            PayButton(
+              text: 'Generate code',
+              loading: _loading,
+              onTap: _formValid ? _submitPicker : null,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  bool get _formValid {
+    if (!_requireAmount) return true; // personal or any store is fine
+    final amt = double.tryParse(_amountCtrl.text.trim()) ?? 0;
+    return _storeId != null && amt > 0;
+  }
+
+  void _submitPicker() {
+    if (_requireAmount) {
+      final amt = double.tryParse(_amountCtrl.text.trim()) ?? 0;
+      if (_storeId == null || amt <= 0) return;
+      _amount = amt;
+    }
+    _generate();
   }
 
   Widget _buildCode() {
@@ -149,6 +290,17 @@ class _MerchantBarcodeDisplayScreenState
       child: Column(
         children: [
           const SizedBox(height: PayTheme.sectionGap),
+          if (_amount != null) ...[
+            Text('\$ ${_amount!.toStringAsFixed(2)}',
+                style: PayTheme.largeHeader),
+            if (_selectedStore?.storeName != null)
+              Text(_selectedStore!.storeName!, style: PayTheme.bodyMuted),
+            const SizedBox(height: PayTheme.itemGap),
+          ] else if (_showingStoreCode &&
+              _selectedStore?.storeName != null) ...[
+            Text(_selectedStore!.storeName!, style: PayTheme.cardTitle),
+            const SizedBox(height: PayTheme.itemGap),
+          ],
           PayCard(
             padding: const EdgeInsets.all(PayTheme.sectionGap),
             child: Column(
@@ -183,15 +335,36 @@ class _MerchantBarcodeDisplayScreenState
           ),
           const SizedBox(height: PayTheme.itemGap),
           Text(
-            _isMerchant
+            _showingStoreCode
                 ? 'Ask the customer to scan this code to complete payment.'
                 : 'Ask the sender to scan this code to pay you.',
             style: PayTheme.bodyMuted,
             textAlign: TextAlign.center,
           ),
+          if (_pickStore) ...[
+            const SizedBox(height: PayTheme.itemGap),
+            TextButton.icon(
+              onPressed: _editPickerDetails,
+              icon: const Icon(Icons.edit_outlined,
+                  color: PayTheme.accent, size: 20),
+              label: Text(
+                  _requireAmount ? 'Change amount / store' : 'Change business',
+                  style: const TextStyle(color: PayTheme.accent)),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  /// Returns to the picker (keeping the current store/amount) so the owner can
+  /// adjust and regenerate without leaving the screen.
+  void _editPickerDetails() {
+    _timer?.cancel();
+    setState(() {
+      _qr = null;
+      _remaining = 0;
+    });
   }
 
   String _format(int secs) {

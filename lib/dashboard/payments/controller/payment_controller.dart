@@ -12,6 +12,8 @@ import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
+import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
+
 import '../model/payment_intent_model.dart';
 import '../model/payment_recipient.dart';
 import '../model/qr_payload_model.dart';
@@ -35,6 +37,10 @@ class PaymentController extends GetxController {
   // UX state
   final RxBool isProcessing = false.obs;
   final RxString errorMessage = ''.obs;
+
+  // Store-owner receive flow: the owner's businesses to choose from.
+  final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
+  final RxBool storesLoading = false.obs;
 
   /// Idempotency key for the current attempt; regenerated when a new payment
   /// is started so retries of the same attempt are safe.
@@ -120,6 +126,9 @@ class PaymentController extends GetxController {
       paymentType.value = r.type;
       _payeeRef = payeeRef;
       errorMessage.value = '';
+      // A fixed-amount merchant code pre-fills (and locks) the amount.
+      amountText.value =
+          r.hasFixedAmount ? r.fixedAmount!.toStringAsFixed(2) : '';
       startNewAttempt();
       return r;
     }
@@ -131,10 +140,29 @@ class PaymentController extends GetxController {
   // My / merchant receive code
   // ---------------------------------------------------------------------------
 
+  /// Fetches the businesses owned by the signed-in user so a store-owner can
+  /// pick which one to receive into. No-op refresh while already loading.
+  Future<void> fetchOwnerStores() async {
+    if (storesLoading.value) return;
+    storesLoading.value = true;
+    final res = await UserProvider().getWithHeadersApi(
+      ServerCommunicator.baseUrl + ServerCommunicator.userStore,
+      _headers,
+      showLoading: false,
+    );
+    if (res != null && _isOk(res.body['status'])) {
+      final model = GetUserStoreListModel.fromJson(
+          Map<String, dynamic>.from(res.body));
+      ownerStores.value = model.data?.stores ?? <UserStoresList>[];
+    }
+    storesLoading.value = false;
+  }
+
   Future<QrPayloadModel?> generateMyCode(
-      {required String actorType, int? storeId}) async {
+      {required String actorType, int? storeId, double? amount}) async {
     final body = <String, dynamic>{"actor_type": actorType};
     if (storeId != null) body['store_id'] = storeId;
+    if (amount != null && amount > 0) body['amount'] = amount;
     final res = await UserProvider().postWithHeadersApi(
       body,
       ServerCommunicator.baseUrl + ServerCommunicator.paymentQrGenerate,

@@ -62,7 +62,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       body: Column(
         children: [
           PayAppBar(
-            title: r?.isMerchant == true ? 'P2B – Pay a Business' : 'P2P – Pay a Person',
+            title: r?.isMerchant == true ? 'Pay to a Business' : 'Pay to a Person',
             subtitle: 'Enter payment details',
           ),
           Expanded(
@@ -91,7 +91,21 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Amount', style: PayTheme.label),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Amount', style: PayTheme.label),
+                            if (r?.hasFixedAmount == true)
+                              Row(
+                                children: const [
+                                  Icon(Icons.lock_outline,
+                                      size: 14, color: PayTheme.secondaryText),
+                                  SizedBox(width: 4),
+                                  Text('Set by merchant', style: PayTheme.caption),
+                                ],
+                              ),
+                          ],
+                        ),
                         const SizedBox(height: 6),
                         Row(
                           children: [
@@ -99,6 +113,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                             Expanded(
                               child: TextField(
                                 controller: _amount,
+                                readOnly: r?.hasFixedAmount == true,
                                 keyboardType:
                                     const TextInputType.numberWithOptions(decimal: true),
                                 style: PayTheme.largeHeader,

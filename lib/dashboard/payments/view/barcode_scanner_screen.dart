@@ -119,7 +119,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
       body: Column(
         children: [
           PayAppBar(
-            title: _isP2B ? 'P2B – Pay a Business' : 'P2P – Pay a Person',
+            title: _isP2B ? 'Pay to a Business' : 'Pay to a Person',
             subtitle: _isP2B ? 'Scan merchant barcode' : 'Scan or enter recipient barcode',
           ),
           Padding(
