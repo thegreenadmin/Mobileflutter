@@ -26,12 +26,16 @@ class _SplashScreenState extends State<SplashScreen>
   bool isAuthenticating = false;
   bool authh = false;
 
+  Timer? _timer;
+  bool _started = false;
+  int _bioRetryCount = 0;
+  static const int _maxBioRetries = 3;
+
   startTime() async {
     authh = await SharedPreferenceStorage.getData(
             StringConstants.authenticatedText) ??
         false;
     authenticatedBiometric.value = authh;
-    authh != false ? authh : false;
     BioMetricAuthentication.isBioMetricAuthenticated.value = authh;
     // BioMetricAuthentication.isBioMetricAuthenticated
     //     .value = await SharedPreferenceStorage.getData(
@@ -41,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
     //         as bool
     //     : false;
     var duration = const Duration(seconds: 2);
-    return Timer(
+    _timer = Timer(
         duration,
         BioMetricAuthentication.isBioMetricAuthenticated.value == false
             ? navigationPage
@@ -75,7 +79,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _authenticateWithBiometrics() async {
-    bool authenticated = false;
     try {
       isAuthenticating = true;
       authorized = 'Authenticating';
@@ -107,17 +110,30 @@ class _SplashScreenState extends State<SplashScreen>
         authenticatedBiometric.value ? 'Authorized' : 'Not Authorized';
     authorized = message;
     if (authenticatedBiometric.value) {
+      _bioRetryCount = 0;
       SharedPreferenceStorage.setData(
-          StringConstants.authenticatedText, authenticated);
+          StringConstants.authenticatedText, authenticatedBiometric.value);
       await navigationPage();
-    } else {
+    } else if (_bioRetryCount < _maxBioRetries) {
+      _bioRetryCount++;
       _authenticateWithBiometrics();
+    } else {
+      // Exhausted retries: stop looping so the user isn't trapped on splash.
+      _bioRetryCount = 0;
+      authorized = 'Not Authorized';
+      if (Platform.isAndroid) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
+    if (!_started) {
+      _started = true;
+      startTime();
+    }
   }
 
   @override
@@ -129,12 +145,12 @@ class _SplashScreenState extends State<SplashScreen>
   }
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    startTime();
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(
