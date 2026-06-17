@@ -9,6 +9,7 @@ class PaymentRoutes {
 
   static const home = '/paymentsHome';
   static const scanner = '/paymentScanner';
+  static const businessSelect = '/paymentBusinessSelect';
   static const details = '/paymentDetails';
   static const review = '/paymentReview';
   static const processing = '/paymentProcessing';

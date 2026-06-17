@@ -4,6 +4,10 @@ class PaymentRecipient {
   final String type;
   final int? userId;
   final int? storeId;
+
+  /// Per-store merchant code, when this payee is a business. Used as the payee
+  /// reference for /payment/create (same key a merchant-id lookup would set).
+  final int? merchantId;
   final String name;
   final String? phone;
   final String? phoneCode;
@@ -20,6 +24,7 @@ class PaymentRecipient {
     required this.type,
     this.userId,
     this.storeId,
+    this.merchantId,
     required this.name,
     this.phone,
     this.phoneCode,
@@ -46,15 +51,25 @@ class PaymentRecipient {
     return double.tryParse(v.toString());
   }
 
+  // Backend sends image as either a plain URL string or an object
+  // {orignal_url, dynamic_url} (the S3 signed-url shape).
+  static String? _toImageUrl(dynamic v) {
+    if (v == null) return null;
+    if (v is String) return v.isEmpty ? null : v;
+    if (v is Map) return v['dynamic_url'] ?? v['orignal_url'];
+    return null;
+  }
+
   factory PaymentRecipient.fromJson(Map<String, dynamic> json) {
     return PaymentRecipient(
       type: json['type'] ?? 'p2p',
       userId: _toInt(json['user_id']),
       storeId: _toInt(json['store_id']),
+      merchantId: _toInt(json['merchant_id']),
       name: json['name'] ?? '',
       phone: json['phone'],
       phoneCode: json['phone_code'],
-      image: json['image'],
+      image: _toImageUrl(json['image']),
       sessionId: json['session_id'],
       fixedAmount: _toDouble(json['amount']),
     );

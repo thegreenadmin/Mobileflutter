@@ -42,6 +42,15 @@ class PaymentController extends GetxController {
   final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
   final RxBool storesLoading = false.obs;
 
+  // P2B pay flow: businesses attached to a looked-up phone number, for the
+  // user to pick which one to pay.
+  final RxList<PaymentRecipient> businessMatches = <PaymentRecipient>[].obs;
+
+  // The number behind the current business lookup, used to pay by phone when a
+  // chosen payee carries no merchant/store id.
+  String? _lookupPhone;
+  String? _lookupCode;
+
   /// Idempotency key for the current attempt; regenerated when a new payment
   /// is started so retries of the same attempt are safe.
   String _idempotencyKey = '';
@@ -77,6 +86,7 @@ class PaymentController extends GetxController {
     errorMessage.value = '';
     _idempotencyKey = '';
     _payeeRef = {};
+    businessMatches.clear();
   }
 
   // ---------------------------------------------------------------------------
@@ -111,6 +121,70 @@ class PaymentController extends GetxController {
       showLoading: true,
     );
     return _handleRecipientResponse(res, payeeRef: body);
+  }
+
+  /// P2B manual entry: look up every business attached to [phone]. Returns the
+  /// list (may be empty) on success, or null with [errorMessage] set on failure.
+  /// The caller shows a picker so the user chooses which business to pay.
+  Future<List<PaymentRecipient>?> lookupBusinessesByPhone({
+    required String phone,
+    required String phoneCode,
+  }) async {
+    final res = await UserProvider().postWithHeadersApi(
+      {"phone": phone, "phone_code": phoneCode, "type": "p2b"},
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentRecipientLookup,
+      _headers,
+      showLoading: true,
+    );
+    if (res == null) {
+      errorMessage.value = 'Something went wrong. Please try again.';
+      return null;
+    }
+    if (_isOk(res.body['status'])) {
+      final data = res.body['data'];
+      // Remember the looked-up number so a payee with no merchant/store id can
+      // still be paid by phone (see [selectBusiness]).
+      _lookupPhone = phone;
+      _lookupCode = phoneCode;
+      // Tolerate three shapes: a bare array in `data`, a wrapped
+      // `data.businesses`, or a single recipient object (current backend, which
+      // resolves the phone to one person/owner rather than a businesses list).
+      final raw = data is List
+          ? data
+          : (data is Map && data['businesses'] is List
+              ? data['businesses'] as List
+              : (data is Map ? [data] : const []));
+      final list = raw
+          .map((e) =>
+              PaymentRecipient.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      businessMatches.value = list;
+      errorMessage.value =
+          list.isEmpty ? 'No businesses found for this number.' : '';
+      return list;
+    }
+    errorMessage.value =
+        res.body['message'] ?? 'No businesses found for this number.';
+    return null;
+  }
+
+  /// Commit the business the user picked as the payee, then prep the
+  /// amount/create step exactly as a successful lookup would.
+  void selectBusiness(PaymentRecipient r) {
+    recipient.value = r;
+    paymentType.value = r.type;
+    // Resolve the payee for /payment/create. Prefer a per-store merchant code,
+    // then store_id; if neither is present (the backend resolved the phone to a
+    // plain user), fall back to paying by the looked-up phone number.
+    if (r.merchantId != null) {
+      _payeeRef = {"merchant_id": r.merchantId};
+    } else if (r.storeId != null) {
+      _payeeRef = {"store_id": r.storeId};
+    } else {
+      _payeeRef = {"phone": _lookupPhone, "phone_code": _lookupCode};
+    }
+    amountText.value = r.hasFixedAmount ? r.fixedAmount!.toStringAsFixed(2) : '';
+    startNewAttempt();
   }
 
   PaymentRecipient? _handleRecipientResponse(dynamic res,

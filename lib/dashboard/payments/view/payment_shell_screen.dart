@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../payment_routes.dart';
 import 'barcode_scanner_screen.dart';
+import 'business_select_screen.dart';
 import 'component/pay_theme.dart';
 import 'merchant_barcode_display_screen.dart';
 import 'payment_details_screen.dart';
@@ -64,6 +65,9 @@ class PaymentShell extends StatelessWidget {
             switch (settings.name) {
               case PaymentRoutes.scanner:
                 page = const BarcodeScannerScreen();
+                break;
+              case PaymentRoutes.businessSelect:
+                page = const BusinessSelectScreen();
                 break;
               case PaymentRoutes.details:
                 page = const PaymentDetailsScreen();

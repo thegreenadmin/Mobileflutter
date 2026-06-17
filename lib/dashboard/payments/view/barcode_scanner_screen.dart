@@ -126,7 +126,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
             padding: const EdgeInsets.symmetric(horizontal: PayTheme.hPad),
             child: _ScanModeToggle(
               manual: _manual,
-              manualLabel: _isP2B ? 'Enter Merchant ID' : 'Enter Mobile',
+              manualLabel: _isP2B ? 'Enter Phone' : 'Enter Mobile',
               onChanged: (m) => setState(() => _manual = m),
             ),
           ),
@@ -210,7 +210,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
   }
 
   Widget _buildManualEntry() {
-    return _isP2B ? const _MerchantIdEntry() : const _MobileEntry();
+    return _MobileEntry(isP2B: _isP2B);
   }
 }
 
@@ -318,7 +318,10 @@ class _CameraError extends StatelessWidget {
 }
 
 class _MobileEntry extends StatefulWidget {
-  const _MobileEntry();
+  /// P2B looks up every business attached to the phone (then a picker);
+  /// P2P resolves a single person directly.
+  final bool isP2B;
+  const _MobileEntry({required this.isP2B});
   @override
   State<_MobileEntry> createState() => _MobileEntryState();
 }
@@ -332,7 +335,25 @@ class _MobileEntryState extends State<_MobileEntry> {
   bool _loading = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Rebuild so the clear button shows/hides as the field fills/empties.
+    _phoneController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() => setState(() {});
+
+  void _clear() {
+    _phoneController.clear();
+    // A programmatic clear doesn't fire IntlPhoneField.onChanged, so reset the
+    // tracked digits here too.
+    _phoneNumber = '';
+    setState(() {});
+  }
+
+  @override
   void dispose() {
+    _phoneController.removeListener(_onTextChanged);
     _phoneController.dispose();
     super.dispose();
   }
@@ -343,18 +364,35 @@ class _MobileEntryState extends State<_MobileEntry> {
     if (phone.isEmpty) return;
     setState(() => _loading = true);
     // Backend stores phone and phone_code separately, so send digits only.
+    if (widget.isP2B) {
+      // Resolve every business on this number, then let the user pick one.
+      final list =
+          await c.lookupBusinessesByPhone(phone: phone, phoneCode: _countryCode);
+      if (!mounted) return;
+      setState(() => _loading = false);
+      if (list != null && list.isNotEmpty) {
+        Get.toNamed(PaymentRoutes.businessSelect, id: PaymentRoutes.navId);
+      } else {
+        _showError(c.errorMessage.value);
+      }
+      return;
+    }
     final r = await c.lookupRecipient(phone: phone, phoneCode: _countryCode);
     if (!mounted) return;
     setState(() => _loading = false);
     if (r != null) {
       Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(c.errorMessage.value),
-        backgroundColor: PayTheme.error,
-        behavior: SnackBarBehavior.floating,
-      ));
+      _showError(c.errorMessage.value);
     }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: PayTheme.error,
+      behavior: SnackBarBehavior.floating,
+    ));
   }
 
   @override
@@ -376,6 +414,12 @@ class _MobileEntryState extends State<_MobileEntry> {
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               prefixIcon: Image.asset(ImageConstants.calling),
+              suffixIcon: _phoneController.text.isEmpty
+                  ? null
+                  : IconButton(
+                      icon: const Icon(Icons.clear, color: AppColors.grey),
+                      onPressed: _clear,
+                    ),
               alignLabelWithHint: true,
               hintText: StringConstants.mobileText,
               hintStyle: const TextStyle(fontSize: 15),
@@ -413,58 +457,3 @@ class _MobileEntryState extends State<_MobileEntry> {
   }
 }
 
-class _MerchantIdEntry extends StatefulWidget {
-  const _MerchantIdEntry();
-  @override
-  State<_MerchantIdEntry> createState() => _MerchantIdEntryState();
-}
-
-class _MerchantIdEntryState extends State<_MerchantIdEntry> {
-  final PaymentController c = Get.find<PaymentController>();
-  final _merchant = TextEditingController();
-  bool _loading = false;
-
-  Future<void> _submit() async {
-    if (_merchant.text.trim().isEmpty) return;
-    setState(() => _loading = true);
-    final r = await c.lookupRecipient(merchantId: _merchant.text.trim());
-    if (!mounted) return;
-    setState(() => _loading = false);
-    if (r != null) {
-      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(c.errorMessage.value),
-        backgroundColor: PayTheme.error,
-        behavior: SnackBarBehavior.floating,
-      ));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: PayTheme.hPad),
-      child: Column(
-        children: [
-          TextField(
-            controller: _merchant,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              hintText: 'Merchant ID',
-              filled: true,
-              fillColor: PayTheme.cardSurface,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: PayTheme.divider),
-              ),
-            ),
-          ),
-          const SizedBox(height: PayTheme.sectionGap),
-          PayButton(text: 'Continue', loading: _loading, onTap: _submit),
-        ],
-      ),
-    );
-  }
-}
