@@ -203,7 +203,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                           onTap: () => _openStores(category: StringConstants.munchiesText),
                         ),
                       ],
-                      if (herbsEnabled.value) ...[
+                      // Herbs is a regulated, single-licensee vertical: every
+                      // store owner could otherwise see it. Customers/guests
+                      // keep browsing it (country flag), but among store owners
+                      // only the country's licensed provider gets the pill.
+                      if (herbsEnabled.value &&
+                          (roleApp.value != Role.storeOwnerRoleText ||
+                              isHerbsLicensee.value)) ...[
                         width5SizedBox,
                         _payPill(
                           icon: Icons.local_florist_outlined,
