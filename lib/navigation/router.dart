@@ -15,6 +15,7 @@ import 'package:thegreenmall/dashboard/payments/view/review_pay_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_processing_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_success_screen.dart';
 import 'package:thegreenmall/dashboard/payments/view/merchant_barcode_display_screen.dart';
+import 'package:thegreenmall/dashboard/payments/view/request_money_screen.dart';
 
 class Routers {
   static final route = [
@@ -83,6 +84,11 @@ class Routers {
     GetPage(
       name: PaymentRoutes.merchantCode,
       page: () => const MerchantBarcodeDisplayScreen(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: PaymentRoutes.requestMoney,
+      page: () => const RequestMoneyScreen(),
       binding: PaymentBinding(),
     ),
   ];

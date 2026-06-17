@@ -14,4 +14,5 @@ class PaymentRoutes {
   static const processing = '/paymentProcessing';
   static const success = '/paymentSuccess';
   static const merchantCode = '/paymentMerchantCode';
+  static const requestMoney = '/paymentRequestMoney';
 }

@@ -216,6 +216,7 @@ class ServerCommunicator {
   static const paymentRecipientLookup = 'user/payment/recipient/lookup';
   static const paymentQrGenerate = 'user/payment/qr/generate';
   static const paymentQrDecode = 'user/payment/qr/decode';
+  static const paymentRequestSms = 'user/payment/request/sms';
   static const paymentCreate = 'user/payment/create';
   static const paymentConfirm = 'user/payment/confirm';
   static const paymentCancel = 'user/payment/cancel';

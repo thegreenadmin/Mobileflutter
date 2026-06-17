@@ -34,6 +34,10 @@ class _MerchantBarcodeDisplayScreenState
   late final bool _requireAmount;
   late final bool _allowPersonal;
 
+  /// Optional header overrides (e.g. the "Request money" flow).
+  String? _titleOverride;
+  String? _subtitleOverride;
+
   int? _storeId;
   UserStoresList? _selectedStore; // null => personal (when allowed)
   double? _amount;
@@ -61,6 +65,16 @@ class _MerchantBarcodeDisplayScreenState
     // "Show my code" (user actor) can also fall back to a personal code.
     _allowPersonal = actorType != 'merchant';
     _storeId = args['store_id'];
+    _titleOverride = args['title'] as String?;
+    _subtitleOverride = args['subtitle'] as String?;
+    // A pre-set amount (e.g. "Request money") is baked straight into the code.
+    final argAmount = args['amount'];
+    if (argAmount != null && !_requireAmount) {
+      final parsed = argAmount is num
+          ? argAmount.toDouble()
+          : double.tryParse(argAmount.toString());
+      if (parsed != null && parsed > 0) _amount = parsed;
+    }
 
     if (_pickStore) {
       // Load the owner's businesses so they can pick one in the form.
@@ -116,10 +130,12 @@ class _MerchantBarcodeDisplayScreenState
       body: Column(
         children: [
           PayAppBar(
-            title: _requireAmount ? 'Generate a payment code' : 'My Payment Code',
-            subtitle: _requireAmount
-                ? 'Let customers scan to pay'
-                : 'Let others scan to pay you',
+            title: _titleOverride ??
+                (_requireAmount ? 'Generate a payment code' : 'My Payment Code'),
+            subtitle: _subtitleOverride ??
+                (_requireAmount
+                    ? 'Let customers scan to pay'
+                    : 'Let others scan to pay you'),
           ),
           Expanded(
             child: _pickStore && _qr == null

@@ -7,6 +7,7 @@ import 'component/pay_theme.dart';
 import 'merchant_barcode_display_screen.dart';
 import 'payment_details_screen.dart';
 import 'payments_home_screen.dart';
+import 'request_money_screen.dart';
 import 'review_pay_screen.dart';
 
 /// Persistent shell for the payments flow.
@@ -72,6 +73,9 @@ class PaymentShell extends StatelessWidget {
                 break;
               case PaymentRoutes.merchantCode:
                 page = const MerchantBarcodeDisplayScreen();
+                break;
+              case PaymentRoutes.requestMoney:
+                page = const RequestMoneyScreen();
                 break;
               case PaymentRoutes.home:
               default:

@@ -193,6 +193,15 @@ class _ReceiveTab extends StatelessWidget {
                     'require_amount': true,
                   }),
             ),
+          ] else ...[
+            const SizedBox(height: PayTheme.itemGap),
+            _OptionCard(
+              icon: Icons.request_quote_rounded,
+              title: 'Request money',
+              subtitle: 'Ask someone to pay you by code or text',
+              onTap: () => Get.toNamed(PaymentRoutes.requestMoney,
+                  id: PaymentRoutes.navId),
+            ),
           ],
         ],
       ),

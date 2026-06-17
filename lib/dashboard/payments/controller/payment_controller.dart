@@ -176,6 +176,31 @@ class PaymentController extends GetxController {
     return null;
   }
 
+  /// "Request money": texts [phone] an SMS (via the backend Pinpoint service)
+  /// asking them to pay [amount] to the signed-in user. Returns true on success;
+  /// shows a toast and returns false otherwise.
+  Future<bool> sendPaymentRequestSms({
+    required String phone,
+    required String phoneCode,
+    required double amount,
+    String? note,
+  }) async {
+    final res = await UserProvider().postWithHeadersApi(
+      {
+        "phone": phone,
+        "phone_code": phoneCode,
+        "amount": amount,
+        if (note != null && note.trim().isNotEmpty) "note": note.trim(),
+      },
+      ServerCommunicator.baseUrl + ServerCommunicator.paymentRequestSms,
+      _headers,
+      showLoading: true,
+    );
+    if (res != null && _isOk(res.body['status'])) return true;
+    Utility.showToast(res?.body['message'] ?? 'Unable to send the request');
+    return false;
+  }
+
   // ---------------------------------------------------------------------------
   // Create (Details -> Review)
   // ---------------------------------------------------------------------------
