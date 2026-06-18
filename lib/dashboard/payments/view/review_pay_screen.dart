@@ -117,6 +117,13 @@ class _WalletMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // When a store owner funds a P2P send from one of their stores, show that
+    // store as the source instead of the personal wallet.
+    final store = Get.find<PaymentController>().sourceStore.value;
+    final title = store?.storeName ?? 'TGM Wallet';
+    final subtitle = store != null
+        ? 'Pay from this store\'s wallet balance'
+        : 'Pay from your wallet balance';
     return PayCard(
       padding: const EdgeInsets.all(14),
       child: Row(
@@ -128,15 +135,19 @@ class _WalletMethod extends StatelessWidget {
               color: PayTheme.accent.withOpacity(0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.account_balance_wallet_outlined, color: PayTheme.accent),
+            child: Icon(
+                store != null
+                    ? Icons.storefront_outlined
+                    : Icons.account_balance_wallet_outlined,
+                color: PayTheme.accent),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('TGM Wallet', style: PayTheme.body),
-                Text('Pay from your wallet balance', style: PayTheme.caption),
+                Text(title, style: PayTheme.body),
+                Text(subtitle, style: PayTheme.caption),
               ],
             ),
           ),

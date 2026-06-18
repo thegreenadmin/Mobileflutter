@@ -76,11 +76,16 @@ class PaymentSuccessScreen extends StatelessWidget {
                           children: [
                             _ReceiptRow('Transaction ID', txnId),
                             _ReceiptRow('Date & Time', dateStr),
-                            _ReceiptRow('Payment Method', 'TGM Wallet'),
+                            _ReceiptRow('Payment Method',
+                                c.sourceStore.value?.storeName ?? 'TGM Wallet'),
                             _ReceiptRow('Amount', _money(i.amount)),
                             _ReceiptRow('Fee', _money(i.fee)),
                             if (i.walletBalance != null)
-                              _ReceiptRow('Wallet Balance', _money(i.walletBalance!)),
+                              _ReceiptRow(
+                                  c.sourceStore.value != null
+                                      ? 'Store Balance'
+                                      : 'Wallet Balance',
+                                  _money(i.walletBalance!)),
                           ],
                         ),
                       ),

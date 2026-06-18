@@ -42,6 +42,10 @@ class PaymentController extends GetxController {
   final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
   final RxBool storesLoading = false.obs;
 
+  // P2P pay flow: when a store owner funds the payment from one of their stores,
+  // the chosen store (null = pay from their personal wallet).
+  final Rxn<UserStoresList> sourceStore = Rxn<UserStoresList>();
+
   // P2B pay flow: businesses attached to a looked-up phone number, for the
   // user to pick which one to pay.
   final RxList<PaymentRecipient> businessMatches = <PaymentRecipient>[].obs;
@@ -87,7 +91,12 @@ class PaymentController extends GetxController {
     _idempotencyKey = '';
     _payeeRef = {};
     businessMatches.clear();
+    sourceStore.value = null;
   }
+
+  /// True when the signed-in user is a store owner — gates the P2P "pay from a
+  /// store" selector to owners only.
+  bool get isStoreOwner => roleApp.value == Role.storeOwnerRoleText;
 
   // ---------------------------------------------------------------------------
   // Recipient resolution
@@ -96,6 +105,9 @@ class PaymentController extends GetxController {
   /// Decode a scanned QR/barcode. Returns the recipient on success, or null with
   /// [errorMessage] set (caller shows the right error UI: invalid / expired).
   Future<PaymentRecipient?> decodeScannedCode(String raw) async {
+    // A store owner may resolve to one of their own stores; load the owner's
+    // store list first so [_handleRecipientResponse] can block self-payment.
+    await _ensureOwnerStoresLoaded();
     final res = await UserProvider().postWithHeadersApi(
       {"payload": raw},
       ServerCommunicator.baseUrl + ServerCommunicator.paymentQrDecode,
@@ -107,6 +119,7 @@ class PaymentController extends GetxController {
   /// Manual lookup by phone (P2P) or merchant id (P2B).
   Future<PaymentRecipient?> lookupRecipient(
       {String? phone, String? phoneCode, String? merchantId}) async {
+    await _ensureOwnerStoresLoaded();
     final body = <String, dynamic>{};
     if (merchantId != null && merchantId.isNotEmpty) {
       body['merchant_id'] = int.tryParse(merchantId) ?? merchantId;
@@ -130,6 +143,7 @@ class PaymentController extends GetxController {
     required String phone,
     required String phoneCode,
   }) async {
+    await _ensureOwnerStoresLoaded();
     final res = await UserProvider().postWithHeadersApi(
       {"phone": phone, "phone_code": phoneCode, "type": "p2b"},
       ServerCommunicator.baseUrl + ServerCommunicator.paymentRecipientLookup,
@@ -158,10 +172,19 @@ class PaymentController extends GetxController {
           .map((e) =>
               PaymentRecipient.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList();
-      businessMatches.value = list;
-      errorMessage.value =
-          list.isEmpty ? 'No businesses found for this number.' : '';
-      return list;
+      // A store owner must not transfer money between their own stores: drop any
+      // match that is one of the owner's stores before showing the picker.
+      final ownMatches = list.where(_isOwnStore).length;
+      final payable = list.where((r) => !_isOwnStore(r)).toList();
+      businessMatches.value = payable;
+      if (payable.isEmpty) {
+        errorMessage.value = ownMatches > 0
+            ? AlertStringConstants.cannotPayOwnStoreText
+            : 'No businesses found for this number.';
+        return null;
+      }
+      errorMessage.value = '';
+      return payable;
     }
     errorMessage.value =
         res.body['message'] ?? 'No businesses found for this number.';
@@ -187,6 +210,22 @@ class PaymentController extends GetxController {
     startNewAttempt();
   }
 
+  /// Loads the signed-in owner's stores once, so the own-store guard below has
+  /// something to match against. No-op for non-owners or when already loaded.
+  Future<void> _ensureOwnerStoresLoaded() async {
+    if (roleApp.value != Role.storeOwnerRoleText) return;
+    if (ownerStores.isNotEmpty) return;
+    await fetchOwnerStores();
+  }
+
+  /// True when [r] is a business that belongs to the signed-in store owner.
+  /// Matched by store id (owner store ids are strings, recipient ids ints).
+  bool _isOwnStore(PaymentRecipient r) {
+    if (roleApp.value != Role.storeOwnerRoleText) return false;
+    if (r.storeId == null) return false;
+    return ownerStores.any((s) => s.storeId == r.storeId.toString());
+  }
+
   PaymentRecipient? _handleRecipientResponse(dynamic res,
       {required Map<String, dynamic> payeeRef}) {
     if (res == null) {
@@ -196,6 +235,12 @@ class PaymentController extends GetxController {
     if (_isOk(res.body['status'])) {
       final r = PaymentRecipient.fromJson(
           Map<String, dynamic>.from(res.body['data']));
+      // Block a store owner from paying (transferring to) one of their own
+      // stores, whether reached by scanning its code or a merchant-id lookup.
+      if (_isOwnStore(r)) {
+        errorMessage.value = AlertStringConstants.cannotPayOwnStoreText;
+        return null;
+      }
       recipient.value = r;
       paymentType.value = r.type;
       _payeeRef = payeeRef;
@@ -303,6 +348,14 @@ class PaymentController extends GetxController {
       // (QR payload, manual phone, or merchant id).
       ..._payeeRef,
     };
+
+    // P2P only: a store owner can fund the send from one of their stores. The
+    // backend authorizes ownership and debits that store's wallet.
+    final src = sourceStore.value;
+    if (paymentType.value == 'p2p' && src?.storeId != null) {
+      final id = int.tryParse(src!.storeId!);
+      if (id != null) body['initiator_store_id'] = id;
+    }
 
     final res = await UserProvider().postWithHeadersApi(
       body,

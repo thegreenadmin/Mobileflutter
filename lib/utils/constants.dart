@@ -759,6 +759,8 @@ class AlertStringConstants {
   static String pleaseEnterFirstNameText = "Please enter first name";
   static String pleaseEnterMobileNoText = "Please enter mobile number";
   static String pleaseEnterPhoneText = "Please enter phone number";
+  static String cannotPayOwnStoreText =
+      "You can't pay to your own store. Transfers between your own stores aren't allowed.";
   static String pleaseEnterNickNameText = "Please enter nick name";
   static String pleaseEnterLastNameText = "Please enter last name";
   static String pleaseEnterEmployeeNameText = "Please enter employee name";

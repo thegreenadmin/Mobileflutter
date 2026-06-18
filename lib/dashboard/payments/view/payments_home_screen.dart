@@ -165,21 +165,6 @@ class _ReceiveTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('Get paid', style: PayTheme.label),
-          const SizedBox(height: PayTheme.itemGap),
-          _OptionCard(
-            icon: Icons.qr_code_2_rounded,
-            title: 'Show my code',
-            subtitle: roleApp.value == Role.storeOwnerRoleText
-                ? 'Show your personal or a store-specific code'
-                : 'Let another TGM user scan to pay you',
-            onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
-                id: PaymentRoutes.navId,
-                arguments: {
-                  'actor_type': 'user',
-                  // Owners pick which business (or personal) the code is for.
-                  'pick_store': roleApp.value == Role.storeOwnerRoleText,
-                }),
-          ),
           if (roleApp.value == Role.storeOwnerRoleText) ...[
             const SizedBox(height: PayTheme.itemGap),
             _OptionCard(
@@ -194,6 +179,18 @@ class _ReceiveTab extends StatelessWidget {
                   }),
             ),
           ] else ...[
+            const SizedBox(height: PayTheme.itemGap),
+            _OptionCard(
+              icon: Icons.qr_code_2_rounded,
+              title: 'Show my code',
+              subtitle: 'Let another TGM user scan to pay you',
+              onTap: () => Get.toNamed(PaymentRoutes.merchantCode,
+                  id: PaymentRoutes.navId,
+                  arguments: {
+                    'actor_type': 'user',
+                    'pick_store': false,
+                  }),
+            ),
             const SizedBox(height: PayTheme.itemGap),
             _OptionCard(
               icon: Icons.request_quote_rounded,

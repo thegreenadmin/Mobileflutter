@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart';
+
 import '../controller/payment_controller.dart';
 import '../payment_routes.dart';
 import 'component/pay_theme.dart';
@@ -27,6 +29,27 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     super.initState();
     _amount.text = c.amountText.value;
     _note.text = c.note.value;
+    // A store owner paying a person picks which of their stores funds the send.
+    // Make sure the store list is loaded, then default to the first one.
+    if (_showSourcePicker) {
+      if (c.ownerStores.isEmpty) {
+        c.fetchOwnerStores().then((_) => _defaultSourceStore());
+      } else {
+        _defaultSourceStore();
+      }
+    }
+  }
+
+  /// The "Pay from" store selector is owner-only and P2P-only (a person, not a
+  /// business).
+  bool get _showSourcePicker =>
+      c.isStoreOwner && c.paymentType.value == 'p2p';
+
+  void _defaultSourceStore() {
+    if (!mounted) return;
+    if (c.sourceStore.value == null && c.ownerStores.isNotEmpty) {
+      c.sourceStore.value = c.ownerStores.first;
+    }
   }
 
   Future<void> _reviewAndPay() async {
@@ -34,6 +57,13 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     c.note.value = _note.text.trim();
     if (c.amount <= 0) {
       _toast('Enter a valid amount');
+      return;
+    }
+    // Owners must pick a funding store when they have one.
+    if (_showSourcePicker &&
+        c.ownerStores.isNotEmpty &&
+        c.sourceStore.value == null) {
+      _toast('Select which store to pay from');
       return;
     }
 
@@ -46,6 +76,73 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     } else {
       _toast(c.errorMessage.value);
     }
+  }
+
+  Widget _buildSourceStorePicker() {
+    return Obx(() {
+      if (c.storesLoading.value && c.ownerStores.isEmpty) {
+        return const PayCard(
+          child: Row(
+            children: [
+              SizedBox(
+                height: 18,
+                width: 18,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: PayTheme.accent),
+              ),
+              SizedBox(width: 12),
+              Text('Loading your stores…', style: PayTheme.bodyMuted),
+            ],
+          ),
+        );
+      }
+      if (c.ownerStores.isEmpty) return const SizedBox.shrink();
+      // Keep the selection valid if the list reloads.
+      final selected = c.sourceStore.value != null &&
+              c.ownerStores
+                  .any((s) => s.storeId == c.sourceStore.value!.storeId)
+          ? c.sourceStore.value
+          : null;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Pay from', style: PayTheme.label),
+          const SizedBox(height: 8),
+          PayCard(
+            padding: const EdgeInsets.symmetric(horizontal: PayTheme.itemGap),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<UserStoresList>(
+                isExpanded: true,
+                value: selected,
+                hint: const Text('Choose a store', style: PayTheme.bodyMuted),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                    color: PayTheme.secondaryText),
+                items: c.ownerStores
+                    .map((s) => DropdownMenuItem<UserStoresList>(
+                          value: s,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.account_balance_wallet_outlined,
+                                  color: PayTheme.accent, size: 22),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  s.storeName ?? 'Store',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: PayTheme.body,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+                onChanged: (s) => c.sourceStore.value = s,
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   void _toast(String m) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -86,6 +183,11 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: PayTheme.sectionGap),
+                  // Pay from (store owners only): choose the funding store.
+                  if (_showSourcePicker) ...[
+                    _buildSourceStorePicker(),
+                    const SizedBox(height: PayTheme.itemGap),
+                  ],
                   // Amount
                   PayCard(
                     child: Column(
