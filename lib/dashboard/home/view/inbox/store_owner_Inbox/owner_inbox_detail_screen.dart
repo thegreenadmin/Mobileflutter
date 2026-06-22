@@ -772,6 +772,9 @@ class OwnerInboxDetailScreenState extends State<OwnerInboxDetailScreen> with Glo
                               )),
                           _buildMessageComposer(),
                           GetBuilder<OwnerInboxDetailController>(
+                              init: Get.isRegistered<OwnerInboxDetailController>()
+                                  ? Get.find<OwnerInboxDetailController>()
+                                  : OwnerInboxDetailController(),
                               builder: (inboxDetailController) => inboxDetailController
                                       .userSelectedImageDynamicLinkFromServer.isNotEmpty
                                   ? buildPhotoLibraryGridView()

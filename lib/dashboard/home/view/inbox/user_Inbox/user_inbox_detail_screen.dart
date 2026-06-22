@@ -750,6 +750,9 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                     )),
                 _buildMessageComposer(),
                 GetBuilder<UserInboxDetailController>(
+                    init: Get.isRegistered<UserInboxDetailController>()
+                        ? Get.find<UserInboxDetailController>()
+                        : UserInboxDetailController(),
                     builder: (userInboxDetailController) =>
                         userInboxDetailController
                                 .userSelectedImageDynamicLinkFromServer

@@ -6,7 +6,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_config_service.dart';
@@ -131,7 +130,12 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
         // is only known for authenticated users).
         AppConfigService.refresh();
         isLoading.value = false;
-        Get.offAll(() => const BottomNavigation());
+        // Use the same named route as the guest path ('/bottomNavigation') so
+        // the existing bottom-nav tree is fully replaced. Get.offAll with the
+        // widget generates a distinct route name ('/BottomNavigation'), which
+        // left the guest tab tree mounted and caused a duplicate
+        // Get.nestedKey(0) GlobalKey collision -> Offers GetBuilder crash.
+        Get.offAllNamed('/bottomNavigation');
       } else if (value?.body["status"] == ApiConstants.statusCode409) {
         // Email must be unique & user already exists
                 isLoading.value = false;

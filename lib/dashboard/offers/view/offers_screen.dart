@@ -185,6 +185,9 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
 
   buildOwnerListView() {
     return GetBuilder<OffersController>(
+        init: Get.isRegistered<OffersController>()
+            ? Get.find<OffersController>()
+            : OffersController(),
         builder: (offersController) {
           return  ListView.separated(
           padding: EdgeInsets.zero,
