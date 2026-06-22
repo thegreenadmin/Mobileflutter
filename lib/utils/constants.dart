@@ -281,6 +281,30 @@ class StringConstants {
   static String paymentsText = "Payments";
   static String storeTypeText = "Store Type";
   static String generalStoreTypeText = "General";
+  // Section headers used when the owner store screens are scoped to a vertical.
+  static String munchiesStoresText = "Munchies Stores";
+  static String herbsStoresText = "Herbs Stores";
+
+  // Maps a backend store_type ("general"/"munchies"/"herbs") to its display
+  // label. Used for badges on the manage/list screens.
+  static String storeTypeLabel(String? storeType) {
+    switch (storeType) {
+      case "munchies":
+        return munchiesText;
+      case "herbs":
+        return herbsText;
+      default:
+        return generalStoreTypeText;
+    }
+  }
+
+  // Maps the home-pill category ("Munchies"/"Herbs"/null) to the list-screen
+  // header title.
+  static String storeListTitle(String? category) {
+    if (category == munchiesText) return munchiesStoresText;
+    if (category == herbsText) return herbsStoresText;
+    return searchForStoreText;
+  }
   static String inStoreText = "In-store";
   static String itemAddedInCart = "Item added in cart";
   static String itemsText = "Items";

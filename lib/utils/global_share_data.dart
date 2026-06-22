@@ -134,6 +134,10 @@ RxBool munchiesEnabled = true.obs;
 RxBool herbsEnabled = false.obs;
 RxBool paymentsEnabled = true.obs;
 RxBool isHerbsLicensee = false.obs;
+// When the caller's country has exactly one herbs store, the backend returns
+// its id here so the Herbs pill deep-links straight to that store instead of
+// the store search. Empty when there are 0 or many herbs stores (→ search).
+RxString herbsStoreId = "".obs;
 GetPermissionsModel getPermissionsModel = GetPermissionsModel();
 RxList<PermissionStore> permissionStoreList = <PermissionStore>[].obs;
 

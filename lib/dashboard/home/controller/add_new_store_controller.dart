@@ -169,6 +169,23 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     kGoogleApiKey = ServerCommunicator.kGoogleApiKey;
   }
 
+  // Rebuilds storeTimingList from the currently selected week days using the
+  // latest opening/closing times. Order-independent, so it supersedes the
+  // incremental updates done while the form is being filled.
+  void rebuildCustomStoreTimings() {
+    storeTimingList.clear();
+    for (final day in weekDaysList) {
+      if (day.isSelected == true) {
+        storeTimingList.add({
+          "is_24_hours_active": false,
+          "day_of_week": day.id,
+          "opening_time": openingTime.value,
+          "closing_time": closingTime.value,
+        });
+      }
+    }
+  }
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -189,6 +206,23 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
           isLoading.value = false;
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectBannerText);
         } else {
+          // Custom hours: rebuild the timings from the selected days + the
+          // currently picked times so the payload never depends on the order
+          // the owner toggled days vs. picked times (which could leave empty
+          // time strings and trigger a backend "invalid input syntax for type
+          // time" 409).
+          if (!is247Time.value) {
+            rebuildCustomStoreTimings();
+            if (storeTimingList.isEmpty ||
+                openingTime.value.isEmpty ||
+                closingTime.value.isEmpty) {
+              isLoading.value = false;
+              autoValidate.value = true;
+              Utility.showAlertMessage(
+                  AlertStringConstants.pleaseSelectOpeningTimeText);
+              return;
+            }
+          }
           isLoading.value = true;
           apiCreateStore();
         }

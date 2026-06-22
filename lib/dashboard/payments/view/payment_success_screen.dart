@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 
 import '../controller/payment_controller.dart';
@@ -95,24 +94,7 @@ class PaymentSuccessScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(PayTheme.hPad),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => _shareReceipt(i, r?.name ?? '', txnId, dateStr),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(PayTheme.buttonHeight),
-                          side: const BorderSide(color: PayTheme.accent),
-                          shape:
-                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        ),
-                        child: const Text('Share Receipt',
-                            style: TextStyle(color: PayTheme.accent)),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: PayButton(
+                child: PayButton(
                         text: 'Done',
                         onTap: () {
                           c.resetFlow();
@@ -140,27 +122,12 @@ class PaymentSuccessScreen extends StatelessWidget {
                           }
                         },
                       ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _shareReceipt(PaymentIntentModel i, String name, String txnId, String date) {
-    final text = 'TGM Payment Receipt\n'
-        'Paid to: $name\n'
-        'Amount: ${_money(i.amount)}\n'
-        'Fee: ${_money(i.fee)}\n'
-        'Total: ${_money(i.total)}\n'
-        'Transaction ID: $txnId\n'
-        'Date: $date\n'
-        'Method: TGM Wallet';
-    Share.share(text, subject: 'TGM Payment Receipt');
   }
 
   static String _month(int m) => const [

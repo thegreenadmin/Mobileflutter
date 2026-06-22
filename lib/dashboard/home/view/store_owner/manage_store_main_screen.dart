@@ -219,6 +219,26 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                         fontWeight: FontWeight.w600),
                                   )),
                               height6SizedBox,
+                              // Store-type badge so the owner can tell which
+                              // vertical this store belongs to.
+                              Obx(() => Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      StringConstants.storeTypeLabel(
+                                          ownerStoresController
+                                              .storeTypeValue.value),
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  )),
+                              height6SizedBox,
                               Row(
                                 crossAxisAlignment:
                                     CrossAxisAlignment.start,

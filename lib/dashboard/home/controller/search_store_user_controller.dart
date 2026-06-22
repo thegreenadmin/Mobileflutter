@@ -768,6 +768,22 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     bool isFilter = false,
   }) async
   {
+    // Check if user is guest - show modal for login
+    if (isGuest.value == true) {
+      isLoading.value = false;
+      isDataLoading.value = false;
+      previousStore.clear();
+      update();
+      GuestAccessModal.show(
+        title: "Login Required",
+        message: "Please login to view previous stores",
+        onContinueAsGuest: () {
+          // Allow guest to continue - just close modal
+        },
+      );
+      return;
+    }
+
     isClicked.value = true;
     isDataLoading.value = true;
     if (page.value == 1) {
@@ -815,10 +831,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Get.parameters.clear();
         Utility.handle401Error();
       } else {
+        // Non-auth failure (e.g. server-side 409): fall back to the empty
+        // state instead of surfacing a raw backend message in an alert.
         isClicked.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (page.value == 1) {
+          previousStore.clear();
         }
+        update();
       }
     });
   }
@@ -886,10 +905,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
         Get.parameters.clear();
         Utility.handle401Error();
       } else {
+        // Non-auth failure (e.g. server-side 409): fall back to the empty
+        // state instead of surfacing a raw backend message in an alert.
         isClicked.value = false;
-        if (value?.body['message'] != null) {
-          Utility.showAlertMessage(value?.body['message']);
+        if (page.value == 1) {
+          favouriteStore.clear();
         }
+        update();
       }
     });
   }

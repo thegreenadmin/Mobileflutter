@@ -197,6 +197,25 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
+                          height4SizedBox,
+                          // Store-type badge so mixed lists stay distinguishable.
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              StringConstants.storeTypeLabel(
+                                  ownerStoresController
+                                      .storeList[index].storeType),
+                              style: const TextStyle(
+                                  fontSize: 10.0,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
                           height8SizedBox,
                           ListView.separated(
                               padding: EdgeInsets.zero,
@@ -412,7 +431,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                                 ),
 
                               Text(
-                                StringConstants.searchForStoreText,
+                                StringConstants.storeListTitle(widget.category),
                                 style: const TextStyle(
                                     fontSize: 18,
                                     color: AppColors.black,
@@ -469,7 +488,7 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
                   ),
                   onTap: () {
 
-                    Get.to(() => const AddNewStoreScreen(), id: pageIdApp.value)!
+                    Get.to(() => AddNewStoreScreen(category: widget.category), id: pageIdApp.value)!
                         .then((value) => ownerStoresController.apiGetStoreList());
                   },
                   height: 50,

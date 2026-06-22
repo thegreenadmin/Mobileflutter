@@ -293,6 +293,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         ? ""
         : homeController.getUserDetailModel.data?.user?.lastName ?? "";
 
+    // Herbs is a single-licensee vertical: when the country has exactly one
+    // herbs store the backend hands us its id, so skip the store search and
+    // open that store directly. Customers/guests only — owners manage herbs
+    // through their own store flow below.
+    if (category == StringConstants.herbsText &&
+        herbsStoreId.value.isNotEmpty &&
+        roleApp.value == Role.customerRoleText) {
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: herbsStoreId.value,
+            isFromMenu: false,
+            isFromFav: false,
+            isFromHome: true,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+      await homeController.apiActiveCartApi();
+      return;
+    }
+
     if (roleApp.value == Role.customerRoleText) {
       await Get.to(
         () => SearchStoreUserScreen(

@@ -10,7 +10,10 @@ import 'package:thegreenmall/utils/google_place_autocompleted.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 class AddNewStoreScreen extends StatefulWidget {
-  const AddNewStoreScreen({super.key});
+  // Vertical the owner came from on the home pills ("Munchies"/"Herbs"/null).
+  // Pre-selects the store type and labels this screen accordingly.
+  final String? category;
+  const AddNewStoreScreen({super.key, this.category});
 
   @override
   State<AddNewStoreScreen> createState() => _AddNewStoreScreenState();
@@ -23,7 +26,32 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
   @override
   void initState() {
     addNewStoreController.apiGetDeliveryServices();
+    // Pre-select the store type from the vertical the owner tapped, but only
+    // when that vertical is actually offered in the dropdown (otherwise the
+    // DropdownButtonFormField would assert on a value with no matching item).
+    if (widget.category == StringConstants.munchiesText && munchiesEnabled.value) {
+      addNewStoreController.storeType.value = "munchies";
+    } else if (widget.category == StringConstants.herbsText &&
+        herbsEnabled.value &&
+        isHerbsLicensee.value) {
+      addNewStoreController.storeType.value = "herbs";
+    } else {
+      addNewStoreController.storeType.value = "general";
+    }
     super.initState();
+  }
+
+  // Title reflecting the vertical, e.g. "Add Munchies Store" / "Add Store".
+  String get _addStoreTitle {
+    if (widget.category == StringConstants.munchiesText && munchiesEnabled.value) {
+      return "${StringConstants.addText} ${StringConstants.munchiesText} ${StringConstants.storeText}";
+    }
+    if (widget.category == StringConstants.herbsText &&
+        herbsEnabled.value &&
+        isHerbsLicensee.value) {
+      return "${StringConstants.addText} ${StringConstants.herbsText} ${StringConstants.storeText}";
+    }
+    return StringConstants.addStoreText;
   }
 
   @override
@@ -1298,7 +1326,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                         ),
                         width10SizedBox,
                         Text(
-                          StringConstants.addStoreText,
+                          _addStoreTitle,
                           style: const TextStyle(
                               fontSize: 22,
                               color: AppColors.black,

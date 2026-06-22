@@ -40,6 +40,9 @@ class AppConfigService {
         herbsEnabled.value = features['herbs'] == true;
         paymentsEnabled.value = features['payments'] == true;
         isHerbsLicensee.value = data?['is_herbs_licensee'] == true;
+        // Present only when the country has a single herbs store (else null);
+        // drives the Herbs pill deep-link in HomeScreen._openStores.
+        herbsStoreId.value = data?['herbs_store_id']?.toString() ?? "";
       }
     } catch (_) {
       // keep the last known flags; the backend still enforces everything

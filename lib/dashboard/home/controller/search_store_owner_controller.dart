@@ -61,6 +61,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   RxString? storeAddressId = "".obs;
   RxString storeId = "".obs;
   RxString storeName = "".obs;
+  // Vertical of the store currently being viewed/edited (general/munchies/herbs).
+  RxString storeTypeValue = "general".obs;
   RxString storeLocation = "".obs;
   RxString? storeImage = "".obs;
   RxString? storeLogo = "".obs;
@@ -669,6 +671,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             value?.body["data"]['store']['logo']["orignal_url"] ?? "";
         storeNameTextController.text =
             storeName.value = value?.body["data"]['store']['store_name'] ?? "";
+        storeTypeValue.value =
+            value?.body["data"]['store']['store_type'] ?? "general";
         einTextController.text =
             value?.body["data"]['store']['store_ein'] ?? "";
         nickNameTextController.text =
