@@ -76,8 +76,12 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
     if (!mounted) return;
     if (recipient != null) {
       await _scanner.stop();
-      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
-      // Allow re-scanning if the user returns.
+      // Await the pushed route so the camera stays stopped (and detection
+      // stays gated by [_handling]) while Details is on top. Restarting the
+      // scanner here without awaiting lets the still-running camera re-detect
+      // the same QR and push Details again and again (navigation loop).
+      await Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
+      // Back on the scanner screen -> allow re-scanning.
       if (mounted) {
         setState(() => _handling = false);
         _scanner.start();
