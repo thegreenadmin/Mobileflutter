@@ -29,8 +29,9 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     super.initState();
     _amount.text = c.amountText.value;
     _note.text = c.note.value;
-    // A store owner paying a person picks which of their stores funds the send.
-    // Make sure the store list is loaded, then default to the first one.
+    // A store owner paying a person or business picks which of their stores
+    // funds the send. Make sure the store list is loaded, then default to the
+    // first one.
     if (_showSourcePicker) {
       if (c.ownerStores.isEmpty) {
         c.fetchOwnerStores().then((_) => _defaultSourceStore());
@@ -40,10 +41,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
     }
   }
 
-  /// The "Pay from" store selector is owner-only and P2P-only (a person, not a
-  /// business).
-  bool get _showSourcePicker =>
-      c.isStoreOwner && c.paymentType.value == 'p2p';
+  /// The "Pay from" store selector is owner-only, shown for both P2P (paying a
+  /// person) and P2B (paying another business) so the owner can choose which of
+  /// their stores funds the send.
+  bool get _showSourcePicker => c.isStoreOwner;
 
   void _defaultSourceStore() {
     if (!mounted) return;

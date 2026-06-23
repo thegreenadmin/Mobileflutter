@@ -42,8 +42,8 @@ class PaymentController extends GetxController {
   final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
   final RxBool storesLoading = false.obs;
 
-  // P2P pay flow: when a store owner funds the payment from one of their stores,
-  // the chosen store (null = pay from their personal wallet).
+  // Pay flow (P2P or P2B): when a store owner funds the payment from one of their
+  // stores, the chosen store (null = pay from their personal wallet).
   final Rxn<UserStoresList> sourceStore = Rxn<UserStoresList>();
 
   // P2B pay flow: businesses attached to a looked-up phone number, for the
@@ -349,10 +349,10 @@ class PaymentController extends GetxController {
       ..._payeeRef,
     };
 
-    // P2P only: a store owner can fund the send from one of their stores. The
+    // A store owner can fund the send (P2P or P2B) from one of their stores. The
     // backend authorizes ownership and debits that store's wallet.
     final src = sourceStore.value;
-    if (paymentType.value == 'p2p' && src?.storeId != null) {
+    if (src?.storeId != null) {
       final id = int.tryParse(src!.storeId!);
       if (id != null) body['initiator_store_id'] = id;
     }
