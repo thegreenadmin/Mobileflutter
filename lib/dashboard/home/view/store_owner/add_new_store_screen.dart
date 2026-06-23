@@ -25,20 +25,23 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
 
   @override
   void initState() {
-    addNewStoreController.apiGetDeliveryServices();
+    super.initState();
     // Pre-select the store type from the vertical the owner tapped, but only
     // when that vertical is actually offered in the dropdown (otherwise the
     // DropdownButtonFormField would assert on a value with no matching item).
+    // Herbs is one-store-per-country, so it's only addable when none exists yet.
     if (widget.category == StringConstants.munchiesText && munchiesEnabled.value) {
       addNewStoreController.storeType.value = "munchies";
     } else if (widget.category == StringConstants.herbsText &&
         herbsEnabled.value &&
-        isHerbsLicensee.value) {
+        isHerbsLicensee.value &&
+        herbsStoreId.value.isEmpty) {
       addNewStoreController.storeType.value = "herbs";
     } else {
       addNewStoreController.storeType.value = "general";
     }
-    super.initState();
+    // Delivery options are per store type, so fetch only after the type is set.
+    addNewStoreController.apiGetDeliveryServices();
   }
 
   // Title reflecting the vertical, e.g. "Add Munchies Store" / "Add Store".
@@ -48,7 +51,8 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
     }
     if (widget.category == StringConstants.herbsText &&
         herbsEnabled.value &&
-        isHerbsLicensee.value) {
+        isHerbsLicensee.value &&
+        herbsStoreId.value.isEmpty) {
       return "${StringConstants.addText} ${StringConstants.herbsText} ${StringConstants.storeText}";
     }
     return StringConstants.addStoreText;
@@ -350,13 +354,24 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     DropdownMenuItem(
                                         value: "munchies",
                                         child: Text(StringConstants.munchiesText)),
-                                  if (herbsEnabled.value && isHerbsLicensee.value)
+                                  // Herbs is one-store-per-country: hide the
+                                  // option once a herbs store already exists
+                                  // (licensee edits it instead of adding).
+                                  if (herbsEnabled.value &&
+                                      isHerbsLicensee.value &&
+                                      herbsStoreId.value.isEmpty)
                                     DropdownMenuItem(
                                         value: "herbs",
                                         child: Text(StringConstants.herbsText)),
                                 ],
-                                onChanged: (value) => addNewStoreController
-                                    .storeType.value = value ?? "general",
+                                onChanged: (value) {
+                                  addNewStoreController.storeType.value =
+                                      value ?? "general";
+                                  // Delivery options differ per store type;
+                                  // refetch + reset selection on change.
+                                  addNewStoreController
+                                      .apiGetDeliveryServices();
+                                },
                               ),
                             ),
 

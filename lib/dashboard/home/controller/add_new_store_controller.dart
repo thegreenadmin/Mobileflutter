@@ -578,8 +578,12 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
   }
 
   ///Get DeliveryServices Api
+  ///Delivery options are per store type, so pass the current store type and
+  ///reset any prior selection whenever it changes.
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
+    deliveryServicesList.clear();
+    deliveryServicesTextController.clear();
     isLoading.value = true;
     Map<String, String> headers = {
       StringConstants.authorizationText:
@@ -587,8 +591,7 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
     };
          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator.baseUrl +
-                ServerCommunicator.deliveryServiceList,
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.deliveryServiceList}?store_type=${storeType.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -599,9 +602,13 @@ class AddNewStoreController extends GetxController with GlobalVarMixin{
             DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        deliveryServices
-            .firstWhere((element) => element.name!.toLowerCase().contains("in"))
-            .isSelected = true;
+        // Pre-select "In store" when offered (general/munchies); herbs only
+        // returns Delivery, so guard against no match instead of crashing.
+        final inStoreIndex = deliveryServices.indexWhere(
+            (element) => (element.name ?? "").toLowerCase().contains("in"));
+        if (inStoreIndex != -1) {
+          deliveryServices[inStoreIndex].isSelected = true;
+        }
         var concatenate = StringBuffer();
         for (int i = 0; i < deliveryServices.length; i++) {
           if (deliveryServices[i].isSelected == true) {

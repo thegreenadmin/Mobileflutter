@@ -477,29 +477,33 @@ class _OwnerStoresListScreenState extends State<OwnerStoresListScreen> with Glob
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.white, AppColors.white],
-                  ),
-                  onTap: () {
+                // Herbs is one-store-per-country: once a herbs store exists,
+                // the licensee can only edit it, so hide the add button here.
+                if (!(widget.category == StringConstants.herbsText &&
+                    herbsStoreId.value.isNotEmpty))
+                  CustomButton(
+                    border: Border.all(
+                      color: AppColors.primary,
+                    ),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.white, AppColors.white],
+                    ),
+                    onTap: () {
 
-                    Get.to(() => AddNewStoreScreen(category: widget.category), id: pageIdApp.value)!
-                        .then((value) => ownerStoresController.apiGetStoreList());
-                  },
-                  height: 50,
-                  text: StringConstants.addANewStoreText,
-                  textColor: AppColors.primary,
-                  borderRadius: 14,
-                  fontWeight: FontWeight.w600,
-                  iconL: false,
-                  iconR: false,
-                  fontSize: 16,
-                ),
+                      Get.to(() => AddNewStoreScreen(category: widget.category), id: pageIdApp.value)!
+                          .then((value) => ownerStoresController.apiGetStoreList());
+                    },
+                    height: 50,
+                    text: StringConstants.addANewStoreText,
+                    textColor: AppColors.primary,
+                    borderRadius: 14,
+                    fontWeight: FontWeight.w600,
+                    iconL: false,
+                    iconR: false,
+                    fontSize: 16,
+                  ),
                 height10SizedBox,
                 InkWell(
                   onTap: () {

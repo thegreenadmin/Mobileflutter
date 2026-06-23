@@ -185,9 +185,12 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
 
   Future<void> getCurrentLocation() async {
 
-    await apiGetDeliveryServices();
     if (storeId.value != "") {
+      // Edit: store details drive the per-type delivery fetch + reconciliation
+      // (apiGetParticularStore knows the store type, then loads its services).
       await apiGetParticularStore();
+    } else {
+      await apiGetDeliveryServices();
     }
     await getApiData();
     // Nashville default — used when GPS is unavailable (e.g. simulator, denied
@@ -608,6 +611,28 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
   }
 
   ///Get DeliveryServices Api
+  // Mark the store's saved delivery services as selected within the current
+  // (per-store-type) list and rebuild the summary text.
+  void _applySelectedDeliveryServices() {
+    var concatenate = StringBuffer();
+    if (storeDeliveryServices.isNotEmpty) {
+      for (var sData in storeDeliveryServices) {
+        for (var element in deliveryServices) {
+          if (element.id == sData["delivery_service_id"]) {
+            if (element.name != null) {
+              concatenate.write(element.name ?? "");
+              concatenate.write(', ');
+              element.isSelected = sData["is_enabled"];
+            }
+          }
+        }
+      }
+    }
+    deliveryServicesTextController.text = concatenate.toString();
+    deliveryServices.refresh();
+    update();
+  }
+
   Future apiGetDeliveryServices() async {
     deliveryServices.clear();
     isLoading.value = true;
@@ -617,8 +642,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
     };
          UserProvider()
         .getWithHeadersApi(
-            ServerCommunicator.baseUrl +
-                ServerCommunicator.deliveryServiceList,
+            // Delivery options are per store type; fetch the set for this store.
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.deliveryServiceList}?store_type=${storeTypeValue.value}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -629,9 +654,8 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             DeliveryServicesResponse.fromJson(value?.body);
         deliveryServices.value =
             deliveryServicesResponse.data?.deliveryServices ?? [];
-        if (storeId.value.isNotEmpty && storeId.value != "") {
-          await apiGetParticularStore();
-        }
+        // Mark the store's saved services as selected within this list.
+        _applySelectedDeliveryServices();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();
@@ -805,21 +829,9 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             }
           }
         }
-        var concatenate = StringBuffer();
-        if (storeDeliveryServices.isNotEmpty) {
-          for (var sData in storeDeliveryServices) {
-            for (var element in deliveryServices) {
-              if (element.id == sData["delivery_service_id"]) {
-                if (element.name != null) {
-                  concatenate.write(element.name ?? "");
-                  concatenate.write(', ');
-                  element.isSelected = sData["is_enabled"];
-                }
-              }
-            }
-          }
-        }
-        deliveryServicesTextController.text = concatenate.toString();
+        // Now that the store type is known, (re)fetch the per-type delivery
+        // list; its .then reconciles the store's saved selections.
+        await apiGetDeliveryServices();
         List storePages = value?.body["data"]['store']['store_pages'] ?? [];
 
         if (storePages.isNotEmpty) {
