@@ -74,6 +74,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       Get.toNamed(PaymentRoutes.review, id: PaymentRoutes.navId);
     } else if (result == 'KYC_REQUIRED') {
       showKycRequiredSheet(context, message: c.errorMessage.value);
+    } else if (result == 'BUSY') {
+      // A create is already in flight (duplicate tap) — ignore.
     } else {
       _toast(c.errorMessage.value);
     }
@@ -285,7 +287,13 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             top: false,
             child: Padding(
               padding: const EdgeInsets.all(PayTheme.hPad),
-              child: PayButton(text: 'Review & Pay', onTap: _reviewAndPay),
+              // Disable while a create is in flight so a double-tap can't fire
+              // two /payment/create calls for the same scanned QR session.
+              child: Obx(() => PayButton(
+                    text: 'Review & Pay',
+                    loading: c.isCreating.value,
+                    onTap: _reviewAndPay,
+                  )),
             ),
           ),
         ],

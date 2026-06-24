@@ -36,6 +36,11 @@ class PaymentController extends GetxController {
 
   // UX state
   final RxBool isProcessing = false.obs;
+  // True while a /payment/create call is in flight. Gates the "Review & Pay"
+  // button and the re-entrancy guard so a double-tap can't fire two creates for
+  // the same scanned QR (the second trips the server's single-use
+  // qr_session_id guard -> "qr_session_id must be unique").
+  final RxBool isCreating = false.obs;
   final RxString errorMessage = ''.obs;
 
   // Store-owner receive flow: the owner's businesses to choose from.
@@ -92,6 +97,7 @@ class PaymentController extends GetxController {
     _payeeRef = {};
     businessMatches.clear();
     sourceStore.value = null;
+    isCreating.value = false;
   }
 
   /// True when the signed-in user is a store owner — gates the P2P "pay from a
@@ -328,6 +334,12 @@ class PaymentController extends GetxController {
   /// 'KYC_REQUIRED' so the caller can route to license upload. Returns 'OK' on
   /// success, or null/other code on failure (errorMessage set).
   Future<String?> createPayment() async {
+    // Re-entrancy guard: ignore a second tap while a create is already running.
+    // Two concurrent creates for a scanned QR race the server's single-use
+    // qr_session_id insert and the loser fails with "qr_session_id must be
+    // unique". 'BUSY' tells the caller to do nothing (no error toast).
+    if (isCreating.value) return 'BUSY';
+
     final r = recipient.value;
     if (r == null) {
       errorMessage.value = 'No recipient selected';
@@ -338,7 +350,17 @@ class PaymentController extends GetxController {
       errorMessage.value = 'Enter a valid amount';
       return null;
     }
+
+    // Already created an intent for this attempt (e.g. user went back from
+    // Review and tapped Pay again): reuse it instead of re-consuming the
+    // single-use QR session.
+    if (intent.value?.id != null) {
+      errorMessage.value = '';
+      return 'OK';
+    }
+
     if (_idempotencyKey.isEmpty) startNewAttempt();
+    isCreating.value = true;
 
     final body = <String, dynamic>{
       "idempotency_key": _idempotencyKey,
@@ -357,27 +379,47 @@ class PaymentController extends GetxController {
       if (id != null) body['initiator_store_id'] = id;
     }
 
-    final res = await UserProvider().postWithHeadersApi(
-      body,
-      ServerCommunicator.baseUrl + ServerCommunicator.paymentCreate,
-      _headers,
-      showLoading: true,
-    );
+    try {
+      final res = await UserProvider().postWithHeadersApi(
+        body,
+        ServerCommunicator.baseUrl + ServerCommunicator.paymentCreate,
+        _headers,
+        showLoading: true,
+      );
 
-    if (res == null) {
-      errorMessage.value = 'Something went wrong. Please try again.';
-      return null;
-    }
-    if (_isOk(res.body['status'])) {
-      intent.value =
-          PaymentIntentModel.fromJson(Map<String, dynamic>.from(res.body['data']));
-      errorMessage.value = '';
-      return 'OK';
-    }
+      if (res == null) {
+        errorMessage.value = 'Something went wrong. Please try again.';
+        return null;
+      }
+      if (_isOk(res.body['status'])) {
+        intent.value = PaymentIntentModel.fromJson(
+            Map<String, dynamic>.from(res.body['data']));
+        errorMessage.value = '';
+        return 'OK';
+      }
 
-    final code = res.body['code'];
-    errorMessage.value = res.body['message'] ?? 'Unable to start payment';
-    return code ?? 'ERROR';
+      final code = res.body['code'];
+      errorMessage.value =
+          _friendlyCreateError(code, res.body['message']);
+      return code ?? 'ERROR';
+    } finally {
+      isCreating.value = false;
+    }
+  }
+
+  /// Maps a /payment/create failure to a message a payer can act on. A scanned
+  /// QR session is single-use: once it has funded a payment the server rejects a
+  /// re-use with a raw "qr_session_id must be unique", which we translate into a
+  /// "scan a fresh code" prompt instead of leaking the DB constraint text.
+  String _friendlyCreateError(String? code, String? message) {
+    final raw = (message ?? '').toLowerCase();
+    if (code == 'QR_SESSION_USED' ||
+        code == 'QR_SESSION_EXPIRED' ||
+        raw.contains('qr_session_id')) {
+      return 'This payment code has already been used or is no longer valid. '
+          'Please ask for a new code and scan again.';
+    }
+    return message ?? 'Unable to start payment';
   }
 
   // ---------------------------------------------------------------------------
@@ -406,7 +448,12 @@ class PaymentController extends GetxController {
     errorMessage.value = '';
 
     PaymentIntentModel? result;
-    // Safe retry: same idempotency_key + intent id (spec 5.5.3, max 2 retries).
+    // Retry only when there is NO answer (timeout / network drop): the confirm
+    // is idempotent (same idempotency_key + intent id, spec 5.5.3), so re-sending
+    // is safe. A definitive server response — success OR failure — is acted on
+    // immediately and never retried: re-confirming an intent the backend has
+    // already moved to a terminal "failed" state just yields a useless generic
+    // "(status: failed)" and hides the real reason.
     for (int attempt = 0; attempt <= 2; attempt++) {
       final res = await UserProvider().postWithHeadersApi(
         {
@@ -418,40 +465,66 @@ class PaymentController extends GetxController {
         _headers,
       );
 
-      if (res != null && _isOk(res.body['status'])) {
+      // No usable response: retry (idempotent) until the last attempt.
+      if (res == null) {
+        if (attempt == 2) {
+          errorMessage.value =
+              'Payment could not be completed. Please try again.';
+        }
+        continue;
+      }
+
+      if (_isOk(res.body['status'])) {
         result = PaymentIntentModel.fromJson(
             Map<String, dynamic>.from(res.body['data']));
+        // A confirm can come back 200 but with a terminal, non-succeeded status
+        // (the transfer itself failed). Surface a usable reason instead of a
+        // blank error on the processing screen.
+        if (!result.isSucceeded) {
+          errorMessage.value = _friendlyConfirmError(
+              res.body['message'], res.body['code'], result.status);
+        }
         break;
       }
 
-      // Typed, non-retryable failures: stop immediately.
-      final code = res?.body['code'];
-      if (res != null && _nonRetryable(code)) {
-        errorMessage.value = res.body['message'] ?? 'Payment failed';
-        break;
-      }
-      if (attempt == 2) {
-        errorMessage.value =
-            res?.body['message'] ?? 'Payment could not be completed. Please try again.';
-      }
+      // Definitive server-side failure: stop and surface the reason.
+      errorMessage.value = _friendlyConfirmError(
+          res.body['message'], res.body['code'], null);
+      break;
     }
 
     isProcessing.value = false;
     return result;
   }
 
-  bool _nonRetryable(String? code) {
-    const codes = {
-      'INSUFFICIENT_BALANCE',
-      'BIOMETRIC_REQUIRED',
-      'INTENT_NOT_PAYABLE',
-      'INTENT_EXPIRED',
-      'INTENT_NOT_FOUND',
-      'DAILY_LIMIT_EXCEEDED',
-      'VELOCITY_EXCEEDED',
-      'KYC_REQUIRED',
-    };
-    return code != null && codes.contains(code);
+  /// Turns a confirm failure (HTTP error body or a 200 with a terminal status)
+  /// into a message the payer can act on. Prefers a meaningful server message,
+  /// but rewrites the bare "(status: ...)" backend string and maps the common
+  /// failure codes/states to plain language.
+  String _friendlyConfirmError(String? message, String? code, String? status) {
+    switch (code) {
+      case 'INSUFFICIENT_BALANCE':
+        return 'Not enough balance in your wallet to complete this payment. '
+            'Please add money and try again.';
+      case 'DAILY_LIMIT_EXCEEDED':
+      case 'VELOCITY_EXCEEDED':
+        return "You've reached your payment limit. Please try again later.";
+      case 'INTENT_EXPIRED':
+        return 'This payment request expired. Please start again.';
+      case 'INTENT_NOT_FOUND':
+      case 'INTENT_NOT_PAYABLE':
+        return 'This payment is no longer valid. Please start again.';
+    }
+    final raw = (message ?? '').toLowerCase();
+    // The backend's bare "Payment cannot be completed (status: failed)" leaks an
+    // internal state and tells the user nothing — replace it.
+    if (message == null || message.trim().isEmpty || raw.contains('status:')) {
+      if (status == 'expired') return 'This payment request expired. Please start again.';
+      if (status == 'cancelled') return 'This payment was cancelled.';
+      return 'The payment could not be completed. Please check your wallet '
+          'balance and try again.';
+    }
+    return message;
   }
 
   Future<bool> _runBiometric() async {
