@@ -17,6 +17,7 @@ import 'package:thegreenmall/dashboard/home/model/get_user_store_list_model.dart
 import '../model/payment_intent_model.dart';
 import '../model/payment_recipient.dart';
 import '../model/qr_payload_model.dart';
+import '../payment_link.dart';
 
 /// Drives the whole P2P / P2B barcode-payment flow:
 /// scan/lookup -> details -> review -> confirm -> success.
@@ -114,12 +115,15 @@ class PaymentController extends GetxController {
     // A store owner may resolve to one of their own stores; load the owner's
     // store list first so [_handleRecipientResponse] can block self-payment.
     await _ensureOwnerStoresLoaded();
+    // Unwrap a `https://thegreenmall.net/pay/<token>` universal link to its
+    // token; legacy opaque payloads pass through unchanged.
+    final payload = PaymentLink.payloadFromScan(raw);
     final res = await UserProvider().postWithHeadersApi(
-      {"payload": raw},
+      {"payload": payload},
       ServerCommunicator.baseUrl + ServerCommunicator.paymentQrDecode,
       _headers,
     );
-    return _handleRecipientResponse(res, payeeRef: {"payload": raw});
+    return _handleRecipientResponse(res, payeeRef: {"payload": payload});
   }
 
   /// Manual lookup by phone (P2P) or merchant id (P2B).

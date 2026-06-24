@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/navigation/deep_link_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 
@@ -11,12 +12,47 @@ import 'component/pay_widgets.dart';
 
 /// Entry point for all payment workflows (spec 5.1). Pay/Send <-> Receive tabs
 /// and the P2P / P2B option cards.
-class PaymentsHomeScreen extends StatelessWidget {
+class PaymentsHomeScreen extends StatefulWidget {
   const PaymentsHomeScreen({super.key});
 
   @override
+  State<PaymentsHomeScreen> createState() => _PaymentsHomeScreenState();
+}
+
+class _PaymentsHomeScreenState extends State<PaymentsHomeScreen> {
+  final PaymentController c = Get.find<PaymentController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Resume a payment opened via universal link
+    // (https://thegreenmall.net/pay/<token>).
+    WidgetsBinding.instance.addPostFrameCallback((_) => _resumeDeepLink());
+  }
+
+  /// If a deep-linked payment token is waiting, decode it and jump to the
+  /// details screen — the same path a successful in-app scan takes.
+  Future<void> _resumeDeepLink() async {
+    final token = DeepLinkService.consumePendingToken();
+    if (token == null || !mounted) return;
+    c.resetFlow();
+    final recipient = await c.decodeScannedCode(token);
+    if (!mounted) return;
+    if (recipient != null) {
+      Get.toNamed(PaymentRoutes.details, id: PaymentRoutes.navId);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(c.errorMessage.value.isEmpty
+            ? 'This payment link is no longer valid.'
+            : c.errorMessage.value),
+        backgroundColor: PayTheme.error,
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final c = Get.find<PaymentController>();
     return Scaffold(
       backgroundColor: PayTheme.background,
       body: Column(
