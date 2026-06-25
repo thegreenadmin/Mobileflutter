@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:thegreenmall/bottomNavigation/bottom_nav_screen.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
@@ -69,6 +70,9 @@ class _SplashScreenState extends State<SplashScreen>
         isStoreOwner.value = wasStoreOwner;
         authToken.value = token;
         isGuest.value = false; // Ensure guest flag is false when token exists
+        // Re-sync the FCM token: it may have rotated since the last login, in
+        // which case the server is holding a dead token and push has stopped.
+        DeviceTokenService.instance.syncToken();
         Get.offAll(() => const BottomNavigation());
       } else {
         // For new users or those without token, go to StartJourneyScreen

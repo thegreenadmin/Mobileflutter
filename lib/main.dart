@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/provider/network_service.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/utils/app_logger.dart';
@@ -115,6 +116,10 @@ Future<void> _initNotifications() async {
   // ✅ Keep your custom notification handlers
   getNotificationOpenedApp();
   getNotification();
+
+  // ✅ Re-register the FCM token with the backend whenever it rotates so a
+  // long-lived logged-in session never ends up with a stale (dead) token.
+  DeviceTokenService.instance.init();
 }
 
 

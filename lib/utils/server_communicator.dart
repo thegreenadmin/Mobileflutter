@@ -186,6 +186,7 @@ class ServerCommunicator {
   static const unclaimedStoreList = 'store/unclaimed';
   static const userDetail = 'user/details';
   static const updateUser = 'user/details/update';
+  static const updateDeviceToken = 'user/device/token/update';
   static const userStore = 'store/list';
   static const updateCart = 'shop/store/cart/item/update';
   static const userProof = 'user/proof/verification/create';

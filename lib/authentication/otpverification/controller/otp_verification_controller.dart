@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/utils/api_constants.dart';
 import 'package:thegreenmall/utils/app_config_service.dart';
 import 'package:thegreenmall/utils/constants.dart';
@@ -26,7 +26,6 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   RxBool isAutoReload = false.obs;
   RxBool autoValidate = false.obs;
   RxString? fcmToken = "".obs;
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   Future<void> onInit() async {
@@ -39,16 +38,14 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
 
   Future<void> getFcmToken() async {
     try {
-      await messaging.getToken().then((v){
-        fcmToken!.value = v!;
-        if (fcmToken?.value != null) {
-          // Save or use the token
-        } else {
-          // Handle null token case
-          Utility.showAlertMessage("Unable to retrieve device token. Please try again.");
-        }
-      });
-
+      // Uses the APNs-aware fetch so iOS does not return a null/empty token
+      // before the APNs token is ready.
+      final token = await DeviceTokenService.instance.getCurrentToken();
+      fcmToken!.value = token ?? "";
+      if (token == null || token.isEmpty) {
+        Utility.showAlertMessage(
+            "Unable to retrieve device token. Please try again.");
+      }
     } catch (e) {
       // Handle error gracefully
       Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
@@ -70,10 +67,9 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
   void validateAndSubmitOtp() async {
     if (otpValidateAndSave()) {
       try {
-        await messaging.getToken().then((value) {
-          fcmToken!.value = value ?? "";
-          apiOtpVerify();
-        });
+        final token = await DeviceTokenService.instance.getCurrentToken();
+        fcmToken!.value = token ?? "";
+        apiOtpVerify();
       } catch (_) {
         // Utility.showAlertMessage("Failed to get notification token. Please check your network or app permissions.");
       }

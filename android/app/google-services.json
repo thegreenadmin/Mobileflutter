@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "454165179084",
-    "project_id": "thegreenmall",
-    "storage_bucket": "thegreenmall.appspot.com"
+    "project_number": "368561070805",
+    "project_id": "thegreenmall-6d910",
+    "storage_bucket": "thegreenmall-6d910.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:454165179084:android:dd3419f251cc1505ee7069",
+        "mobilesdk_app_id": "1:368561070805:android:9f143faea47b49959a785c",
         "android_client_info": {
           "package_name": "com.thegreenmall"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "454165179084-a7qdc7vqu6s1b4i8dmite83m8hlckloi.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.thegreenmall",
-            "certificate_hash": "2eab53972c38f16a403853ca75ee5b6be6535205"
-          }
-        },
-        {
-          "client_id": "454165179084-3ofkb9tsas9ik0ukbl93ti2lthg8u91p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyByjKewbMj4UrivNJfwtEZ0KAXtCNj62qo"
+          "current_key": "AIzaSyByXUVUKuFkgMQWBgY0PpXNiPXjPxoA-i4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "454165179084-3ofkb9tsas9ik0ukbl93ti2lthg8u91p.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "454165179084-csqudma8ck2f2hc90pcs1qj9h92kv7sr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.app.thegreenmall"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

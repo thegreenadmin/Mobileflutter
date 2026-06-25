@@ -60,6 +60,9 @@ import 'package:thegreenmall/bottomNavigation/bottom_nav_controller.dart';
 
   getNotification() {
     FirebaseMessaging.onMessage.listen((RemoteMessage? message) {
+      AppLogger.info(
+          'FCM onMessage received: title=${message?.notification?.title}, '
+          'body=${message?.notification?.body}, data=${message?.data}');
       RemoteNotification? notification = message!.notification;
       if (notification != null) {
         if (Platform.isAndroid) {

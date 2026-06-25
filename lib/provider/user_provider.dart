@@ -249,7 +249,7 @@ class UserProvider extends GetConnect {
   // Post with header request
   Future<Response?> postWithHeadersApi(
       data, String url, Map<String, String> headers,
-      {bool showLoading = false}) async {
+      {bool showLoading = false, bool showError = true}) async {
 
 
     headers.putIfAbsent('Keep-Alive', () => 'timeout=5, max=1000');
@@ -299,34 +299,42 @@ class UserProvider extends GetConnect {
       } on SocketException catch (e) {
         if (showLoading) Get.back();
         AppLogger.error('Server error', error: e);
-        Utility.showAlertMessage(
-          "Server error",
-          title:  AlertStringConstants.alertText,
-        );
+        if (showError) {
+          Utility.showAlertMessage(
+            "Server error",
+            title:  AlertStringConstants.alertText,
+          );
+        }
         return null;
     } on TimeoutException catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Connection timed out', error: e);
-      Utility.showAlertMessage(
-        "Connection timed out.",
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          "Connection timed out.",
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     } on Exception catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Exception in postWithHeadersApi', error: e);
-      Utility.showAlertMessage(
-        e.toString(),
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          e.toString(),
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     } catch (e) {
       if (showLoading) Get.back();
       AppLogger.error('Error in postWithHeadersApi', error: e);
-      Utility.showAlertMessage(
-        e.toString(),
-        title:  AlertStringConstants.alertText,
-      );
+      if (showError) {
+        Utility.showAlertMessage(
+          e.toString(),
+          title:  AlertStringConstants.alertText,
+        );
+      }
       return null;
     }
   }
