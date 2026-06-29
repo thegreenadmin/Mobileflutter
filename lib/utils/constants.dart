@@ -337,6 +337,8 @@ class StringConstants {
   static String mondayText = "Monday";
 
   static String messageText = "Message";
+  static String messageRatesDisclaimerText =
+      '. Message and data rates may apply.';
   static String moreText = "More";
   static String manageText = "Manage";
   static String menuText = "Menu";

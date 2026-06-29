@@ -222,6 +222,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 _buildLinkText(StringConstants.termsAndConditionsText, "terms"),
                 TextSpan(text: StringConstants.acknowledgeText),
                 _buildLinkText(StringConstants.privacyPolicyText, StringConstants.privacyText),
+                TextSpan(text: StringConstants.messageRatesDisclaimerText),
               ],
             ),
           ),
