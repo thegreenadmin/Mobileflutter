@@ -17,6 +17,7 @@ class HomeController extends GetxController with GlobalVarMixin {
   RxString? storeId = "".obs;
   RxString? currentUserId = "".obs;
   RxString? currentUserPhone = "".obs;
+  RxBool currentUserIsTestAccount = false.obs;
   RxString? offerProductId = "".obs;
   RxString? storeIdValue = "".obs;
   RxInt pageId = 0.obs;
@@ -101,7 +102,7 @@ class HomeController extends GetxController with GlobalVarMixin {
     }
 
     // Authenticated: fetch user detail first so getCurrentLocation() has the
-    // phone number and can skip GPS for the Apple review account (0000000000).
+    // is_test_account flag and can skip GPS for the review account.
     await apiGetUserDetail();
 
     // Resolve location after user detail — phone number is now populated.
@@ -139,8 +140,8 @@ class HomeController extends GetxController with GlobalVarMixin {
         final roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
         if (roleData.isNotEmpty) roleApp.value = roleData;
       }
-      // Fetch user detail first so getCurrentLocation() can detect the
-      // Apple review account (0000000000) and skip GPS if needed.
+      // Fetch user detail first so getCurrentLocation() can detect a flagged
+      // test account (is_test_account) and skip GPS if needed.
       await apiGetUserDetail();
       await getCurrentLocation();
       await _loadRoleSpecificData();
@@ -154,12 +155,14 @@ class HomeController extends GetxController with GlobalVarMixin {
     lat = 36.1627;
     lng = -86.7816;
 
-    // Skip GPS for guests or the Apple review account (phone 0000000000).
-    // The review account is used when the backend has no stores near the tester's
-    // location; Nashville data is pre-seeded so the app always shows content.
+    // Skip GPS for guests or any backend-flagged test account (e.g. the Apple
+    // review account). The flag is toggled from the admin panel, so the review
+    // phone number can change without an app release. The review account is used
+    // when the backend has no stores near the tester's location; Nashville data
+    // is pre-seeded so the app always shows content.
     if (isGuest.value == true) return;
-    if (currentUserPhone?.value == "0000000000") {
-      print("DEBUG: Apple review account detected, using Nashville default");
+    if (currentUserIsTestAccount.value == true) {
+      print("DEBUG: test account detected, using Nashville default");
       return;
     }
 
@@ -370,6 +373,10 @@ class HomeController extends GetxController with GlobalVarMixin {
         email!.value = getUserDetailModel.data?.user?.email ?? "";
         currentUserId!.value = getUserDetailModel.data?.user?.userId ?? "";
         currentUserPhone!.value = getUserDetailModel.data?.user?.phone ?? "";
+        currentUserIsTestAccount.value =
+            getUserDetailModel.data?.user?.isTestAccount ?? false;
+        SharedPreferenceStorage.setData(
+            "isTestAccount", currentUserIsTestAccount.value);
         SharedPreferenceStorage.setData("userData", getUserDetailModel.data);
         SharedPreferenceStorage.setData(StringConstants.firstNameText,
             getUserDetailModel.data?.user?.firstName ?? "");

@@ -18,6 +18,7 @@ class OffersController extends GetxController with GlobalVarMixin{
   RxString? nickName = "".obs;
   RxString? email = "".obs;
   RxString? phone = "".obs;
+  RxBool isTestAccount = false.obs;
   Rx<Offer> offerObj = Offer().obs;
   RxString? storeId = "".obs;
   RxString? offerId = "".obs;
@@ -123,6 +124,8 @@ class OffersController extends GetxController with GlobalVarMixin{
             "";
     phone?.value =
         await SharedPreferenceStorage.getData("userPhone") ?? "";
+    isTestAccount.value =
+        await SharedPreferenceStorage.getData("isTestAccount") ?? false;
 
     // Prefer the global roleApp.value (set synchronously on login / profile
     // switch) over the SharedPrefs read, which lags on real devices and can
@@ -139,7 +142,10 @@ class OffersController extends GetxController with GlobalVarMixin{
   }
 
   getCurrentLocation() async {
-    if (phone?.value == "0000000000") {
+    // Backend-flagged test accounts (e.g. the Apple review login) skip GPS and
+    // use the Nashville default. Toggled from the admin panel, so the review
+    // phone number can change without an app release.
+    if (isTestAccount.value == true) {
       lat = 36.1627; // Nashville, Tennessee latitude
       lng = -86.7816; // Nashville, Tennessee longitude
     } else {
