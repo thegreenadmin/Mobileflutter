@@ -39,6 +39,14 @@
             <meta-data
                 android:name="com.google.android.gms.wallet.api.enabled"
                 android:value="true" />
+            <!-- Deep links are handled by the app_links plugin (see
+                 DeepLinkService), not Flutter's built-in Navigator-based deep
+                 linking. Leaving Flutter's handler on makes it treat the
+                 incoming /pay/<token> URL as the app's initial route, which
+                 GetX can't match and crashes at startup. Keep this false. -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

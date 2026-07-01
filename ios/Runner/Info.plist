@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Deep links are handled by the app_links plugin (see DeepLinkService),
+	     not Flutter's built-in Navigator-based deep linking. With Flutter's
+	     handler on, the incoming /pay/<token> universal link is treated as the
+	     app's initial route, which GetX can't match and crashes at startup. -->
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
