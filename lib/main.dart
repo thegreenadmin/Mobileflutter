@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thegreenmall/navigation/deep_link_service.dart';
 import 'package:thegreenmall/navigation/router.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:thegreenmall/provider/network_service.dart';
@@ -141,6 +142,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // Country feature flags (munchies/herbs/payments availability).
     AppConfigService.refresh();
+
+    // Universal links (payment QR: https://thegreenmall.net/pay/<token>).
+    DeepLinkService.init();
   }
 
   @override
@@ -168,6 +172,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     // ✅ Cleanup global clients to avoid leaks
     UserProvider.disposeClient(); // <-- close IOClient safely
+    DeepLinkService.dispose();
     super.dispose();
   }
 
