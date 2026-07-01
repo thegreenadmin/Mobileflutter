@@ -24,6 +24,11 @@ Serve both files over **HTTPS**, from the apex domain, **no redirects**, with
 | `apple-app-site-association` | `https://thegreenmall.net/.well-known/apple-app-site-association` (no `.json` extension) |
 | `assetlinks.json` | `https://thegreenmall.net/.well-known/assetlinks.json` |
 
+> **Hosting on the WordPress site?** `thegreenmall.net` runs WordPress behind
+> Cloudflare, which returns a 404 for `.well-known/*` unless the files are placed
+> and rewritten correctly. See [`HOSTING_WORDPRESS.md`](./HOSTING_WORDPRESS.md)
+> for the exact fix and verification steps.
+
 Notes:
 - iOS App ID is `6F246JUX8A.com.thegreenmall` (Team ID + bundle id) — already filled in.
 - **`assetlinks.json` needs a real SHA-256.** Replace `REPLACE_WITH_PLAY_APP_SIGNING_SHA256`
