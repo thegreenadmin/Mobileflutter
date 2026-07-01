@@ -121,6 +121,26 @@ jobs:
         working-directory: ios
         run: pod install
 
+      # One-off: the App Store match profile predated the associated-domains
+      # entitlement, so the archive failed on the missing Associated Domains
+      # capability. This enables the capability on the App ID and force-regenerates
+      # the profile (pushed to the certs repo) before the build. Remove once the
+      # profile in the certs repo carries the capability.
+      - name: Refresh App Store signing (Associated Domains) [one-off]
+        if: env.BUILD_ENVIRONMENT == 'beta'
+        working-directory: ios
+        env:
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          OPENSSL_CONF: /dev/null
+        run: bundle exec fastlane refresh_appstore_signing
+
       - name: Build iOS app for beta (TestFlight)
         if: env.BUILD_ENVIRONMENT == 'beta'
         env:
