@@ -230,6 +230,40 @@ platform :ios do
     match(type: "appstore", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
   end
 
+  desc "Enable Associated Domains on the App ID and force-regenerate the App Store profile"
+  # One-off maintenance lane. Run when a new entitlement (e.g. Associated Domains
+  # for universal links) is added: the existing match profile predates the
+  # capability, so build_app fails with "provisioning profile doesn't include the
+  # ... capability". This enables the capability on the App ID (idempotent, via the
+  # App Store Connect API key set up in before_all) and force-regenerates the
+  # appstore profile, pushing it back to the certificates repo. The certificate is
+  # left untouched (no force_for_new_certificates) and the new profile is a
+  # superset, so existing signing keeps working.
+  lane :refresh_appstore_signing do
+    setup_ci if ENV['CI']
+
+    begin
+      require 'spaceship'
+      bundle_id = Spaceship::ConnectAPI::BundleId.all.find { |b| b.identifier == "com.thegreenmall" }
+      if bundle_id.nil?
+        UI.important("Could not find bundle id com.thegreenmall via ASC API — assuming Associated Domains is already enabled in the portal.")
+      else
+        caps = bundle_id.get_capabilities
+        already = caps.any? { |c| c.id.to_s.include?("ASSOCIATED_DOMAINS") || c.capability_type.to_s.include?("ASSOCIATED_DOMAINS") }
+        if already
+          UI.message("Associated Domains capability already enabled on com.thegreenmall.")
+        else
+          bundle_id.create_capability(Spaceship::ConnectAPI::BundleIdCapability::Type::ASSOCIATED_DOMAINS)
+          UI.success("Enabled Associated Domains capability on com.thegreenmall.")
+        end
+      end
+    rescue => e
+      UI.important("Automatic capability enable skipped (#{e.message}). If the rebuild still fails on the capability, enable Associated Domains for com.thegreenmall in the Apple Developer portal, then re-run this lane.")
+    end
+
+    match(type: "appstore", readonly: false, force: true, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
+  end
+
   desc "Create signing certificates (run once to initialize, not for CI)"
   lane :create_signing do
     match(type: "development", readonly: false, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
