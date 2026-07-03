@@ -384,6 +384,7 @@ class Store {
   bool? isFavouriteStore;
   String? storeId;
   String? storeName;
+  String? storeType;
   String? storeEin;
   String? storeNickName;
   String? storePhoneCode;
@@ -412,6 +413,7 @@ class Store {
     this.isFavouriteStore,
     this.storeId,
     this.storeName,
+    this.storeType,
     this.storeEin,
     this.storeNickName,
     this.storePhoneCode,
@@ -438,6 +440,7 @@ class Store {
     bool? isFavouriteStore,
     String? storeId,
     String? storeName,
+    String? storeType,
     String? storeEin,
     String? storeNickName,
     String? storePhoneCode,
@@ -463,6 +466,7 @@ class Store {
         isFavouriteStore: isFavouriteStore ?? this.isFavouriteStore,
         storeId: storeId ?? this.storeId,
         storeName: storeName ?? this.storeName,
+        storeType: storeType ?? this.storeType,
         storeEin: storeEin ?? this.storeEin,
         storeNickName: storeNickName ?? this.storeNickName,
         storePhoneCode: storePhoneCode ?? this.storePhoneCode,
@@ -490,6 +494,7 @@ class Store {
     taxValue: json["tax_value"],
         storeId: json["store_id"]?.toString(),
         storeName: json["store_name"],
+        storeType: json["store_type"],
         storeEin: json["store_ein"],
         storeNickName: json["store_nick_name"],
         storePhoneCode: json["store_phone_code"],
@@ -528,6 +533,7 @@ class Store {
         "store_id": storeId,
         "tax_value": taxValue,
         "store_name": storeName,
+        "store_type": storeType,
         "store_ein": storeEin,
         "store_nick_name": storeNickName,
         "store_phone_code": storePhoneCode,

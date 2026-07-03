@@ -836,6 +836,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                               },
                             ),
                             height20SizedBox,
+                            if (manageStoreController.isHerbsStore) ...[
                             Row(
                               children: [
                                 Flexible(
@@ -972,6 +973,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> with GlobalVa
                               ],
                             ),
                             height20SizedBox,
+                            ],
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,

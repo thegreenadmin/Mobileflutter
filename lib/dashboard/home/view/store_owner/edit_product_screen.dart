@@ -854,6 +854,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                       },
                                     )),
                               height20SizedBox,
+                              if (manageStoreController.isHerbsStore) ...[
                               Row(
                                 children: [
                                   Flexible(
@@ -986,6 +987,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                 ],
                               ),
                               height20SizedBox,
+                              ],
                               Row(
                                 children: [
                                   Flexible(

@@ -468,31 +468,31 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                   }),
 
                   Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.lengthText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.breadthText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.heightText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches");
-                  }),
-
-                  Obx(() {
-                    return _buildRowOtherDetail(
-                        title: StringConstants.weightText,
-                        textData:
-                        "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces");
+                    return Visibility(
+                      visible: storeHomeMainController.storeDetailsResponse
+                          .value.data?.store?.storeType ==
+                          "herbs",
+                      child: Column(
+                        children: [
+                          _buildRowOtherDetail(
+                              title: StringConstants.lengthText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.length.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.breadthText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.width.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.heightText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.height.toString() ?? "0"} Inches"),
+                          _buildRowOtherDetail(
+                              title: StringConstants.weightText,
+                              textData:
+                              "${storeHomeMainController.productDetailResponse.value.data?.product?.weight.toString() ?? "0"} Ounces"),
+                        ],
+                      ),
+                    );
                   }),
 
                   Obx(() {
