@@ -12,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/model/user_store_details_response.da
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/utils/email_required_modal.dart';
+import 'package:thegreenmall/utils/stripe_error_mapper.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -521,13 +522,13 @@ class WalletController extends GetxController with GlobalVarMixin{
         await apiCreateCard();
       } else {
         isLoading.value = false;
-        var parsed = jsonDecode(streamResponse.body);
-        String errorMessage = parsed['error']?['message'] ?? 'Failed to create Stripe token';
-        Utility.showAlertMessage(errorMessage);
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultCardMessage));
       }
     } catch (error) {
       isLoading.value = false;
-      Utility.showAlertMessage('Failed to create Stripe token: ${error.toString()}');
+      Utility.showAlertMessage(StripeErrorMapper.defaultCardMessage);
     }
   }
 
@@ -802,15 +803,14 @@ class WalletController extends GetxController with GlobalVarMixin{
         bankToken.value = parsed['id'].toString();
         isLoading.value = false;
         apiCreateStoreStripeAccount();
-      } else if (response.statusCode == 400) {  isLoading.value = false;
-        var parsed = jsonDecode(streamResponse.body);
-        Utility.showAlertMessage(parsed['error']['message'].toString());
       } else {  isLoading.value = false;
-        var parsed = jsonDecode(streamResponse.body);
-        Utility.showAlertMessage(parsed['error']['message'].toString());
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultBankMessage));
       }
     } catch (error) {  isLoading.value = false;
-           }
+      Utility.showAlertMessage(StripeErrorMapper.defaultBankMessage);
+    }
   }
 
   Future apiCreateStoreStripeAccount() async {

@@ -12,6 +12,7 @@ import 'package:thegreenmall/dashboard/home/model/get_state_model.dart';
 import 'package:thegreenmall/dashboard/offers/model/get_user_detail_model.dart';
 import 'package:thegreenmall/dashboard/wallet/model/wallet_model.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/utils/stripe_error_mapper.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/welcome/startjourney/view/start_journey_screen.dart';
 
@@ -496,11 +497,13 @@ class AddCardController extends GetxController with GlobalVarMixin{
         await apiCreateCard();
       } else {
         isLoading.value = false;
-        Utility.showAlertMessage("Failed to create Stripe token");
+        Utility.showAlertMessage(StripeErrorMapper.fromResponseBody(
+            streamResponse.body,
+            fallback: StripeErrorMapper.defaultCardMessage));
       }
     } catch (error) {
       isLoading.value = false;
-      Utility.showAlertMessage("Failed to add card");
+      Utility.showAlertMessage(StripeErrorMapper.defaultCardMessage);
     }
   }
 
