@@ -2303,7 +2303,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         // isFavouriteProduct.value = true;
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         isFavouriteProduct.value = false;
-        final matchingProducts = featureProductList.where((p0) => p0.storeId == id);
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
         if (matchingProducts.isNotEmpty) {
           matchingProducts.first.isFavouriteProduct?.value = false;
         }
@@ -2313,8 +2313,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         storage.clearData();
         Get.parameters.clear();
         Utility.handle401Error();
+      } else if (value?.body["status"] == ApiConstants.statusCode409) {
+        // Server already has this favourite (unique-constraint conflict):
+        // sync the UI to the server state instead of showing the raw error.
+        isFavouriteProduct.value = true;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = true;
+        }
       } else { isFavouriteProduct.value = false;
-        final matchingProducts = featureProductList.where((p0) => p0.storeId == id);
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
         if (matchingProducts.isNotEmpty) {
           matchingProducts.first.isFavouriteProduct?.value = false;
         }
@@ -2381,6 +2389,16 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         storage.clearData();
         Get.parameters.clear();
         Utility.handle401Error();
+      } else if (value?.body["status"] == ApiConstants.statusCode404 ||
+          value?.body["status"] == ApiConstants.statusCode409) {
+        // Favourite no longer exists on the server: sync the UI to the
+        // server state instead of showing the raw error.
+        isFavouriteProduct.value = false;
+        final matchingProducts = featureProductList.where((p0) => p0.productId == id);
+        if (matchingProducts.isNotEmpty) {
+          matchingProducts.first.isFavouriteProduct?.value = false;
+        }
+        isFromFavS ? apiFeatureProductListApi(isFavouriteProducts: true) : null;
       } else {
         isFavouriteProduct.value = true;
         if (value?.body['message'] != null) {

@@ -205,7 +205,11 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                           ),*/
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: storeHomeMainController
+                                      // Obx scope is required here: itemBuilder runs
+                                      // outside the parent Obx's builder, so the RxBool
+                                      // read is otherwise never tracked and the heart
+                                      // wouldn't repaint on toggle.
+                                      child: Obx(() => storeHomeMainController
                                                   .featureProductList[i]
                                                   .isFavouriteProduct!.value==
                                               true
@@ -223,12 +227,12 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                                   return; // Don't toggle or make API call
                                                 }
 
-                                                storeHomeMainController
-                                                    .featureProductList[i]
-                                                    .isFavouriteProduct!.value= false;
                                                 if (storeHomeMainController
                                                         .isLoading.value ==
                                                     false) {
+                                                  storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct!.value = false;
                                                   storeHomeMainController
                                                       .apiRemoveFavouriteProduct(
                                                           storeHomeMainController
@@ -256,12 +260,12 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                                   return; // Don't toggle or make API call
                                                 }
 
-                                                storeHomeMainController
-                                                    .featureProductList[i]
-                                                    .isFavouriteProduct!.value= true;
                                                 if (storeHomeMainController
                                                         .isLoading.value ==
                                                     false) {
+                                                  storeHomeMainController
+                                                      .featureProductList[i]
+                                                      .isFavouriteProduct!.value = true;
                                                   storeHomeMainController
                                                       .apiCreateFavouriteProduct(
                                                           storeHomeMainController
@@ -275,6 +279,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                                 scale: 3,
                                               ),
                                             ),
+                                    ),
                                     )
                                   ],
                                 ),

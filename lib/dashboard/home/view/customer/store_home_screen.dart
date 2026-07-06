@@ -201,8 +201,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                                       return; // Don't toggle or make API call
                                     }
 
-                                    item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
                                     if (!storeHomeMainController.isLoading.value) {
+                                      item.isFavouriteProduct!.value = !item.isFavouriteProduct!.value; // Toggle
                                       if (item.isFavouriteProduct!.value) {
                                         storeHomeMainController.apiCreateFavouriteProduct(item.productId);
                                       } else {

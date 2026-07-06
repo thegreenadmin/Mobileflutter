@@ -1010,9 +1010,9 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
               return; // Don't toggle or make API call
             }
 
-            var isFavorite = storeHomeMainController.isFavouriteProduct.value;
-            storeHomeMainController.isFavouriteProduct.value = !isFavorite;
             if (!storeHomeMainController.isLoading.value) {
+              var isFavorite = storeHomeMainController.isFavouriteProduct.value;
+              storeHomeMainController.isFavouriteProduct.value = !isFavorite;
               if (isFavorite) {
                 storeHomeMainController.apiRemoveFavouriteProduct(product?.productId);
               } else {
