@@ -1,20 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
+
 import '../controller/payment_controller.dart';
 import '../payment_routes.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
 
 /// Final review before submitting the payment (spec 5.4).
-class ReviewPayScreen extends StatelessWidget {
+class ReviewPayScreen extends StatefulWidget {
   const ReviewPayScreen({super.key});
+
+  @override
+  State<ReviewPayScreen> createState() => _ReviewPayScreenState();
+}
+
+class _ReviewPayScreenState extends State<ReviewPayScreen> {
+  final PaymentController c = Get.find<PaymentController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Balance backs the insufficient-funds banner + pay-button guard below.
+    c.loadWalletBalance();
+  }
 
   String _money(double v) => '\$${v.toStringAsFixed(2)}';
 
+  /// Same recovery path as the cart's insufficient-funds banner: top-up
+  /// screen pushed on the host nested navigator, balance re-checked on return.
+  Future<void> _openAddMoney() async {
+    await Get.to(() => const AddMoneyToWalletUser(isFromCartScreen: true),
+        id: pageIdApp.value);
+    c.loadWalletBalance();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<PaymentController>();
     final r = c.recipient.value;
     final i = c.intent.value;
     final total = i?.total ?? c.amount;
@@ -100,10 +124,62 @@ class ReviewPayScreen extends StatelessWidget {
             top: false,
             child: Padding(
               padding: const EdgeInsets.all(PayTheme.hPad),
-              child: PayButton(
-                text: 'Pay ${_money(total)}',
-                onTap: () => Get.toNamed(PaymentRoutes.processing),
-              ),
+              child: Obx(() {
+                // Only a definite shortfall blocks paying: while the balance is
+                // still loading (null) the server-side check remains the guard.
+                final bal = c.walletBalance.value;
+                final insufficient = bal != null && bal < total;
+                // Store-funded sends can't be topped up from here; owners add
+                // money from the wallet tab instead.
+                final canAddMoney = c.sourceStore.value == null;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (insufficient) ...[
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: PayTheme.error.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Insufficient funds (${_money(bal)})',
+                                style: const TextStyle(
+                                    color: PayTheme.error,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            if (canAddMoney)
+                              InkWell(
+                                onTap: _openAddMoney,
+                                child: const Text(
+                                  'Add funds',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: PayTheme.error,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                    PayButton(
+                      text: 'Pay ${_money(total)}',
+                      onTap: insufficient
+                          ? null
+                          : () => Get.toNamed(PaymentRoutes.processing),
+                    ),
+                  ],
+                );
+              }),
             ),
           ),
         ],

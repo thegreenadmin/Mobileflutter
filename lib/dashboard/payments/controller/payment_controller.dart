@@ -44,6 +44,15 @@ class PaymentController extends GetxController {
   final RxBool isCreating = false.obs;
   final RxString errorMessage = ''.obs;
 
+  /// Machine-readable code of the last confirm failure (e.g.
+  /// 'INSUFFICIENT_BALANCE'), so screens can offer a matching recovery action.
+  final RxString errorCode = ''.obs;
+
+  /// Balance of the funding wallet (personal, or [sourceStore]'s), fetched for
+  /// the review screen's insufficient-funds guard. Null while unknown so the
+  /// guard only engages on a definite shortfall.
+  final Rxn<double> walletBalance = Rxn<double>();
+
   // Store-owner receive flow: the owner's businesses to choose from.
   final RxList<UserStoresList> ownerStores = <UserStoresList>[].obs;
   final RxBool storesLoading = false.obs;
@@ -86,6 +95,7 @@ class PaymentController extends GetxController {
     _idempotencyKey = _uuid.v4();
     intent.value = null;
     errorMessage.value = '';
+    errorCode.value = '';
   }
 
   void resetFlow() {
@@ -94,6 +104,8 @@ class PaymentController extends GetxController {
     note.value = '';
     intent.value = null;
     errorMessage.value = '';
+    errorCode.value = '';
+    walletBalance.value = null;
     _idempotencyKey = '';
     _payeeRef = {};
     businessMatches.clear();
@@ -430,6 +442,23 @@ class PaymentController extends GetxController {
   // Confirm (Review -> Processing -> Success)
   // ---------------------------------------------------------------------------
 
+  /// Fetches the funding wallet's balance (personal wallet, or the chosen
+  /// store's) so the review screen can flag a shortfall before the user
+  /// commits, mirroring the cart checkout's insufficient-funds guard.
+  Future<void> loadWalletBalance() async {
+    walletBalance.value = null;
+    final src = sourceStore.value;
+    final url = src?.storeId != null
+        ? "${ServerCommunicator.baseUrl}${ServerCommunicator.storeWalletBalance}?store_id=${src!.storeId}"
+        : ServerCommunicator.baseUrl + ServerCommunicator.userWalletBalance;
+    final res =
+        await UserProvider().getWithHeadersApi(url, _headers, showLoading: false);
+    if (res != null && _isOk(res.body['status'])) {
+      final bal = res.body['data']?['balance'];
+      walletBalance.value = bal is num ? bal.toDouble() : double.tryParse('$bal');
+    }
+  }
+
   /// Runs biometric (if required) then confirms. Returns the succeeded intent,
   /// or null with [errorMessage] set. Safe to retry with the same intent.
   Future<PaymentIntentModel?> confirmPayment() async {
@@ -450,6 +479,7 @@ class PaymentController extends GetxController {
 
     isProcessing.value = true;
     errorMessage.value = '';
+    errorCode.value = '';
 
     PaymentIntentModel? result;
     // Retry only when there is NO answer (timeout / network drop): the confirm
@@ -485,6 +515,7 @@ class PaymentController extends GetxController {
         // (the transfer itself failed). Surface a usable reason instead of a
         // blank error on the processing screen.
         if (!result.isSucceeded) {
+          errorCode.value = (res.body['code'] ?? '').toString();
           errorMessage.value = _friendlyConfirmError(
               res.body['message'], res.body['code'], result.status);
         }
@@ -492,6 +523,7 @@ class PaymentController extends GetxController {
       }
 
       // Definitive server-side failure: stop and surface the reason.
+      errorCode.value = (res.body['code'] ?? '').toString();
       errorMessage.value = _friendlyConfirmError(
           res.body['message'], res.body['code'], null);
       break;

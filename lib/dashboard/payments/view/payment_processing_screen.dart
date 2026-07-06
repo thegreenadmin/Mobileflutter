@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/dashboard/wallet/view/add_money_to_wallet_customer.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
+
 import '../controller/payment_controller.dart';
 import '../model/payment_intent_model.dart';
 import '../payment_routes.dart';
@@ -74,7 +77,31 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
     );
   }
 
+  /// Insufficient balance is recoverable: send the payer to the top-up screen
+  /// (like cart checkout), then retry with a FRESH intent — the failed one is
+  /// terminal server-side, so re-confirming it only yields INTENT_NOT_PAYABLE
+  /// ("no longer valid").
+  Future<void> _addMoneyAndRetry() async {
+    await Get.to(() => const AddMoneyToWalletUser(isFromCartScreen: true),
+        id: pageIdApp.value);
+    if (!mounted) return;
+    c.startNewAttempt();
+    final status = await c.createPayment();
+    if (!mounted) return;
+    if (status == 'OK') {
+      _process();
+    } else {
+      // createPayment set errorMessage (e.g. a consumed single-use QR session);
+      // stay on the failure view with the fresh reason.
+      setState(() => _failed = true);
+    }
+  }
+
   Widget _buildFailed() {
+    // Store-funded sends can't be topped up from this screen; owners add money
+    // to a store wallet from the wallet tab.
+    final canAddMoney = c.errorCode.value == 'INSUFFICIENT_BALANCE' &&
+        c.sourceStore.value == null;
     return PayMessageView(
       icon: Icons.error_outline,
       iconColor: PayTheme.error,
@@ -82,8 +109,8 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
       message: c.errorMessage.value.isEmpty
           ? 'Something went wrong. Please try again.'
           : c.errorMessage.value,
-      actionText: 'Try Again',
-      onAction: _process,
+      actionText: canAddMoney ? 'Add Money to Wallet' : 'Try Again',
+      onAction: canAddMoney ? _addMoneyAndRetry : _process,
     );
   }
 }
