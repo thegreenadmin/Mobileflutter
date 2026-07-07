@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart'
+    show OrderItem;
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'component/order_status_enum.dart';
@@ -218,6 +220,101 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
     );
   }
 
+  bool isItemSelectable(OrderItem item) {
+    final status = item.orderItemStatus;
+    switch (ordersHomeMainController.selectedIndex.value) {
+      case 0:
+        return status == OrderStatusEnum.receivedOrder.statusName;
+      case 1:
+        return status == OrderStatusEnum.inProgress.statusName ||
+            status == OrderStatusEnum.receivedOrder.statusName;
+      case 2:
+        return status == OrderStatusEnum.inTransit.statusName ||
+            status == OrderStatusEnum.readyForPickup.statusName ||
+            status == OrderStatusEnum.receivedOrder.statusName ||
+            status == OrderStatusEnum.inProgress.statusName;
+      default:
+        return false;
+    }
+  }
+
+  Widget buildSelectAllRow() {
+    final selectableItems = ordersHomeMainController.getOrderItems
+        .where(isItemSelectable)
+        .toList();
+    if (ordersHomeMainController.selectedIndex.value != 0 ||
+        selectableItems.length < 2) {
+      return height0SizedBox;
+    }
+    final selectedCount =
+        selectableItems.where((item) => item.isSelected == true).length;
+    final bool allSelected = selectedCount == selectableItems.length;
+    void toggleAll() {
+      setState(() {
+        for (var item in selectableItems) {
+          item.isSelected = !allSelected;
+        }
+      });
+    }
+
+    // Mirrors the item card's flex layout (image 2 : content 7) so the
+    // checkbox lands in the same column as the per-item checkboxes.
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 8),
+      child: Row(
+        children: [
+          const Flexible(
+            flex: 2,
+            child: SizedBox(width: 70),
+          ),
+          width10SizedBox,
+          Flexible(
+            flex: 7,
+            child: InkWell(
+              onTap: toggleAll,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(StringConstants.selectAllText,
+                      style: TextStyle(
+                          color: AppColors.blackLight,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14)),
+                  width4SizedBox,
+                  SizedBox(
+                    height: 20,
+                    width: 30,
+                    child: Checkbox(
+                      side: WidgetStateBorderSide.resolveWith(
+                        (states) => BorderSide(
+                            width: 1.0,
+                            color: AppColors.primary.withOpacity(0.5)),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
+                      activeColor: AppColors.primary,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      tristate: true,
+                      value: allSelected
+                          ? true
+                          : selectedCount == 0
+                          ? false
+                          : null,
+                      onChanged: (bool? value) {
+                        toggleAll();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Obx buildOrderItems() {
     return Obx(() =>
         Expanded(
@@ -247,7 +344,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                 ),
               ],
             )
-                : ListView.separated(
+                : Column(children: [
+              buildSelectAllRow(),
+              Expanded(
+                  child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return height8SizedBox;
                 },
@@ -347,7 +447,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                             () =>
                                         ordersHomeMainController
                                             .selectedIndex
-                                            .value == 3
+                                            .value != 0
                                             ? height0SizedBox
                                             : Flexible(
                                           flex: 1,
@@ -378,40 +478,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                 onChanged:
                                                     (bool?
                                                 value) {
-                                                  if (ordersHomeMainController.selectedIndex.value ==
-                                                      0 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum
-                                                              .receivedOrder.statusName) {
-                                                    setState(
-                                                            () {
-                                                          ordersHomeMainController.getOrderItems
-                                                              .elementAt(index)
-                                                              .isSelected =
-                                                              value;
-                                                        });
-                                                  } else if (ordersHomeMainController.selectedIndex.value == 1 &&
-                                                      ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum.inProgress.statusName ||
-                                                      ordersHomeMainController.selectedIndex.value == 1 &&
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.receivedOrder.statusName) {
-                                                    setState(
-                                                            () {
-                                                          ordersHomeMainController.getOrderItems
-                                                              .elementAt(index)
-                                                              .isSelected =
-                                                              value;
-                                                        });
-                                                  } else if (ordersHomeMainController.selectedIndex.value == 2 &&
-                                                      (ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                          OrderStatusEnum.inTransit.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.readyForPickup.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.receivedOrder.statusName ||
-                                                          ordersHomeMainController.getOrderItems[index].orderItemStatus ==
-                                                              OrderStatusEnum.inProgress.statusName)) {
+                                                  if (isItemSelectable(
+                                                      ordersHomeMainController
+                                                          .getOrderItems[
+                                                      index])) {
                                                     setState(
                                                             () {
                                                           ordersHomeMainController.getOrderItems
@@ -584,7 +654,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     );
                   }
                   return height0SizedBox;
-                })));
+                }))
+            ])));
   }
 
   Divider buildDivider() {
@@ -802,6 +873,15 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                         colors: [AppColors.primary, AppColors.primary],
                       ),
                       onTap: () {
+                        if (ordersHomeMainController.selectedIndex.value == 1 ||
+                            ordersHomeMainController.selectedIndex.value == 2) {
+                          // No per-item selection on these tabs; the action
+                          // always moves every product to the next status.
+                          for (var item
+                          in ordersHomeMainController.getOrderItems) {
+                            item.isSelected = true;
+                          }
+                        }
                         if (ordersHomeMainController.getOrderItems
                             .any((element) => element.isSelected == true)) {
                           ordersHomeMainController.selectedIndex.value == 0
