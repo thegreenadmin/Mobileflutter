@@ -27,6 +27,7 @@ class OrdersHomeMainScreen extends StatefulWidget {
 class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+  final TextEditingController searchTextController = TextEditingController();
 
 
   @override
@@ -35,8 +36,81 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
       ordersHomeMainController.storeId.value = widget.storeId ?? Get.parameters["storeId"] ?? "";
       ordersHomeMainController.orderId.value = widget.orderId ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
+      searchTextController.text =
+          ordersHomeMainController.orderSearchQuery.value;
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
+
+  Padding buildOrderSearchField() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: TextField(
+        controller: searchTextController,
+        textInputAction: TextInputAction.search,
+        onChanged: (value) {
+          ordersHomeMainController.orderSearchQuery.value = value;
+        },
+        style: const TextStyle(
+            color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w400),
+        decoration: InputDecoration(
+          filled: true,
+          isDense: true,
+          prefixIcon: Image.asset(
+            ImageConstants.search,
+            color: AppColors.grey,
+            scale: 4,
+          ),
+          suffixIcon: Obx(
+            () => Visibility(
+              visible:
+                  ordersHomeMainController.orderSearchQuery.value.isNotEmpty,
+              child: InkWell(
+                onTap: () {
+                  searchTextController.clear();
+                  ordersHomeMainController.orderSearchQuery.value = "";
+                },
+                child: Image.asset(
+                  ImageConstants.cross,
+                  scale: 4,
+                ),
+              ),
+            ),
+          ),
+          focusColor: AppColors.grey,
+          hintText: StringConstants.searchOrdersHintText,
+          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Padding horizontalTabs() {
@@ -265,6 +339,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                 ],
               ),
               horizontalTabs(),
+              buildOrderSearchField(),
               Obx(() => Expanded(
                   child: ordersHomeMainController.ownerOrderHistoryList!.isEmpty
                       ? Column(

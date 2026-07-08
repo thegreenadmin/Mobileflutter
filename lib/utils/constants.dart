@@ -574,6 +574,7 @@ class StringConstants {
   static String searchText = "Search";
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
+  static String searchOrdersHintText = "Search by order ID or customer name";
   static String selectAllText = "Select All";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";

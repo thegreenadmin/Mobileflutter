@@ -35,6 +35,7 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   RxString storeLocation = "".obs;
   RxString storeCount = "0".obs;
   RxBool isFromNotification = false.obs;
+  RxString orderSearchQuery = "".obs;
 
   Rx<store.StoreDetailsResponse> storeDetailsResponse = store.StoreDetailsResponse().obs;
   GetOwnerOrderHistoryModel getOwnerOrderHistoryModel = GetOwnerOrderHistoryModel();
@@ -115,9 +116,18 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
   //   role?.value = await SharedPreferenceStorage.getData(Role.role) ?? "";
   // }
 
+  // onInit is also re-invoked manually from the orders screen on card tap,
+  // so dispose the previous worker to avoid duplicate debounce callbacks.
+  Worker? _searchDebounce;
+
   @override
   void onInit() {
     super.onInit();
+    _searchDebounce?.dispose();
+    _searchDebounce = debounce(orderSearchQuery, (_) {
+      page.value = 1;
+      apiGetOwnerOrderHistory();
+    }, time: const Duration(milliseconds: 400));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var roleData = await SharedPreferenceStorage.getData(Role.role) ?? "";
       role!.value = roleData;
@@ -289,6 +299,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
       "order_type": "DESC",
       "from_date": null,
       "to_date": null,
+      "search": orderSearchQuery.value.trim().isEmpty
+          ? null
+          : orderSearchQuery.value.trim(),
       "only_active_orders": selectedIndex.value == 0 ? true : null,
       "order_statuses": selectedIndex.value == 1
           ? [
