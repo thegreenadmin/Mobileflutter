@@ -575,6 +575,12 @@ class StringConstants {
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
   static String searchOrdersHintText = "Search by order ID or customer name";
+  static String scanOrderBarcodeText = "Scan Order Barcode";
+  static String showOrderQRText = "Show Order QR";
+  static String showQrAtStoreText =
+      "Show this code at the store to pull up your order";
+  static String alignOrderCodeText = "Align the order QR within the frame";
+  static String uploadFromGalleryText = "Upload from Gallery";
   static String selectAllText = "Select All";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
@@ -767,8 +773,13 @@ class AlertStringConstants {
   static String noDataFoundText = "No Data Found";
   static String notAuthorizedToStoreText =
       "Sorry, You are not authorized. Contact your store owner for more info.";
+  static String notAValidOrderCodeText = "This is not a valid order code.";
+  static String noOrderCodeInImageText =
+      "No order code found in the selected image.";
 
   //O
+  static String orderReturnRequestScanText =
+      "This order has a return request. Please open it from the store's orders list.";
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
   static String only5MaximumImagesCanSelectText =

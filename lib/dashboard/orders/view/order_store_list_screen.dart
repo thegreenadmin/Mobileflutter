@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/view/order_barcode_scanner_screen.dart';
 import 'package:thegreenmall/dashboard/orders/view/orders_home_main_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -108,6 +109,7 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
                 )),
           ),
           height8SizedBox,
+          buildScanBarcodeSection(),
           // ✅ Dynamic flexible space for list or empty state
           Expanded(
             child: Padding(
@@ -149,6 +151,50 @@ class _OrderStoresListScreenState extends State<OrderStoresListScreen> with Glob
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildScanBarcodeSection() {
+    return Obx(
+      () => Visibility(
+        visible: ordersController.storeList.isNotEmpty,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+          child: InkWell(
+            onTap: () {
+              Get.to(() => const OrderBarcodeScannerScreen(),
+                  id: pageIdApp.value);
+            },
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+              decoration: const BoxDecoration(
+                  color: AppColors.greyLight,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  )),
+              child: Row(
+                children: [
+                  const Icon(Icons.qr_code_scanner,
+                      color: AppColors.primary, size: 26),
+                  width10SizedBox,
+                  Expanded(
+                    child: Text(
+                      StringConstants.scanOrderBarcodeText,
+                      style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
+                  ),
+                  Icon(Icons.chevron_right,
+                      color: AppColors.blackLight, size: 24),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
