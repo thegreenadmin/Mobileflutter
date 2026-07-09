@@ -121,39 +121,47 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             ordersHomeMainController.horizontalTabList.length,
-                (i) => InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                ordersHomeMainController.onIndexChange(i);
-                setState(() {});
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    ordersHomeMainController.horizontalTabList[i],
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: ordersHomeMainController.selectedIndex.value == i
-                          ? FontWeight.w500
-                          : FontWeight.w400,
-                      color: ordersHomeMainController.selectedIndex.value == i
-                          ? AppColors.primary
-                          : AppColors.blackLight,
+                (i) {
+              // Visible tabs skip the hidden in-progress status, so each tab
+              // maps to an internal status index rather than its position.
+              final statusIndex = ordersHomeMainController.tabStatusIndexes[i];
+              return InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  ordersHomeMainController.onIndexChange(statusIndex);
+                  setState(() {});
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      ordersHomeMainController.horizontalTabList[i],
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: ordersHomeMainController
+                            .selectedIndex.value == statusIndex
+                            ? FontWeight.w500
+                            : FontWeight.w400,
+                        color: ordersHomeMainController.selectedIndex.value ==
+                            statusIndex
+                            ? AppColors.primary
+                            : AppColors.blackLight,
+                      ),
                     ),
-                  ),
-                  height8SizedBox,
-                  Container(
-                    color: ordersHomeMainController.selectedIndex.value == i
-                        ? AppColors.primary
-                        : Colors.transparent,
-                    height: 2,
-                    width: 80,
-                  ),
-                ],
-              ),
-            ),
+                    height8SizedBox,
+                    Container(
+                      color: ordersHomeMainController.selectedIndex.value ==
+                          statusIndex
+                          ? AppColors.primary
+                          : Colors.transparent,
+                      height: 2,
+                      width: 80,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

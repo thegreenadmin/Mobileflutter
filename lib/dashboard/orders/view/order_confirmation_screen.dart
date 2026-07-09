@@ -1179,7 +1179,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .isEmpty &&
                                                 ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController
                                                     .orderItems[i]
                                                     .returnOrderItems!
@@ -1331,7 +1331,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                           Visibility(
                                             visible: ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController.orderItems[i]
                                                         .enableReturnButton ==
                                                     true &&

@@ -221,12 +221,16 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
     }
   }
 
+  // The in-progress status is hidden from the UI: preparing a pickup order
+  // chains received -> in progress -> ready for pickup in one action (see
+  // apiPrepareAndMoveToPickup), so the visible tabs skip internal index 1.
+  // Each visible tab maps to its internal selectedIndex via tabStatusIndexes.
   RxList horizontalTabList = [
     StringConstants.receivedText,
-    StringConstants.inProgress,
     StringConstants.pickupText,
     StringConstants.completedText,
   ].obs;
+  final List<int> tabStatusIndexes = [0, 2, 3];
 
   ///Get Store Details Api
   Future apiGetStoreDetails() async {
@@ -311,6 +315,9 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
             ]
           : selectedIndex.value == 2
               ? [
+                  {
+                    "order_status_name": OrderStatusEnum.inProgress.statusName
+                  }, // prepared but not yet shipped (in-progress tab is hidden)
                   {
                     "order_status_name": OrderStatusEnum.inTransit.statusName
                   }, // inTransit
@@ -707,6 +714,73 @@ class OrdersHomeMainController extends GetxController with GlobalVarMixin{
         }
       }
     });
+  }
+
+  ///Confirm a pickup/curb-side order and immediately mark it ready for
+  ///pickup. The backend still walks received -> in progress -> ready for
+  ///pickup, but the store and customer see it jump straight to pickup since
+  ///the in-progress state is hidden from the UI. Delivery orders keep the
+  ///two-step flow (apiMarkOrderReady, then apiMarkReadyForShipping later).
+  Future apiPrepareAndMoveToPickup() async {
+    if (storeId.value == "" || orderId.value == "") {
+      return;
+    }
+    isLoading.value = true;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      StringConstants.authorizationText:
+          "${StringConstants.bearerText} ${authToken.value}",
+    };
+    List<dynamic> orderItems = [];
+    for (var element in getOrderItems) {
+      if (element.isSelected == true &&
+          element.orderItemStatus == OrderStatusEnum.receivedOrder.statusName) {
+        orderItems
+            .add({"order_item_id": int.parse(element.orderItemId ?? "0")});
+      }
+    }
+    Map body = {
+      "store_id": int.parse(storeId.value),
+      "order_id": int.parse(orderId.value),
+      "order_items": orderItems
+    };
+
+    final confirmValue = await UserProvider().postWithHeadersApi(
+        body,
+        ServerCommunicator.baseUrl + ServerCommunicator.storeOrderConfirm,
+        headers,
+        showLoading: false);
+    if (confirmValue?.body["status"] != ApiConstants.statusCode201 &&
+        confirmValue?.body["status"] != ApiConstants.statusCode200) {
+      isLoading.value = false;
+      if (confirmValue?.body['message'] != null) {
+        Utility.showAlertMessage(confirmValue?.body['message']);
+      }
+      return;
+    }
+
+    // Same item ids advance to ready-for-pickup right away.
+    final pickupValue = await UserProvider().postWithHeadersApi(
+        body,
+        ServerCommunicator.baseUrl + ServerCommunicator.storeOrderPickUp,
+        headers,
+        showLoading: false);
+    isLoading.value = false;
+    if (pickupValue?.body["status"] == ApiConstants.statusCode201 ||
+        pickupValue?.body["status"] == ApiConstants.statusCode200) {
+      Utility.showToast(pickupValue?.body['message']);
+      for (var element in getOrderItems) {
+        element.isSelected = false;
+      }
+      page.value == 1;
+      await apiGetOwnerOrderHistory();
+      Get.back(id: pageIdApp.value);
+      update();
+    } else {
+      if (pickupValue?.body['message'] != null) {
+        Utility.showAlertMessage(pickupValue?.body['message']);
+      }
+    }
   }
 
   ///Mark store order ready for Shipped

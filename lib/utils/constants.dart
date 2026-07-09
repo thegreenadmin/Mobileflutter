@@ -704,7 +704,7 @@ class StringConstants {
   static String x4Text = "XXXX XXXX XXXX XXXX";
 
   //Y
-  static String your420MarketPlace = "Your 420 Market Place";
+  static String yourWellnessMarketPlace = "Your Wellness Market Place";
   static String yesText = "Yes";
   static String yearlyPlanText = "Yearly Plan   ";
   static String yourThoughtText = "Your Thoughts";

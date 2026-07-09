@@ -66,11 +66,14 @@ class OrdersController extends GetxController with GlobalVarMixin{
   RxList<Order> orderList = <Order>[].obs;
   RxList<Order> storeOrderList = <Order>[].obs;
   RxBool isFavouriteStore = false.obs;
+  // The in-progress status is hidden from the tracker: an order being
+  // prepared still shows as Received, then jumps to Ready for pickup /
+  // In-transit (mirrors the store-side flow where preparing a pickup order
+  // chains straight to ready-for-pickup).
   RxList<Categories> stepInd = [
     Categories(id: 0, name: "Received", isSelected: false),
-    Categories(id: 1, name: "In Progress", isSelected: false),
-    Categories(id: 2, name: "In-transit", isSelected: false),
-    Categories(id: 3, name: "Complete", isSelected: false),
+    Categories(id: 1, name: "In-transit", isSelected: false),
+    Categories(id: 2, name: "Complete", isSelected: false),
   ].obs;
 
 
@@ -1197,30 +1200,31 @@ class OrdersController extends GetxController with GlobalVarMixin{
             orderStatusTypeName.value =
                 element.orderStatus?.orderStatusName ?? "";
 
+            // in progress maps to the Received step: the preparing state is
+            // hidden from the tracker.
             activeStep.value = element.orderStatus?.orderStatusName ==
-                    OrderStatusEnum.receivedOrder.statusName
+                        OrderStatusEnum.receivedOrder.statusName ||
+                    element.orderStatus?.orderStatusName ==
+                        OrderStatusEnum.inProgress.statusName
                 ? 0
                 : element.orderStatus?.orderStatusName ==
-                        OrderStatusEnum.inProgress.statusName
+                            OrderStatusEnum.inTransit.statusName ||
+                        element.orderStatus?.orderStatusName ==
+                            OrderStatusEnum.readyForPickup.statusName
                     ? 1
                     : element.orderStatus?.orderStatusName ==
-                                OrderStatusEnum.inTransit.statusName ||
+                                OrderStatusEnum.completed.statusName ||
                             element.orderStatus?.orderStatusName ==
-                                OrderStatusEnum.readyForPickup.statusName
+                                OrderStatusEnum.cancelled.statusName
                         ? 2
-                        : element.orderStatus?.orderStatusName ==
-                                    OrderStatusEnum.completed.statusName ||
-                                element.orderStatus?.orderStatusName ==
-                                    OrderStatusEnum.cancelled.statusName
-                            ? 3
-                            : 0;
+                        : 0;
           }
         });
 
         if (orderDetailResponse.data?.order?.deliveryServiceId == "2") {
-          stepInd.firstWhere((element) => element.id == 2).name = "In-transit";
+          stepInd.firstWhere((element) => element.id == 1).name = "In-transit";
         } else { isLoading.value = false;
-          stepInd.firstWhere((element) => element.id == 2).name =
+          stepInd.firstWhere((element) => element.id == 1).name =
               "Ready for pickup";
         }
 

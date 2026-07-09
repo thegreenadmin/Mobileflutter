@@ -220,6 +220,22 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
     );
   }
 
+  bool get isDeliveryOrder =>
+      ordersHomeMainController.getStoreOrderDetailModel.value.data?.order
+          ?.deliveryService?.id ==
+      "2";
+
+  /// A delivery order that was prepared (in progress) but not yet shipped.
+  /// The in-progress tab is hidden, so these surface on the Pickup tab and
+  /// need the "Order Shipped" action there.
+  bool get isDeliveryAwaitingShipment =>
+      ordersHomeMainController.selectedIndex.value == 2 &&
+      isDeliveryOrder &&
+      ordersHomeMainController.orderHistories.isNotEmpty &&
+      ordersHomeMainController
+              .orderHistories.last.orderStatus?.orderStatusName ==
+          OrderStatusEnum.inProgress.statusName;
+
   bool isItemSelectable(OrderItem item) {
     final status = item.orderItemStatus;
     switch (ordersHomeMainController.selectedIndex.value) {
@@ -885,29 +901,28 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                         if (ordersHomeMainController.getOrderItems
                             .any((element) => element.isSelected == true)) {
                           ordersHomeMainController.selectedIndex.value == 0
+                              // Pickup/curb-side orders jump straight to
+                              // ready-for-pickup; delivery orders stay
+                              // two-step (prepare now, ship later from the
+                              // Pickup tab).
+                              ? (isDeliveryOrder
                               ? ordersHomeMainController.apiMarkOrderReady()
+                              : ordersHomeMainController
+                              .apiPrepareAndMoveToPickup())
                               : ordersHomeMainController.selectedIndex.value ==
                               1
+                              ? isDeliveryOrder
                               ? ordersHomeMainController
-                              .getStoreOrderDetailModel
-                              .value
-                              .data
-                              ?.order
-                              ?.deliveryService
-                              ?.id !=
-                              "2"
-                              ? ordersHomeMainController
-                              .apiMarkReadyForPickUp()
-                              : ordersHomeMainController
                               .apiMarkReadyForShipping()
+                              : ordersHomeMainController
+                              .apiMarkReadyForPickUp()
                               : ordersHomeMainController
                               .selectedIndex.value ==
                               2
-                              ?
-                          // add method
-                          alertTOCancelRemainingItems()
-
-
+                              ? (isDeliveryAwaitingShipment
+                              ? ordersHomeMainController
+                              .apiMarkReadyForShipping()
+                              : alertTOCancelRemainingItems())
                               : ordersHomeMainController
                               .selectedIndex.value ==
                               3
@@ -922,7 +937,12 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       },
                       height: 50,
                       text: ordersHomeMainController.selectedIndex.value == 0
+                          // Pickup orders jump straight to ready-for-pickup,
+                          // so the label reflects the destination; delivery
+                          // orders still just get prepared here.
+                          ? (isDeliveryOrder
                           ? StringConstants.prepareOrderText
+                          : StringConstants.readyForPickUpText)
                           : ordersHomeMainController.selectedIndex.value == 1 &&
                           ordersHomeMainController
                               .getStoreOrderDetailModel
@@ -942,6 +962,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                               ?.deliveryService
                               ?.id ==
                               "2"
+                          ? StringConstants.orderShippedText
+                          : isDeliveryAwaitingShipment
                           ? StringConstants.orderShippedText
                           : ordersHomeMainController.selectedIndex.value == 2 &&
                           ordersHomeMainController

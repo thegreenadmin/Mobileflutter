@@ -233,9 +233,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   /// Link Text for Terms & Conditions
   TextSpan _buildLinkText(String text, String page) {
+    final url = Uri.parse(ServerCommunicator.baseUrlWithoutApi +
+            (page == "terms"
+                ? ServerCommunicator.pageTerms
+                : ServerCommunicator.pagePolicy))
+        .toString();
     return TextSpan(
       recognizer: TapGestureRecognizer()
-        ..onTap = () => Get.to(() => WebviewPageScreen(isFrom: page, url: 'URL')),
+        ..onTap = () => Get.to(() => WebviewPageScreen(isFrom: page, url: url)),
       text: text,
       style: const TextStyle(
         fontWeight: FontWeight.w600,
