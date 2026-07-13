@@ -576,7 +576,7 @@ class StringConstants {
   static String shortDescriptionText = "Short Description";
   static String searchOrdersHintText = "Search by order ID or customer name";
   static String scanOrderBarcodeText = "Scan Order Barcode";
-  static String showOrderQRText = "Show Order QR";
+  static String showOrderQRText = "Pickup";
   static String showQrAtStoreText =
       "Show this code at the store to pull up your order";
   static String alignOrderCodeText = "Align the order QR within the frame";

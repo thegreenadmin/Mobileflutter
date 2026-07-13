@@ -614,23 +614,36 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           iconL: false,
                           fontSize: 16,
                         ),
-                        height20SizedBox,
-                        CustomButton(
-                          border: Border.all(color: AppColors.primary),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.white, AppColors.white],
+                        Obx(
+                          () => Visibility(
+                            visible: ordersController.orderType.value != "2",
+                            child: Column(
+                              children: [
+                                height20SizedBox,
+                                CustomButton(
+                                  border:
+                                      Border.all(color: AppColors.primary),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.white,
+                                      AppColors.white
+                                    ],
+                                  ),
+                                  onTap: showOrderQrDialog,
+                                  height: 50,
+                                  width: WidgetConstants.screenWidth * 0.5,
+                                  text: StringConstants.showOrderQRText,
+                                  textColor: AppColors.primary,
+                                  borderRadius: 12,
+                                  fontWeight: FontWeight.w500,
+                                  iconL: false,
+                                  fontSize: 16,
+                                ),
+                              ],
+                            ),
                           ),
-                          onTap: showOrderQrDialog,
-                          height: 50,
-                          width: WidgetConstants.screenWidth * 0.5,
-                          text: StringConstants.showOrderQRText,
-                          textColor: AppColors.primary,
-                          borderRadius: 12,
-                          fontWeight: FontWeight.w500,
-                          iconL: false,
-                          fontSize: 16,
                         ),
                         height20SizedBox,
                       ],

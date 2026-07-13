@@ -169,6 +169,10 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                           ),
                                           id: pageIdApp.value,
                                         );
+                                      } else if (notification.type == "payment" ||
+                                          notification.store == null) {
+                                        // Storeless payment notification: nothing
+                                        // to open, so don't surface an error.
                                       } else {
                                         Utility.showAlertMessage("Unable to process notification.");
                                       }
@@ -204,7 +208,14 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                     "",
                                                 fit: BoxFit.contain,
                                                 radius: 22.0,
-                                                assetImg: ImageConstants.nopicfound,
+                                                // Storeless payment notification:
+                                                // fall back to the app logo.
+                                                assetImg: notificationListController
+                                                            .notificationList[index]
+                                                            .store ==
+                                                        null
+                                                    ? ImageConstants.homeMall
+                                                    : ImageConstants.nopicfound,
                                               ),
                                             ),
                                           ),
@@ -216,10 +227,24 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  notificationListController
-                                                          .notificationList[index]
-                                                          .store!
-                                                          .storeName ??
+                                                  // Payment rows: bold title
+                                                  // ("Payment sent"). Store rows:
+                                                  // the store name.
+                                                  ((notificationListController
+                                                                      .notificationList[index]
+                                                                      .type ==
+                                                                  "payment" ||
+                                                              notificationListController
+                                                                      .notificationList[index]
+                                                                      .store ==
+                                                                  null)
+                                                          ? notificationListController
+                                                              .notificationList[index]
+                                                              .title
+                                                          : notificationListController
+                                                              .notificationList[index]
+                                                              .store
+                                                              ?.storeName) ??
                                                       "",
                                                   style: const TextStyle(
                                                       fontSize: 16.0,
@@ -228,9 +253,24 @@ class _NotificationListScreenState extends State<NotificationListScreen> with Gl
                                                 ),
                                                 height4SizedBox,
                                                 Text(
-                                                  notificationListController
-                                                          .notificationList[index]
-                                                          .title ??
+                                                  // Payment rows: the detail line
+                                                  // ("You paid $20.00 to qwerty.").
+                                                  // Store rows: the notification
+                                                  // title.
+                                                  ((notificationListController
+                                                                      .notificationList[index]
+                                                                      .type ==
+                                                                  "payment" ||
+                                                              notificationListController
+                                                                      .notificationList[index]
+                                                                      .store ==
+                                                                  null)
+                                                          ? notificationListController
+                                                              .notificationList[index]
+                                                              .message
+                                                          : notificationListController
+                                                              .notificationList[index]
+                                                              .title) ??
                                                       "",
 
                                                   style: const TextStyle(
