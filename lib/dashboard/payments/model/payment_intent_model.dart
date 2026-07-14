@@ -8,6 +8,10 @@ class PaymentIntentModel {
   final String type; // 'p2p' | 'p2b'
   final double amount;
   final double fee;
+
+  /// What the recipient actually receives: amount - fee. The fee is deducted
+  /// from the payout, so the payer is charged [total] (== amount).
+  final double netAmount;
   final double total;
   final String currency;
   final String status; // created | processing | succeeded | failed | cancelled | expired
@@ -27,6 +31,7 @@ class PaymentIntentModel {
     required this.type,
     required this.amount,
     required this.fee,
+    required this.netAmount,
     required this.total,
     required this.currency,
     required this.status,
@@ -59,6 +64,10 @@ class PaymentIntentModel {
       type: json['type'] ?? 'p2p',
       amount: _toDouble(json['amount']),
       fee: _toDouble(json['fee']),
+      // Fall back to amount - fee for older responses without net_amount.
+      netAmount: json['net_amount'] != null
+          ? _toDouble(json['net_amount'])
+          : (_toDouble(json['amount']) - _toDouble(json['fee'])),
       total: _toDouble(json['total']),
       currency: json['currency'] ?? 'USD',
       status: json['status'] ?? 'created',

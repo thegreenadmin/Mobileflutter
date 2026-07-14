@@ -78,7 +78,9 @@ class PaymentSuccessScreen extends StatelessWidget {
                             _ReceiptRow('Payment Method',
                                 c.sourceStore.value?.storeName ?? 'TGM Wallet'),
                             _ReceiptRow('Amount', _money(i.amount)),
-                            _ReceiptRow('Fee', _money(i.fee)),
+                            if (i.fee > 0) _ReceiptRow('Fee', _money(i.fee)),
+                            if (i.fee > 0)
+                              _ReceiptRow('Recipient received', _money(i.netAmount)),
                             if (i.walletBalance != null)
                               _ReceiptRow(
                                   c.sourceStore.value != null
