@@ -26,12 +26,14 @@ class AccountController extends GetxController with GlobalVarMixin {
   TextEditingController countryTextController = TextEditingController();
   TextEditingController noOfDaysTextController = TextEditingController();
   RxBool isScreenLockNotify = false.obs;
-  RxBool isUserInboxMessagesNotify = false.obs;
-  RxBool isOwnerInboxMessagesNotify = false.obs;
-  RxBool isUserTippingNotify = false.obs;
-  RxBool isOwnerTippingNotify = false.obs;
-  RxBool isOwnerOfferNotify = false.obs;
-  RxBool isUserOfferNotify = false.obs;
+  /// Default on, matching the backend send gate: it treats a missing
+  /// notification_settings row as enabled, so the toggles must too.
+  RxBool isUserInboxMessagesNotify = true.obs;
+  RxBool isOwnerInboxMessagesNotify = true.obs;
+  RxBool isUserTippingNotify = true.obs;
+  RxBool isOwnerTippingNotify = true.obs;
+  RxBool isOwnerOfferNotify = true.obs;
+  RxBool isUserOfferNotify = true.obs;
   RxBool autoValidate = false.obs;
   RxBool isFromCart = false.obs;
   RxBool isOwner = false.obs;
@@ -667,6 +669,31 @@ class AccountController extends GetxController with GlobalVarMixin {
     });
   }
 
+  /// Maps the server's notification_settings rows onto the toggles.
+  ///
+  /// The list endpoint returns rows for one side only and omits any row that
+  /// was never created, so a type missing from [settings] must keep its
+  /// default-on value — the backend treats a missing row as enabled and sends.
+  /// For the same reason a row only ever writes the side it belongs to.
+  void applyNotificationSettings(List<NotificationSettings> settings) {
+    for (final setting in settings) {
+      final bool isEnabled = setting.isEnabled == true;
+      final bool isForStore = setting.isForStore == true;
+
+      switch (setting.notificationType) {
+        case "order":
+          isForStore ? isOwnerTippingNotify.value = isEnabled : isUserTippingNotify.value = isEnabled;
+          break;
+        case "offer":
+          isForStore ? isOwnerOfferNotify.value = isEnabled : isUserOfferNotify.value = isEnabled;
+          break;
+        case "message":
+          isForStore ? isOwnerInboxMessagesNotify.value = isEnabled : isUserInboxMessagesNotify.value = isEnabled;
+          break;
+      }
+    }
+  }
+
   ///Get Notification Status Api
   Future apiGetNotificationStatus(bool isOwner) async {
     // Skip API call for guest users
@@ -688,47 +715,7 @@ class AccountController extends GetxController with GlobalVarMixin {
         isLoading.value = false;
         notificationStatusList.value = notificationStatusModel.data!.notificationSettings!;
 
-        for (int i = 0; i < notificationStatusList.length; i++) {
-          if (notificationStatusList[i].notificationType == "order") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserTippingNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerTippingNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserTippingNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-          if (notificationStatusList[i].notificationType == "offer") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserOfferNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerOfferNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserOfferNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-          if (notificationStatusList[i].notificationType == "message") {
-            if (notificationStatusList[i].isForStore == true) {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
-                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
-              }
-            } else {
-              if (notificationStatusList[i].isEnabled == true) {
-                isOwnerInboxMessagesNotify.value = notificationStatusList[i].isEnabled != true;
-                isUserInboxMessagesNotify.value = notificationStatusList[i].isEnabled == true;
-              }
-            }
-          }
-        }
+        applyNotificationSettings(notificationStatusList);
 
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {  isLoading.value = false;
