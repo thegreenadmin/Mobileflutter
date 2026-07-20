@@ -271,7 +271,7 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         Expanded(
           child: Text(
-            "Are you 18 or older",
+            "I am 18 years old or older",
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,

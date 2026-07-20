@@ -16,7 +16,7 @@ class StringConstants {
   static String acceptText = "Accept";
   static String ageText = "Age";
   static String acknowledgeText =
-      ' and acknowledge the receipts of the green mall Inc’s ';
+      ' and acknowledge the receipts of the green mall LLC ';
   static String accountIdText = "Account ID";
   static String appIconAndSkinUpdateText = "App Icon & Skin Update";
   static String aboutUsText = "About us";
@@ -88,7 +88,7 @@ class StringConstants {
 
   //B
   static String byCheckingText =
-      'By checking this box, you agree to the green mall Inc’s ';
+      'By checking this box, you agree to the green mall LLC ';
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
@@ -576,7 +576,7 @@ class StringConstants {
   static String shortDescriptionText = "Short Description";
   static String searchOrdersHintText = "Search by order ID or customer name";
   static String scanOrderBarcodeText = "Scan Order Barcode";
-  static String showOrderQRText = "Pickup";
+  static String showOrderQRText = "Pickup / QR code";
   static String showQrAtStoreText =
       "Show this code at the store to pull up your order";
   static String alignOrderCodeText = "Align the order QR within the frame";
