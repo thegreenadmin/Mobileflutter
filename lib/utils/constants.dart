@@ -881,6 +881,8 @@ class AlertStringConstants {
   static String pleaseEnterAccountTypeText = "Please enter account type";
   static String pleaseEnterCountry = "Please enter country";
   static String pleaseSelectStore = "Please select store";
+  static String pleaseSelectBankAccountText = "Please select a bank account";
+  static String pleaseEnterValidAmountText = "Please enter a valid amount";
   static String pleaseEnterStoreTermsText = "Please enter store terms";
   static String pleaseEnterStorePrivacyText = "Please enter store privacy";
   static String pleaseEnterFrequencyText = "Please enter frequency";

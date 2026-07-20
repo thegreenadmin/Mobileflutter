@@ -293,8 +293,17 @@ class AddCardController extends GetxController with GlobalVarMixin{
   validateAndSavePayOut() {
     if (validateAndSave2()) {
       try {
+        final double? amount =
+            double.tryParse(payoutAmountTextController.text.trim());
         if (selectedStore.value.isEmpty) {
           Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+        } else if (userStripeBankId!.value.isEmpty) {
+          //NO BANK CONNECTED/SELECTED YET - PAYOUT HAS NOWHERE TO GO
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseSelectBankAccountText);
+        } else if (amount == null || amount <= 0) {
+          Utility.showAlertMessage(
+              AlertStringConstants.pleaseEnterValidAmountText);
         } else {
           apiCreatePayout();
         }
@@ -860,6 +869,21 @@ class AddCardController extends GetxController with GlobalVarMixin{
           value?.body["status"] == ApiConstants.statusCode201) {
         bankAccountListModel = BankAccountListModel.fromJson(value?.body);
         bankAccountList.value = bankAccountListModel.data?.banks ?? [];
+        //KEEP THE HIGHLIGHTED ROW AND THE ID WE POST IN SYNC - THE PAYOUT SCREEN
+        //SHOWS THE FIRST ACCOUNT AS SELECTED, SO SEED IT HERE INSTEAD OF DURING BUILD
+        if (bankAccountList.isEmpty) {
+          selectedBankAccountIndex!.value = 0;
+          userStripeBankId!.value = "";
+        } else {
+          if (selectedBankAccountIndex!.value < 0 ||
+              selectedBankAccountIndex!.value >= bankAccountList.length) {
+            selectedBankAccountIndex!.value = 0;
+          }
+          userStripeBankId!.value = bankAccountList[
+                  selectedBankAccountIndex!.value]
+              .userStripeBankId
+              .toString();
+        }
         update();
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -880,10 +904,26 @@ class AddCardController extends GetxController with GlobalVarMixin{
 
   ///Api create payout
   Future apiCreatePayout() async {
+    final int? storeIdValue = int.tryParse(selectedStore.value);
+    final int? bankIdValue = int.tryParse(userStripeBankId!.value);
+    final double? amountValue =
+        double.tryParse(payoutAmountTextController.text.trim());
+    if (storeIdValue == null) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectStore);
+      return;
+    }
+    if (bankIdValue == null) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseSelectBankAccountText);
+      return;
+    }
+    if (amountValue == null || amountValue <= 0) {
+      Utility.showAlertMessage(AlertStringConstants.pleaseEnterValidAmountText);
+      return;
+    }
          Map body = {
-      "store_id": int.parse(selectedStore.value),
-      "user_stripe_bank_id": int.parse(userStripeBankId!.value),
-      "amount": double.parse(payoutAmountTextController.text.trim())
+      "store_id": storeIdValue,
+      "user_stripe_bank_id": bankIdValue,
+      "amount": amountValue
     };
          isLoading.value= true;
     Map<String, String> headers = {
@@ -1000,12 +1040,14 @@ class AddCardController extends GetxController with GlobalVarMixin{
         Get.parameters.clear();
         Utility.handle401Error();
       } else {isLoading.value = false;
-        String msg = value!.body["message"].toString().toLowerCase();
+        //DON'T KEEP SHOWING THE PREVIOUS STORE'S BALANCE WHEN THIS ONE FAILED TO LOAD
+        ownerWalletBalance!.value = "0.00";
+        String msg = value?.body["message"].toString().toLowerCase() ?? "";
         if (msg.contains("store not found")) {
           Utility.showAlertMessage("Please select store");
         } else {
-          if (value.body['message'] != null) {
-            Utility.showAlertMessage(value.body['message']);
+          if (value?.body['message'] != null) {
+            Utility.showAlertMessage(value?.body['message']);
           }
         }
       }

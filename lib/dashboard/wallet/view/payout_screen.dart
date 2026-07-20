@@ -31,6 +31,8 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
           .selectedStore.value = widget.selectedStore!;
     }
 
+    //THE CONTROLLER IS A SINGLETON, SO CLEAR ANY AMOUNT LEFT OVER FROM A PREVIOUS VISIT
+    addCardController.payoutAmountTextController.clear();
     addCardController.apiGetBankAccountList();
   }
 
@@ -212,6 +214,10 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                                         value.toString();
                                                     addCardController.selectedStore
                                                         .value = value.toString();
+                                                    //THE AMOUNT BELONGS TO THE PREVIOUS STORE'S BALANCE
+                                                    addCardController
+                                                        .payoutAmountTextController
+                                                        .clear();
                                                     addCardController
                                                         .apiGetOwnerWalletBalance();
                                                     addCardController
@@ -338,29 +344,33 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                               ],
                             ),
                             height20SizedBox,
-                            addCardController.payoutAmountTextController.text.isEmpty
-                                ? height0SizedBox
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            ImageConstants.greencheck,
-                                            scale: 22,
-                                          ),
-                                          width10SizedBox,
-                                          Text(
-                                            "${StringConstants.withdrawAll} \$${addCardController.payoutAmountTextController.text}",
-                                            style: const TextStyle(
-                                                color: AppColors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                            ValueListenableBuilder<TextEditingValue>(
+                              valueListenable:
+                                  addCardController.payoutAmountTextController,
+                              builder: (_, amount, __) => amount.text.trim().isEmpty
+                                  ? height0SizedBox
+                                  : Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              ImageConstants.greencheck,
+                                              scale: 22,
+                                            ),
+                                            width10SizedBox,
+                                            Text(
+                                              "${StringConstants.withdrawAll} \$${amount.text}",
+                                              style: const TextStyle(
+                                                  color: AppColors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                            ),
                             height30SizedBox,
                             Text(
                               StringConstants.bankAccountsText,
@@ -451,13 +461,7 @@ class PayOutScreenState extends State<PayOutScreen> with GlobalVarMixin{
                                           shrinkWrap: true,
                                           physics: const NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext context, int index) {
-                                            if (addCardController
-                                                .userStripeBankId!.value.isEmpty) {
-                                              addCardController.userStripeBankId!.value =
-                                                  addCardController
-                                                      .bankAccountList[0].userStripeBankId
-                                                      .toString();
-                                            }
+                                            //DEFAULT SELECTION IS SEEDED IN apiGetBankAccountList
                                             return Container(
                                               padding: const EdgeInsets.only(
                                                   left: 0,
