@@ -168,6 +168,7 @@ class _GooglePlaceAutocompleteFieldState
     final details = await _places.fetchPlace(
       prediction.placeId,
       fields: [
+        PlaceField.Id,
         PlaceField.Address,
         PlaceField.Name,
         PlaceField.AddressComponents,

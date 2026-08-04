@@ -291,9 +291,9 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           searchStoreUserController.zipCodeTextController.text =
                               getComponent('postal_code') ?? '';
                           searchStoreUserController.placeId.value =
-                              place.id.toString() ?? "";
+                              place.id ?? "";
                           searchStoreUserController.lat.value = place.latLng?.lat??0.0;
-                          searchStoreUserController.lng.value =place.latLng?.lat??0.0;
+                          searchStoreUserController.lng.value =place.latLng?.lng??0.0;
                           searchStoreUserController.updateMap(place.latLng?.lat??0.0,
                               place.latLng?.lng??0.0,isSearchVal: true);
                         },

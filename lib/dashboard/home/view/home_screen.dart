@@ -642,7 +642,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                     ImageConstants.greenmall420,
                   ),
                   Text(
-                    StringConstants.welcomeToGreenMallText,
+                    StringConstants.yourWellnessMarketPlace,
                     style: const TextStyle(
                         fontSize: 20,
                         fontStyle: FontStyle.italic,
