@@ -805,6 +805,8 @@ class AlertStringConstants {
   static String pleaseEnterEmployeeNameText = "Please enter employee name";
   static String pleaseEnterMileageText = "Please enter mileage";
   static String pleaseEnterEmailText = "Please enter email";
+  static String pleaseUpdateEmailToContinueText =
+      "Please update your email to continue";
   static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
   static String pleaseEnterValidPhoneText = "Please enter valid Phone number";
