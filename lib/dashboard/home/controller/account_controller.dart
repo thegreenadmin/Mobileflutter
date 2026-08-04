@@ -465,6 +465,26 @@ class AccountController extends GetxController with GlobalVarMixin {
     });
   }
 
+  /// Re-populate the edit-form text controllers from the values currently held
+  /// in state. The AccountController is a living singleton, so its controllers
+  /// survive between screen visits. Without this, a field the user cleared but
+  /// did not successfully save — e.g. email left blank on a failed update —
+  /// stays blank when the edit screen is reopened, even though the view screen
+  /// still shows the saved value (it reads the observables, not the
+  /// controllers).
+  void syncEditFormControllers() {
+    firstNameTextController.text = firstName?.value ?? "";
+    lastNameTextController.text = lastName?.value ?? "";
+    nickNameTextController.text = nickName?.value ?? "";
+    emailTextController.text = email.value;
+    addressLine1TextController.text = addressLine1.value;
+    addressLine2TextController.text = addressLine2.value;
+    townOrCityTextController.text = city.value;
+    postalCodeTextController.text = postalCode.value;
+    countryTextController.text = country.value;
+    stateTextController.text = state.value;
+  }
+
   ///Get Store List Api
   Future apiGetAllStoreList() async {
     isLoading.value = true;
