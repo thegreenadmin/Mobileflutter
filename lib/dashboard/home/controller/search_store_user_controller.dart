@@ -802,7 +802,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.previousStoreList}?page=${page.value.toString()}&page_size=5",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.previousStoreList}?page=${page.value.toString()}&page_size=5${storeTypeFilter.value.isEmpty ? "" : "&store_type=${storeTypeFilter.value}"}",
             headers,
             showLoading: false)
         .then((value) async {
@@ -876,7 +876,7 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
 
          UserProvider()
         .getWithHeadersApi(
-            "${ServerCommunicator.baseUrl}${ServerCommunicator.favouriteStoreList}?page=${page.value.toString()}&page_size=5",
+            "${ServerCommunicator.baseUrl}${ServerCommunicator.favouriteStoreList}?page=${page.value.toString()}&page_size=5${storeTypeFilter.value.isEmpty ? "" : "&store_type=${storeTypeFilter.value}"}",
             headers,
             showLoading: false)
         .then((value) async {

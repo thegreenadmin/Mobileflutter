@@ -41,7 +41,12 @@ class _ReviewPayScreenState extends State<ReviewPayScreen> {
   Widget build(BuildContext context) {
     final r = c.recipient.value;
     final i = c.intent.value;
+    final amount = i?.amount ?? c.amount;
+    final fee = i?.fee ?? 0;
+    // The fee is withheld from the recipient's payout, so the payer pays exactly
+    // the amount (total == amount) and the recipient gets amount - fee.
     final total = i?.total ?? c.amount;
+    final recipientGets = i?.netAmount ?? (amount - fee);
 
     return Scaffold(
       backgroundColor: PayTheme.background,
@@ -78,8 +83,10 @@ class _ReviewPayScreenState extends State<ReviewPayScreen> {
                   PayCard(
                     child: Column(
                       children: [
-                        PayRow('Amount', _money(i?.amount ?? c.amount)),
-                        PayRow('Fee', _money(i?.fee ?? 0)),
+                        PayRow('Amount', _money(amount)),
+                        if (fee > 0) PayRow('Fee', '- ${_money(fee)}'),
+                        if (fee > 0)
+                          PayRow('Recipient gets', _money(recipientGets)),
                         const Divider(height: 20),
                         PayRow('Total', _money(total),
                             emphasize: true, valueColor: PayTheme.accent),

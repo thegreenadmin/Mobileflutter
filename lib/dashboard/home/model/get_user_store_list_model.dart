@@ -52,6 +52,7 @@ class UserStoresList {
   String? storeId;
   String? storeName;
   String? storeEin;
+  bool? isEnabled;
   Images? image;
   List<Addresses>? addresses;
 
@@ -59,6 +60,7 @@ class UserStoresList {
       {this.storeId,
       this.storeName,
       this.storeEin,
+      this.isEnabled,
       this.image,
       this.addresses});
 
@@ -66,6 +68,8 @@ class UserStoresList {
     storeId = json['store_id'];
     storeName = json['store_name'];
     storeEin = json['store_ein'];
+    // Absent on older payloads → treat as active.
+    isEnabled = json['is_enabled'] ?? true;
     image = json['image'] != null ? Images.fromJson(json['image']) : null;
     if (json['addresses'] != null) {
       addresses = <Addresses>[];
@@ -80,6 +84,7 @@ class UserStoresList {
     data['store_id'] = storeId;
     data['store_name'] = storeName;
     data['store_ein'] = storeEin;
+    data['is_enabled'] = isEnabled;
     if (image != null) {
       data['image'] = image!.toJson();
     }

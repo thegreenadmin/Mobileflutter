@@ -243,7 +243,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                   ImageConstants.greenmall420,
                 ),
                 Text(
-                  StringConstants.welcomeToGreenMallText,
+                  StringConstants.yourWellnessMarketPlace,
                   style: const TextStyle(
                       fontSize: 20,
                       fontStyle: FontStyle.italic,

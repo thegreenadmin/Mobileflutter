@@ -55,6 +55,9 @@ class Stores {
   String? storeEin;
   // Business vertical: general / munchies / herbs
   String? storeType;
+  // false when an admin has deactivated the store; owner/staff can view but
+  // not operate it. Absent on older payloads → treat as active.
+  bool? isEnabled;
   List<StoreAddresses>? storeAddresses;
 
   Stores(
@@ -64,6 +67,7 @@ class Stores {
       this.storeName,
       this.storeEin,
       this.storeType,
+      this.isEnabled,
       this.storeAddresses});
 
   Stores.fromJson(Map<String, dynamic> json) {
@@ -73,6 +77,7 @@ class Stores {
     storeName = json['store_name'];
     storeEin = json['store_ein'];
     storeType = json['store_type'];
+    isEnabled = json['is_enabled'] ?? true;
     if (json['store_addresses'] != null) {
       storeAddresses = <StoreAddresses>[];
       json['store_addresses'].forEach((v) {
@@ -93,6 +98,7 @@ class Stores {
     data['store_name'] = storeName;
     data['store_ein'] = storeEin;
     data['store_type'] = storeType;
+    data['is_enabled'] = isEnabled;
     if (storeAddresses != null) {
       data['store_addresses'] = storeAddresses!.map((v) => v.toJson()).toList();
     }

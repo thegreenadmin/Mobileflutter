@@ -112,6 +112,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildAppBar(),
+            deactivatedBanner(),
             horizontalTabs(),
             const Divider(
               thickness: 1,
@@ -138,6 +139,31 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
         }),
       ],
     );
+  }
+
+   Widget deactivatedBanner() {
+    return Obx(() {
+      if (ownerStoresController.isEnabled.value) {
+        return const SizedBox.shrink();
+      }
+      return Container(
+        width: double.infinity,
+        color: const Color(0xFFFDECEA),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: const [
+            Icon(Icons.block, color: Color(0xFFC62828), size: 20),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                "This store has been deactivated by the admin. Customers can no longer see or order from it. Please contact support.",
+                style: TextStyle(color: Color(0xFFC62828), fontSize: 13),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
    buildAppBar() {

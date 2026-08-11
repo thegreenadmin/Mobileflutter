@@ -1222,6 +1222,7 @@ class WalletController extends GetxController with GlobalVarMixin{
             value?.body["data"]['account']['capabilities']['transfers'];
         payouts.value = value?.body["data"]['account']['payouts_enabled'];
         accountLink.value = value?.body["data"]['accountLink']['url'];
+        AppLogger.debug("STRIPE_ACCOUNT_LINK: ${accountLink.value}");
       } else if (value?.body["status"] == ApiConstants.statusCode401) {isLoading.value = false;
         Utility.showAlertMessage(value?.body['message']);
         storage.clearData();

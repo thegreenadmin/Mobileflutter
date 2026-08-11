@@ -54,14 +54,33 @@ class Utility {
     return ServerCommunicator.baseUrlWithoutV1 + url;
   }
 
+  /// Guards against the 401 redirect storm. Many requests fire concurrently,
+  /// so when a session goes bad they all 401 at once. Without this flag each
+  /// one calls Get.offAll(StartJourneyScreen), producing the repeated
+  /// StartJourney→StartJourney navigation loop. Only the first 401 redirects;
+  /// the rest no-op until a new session is established (see
+  /// [resetUnauthorizedGuard], called on successful login).
+  static bool _isHandlingUnauthorized = false;
+
   /// Handle 401 unauthorized errors - skip redirect for guest users
   static void handle401Error() {
     // Skip redirect for guest users by checking reactive variable
     if (isGuest.value == true) {
       return;
     }
+    // Suppress concurrent/duplicate 401s so we redirect to login only once.
+    if (_isHandlingUnauthorized) {
+      return;
+    }
+    _isHandlingUnauthorized = true;
     // Redirect to login for authenticated users
     Get.offAll(() => const StartJourneyScreen());
+  }
+
+  /// Re-arm 401 handling once a new session exists (e.g. after a successful
+  /// login), so a future genuine session expiry can redirect again.
+  static void resetUnauthorizedGuard() {
+    _isHandlingUnauthorized = false;
   }
 
   static void showConfirmAlertMessage(title,

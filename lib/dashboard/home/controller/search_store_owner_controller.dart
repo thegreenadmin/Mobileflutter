@@ -721,7 +721,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             value?.body["data"]['store']['store_timings'] ?? [];
         storeDeliveryServices.value =
             value?.body["data"]['store']['store_delivery_services'] ?? [];
-        isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? [];
+        isEnabled.value = value?.body["data"]['store']['is_enabled'] ?? true;
         if (storeAddresses.isNotEmpty) {
           for (int i = 0; i < storeAddresses.length; i++) {
             addressLine1TextController.text =

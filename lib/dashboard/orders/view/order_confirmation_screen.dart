@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
@@ -611,6 +614,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           iconL: false,
                           fontSize: 16,
                         ),
+                        Obx(
+                          () => Visibility(
+                            visible: ordersController.orderType.value != "2",
+                            child: Column(
+                              children: [
+                                height20SizedBox,
+                                CustomButton(
+                                  border:
+                                      Border.all(color: AppColors.primary),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.white,
+                                      AppColors.white
+                                    ],
+                                  ),
+                                  onTap: showOrderQrDialog,
+                                  height: 50,
+                                  width: WidgetConstants.screenWidth * 0.5,
+                                  text: StringConstants.showOrderQRText,
+                                  textColor: AppColors.primary,
+                                  borderRadius: 12,
+                                  fontWeight: FontWeight.w500,
+                                  iconL: false,
+                                  fontSize: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         height20SizedBox,
                       ],
                     ),
@@ -619,6 +653,77 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                 buildOrderItems()
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// The store side scans this from Orders > Scan Order Barcode to open the
+  /// fulfil screen for this order (see OrderBarcodeScannerScreen).
+  void showOrderQrDialog() {
+    final payload = jsonEncode({
+      "type": "order",
+      "order_id": ordersController.orderStatus.value,
+      "store_id": ordersController.storeId.value,
+    });
+    showDialog(
+      context: Get.context!,
+      builder: (_) => AlertDialog(
+        icon: Align(
+          alignment: Alignment.topRight,
+          child: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.clear,
+              color: AppColors.primary,
+              size: 24.0,
+            ),
+          ),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        // AlertDialog measures its content with IntrinsicWidth, which
+        // QrImageView's internal LayoutBuilder can't answer — the tight
+        // SizedBoxes below keep intrinsic measurement from reaching it.
+        content: SizedBox(
+          width: 260,
+          child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.greyLight),
+              ),
+              child: SizedBox(
+                width: 220,
+                height: 220,
+                child: QrImageView(
+                  data: payload,
+                  version: QrVersions.auto,
+                  size: 220,
+                ),
+              ),
+            ),
+            height12SizedBox,
+            Text(
+              "${StringConstants.orderIDText}: #${ordersController.orderStatus.value}",
+              style: const TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16),
+            ),
+            height8SizedBox,
+            Text(
+              StringConstants.showQrAtStoreText,
+              style: TextStyle(color: AppColors.blackLight, fontSize: 13),
+              textAlign: TextAlign.center,
+            ),
+          ],
           ),
         ),
       ),
@@ -1087,7 +1192,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .isEmpty &&
                                                 ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController
                                                     .orderItems[i]
                                                     .returnOrderItems!
@@ -1239,7 +1344,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                           Visibility(
                                             visible: ordersController
                                                         .activeStep.value ==
-                                                    3 &&
+                                                    2 &&
                                                 ordersController.orderItems[i]
                                                         .enableReturnButton ==
                                                     true &&

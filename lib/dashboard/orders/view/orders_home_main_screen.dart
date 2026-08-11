@@ -27,6 +27,7 @@ class OrdersHomeMainScreen extends StatefulWidget {
 class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with GlobalVarMixin{
   final OrdersHomeMainController ordersHomeMainController =
       Get.put(OrdersHomeMainController());
+  final TextEditingController searchTextController = TextEditingController();
 
 
   @override
@@ -35,8 +36,81 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
       ordersHomeMainController.storeId.value = widget.storeId ?? Get.parameters["storeId"] ?? "";
       ordersHomeMainController.orderId.value = widget.orderId ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
+      searchTextController.text =
+          ordersHomeMainController.orderSearchQuery.value;
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
+
+  Padding buildOrderSearchField() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: TextField(
+        controller: searchTextController,
+        textInputAction: TextInputAction.search,
+        onChanged: (value) {
+          ordersHomeMainController.orderSearchQuery.value = value;
+        },
+        style: const TextStyle(
+            color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w400),
+        decoration: InputDecoration(
+          filled: true,
+          isDense: true,
+          prefixIcon: Image.asset(
+            ImageConstants.search,
+            color: AppColors.grey,
+            scale: 4,
+          ),
+          suffixIcon: Obx(
+            () => Visibility(
+              visible:
+                  ordersHomeMainController.orderSearchQuery.value.isNotEmpty,
+              child: InkWell(
+                onTap: () {
+                  searchTextController.clear();
+                  ordersHomeMainController.orderSearchQuery.value = "";
+                },
+                child: Image.asset(
+                  ImageConstants.cross,
+                  scale: 4,
+                ),
+              ),
+            ),
+          ),
+          focusColor: AppColors.grey,
+          hintText: StringConstants.searchOrdersHintText,
+          hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(
+              color: AppColors.grey,
+              width: 1.0,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Padding horizontalTabs() {
@@ -47,39 +121,47 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             ordersHomeMainController.horizontalTabList.length,
-                (i) => InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onTap: () {
-                ordersHomeMainController.onIndexChange(i);
-                setState(() {});
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    ordersHomeMainController.horizontalTabList[i],
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: ordersHomeMainController.selectedIndex.value == i
-                          ? FontWeight.w500
-                          : FontWeight.w400,
-                      color: ordersHomeMainController.selectedIndex.value == i
-                          ? AppColors.primary
-                          : AppColors.blackLight,
+                (i) {
+              // Visible tabs skip the hidden in-progress status, so each tab
+              // maps to an internal status index rather than its position.
+              final statusIndex = ordersHomeMainController.tabStatusIndexes[i];
+              return InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onTap: () {
+                  ordersHomeMainController.onIndexChange(statusIndex);
+                  setState(() {});
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      ordersHomeMainController.horizontalTabList[i],
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: ordersHomeMainController
+                            .selectedIndex.value == statusIndex
+                            ? FontWeight.w500
+                            : FontWeight.w400,
+                        color: ordersHomeMainController.selectedIndex.value ==
+                            statusIndex
+                            ? AppColors.primary
+                            : AppColors.blackLight,
+                      ),
                     ),
-                  ),
-                  height8SizedBox,
-                  Container(
-                    color: ordersHomeMainController.selectedIndex.value == i
-                        ? AppColors.primary
-                        : Colors.transparent,
-                    height: 2,
-                    width: 80,
-                  ),
-                ],
-              ),
-            ),
+                    height8SizedBox,
+                    Container(
+                      color: ordersHomeMainController.selectedIndex.value ==
+                          statusIndex
+                          ? AppColors.primary
+                          : Colors.transparent,
+                      height: 2,
+                      width: 80,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -265,6 +347,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                 ],
               ),
               horizontalTabs(),
+              buildOrderSearchField(),
               Obx(() => Expanded(
                   child: ordersHomeMainController.ownerOrderHistoryList!.isEmpty
                       ? Column(

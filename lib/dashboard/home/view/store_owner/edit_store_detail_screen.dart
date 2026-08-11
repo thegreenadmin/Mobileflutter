@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
@@ -1554,13 +1553,16 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         icon: const Icon(Icons.attach_file_rounded)),
                                   ),
                                   height20SizedBox,
+                                  // Store Status is controlled by the admin only.
+                                  // The owner can see it here but cannot change it;
+                                  // the backend ignores is_enabled on a store edit.
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
                                           Text(
-                                            StringConstants.enableStoreText,
+                                            StringConstants.storeStatusText,
                                             style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -1569,26 +1571,32 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           ),
                                         ],
                                       ),
-                                      Obx(() => FlutterSwitch(
-                                            height: 28,
-                                            width: 50,
-                                            value: ownerStoreController.isEnabled.value,
-                                            activeToggleColor: AppColors.primary,
-                                            inactiveToggleColor: AppColors.grey,
-                                            activeSwitchBorder: Border.all(
-                                              color: AppColors.greyLight,
+                                      Obx(() => Text(
+                                            ownerStoreController.isEnabled.value
+                                                ? StringConstants.activeText
+                                                : StringConstants.inactiveText,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: ownerStoreController.isEnabled.value
+                                                  ? const Color(0xFF2E7D32)
+                                                  : const Color(0xFFC62828),
                                             ),
-                                            inactiveSwitchBorder: Border.all(
-                                              color: AppColors.greyLight,
-                                            ),
-                                            activeColor: AppColors.greyMediumLight,
-                                            inactiveColor: AppColors.greyMediumLight,
-                                            onToggle: (val) {
-                                              ownerStoreController.isEnabled.value = val;
-                                            },
                                           )),
                                     ],
                                   ),
+                                  Obx(() => ownerStoreController.isEnabled.value
+                                      ? const SizedBox.shrink()
+                                      : const Padding(
+                                          padding: EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            "This store has been deactivated by the admin. Please contact support.",
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color(0xFFC62828),
+                                            ),
+                                          ),
+                                        )),
                                   height40SizedBox,
                                   CustomButton(
                                     gradient: const LinearGradient(

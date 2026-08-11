@@ -133,5 +133,9 @@ dependencies {
     // implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation 'com.android.support:appcompat-v7:22.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20"
-    implementation "com.android.billingclient:billing:5.2.0"
+    // Pin Google Play Billing Library to 8.0.0+ to satisfy the Play requirement
+    // (mandatory from Aug 30, 2026). The in_app_purchase plugin (in_app_purchase_android
+    // 0.5.x) already targets 8.0.0; this explicit pin guards against any transitive
+    // dependency reintroducing an older billing client.
+    implementation "com.android.billingclient:billing:8.0.0"
 }

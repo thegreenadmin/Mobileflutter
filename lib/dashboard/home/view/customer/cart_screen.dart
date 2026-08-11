@@ -47,7 +47,20 @@ class _CartScreenState extends State<CartScreen> with GlobalVarMixin{
     storeHomeMainController.isFromAddProduct.value = widget.isFromAddProduct ?? false;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await storeHomeMainController.apiActiveCartApi();
+      // The shipping/pickup address section reads selectedUserAddress,
+      // which is only populated by apiGetUserDetailsApi — never called on
+      // a cold cart open, so the address stayed blank until the user
+      // tapped around (T2-409). Guarded so a re-open doesn't clobber an
+      // address the user already picked this session.
+      if (storeHomeMainController.userAddress.isEmpty) {
+        storeHomeMainController.apiGetUserDetailsApi();
+      }
+      // Loads the wallet balance and chains the active-cart, cart-list and
+      // store-details fetches, so the cart works no matter where it's
+      // opened from (tab bar, wallet cart icon, store page). Calling
+      // apiActiveCartApi directly here left walletBalance at 0.0, showing
+      // a bogus "insufficient funds" banner.
+      await storeHomeMainController.apiGetUserWalletBalance();
     });
 
   }

@@ -105,6 +105,9 @@ class OtpVerificationController extends GetxController  with GlobalVarMixin{
         SharedPreferenceStorage.removeData("token");
         SharedPreferenceStorage.setData("pageId", 0);
         authToken.value = value?.body['data']['token'];
+        // New session established — re-arm 401 handling so a future expiry
+        // can redirect to login again (it self-disables after the first 401).
+        Utility.resetUnauthorizedGuard();
 
         SharedPreferenceStorage.setData("token", value?.body['data']['token']);
         hasStoreAccess.value = value?.body['data']['has_store_access'] ?? false;

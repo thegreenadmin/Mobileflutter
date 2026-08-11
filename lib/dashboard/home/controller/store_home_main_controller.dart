@@ -1008,6 +1008,17 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
           isValidAddress.value = activeCartModel.data!.isValidAddress!;
           isOrderDeliverable.value = activeCartModel.data!.isOrderDeliverable!;
           await apiGetCartListApi(existingStoreId: activeCartModel.data!.storeId.toString());
+          // The cart can be reached without walking through the store page
+          // (tab switch, wallet round-trip), leaving storeDetailsResponse
+          // empty. Store details power the cart's Order Type grid and the
+          // default delivery selection, so without them the grid shows
+          // "No Data" and Pay Now fails with "Please select order type".
+          // Restore them from the active cart's store.
+          if (storeDetailsResponse.value.data?.store == null &&
+              parsedActiveStoreId != 0) {
+            storeId.value = activeStoreId;
+            await apiGetStoreDetailsApi();
+          }
         }
       } else if (value?.body["status"] == ApiConstants.statusCode401) {
         Utility.showAlertMessage(value?.body['message']);
@@ -1231,6 +1242,11 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
         if (selectedDeliveryService.value.toString() == "2" && cartData.value.isOrderDeliverable == false) {
           Utility.showAlertMessage(AlertStringConstants.orderNotDeliverable);
           isPlaceOrder.value = false;
+        } else {
+          // Re-arm checkout: without this the block above latches and the
+          // payment dialog's Proceed silently no-ops even after the user
+          // switches to a viable order type.
+          isPlaceOrder.value = true;
         }
         if (isDeleteCartItem.value == true &&
             cartListResponse.data!.cartItems!.isEmpty &&

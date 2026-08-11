@@ -137,8 +137,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    // ✅ Don’t clear storage blindly at startup (optional)
-    clearData();
+    // Clear only transient navigation params on startup — must NOT wipe the
+    // persisted session (token/role/profile), or users are logged out on every
+    // cold start.
+    Get.parameters.clear();
 
     // Country feature flags (munchies/herbs/payments availability).
     AppConfigService.refresh();
@@ -156,15 +158,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       AppConfigService.refresh();
     }
   }
-
-  clearData() async {
-    SharedPreferenceStorage.getData('onboardingCompleted');
-    SharedPreferenceStorage storage = SharedPreferenceStorage();
-
-    storage.clearData();
-    Get.parameters.clear();
-  }
-
 
   @override
   void dispose() {

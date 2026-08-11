@@ -16,6 +16,7 @@ class WebviewPageScreen extends StatefulWidget {
 class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMixin{
   late final WebViewController controller;
   var pageId = 0;
+  bool _hasReturnedFromConnect = false;
   @override
   void initState() {
     super.initState();
@@ -27,7 +28,9 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMix
         NavigationDelegate(
           onProgress: (int progress) {},
           onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageFinished: (String url) {
+            _handleConnectAccountReturn(url);
+          },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
             // if (request.url.startsWith('https')) {
@@ -39,6 +42,19 @@ class _WebviewPageScreenState extends State<WebviewPageScreen> with GlobalVarMix
       )
       ..loadRequest(Uri.parse(widget.url));
     // #enddocregion webview_controller
+  }
+
+  // After a successful Stripe Connect onboarding, Stripe redirects to the
+  // backend return_url (".../stripe?messageType=return"). When we land there,
+  // pop back to the wallet screen so the caller can refresh account details.
+  void _handleConnectAccountReturn(String url) {
+    if (widget.isFrom != 'connectAccount' || _hasReturnedFromConnect) {
+      return;
+    }
+    if (url.contains('messageType=return')) {
+      _hasReturnedFromConnect = true;
+      pageIdApp.value == 0 ? Get.back() : Get.back(id: pageIdApp.value);
+    }
   }
 
   // #docregion webview_widget

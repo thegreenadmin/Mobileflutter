@@ -27,6 +27,11 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
     if (accountController.userId == null ||
         accountController.userId!.value.isEmpty) {
       accountController.apiGetUserDetailApi();
+    } else {
+      // Controller is a living singleton; restore the form from the last saved
+      // values so a field cleared during a previous failed edit (e.g. email)
+      // isn't left blank when the screen is reopened.
+      accountController.syncEditFormControllers();
     }
     super.initState();
   }
@@ -121,11 +126,13 @@ class _PersonalInfoEditScreenState extends State<PersonalInfoEditScreen> with Gl
 
                                   formFields(StringConstants.nickNameText,false, controller: accountController.nickNameTextController,hint:StringConstants.nickNameText,),
 
-                                  formFields(StringConstants.emailText,false, controller: accountController.emailTextController,hint:StringConstants.emailText,
+                                  formFields(StringConstants.emailText,true, controller: accountController.emailTextController,hint:StringConstants.emailText,
                                       validator: (value) {
-                                        if (value != null &&
-                                            value.trim().isNotEmpty &&
-                                            !GetUtils.isEmail(value.trim())) {
+                                        if (value == null || value.trim().isEmpty) {
+                                          return AlertStringConstants
+                                              .pleaseUpdateEmailToContinueText;
+                                        }
+                                        if (!GetUtils.isEmail(value.trim())) {
                                           return AlertStringConstants
                                               .pleaseEnterValidEmailText;
                                         }

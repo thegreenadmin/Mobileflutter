@@ -34,6 +34,10 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Maestro test artifacts
+.maestro/tests/
+*.maestro-screenshot.png
+
 # Symbolication related
 app.*.symbols
 

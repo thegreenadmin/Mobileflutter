@@ -16,7 +16,7 @@ class StringConstants {
   static String acceptText = "Accept";
   static String ageText = "Age";
   static String acknowledgeText =
-      ' and acknowledge the receipts of the green mall Inc’s ';
+      ' and acknowledge the receipts of the green mall LLC ';
   static String accountIdText = "Account ID";
   static String appIconAndSkinUpdateText = "App Icon & Skin Update";
   static String aboutUsText = "About us";
@@ -88,7 +88,7 @@ class StringConstants {
 
   //B
   static String byCheckingText =
-      'By checking this box, you agree to the green mall Inc’s ';
+      'By checking this box, you agree to the green mall LLC ';
   static String breadthText = "Breadth";
   static String bannerImageText = "Banner Image";
   static String backToShoppingText = "Back To Shopping";
@@ -193,6 +193,8 @@ class StringConstants {
   //E
   static String enterCategoryNameText = "Enter category name";
   static String enableStoreText = "Enable Store";
+  static String storeStatusText = "Store Status";
+  static String inactiveText = "Inactive";
   static String emailText = "Email";
   static String estimatedDeliveryDateText = "Estimated Delivery Date";
   static String endTimeText = "End Time";
@@ -574,6 +576,14 @@ class StringConstants {
   static String searchText = "Search";
   static String storeProfileText = "Store Profile";
   static String shortDescriptionText = "Short Description";
+  static String searchOrdersHintText = "Search by order ID or customer name";
+  static String scanOrderBarcodeText = "Scan Order Barcode";
+  static String showOrderQRText = "Pickup / QR code";
+  static String showQrAtStoreText =
+      "Show this code at the store to pull up your order";
+  static String alignOrderCodeText = "Align the order QR within the frame";
+  static String uploadFromGalleryText = "Upload from Gallery";
+  static String selectAllText = "Select All";
   static String selectTypeText = "Select Type";
   static String selectDaysText = "Select Days";
   static String selectDeliveryServicesText = "Select Delivery Services";
@@ -696,7 +706,7 @@ class StringConstants {
   static String x4Text = "XXXX XXXX XXXX XXXX";
 
   //Y
-  static String your420MarketPlace = "Your 420 Market Place";
+  static String yourWellnessMarketPlace = "Your Wellness Market Place";
   static String yesText = "Yes";
   static String yearlyPlanText = "Yearly Plan   ";
   static String yourThoughtText = "Your Thoughts";
@@ -765,8 +775,13 @@ class AlertStringConstants {
   static String noDataFoundText = "No Data Found";
   static String notAuthorizedToStoreText =
       "Sorry, You are not authorized. Contact your store owner for more info.";
+  static String notAValidOrderCodeText = "This is not a valid order code.";
+  static String noOrderCodeInImageText =
+      "No order code found in the selected image.";
 
   //O
+  static String orderReturnRequestScanText =
+      "This order has a return request. Please open it from the store's orders list.";
   static String openingTimeAlertText =
       "Opening time can not be as closing time";
   static String only5MaximumImagesCanSelectText =
@@ -792,6 +807,8 @@ class AlertStringConstants {
   static String pleaseEnterEmployeeNameText = "Please enter employee name";
   static String pleaseEnterMileageText = "Please enter mileage";
   static String pleaseEnterEmailText = "Please enter email";
+  static String pleaseUpdateEmailToContinueText =
+      "Please update your email to continue";
   static String pleaseEnterOtpText = "Please enter Otp";
   static String pleaseEnterValidEmailText = "Please enter valid email";
   static String pleaseEnterValidPhoneText = "Please enter valid Phone number";
