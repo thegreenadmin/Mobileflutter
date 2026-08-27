@@ -23,6 +23,7 @@ import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/dashboard/payments/binding/payment_binding.dart';
 import 'package:thegreenmall/dashboard/payments/view/payment_shell_screen.dart';
 import 'customer/components/store_home_main_args.dart';
+import 'customer/components/ad_video_slide.dart';
 import 'store_owner/manage_store_main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -177,56 +178,61 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
             children: [
               buildTitle(),
               height12SizedBox,
-              // The whole row scales down as one unit, so all four pills fit
-              // on screen (no scrolling) and every label keeps the same
-              // font size relative to the others.
+              // Align pins the pill group to the left so with 2-3 pills they
+              // hug the start (natural width) instead of being centered by the
+              // parent Column. FittedBox scales the whole group down as one unit
+              // when all four pills are present, so they still fit on screen.
               // Munchies / Herbs / Payments are country-gated: the flags come
               // from utils/app/config and the backend enforces them again on
               // every API call, hiding a pill here is cosmetic only.
               Obx(
-                () => FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Row(
-                    children: [
-                      // Store category shortcuts. Munchies / Herbs reuse the same
-                      // store screens as Stores, scoped by a category filter.
-                      _payPill(
-                        icon: Icons.storefront_outlined,
-                        label: StringConstants.storesText,
-                        onTap: () => _openStores(),
-                      ),
-                      if (munchiesEnabled.value) ...[
-                        width5SizedBox,
+                () => Align(
+                  alignment: Alignment.centerLeft,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        // Store category shortcuts. Munchies / Herbs reuse the same
+                        // store screens as Stores, scoped by a category filter.
                         _payPill(
-                          icon: Icons.lunch_dining_outlined,
-                          label: StringConstants.munchiesText,
-                          onTap: () => _openStores(category: StringConstants.munchiesText),
+                          icon: Icons.storefront_outlined,
+                          label: StringConstants.storesText,
+                          onTap: () => _openStores(),
                         ),
+                        if (munchiesEnabled.value) ...[
+                          width5SizedBox,
+                          _payPill(
+                            icon: Icons.lunch_dining_outlined,
+                            label: StringConstants.munchiesText,
+                            onTap: () => _openStores(category: StringConstants.munchiesText),
+                          ),
+                        ],
+                        // Herbs is a regulated, single-licensee vertical: every
+                        // store owner could otherwise see it. Customers/guests
+                        // keep browsing it (country flag), but among store owners
+                        // only the country's licensed provider gets the pill.
+                        if (herbsEnabled.value &&
+                            (roleApp.value != Role.storeOwnerRoleText ||
+                                isHerbsLicensee.value)) ...[
+                          width5SizedBox,
+                          _payPill(
+                            icon: Icons.local_florist_outlined,
+                            label: StringConstants.herbsText,
+                            onTap: () => _openStores(category: StringConstants.herbsText),
+                          ),
+                        ],
+                        if (paymentsEnabled.value) ...[
+                          width5SizedBox,
+                          // Opens the dedicated Payments screen (P2P / P2B live there).
+                          _payPill(
+                            icon: Icons.payments_outlined,
+                            label: StringConstants.paymentsText,
+                            onTap: () => _openPaymentsHome(),
+                          ),
+                        ],
                       ],
-                      // Herbs is a regulated, single-licensee vertical: every
-                      // store owner could otherwise see it. Customers/guests
-                      // keep browsing it (country flag), but among store owners
-                      // only the country's licensed provider gets the pill.
-                      if (herbsEnabled.value &&
-                          (roleApp.value != Role.storeOwnerRoleText ||
-                              isHerbsLicensee.value)) ...[
-                        width5SizedBox,
-                        _payPill(
-                          icon: Icons.local_florist_outlined,
-                          label: StringConstants.herbsText,
-                          onTap: () => _openStores(category: StringConstants.herbsText),
-                        ),
-                      ],
-                      if (paymentsEnabled.value) ...[
-                        width5SizedBox,
-                        // Opens the dedicated Payments screen (P2P / P2B live there).
-                        _payPill(
-                          icon: Icons.payments_outlined,
-                          label: StringConstants.paymentsText,
-                          onTap: () => _openPaymentsHome(),
-                        ),
-                      ],
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -622,6 +628,47 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
         ]);
   }
 
+  // Advertisement tap handling. In-app navigation only, keyed off target_type:
+  //   product -> that product's detail; store/offer -> the store home.
+  Future<void> _handleAdTap(OffersList item) async {
+    final target = item.targetType ?? 'none';
+    if (target == 'none' || (item.storeId ?? "").isEmpty) {
+      return;
+    }
+    if (target == 'product') {
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            productId: item.productId ?? "",
+            invokedIndex: 2,
+            isFromMenu: true,
+            isFromFav: false,
+            isFromHome: false,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    } else {
+      // store / offer -> store home
+      await Get.to(
+        () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+            storeId: item.storeId ?? "",
+            invokedIndex: 0,
+            isFromMenu: false,
+            isFromFav: false,
+            isFromHome: true,
+            isFromOptions: false,
+          ),
+        ),
+        id: pageIdApp.value,
+      );
+    }
+    await homeController.apiActiveCartApi();
+  }
+
   _buildCarouselSlider({RxList<OffersList>? offersCarouselList,
     RxList<ProductsList>? featuredProductList}) {
     print("CAROUSEL_DEBUG: isEmpty=${offersCarouselList!.isEmpty}, length=${offersCarouselList.length}, hashCode=${offersCarouselList.hashCode}");
@@ -655,10 +702,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                 : CarouselSlider(
               items: offersCarouselList.take(5)
                   .map((item) =>
-                  Obx(() {
-                    return InkWell(
+                  InkWell(
                       onTap: () async {
                         if (homeController.isLoading.value == false) {
+                          // Advertisement slides navigate in-app by target_type
+                          // (no external URLs).
+                          if (item.isAd == true) {
+                            await _handleAdTap(item);
+                            return;
+                          }
                           if (roleApp.value == Role.customerRoleText) {
                             if (item.isOfferForStore == false) {
                               await Get.to(() =>
@@ -726,13 +778,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                               borderRadius: BorderRadius.circular(6.0),
                               child: Stack(
                                   children: <Widget>[
-                                    CommonWidgets.cachedNetworkImage(
-                                        item.image?.dynamicUrl.toString() ?? "",
-                                        assetImg: ImageConstants.nopicfound,
-                                        height:
-                                        WidgetConstants.screenHeight * 0.28,
-                                        width:
-                                        WidgetConstants.screenWidth * 0.85),
+                                    (item.isAd == true &&
+                                            item.mediaType == 'video' &&
+                                            (item.mediaUrl ?? "").isNotEmpty)
+                                        ? AdVideoSlide(
+                                            videoUrl: item.mediaUrl!,
+                                            thumbnailUrl: item.thumbnailUrl ??
+                                                item.image?.dynamicUrl
+                                                    ?.toString(),
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85,
+                                          )
+                                        : CommonWidgets.cachedNetworkImage(
+                                            item.image?.dynamicUrl.toString() ??
+                                                "",
+                                            assetImg:
+                                                ImageConstants.nopicfound,
+                                            height: WidgetConstants
+                                                    .screenHeight *
+                                                0.28,
+                                            width: WidgetConstants
+                                                    .screenWidth *
+                                                0.85),
                                     Positioned(
                                       bottom: 0.0,
                                       left: 0.0,
@@ -751,11 +822,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
                                         child: Text(
-                                          offersCarouselList
-                                              .where((p0) => item == p0)
-                                              .first
-                                              .store
-                                              ?.storeName ?? "",
+                                          item.isAd == true
+                                              ? (item.title ??
+                                                  item.store?.storeName ??
+                                                  "")
+                                              : offersCarouselList
+                                                      .where((p0) => item == p0)
+                                                      .first
+                                                      .store
+                                                      ?.storeName ??
+                                                  "",
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
@@ -764,9 +840,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Gl
                                         ),
                                       ),
                                     ),
+                                    // "Sponsored" marker on ad slides.
+                                    if (item.isAd == true)
+                                      Positioned(
+                                        top: 8.0,
+                                        right: 8.0,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 3.0, horizontal: 8.0),
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                160, 0, 0, 0),
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                          ),
+                                          child: const Text(
+                                            "Sponsored",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                   ]))),
-                    );
-                  }))
+                    )
+                  )
                   .toList(),
               carouselController: _controller,
               options: CarouselOptions(
