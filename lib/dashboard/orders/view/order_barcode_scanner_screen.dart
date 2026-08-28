@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
+import 'package:thegreenmall/dashboard/orders/order_link.dart';
 import 'package:thegreenmall/dashboard/orders/model/orders_model.dart' as model;
 import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
 import 'package:thegreenmall/provider/user_provider.dart';
@@ -67,19 +66,10 @@ class _OrderBarcodeScannerScreenState extends State<OrderBarcodeScannerScreen>
     await _resolveAndProceed(raw);
   }
 
-  /// Order QRs carry {"type":"order","order_id":..,"store_id":..}.
-  Map<String, String>? _parseOrderCode(String raw) {
-    try {
-      final decoded = jsonDecode(raw);
-      if (decoded is! Map || decoded['type'] != 'order') return null;
-      final orderId = decoded['order_id']?.toString() ?? '';
-      final storeId = decoded['store_id']?.toString() ?? '';
-      if (orderId.isEmpty || storeId.isEmpty) return null;
-      return {'orderId': orderId, 'storeId': storeId};
-    } catch (_) {
-      return null;
-    }
-  }
+  /// Order QRs carry a universal link
+  /// (`https://thegreenmall.net/order?store_id=..&order_id=..`); codes from
+  /// older builds carry the legacy JSON blob. [OrderLink.parse] accepts both.
+  Map<String, String>? _parseOrderCode(String raw) => OrderLink.parse(raw);
 
   bool _hasStoreAccess(String storeId) {
     return hasStoreAccess.value && permissionStoreList.isEmpty ||

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:thegreenmall/authentication/login/view/login_screen.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
+import 'package:thegreenmall/dashboard/orders/order_link.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
@@ -660,13 +659,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
   }
 
   /// The store side scans this from Orders > Scan Order Barcode to open the
-  /// fulfil screen for this order (see OrderBarcodeScannerScreen).
+  /// fulfil screen for this order (see OrderBarcodeScannerScreen). The QR
+  /// carries a universal link (not raw JSON) so a native-camera scan opens the
+  /// order instead of a Google search — see [OrderLink] and T2-452.
   void showOrderQrDialog() {
-    final payload = jsonEncode({
-      "type": "order",
-      "order_id": ordersController.orderStatus.value,
-      "store_id": ordersController.storeId.value,
-    });
+    final payload = OrderLink.build(
+      storeId: ordersController.storeId.value,
+      orderId: ordersController.orderStatus.value,
+    );
     showDialog(
       context: Get.context!,
       builder: (_) => AlertDialog(
