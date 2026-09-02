@@ -28,7 +28,7 @@ class OrderConfirmationScreen extends StatefulWidget {
       _OrderConfirmationScreenState();
 }
 
-class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with GlobalVarMixin{
+class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with GlobalVarMixin, RouteAware {
   final OrdersController ordersController = Get.put(OrdersController());
 
   @override
@@ -69,6 +69,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to the nested navigator's route observer so didPopNext fires
+    // when a screen pushed above this one is popped.
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      appRouteObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    appRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // We navigated back to this screen (e.g. after tapping a popup
+    // notification). The order's status may have changed in the meantime
+    // (a pickup order can be completed elsewhere), so re-fetch the details so
+    // stale action buttons like "here for pickup" reflect the current status.
+    if (isGuest.value == true) {
+      return;
+    }
+    if (ordersController.orderStatus.value != "") {
+      ordersController.apiGetOrderDetailsApi();
+    }
   }
 
   @override

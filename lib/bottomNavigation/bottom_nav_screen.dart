@@ -282,6 +282,7 @@ class _TabNav extends GetView<BottomNavController> {
   Widget build(BuildContext context) {
     return Navigator(
       key: Get.nestedKey(navKey),
+      observers: [appRouteObserver],
       pages: [
         MaterialPage(child: tab),
       ],

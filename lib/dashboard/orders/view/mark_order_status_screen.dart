@@ -20,7 +20,7 @@ class MarkOrderStatusScreen extends StatefulWidget {
   State<MarkOrderStatusScreen> createState() => _MarkOrderStatusScreenState();
 }
 
-class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with GlobalVarMixin {
+class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with GlobalVarMixin, RouteAware {
   final OrdersHomeMainController ordersHomeMainController =
   Get.put(OrdersHomeMainController());
 
@@ -45,6 +45,35 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to the nested navigator's route observer so didPopNext fires
+    // when a screen pushed above this one is popped.
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      appRouteObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    appRouteObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Returned to this screen (e.g. after tapping a popup notification). The
+    // order may have advanced/completed in the meantime, so re-fetch so the
+    // items move to the right tab and stale action buttons like "Picked up"
+    // no longer appear for an already-completed order.
+    if (ordersHomeMainController.orderId.value != "") {
+      ordersHomeMainController.apiGetStoreDetails();
+      ordersHomeMainController.apiGetStoreOrderDetail();
+    }
   }
 
 

@@ -1,7 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+/// Shared observer for the bottom-nav nested navigators. Screens can mix in
+/// [RouteAware] and subscribe to this so they can refresh when a route pushed
+/// above them is popped and they become visible again (e.g. re-fetch an order's
+/// status after returning from a notification screen).
+final RouteObserver<PageRoute<dynamic>> appRouteObserver =
+    RouteObserver<PageRoute<dynamic>>();
 
 mixin GlobalVarMixin {
   RxString _roleApp = "".obs;
