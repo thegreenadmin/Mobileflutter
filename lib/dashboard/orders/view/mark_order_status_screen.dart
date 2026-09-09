@@ -32,11 +32,14 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
       ordersHomeMainController.orderStatus.value = widget.orderStatus ?? "";
       ordersHomeMainController.isFromNotification.value = widget.isFromNotification ?? false;
       if (ordersHomeMainController.isFromNotification.value ) {
-        if(widget.orderStatus== "delivered"){
+        // Backend sends the DB status name ('completed' for a delivered order);
+        // keep the legacy UI aliases too. A delivered/completed order opens the
+        // read-only completed tab (index 3) rather than the fulfillment view.
+        if(widget.orderStatus== "delivered" || widget.orderStatus== "completed"){
           ordersHomeMainController.selectedIndex.value = 3;
         }else if(widget.orderStatus== "received"){
           ordersHomeMainController.selectedIndex.value = 0;
-        }else if(widget.orderStatus== "pickup"){
+        }else if(widget.orderStatus== "pickup" || widget.orderStatus== "ready for pickup"){
           ordersHomeMainController.selectedIndex.value = 2;
         }
 
