@@ -154,6 +154,7 @@ class PushNotificationService  with GlobalVarMixin{
         await Get.to(() =>  MarkOrderStatusScreen(
           orderId: notificationData.orderId.toString(),
           storeId: notificationData.storeId.toString(),
+          orderStatus: notificationData.orderStatus,
             isFromNotification:true
         ), id: pageIdApp.value);
       });
