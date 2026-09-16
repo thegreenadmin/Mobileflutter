@@ -3,19 +3,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:thegreenmall/dashboard/orders/controller/orders_home_main_controller.dart';
-import 'package:thegreenmall/dashboard/orders/order_link.dart';
-import 'package:thegreenmall/dashboard/orders/model/orders_model.dart' as model;
-import 'package:thegreenmall/dashboard/orders/view/mark_order_status_screen.dart';
-import 'package:thegreenmall/provider/user_provider.dart';
+import 'package:thegreenmall/dashboard/orders/order_scan_resolver.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
-import 'component/order_status_enum.dart';
-
-/// Scans a customer's order QR (payload: {"type":"order","order_id","store_id"})
-/// and opens that order's fulfil screen. Modeled on the payments
-/// BarcodeScannerScreen: live camera with overlay + torch, and an
-/// upload-from-gallery fallback.
+/// Scans a customer's order QR — an OrderLink universal link
+/// (`https://thegreenmall.net/order/<token>`) or a legacy bare
+/// {"type":"order","order_id","store_id"} JSON payload — and opens that order's
+/// fulfil screen. Modeled on the payments BarcodeScannerScreen: live camera
+/// with overlay + torch, and an upload-from-gallery fallback.
 class OrderBarcodeScannerScreen extends StatefulWidget {
   const OrderBarcodeScannerScreen({super.key});
 
@@ -66,101 +61,20 @@ class _OrderBarcodeScannerScreenState extends State<OrderBarcodeScannerScreen>
     await _resolveAndProceed(raw);
   }
 
-  /// Order QRs carry a universal link
-  /// (`https://thegreenmall.net/order?store_id=..&order_id=..`); codes from
-  /// older builds carry the legacy JSON blob. [OrderLink.parse] accepts both.
-  Map<String, String>? _parseOrderCode(String raw) => OrderLink.parse(raw);
-
-  bool _hasStoreAccess(String storeId) {
-    return hasStoreAccess.value && permissionStoreList.isEmpty ||
-        permissionStoreList.any((element) =>
-            element.storeId == storeId && element.isStoreOwner == true ||
-            element.storeId == storeId &&
-                element.controllers!.any((ele) =>
-                    ele.controllerKey ==
-                    PermissionKey.manageOrders.statusName));
-  }
-
-  /// Which orders tab the fulfil screen should open on for [statusName].
-  int _tabIndexForStatus(String statusName) {
-    if (statusName == OrderStatusEnum.receivedOrder.statusName) return 0;
-    if (statusName == OrderStatusEnum.inProgress.statusName) return 1;
-    if (statusName == OrderStatusEnum.inTransit.statusName ||
-        statusName == OrderStatusEnum.readyForPickup.statusName) {
-      return 2;
-    }
-    return 3;
-  }
-
   Future<void> _resolveAndProceed(String raw) async {
     if (_handling) return;
     setState(() => _handling = true);
 
-    final code = _parseOrderCode(raw);
-    if (code == null) {
-      Utility.showAlertMessage(AlertStringConstants.notAValidOrderCodeText);
-      setState(() => _handling = false);
-      return;
-    }
-    if (!_hasStoreAccess(code['storeId']!)) {
-      Utility.showAlertMessage(AlertStringConstants.notAuthorizedToStoreText);
-      setState(() => _handling = false);
-      return;
-    }
-
-    // Fetch the order to learn its current status so the fulfil screen opens
-    // on the matching tab with the right action button.
-    Map<String, String> headers = {
-      StringConstants.authorizationText:
-          "${StringConstants.bearerText} ${authToken.value}",
-    };
-    final value = await UserProvider().getWithHeadersApi(
-        "${ServerCommunicator.baseUrl}${ServerCommunicator.storeOrderDetail}?store_id=${code['storeId']}&order_id=${code['orderId']}",
-        headers,
-        showLoading: true);
-    if (!mounted) return;
-
-    if (value?.body["status"] != ApiConstants.statusCode200 &&
-        value?.body["status"] != ApiConstants.statusCode201) {
-      Utility.showAlertMessage(value?.body['message'] ??
-          AlertStringConstants.notAValidOrderCodeText);
-      setState(() => _handling = false);
-      return;
-    }
-
-    final detail = model.GetStoreOrderDetailModel.fromJson(value?.body);
-    final statusName = detail
-            .data?.order?.orderHistories?.last.orderStatus?.orderStatusName ??
-        "";
-    if (statusName == OrderStatusEnum.returnRequest.statusName) {
-      Utility.showAlertMessage(
-          AlertStringConstants.orderReturnRequestScanText);
-      setState(() => _handling = false);
-      return;
-    }
-
-    final ordersHomeMainController = Get.put(OrdersHomeMainController());
-    ordersHomeMainController.storeId.value = code['storeId']!;
-    ordersHomeMainController.orderId.value = code['orderId']!;
-    ordersHomeMainController.selectedIndex.value =
-        _tabIndexForStatus(statusName);
-
+    // Stop the camera while we resolve + show the fulfil screen so it can't
+    // re-detect the same QR in a loop; restart on return.
     await _scanner.stop();
-    // Await the pushed route so the camera stays stopped (and detection stays
-    // gated by [_handling]) while the fulfil screen is on top; restarting
-    // without awaiting lets the camera re-detect the same QR in a loop.
-    await Get.to(
-        () => MarkOrderStatusScreen(
-              orderId: code['orderId'],
-              storeId: code['storeId'],
-              orderStatus: "",
-              isFromNotification: true,
-            ),
-        id: pageIdApp.value);
-    if (mounted) {
-      setState(() => _handling = false);
-      _scanner.start();
+    final error = await resolveOrderAndOpen(raw, navId: pageIdApp.value);
+    if (!mounted) return;
+    if (error != null) {
+      Utility.showAlertMessage(error);
     }
+    setState(() => _handling = false);
+    _scanner.start();
   }
 
   @override

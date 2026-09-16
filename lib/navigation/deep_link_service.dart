@@ -4,18 +4,21 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import 'package:thegreenmall/dashboard/orders/order_link.dart';
+import 'package:thegreenmall/dashboard/orders/order_scan_resolver.dart';
 import 'package:thegreenmall/dashboard/payments/payment_link.dart';
 import 'package:thegreenmall/dashboard/payments/payment_routes.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/utility.dart';
 
-/// Handles incoming universal links — currently the payment QR link
-/// `https://thegreenmall.net/pay/<token>`.
+/// Handles incoming universal links — the payment QR link
+/// `https://thegreenmall.net/pay/<token>` and the pickup/order QR link
+/// `https://thegreenmall.net/order/<token>`.
 ///
 /// When the app is already installed, iOS / Android route the tapped or scanned
-/// link straight here (cold start or while running). We unwrap the `<token>`,
-/// open the payments flow, and let [PaymentsHomeScreen] consume the pending
-/// token to run the normal decode -> details flow.
+/// link straight here (cold start or while running). For payments we unwrap the
+/// `<token>`, open the payments flow, and let [PaymentsHomeScreen] consume the
+/// pending token. For orders we resolve the order and open its fulfil screen.
 ///
 /// People without the app never reach this code: their link opens the website's
 /// "Get the app" page instead (CTA A, install funnel).
@@ -52,9 +55,21 @@ class DeepLinkService {
   }
 
   static void _handleUri(Uri uri) {
-    final token = PaymentLink.extractToken(uri.toString());
-    if (token == null) return; // not a /pay/<token> link
-    _openPayment(token);
+    final raw = uri.toString();
+
+    final token = PaymentLink.extractToken(raw);
+    if (token != null) {
+      _openPayment(token);
+      return;
+    }
+
+    // Pickup/order QR: https://thegreenmall.net/order/<token>. Scanned with a
+    // plain phone camera by store staff, this opens the order's fulfil screen.
+    if (OrderLink.isOrderLink(raw)) {
+      _openOrder(raw);
+      return;
+    }
+    // Anything else isn't ours — ignore.
   }
 
   static void _openPayment(String token) {
@@ -72,6 +87,21 @@ class DeepLinkService {
     // Open the payments flow on the root navigator (the shell supports being
     // hosted there when deep-linked).
     Get.toNamed(PaymentRoutes.flow);
+  }
+
+  static void _openOrder(String link) {
+    // Fulfilling an order needs a signed-in store user. If we're not there yet,
+    // ask them to sign in rather than silently dropping the scan.
+    if (authToken.value.isEmpty) {
+      Utility.showToast('Please sign in to open this order.');
+      return;
+    }
+    // Push on the root navigator (navId: null) — a deep link can arrive on cold
+    // start before the orders tab shell is mounted. resolveOrderAndOpen surfaces
+    // access/lookup failures as a message.
+    resolveOrderAndOpen(link).then((error) {
+      if (error != null) Utility.showToast(error);
+    });
   }
 
   /// Returns and clears any pending payment token. The payments home screen

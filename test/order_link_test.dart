@@ -1,71 +1,67 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:thegreenmall/dashboard/orders/order_link.dart';
 
 void main() {
-  group('OrderLink.build', () {
-    test('produces the universal-link form', () {
+  group('OrderLink', () {
+    test('build round-trips through extractPayload to the original code', () {
+      final link = OrderLink.build(orderId: '123', storeId: '45');
+      expect(link, startsWith('https://thegreenmall.net/order/'));
+
+      final payload = OrderLink.extractPayload(link);
+      expect(payload, isNotNull);
+
+      final decoded = jsonDecode(payload!);
+      expect(decoded['type'], 'order');
+      expect(decoded['order_id'], '123');
+      expect(decoded['store_id'], '45');
+    });
+
+    test('build accepts int ids too', () {
+      final link = OrderLink.build(orderId: 9, storeId: 8);
+      final decoded = jsonDecode(OrderLink.extractPayload(link)!);
+      expect(decoded['order_id'], 9);
+      expect(decoded['store_id'], 8);
+    });
+
+    test('isOrderLink recognises an order link and rejects others', () {
+      expect(OrderLink.isOrderLink(OrderLink.build(orderId: '1', storeId: '2')),
+          isTrue);
+      // A payment link is not an order link.
+      expect(OrderLink.isOrderLink('https://thegreenmall.net/pay/abc'), isFalse);
+      // Wrong host.
+      expect(OrderLink.isOrderLink('https://evil.example/order/abc'), isFalse);
+      // Bare JSON (legacy QR) is not a URL.
       expect(
-        OrderLink.build(storeId: 12, orderId: 345),
-        'https://thegreenmall.net/order?store_id=12&order_id=345',
-      );
+          OrderLink.isOrderLink('{"type":"order","order_id":"1","store_id":"2"}'),
+          isFalse);
     });
 
-    test('stringifies String ids too', () {
-      expect(
-        OrderLink.build(storeId: '8', orderId: '9'),
-        'https://thegreenmall.net/order?store_id=8&order_id=9',
-      );
-    });
-  });
-
-  group('OrderLink.parse', () {
-    test('round-trips the universal-link form', () {
-      final url = OrderLink.build(storeId: 12, orderId: 345);
-      expect(OrderLink.parse(url), {'storeId': '12', 'orderId': '345'});
+    test('extractPayload accepts the legacy query-string form', () {
+      final payload = OrderLink.extractPayload(
+          'https://www.thegreenmall.net/order?order_id=9&store_id=8&utm=x');
+      expect(payload, isNotNull);
+      final decoded = jsonDecode(payload!);
+      expect(decoded['order_id'], '9');
+      expect(decoded['store_id'], '8');
+      // A query-form link missing an id is not a valid order link.
+      expect(OrderLink.extractPayload('https://thegreenmall.net/order?store_id=8'),
+          isNull);
     });
 
-    test('accepts www host, reordered params, and extra query keys', () {
-      expect(
-        OrderLink.parse(
-            'https://www.thegreenmall.net/order?order_id=9&store_id=8&utm=x'),
-        {'storeId': '8', 'orderId': '9'},
-      );
+    test('payloadFromScan unwraps a link but passes legacy JSON through', () {
+      final link = OrderLink.build(orderId: '7', storeId: '8');
+      final unwrapped = OrderLink.payloadFromScan(link);
+      expect(jsonDecode(unwrapped)['order_id'], '7');
+
+      const legacy = '{"type":"order","order_id":"9","store_id":"10"}';
+      expect(OrderLink.payloadFromScan(legacy), legacy);
     });
 
-    test('still parses legacy JSON payloads from older builds', () {
-      expect(
-        OrderLink.parse('{"type":"order","order_id":7,"store_id":3}'),
-        {'storeId': '3', 'orderId': '7'},
-      );
-    });
-
-    test('rejects a payment link (no cross-talk with /pay)', () {
-      expect(OrderLink.parse('https://thegreenmall.net/pay/abc'), isNull);
-    });
-
-    test('rejects a foreign host', () {
-      expect(
-        OrderLink.parse('https://evil.com/order?store_id=1&order_id=2'),
-        isNull,
-      );
-    });
-
-    test('rejects a link missing an id', () {
-      expect(OrderLink.parse('https://thegreenmall.net/order?store_id=1'), isNull);
-    });
-
-    test('rejects plain text (the old Google-search trigger)', () {
-      expect(OrderLink.parse('just some text'), isNull);
-    });
-  });
-
-  group('OrderLink.isOrderLink', () {
-    test('true for an order link, false for a payment link', () {
-      expect(
-        OrderLink.isOrderLink(OrderLink.build(storeId: 1, orderId: 2)),
-        isTrue,
-      );
-      expect(OrderLink.isOrderLink('https://thegreenmall.net/pay/x'), isFalse);
+    test('rejects an empty path and non-order paths', () {
+      expect(OrderLink.extractPayload('https://thegreenmall.net/order/'), isNull);
+      expect(OrderLink.extractPayload('https://thegreenmall.net/'), isNull);
     });
   });
 }
