@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,6 +19,10 @@ import 'package:thegreenmall/utils/app_logger.dart';
 import 'package:thegreenmall/utils/navigation_observer.dart';
 
 RemoteMessage? initialRemoteMessage;
+
+// ✅ Firebase Analytics (used by the whole app + navigator observer)
+final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +42,10 @@ Future<void> main() async {
   // Test logging
   AppLogger.info('App initialized successfully');
   AppLogger.debug('Debug mode enabled');
+
+  // ✅ Make sure Analytics collection is on (auto-collected events like
+  // first_open / screen_view flow once the SDK is present).
+  await analytics.setAnalyticsCollectionEnabled(true);
 
 
   // Start network monitoring (singleton, not recreated each time)
@@ -189,7 +198,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       getPages: Routers.route,
       themeMode: ThemeMode.system,
       initialRoute: '/splashView',
-      navigatorObservers: [NavigationObserver()],
+      // ✅ App navigation observer + automatic screen-view tracking for
+      // Firebase Analytics (a single navigatorObservers list is required).
+      navigatorObservers: [
+        NavigationObserver(),
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
     );
   }
 }
