@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:thegreenmall/navigation/deep_link_service.dart';
@@ -27,17 +31,33 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Global error handling
-  FlutterError.onError = (details) {
-    AppLogger.fatal('Flutter Error', error: details.exception, stackTrace: details.stack);
-    FlutterError.presentError(details);
-  };
-
-
   // ✅ Initialize services in sequence to avoid socket spikes
   await dotenv.load(fileName: 'assets/env/api_key.env');
   await Firebase.initializeApp();
   await GetStorage.init();
+
+  // ✅ Crashlytics — report crashes (including backend/database call
+  // failures surfaced via AppLogger.error/fatal, see app_logger.dart) to
+  // the Firebase console. Collection is disabled in debug builds so local
+  // development noise doesn't pollute the dashboard.
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+
+  // Catch Flutter framework errors (widget build/layout/render errors, and
+  // errors thrown inside API/database calls that bubble up uncaught).
+  FlutterError.onError = (details) {
+    AppLogger.fatal('Flutter Error', error: details.exception, stackTrace: details.stack);
+    FlutterError.presentError(details);
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+  };
+
+  // Catch async errors thrown outside the Flutter framework (e.g. inside
+  // unawaited Futures from network/database calls) that would otherwise
+  // crash the app silently.
+  PlatformDispatcher.instance.onError = (error, stack) {
+    AppLogger.fatal('Uncaught Error', error: error, stackTrace: stack);
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   // Test logging
   AppLogger.info('App initialized successfully');
