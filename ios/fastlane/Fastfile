@@ -175,6 +175,7 @@ platform :ios do
 
   desc "Build a development build"
   lane :dev do
+    setup_ci if ENV['CI']
     match(type: "development", readonly: is_ci, git_basic_authorization: ENV['MATCH_GIT_BASIC_AUTHORIZATION'])
     build_app(
       workspace: "Runner.xcworkspace",

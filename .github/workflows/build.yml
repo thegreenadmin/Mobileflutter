@@ -126,6 +126,67 @@ jobs:
         working-directory: ios
         run: pod install
 
+      - name: Authenticate to Google Cloud (Firebase Test Lab)
+        if: github.event.inputs.run_robo_test == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        if: github.event.inputs.run_robo_test == 'true'
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Firebase Test Lab's iOS+ Robo test (beta) runs against a
+      # development-signed IPA, not the app-store-signed archive the
+      # beta/release lanes below produce — so this builds a separate one via
+      # the existing `dev` lane.
+      - name: Build development-signed IPA (for Test Lab)
+        if: github.event.inputs.run_robo_test == 'true'
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ vars.MATCH_GIT_URL }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          FASTLANE_USER: ${{ vars.FASTLANE_USER }}
+          OPENSSL_CONF: /dev/null
+        working-directory: ios
+        run: bundle exec fastlane dev
+
+      - name: Run Firebase Test Lab Robo test
+        if: github.event.inputs.run_robo_test == 'true'
+        env:
+          ROBO_TEST_USERNAME: ${{ secrets.ROBO_TEST_USERNAME }}
+          ROBO_TEST_PASSWORD: ${{ secrets.ROBO_TEST_PASSWORD }}
+          # Same placeholder-substitution convention as the Android step —
+          # set once the login screen's Robo-visible field identifiers are
+          # known, e.g. "text:Email=ROBO_TEST_USERNAME,text:Password=ROBO_TEST_PASSWORD".
+          ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
+        run: |
+          set -euo pipefail
+          ipa_path=$(find ios -maxdepth 2 -name '*.ipa' -print -quit)
+          if [ -z "$ipa_path" ]; then
+            echo "No .ipa found under ios/ after the 'dev' fastlane lane — check the build step above."
+            exit 1
+          fi
+
+          directive_args=()
+          if [ -n "$ROBO_DIRECTIVES_TEMPLATE" ]; then
+            resolved_directives=$(printf '%s' "$ROBO_DIRECTIVES_TEMPLATE" \
+              | sed "s/ROBO_TEST_USERNAME/${ROBO_TEST_USERNAME}/g; s/ROBO_TEST_PASSWORD/${ROBO_TEST_PASSWORD}/g")
+            directive_args=(--robo-directives "$resolved_directives")
+          fi
+
+          # `gcloud firebase test ios models list` shows current device/version
+          # options — iphone8plus is Google's own example and a safe starting point.
+          gcloud firebase test ios run \
+            --type robo \
+            --app "$ipa_path" \
+            --device model=iphone8plus,version=17.0,locale=en_US,orientation=portrait \
+            --timeout 5m \
+            --project "${{ vars.FIREBASE_PROJECT_ID }}" \
+            "${directive_args[@]}"
+
       - name: Build iOS app for beta (TestFlight)
         if: env.BUILD_ENVIRONMENT == 'beta'
         env:
