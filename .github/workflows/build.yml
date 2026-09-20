@@ -20,6 +20,11 @@ on:
         options:
           - beta
           - release
+      run_robo_test:
+        description: 'Run Firebase Test Lab Robo test before deploying (Android only)'
+        required: true
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths:
@@ -314,6 +319,63 @@ jobs:
 
       - name: Verify build output
         run: ls -la build/app/outputs/bundle/release/*.aab
+
+      - name: Authenticate to Google Cloud (Firebase Test Lab)
+        if: github.event.inputs.run_robo_test == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_TEST_LAB_SA_JSON }}
+
+      - name: Setup gcloud CLI
+        if: github.event.inputs.run_robo_test == 'true'
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Download bundletool
+        if: github.event.inputs.run_robo_test == 'true'
+        run: |
+          curl -sSL -o bundletool.jar \
+            https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
+
+      - name: Build installable APK from app bundle (for Test Lab)
+        if: github.event.inputs.run_robo_test == 'true'
+        run: |
+          java -jar bundletool.jar build-apks \
+            --bundle=build/app/outputs/bundle/release/app-release.aab \
+            --output=app.apks \
+            --mode=universal \
+            --ks="$KEYSTORE_FILE" \
+            --ks-pass=pass:"$KEYSTORE_PASSWORD" \
+            --ks-key-alias="$KEY_ALIAS" \
+            --key-pass=pass:"$KEY_PASSWORD"
+          unzip -p app.apks universal.apk > app-universal.apk
+        env:
+          KEYSTORE_FILE: ${{ github.workspace }}/android/app/keystore.jks
+
+      - name: Run Firebase Test Lab Robo test
+        if: github.event.inputs.run_robo_test == 'true'
+        env:
+          ROBO_TEST_USERNAME: ${{ secrets.ROBO_TEST_USERNAME }}
+          ROBO_TEST_PASSWORD: ${{ secrets.ROBO_TEST_PASSWORD }}
+          # Set once the login screen's Robo-visible field labels are known, e.g.
+          # "text:Email=ROBO_TEST_USERNAME,text:Password=ROBO_TEST_PASSWORD" — the
+          # ROBO_TEST_USERNAME/ROBO_TEST_PASSWORD placeholders are substituted with
+          # the real secret values below before being passed to gcloud.
+          ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
+        run: |
+          set -euo pipefail
+          directive_args=()
+          if [ -n "$ROBO_DIRECTIVES_TEMPLATE" ]; then
+            resolved_directives=$(printf '%s' "$ROBO_DIRECTIVES_TEMPLATE" \
+              | sed "s/ROBO_TEST_USERNAME/${ROBO_TEST_USERNAME}/g; s/ROBO_TEST_PASSWORD/${ROBO_TEST_PASSWORD}/g")
+            directive_args=(--robo-directives "$resolved_directives")
+          fi
+          gcloud firebase test android run \
+            --type robo \
+            --app app-universal.apk \
+            --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait \
+            --timeout 5m \
+            --project "${{ vars.FIREBASE_PROJECT_ID }}" \
+            "${directive_args[@]}"
 
       - name: Deploy to Google Play Internal Testing (beta)
         if: env.BUILD_ENVIRONMENT == 'beta'
