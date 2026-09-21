@@ -162,6 +162,10 @@ jobs:
           # set once the login screen's Robo-visible field identifiers are
           # known, e.g. "text:Email=ROBO_TEST_USERNAME,text:Password=ROBO_TEST_PASSWORD".
           ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
+          # Falls back to the known project id below if the FIREBASE_PROJECT_ID
+          # repo/environment var isn't set — Test Lab vars are easy to add at
+          # the wrong scope (repo-level vs. this job's environment).
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
         run: |
           set -euo pipefail
           ipa_path=$(find ios -maxdepth 2 -name '*.ipa' -print -quit)
@@ -184,7 +188,7 @@ jobs:
             --app "$ipa_path" \
             --device model=iphone8plus,version=17.0,locale=en_US,orientation=portrait \
             --timeout 5m \
-            --project "${{ vars.FIREBASE_PROJECT_ID }}" \
+            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}" \
             "${directive_args[@]}"
 
       - name: Build iOS app for beta (TestFlight)
@@ -428,6 +432,10 @@ jobs:
           # ROBO_TEST_USERNAME/ROBO_TEST_PASSWORD placeholders are substituted with
           # the real secret values below before being passed to gcloud.
           ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
+          # Falls back to the known project id below if the FIREBASE_PROJECT_ID
+          # repo/environment var isn't set — Test Lab vars are easy to add at
+          # the wrong scope (repo-level vs. this job's environment).
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
         run: |
           set -euo pipefail
           directive_args=()
@@ -441,7 +449,7 @@ jobs:
             --app app-universal.apk \
             --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait \
             --timeout 5m \
-            --project "${{ vars.FIREBASE_PROJECT_ID }}" \
+            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}" \
             "${directive_args[@]}"
 
       - name: Deploy to Google Play Internal Testing (beta)
