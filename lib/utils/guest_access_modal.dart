@@ -136,22 +136,31 @@ class _GuestAccessDialog extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: TextButton(
-                onPressed: () {
-                  Get.back();
-                  onContinueAsGuest?.call();
-                },
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              child: Semantics(
+                // Exposed as the Android resource-id / iOS accessibility
+                // identifier so UI automation (Firebase Test Lab Robo
+                // directives) can target this button without matching on
+                // its display text, which Robo's resource-name matcher
+                // rejects because it contains spaces.
+                identifier: 'continue_as_guest_button',
+                button: true,
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                    onContinueAsGuest?.call();
+                  },
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  "Continue as Guest",
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                  child: const Text(
+                    "Continue as Guest",
+                    style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
