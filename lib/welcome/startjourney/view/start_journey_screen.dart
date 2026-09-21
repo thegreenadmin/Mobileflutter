@@ -81,17 +81,26 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
               bottom: 60,
               child: Column(
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      _browseAsGuest();
-                    },
-                    child: Text(
-                      StringConstants.continueAsGuestText,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w400,
-                        decoration: TextDecoration.underline,
+                  Semantics(
+                    // Exposed as the Android resource-id / iOS accessibility
+                    // identifier so Firebase Test Lab's Robo test can target
+                    // this button (--robo-directives click:browse_as_guest_button=)
+                    // without matching on its display text, which Robo's
+                    // resource-name matcher rejects because it contains spaces.
+                    identifier: 'browse_as_guest_button',
+                    button: true,
+                    child: TextButton(
+                      onPressed: () {
+                        _browseAsGuest();
+                      },
+                      child: Text(
+                        StringConstants.continueAsGuestText,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
