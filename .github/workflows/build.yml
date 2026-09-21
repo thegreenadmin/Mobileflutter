@@ -307,6 +307,12 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # Google has removed the legacy 'tools' meta-package from the SDK
+          # repository manifest, so the action's default package list fails
+          # with "Failed to find package 'tools'". platforms/build-tools are
+          # installed explicitly in the next step.
+          packages: 'platform-tools'
 
       - name: Install required Android SDK components
         run: |
