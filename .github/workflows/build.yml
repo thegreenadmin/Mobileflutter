@@ -153,18 +153,13 @@ jobs:
         working-directory: ios
         run: bundle exec fastlane dev
 
-      - name: Run Firebase Test Lab Robo test
+      # Undirected crash-hunting smoke test — see the equivalent Android step
+      # in build-android for why this doesn't attempt --robo-directives
+      # (Flutter's semantics tree isn't reliably exposed to the resource-name
+      # matcher directives depend on). Robo for iOS+ is also still beta.
+      - name: Run Firebase Test Lab Robo test (undirected crash smoke test)
         if: github.event.inputs.run_robo_test == 'true'
         env:
-          ROBO_TEST_USERNAME: ${{ secrets.ROBO_TEST_USERNAME }}
-          ROBO_TEST_PASSWORD: ${{ secrets.ROBO_TEST_PASSWORD }}
-          # Same placeholder-substitution convention as the Android step —
-          # set once the login screen's Robo-visible field identifiers are
-          # known, e.g. "text:Email=ROBO_TEST_USERNAME,text:Password=ROBO_TEST_PASSWORD".
-          ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
-          # Falls back to the known project id below if the FIREBASE_PROJECT_ID
-          # repo/environment var isn't set — Test Lab vars are easy to add at
-          # the wrong scope (repo-level vs. this job's environment).
           FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
         run: |
           set -euo pipefail
@@ -174,13 +169,6 @@ jobs:
             exit 1
           fi
 
-          directive_args=()
-          if [ -n "$ROBO_DIRECTIVES_TEMPLATE" ]; then
-            resolved_directives=$(printf '%s' "$ROBO_DIRECTIVES_TEMPLATE" \
-              | sed "s/ROBO_TEST_USERNAME/${ROBO_TEST_USERNAME}/g; s/ROBO_TEST_PASSWORD/${ROBO_TEST_PASSWORD}/g")
-            directive_args=(--robo-directives "$resolved_directives")
-          fi
-
           # `gcloud firebase test ios models list` shows current device/version
           # options — iphone8plus is Google's own example and a safe starting point.
           gcloud firebase test ios run \
@@ -188,8 +176,7 @@ jobs:
             --app "$ipa_path" \
             --device model=iphone8plus,version=17.0,locale=en_US,orientation=portrait \
             --timeout 5m \
-            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}" \
-            "${directive_args[@]}"
+            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}"
 
       - name: Build iOS app for beta (TestFlight)
         if: env.BUILD_ENVIRONMENT == 'beta'
@@ -422,35 +409,57 @@ jobs:
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/android/app/keystore.jks
 
-      - name: Run Firebase Test Lab Robo test
+      # Undirected crash-hunting smoke test. Firebase Test Lab's Robo crawler
+      # does not reliably steer Flutter apps to a specific widget by
+      # resource-id — Flutter's semantics tree isn't exposed to Android's
+      # accessibility bridge the way --robo-directives' resource-name matcher
+      # expects (confirmed by repeated "no resource name matched" results
+      # even with Semantics(identifier: ...) on the target buttons; see
+      # firebase.google.com/docs/test-lab/flutter/integration-testing-with-flutter).
+      # So this step no longer attempts directives — it just crawls whatever
+      # it can reach and flags crashes. Deterministic, meaningful coverage of
+      # the guest flow lives in the instrumentation test step below instead.
+      - name: Run Firebase Test Lab Robo test (undirected crash smoke test)
         if: github.event.inputs.run_robo_test == 'true'
         env:
-          ROBO_TEST_USERNAME: ${{ secrets.ROBO_TEST_USERNAME }}
-          ROBO_TEST_PASSWORD: ${{ secrets.ROBO_TEST_PASSWORD }}
-          # Set once the login screen's Robo-visible field labels are known, e.g.
-          # "text:Email=ROBO_TEST_USERNAME,text:Password=ROBO_TEST_PASSWORD" — the
-          # ROBO_TEST_USERNAME/ROBO_TEST_PASSWORD placeholders are substituted with
-          # the real secret values below before being passed to gcloud.
-          ROBO_DIRECTIVES_TEMPLATE: ${{ vars.ROBO_DIRECTIVES_TEMPLATE }}
-          # Falls back to the known project id below if the FIREBASE_PROJECT_ID
-          # repo/environment var isn't set — Test Lab vars are easy to add at
-          # the wrong scope (repo-level vs. this job's environment).
           FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
         run: |
           set -euo pipefail
-          directive_args=()
-          if [ -n "$ROBO_DIRECTIVES_TEMPLATE" ]; then
-            resolved_directives=$(printf '%s' "$ROBO_DIRECTIVES_TEMPLATE" \
-              | sed "s/ROBO_TEST_USERNAME/${ROBO_TEST_USERNAME}/g; s/ROBO_TEST_PASSWORD/${ROBO_TEST_PASSWORD}/g")
-            directive_args=(--robo-directives "$resolved_directives")
-          fi
           gcloud firebase test android run \
             --type robo \
             --app app-universal.apk \
             --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait \
             --timeout 5m \
-            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}" \
-            "${directive_args[@]}"
+            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}"
+
+      # Deterministic coverage of the guest flow via Flutter's own
+      # integration_test package (integration_test/app_test.dart), compiled
+      # to an Espresso instrumentation test and run on a real Test Lab
+      # device. This drives the app through Flutter's widget tree directly
+      # (WidgetTester), sidestepping the Robo/accessibility-bridge gap above.
+      - name: Build instrumentation test APKs
+        if: github.event.inputs.run_robo_test == 'true'
+        run: |
+          set -euo pipefail
+          flutter build apk --target=integration_test/app_test.dart
+          pushd android
+          ./gradlew app:assembleAndroidTest
+          ./gradlew app:assembleDebug -Ptarget=integration_test/app_test.dart
+          popd
+
+      - name: Run Firebase Test Lab instrumentation test (guest flow)
+        if: github.event.inputs.run_robo_test == 'true'
+        env:
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          gcloud firebase test android run \
+            --type instrumentation \
+            --app build/app/outputs/apk/debug/app-debug.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait \
+            --timeout 5m \
+            --project "${FIREBASE_PROJECT_ID:-thegreenmall-6d910}"
 
       - name: Deploy to Google Play Internal Testing (beta)
         if: env.BUILD_ENVIRONMENT == 'beta'
