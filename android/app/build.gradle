@@ -96,6 +96,13 @@ android {
         ndk {
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
         }
+
+        // Required for `flutter test integration_test/` and Firebase Test
+        // Lab's --type instrumentation: without this, the built androidTest
+        // APK has no declared instrumentation runner and Test Lab reports
+        // "A non-retryable error occurred" / "Test failed to run" instead of
+        // actually launching the app.
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
