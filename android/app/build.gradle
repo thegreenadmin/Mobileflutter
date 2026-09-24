@@ -147,4 +147,11 @@ dependencies {
     // 0.5.x) already targets 8.0.0; this explicit pin guards against any transitive
     // dependency reintroducing an older billing client.
     implementation "com.android.billingclient:billing:8.0.0"
+
+    // Required for the androidTest MainActivityTest JUnit bridge that lets
+    // Firebase Test Lab / AndroidJUnitRunner discover and run
+    // integration_test/app_test.dart.
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
