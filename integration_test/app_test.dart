@@ -21,8 +21,20 @@ void main() {
   testWidgets('guest entry reaches the app home screen', (tester) async {
     app.main();
 
+    // pumpAndSettle's default `timeout` is 10 minutes — well past gcloud's
+    // own --timeout on the instrumentation run, so a genuine hang here
+    // (e.g. a spinner tied to a network call that never resolves) would
+    // previously surface as an opaque Test-Lab-level "Test timed out"
+    // instead of a readable Dart assertion. Bound it explicitly so a real
+    // hang fails fast with an actionable error.
+    const settleTimeout = Duration(seconds: 30);
+
     // Splash screen holds for a fixed 3s before routing to StartJourneyScreen.
-    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      settleTimeout,
+    );
 
     final guestButton = find.text(StringConstants.continueAsGuestText);
     expect(
@@ -32,7 +44,11 @@ void main() {
     );
 
     await tester.tap(guestButton);
-    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      settleTimeout,
+    );
 
     expect(
       find.byType(BottomNavigation),
