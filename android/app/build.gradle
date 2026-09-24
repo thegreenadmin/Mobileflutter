@@ -150,8 +150,12 @@ dependencies {
 
     // Required for the androidTest MainActivityTest JUnit bridge that lets
     // Firebase Test Lab / AndroidJUnitRunner discover and run
-    // integration_test/app_test.dart.
+    // integration_test/app_test.dart. Pinned to exactly the versions
+    // Flutter's own integration_test package constrains via Gradle
+    // consistent resolution — a newer runner/espresso-core fails
+    // ':app:checkDebugAndroidTestAarMetadata' with "Cannot find a version
+    // that satisfies the version constraints ... strictly 1.2.0/3.2.0".
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.6.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
