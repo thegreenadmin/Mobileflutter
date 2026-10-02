@@ -130,7 +130,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
             ignoring: false, // tap blocked only when loading
                 child: Container(
                               color: Colors.black.withOpacity(0.2),
-                              child: const Center(
+                              child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                               ),),
               )
@@ -232,7 +232,7 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
                                       StringConstants.storeTypeLabel(
                                           ownerStoresController
                                               .storeTypeValue.value),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.primary,
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600),

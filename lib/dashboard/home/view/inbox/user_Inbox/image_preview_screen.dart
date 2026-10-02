@@ -48,7 +48,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> with GlobalVarM
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.arrow_back,
                                     color: AppColors.black,
                                     size: 24.0,
@@ -57,7 +57,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> with GlobalVarM
                                 width10SizedBox,
                                 Text(
                                   StringConstants.imageText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 22,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),

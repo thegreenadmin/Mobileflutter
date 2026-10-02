@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 import '../../model/user_offers_model.dart';
 import 'edit_product_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class MyStoreScreen extends StatefulWidget {
   const MyStoreScreen({super.key});
@@ -71,7 +72,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
           ? height0SizedBox
           : Text(
               StringConstants.featuredProductsText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 18),
@@ -192,7 +193,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
           children: [
             Text(
               storeProduct.productName ?? "", maxLines: 1,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w600),
@@ -218,8 +219,8 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                 ? height0SizedBox
                 : height4SizedBox,
             Text(
-              "\$${storeProduct.productPrice!.toStringAsFixed(2)}", maxLines: 1,
-              style: const TextStyle(
+              "$currencySign${storeProduct.productPrice!.toStringAsFixed(2)}", maxLines: 1,
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.w600),
@@ -239,12 +240,12 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
+                BrandImage.asset(
                   ImageConstants.greenmall420,
                 ),
                 Text(
                   StringConstants.yourWellnessMarketPlace,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 20,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w500,
@@ -357,7 +358,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
                   Text(
                     item.offerName ??
                         "",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: 14),
@@ -380,7 +381,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
         children: [
 
           Center(
-            child: Image.asset(
+            child: BrandImage.asset(
               ImageConstants.nodata,
               scale: 8,
               color: AppColors.primary,
@@ -395,7 +396,7 @@ class _MyStoreScreenState extends State<MyStoreScreen> with GlobalVarMixin{
           ),
           height30SizedBox,
           CustomButton(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [AppColors.primary, AppColors.primary],

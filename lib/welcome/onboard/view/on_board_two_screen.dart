@@ -3,6 +3,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OnBoardTwo extends StatefulWidget {
   const OnBoardTwo({super.key});
@@ -39,7 +40,7 @@ class OnBoardTwoState extends State<OnBoardTwo> {
                     Container(
                         padding: const EdgeInsets.only(top: 0),
                         height: WidgetConstants.screenHeight * 0.40,
-                        child: Image.asset(ImageConstants.onBoardTwo)),
+                        child: BrandImage.asset(ImageConstants.onBoardTwo)),
                     height20SizedBox,
                     Text.rich(
                       TextSpan(
@@ -51,7 +52,7 @@ class OnBoardTwoState extends State<OnBoardTwo> {
                           TextSpan(
                             text:
                                 " ${StringConstants.productText.toLowerCase()}",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 24,
                                 color: AppColors.primary),

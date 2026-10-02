@@ -55,7 +55,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                 children: [
                                   Text(
                                     StringConstants.storeDetailsText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20),
@@ -166,7 +166,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Text(StringConstants.uploadStoreLogoText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500)),
@@ -290,7 +290,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -321,7 +321,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -336,7 +336,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                   height20SizedBox,
                                   Text(
                                     StringConstants.nickNameText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -357,7 +357,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -385,7 +385,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -409,7 +409,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                       FilteringTextInputFormatter.digitsOnly,
                                     ],
                                     keyboardType: TextInputType.phone,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 15,
                                         fontWeight: FontWeight.w400),
@@ -426,14 +426,14 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           color: AppColors.blackLight, fontSize: 15),
                                       border: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       errorBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
@@ -447,7 +447,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                       ),
                                       focusedBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
@@ -470,7 +470,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                   height20SizedBox,
                                   Text(
                                     StringConstants.addressText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20),
@@ -516,7 +516,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor:  AppColors.transparent,
-                                      errorStyle: const TextStyle(color: AppColors.red),
+                                      errorStyle: TextStyle(color: AppColors.red),
                                       errorMaxLines: 3,
                                       errorBorder:  CommonWidgets.underlineInputBorder(
                                           borderRadius:  0.0,
@@ -549,7 +549,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           color:  AppColors.primary),
                                     ),
                                     // textCapitalization: TextCapitalization.words,
-                                    textStyle: const TextStyle(
+                                    textStyle: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -638,7 +638,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                   height20SizedBox,
                                   Text(
                                     StringConstants.addressLine2Text,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.black,
@@ -661,7 +661,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -687,7 +687,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -718,7 +718,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -746,7 +746,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -777,7 +777,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -792,7 +792,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
 
                                   Text(
                                     StringConstants.storeTimingText,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20),
@@ -826,7 +826,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           Text(
                                             StringConstants.customTimeText,
                                             overflow: TextOverflow.visible,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400),
@@ -873,7 +873,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                           Text(
                                             StringConstants.twentyFourSevenText,
                                             overflow: TextOverflow.visible,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400),
@@ -915,7 +915,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                                               data:
                                                                   ThemeData.light().copyWith(
                                                                 colorScheme:
-                                                                    const ColorScheme.light(
+                                                                    ColorScheme.light(
                                                                         primary: AppColors
                                                                             .primary),
                                                                 buttonTheme:
@@ -1047,7 +1047,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                                           AutovalidateMode.onUserInteraction,
                                                       textCapitalization:
                                                           TextCapitalization.words,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           color: AppColors.black,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w400),
@@ -1097,7 +1097,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                                               data:
                                                                   ThemeData.light().copyWith(
                                                                 colorScheme:
-                                                                    const ColorScheme.light(
+                                                                    ColorScheme.light(
                                                                         primary: AppColors
                                                                             .primary),
                                                                 buttonTheme:
@@ -1228,7 +1228,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                                           AutovalidateMode.onUserInteraction,
                                                       textCapitalization:
                                                           TextCapitalization.words,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           color: AppColors.black,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w400),
@@ -1492,7 +1492,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -1535,7 +1535,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         const TextStyle(color: AppColors.grey, fontSize: 14),
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textCapitalization: TextCapitalization.words,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400),
@@ -1561,7 +1561,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                         children: [
                                           Text(
                                             StringConstants.enableStoreText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
                                               color: AppColors.black,
@@ -1591,7 +1591,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                                   ),
                                   height40SizedBox,
                                   CustomButton(
-                                    gradient: const LinearGradient(
+                                    gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [AppColors.primary, AppColors.primary],
@@ -1629,7 +1629,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
           return ownerStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -1662,7 +1662,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -1671,7 +1671,7 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
                         width10SizedBox,
                         Text(
                           StringConstants.editStoreText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
@@ -1687,13 +1687,13 @@ class _EditStoreDetailScreenState extends State<EditStoreDetailScreen> with Glob
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

@@ -92,7 +92,7 @@ class Utility {
               height12SizedBox,
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -105,7 +105,7 @@ class Utility {
                     height15SizedBox,
                     Text(
                       description,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           height: 1.6,
@@ -134,7 +134,7 @@ class Utility {
                       child: Center(
                         child: Text(
                           cancelText ?? StringConstants.cancelText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
                               color: AppColors.primary),
@@ -223,7 +223,7 @@ class Utility {
               visible: title != null,
               child: Text(
                 title ?? "",
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -280,11 +280,11 @@ class Utility {
     return await Get.dialog(AlertDialog(
       title: Text(
         StringConstants.alertText,
-        style: const TextStyle(color: AppColors.primary, fontSize: 20),
+        style: TextStyle(color: AppColors.primary, fontSize: 20),
       ),
       content: Text(
         message,
-        style: const TextStyle(
+        style: TextStyle(
           color: AppColors.black,
           fontSize: 18,
         ),
@@ -452,13 +452,13 @@ class Utility {
         return AlertDialog(
           title: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: AppColors.black,
                 fontSize: 20),
           ),
           content: Text(description,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w400,
                   color: AppColors.black,
                   fontSize: 20)),
@@ -499,7 +499,7 @@ class Utility {
                     Get.back();
                     // Navigator.pop(contextt);
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.clear,
                     color: AppColors.primary,
                     size: 24.0,
@@ -508,7 +508,7 @@ class Utility {
               ),
               title: Text(
                 StringConstants.fromWherePhotoText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w500),
@@ -519,14 +519,14 @@ class Utility {
                     InkWell(
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.image_sharp,
                             color: AppColors.primary,
                             size: 24.0,
                           ),
                           width10SizedBox,
                           Text(StringConstants.galleryText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary, fontSize: 16)),
                         ],
                       ),
@@ -539,14 +539,14 @@ class Utility {
                     InkWell(
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.camera_alt,
                             color: AppColors.primary,
                             size: 24.0,
                           ),
                           width10SizedBox,
                           Text(StringConstants.cameraText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary, fontSize: 16)),
                         ],
                       ),

@@ -3,6 +3,7 @@ import 'package:thegreenmall/utils/app_colors.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OnBoardFour extends StatefulWidget {
   const OnBoardFour({super.key});
@@ -42,7 +43,7 @@ class OnBoardFourState extends State<OnBoardFour> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Image.asset(ImageConstants.onBoardFour),
+                            BrandImage.asset(ImageConstants.onBoardFour),
                             Positioned(
                               right: 90,
                               bottom: 90,
@@ -66,7 +67,7 @@ class OnBoardFourState extends State<OnBoardFour> {
                           TextSpan(
                             text:
                                 " ${StringConstants.productText.toLowerCase()}",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 24,
                                 color: AppColors.primary),

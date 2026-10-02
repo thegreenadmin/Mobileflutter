@@ -18,6 +18,7 @@ import 'package:thegreenmall/provider/user_provider.dart';
 import 'package:thegreenmall/push_notifications/push_notifications.dart';
 import 'package:thegreenmall/push_notifications/device_token_service.dart';
 import 'package:thegreenmall/splash_screen.dart';
+import 'package:thegreenmall/utils/app_gate.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:thegreenmall/utils/app_logger.dart';
 import 'package:thegreenmall/utils/navigation_observer.dart';
@@ -35,6 +36,10 @@ Future<void> main() async {
   await dotenv.load(fileName: 'assets/env/api_key.env');
   await Firebase.initializeApp();
   await GetStorage.init();
+
+  // Admin-managed theme / branding / text from the last session, applied
+  // before the first frame; SplashScreen fetches the latest.
+  AppConfigService.loadCached();
 
   // ✅ Crashlytics — report crashes (including backend/database call
   // failures surfaced via AppLogger.error/fatal, see app_logger.dart) to
@@ -169,8 +174,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // ✅ Don’t clear storage blindly at startup (optional)
     clearData();
 
-    // Country feature flags (munchies/herbs/payments availability).
-    AppConfigService.refresh();
+    // Country feature flags + admin app config are fetched by SplashScreen
+    // (awaited there so the version / maintenance gates can run first).
 
     // Universal links (payment QR: https://thegreenmall.net/pay/<token>).
     DeepLinkService.init();
@@ -182,7 +187,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // Re-fetch on resume so an admin kill switch reaches live users without
     // an app restart.
     if (state == AppLifecycleState.resumed) {
-      AppConfigService.refresh();
+      AppConfigService.refresh().then((_) => AppGate.enforce());
     }
   }
 
@@ -211,7 +216,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: StringConstants.theGreenMallTitleText,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: StringConstants.interFamilyText,
+        fontFamily: AppConfig.current.fontFamily,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const SplashScreen(),

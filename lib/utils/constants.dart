@@ -714,6 +714,42 @@ class StringConstants {
   //Z
   static String zipCodeText = "Zip Code";
   static String zoneText = "Zone (State or Province)";
+  // Guest prompts
+  static String loginRequiredText = "Login Required";
+  static String exitAppConfirmText = "Click OK to exit the app.";
+  static String loginToAccessPreviousAndFavoriteStoresText = "Please login to access Previous and Favorite stores";
+  static String loginToAccessAccountSettingsText = "Please login to access account settings";
+  static String loginToAccessInboxText = "Please login to access inbox";
+  static String loginToAccessOrderHistoryText = "Please login to access order history";
+  static String loginToAccessThisFeatureText = "Please login to access this feature";
+  static String loginToAccessTransactionHistoryText = "Please login to access transaction history";
+  static String loginToAccessYourCartText = "Please login to access your cart";
+  static String loginToAddItemsToCartText = "Please login to add items to cart";
+  static String loginToAddProductsToFavouritesText = "Please login to add products to favourites";
+  static String loginToAddStoresToFavouritesText = "Please login to add stores to favourites";
+  static String loginToContactStoresText = "Please login to contact stores";
+  static String loginToManageFavouriteStoresText = "Please login to manage favourite stores";
+  static String loginToManageFavouritesText = "Please login to manage favourites";
+  static String loginToSendOrReceivePaymentsText = "Please login to send or receive payments";
+  static String loginToViewFavouriteProductsText = "Please login to view favourite products";
+  static String loginToViewFavouriteStoresText = "Please login to view favourite stores";
+  static String loginToViewNotificationsText = "Please login to view notifications";
+  static String loginToViewPreviousOrdersText = "Please login to view previous orders";
+  static String loginToViewPreviousStoresText = "Please login to view previous stores";
+
+  // App gates & support (driven by admin App behavior settings)
+  static String updateRequiredTitleText = "Update required";
+  static String updateRequiredMessageText =
+      "A new version of The Green Mall is available. Please update the app to continue.";
+  static String updateAvailableTitleText = "Update available";
+  static String updateAvailableMessageText =
+      "A new version of The Green Mall is available with the latest improvements.";
+  static String updateNowText = "Update now";
+  static String maintenanceTitleText = "We'll be right back";
+  static String tryAgainText = "Try again";
+  static String supportEmailText = "Email support";
+  static String supportPhoneText = "Call support";
+  static String followUsText = "Follow us";
 }
 
 //Bottom Tab bar

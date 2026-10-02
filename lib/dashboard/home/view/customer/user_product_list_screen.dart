@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class UserProductListScreen extends StatefulWidget {
   const UserProductListScreen({super.key});
@@ -32,7 +33,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
               children: [
                 Text(
                   storeHomeMainController.categoryName.value,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                       color: AppColors.black),
@@ -64,7 +65,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                         children: [
                           SizedBox(height: WidgetConstants.screenHeight *0.09,),
                           Center(
-                            child: Image.asset(
+                            child: BrandImage.asset(
                               ImageConstants.nodata,
                               scale: 8,
                               color: AppColors.primary,
@@ -197,7 +198,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                             height: 148,
                                             width: 148,
                                           )
-                                        : Image.asset(
+                                        : BrandImage.asset(
                                             ImageConstants.defaultProduct,
                                             fit: BoxFit.fill,
                                             height: 148,
@@ -218,8 +219,8 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                                 // Check if user is guest - show modal and prevent state change
                                                 if (isGuest.value == true) {
                                                   GuestAccessModal.show(
-                                                    title: "Login Required",
-                                                    message: "Please login to manage favourites",
+                                                    title: StringConstants.loginRequiredText,
+                                                    message: StringConstants.loginToManageFavouritesText,
                                                     onContinueAsGuest: () {
                                                       // Allow guest to continue - just close modal
                                                     },
@@ -251,8 +252,8 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                                 // Check if user is guest - show modal and prevent state change
                                                 if (isGuest.value == true) {
                                                   GuestAccessModal.show(
-                                                    title: "Login Required",
-                                                    message: "Please login to add products to favourites",
+                                                    title: StringConstants.loginRequiredText,
+                                                    message: StringConstants.loginToAddProductsToFavouritesText,
                                                     onContinueAsGuest: () {
                                                       // Allow guest to continue - just close modal
                                                     },
@@ -294,7 +295,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                             .productName ??
                                         "",
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
@@ -329,8 +330,8 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                                       ? height0SizedBox
                                       : height4SizedBox,
                                   Text(
-                                    "${StringConstants.unitPriceText}: \$${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
-                                    style: const TextStyle(
+                                    "${StringConstants.unitPriceText}: $currencySign${storeHomeMainController.featureProductList[i].productPrice ?? ""}",
+                                    style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600),
@@ -367,7 +368,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
                     children: [
                       Text(
                         "${StringConstants.priceText} ${StringConstants.lowToHighText.toLowerCase()}",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontFamily: "",
                             fontSize: 16),
@@ -398,7 +399,7 @@ class _UserProductListScreenState extends State<UserProductListScreen>  with Glo
               children: [
                 Text(
                   "${StringConstants.priceText} ${StringConstants.highToLowText.toLowerCase()}",
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black, fontFamily: "", fontSize: 16),
                 ),
               ],

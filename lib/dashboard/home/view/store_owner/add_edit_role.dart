@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/add_new_role_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddNewRoleScreen extends StatefulWidget {
   final bool isEdit;
@@ -45,7 +46,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                               height20SizedBox,
                               Text(
                                 StringConstants.roleText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -56,13 +57,13 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                                   children: [
                                     TextSpan(
                                         text: StringConstants.roleNameText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
                                     TextSpan(
                                       text: StringConstants.starText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -112,7 +113,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                               height20SizedBox,
                               Text(
                                 StringConstants.permissionsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -132,7 +133,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                         border: Border.all(
                           color: AppColors.primary,
                         ),
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
@@ -169,7 +170,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
           return addNewRoleController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -349,7 +350,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
           CrossAxisAlignment.center,
       children: [
         Center(
-          child: Image.asset(
+          child: BrandImage.asset(
             ImageConstants.nodata,
             scale: 8,
             color: AppColors.primary,
@@ -393,7 +394,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -402,7 +403,7 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> with GlobalVarMixin
                         width10SizedBox,
                         Text( widget.isEdit ? StringConstants.updateRoleText:
                           StringConstants.addRoleText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),

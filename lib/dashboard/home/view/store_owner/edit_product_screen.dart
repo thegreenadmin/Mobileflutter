@@ -82,7 +82,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               manageStoreController.imageUrlList.clear();
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -94,7 +94,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                 child: Text(
                                   widget.categoryName??"",
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 22,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w600),
@@ -130,7 +130,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                     : Column(
                                         children: [
                                           Text(StringConstants.uploadProductPhotosText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400)),
@@ -209,7 +209,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                                   .status = "deleted";
                                                               setState(() {});
                                                             },
-                                                            child: const Padding(
+                                                            child: Padding(
                                                               padding:
                                                                   EdgeInsets.all(2),
                                                               child: Icon(
@@ -281,7 +281,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                 Text(
                                                     StringConstants
                                                         .uploadProductPhotosText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w500)),
@@ -289,7 +289,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                 Text(
                                                     StringConstants
                                                         .theImageMustBeAtLeastText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontSize: 12,
                                                         fontWeight: FontWeight.w400)),
@@ -463,21 +463,21 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                             ),
                                             border: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
                                             ),
                                             errorBorder: UnderlineInputBorder(
                                               borderRadius: BorderRadius.circular(5.0),
-                                              borderSide: const BorderSide(
+                                              borderSide: BorderSide(
                                                 color: AppColors.primary,
                                                 width: 1.0,
                                               ),
@@ -494,7 +494,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                               value: value.quantityTypeId,
                                               child: Text(
                                                 value.quantityTypeName,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w500),
@@ -567,7 +567,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               height20SizedBox,
                               Text(
                                 StringConstants.shortDescriptionText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -589,7 +589,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               height20SizedBox,
                               Text(
                                 StringConstants.contentsAndStrainsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -612,7 +612,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               height20SizedBox,
                               Text(
                                 StringConstants.additionalLinksToResearchText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -637,7 +637,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               height20SizedBox,
                               Text(
                                 StringConstants.discountsOrOffersText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -668,7 +668,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                   border: UnderlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(5.0),
-                                                    borderSide: const BorderSide(
+                                                    borderSide: BorderSide(
                                                       color: AppColors.primary,
                                                       width: 1.0,
                                                     ),
@@ -676,7 +676,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                   focusedBorder: UnderlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(5.0),
-                                                    borderSide: const BorderSide(
+                                                    borderSide: BorderSide(
                                                       color: AppColors.primary,
                                                       width: 1.0,
                                                     ),
@@ -684,7 +684,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                   errorBorder: UnderlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(5.0),
-                                                    borderSide: const BorderSide(
+                                                    borderSide: BorderSide(
                                                       color: AppColors.primary,
                                                       width: 1.0,
                                                     ),
@@ -702,7 +702,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                   value: value,
                                                   child: Text(
                                                     value,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontSize: 16,
                                                         fontWeight: FontWeight.w500),
@@ -802,21 +802,21 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                         ),
                                         border: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
                                         ),
                                         errorBorder: UnderlineInputBorder(
                                           borderRadius: BorderRadius.circular(5.0),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             color: AppColors.primary,
                                             width: 1.0,
                                           ),
@@ -833,7 +833,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                           value: value,
                                           child: Text(
                                             value,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500),
@@ -1031,7 +1031,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                     border: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -1039,7 +1039,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                     focusedBorder: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -1047,7 +1047,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                     errorBorder: UnderlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(5.0),
-                                                      borderSide: const BorderSide(
+                                                      borderSide: BorderSide(
                                                         color: AppColors.primary,
                                                         width: 1.0,
                                                       ),
@@ -1066,7 +1066,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                                       value: value,
                                                       child: Text(
                                                         value,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: AppColors.black,
                                                             fontSize: 16,
                                                             fontWeight:
@@ -1146,7 +1146,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                                     children: [
                                       Text(
                                         StringConstants.enableProductText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                           color: AppColors.black,
@@ -1176,7 +1176,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
                               ),
                               height40SizedBox,
                               CustomButton(
-                                gradient: const LinearGradient(
+                                gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [AppColors.primary, AppColors.primary],
@@ -1208,7 +1208,7 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
           return manageStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -1223,13 +1223,13 @@ class _EditProductScreenState extends State<EditProductScreen> with GlobalVarMix
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

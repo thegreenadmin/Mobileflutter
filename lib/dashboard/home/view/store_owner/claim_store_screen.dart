@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class ClaimStoreScreen extends StatefulWidget {
   const ClaimStoreScreen({super.key});
@@ -48,7 +49,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                             onPressed: () {
                               Get.back(id: pageIdApp.value);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.black,
                               size: 24.0,
@@ -57,7 +58,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                           width10SizedBox,
                           Text(
                             StringConstants.claimStoreText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w500),
@@ -90,7 +91,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Center(
-                                        child: Image.asset(
+                                        child: BrandImage.asset(
                                           ImageConstants.nodata,
                                           scale: 8,
                                           color: AppColors.primary,
@@ -123,7 +124,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
           return ownerStoresController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -169,7 +170,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                       color: AppColors.primaryLight,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(8.0),
@@ -221,7 +222,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                           .store!
                                                           .storeName ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16.0,
                                                       color: AppColors.black,
                                                       fontWeight:
@@ -294,7 +295,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                                         index]
                                                                     .city ??
                                                                 "",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color:
                                                                     AppColors
                                                                         .black,
@@ -328,7 +329,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                                           child: Text(
                                                             ownerStoresController.unclaimedStoreList[index]
                                                                     .state!.stateName ?? "",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color: AppColors.black,
                                                                 fontWeight: FontWeight.w600, fontSize: 12),
                                                           ),
@@ -365,7 +366,7 @@ class _ClaimStoreScreenState extends State<ClaimStoreScreen> with GlobalVarMixin
                                             padding: const EdgeInsets.fromLTRB(
                                                 8.0, 8.0, 8.0, 8.0),
                                             shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
+                                              side: BorderSide(
                                                   width: 1.0,
                                                   color: AppColors.primary),
                                               borderRadius:

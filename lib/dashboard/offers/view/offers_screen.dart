@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/offers/view/edit_offer_screen.dart';
 import 'package:thegreenmall/dashboard/offers/view/offer_products_screen.dart';
 import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OffersScreen extends StatefulWidget {
   final String? orderId;
@@ -83,7 +84,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
             return offersController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )
@@ -129,7 +130,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
               ? height0SizedBox
               : Text(
             StringConstants.activeOffersText,
-            style: const TextStyle(
+            style: TextStyle(
                 color: AppColors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 20),
@@ -137,7 +138,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
         ),
         Obx(() => isGuest.value ? const SizedBox.shrink() : Row(
           children: [
-            const Icon(
+            Icon(
               Icons.add,
               color: AppColors.primary,
               size: 18.0,
@@ -171,7 +172,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                         .notAuthorizedToStoreText);
               },
               child: Text(StringConstants.addNewOfferText,
-                  style: const TextStyle(
+                  style: TextStyle(
                       decoration: TextDecoration.underline,
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -205,7 +206,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
               return Dismissible(
                 background: Container(
                   color: AppColors.redLight,
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerRight,
                     child: Row(
                       mainAxisAlignment:
@@ -255,7 +256,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: const BoxDecoration(color: AppColors.greyLight,
+                  decoration: BoxDecoration(color: AppColors.greyLight,
                       borderRadius: BorderRadius.all(Radius.circular(10.0),)),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +284,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                       offersController.getOwnerOfferList[index].store?.storeName ?? "",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16.0,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.w600),
@@ -382,7 +383,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                             children: [
                                               Text(
                                                 offersController.getOwnerOfferList[index].offerName ?? "",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 16),
@@ -437,7 +438,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
               return Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10, vertical: 10),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     color: AppColors.greyLight,
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
@@ -477,7 +478,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                 .storeName ??
                                 "",
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.w600),
@@ -593,7 +594,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
                                               children: [
                                                 Text(
                                                   offersController.getUserOfferList[index].offers![i].offerName ?? "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500,
                                                       fontSize: 14),
@@ -631,7 +632,7 @@ class _OffersScreenState extends State<OffersScreen> with GlobalVarMixin {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Image.asset(
+          child: BrandImage.asset(
             ImageConstants.nodata,
             scale: 8,
             color: AppColors.primary,

@@ -84,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget _buildTitle() {
     return Text(
       StringConstants.createAccountText,
-      style: const TextStyle(
+      style: TextStyle(
         color: AppColors.primary,
         fontSize: 30,
         fontWeight: FontWeight.w600,
@@ -160,7 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
       controller: signupController.phoneNumberTextController,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.phone,
-      style: const TextStyle(color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w400),
+      style: TextStyle(color: AppColors.black, fontSize: 15, fontWeight: FontWeight.w400),
       showDropdownIcon: false,
       flagsButtonMargin: const EdgeInsets.all(10),
       textInputAction: TextInputAction.done,
@@ -285,7 +285,7 @@ class _SignupScreenState extends State<SignupScreen> {
   /// Signup Button
   Widget _buildSignupButton() {
     return CustomButton(
-      gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primary]),
+      gradient: LinearGradient(colors: [AppColors.primary, AppColors.primary]),
       onTap: () => signupController.validateAndSubmit(isFromOwner: widget.isFromOwner),
       height: 50,
       text: StringConstants.signUpText,
@@ -304,7 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
       child: Center(
         child: Text(
           StringConstants.loginYourAccountText,
-          style: const TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -315,7 +315,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Obx(() => signupController.isLoading.value
         ? Container(
       color: Colors.black.withOpacity(0.2),
-      child: const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+      child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
     )
         : const SizedBox.shrink());
   }

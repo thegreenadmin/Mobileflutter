@@ -141,7 +141,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen>
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 4),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.greyLight,
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
@@ -170,7 +170,7 @@ class _ManageStoreScreenState extends State<ManageStoreScreen>
                   width10SizedBox,
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16.0,
                       color: AppColors.black,
                       fontWeight: FontWeight.w500,

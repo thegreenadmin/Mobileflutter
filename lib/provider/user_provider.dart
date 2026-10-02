@@ -66,7 +66,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -126,7 +126,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -195,7 +195,7 @@ class UserProvider extends GetConnect {
     
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -270,7 +270,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -362,7 +362,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -442,7 +442,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }
@@ -522,7 +522,7 @@ class UserProvider extends GetConnect {
     }
         if (showLoading) {
           Get.dialog(
-              const Center(
+              Center(
                   child: CircularProgressIndicator(color: AppColors.primary)),
               barrierDismissible: false);
         }

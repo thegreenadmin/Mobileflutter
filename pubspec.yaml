@@ -43,6 +43,7 @@ dependencies:
 #  date_util: ^0.1.4
   intl_phone_field: ^3.1.0
   cached_network_image: ^3.3.1
+  package_info_plus: ^9.0.1
   fluttertoast: ^8.2.12
   carousel_slider: ^5.0.0
   video_player: ^2.7.2
@@ -180,6 +181,9 @@ flutter:
         weight: 100
       - asset: assets/Inter-Thin.ttf
         weight: 100
+  - family: Montaga
+    fonts:
+      - asset: assets/Montaga-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -708,7 +708,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                 contentType == "terms"
                     ? StringConstants.termsAndConditionsText
                     : StringConstants.privacyPolicyText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
@@ -743,7 +743,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                       child: Center(
                         child: Text(
                           StringConstants.okayText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 14.0,
                               color: AppColors.primary),
@@ -782,7 +782,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height12SizedBox,
             Text(
               StringConstants.paymentConfirmationText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
@@ -790,7 +790,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             ),
             height15SizedBox,
             Text(
-              "\$$amount ${StringConstants.amountWillBeDeductedText}",
+              "$currencySign$amount ${StringConstants.amountWillBeDeductedText}",
               style: TextStyle(
                   color: AppColors.blackLight,
                   fontSize: 16,
@@ -817,7 +817,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                     child: Center(
                       child: Text(
                         StringConstants.cancelText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: AppColors.primary),
@@ -892,7 +892,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.replaceCartItemsText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
@@ -901,7 +901,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height15SizedBox,
             Text(
               StringConstants.cartItemReplaceText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 14,
                   height: 1.6,
@@ -1041,8 +1041,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     // Check if user is guest - show modal for login
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to contact stores",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToContactStoresText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },
@@ -1388,7 +1388,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
   /// Add To CartApi
   Future apiAddToCart(BuildContext context) async {
     if (isGuest.value == true) {
-      Utility.showAlertMessage("Please login to add items to cart");
+      Utility.showAlertMessage(StringConstants.loginToAddItemsToCartText);
       Get.to(() => LoginScreen());
       return;
     }
@@ -1547,7 +1547,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.itemAddedInCart,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.w600),
@@ -1630,7 +1630,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                       child: Text(
                         StringConstants.goToCartText,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.0,
                             color: AppColors.primary),
@@ -2086,7 +2086,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.selectLocationText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -2121,7 +2121,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
@@ -2142,7 +2142,7 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
                                             child: Text(
                                               "${userAddress[index].addressLine1},${userAddress[index].city},"
                                               "${userAddress[index].state?.stateName},${userAddress[index].state?.country?.countryName},",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 14.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500),
@@ -2284,8 +2284,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     // Check if user is guest - show modal for login
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to add products to favourites",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToAddProductsToFavouritesText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },
@@ -2364,8 +2364,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     // Check if user is guest - show modal for login
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to manage favourites",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToManageFavouritesText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },
@@ -2429,8 +2429,8 @@ class StoreHomeMainController extends GetxController  with GlobalVarMixin{
     // Check if user is guest - show modal for login
     if (isGuest.value == true) {
       GuestAccessModal.show(
-        title: "Login Required",
-        message: "Please login to view previous orders",
+        title: StringConstants.loginRequiredText,
+        message: StringConstants.loginToViewPreviousOrdersText,
         onContinueAsGuest: () {
           // Allow guest to continue - just close modal
         },

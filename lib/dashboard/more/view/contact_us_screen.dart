@@ -56,12 +56,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
                   width10SizedBox,
                   IconButton(
                     onPressed: () => Get.back(id: pageIdApp.value),
-                    icon: const Icon(Icons.arrow_back, color: AppColors.black, size: 24.0),
+                    icon: Icon(Icons.arrow_back, color: AppColors.black, size: 24.0),
                   ),
                   width10SizedBox,
                   Text(
                     StringConstants.contactUsText,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: AppColors.black),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: AppColors.black),
                   ),
                 ],
               ),
@@ -90,7 +90,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
         children: [
           Text(
             StringConstants.getInTouchText,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.black),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.black),
           ),
           height20SizedBox,
           _buildTextField(
@@ -122,7 +122,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
           ),
           height10SizedBox,
           CustomButton(
-            gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primary]),
+            gradient: LinearGradient(colors: [AppColors.primary, AppColors.primary]),
             onTap: () => contactUsController.validateAndSubmit(context),
             height: 50,
             text: StringConstants.sendMessageText,
@@ -152,7 +152,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with GlobalVarMixin {
         maxLines: maxLines,
         textCapitalization: TextCapitalization.words,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.black),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.black),
         validator: validator,
         decoration: InputDecoration(
           hintText: label,

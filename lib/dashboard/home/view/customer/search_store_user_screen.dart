@@ -97,7 +97,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
               return searchStoreUserController.isLoading.value
                   ? Container(
                 color: Colors.black.withValues(alpha: 0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();
@@ -141,8 +141,8 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                     if (isGuest.value == true && (i == 1 || i == 2)) {
                       _tabController?.animateTo(_lastAllowedTabIndex);
                       GuestAccessModal.show(
-                        title: "Login Required",
-                        message: "Please login to access Previous and Favorite stores",
+                        title: StringConstants.loginRequiredText,
+                        message: StringConstants.loginToAccessPreviousAndFavoriteStoresText,
                       );
                       return;
                     }
@@ -349,7 +349,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                             ),
                           ),
                         ),
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             color: AppColors.primary,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -594,7 +594,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                       Get.back(id: pageIdApp.value);
 
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.black,
                                       size: 24.0,
@@ -608,7 +608,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                                    Text(
                                               'Hi, ${widget.firstName ??""}',
                                               overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 18,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -616,7 +616,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
 
                                       Text(
                                         StringConstants.searchForStoreText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 16,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w400),
@@ -716,7 +716,7 @@ class _SearchStoreUserScreenState extends State<SearchStoreUserScreen>
                           searchStoreUserController.miles.value != ""
                               ? "Nearby stores are shown from ${searchStoreUserController.miles.value} miles radius"
                               : StringConstants.nearByLabelForMilesText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 12, color: AppColors.black),
                         )),
                         height4SizedBox,

@@ -6,6 +6,7 @@ import 'package:thegreenmall/dashboard/more/view/contact_us_screen.dart';
 import 'package:thegreenmall/dashboard/more/view/webview_page_screen.dart';
 import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
@@ -16,6 +17,64 @@ class MoreScreen extends StatefulWidget {
 
 class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
   final MoreController moreController = Get.put(MoreController());
+
+  List<Widget> _supportRows() {
+    final config = AppConfig.current;
+    final rows = <Widget>[];
+    void add(IconData icon, String label, Uri uri) {
+      rows.add(const Divider(thickness: 1, height: 40));
+      rows.add(_linkRow(icon, label, uri));
+    }
+
+    if (config.supportEmail.isNotEmpty) {
+      add(Icons.mail_outline, StringConstants.supportEmailText,
+          Uri(scheme: 'mailto', path: config.supportEmail));
+    }
+    if (config.supportPhone.isNotEmpty) {
+      add(Icons.phone_outlined, StringConstants.supportPhoneText,
+          Uri(scheme: 'tel', path: config.supportPhone.replaceAll(' ', '')));
+    }
+    for (final entry in {
+      'Instagram': config.instagramUrl,
+      'Facebook': config.facebookUrl,
+      'X': config.xUrl,
+    }.entries) {
+      if (entry.value.isNotEmpty) {
+        add(Icons.public, '${StringConstants.followUsText} · ${entry.key}',
+            Uri.parse(entry.value));
+      }
+    }
+    return rows;
+  }
+
+  Widget _linkRow(IconData icon, String label, Uri uri) {
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: () => launchUrl(uri, mode: LaunchMode.externalApplication),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: AppColors.primary, size: 22),
+              width18SizedBox,
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w500)),
+            ],
+          ),
+          Image.asset(
+            ImageConstants.arrowForward,
+            scale: 3.4,
+            color: AppColors.blackLight,
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +137,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                             ),
                             width18SizedBox,
                             Text(StringConstants.aboutUsText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w500)),
@@ -128,7 +187,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                           ),
                           width18SizedBox,
                           Text(StringConstants.faqText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500)),
@@ -165,7 +224,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                           ),
                           width18SizedBox,
                           Text(StringConstants.contactTgmText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500)),
@@ -214,7 +273,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                           ),
                           width18SizedBox,
                           Text(StringConstants.termsOfServiceText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500)),
@@ -263,7 +322,7 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                           ),
                           width18SizedBox,
                           Text(StringConstants.privacyPolicyText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500)),
@@ -277,6 +336,9 @@ class _MoreScreenState extends State<MoreScreen> with GlobalVarMixin{
                     ],
                   ),
                 ),
+                // Admin-configured support / social links (App behavior);
+                // each row is hidden until its value is set.
+                ..._supportRows(),
               ]),
             ),
           ),

@@ -35,7 +35,7 @@ class PersonalInfoHeader extends StatelessWidget {
                           onPressed: () {
                             Get.back(id: pageIdApp.value);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -44,7 +44,7 @@ class PersonalInfoHeader extends StatelessWidget {
                         width10SizedBox,
                         Text(
                           StringConstants.personalInformationText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 20,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),

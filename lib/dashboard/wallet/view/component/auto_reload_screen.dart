@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/add_card_controller.dar
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AutoReloadScreen extends StatefulWidget {
   final bool isFromEdit;
@@ -51,7 +52,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                     Flexible(
                       child: Text(
                         StringConstants.autoReloadText,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,
@@ -190,7 +191,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                   children: [
                     Text(
                       StringConstants.amountToBeAddedText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -210,7 +211,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               autofocus: false,
-                              hintText: "eg \$10.00",
+                              hintText: "eg ${currencySign}10.00",
                               textCapitalization: TextCapitalization.words,
                               controller:
                                   walletController.chargeAmountTextController,
@@ -236,7 +237,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                     RegExp(r'^(\d+)?\.?\d{0,2}'))
                               ],
                               autofocus: false,
-                              hintText: "eg \$10.00",
+                              hintText: "eg ${currencySign}10.00",
                               textCapitalization: TextCapitalization.words,
                               controller: walletController
                                   .periodChargeAmountTextController,
@@ -260,7 +261,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                               children: [
                                 Text(
                                   StringConstants.whenBalanceBelowText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
@@ -277,7 +278,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                         RegExp(r'^(\d+)?\.?\d{0,2}'))
                                   ],
                                   autofocus: false,
-                                  hintText: "eg \$10.00",
+                                  hintText: "eg ${currencySign}10.00",
                                   textCapitalization: TextCapitalization.words,
                                   controller: walletController
                                       .thresholdAmountTextController,
@@ -296,7 +297,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                               children: [
                                 Text(
                                   StringConstants.paymentTypeText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
@@ -322,21 +323,21 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                     ),
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
                                     ),
                                     errorBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
@@ -355,7 +356,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                       value: value,
                                       child: Text(
                                         value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500),
@@ -387,7 +388,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                               height20SizedBox,
                               Text(
                                 StringConstants.daysText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -430,21 +431,21 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                   ),
                                   border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   focusedBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
                                   ),
                                   errorBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: AppColors.primary,
                                       width: 1.0,
                                     ),
@@ -463,7 +464,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                     value: value,
                                     child: Text(
                                       value.toString(),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500),
@@ -487,7 +488,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                 height20SizedBox,
                                 Text(
                                   StringConstants.daysText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400),
@@ -535,21 +536,21 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                     ),
                                     border: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
                                     ),
                                     focusedBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
                                     ),
                                     errorBorder: UnderlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
+                                      borderSide: BorderSide(
                                         color: AppColors.primary,
                                         width: 1.0,
                                       ),
@@ -568,7 +569,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                       value: value.id.toString(),
                                       child: Text(
                                         value.name,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500),
@@ -586,7 +587,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                     height20SizedBox,
                     Text(
                       StringConstants.selectCardText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
@@ -605,7 +606,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                           CrossAxisAlignment.center,
                                       children: [
                                         Center(
-                                          child: Image.asset(
+                                          child: BrandImage.asset(
                                             ImageConstants.nodata,
                                             scale: 8,
                                             color: AppColors.primary,
@@ -624,7 +625,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                                         Align(
                                           alignment: Alignment.bottomRight,
                                           child: CustomButton(
-                                            gradient: const LinearGradient(
+                                            gradient: LinearGradient(
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                               colors: [
@@ -829,7 +830,7 @@ class _AutoReloadScreenState extends State<AutoReloadScreen> with GlobalVarMixin
                         )),
                     height10SizedBox,
                     CustomButton(
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [AppColors.primary, AppColors.primary],

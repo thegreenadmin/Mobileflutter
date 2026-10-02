@@ -5,6 +5,7 @@ import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart'
 import 'package:thegreenmall/dashboard/orders/view/order_confirmation_screen.dart';
 import 'package:thegreenmall/utils/common_appBar.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrdersScreen extends StatefulWidget {
   final String? orderId;
@@ -223,7 +224,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
             return ordersController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )
@@ -261,7 +262,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                            decoration: const BoxDecoration(
+                                            decoration: BoxDecoration(
                                                 color: AppColors.primaryLight,
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(10.0),
@@ -352,11 +353,11 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Text(ordersController.orderList[i].store?.storeName ?? "",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16)),
                                                             Text(
-                                                              "\$${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
-                                                              style: const TextStyle(
+                                                              "$currencySign${ordersController.orderList[i].totalAmount?.toStringAsFixed(2)}",
+                                                              style: TextStyle(
                                                                   color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 16),
                                                             ),
                                                           ],
@@ -376,14 +377,14 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                       children: [
                                                         TextSpan(
                                                             text: "${StringConstants.statusText} : ",
-                                                            style: const TextStyle(
+                                                            style: TextStyle(
                                                                 color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
                                                         TextSpan(
                                                           text: ordersController.orderList[i].orderHistories?.first.orderStatus?.orderStatusName
                                                                   ?.toTitleCase() ??
                                                               "",
                                                           style:
-                                                              const TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
+                                                              TextStyle(color: AppColors.yellow, fontWeight: FontWeight.w600, fontSize: 14),
                                                         ),
                                                       ],
                                                     ),
@@ -395,11 +396,11 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                                           children: [
                                                             TextSpan(
                                                                 text: "${StringConstants.productsText}: ",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
                                                             TextSpan(
                                                               text: ordersController.orderList[i].orderItems?.length.toString() ?? "0",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   color: AppColors.primary, fontWeight: FontWeight.w600, fontSize: 14),
                                                             ),
                                                           ],
@@ -426,7 +427,7 @@ class _OrdersScreenState extends State<OrdersScreen> with GlobalVarMixin{
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Center(
-                                          child: Image.asset(
+                                          child: BrandImage.asset(
                                             ImageConstants.nodata,
                                             scale: 8,
                                             color: AppColors.primary,

@@ -76,7 +76,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                       // Navigator.of(Get.context!).popUntil(
                                       //     (route) => route.isFirst);
                                     },
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.arrow_back,
                                       color: AppColors.black,
                                       size: 24.0,
@@ -88,7 +88,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                                 : height0SizedBox,
                             Text(
                               "${StringConstants.hiText}${widget.firstName}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w400),
@@ -98,7 +98,7 @@ class _CommonAppBarState extends State<CommonAppBar> with GlobalVarMixin{
                         height4SizedBox,
                         Text(
                           widget.labelText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),

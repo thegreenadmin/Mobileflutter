@@ -38,7 +38,7 @@ class AppBottomNavBar extends StatelessWidget {
         child: Obx(
           () => BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: const TextStyle(color: AppColors.primary),
+            selectedLabelStyle: TextStyle(color: AppColors.primary),
             selectedFontSize: 0.0,
             elevation: 0,
             showSelectedLabels: true,

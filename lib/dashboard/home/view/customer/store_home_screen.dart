@@ -6,6 +6,7 @@ as offer;
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StoreHomeScreen extends StatefulWidget {
   const StoreHomeScreen({super.key});
@@ -53,7 +54,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                             TextSpan(
                               text:
                               " ${storeHomeMainController.storeDetailsResponse.value.data?.store?.storeName ?? ""}",
-                              style: const TextStyle(
+                              style: TextStyle(
 
                                   overflow: TextOverflow.visible,
                                   fontWeight: FontWeight.w600,
@@ -76,7 +77,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                           controller.isLoading.value == false,
                       child: Text(
                         StringConstants.featuredProductsText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 18),
@@ -105,7 +106,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(ImageConstants.nodata, scale: 8),
+              BrandImage.asset(ImageConstants.nodata, scale: 8),
               height4SizedBox,
                Text(
                 StringConstants.noProductFoundText,
@@ -192,8 +193,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                                     // Check if user is guest - show modal and prevent API call
                                     if (isGuest.value == true) {
                                       GuestAccessModal.show(
-                                        title: "Login Required",
-                                        message: "Please login to add products to favourites",
+                                        title: StringConstants.loginRequiredText,
+                                        message: StringConstants.loginToAddProductsToFavouritesText,
                                         onContinueAsGuest: () {
                                           // Allow guest to continue - just close modal
                                         },
@@ -264,7 +265,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                         Text(
                           item.productName ?? "",
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w600),
@@ -286,8 +287,8 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                         ),
                         height4SizedBox,
                         Text(
-                          "${StringConstants.unitPriceText}: \$${item.productPrice ?? ""}",
-                          style: const TextStyle(
+                          "${StringConstants.unitPriceText}: $currencySign${item.productPrice ?? ""}",
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
@@ -380,7 +381,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
                                           top: 10),
                                       child: Text(
                                         item.offerName ?? "",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14),
@@ -457,7 +458,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> with GlobalVarMixin {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
-            child: Image.asset(
+            child: BrandImage.asset(
               ImageConstants.nodata,
               scale: 8,
               color: AppColors.primary,

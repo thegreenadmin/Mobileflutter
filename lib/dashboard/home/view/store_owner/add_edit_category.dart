@@ -75,7 +75,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                             Get.back(id: pageIdApp.value);
                             Get.delete<AddNewCategoryController>();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -84,7 +84,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                         width10SizedBox,
                         Text( widget.isEdit ? StringConstants.updateCategoryText:
                           StringConstants.addCategoryText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
@@ -310,7 +310,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
                             ),
                             height50SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -341,7 +341,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
           return addNewCategoryController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -355,13 +355,13 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> with Global
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

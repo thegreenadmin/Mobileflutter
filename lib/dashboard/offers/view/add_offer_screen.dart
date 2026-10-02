@@ -71,7 +71,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   Get.delete<AddOffersController>();
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -80,7 +80,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                               width10SizedBox,
                               Text(
                                 StringConstants.addOfferText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -106,13 +106,13 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   children: [
                                     TextSpan(
                                         text: StringConstants.uploadImageText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
                                     TextSpan(
                                       text: StringConstants.starText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -205,13 +205,13 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   children: [
                                     TextSpan(
                                         text: StringConstants.offerNameText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
                                     TextSpan(
                                       text: StringConstants.starText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -250,13 +250,13 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                         children: [
                                           TextSpan(
                                               text: StringConstants.offerFor,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400)),
                                           TextSpan(
                                             text: StringConstants.starText,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 16,
                                                 color: AppColors.red,
                                                 fontWeight: FontWeight.bold),
@@ -348,13 +348,13 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   children: [
                                     TextSpan(
                                         text: StringConstants.selectStoreText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
                                     TextSpan(
                                       text: StringConstants.starText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -379,21 +379,21 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                       ),
                                       border: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
                                       ),
                                       errorBorder: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(5.0),
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: AppColors.primary,
                                           width: 1.0,
                                         ),
@@ -410,7 +410,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                         value: value.storeId,
                                         child: Text(
                                           value.storeName,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -561,13 +561,13 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                   children: [
                                     TextSpan(
                                         text: StringConstants.discountsOrOffersText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400)),
                                     TextSpan(
                                       text: StringConstants.starText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.red,
                                           fontWeight: FontWeight.bold),
@@ -712,15 +712,15 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                           ),
                                           border: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                            borderSide: BorderSide(color: AppColors.primary, width: 1.0),
                                           ),
                                           focusedBorder: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
+                                            borderSide: BorderSide(color: AppColors.primary, width: 1.0),
                                           ),
                                           errorBorder: UnderlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
-                                            borderSide: const BorderSide(color: AppColors.red, width: 2.0),
+                                            borderSide: BorderSide(color: AppColors.red, width: 2.0),
                                           ),
                                         ),
                                         isExpanded: true,
@@ -733,7 +733,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
                                             value: value,
                                             child: Text(
                                               value.label,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500),
@@ -796,7 +796,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
 
                               height35SizedBox,
                               CustomButton(
-                                gradient: const LinearGradient(
+                                gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [AppColors.primary, AppColors.primary],
@@ -824,7 +824,7 @@ class _AddOfferScreenState extends State<AddOfferScreen>with GlobalVarMixin {
             return addOffersController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

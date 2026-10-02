@@ -147,7 +147,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
             height10SizedBox,
             Text(
               StringConstants.welcomeText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.primary,
                   fontSize: 22,
                   fontWeight: FontWeight.w600),
@@ -158,7 +158,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
               storeHomeMainController
                       .storeDetailsResponse.value.data?.store?.storeName ??
                   "",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
@@ -167,7 +167,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
             height15SizedBox,
             Text(
               "${StringConstants.contactUsText} " "at:",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
@@ -188,7 +188,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
             height15SizedBox,
             Text(
               "${StringConstants.emailText} " "at:",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   height: 1.6,
@@ -297,8 +297,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
                     // Check if user is guest trying to access favourites (index 2)
                     if (i == 2 && isGuest.value == true) {
                       GuestAccessModal.show(
-                        title: "Login Required",
-                        message: "Please login to view favourite products",
+                        title: StringConstants.loginRequiredText,
+                        message: StringConstants.loginToViewFavouriteProductsText,
                         onContinueAsGuest: () {
                           // Allow guest to continue - just close modal
                         },
@@ -407,7 +407,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
                 children: [
                   Text(
                     StringConstants.previousOrdersText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: AppColors.black, fontFamily: "", fontSize: 14),
                   ),
                 ],
@@ -419,8 +419,8 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
           // Check if user is guest - show modal and prevent navigation
           if (isGuest.value == true) {
             GuestAccessModal.show(
-              title: "Login Required",
-              message: "Please login to view previous orders",
+              title: StringConstants.loginRequiredText,
+              message: StringConstants.loginToViewPreviousOrdersText,
               onContinueAsGuest: () {
                 // Allow guest to continue - just close modal
               },
@@ -439,7 +439,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
             children: [
               Text(
                 StringConstants.contactText,
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.black, fontFamily: "", fontSize: 14),
               ),
             ],
@@ -459,7 +459,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
               children: [
                 Text(
                   StringConstants.storePolicyText,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black,
                       fontFamily: "",
                       fontSize: 14),
@@ -481,7 +481,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
               children: [
                 Text(
                   StringConstants.termsAndConditionsText,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black,
                       fontFamily: "",
                       fontSize: 14),
@@ -617,7 +617,7 @@ class _StoreHomeMainScreenState extends State<StoreHomeMainScreen> with GlobalVa
                   return storeHomeMainController.isLoading.value
                       ? Container(
                     color: Colors.black.withOpacity(0.2),
-                    child: const Center(
+                    child: Center(
                       child: CircularProgressIndicator(color: AppColors.primary),
                     ),)
                       : const SizedBox.shrink();

@@ -9,6 +9,7 @@ import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart'
 import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'payment_configurations.dart' as payment_configurations;
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddMoneyToWalletOwner extends StatefulWidget {
   const AddMoneyToWalletOwner({
@@ -119,14 +120,14 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                       onPressed: () {
                                         Get.back(id: pageIdApp.value);
                                       },
-                                      icon: const Icon(
+                                      icon: Icon(
                                         Icons.arrow_back,
                                         color: AppColors.black,
                                         size: 24.0,
                                       ),
                                     ),
                                     width10SizedBox,
-                                    const Flexible(
+                                    Flexible(
                                       child: Text(
                                         "Add money to store wallet",
                                         overflow: TextOverflow.visible,
@@ -152,7 +153,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                           height15SizedBox,
                           Text(
                             StringConstants.amountText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
@@ -178,8 +179,9 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                               // Check if the input is a valid decimal number
                               try {
                                 final parsedValue = double.parse(value);
-                                if (parsedValue < 10) {
-                                  return 'Please enter an amount greater than or equal to 10';
+                                final minTopup = AppConfig.current.minWalletTopup;
+                                if (parsedValue < minTopup) {
+                                  return 'Please enter an amount greater than or equal to ${formatMoney(minTopup)}';
                                 }
                               } catch (e) {
                                 return 'Invalid input. Please enter a valid decimal number';
@@ -198,7 +200,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                           height20SizedBox,
                           Text(
                             StringConstants.paymentText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
@@ -441,7 +443,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                             CrossAxisAlignment.center,
                                                         children: [
                                                           Center(
-                                                            child: Image.asset(
+                                                            child: BrandImage.asset(
                                                               ImageConstants.nodata,
                                                               scale: 8,
                                                               color: AppColors.primary,
@@ -463,7 +465,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                                                                 Alignment.bottomRight,
                                                             child: CustomButton(
                                                               gradient:
-                                                                  const LinearGradient(
+                                                                  LinearGradient(
                                                                 begin:
                                                                     Alignment.topCenter,
                                                                 end: Alignment
@@ -661,7 +663,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
                               visible: addCardController.selectPaymentType.value !=
                                   StringConstants.applePaysText,
                               child: CustomButton(
-                                gradient: const LinearGradient(
+                                gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [AppColors.primary, AppColors.primary],
@@ -695,7 +697,7 @@ class AddMoneyToWalletOwnerState extends State<AddMoneyToWalletOwner> with Globa
               return addCardController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();

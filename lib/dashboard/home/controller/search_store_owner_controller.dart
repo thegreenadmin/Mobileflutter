@@ -1099,7 +1099,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
             height10SizedBox,
             Text(
               StringConstants.enterEinNumberText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.primaryDark,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
@@ -1122,7 +1122,7 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                     }
                     return null;
                   },
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
@@ -1135,21 +1135,21 @@ class OwnerStoresController extends GetxController  with GlobalVarMixin {
                     fillColor: Colors.white,
                     border: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     errorBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.primary,
                         width: 1.0,
                       ),

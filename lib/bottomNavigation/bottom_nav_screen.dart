@@ -45,8 +45,8 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (v) async {
-        Utility.showConfirmAlertMessage("Click OK to exit the app.",
-            description: "Click OK to exit the app.", okay: "OK", okayTap: () {
+        Utility.showConfirmAlertMessage(StringConstants.exitAppConfirmText,
+            description: StringConstants.exitAppConfirmText, okay: "OK", okayTap: () {
           Get.back();
           if (Platform.isAndroid) {
             SystemNavigator.pop();
@@ -77,7 +77,7 @@ class _BottomNavigationState extends State<BottomNavigation>  with GlobalVarMixi
                     () => BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       selectedLabelStyle:
-                          const TextStyle(color: AppColors.primary),
+                          TextStyle(color: AppColors.primary),
                       selectedFontSize: 0.0,
                       elevation: 0,
                       showSelectedLabels: true,

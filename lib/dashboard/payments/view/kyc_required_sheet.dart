@@ -28,7 +28,7 @@ void showKycRequiredSheet(BuildContext context, {required String message}) {
               color: PayTheme.warning.withOpacity(0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.badge_outlined, color: PayTheme.warning, size: 28),
+            child: Icon(Icons.badge_outlined, color: PayTheme.warning, size: 28),
           ),
           const SizedBox(height: 16),
           const Text('Verify your identity', style: PayTheme.cardTitle),

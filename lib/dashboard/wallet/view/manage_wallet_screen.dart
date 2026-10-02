@@ -89,7 +89,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -98,7 +98,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               width10SizedBox,
                               Text(
                                 StringConstants.manageWalletText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -153,7 +153,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                           ? Text(
                                               walletController.storeList[0].storeName
                                                   .toString(),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500))
@@ -185,7 +185,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                 border: UnderlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5.0),
-                                                  borderSide: const BorderSide(
+                                                  borderSide: BorderSide(
                                                     color: AppColors.primary,
                                                     width: 1.0,
                                                   ),
@@ -193,7 +193,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                 focusedBorder: UnderlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5.0),
-                                                  borderSide: const BorderSide(
+                                                  borderSide: BorderSide(
                                                     color: AppColors.primary,
                                                     width: 1.0,
                                                   ),
@@ -201,7 +201,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                 errorBorder: UnderlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5.0),
-                                                  borderSide: const BorderSide(
+                                                  borderSide: BorderSide(
                                                     color: AppColors.primary,
                                                     width: 1.0,
                                                   ),
@@ -219,7 +219,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                   value: value.storeId,
                                                   child: Text(
                                                     value.storeName,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontSize: 16,
                                                         fontWeight: FontWeight.w500),
@@ -262,7 +262,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 ? Column(
                                     children: [
                                       Obx(() => Text(
-                                            "\$${walletController.userWalletBalance!.value}",
+                                            "$currencySign${walletController.userWalletBalance!.value}",
                                             style: const TextStyle(
                                                 color: AppColors.white,
                                                 fontSize: 26,
@@ -271,7 +271,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                       height8SizedBox,
                                       Text(
                                         StringConstants.totalBalanceText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black, fontSize: 18),
                                       ),
                                       height12SizedBox,
@@ -303,8 +303,8 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 : Column(
                                     children: [
                                       Obx(() => Text(
-                                            "\$${walletController.ownerWalletBalance!.value}",
-                                            style: const TextStyle(
+                                            "$currencySign${walletController.ownerWalletBalance!.value}",
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 26,
                                                 fontWeight: FontWeight.w500),
@@ -312,7 +312,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                       height8SizedBox,
                                       Text(
                                         StringConstants.totalBalanceText,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black, fontSize: 18),
                                       ),
                                       height12SizedBox,
@@ -372,7 +372,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                     child: Text(
                                                       StringConstants
                                                           .autoReloadIntoWalletText,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           color: AppColors.black,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500),
@@ -388,7 +388,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                     child: Text(
                                                       StringConstants
                                                           .editAutoReloadIntoWalletText,
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           decoration:
                                                               TextDecoration.underline,
                                                           color: AppColors.primary,
@@ -466,7 +466,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                 width15SizedBox,
                                 Text(
                                   StringConstants.addCardPaymentMethodsText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -511,7 +511,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                         width15SizedBox,
                                         Text(
                                           StringConstants.connectBankAccountText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -564,7 +564,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                       children: [
                                         Text(
                                           StringConstants.debitMoneyFromWalletText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -586,7 +586,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               ? height0SizedBox
                               : Text(
                                   StringConstants.paymentMethodText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600),
@@ -595,7 +595,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                               ? height0SizedBox
                               : Text(
                                   StringConstants.bankAccountsText,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       color: AppColors.black,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600),
@@ -687,7 +687,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                               .cardList[index].card?.brand
                                                               .toString()
                                                               .toUpperCase()??"",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               color: AppColors.black,
                                                               fontSize: 15,
                                                               fontWeight:
@@ -774,7 +774,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                                                             .bank!
                                                             .bankName
                                                             .toString(),
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             color: AppColors.black,
                                                             fontSize: 15,
                                                             fontWeight:
@@ -856,7 +856,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
             return walletController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();

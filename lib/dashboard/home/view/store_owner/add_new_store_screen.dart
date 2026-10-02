@@ -85,7 +85,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                           children: [
                             Text(
                               StringConstants.storeDetailsText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -198,7 +198,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(StringConstants.uploadStoreLogoText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500)),
@@ -319,7 +319,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -342,7 +342,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 decoration: const InputDecoration(
                                   border: UnderlineInputBorder(),
                                 ),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: AppColors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400),
@@ -395,7 +395,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -409,7 +409,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.nickNameText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -431,7 +431,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -459,7 +459,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -487,7 +487,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
                               keyboardType: TextInputType.phone,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400),
@@ -504,14 +504,14 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     color: AppColors.grey, fontSize: 14),
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
                                 ),
                                 errorBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -525,7 +525,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.primary,
                                     width: 1.0,
                                   ),
@@ -545,7 +545,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.addressText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -593,7 +593,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor:  AppColors.transparent,
-                                errorStyle: const TextStyle(color: AppColors.red),
+                                errorStyle: TextStyle(color: AppColors.red),
                                 errorMaxLines: 3,
                                 errorBorder:  CommonWidgets.underlineInputBorder(
                                     borderRadius:  0.0,
@@ -624,7 +624,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     color:  AppColors.primary),
                               ),
                               // textCapitalization: TextCapitalization.words,
-                              textStyle: const TextStyle(
+                              textStyle: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -711,7 +711,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.addressLine2Text,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -733,7 +733,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -761,7 +761,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -792,7 +792,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -822,7 +822,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -853,7 +853,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -868,7 +868,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             height20SizedBox,
                             Text(
                               StringConstants.storeTimingText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20),
@@ -902,7 +902,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     Text(
                                       StringConstants.customTimeText,
                                       overflow: TextOverflow.visible,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
@@ -949,7 +949,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                     Text(
                                       StringConstants.twentyFourSevenText,
                                       overflow: TextOverflow.visible,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
@@ -1006,7 +1006,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                     AutovalidateMode.onUserInteraction,
                                                 textCapitalization:
                                                     TextCapitalization.words,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400),
@@ -1068,7 +1068,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                                     AutovalidateMode.onUserInteraction,
                                                 textCapitalization:
                                                     TextCapitalization.words,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400),
@@ -1204,7 +1204,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -1244,7 +1244,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                                   const TextStyle(color: AppColors.grey, fontSize: 14),
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textCapitalization: TextCapitalization.words,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: AppColors.primary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
@@ -1264,7 +1264,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                             ),
                             height40SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -1298,7 +1298,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
           return addNewStoreController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -1333,7 +1333,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
 
                             Get.delete<AddNewStoreController>();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: AppColors.black,
                             size: 24.0,
@@ -1342,7 +1342,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
                         width10SizedBox,
                         Text(
                           _addStoreTitle,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 22,
                               color: AppColors.black,
                               fontWeight: FontWeight.w600),
@@ -1366,7 +1366,7 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
         builder: (context, child) {
           return Theme(
             data: ThemeData.light().copyWith(
-              colorScheme: const ColorScheme.light(primary: AppColors.primary),
+              colorScheme: ColorScheme.light(primary: AppColors.primary),
               buttonTheme:
                   const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             ),
@@ -1402,13 +1402,13 @@ class _AddNewStoreScreenState extends State<AddNewStoreScreen> with GlobalVarMix
         children: [
           TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400)),
           TextSpan(
             text:starText,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 color: AppColors.red,
                 fontWeight: FontWeight.bold),

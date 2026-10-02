@@ -8,6 +8,7 @@ import '../controller/payment_controller.dart';
 import '../payment_routes.dart';
 import 'component/pay_theme.dart';
 import 'component/pay_widgets.dart';
+import 'package:thegreenmall/utils/app_config.dart';
 
 /// Final review before submitting the payment (spec 5.4).
 class ReviewPayScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _ReviewPayScreenState extends State<ReviewPayScreen> {
     c.loadWalletBalance();
   }
 
-  String _money(double v) => '\$${v.toStringAsFixed(2)}';
+  String _money(double v) => '$currencySign${v.toStringAsFixed(2)}';
 
   /// Same recovery path as the cart's insufficient-funds banner: top-up
   /// screen pushed on the host nested navigator, balance re-checked on return.
@@ -155,7 +156,7 @@ class _ReviewPayScreenState extends State<ReviewPayScreen> {
                             Expanded(
                               child: Text(
                                 'Insufficient funds (${_money(bal)})',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: PayTheme.error,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500),
@@ -164,7 +165,7 @@ class _ReviewPayScreenState extends State<ReviewPayScreen> {
                             if (canAddMoney)
                               InkWell(
                                 onTap: _openAddMoney,
-                                child: const Text(
+                                child: Text(
                                   'Add funds',
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
@@ -234,7 +235,7 @@ class _WalletMethod extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.check_circle, color: PayTheme.success),
+          Icon(Icons.check_circle, color: PayTheme.success),
         ],
       ),
     );

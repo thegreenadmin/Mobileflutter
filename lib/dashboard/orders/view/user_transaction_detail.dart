@@ -55,7 +55,7 @@ class _UserTransactionDetailScreenState
                                 onPressed: () {
                                   Get.back(id: pageIdApp.value);
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: AppColors.black,
                                   size: 24.0,
@@ -64,7 +64,7 @@ class _UserTransactionDetailScreenState
                               width10SizedBox,
                               Text(
                                 StringConstants.detailText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 22,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w600),
@@ -147,7 +147,7 @@ class _UserTransactionDetailScreenState
                                                 .walletTransactionText
                                             : userTransactionDetailController
                                                 .storeName!.value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16))),
@@ -163,7 +163,7 @@ class _UserTransactionDetailScreenState
                                           userTransactionDetailController
                                               .orderDate
                                               .toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14)),
@@ -178,8 +178,8 @@ class _UserTransactionDetailScreenState
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14)),
                                         Obx(() => Text(
-                                              "\$${userTransactionDetailController.orderAmount!.value}",
-                                              style: const TextStyle(
+                                              "$currencySign${userTransactionDetailController.orderAmount!.value}",
+                                              style: TextStyle(
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 14),

@@ -83,12 +83,12 @@ class _OrderBarcodeScannerScreenState extends State<OrderBarcodeScannerScreen>
       appBar: AppBar(
         backgroundColor: AppColors.primaryLight,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          icon: Icon(Icons.arrow_back, color: AppColors.black),
           onPressed: () => Get.back(id: pageIdApp.value),
         ),
         title: Text(
           StringConstants.scanOrderBarcodeText,
-          style: const TextStyle(
+          style: TextStyle(
               color: AppColors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
@@ -152,13 +152,13 @@ class _OrderBarcodeScannerScreenState extends State<OrderBarcodeScannerScreen>
               onPressed: _uploadFromGallery,
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                side: const BorderSide(color: AppColors.primary),
+                side: BorderSide(color: AppColors.primary),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
               ),
-              icon: const Icon(Icons.image_outlined, color: AppColors.primary),
+              icon: Icon(Icons.image_outlined, color: AppColors.primary),
               label: Text(StringConstants.uploadFromGalleryText,
-                  style: const TextStyle(color: AppColors.primary)),
+                  style: TextStyle(color: AppColors.primary)),
             ),
           ],
         ),
@@ -244,7 +244,7 @@ class _CameraError extends StatelessWidget {
             height12SizedBox,
             TextButton(
               onPressed: () => openAppSettings(),
-              child: const Text('Open Settings',
+              child: Text('Open Settings',
                   style: TextStyle(color: AppColors.primary)),
             ),
           ],

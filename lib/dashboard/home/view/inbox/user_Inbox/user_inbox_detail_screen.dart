@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/home/model/user_message_list_model.dart';
 import 'package:thegreenmall/dashboard/home/view/inbox/user_Inbox/image_preview_screen.dart';
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class UserInboxDetailScreen extends StatefulWidget {
   final String? storeName;
@@ -36,8 +37,8 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
     if (isGuest.value == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         GuestAccessModal.show(
-          title: "Login Required",
-          message: "Please login to access inbox",
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessInboxText,
           onContinueAsGuest: () {
             // Allow guest to continue - just close modal and go back
             Get.back();
@@ -115,7 +116,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
           children: [
             Expanded(
               child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       color: AppColors.greyLight,
                       borderRadius: BorderRadius.all(
                         Radius.circular(50),
@@ -147,7 +148,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                               userInboxDetailController
                                   .showSelectionDialog(context);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.image,
                               color: AppColors.primary,
                               size: 24.0,
@@ -215,7 +216,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                   await userInboxDetailController.apiSendMessage();
                 }
               },
-              child: const Center(
+              child: Center(
                 child: Icon(
                   Icons.send_outlined,
                   color: AppColors.primary,
@@ -380,7 +381,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                     ),
                                     secFormat: '',
                                   ).toString(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w400,
@@ -479,7 +480,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                     ),
                               height10SizedBox,
                               Text(messageList[index].message ?? "",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w300,
@@ -656,7 +657,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                           onPressed: () {
                                             Get.back(id: pageIdApp.value);
                                           },
-                                          icon: const Icon(
+                                          icon: Icon(
                                             Icons.arrow_back,
                                             color: AppColors.black,
                                             size: 24.0,
@@ -665,7 +666,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                         width10SizedBox,
                                         Obx(() => Text(
                                           userInboxDetailController.storeName.value,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 22,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -689,14 +690,14 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                                       : Column(
                                           children: [
                                             height20SizedBox,
-                                            Image.asset(
+                                            BrandImage.asset(
                                               ImageConstants.nodata,
                                               color: AppColors.primary,
                                               scale: 8,
                                             ),
                                             Text(
                                               StringConstants.noMessagesYetText,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColors.primary,
@@ -764,7 +765,7 @@ class UserInboxDetailScreenState extends State<UserInboxDetailScreen> with Globa
                   return userInboxDetailController.isLoading.value
                       ? Container(
                     color: Colors.black.withOpacity(0.2),
-                    child: const Center(
+                    child: Center(
                       child: CircularProgressIndicator(color: AppColors.primary),
                     ),)
                       : const SizedBox.shrink();

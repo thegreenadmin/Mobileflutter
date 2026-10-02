@@ -10,6 +10,7 @@ import 'package:thegreenmall/dashboard/wallet/view/add_card_detail_screen.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'payment_configurations.dart' as payment_configurations;
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddMoneyToWalletUser extends StatefulWidget {
   final bool isFromCartScreen;
@@ -117,7 +118,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                   onPressed: () {
                                     Get.back(id: pageIdApp.value);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.arrow_back,
                                     color: AppColors.black,
                                     size: 24.0,
@@ -128,7 +129,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                   child: Text(
                                     StringConstants.addMoneyToMyWalletText,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 18,
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w600),
@@ -150,7 +151,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                           height15SizedBox,
                           Text(
                             StringConstants.amountText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
@@ -175,8 +176,9 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                               // Check if the input is a valid decimal number
                               try {
                                 final parsedValue = double.parse(value);
-                                if (parsedValue < 10) {
-                                  return 'Please enter an amount greater than or equal to 10';
+                                final minTopup = AppConfig.current.minWalletTopup;
+                                if (parsedValue < minTopup) {
+                                  return 'Please enter an amount greater than or equal to ${formatMoney(minTopup)}';
                                 }
                               } catch (e) {
                                 return 'Invalid input. Please enter a valid decimal number';
@@ -195,7 +197,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                           height20SizedBox,
                           Text(
                             StringConstants.paymentText,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
@@ -439,7 +441,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                             CrossAxisAlignment.center,
                                                         children: [
                                                           Center(
-                                                            child: Image.asset(
+                                                            child: BrandImage.asset(
                                                               ImageConstants.nodata,
                                                               scale: 8,
                                                               color: AppColors.primary,
@@ -461,7 +463,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                                                                 Alignment.bottomRight,
                                                             child: CustomButton(
                                                               gradient:
-                                                                  const LinearGradient(
+                                                                  LinearGradient(
                                                                 begin:
                                                                     Alignment.topCenter,
                                                                 end: Alignment
@@ -671,7 +673,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
                               visible: addCardController.selectPaymentType.value !=
                                   StringConstants.applePaysText,
                               child: CustomButton(
-                                gradient: const LinearGradient(
+                                gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [AppColors.primary, AppColors.primary],
@@ -702,7 +704,7 @@ class AddMoneyToWalletUserState extends State<AddMoneyToWalletUser> with GlobalV
               return addCardController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),)
                   : const SizedBox.shrink();

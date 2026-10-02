@@ -9,6 +9,7 @@ import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
 import 'mark_return_order_screen.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrdersHomeMainScreen extends StatefulWidget {
   final String? orderId;
@@ -57,7 +58,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
         onChanged: (value) {
           ordersHomeMainController.orderSearchQuery.value = value;
         },
-        style: const TextStyle(
+        style: TextStyle(
             color: AppColors.black, fontSize: 14, fontWeight: FontWeight.w400),
         decoration: InputDecoration(
           filled: true,
@@ -355,7 +356,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Center(
-                                  child: Image.asset(
+                                  child: BrandImage.asset(
                                     ImageConstants.nodata,
                                     scale: 8,
                                     color: AppColors.primary,
@@ -405,7 +406,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
             return ordersHomeMainController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();
@@ -479,7 +480,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     color: AppColors.greyLight,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.0),
@@ -523,7 +524,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             .customerName
                                                             ?.toTitleCase() ??
                                                         "",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -547,7 +548,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                       .ownerOrderHistoryList![
                                                   index].orderId.toString()}",
 
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -577,7 +578,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                               .toString()),
                                                       secFormat: '',
                                                     ).toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -618,7 +619,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                     .estimateDeliveryDate.toString()),
                                                             secFormat: '',
                                                           ).toString(),
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                               color: AppColors.black,
                                                               fontWeight: FontWeight.w600,
                                                               fontSize: 14))
@@ -656,7 +657,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                                 .deliveryText
                                                             : StringConstants
                                                                 .curbSideText,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -687,7 +688,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             ?.orderStatusName
                                                             ?.toTitleCase() ??
                                                         "",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.green,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -749,7 +750,7 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
-                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
+                                                    "$currencySign${ordersHomeMainController.ownerOrderHistoryList![index].totalAmount!.toStringAsFixed(2)}",
                                                     style: const TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
@@ -772,9 +773,9 @@ class _OrdersHomeMainScreenState extends State<OrdersHomeMainScreen> with Global
                                                             FontWeight.w600,
                                                         fontSize: 14)),
                                                 Text(
-                                                    "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0"}",
+                                                    "$currencySign${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount?.toStringAsFixed(2) ??"0.0"}",
                                                     // "\$${ordersHomeMainController.ownerOrderHistoryList![index].orderTransactions![0].storeReceivedAmount!.toStringAsFixed(2)}",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: AppColors.black,
                                                         fontWeight:
                                                             FontWeight.w600,

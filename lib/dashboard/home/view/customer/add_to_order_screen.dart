@@ -8,6 +8,7 @@ import 'package:thegreenmall/dashboard/home/controller/store_home_main_controlle
 import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class AddToOrderScreen extends StatefulWidget {
   const AddToOrderScreen({super.key});
@@ -117,7 +118,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                 children: [
                   Text(
                     StringConstants.orderText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -366,7 +367,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                                 ?.first
                                 .link ??
                                 "",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -388,7 +389,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                         ? height0SizedBox
                         : Text(
                       StringConstants.aboutProductText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                           color: AppColors.black),
@@ -427,7 +428,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                   ),
                   Text(
                     StringConstants.otherDetailsText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -523,7 +524,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                   }),
                   Text(
                     StringConstants.ratingReviewText,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: AppColors.black),
@@ -537,7 +538,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                               ?.product?.averageRating
                               ?.toStringAsFixed(1) ??
                               "0.0",
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.black),
@@ -580,7 +581,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                             Text(
                               "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?.length ??
                                   "0"} ${StringConstants.reviewsText}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                   color: AppColors.black),
@@ -605,7 +606,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 8),
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: AppColors.greyLight,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8.0),
@@ -632,7 +633,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                                               ?.firstName?.toTitleCase() ?? ""} "
                                               "${storeHomeMainController.productDetailResponse.value.data?.product?.productReviews?[i].user
                                               ?.lastName?.toTitleCase() ?? ""} ",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600),
@@ -681,7 +682,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                                                           .productReviews![i]
                                                           .createdAt
                                                           .toString())),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 14.0,
                                                   color: AppColors.black,
                                                   fontWeight: FontWeight.w400),
@@ -698,7 +699,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
                                               ?.productReviews?[i]
                                               .review ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 14.0,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w400),
@@ -738,7 +739,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
           left: 20,
           right: 20,
           child: CustomButton(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [AppColors.primary, AppColors.primary],
@@ -788,8 +789,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
             onTap: () {
               if (isGuest.value == true) {
                 GuestAccessModal.show(
-                  title: "Login Required",
-                  message: "Please login to add items to cart",
+                  title: StringConstants.loginRequiredText,
+                  message: StringConstants.loginToAddItemsToCartText,
                 );
                 return;
               }
@@ -855,7 +856,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
               ),
               Text(
                 textData,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: AppColors.black),
@@ -871,7 +872,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
         .productDetailResponse.value.data?.product?.productImages;
 
     if (productImages == null || productImages.isEmpty) {
-      return Image.asset(
+      return BrandImage.asset(
         ImageConstants.defaultProduct,
         fit: BoxFit.fill,
         height: 120,
@@ -988,7 +989,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
         Expanded(
           child: Text(
             product?.productName ?? "",
-            style: const TextStyle(
+            style: TextStyle(
               overflow: TextOverflow.visible,
               fontSize: 18,
               color: AppColors.black,
@@ -1001,8 +1002,8 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
             // Check if user is guest - show modal and prevent state change
             if (isGuest.value == true) {
               GuestAccessModal.show(
-                title: "Login Required",
-                message: "Please login to add products to favourites",
+                title: StringConstants.loginRequiredText,
+                message: StringConstants.loginToAddProductsToFavouritesText,
                 onContinueAsGuest: () {
                   // Allow guest to continue - just close modal
                 },
@@ -1038,11 +1039,11 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
         children: [
           TextSpan(
             text: "${StringConstants.unitPriceText}:",
-            style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14),
           ),
           TextSpan(
-            text: ' \$${product?.productPrice ?? ""}',
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+            text: ' $currencySign${product?.productPrice ?? ""}',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
           ),
         ],
       ),
@@ -1059,18 +1060,18 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
     var discountValue = product?.offer?.offerValue != null
         ? product!.offer!.offerType!.contains("percentage")
         ? ' ${product.offer!.offerValue}%'
-        : ' \$${product.offer!.offerValue}'
+        : ' $currencySign${product.offer!.offerValue}'
         : product?.discountType?.contains("percentage") ?? false
         ? ' ${product!.discountValue}%'
-        : ' \$${product?.discountValue ?? "0"}';
+        : ' $currencySign${product?.discountValue ?? "0"}';
     return Visibility(
       visible: product?.offer?.offerValue != null || isOfferForStore,
       replacement: SizedBox.shrink(),
       child: Text.rich(
         TextSpan(
           children: [
-            TextSpan(text: discountText, style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
-            TextSpan(text: discountValue, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
+            TextSpan(text: discountText, style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 14)),
+            TextSpan(text: discountValue, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black)),
           ],
         ),
       ),
@@ -1091,7 +1092,7 @@ class _AddToOrderScreenState extends State<AddToOrderScreen> with GlobalVarMixin
         width10SizedBox,
         Text(
           storeHomeMainController.itemsCount.toString().padLeft(2, '0'),
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppColors.black),
         ),
         width10SizedBox,
         InkWell(

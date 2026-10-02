@@ -110,7 +110,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                         ? Text(
                                             walletController.storeList[0].storeName
                                                 .toString(),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500))
@@ -144,7 +144,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               border: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -152,7 +152,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               focusedBorder: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -160,7 +160,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                               errorBorder: UnderlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: AppColors.primary,
                                                   width: 1.0,
                                                 ),
@@ -178,7 +178,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                                 value: value.storeId,
                                                 child: Text(
                                                   value.storeName,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       color: AppColors.black,
                                                       fontSize: 16,
                                                       fontWeight: FontWeight.w500),
@@ -230,7 +230,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                             ),
                                           )
                                         : Text(
-                                            "\$${walletController.userWalletBalance?.value ?? "0.00"}",
+                                            "$currencySign${walletController.userWalletBalance?.value ?? "0.00"}",
                                             style: const TextStyle(
                                                 color: AppColors.white,
                                                 fontSize: 26,
@@ -271,8 +271,8 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                             ),
                                           )
                                         : Text(
-                                            "\$${walletController.ownerWalletBalance!.value}",
-                                            style: const TextStyle(
+                                            "$currencySign${walletController.ownerWalletBalance!.value}",
+                                            style: TextStyle(
                                                 color: AppColors.black,
                                                 fontSize: 26,
                                                 fontWeight: FontWeight.w500),
@@ -280,7 +280,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                                     height4SizedBox,
                                     Text(
                                       StringConstants.totalBalanceText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           color: AppColors.black, fontSize: 18),
                                     ),
                                     height10SizedBox,
@@ -337,7 +337,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
                               ),
                               Text(
                                 StringConstants.manageText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.w500),
@@ -465,7 +465,7 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
             return walletController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),
             )

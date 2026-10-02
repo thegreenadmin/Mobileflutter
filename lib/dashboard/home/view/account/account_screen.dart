@@ -125,14 +125,14 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   Obx(() => Text(
                                         "${accountController.firstName!.value} ${accountController.lastName!.value}",
                                         overflow: TextOverflow.visible,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600),
                                       )),
                                   Obx(() => Text(
                                         accountController.email.value,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             overflow: TextOverflow.visible,
                                             color: AppColors.black,
                                             fontSize: 16,
@@ -226,7 +226,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                           children: [
                             Text(
                               StringConstants.profileText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -251,7 +251,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.personalInformationText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -292,7 +292,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                               width15SizedBox,
                                               Text(
                                                   StringConstants.cardAndPaymentsText,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 16,
                                                       color: AppColors.black,
                                                       fontWeight: FontWeight.w500)),
@@ -323,8 +323,8 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                 // Check if user is guest - show modal for account-based features
                                 if (isGuest.value == true) {
                                   GuestAccessModal.show(
-                                    title: "Login Required",
-                                    message: "Please login to access transaction history",
+                                    title: StringConstants.loginRequiredText,
+                                    message: StringConstants.loginToAccessTransactionHistoryText,
                                     onContinueAsGuest: () {
                                       // Allow guest to continue - just close modal
                                     },
@@ -356,7 +356,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.transactionsHistoryText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -393,7 +393,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                       ),
                                       width15SizedBox,
                                       Text(StringConstants.accountIdText,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 16,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w500)),
@@ -469,7 +469,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),*/
                             Text(
                               StringConstants.securityText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -482,7 +482,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   children: [
                                     Text(
                                       StringConstants.screenLockText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -529,7 +529,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             Text(
                               StringConstants.notificationPreferencesText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 20,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),
@@ -542,7 +542,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   children: [
                                     Text(
                                       StringConstants.inboxMessages,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -639,7 +639,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                                   children: [
                                     Text(
                                       StringConstants.storeOfferAndDiscountText,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.black,
@@ -726,7 +726,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             height30SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.primary, AppColors.primary],
@@ -747,7 +747,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             ),
                             height30SizedBox,
                             CustomButton(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [AppColors.redLight, AppColors.redLight],
@@ -779,7 +779,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
               return accountController.isLoading.value
                   ? Container(
                 color: Colors.black.withOpacity(0.2),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 ),
               )
@@ -817,7 +817,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: AppColors.black,
                                 size: 24.0,
@@ -826,7 +826,7 @@ class _AccountScreenState extends State<AccountScreen> with GlobalVarMixin{
                             width10SizedBox,
                             Text(
                               StringConstants.accountText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),

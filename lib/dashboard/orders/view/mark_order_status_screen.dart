@@ -7,6 +7,7 @@ import 'package:thegreenmall/dashboard/orders/model/order_detail_model.dart'
 import 'package:thegreenmall/utils/utils.dart';
 
 import 'component/order_status_enum.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class MarkOrderStatusScreen extends StatefulWidget {
   final String? orderId;
@@ -93,7 +94,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
             return ordersHomeMainController.isLoading.value
                 ? Container(
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               ),)
                 : const SizedBox.shrink();
@@ -155,7 +156,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                           ordersHomeMainController
                                               .customerName.value
                                               .toTitleCase(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16)),
@@ -176,7 +177,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                               child: Text(
                                                   ordersHomeMainController
                                                       .orderDate.value,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       overflow:
                                                       TextOverflow.ellipsis,
                                                       color: AppColors.black,
@@ -206,7 +207,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                       ?.deliveryService
                                                       ?.name ??
                                                       "",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       overflow:
                                                       TextOverflow.ellipsis,
                                                       color: AppColors.black,
@@ -227,8 +228,8 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   fontSize: 14)),
                                           Obx(() =>
                                               Text(
-                                                "\$${ordersHomeMainController.orderAmount.value}",
-                                                style: const TextStyle(
+                                                "$currencySign${ordersHomeMainController.orderAmount.value}",
+                                                style: TextStyle(
                                                     color: AppColors.black,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14),
@@ -374,7 +375,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                  child: Image.asset(
+                  child: BrandImage.asset(
                     ImageConstants.nodata,
                     scale: 8,
                     color: AppColors.primary,
@@ -485,7 +486,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                               .product!
                                               .productName ??
                                               "",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color:
                                               AppColors.black,
                                               fontWeight:
@@ -636,7 +637,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                   .padLeft(2, '0'),
                                               overflow: TextOverflow
                                                   .visible,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors
                                                       .black,
                                                   fontWeight:
@@ -659,10 +660,10 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                                       .w500,
                                                   fontSize: 14)),
                                           Text(
-                                              "\$${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
+                                              "$currencySign${ordersHomeMainController.getOrderItems[index].offerPrice.toStringAsFixed(2) ?? "0.00"}",
                                               overflow: TextOverflow
                                                   .visible,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   color: AppColors
                                                       .black,
                                                   fontWeight:
@@ -695,7 +696,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       child: Text(
                           StringConstants
                               .customerInStoreForPickupText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 16)),
@@ -728,7 +729,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
           Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 5),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 color: AppColors.greyLight,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
@@ -757,7 +758,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     width8SizedBox,
                     Text(
                         StringConstants.identityProofText,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 16)),
@@ -784,7 +785,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                                   onTap: () {
                                     Get.back(); // Navigator.pop(_);
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.clear,
                                     color: AppColors.primary,
                                     size: 24.0,
@@ -842,7 +843,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                     }
                   },
                   child: Text(StringConstants.viewText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           decoration:
                           TextDecoration.underline,
                           color: AppColors.primary,
@@ -915,7 +916,7 @@ class _MarkOrderStatusScreenState extends State<MarkOrderStatusScreen> with Glob
                       border: Border.all(
                         color: AppColors.primary,
                       ),
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [AppColors.primary, AppColors.primary],

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'app_colors.dart';
 import 'image_constants.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class CommonTheme {
   getColors() {
@@ -128,7 +129,7 @@ class CommonWidgets {
             memCacheWidth: width != null ? (width * 2).toInt() : null,
             memCacheHeight: height != null ? (height * 2).toInt() : null,
             placeholder: placeholder ??
-                (context, url) => Image.asset(
+                (context, url) => BrandImage.asset(
                       assetImg,
                       fit: BoxFit.fill,
                       width: width,
@@ -136,14 +137,14 @@ class CommonWidgets {
                     ),
             imageBuilder: imageBuilder,
             errorWidget: errorWidget ??
-                (context, url, error) => Image.asset(
+                (context, url, error) => BrandImage.asset(
                       assetImg,
                       fit: BoxFit.fill,
                       width: width,
                       height: height,
                     ),
           )
-        : Image.asset(
+        : BrandImage.asset(
             assetImg,
             fit: BoxFit.fill,
             width: width,
@@ -152,7 +153,7 @@ class CommonWidgets {
   }
 
   static Widget loadingIndicator() {
-    return const Padding(
+    return Padding(
         padding: EdgeInsets.all(8.0),
         child: Center(
           child: CupertinoActivityIndicator(
@@ -180,7 +181,7 @@ class CommonWidgets {
       return CircleAvatar(
         radius: radius ?? 25.0,
         backgroundColor: assetBackgroundColor ?? Colors.transparent,
-        backgroundImage: AssetImage(assetImg),
+        backgroundImage: brandImageProvider(assetImg),
       );
     }
     return CachedNetworkImage(
@@ -215,7 +216,7 @@ class CommonWidgets {
       errorWidget: (context, url, error) => CircleAvatar(
         radius: radius ?? 25.0,
         backgroundColor: assetBackgroundColor ?? Colors.transparent,
-        backgroundImage: AssetImage(assetImg),
+        backgroundImage: brandImageProvider(assetImg),
       ),
     );
   }

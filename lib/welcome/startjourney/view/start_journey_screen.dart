@@ -11,6 +11,7 @@ import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/sizedbox_constants.dart';
 import 'package:thegreenmall/utils/shared_prefrences.dart';
 import 'package:thegreenmall/welcome/startjourney/controller/start_journey_controller.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class StartJourneyScreen extends StatefulWidget {
   const StartJourneyScreen({super.key});
@@ -51,9 +52,9 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
         children: [
           Container(
             height: WidgetConstants.screenHeight,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(ImageConstants.startJourneyBg),
+                image: brandImageProvider(ImageConstants.startJourneyBg),
                 fit: BoxFit.cover,
               ),
             ),
@@ -62,7 +63,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
             padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
             child: Column(
               children: [
-                Image.asset(ImageConstants.greenmall420),
+                BrandImage.asset(ImageConstants.greenmall420),
                 height10SizedBox,
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -97,7 +98,7 @@ class _StartJourneyScreenState extends State<StartJourneyScreen> {
                   ),
                   height20SizedBox,
                   CustomButton(
-                    gradient: const LinearGradient(
+                    gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [AppColors.primary, AppColors.primary],

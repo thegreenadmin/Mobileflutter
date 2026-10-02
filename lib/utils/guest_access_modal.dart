@@ -8,15 +8,15 @@ import 'package:thegreenmall/utils/utils.dart';
 /// Provides three options: Login, Create Account, or Continue as Guest
 class GuestAccessModal {
   static void show({
-    String title = "Login Required",
-    String message = "Please login to access this feature",
+    String? title,
+    String? message,
     VoidCallback? onContinueAsGuest,
   }) {
     Get.dialog(
       barrierDismissible: true,
       _GuestAccessDialog(
-        title: title,
-        message: message,
+        title: title ?? StringConstants.loginRequiredText,
+        message: message ?? StringConstants.loginToAccessThisFeatureText,
         onContinueAsGuest: onContinueAsGuest,
       ),
     );
@@ -60,7 +60,7 @@ class _GuestAccessDialog extends StatelessWidget {
             // Title
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.black,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class _GuestAccessDialog extends StatelessWidget {
                 ),
                 child: Text(
                   StringConstants.createAccountText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.primary,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

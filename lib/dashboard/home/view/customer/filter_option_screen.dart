@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
 import 'package:thegreenmall/utils/utils.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class FilterOptionScreen extends StatefulWidget {
   const FilterOptionScreen({super.key});
@@ -51,7 +52,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
           return searchStoreUserController.isLoading.value
               ? Container(
             color: Colors.black.withOpacity(0.2),
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),)
               : const SizedBox.shrink();
@@ -67,7 +68,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
         children: [
           height15SizedBox,
           Center(
-              child: Image.asset(
+              child: BrandImage.asset(
             ImageConstants.greenmall420,
             scale: 4,
           )),
@@ -81,7 +82,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                 FilteringTextInputFormatter
                     .digitsOnly,
               ],
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400),
@@ -99,7 +100,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                 FilteringTextInputFormatter
                     .digitsOnly,
               ],
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.w400),
@@ -136,7 +137,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                 value: value,
                 child: Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w500),
@@ -169,7 +170,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                         LengthLimitingTextInputFormatter(100),
                         FilteringTextInputFormatter.digitsOnly,
                       ],
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
@@ -195,7 +196,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                           builder: (context, child) {
                             return Theme(
                               data: ThemeData.light().copyWith(
-                                colorScheme: const ColorScheme.light(
+                                colorScheme: ColorScheme.light(
                                     primary: AppColors.primary),
                                 buttonTheme: const ButtonThemeData(
                                     textTheme: ButtonTextTheme.primary),
@@ -236,7 +237,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                           LengthLimitingTextInputFormatter(100),
                           FilteringTextInputFormatter.digitsOnly,
                         ],
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
@@ -263,7 +264,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                             builder: (context, child) {
                               return Theme(
                                 data: ThemeData.light().copyWith(
-                                  colorScheme: const ColorScheme.light(
+                                  colorScheme: ColorScheme.light(
                                       primary: AppColors.primary),
                                   buttonTheme: const ButtonThemeData(
                                       textTheme: ButtonTextTheme.primary),
@@ -337,7 +338,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomButton(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [AppColors.primary, AppColors.primary],
@@ -428,7 +429,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                               onPressed: () {
                                 Get.back(id: pageIdApp.value);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: AppColors.black,
                                 size: 24.0,
@@ -437,7 +438,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> with GlobalVarM
                             width10SizedBox,
                             Text(
                               StringConstants.filterOptionsText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w600),

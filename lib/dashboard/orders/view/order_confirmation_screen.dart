@@ -13,6 +13,7 @@ import 'package:thegreenmall/utils/guest_access_modal.dart';
 import 'package:thegreenmall/utils/utils.dart';
 
 import '../view/component/order_status_enum.dart';
+import 'package:thegreenmall/utils/brand_image.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
   final String? orderId;
@@ -37,8 +38,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
     if (isGuest.value == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         GuestAccessModal.show(
-          title: "Login Required",
-          message: "Please login to access order history",
+          title: StringConstants.loginRequiredText,
+          message: StringConstants.loginToAccessOrderHistoryText,
           onContinueAsGuest: () {
             // Allow guest to continue - just close modal and go back
             Get.back();
@@ -449,7 +450,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         height8SizedBox,
                         Text(
                           StringConstants.orderConfirmedText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.black),
@@ -457,7 +458,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         height8SizedBox,
                         Text(
                           StringConstants.thankOrderText,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
                               color: AppColors.black),
@@ -477,7 +478,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderIDText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -485,7 +486,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     Obx(
                       () => Text(
                         ordersController.orderStatus.value,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -499,7 +500,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderStatusText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -508,7 +509,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                       () => Text(
                         ordersController.orderStatusTypeName.value
                             .toTitleCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.green),
@@ -522,15 +523,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderAmountText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
                     ),
                     Obx(
                       () => Text(
-                        "\$${ordersController.totalAmount.value.toStringAsFixed(2)}",
-                        style: const TextStyle(
+                        "$currencySign${ordersController.totalAmount.value.toStringAsFixed(2)}",
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -544,7 +545,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                   children: [
                     Text(
                       StringConstants.orderDateText,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: AppColors.black),
@@ -557,7 +558,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                 firstFormat: "yyyy-MM-dd HH:mm:ss",
                                 secFormat: "dd MMM yyyy")
                             : "",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: AppColors.primary),
@@ -580,7 +581,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     child: Column(
                       children: [
                         CustomButton(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [AppColors.primary, AppColors.primary],
@@ -614,7 +615,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                     child: Column(
                       children: [
                         CustomButton(
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [AppColors.primary, AppColors.primary],
@@ -707,7 +708,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
             onTap: () {
               Get.back();
             },
-            child: const Icon(
+            child: Icon(
               Icons.clear,
               color: AppColors.primary,
               size: 24.0,
@@ -743,7 +744,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
             height12SizedBox,
             Text(
               "${StringConstants.orderIDText}: #${ordersController.orderStatus.value}",
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 16),
@@ -814,7 +815,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                             customTitle: Text(
                               ordersController.stepInd[index].name ?? "",
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   overflow: TextOverflow.visible,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -840,7 +841,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
           children: [
             Text(
               StringConstants.itemsText,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                   color: AppColors.black),
@@ -891,7 +892,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Center(
-                              child: Image.asset(
+                              child: BrandImage.asset(
                                 ImageConstants.nodata,
                                 scale: 8,
                                 color: AppColors.primary,
@@ -919,7 +920,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                         return Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               color: AppColors.primaryLight,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
@@ -978,7 +979,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                     .product?.productName
                                                     ?.toCapitalized() ??
                                                 "",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 16,
                                                 color: AppColors.black),
@@ -1005,7 +1006,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                               fontSize: 14)),
                                                       TextSpan(
                                                         text:
-                                                            "\$${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
+                                                            "$currencySign${ordersController.orderItems[i].offerPrice?.toStringAsFixed(2) ?? "0.00"}",
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w600,
@@ -1423,7 +1424,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                               },
                                               child: Text(
                                                 StringConstants.returnOrderText,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 14,
                                                     color: AppColors.red),
@@ -1657,7 +1658,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> with 
                                                                 .orderItems[i]
                                                                 .returnOrderItems!
                                                                 .isNotEmpty
-                                                        ? "\$${ordersController.orderItems[i].returnOrderItems?.first.totalAmountReversed?.toStringAsFixed(2) ?? ""}"
+                                                        ? "$currencySign${ordersController.orderItems[i].returnOrderItems?.first.totalAmountReversed?.toStringAsFixed(2) ?? ""}"
                                                         : "",
                                                     style: TextStyle(
                                                         fontWeight:

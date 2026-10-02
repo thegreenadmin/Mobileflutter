@@ -282,7 +282,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.ratingText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -352,7 +352,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(100),
                           ],
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -373,21 +373,21 @@ class OrdersController extends GetxController with GlobalVarMixin{
                             fillColor: Colors.white,
                             border: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
@@ -402,7 +402,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           )),
                       height10SizedBox,
                       CustomButton(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
@@ -456,7 +456,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           Flexible(
                             child: Text(
                               StringConstants.returnOrderText,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.black,
@@ -520,7 +520,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                               children: [
                                 Text(
                                   orderItemObj.value.product?.productName ?? "",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18,
                                       color: AppColors.black),
@@ -543,7 +543,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                                                   fontSize: 16)),
                                           TextSpan(
                                             text:
-                                                "\$${orderItemObj.value.product?.productPrice.toString() ?? ""}",
+                                                "$currencySign${orderItemObj.value.product?.productPrice.toString() ?? ""}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
@@ -576,7 +576,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           inputFormatters: <TextInputFormatter>[
                             LengthLimitingTextInputFormatter(100),
                           ],
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -597,21 +597,21 @@ class OrdersController extends GetxController with GlobalVarMixin{
                             fillColor: Colors.white,
                             border: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.primary,
                                 width: 1.0,
                               ),
@@ -626,7 +626,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
                           )),
                       height10SizedBox,
                       CustomButton(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.primary, AppColors.primary],
@@ -675,7 +675,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
             height10SizedBox,
             Text(
               StringConstants.returnRequestSentText,
-              style: const TextStyle(
+              style: TextStyle(
                   color: AppColors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.w600),
@@ -697,7 +697,7 @@ class OrdersController extends GetxController with GlobalVarMixin{
             ),
             height25SizedBox,
             CustomButton(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [AppColors.primary, AppColors.primary],
