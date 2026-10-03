@@ -1,0 +1,55 @@
+appId: com.thegreenmall
+---
+# After adding items to cart, verify the cart screen shows expected elements.
+# Prerequisite: items should already be in cart (run order_add_to_cart first).
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Wait for nearby stores and tap the first one
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+
+# Tap the cart icon (top-right area)
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          point: "90%,6%"
+      - extendedWaitUntil:
+          visible: "Cart"
+          timeout: 8000
+
+- takeScreenshot: cart_screen
+
+# Verify cart elements
+- assertVisible: "Items"
+- assertVisible: "Order Summary"
+
+# Verify order summary rows
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Subtotal"
+      - assertVisible: "Total"
+
+- takeScreenshot: cart_summary
+
+# Verify Pay Now button is visible
+- retry:
+    maxRetries: 2
+    commands:
+      - swipe:
+          start: "50%,80%"
+          end: "50%,30%"
+      - assertVisible: "Pay Now"
+
+- takeScreenshot: cart_pay_now

@@ -1,0 +1,33 @@
+appId: com.thegreenmall
+---
+# Navigate to Wallet > Manage and verify all management options.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_wallet.yaml
+
+# Verify wallet screen loaded
+- assertVisible: "Total Balance"
+- takeScreenshot: wallet_home
+
+# Tap Manage button
+- tapOn: "Manage"
+- extendedWaitUntil:
+    visible: "Manage Wallet"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: manage_wallet
+
+# Verify key elements on Manage Wallet screen
+- assertVisible: "Total Balance"
+- assertVisible: "Auto Reload Into Wallet"
+
+# Verify Add Card Payment Methods option
+- retry:
+    maxRetries: 2
+    commands:
+      - swipe:
+          start: "50%,80%"
+          end: "50%,30%"
+      - assertVisible: "Add Cards / Payment Methods"
+
+- takeScreenshot: manage_wallet_scrolled

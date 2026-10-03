@@ -1,0 +1,83 @@
+appId: com.thegreenmall
+---
+# Full Smoke Test Suite
+# Quick end-to-end coverage: login -> home -> stores -> orders -> wallet -> payments.
+# Designed for Firebase Test Lab or CI/CD execution.
+
+# --- Step 1: Launch and Login ---
+- runFlow: ../flows/helpers/login.yaml
+- assertVisible: "Stores"
+- assertVisible: "Munchies"
+- assertVisible: "Herbs"
+- assertVisible: "Payments"
+- takeScreenshot: smoke_home
+
+# --- Step 2: Store Browsing ---
+- tapOn: "Stores"
+- extendedWaitUntil:
+    visible: "Search for stores"
+    timeout: 10000
+- assertVisible: "Nearby"
+- assertVisible: "Previous"
+- assertVisible: "Favorite"
+- takeScreenshot: smoke_store_search
+
+# Wait for nearby stores
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+# Tap first store
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+- takeScreenshot: smoke_store_home
+
+# Go back to home
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 10000
+
+# --- Step 3: Wallet ---
+- tapOn: "Wallet"
+- extendedWaitUntil:
+    visible: "Total Balance"
+    timeout: 10000
+- assertVisible: "Manage"
+- takeScreenshot: smoke_wallet
+
+# --- Step 4: Orders ---
+- tapOn: "Orders"
+- extendedWaitUntil:
+    visible: "Orders"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: smoke_orders
+
+# --- Step 5: Offers ---
+- tapOn: "Offers"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: smoke_offers
+
+# --- Step 6: More ---
+- tapOn: "More"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: smoke_more
+
+# --- Step 7: Payments ---
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Payments"
+    timeout: 10000
+- tapOn: "Payments"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: smoke_payments

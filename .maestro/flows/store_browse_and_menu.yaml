@@ -1,0 +1,32 @@
+appId: com.thegreenmall
+---
+# Browse to a nearby store, view its home page and category menu.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Wait for nearby store list to populate
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+
+# Tap the first store in the list
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+
+# Verify the store home screen loaded
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+- takeScreenshot: store_home_page
+
+# Navigate to the Categories / Menu screen
+- tapOn: "Categories"
+- extendedWaitUntil:
+    visible: "Categories"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: store_categories

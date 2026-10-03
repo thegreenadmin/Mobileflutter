@@ -1,0 +1,19 @@
+appId: com.thegreenmall
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Continue as Guest"
+    timeout: 15000
+- tapOn: "Continue as Guest"
+- extendedWaitUntil:
+    visible: "Yes, I'm 18 or older"
+    timeout: 20000
+- tapOn: "Yes, I'm 18 or older"
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 10000
+- assertVisible: "Stores"
+- assertVisible: "Munchies"
+- assertVisible: "Herbs"
+- assertVisible: "Payments"
+- takeScreenshot: guest_home

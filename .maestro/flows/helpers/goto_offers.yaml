@@ -1,0 +1,10 @@
+appId: com.thegreenmall
+---
+# Reusable subflow: from authenticated home screen, navigate to the Offers tab.
+# Bottom nav order: Home(0) / Wallet(1) / Orders(2) / Offers(3) / More(4)
+- tapOn: "Offers"
+- extendedWaitUntil:
+    visible: "Offers"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000

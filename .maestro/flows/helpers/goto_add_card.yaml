@@ -1,0 +1,23 @@
+appId: com.thegreenmall
+---
+# Assumes already logged in and app is running. Navigates Wallet -> Manage -> Add Cards -> Add New Card.
+- runFlow: login.yaml
+- tapOn:
+    point: "127,800"
+- extendedWaitUntil:
+    visible: "Manage"
+    timeout: 10000
+- tapOn: "Manage"
+- extendedWaitUntil:
+    visible: "Add Cards / Payment Methods"
+    timeout: 10000
+- tapOn: "Add Cards / Payment Methods"
+- extendedWaitUntil:
+    visible: "Add New Card"
+    timeout: 10000
+- tapOn: "Add New Card"
+- extendedWaitUntil:
+    visible: "Card Number"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000

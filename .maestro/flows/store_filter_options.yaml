@@ -1,0 +1,53 @@
+appId: com.thegreenmall
+---
+# Open the filter options screen from the store search, fill in fields, and save.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_store_search.yaml
+
+# Tap the filter icon on the map section
+- tapOn:
+    id: "filter_button"
+    optional: true
+# Fallback: tap filter by looking for the filter icon area
+- retry:
+    maxRetries: 2
+    commands:
+      - extendedWaitUntil:
+          visible: "Filter Options"
+          timeout: 8000
+
+- takeScreenshot: filter_options_empty
+
+# Enter a zip code
+- tapOn: "Zip Code"
+- inputText: "90210"
+
+# Enter miles radius
+- tapOn: "Miles"
+- inputText: "25"
+
+# Tap on Store Opening dropdown
+- tapOn: "Open Now"
+- waitForAnimationToEnd:
+    timeout: 2000
+
+- hideKeyboard
+- takeScreenshot: filter_options_filled
+
+# Save filters
+- tapOn: "Save"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: filter_applied
+
+# Clear filters
+- retry:
+    maxRetries: 2
+    commands:
+      - extendedWaitUntil:
+          visible: "Filter Options"
+          timeout: 5000
+- tapOn: "Clear Filters"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: filter_cleared

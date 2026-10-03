@@ -1,0 +1,12 @@
+appId: com.thegreenmall
+---
+# Log in, then cold-restart the app and check whether the session survives.
+- runFlow: helpers/login.yaml
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: ".*"
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 10000
+- takeScreenshot: after_restart

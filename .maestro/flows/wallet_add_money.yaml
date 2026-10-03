@@ -1,0 +1,40 @@
+appId: com.thegreenmall
+---
+# Navigate to Wallet and open the Add Money screen.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_wallet.yaml
+
+# Verify wallet loaded
+- assertVisible: "Total Balance"
+
+# Tap the Add Money icon
+- tapOn: "Add Money"
+- extendedWaitUntil:
+    visible: "Add Money To My Wallet"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: add_money_screen
+
+# Verify amount field
+- assertVisible: "Amount"
+
+# Verify Card payment type tab is visible
+- assertVisible: "Card"
+
+# Enter an amount
+- tapOn: "Amount"
+- inputText: "10.00"
+- hideKeyboard
+- takeScreenshot: add_money_amount_entered
+
+# Verify Add button is present
+- retry:
+    maxRetries: 2
+    commands:
+      - swipe:
+          start: "50%,80%"
+          end: "50%,30%"
+      - assertVisible: "Add"
+
+- takeScreenshot: add_money_ready

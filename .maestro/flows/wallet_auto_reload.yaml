@@ -1,0 +1,23 @@
+appId: com.thegreenmall
+---
+# Navigate to Wallet > Manage and toggle auto-reload setting.
+- runFlow: helpers/login.yaml
+- runFlow: helpers/goto_wallet.yaml
+
+# Go to Manage Wallet
+- tapOn: "Manage"
+- extendedWaitUntil:
+    visible: "Manage Wallet"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+
+# Verify Auto Reload toggle is visible
+- assertVisible: "Auto Reload Into Wallet"
+- takeScreenshot: auto_reload_before
+
+# Tap the auto-reload toggle switch
+- tapOn: "Auto Reload Into Wallet"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: auto_reload_toggled

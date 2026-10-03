@@ -1,0 +1,43 @@
+appId: com.thegreenmall
+---
+# Navigate to Payments and open the barcode scanner screen.
+- runFlow: helpers/login.yaml
+
+# Tap the Payments shortcut pill on the home screen
+- tapOn: "Payments"
+- waitForAnimationToEnd:
+    timeout: 5000
+
+# The scanner screen should open with mode toggle tabs
+- extendedWaitUntil:
+    visible: "Scan Barcode"
+    timeout: 10000
+- takeScreenshot: payment_scanner
+
+# Verify scanner mode elements
+- assertVisible: "Scan Barcode"
+
+# Verify the alignment instruction
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Align the barcode within the frame"
+
+- takeScreenshot: scanner_ready
+
+# Switch to manual entry mode
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn: "Enter Phone"
+      - waitForAnimationToEnd:
+          timeout: 3000
+
+# Verify mobile entry field
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Mobile"
+      - assertVisible: "Continue"
+
+- takeScreenshot: manual_entry_mode

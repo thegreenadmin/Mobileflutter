@@ -1,0 +1,74 @@
+appId: com.thegreenmall
+---
+# Test Suite: Wallet & Payments
+# Covers wallet balance, manage wallet, add money, and payment scanner.
+# Assumes session persisted.
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 20000
+
+# 1. Navigate to Wallet tab
+- tapOn: "Wallet"
+- extendedWaitUntil:
+    visible: "Total Balance"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: suite_wallet_home
+
+# 2. Verify wallet screen elements
+- assertVisible: "Total Balance"
+- assertVisible: "Manage"
+
+# 3. Navigate to Manage Wallet
+- tapOn: "Manage"
+- extendedWaitUntil:
+    visible: "Manage Wallet"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible: "Total Balance"
+- assertVisible: "Auto Reload Into Wallet"
+- takeScreenshot: suite_manage_wallet
+
+# 4. Scroll down to see payment methods and card options
+- swipe:
+    start: "50%,80%"
+    end: "50%,30%"
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: "Add Cards / Payment Methods"
+- takeScreenshot: suite_manage_wallet_cards
+
+# 5. Navigate to Add New Card screen
+- tapOn: "Add Cards / Payment Methods"
+- extendedWaitUntil:
+    visible: "Add New Card"
+    timeout: 10000
+- takeScreenshot: suite_card_list
+
+# 6. Go back to wallet
+- tapOn:
+    point: "8%,6%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    point: "8%,6%"
+- waitForAnimationToEnd:
+    timeout: 3000
+
+# 7. Navigate to Home and open Payment scanner
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 10000
+- tapOn: "Payments"
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Scan Barcode"
+    timeout: 10000
+- takeScreenshot: suite_payment_scanner

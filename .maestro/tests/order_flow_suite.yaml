@@ -1,0 +1,63 @@
+appId: com.thegreenmall
+---
+# Test Suite: Order Flow
+# Covers navigating to orders, viewing tabs, and checking order history.
+# Assumes session persisted.
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 20000
+
+# 1. Navigate to Orders tab via bottom nav
+- tapOn: "Orders"
+- extendedWaitUntil:
+    visible: "Orders"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: suite_orders_home
+
+# 2. Verify the Scan Order Barcode option
+- retry:
+    maxRetries: 2
+    commands:
+      - assertVisible: "Scan Order Barcode"
+
+# 3. If store orders exist, tap the first store
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          text: ".*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+
+# 4. Verify order tabs: Active / Complete / Cancelled
+- retry:
+    maxRetries: 2
+    commands:
+      - extendedWaitUntil:
+          visible: "Active"
+          timeout: 10000
+      - assertVisible: "Active"
+      - assertVisible: "Complete"
+      - assertVisible: "Cancelled"
+- takeScreenshot: suite_order_tabs
+
+# 5. Cycle through tabs
+- tapOn: "Complete"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: suite_orders_complete
+
+- tapOn: "Cancelled"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: suite_orders_cancelled
+
+- tapOn: "Active"
+- waitForAnimationToEnd:
+    timeout: 3000

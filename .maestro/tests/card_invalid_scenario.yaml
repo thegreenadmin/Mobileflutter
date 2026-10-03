@@ -1,0 +1,8 @@
+appId: com.thegreenmall
+---
+# Wrapper: launch (session persisted) then run the invalid-card negative test.
+- launchApp
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 20000
+- runFlow: ../flows/card_validation_invalid.yaml

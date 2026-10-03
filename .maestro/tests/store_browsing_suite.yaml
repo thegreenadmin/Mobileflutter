@@ -1,0 +1,64 @@
+appId: com.thegreenmall
+---
+# Test Suite: Store Browsing
+# Covers store search tabs, browsing a store menu, product listing, and favourites.
+# Assumes session persisted (run login_with_test_account first if needed).
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Stores"
+    timeout: 20000
+
+# 1. Verify store search tabs
+- tapOn: "Stores"
+- extendedWaitUntil:
+    visible: "Search for stores"
+    timeout: 10000
+- assertVisible: "Nearby"
+- assertVisible: "Previous"
+- assertVisible: "Favorite"
+- takeScreenshot: suite_store_tabs
+
+# 2. Switch through tabs
+- tapOn: "Previous"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Favorite"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Nearby"
+- waitForAnimationToEnd:
+    timeout: 3000
+
+# 3. Open the first nearby store
+- extendedWaitUntil:
+    visible: "Store Hours.*"
+    timeout: 15000
+- tapOn:
+    text: "Store Hours.*"
+    index: 0
+- waitForAnimationToEnd:
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Welcome to.*"
+    timeout: 10000
+- takeScreenshot: suite_store_home
+
+# 4. Navigate to Categories
+- tapOn: "Categories"
+- extendedWaitUntil:
+    visible: "Categories"
+    timeout: 10000
+- takeScreenshot: suite_store_categories
+
+# 5. Open first category and browse products
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          text: ".*product.*"
+          index: 0
+      - waitForAnimationToEnd:
+          timeout: 5000
+- takeScreenshot: suite_product_list
