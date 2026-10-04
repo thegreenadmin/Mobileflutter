@@ -94,7 +94,7 @@ void main() {
     });
 
     FlutterError.onError = originalOnError;
-  });
+  }, timeout: const Timeout(Duration(minutes: 8)));
 }
 
 /// Labels each stage in the device log so a Test Lab failure names the step.

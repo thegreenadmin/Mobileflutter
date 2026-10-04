@@ -123,10 +123,23 @@ jobs:
       - name: Extract results bucket
         if: always()
         run: |
-          BUCKET_PATH=$(grep -oP 'gs://\S+' test-lab-output.txt | head -1 || true)
+          # gcloud prints the bucket as a console URL, not a gs:// path.
+          BUCKET_PATH=$(grep -oP 'storage/browser/\K[^ \]]+' test-lab-output.txt | head -1 || true)
           if [ -n "$BUCKET_PATH" ]; then
             mkdir -p test-lab-results
-            gsutil -m cp -r "${BUCKET_PATH}*" test-lab-results/ || true
+            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
+          fi
+
+      - name: Show journey log from device
+        if: always()
+        run: |
+          find test-lab-results -name 'logcat' -exec grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' {} + || true
+
+      - name: Fail unless Test Lab reported Passed
+        run: |
+          if grep -qE '│ (Failed|Inconclusive|Skipped) ' test-lab-output.txt; then
+            echo "::error::Firebase Test Lab did not pass"
+            exit 1
           fi
 
       - name: Upload test results
@@ -240,10 +253,11 @@ jobs:
       - name: Extract results bucket
         if: always()
         run: |
-          BUCKET_PATH=$(grep -oP 'gs://\S+' test-lab-output.txt | head -1 || true)
+          # gcloud prints the bucket as a console URL, not a gs:// path.
+          BUCKET_PATH=$(grep -oP 'storage/browser/\K[^ \]]+' test-lab-output.txt | head -1 || true)
           if [ -n "$BUCKET_PATH" ]; then
             mkdir -p test-lab-results
-            gsutil -m cp -r "${BUCKET_PATH}*" test-lab-results/ || true
+            gsutil -m cp -r "gs://${BUCKET_PATH}*" test-lab-results/ || true
           fi
 
       - name: Upload test results
