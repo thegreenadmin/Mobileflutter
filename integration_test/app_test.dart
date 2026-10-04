@@ -64,13 +64,13 @@ void main() {
           _testOtp);
 
       await _waitFor(tester, find.text('Munchies'));
-      expect(find.text('Stores'), findsWidgets);
-      expect(find.text('Herbs'), findsWidgets);
-      expect(find.text('Payments'), findsWidgets);
+      // Shortcut pill labels come from the admin app config, and Herbs /
+      // Payments are country-gated, so only the stores pill is asserted.
+      expect(_storesPill, findsWidgets);
     });
 
     await _step('store search tabs', () async {
-      await _tap(tester, find.text('Stores'));
+      await _tap(tester, _storesPill);
       await _waitFor(tester, find.text('Search for stores'));
       for (final tab in ['Nearby', 'Previous', 'Favorite', 'Nearby']) {
         await _tap(tester, find.text(tab));
@@ -96,6 +96,11 @@ void main() {
     });
   }, timeout: const Timeout(Duration(minutes: 8)));
 }
+
+/// The home stores shortcut. Admins can rename it (staging says "Store").
+final _storesPill = find.byWidgetPredicate(
+    (w) => w is Text && (w.data == 'Store' || w.data == 'Stores'),
+    description: 'stores shortcut pill');
 
 /// Labels each stage in the device log so a Test Lab failure names the step.
 Future<void> _step(String name, Future<void> Function() body) async {
