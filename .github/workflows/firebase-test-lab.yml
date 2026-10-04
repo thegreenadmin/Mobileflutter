@@ -110,6 +110,9 @@ jobs:
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
+          # Without pipefail, tee masks gcloud errors (e.g. TEST_QUOTA_EXCEEDED)
+          # and the step goes green without any test having run.
+          set -o pipefail
           gcloud firebase test android run \
             --type=instrumentation \
             --app=build/app/outputs/apk/debug/app-debug.apk \
@@ -143,7 +146,8 @@ jobs:
           fi
           # Test Lab reports "Passed" when the runner records 0 tests (e.g. a
           # Dart-side hang), so also require the last step to have finished.
-          if ! find test-lab-results -name logcat -exec grep -q '\[journey\] <<< wallet ok' {} +; then
+          # grep -r (not find -exec) so a missing logcat counts as a failure.
+          if ! grep -rqs --include=logcat '\[journey\] <<< wallet ok' test-lab-results; then
             echo "::error::Integration journey did not complete (see 'Show journey log from device')"
             exit 1
           fi
@@ -246,6 +250,9 @@ jobs:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           ROBO_DIRECTIVES_TEMPLATE: ${{ secrets.ROBO_DIRECTIVES_TEMPLATE }}
         run: |
+          # Without pipefail, tee masks gcloud errors (e.g. TEST_QUOTA_EXCEEDED)
+          # and the step goes green without any test having run.
+          set -o pipefail
           gcloud firebase test android run \
             --type=robo \
             --app=build/app/outputs/flutter-apk/app-debug.apk \
