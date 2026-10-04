@@ -6,6 +6,9 @@
 // Uses the staging review account (phone 0000000000 / static OTP 0000), so
 // the app must be built against the BETA env (assets/env/api_key.env).
 //
+// Screen text comes from StringConstants, which constants_overrides.g.dart
+// can rewrite, so the test reads the constants rather than literals.
+//
 // Run locally:  flutter test integration_test/app_test.dart -d <device>
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +16,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/main.dart' as app;
+import 'package:thegreenmall/utils/constants.dart';
 
 const _testPhone = '0000000000';
 const _testOtp = '0000';
@@ -32,16 +36,16 @@ void main() {
 
     await _step('launch screen', () async {
       app.main();
-      await _waitFor(tester, find.text('Continue as Guest'),
+      await _waitFor(tester, find.text(StringConstants.continueAsGuestText),
           timeout: const Duration(seconds: 60));
       FlutterError.onError = originalOnError;
-      expect(find.text('Login your account'), findsWidgets);
-      expect(find.text('Create an account'), findsWidgets);
+      expect(find.text(StringConstants.loginYourAccountText), findsWidgets);
+      expect(find.text(StringConstants.createAnAccountText), findsWidgets);
     });
 
     await _step('login screen', () async {
-      await _tap(tester, find.text('Login your account'));
-      await _waitFor(tester, find.text('Send Confirmation Code'));
+      await _tap(tester, find.text(StringConstants.loginYourAccountText));
+      await _waitFor(tester, find.text(StringConstants.sendConfirmationCodeText));
       // The subtitle wraps with a hard line break, so match the phone field.
       expect(find.byType(IntlPhoneField), findsOneWidget);
     });
@@ -53,7 +57,7 @@ void main() {
               matching: find.byType(EditableText)),
           _testPhone);
       await _pumpFor(tester, const Duration(milliseconds: 500));
-      await _tap(tester, find.text('Send Confirmation Code'));
+      await _tap(tester, find.text(StringConstants.sendConfirmationCodeText));
 
       await _waitFor(tester, find.byType(PinCodeTextField));
       await _pumpFor(tester, const Duration(seconds: 1));
@@ -63,36 +67,44 @@ void main() {
               matching: find.byType(EditableText)),
           _testOtp);
 
-      await _waitFor(tester, find.text('Munchies'));
-      // Shortcut pill labels come from the admin app config, and Herbs /
-      // Payments are country-gated, so only the stores pill is asserted.
-      expect(_storesPill, findsWidgets);
+      // Shortcut pill labels come from the admin app config, and Munchies /
+      // Herbs / Payments are country-gated, so only the stores pill is checked.
+      await _waitFor(tester, _storesPill);
     });
 
     await _step('store search tabs', () async {
       await _tap(tester, _storesPill);
-      await _waitFor(tester, find.text('Search for stores'));
-      for (final tab in ['Nearby', 'Previous', 'Favorite', 'Nearby']) {
+      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+      for (final tab in [
+        StringConstants.nearbyText,
+        StringConstants.previousText,
+        StringConstants.favoriteText,
+        StringConstants.nearbyText,
+      ]) {
         await _tap(tester, find.text(tab));
         await _pumpFor(tester, const Duration(seconds: 2));
       }
       // Android back button -> home.
       await tester.binding.handlePopRoute();
-      await _waitFor(tester, find.text('Munchies'));
+      await _waitFor(tester, _storesPill);
     });
 
     await _step('order history tabs', () async {
-      await _tap(tester, find.text('Orders'));
-      await _waitFor(tester, find.text('Cancelled'));
-      for (final tab in ['Complete', 'Cancelled', 'Active']) {
+      await _tap(tester, find.text(BottomNavStringConstants.ordersText));
+      await _waitFor(tester, find.text(StringConstants.cancelledText));
+      for (final tab in [
+        StringConstants.completeText,
+        StringConstants.cancelledText,
+        StringConstants.activeText,
+      ]) {
         await _tap(tester, find.text(tab));
         await _pumpFor(tester, const Duration(seconds: 2));
       }
     });
 
     await _step('wallet', () async {
-      await _tap(tester, find.text('Wallet'));
-      await _waitFor(tester, find.text('Total Balance'));
+      await _tap(tester, find.text(BottomNavStringConstants.walletText));
+      await _waitFor(tester, find.text(StringConstants.totalBalanceText));
     });
   }, timeout: const Timeout(Duration(minutes: 8)));
 }
