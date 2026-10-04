@@ -278,11 +278,17 @@ class _TabNav extends GetView<BottomNavController> {
   // A ValueKey forces a fresh element + Navigator when the navKey changes.
   _TabNav(this.navKey, this.tab) : super(key: ValueKey('tabNav_$navKey'));
 
+  // One observer per tab Navigator, reused across rebuilds; sharing a single
+  // observer between Navigators trips 'observer.navigator == null'.
+  static final Map<int, TabRouteObserverProxy> _observers = {};
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: Get.nestedKey(navKey),
-      observers: [appRouteObserver],
+      observers: [
+        _observers.putIfAbsent(navKey, () => TabRouteObserverProxy()),
+      ],
       pages: [
         MaterialPage(child: tab),
       ],

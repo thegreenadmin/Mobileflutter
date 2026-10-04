@@ -10,6 +10,27 @@ import 'package:get/get.dart';
 final RouteObserver<PageRoute<dynamic>> appRouteObserver =
     RouteObserver<PageRoute<dynamic>>();
 
+/// A [NavigatorObserver] may only be attached to one [Navigator], but each
+/// bottom-nav tab has its own. Give every tab one of these; it forwards route
+/// events to [appRouteObserver] so [RouteAware] subscribers still get them.
+class TabRouteObserverProxy extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didPush(route, previousRoute);
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didPop(route, previousRoute);
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      appRouteObserver.didRemove(route, previousRoute);
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
+      appRouteObserver.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+}
+
 mixin GlobalVarMixin {
   RxString _roleApp = "".obs;
   RxBool _authenticatedBiometric = false.obs;
