@@ -145,9 +145,12 @@ Future<void> _pumpFor(WidgetTester tester, Duration duration) async {
   }
 }
 
-/// Taps the first match, mirroring Maestro's `tapOn: "<text>"`.
+/// Taps the first match that can receive the tap, mirroring Maestro's
+/// `tapOn: "<text>"`. Inactive tabs keep their widgets alive, so plain
+/// `finder.first` can land on text the user cannot see.
 Future<void> _tap(WidgetTester tester, Finder finder) async {
-  await _waitFor(tester, finder);
-  await tester.tap(finder.first, warnIfMissed: false);
+  final target = finder.hitTestable();
+  await _waitFor(tester, target);
+  await tester.tap(target.first);
   await tester.pump(const Duration(milliseconds: 300));
 }
