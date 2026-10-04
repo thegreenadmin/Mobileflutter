@@ -120,9 +120,10 @@ flutter {
 }
 
 dependencies {
-    // Firebase Test Lab instrumentation runner for integration_test/
-    androidTestImplementation 'androidx.test:runner:1.6.2'
-    androidTestImplementation 'androidx.test:rules:1.6.1'
+    // Firebase Test Lab instrumentation runner for integration_test/. Must
+    // match the androidx.test version the integration_test plugin pins.
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 
     implementation 'com.google.firebase:firebase-dynamic-links:16.0.1'
     implementation "com.google.android.gms:play-services-wallet:19.2.0"
