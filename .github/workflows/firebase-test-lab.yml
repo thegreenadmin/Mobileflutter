@@ -135,10 +135,16 @@ jobs:
         run: |
           find test-lab-results -name 'logcat' -exec grep -hE '\[journey\]|EXCEPTION CAUGHT|Test failed|══' {} + || true
 
-      - name: Fail unless Test Lab reported Passed
+      - name: Fail unless the journey passed
         run: |
           if grep -qE '│ (Failed|Inconclusive|Skipped) ' test-lab-output.txt; then
             echo "::error::Firebase Test Lab did not pass"
+            exit 1
+          fi
+          # Test Lab reports "Passed" when the runner records 0 tests (e.g. a
+          # Dart-side hang), so also require the last step to have finished.
+          if ! find test-lab-results -name logcat -exec grep -q '\[journey\] <<< wallet ok' {} +; then
+            echo "::error::Integration journey did not complete (see 'Show journey log from device')"
             exit 1
           fi
 

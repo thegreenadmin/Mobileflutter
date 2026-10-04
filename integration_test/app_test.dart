@@ -24,8 +24,9 @@ void main() {
   // and storage globally, so re-launching per test is not safe.
   testWidgets('critical journey: launch, login, stores, orders, wallet',
       (tester) async {
-    // main() installs Crashlytics error handlers; the test binding requires
-    // FlutterError.onError to be restored before the test ends.
+    // main() swaps FlutterError.onError for its Crashlytics handler, which
+    // swallows test failures and hangs the run. Put the test binding's
+    // handler back as soon as the app has started.
     final originalOnError = FlutterError.onError;
     addTearDown(() => FlutterError.onError = originalOnError);
 
@@ -33,6 +34,7 @@ void main() {
       app.main();
       await _waitFor(tester, find.text('Continue as Guest'),
           timeout: const Duration(seconds: 60));
+      FlutterError.onError = originalOnError;
       expect(find.text('Login your account'), findsWidgets);
       expect(find.text('Create an account'), findsWidgets);
     });
@@ -40,8 +42,8 @@ void main() {
     await _step('login screen', () async {
       await _tap(tester, find.text('Login your account'));
       await _waitFor(tester, find.text('Send Confirmation Code'));
-      expect(find.text('Enter mobile number to login your account'),
-          findsOneWidget);
+      // The subtitle wraps with a hard line break, so match the phone field.
+      expect(find.byType(IntlPhoneField), findsOneWidget);
     });
 
     await _step('login with test account', () async {
@@ -92,8 +94,6 @@ void main() {
       await _tap(tester, find.text('Wallet'));
       await _waitFor(tester, find.text('Total Balance'));
     });
-
-    FlutterError.onError = originalOnError;
   }, timeout: const Timeout(Duration(minutes: 8)));
 }
 
