@@ -11,9 +11,9 @@ appId: com.thegreenmall
     timeout: 20000
 
 # 1. Navigate to Orders tab via bottom nav
-- tapOn: "Orders"
+- tapOn: 'Orders(\nTab.*)?'
 - extendedWaitUntil:
-    visible: "Orders"
+    visible: 'Orders(\nTab.*)?'
     timeout: 10000
 - waitForAnimationToEnd:
     timeout: 3000

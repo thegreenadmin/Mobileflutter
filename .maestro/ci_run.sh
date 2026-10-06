@@ -20,6 +20,14 @@ failed=0
 for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   name="$(basename "$flow" .yaml)"
   [[ "$name" =~ $FILTER ]] || continue
+  # Flows tagged customer-only need a customer test account; the staging
+  # review account (0000000000) is a store owner, so skip them unless
+  # MAESTRO_ACCOUNT_ROLE=customer.
+  if [ "${MAESTRO_ACCOUNT_ROLE:-owner}" != customer ] && grep -q -- '- customer-only' "$flow"; then
+    echo "$name: SKIP (customer-only)"
+    printf '%s\t%s\t%s\n' "$name" "SKIP" "0" >> "$OUT/results.tsv"
+    continue
+  fi
   echo "::group::$name"
   start=$(date +%s)
   if maestro test "$flow" \
@@ -42,5 +50,6 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
 done
 
 total=$(wc -l < "$OUT/results.tsv")
-echo "Maestro: $((total - failed))/$total flows passed"
+skipped=$(grep -c $'\tSKIP\t' "$OUT/results.tsv" || true)
+echo "Maestro: $((total - failed - skipped))/$((total - skipped)) flows passed, $skipped skipped (customer-only)"
 [ "$failed" -eq 0 ]

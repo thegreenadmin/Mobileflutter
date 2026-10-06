@@ -11,7 +11,7 @@ appId: com.thegreenmall
     timeout: 20000
 
 # 1. Navigate to Wallet tab
-- tapOn: "Wallet"
+- tapOn: 'Wallet(\nTab.*)?'
 - extendedWaitUntil:
     visible: "Total Balance"
     timeout: 10000
@@ -61,7 +61,7 @@ appId: com.thegreenmall
     timeout: 3000
 
 # 7. Navigate to Home and open Payment scanner
-- tapOn: "Home"
+- tapOn: 'Home(\nTab.*)?'
 - extendedWaitUntil:
     visible: "Stores?"
     timeout: 10000

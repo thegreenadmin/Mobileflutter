@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Open the filter options screen from the store search, fill in fields, and save.
 - runFlow: helpers/login.yaml

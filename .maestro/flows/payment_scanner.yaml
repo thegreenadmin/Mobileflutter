@@ -1,43 +1,26 @@
 appId: com.thegreenmall
 ---
-# Navigate to Payments and open the barcode scanner screen.
+# Payments -> Pay to a Business opens the barcode scanner; switch to manual
+# phone entry. Stops before entering anything, so no money moves.
 - runFlow: helpers/login.yaml
-
-# Tap the Payments shortcut pill on the home screen
 - tapOn: "Payments"
-- waitForAnimationToEnd:
-    timeout: 5000
-
-# The scanner screen should open with mode toggle tabs
+- extendedWaitUntil:
+    visible: "Pay to a Business.*"
+    timeout: 10000
+- tapOn: "Pay to a Business.*"
+# Camera permission prompt (first run after clearState). The CI emulator has
+# no camera, so the scanner may show "Camera unavailable" instead of a feed.
+- runFlow:
+    when:
+      visible: "While using the app"
+    commands:
+      - tapOn: "While using the app"
 - extendedWaitUntil:
     visible: "Scan Barcode"
     timeout: 10000
 - takeScreenshot: payment_scanner
-
-# Verify scanner mode elements
-- assertVisible: "Scan Barcode"
-
-# Verify the alignment instruction
-- retry:
-    maxRetries: 2
-    commands:
-      - assertVisible: "Align the barcode within the frame"
-
-- takeScreenshot: scanner_ready
-
-# Switch to manual entry mode
-- retry:
-    maxRetries: 2
-    commands:
-      - tapOn: "Enter Phone"
-      - waitForAnimationToEnd:
-          timeout: 3000
-
-# Verify mobile entry field
-- retry:
-    maxRetries: 2
-    commands:
-      - assertVisible: "Mobile"
-      - assertVisible: "Continue"
-
+- tapOn: "Enter Phone"
+- extendedWaitUntil:
+    visible: "Continue"
+    timeout: 8000
 - takeScreenshot: manual_entry_mode

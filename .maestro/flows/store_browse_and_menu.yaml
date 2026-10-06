@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Browse to a nearby store, view its home page and category menu.
 - runFlow: helpers/login.yaml

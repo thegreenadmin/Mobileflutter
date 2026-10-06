@@ -116,9 +116,9 @@ jobs:
           {
             echo "| Flow | Result | Seconds |"
             echo "|---|---|---|"
-            awk -F'\t' '{ printf "| %s | %s | %s |\n", $1, ($2=="PASS" ? "✅ pass" : "❌ fail"), $3 }' maestro-results/results.tsv
+            awk -F'\t' '{ printf "| %s | %s | %s |\n", $1, ($2=="PASS" ? "✅ pass" : ($2=="SKIP" ? "⏭️ skip (customer-only)" : "❌ fail")), $3 }' maestro-results/results.tsv
             echo
-            echo "**$(grep -c PASS maestro-results/results.tsv)/$(wc -l < maestro-results/results.tsv) flows passed**"
+            echo "**$(grep -c PASS maestro-results/results.tsv) passed, $(grep -c FAIL maestro-results/results.tsv) failed, $(grep -c SKIP maestro-results/results.tsv) skipped**"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload results

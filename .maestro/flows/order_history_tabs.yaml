@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Navigate to Orders tab and verify Active / Complete / Cancelled tabs.
 - runFlow: helpers/login.yaml

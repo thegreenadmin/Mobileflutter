@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Verify the Favorites tab in store search and check favourite product screen.
 - runFlow: helpers/login.yaml

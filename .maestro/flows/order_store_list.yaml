@@ -6,7 +6,7 @@ appId: com.thegreenmall
 
 # Wait for the orders store list screen
 - extendedWaitUntil:
-    visible: "Orders"
+    visible: 'Orders(\nTab.*)?'
     timeout: 10000
 - waitForAnimationToEnd:
     timeout: 3000

@@ -1,31 +1,32 @@
 appId: com.thegreenmall
 ---
-# Open the merchant barcode / payment code generation screen.
+# Payments -> Receive -> payment code screen. Store owners get
+# "Receive to my business" (code for a store + amount); customers get
+# "Show my code". Only opens the screen; no code is generated.
 - runFlow: helpers/login.yaml
-
-# Navigate to Payments
 - tapOn: "Payments"
-- waitForAnimationToEnd:
-    timeout: 5000
 - extendedWaitUntil:
-    visible: ".*"
+    visible: "Receive"
     timeout: 10000
-
-# Look for My Payment Code option
-- retry:
-    maxRetries: 3
+- tapOn: "Receive"
+- extendedWaitUntil:
+    visible: "Get paid"
+    timeout: 8000
+- runFlow:
+    when:
+      visible: "Receive to my business.*"
     commands:
-      - tapOn: "My Payment Code"
+      - tapOn: "Receive to my business.*"
       - extendedWaitUntil:
-          visible: "My Payment Code"
-          timeout: 8000
-
-- takeScreenshot: merchant_barcode_screen
-
-# Verify elements
-- retry:
-    maxRetries: 2
-    commands:
+          visible: "Generate a payment code.*"
+          timeout: 10000
       - assertVisible: "Generate code"
-
-- takeScreenshot: merchant_barcode_ready
+- runFlow:
+    when:
+      visible: "Show my code.*"
+    commands:
+      - tapOn: "Show my code.*"
+      - extendedWaitUntil:
+          visible: "My Payment Code.*"
+          timeout: 10000
+- takeScreenshot: merchant_barcode_screen

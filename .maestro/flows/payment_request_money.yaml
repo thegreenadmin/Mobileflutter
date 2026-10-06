@@ -1,40 +1,19 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
-# Open the Request Money screen and verify its elements.
+# Payments -> Receive -> Request money (customers only; owners don't get this
+# option). Checks the form; nothing is generated or sent.
 - runFlow: helpers/login.yaml
-
-# Navigate to Payments
 - tapOn: "Payments"
-- waitForAnimationToEnd:
-    timeout: 5000
-
-# Look for Request Money option — may be accessible from a menu or direct button
 - extendedWaitUntil:
-    visible: ".*"
+    visible: "Receive"
     timeout: 10000
-
-# Try to find and tap Request Money
-- retry:
-    maxRetries: 3
-    commands:
-      - tapOn: "Request money"
-      - extendedWaitUntil:
-          visible: "Request money"
-          timeout: 8000
-
-- takeScreenshot: request_money_screen
-
-# Verify key elements
-- assertVisible: "Mobile number"
+- tapOn: "Receive"
+- tapOn: "Request money.*"
+- extendedWaitUntil:
+    visible: "Mobile number"
+    timeout: 8000
 - assertVisible: "Amount"
-
-# Verify action buttons
-- retry:
-    maxRetries: 2
-    commands:
-      - swipe:
-          start: "50%,80%"
-          end: "50%,30%"
-      - assertVisible: "Generate barcode"
-
-- takeScreenshot: request_money_buttons
+- assertVisible: "Generate barcode"
+- takeScreenshot: request_money_screen

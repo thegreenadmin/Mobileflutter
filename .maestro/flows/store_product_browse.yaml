@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Navigate into a store, open a category, and browse products.
 - runFlow: helpers/login.yaml

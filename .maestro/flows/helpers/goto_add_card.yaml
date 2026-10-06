@@ -2,7 +2,7 @@ appId: com.thegreenmall
 ---
 # Assumes already logged in and app is running. Navigates Wallet -> Manage -> Add Cards -> Add New Card.
 - runFlow: login.yaml
-- tapOn: "Wallet"
+- tapOn: 'Wallet(\nTab.*)?'
 - extendedWaitUntil:
     visible: "Manage"
     timeout: 10000

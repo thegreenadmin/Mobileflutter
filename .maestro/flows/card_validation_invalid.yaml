@@ -4,7 +4,7 @@ appId: com.thegreenmall
 # Coordinates are percentages (authored on a 402x874pt iPhone) so they scale to
 # the CI emulator. Each flow starts from clearState, so log in first.
 - runFlow: helpers/login.yaml
-- tapOn: "Wallet"
+- tapOn: 'Wallet(\nTab.*)?'
 - extendedWaitUntil:
     visible: "Manage"
     timeout: 10000

@@ -2,7 +2,7 @@ appId: com.thegreenmall
 ---
 - runFlow: helpers/login.yaml
 # Bottom nav: Home / Wallet / Orders / Offers / More — Wallet is 2nd tab
-- tapOn: "Wallet"
+- tapOn: 'Wallet(\nTab.*)?'
 - waitForAnimationToEnd:
     timeout: 8000
 - takeScreenshot: wallet_tab

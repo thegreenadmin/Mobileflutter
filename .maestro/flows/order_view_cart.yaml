@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # After adding items to cart, verify the cart screen shows expected elements.
 # Prerequisite: items should already be in cart (run order_add_to_cart first).

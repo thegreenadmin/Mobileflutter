@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Verify the store search screen loads with all three tabs and the search field.
 - runFlow: helpers/login.yaml

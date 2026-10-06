@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Navigate to Orders and view the transaction history screen.
 - runFlow: helpers/login.yaml
