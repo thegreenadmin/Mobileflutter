@@ -6,6 +6,11 @@ name: Maestro E2E
 # full run takes ~30-40 minutes.
 on:
   workflow_dispatch:
+    inputs:
+      flows:
+        description: 'Regex of flow names to run (default: all)'
+        required: false
+        default: '.'
   push:
     branches: ['ci/*']
     paths:
@@ -102,7 +107,7 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: bash .maestro/ci_run.sh build/app/outputs/flutter-apk/app-debug.apk
+          script: bash .maestro/ci_run.sh build/app/outputs/flutter-apk/app-debug.apk '${{ inputs.flows || '.' }}'
 
       - name: Summarise results
         if: always()

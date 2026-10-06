@@ -2,8 +2,7 @@ appId: com.thegreenmall
 ---
 - runFlow: helpers/login.yaml
 # Bottom nav: Home / Wallet / Orders / Offers / More — Wallet is 2nd tab
-- tapOn:
-    point: "30%,96%"
+- tapOn: "Wallet"
 - waitForAnimationToEnd:
     timeout: 8000
 - takeScreenshot: wallet_tab

@@ -24,8 +24,11 @@ appId: com.thegreenmall
 - retry:
     maxRetries: 3
     commands:
+      # The PIN boxes are the first element under the "We have sent..." line.
+      # Element-relative so it works on any screen size (a fixed point missed
+      # the boxes on the CI emulator).
       - tapOn:
-          point: "20%,71%"
+          below: "We have sent the code verification.*"
       - inputText: "0000"
       - extendedWaitUntil:
           visible: "Stores?"

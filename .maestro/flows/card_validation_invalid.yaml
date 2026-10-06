@@ -1,9 +1,10 @@
 appId: com.thegreenmall
 ---
 # Negative test: invalid (Luhn-failing) card number + past expiry should be rejected.
-# Assumes already logged in and on Home (avoids OTP re-entry which crashes the driver).
-- tapOn:
-    point: "127,800"
+# Coordinates are percentages (authored on a 402x874pt iPhone) so they scale to
+# the CI emulator. Each flow starts from clearState, so log in first.
+- runFlow: helpers/login.yaml
+- tapOn: "Wallet"
 - extendedWaitUntil:
     visible: "Manage"
     timeout: 10000
@@ -22,22 +23,22 @@ appId: com.thegreenmall
 - waitForAnimationToEnd:
     timeout: 3000
 - tapOn:
-    point: "201,393"
+    point: "50%,45%"
 - inputText: "1234567890123456"
 - tapOn:
-    point: "100,473"
+    point: "25%,54%"
 - inputText: "0120"
 - tapOn:
-    point: "301,473"
+    point: "75%,54%"
 - inputText: "123"
 - tapOn:
-    point: "201,553"
+    point: "50%,63%"
 - inputText: "Test User"
 - hideKeyboard
 - takeScreenshot: card_invalid_filled
 - swipe:
-    start: "201,650"
-    end: "201,250"
+    start: "50%,74%"
+    end: "50%,29%"
 - waitForAnimationToEnd:
     timeout: 2000
 - tapOn:

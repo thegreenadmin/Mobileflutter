@@ -6,7 +6,8 @@
 # and screenshots. Exits non-zero if any flow failed.
 set -uo pipefail
 
-APK="${1:?Usage: ci_run.sh <apk>}"
+APK="${1:?Usage: ci_run.sh <apk> [flow-name-regex]}"
+FILTER="${2:-.}"
 MAESTRO_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUT="${MAESTRO_OUT:-maestro-results}"
 mkdir -p "$OUT"
@@ -17,6 +18,7 @@ adb install -r "$APK"
 failed=0
 for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   name="$(basename "$flow" .yaml)"
+  [[ "$name" =~ $FILTER ]] || continue
   echo "::group::$name"
   start=$(date +%s)
   if maestro test "$flow" \
@@ -26,6 +28,9 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   else
     status=FAIL
     failed=$((failed + 1))
+    # Where the flow got stuck: screen + view hierarchy.
+    adb exec-out screencap -p > "$OUT/$name-fail.png" || true
+    adb exec-out uiautomator dump /dev/tty > "$OUT/$name-fail.xml" 2>/dev/null || true
   fi
   secs=$(( $(date +%s) - start ))
   tail -40 "$OUT/$name.log"
