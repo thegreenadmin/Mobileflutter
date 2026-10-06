@@ -30,10 +30,23 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   fi
   echo "::group::$name"
   start=$(date +%s)
-  if maestro test "$flow" \
+  run_flow() {
+    maestro test "$flow" \
       --format junit --output "$OUT/$name.xml" \
       --test-output-dir "$OUT/$name" \
-      --debug-output "$OUT/$name" > "$OUT/$name.log" 2>&1; then
+      --debug-output "$OUT/$name" > "$OUT/$name.log" 2>&1
+  }
+  run_flow
+  rc=$?
+  # One retry when the emulator or Maestro's device server dropped out
+  # (infra flake), never for a real assertion failure.
+  if [ $rc -ne 0 ] && grep -rqE 'device offline|DeviceServerDiedException' "$OUT/$name.log" "$OUT/$name"; then
+    echo "$name: device dropped out, retrying once"
+    adb wait-for-device
+    run_flow
+    rc=$?
+  fi
+  if [ $rc -eq 0 ]; then
     status=PASS
   else
     status=FAIL
