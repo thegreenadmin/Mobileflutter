@@ -3,7 +3,8 @@
 # emulator and runs every top-level flow in .maestro/flows one at a time, so a
 # failing or crashing flow doesn't stop the rest. Writes
 # maestro-results/results.tsv (flow, PASS/FAIL, seconds) plus per-flow logs
-# and screenshots. Exits non-zero if any flow failed.
+# and screenshots (Maestro's takeScreenshot output, command log and logcat go
+# to maestro-results/<flow>/ via --test-output-dir). Exits non-zero if any flow failed.
 set -uo pipefail
 
 APK="${1:?Usage: ci_run.sh <apk> [flow-name-regex]}"
@@ -39,12 +40,6 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   echo "$name: $status (${secs}s)"
   printf '%s\t%s\t%s\n' "$name" "$status" "$secs" >> "$OUT/results.tsv"
 done
-
-# takeScreenshot output lands in the cwd; Maestro's own per-command log and
-# screenshots land in ~/.maestro/tests.
-find . "$HOME/.maestro" -name '*.png' -newer "$APK" -not -path "./$OUT/*" 2>/dev/null | head -50
-find . "$HOME/.maestro" -name '*.png' -newer "$APK" -not -path "./$OUT/*" -exec mv {} "$OUT"/ \; 2>/dev/null || true
-cp -r "$HOME/.maestro/tests" "$OUT/maestro-tests" 2>/dev/null || true
 
 total=$(wc -l < "$OUT/results.tsv")
 echo "Maestro: $((total - failed))/$total flows passed"

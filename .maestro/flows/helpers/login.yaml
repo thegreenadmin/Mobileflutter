@@ -25,10 +25,10 @@ appId: com.thegreenmall
     maxRetries: 3
     commands:
       # The PIN field has no accessibility node on Android, so it can't be
-      # targeted by text; tap the middle of the box row (~66% down on the CI
-      # Pixel 6 emulator, between "We have sent..." and "Resend").
+      # targeted by text; tap the FIRST box (~64-66% down on the CI Pixel 6
+      # emulator). The gaps between boxes don't take taps, so not the centre.
       - tapOn:
-          point: "50%,66%"
+          point: "19%,65%"
       - inputText: "0000"
       - runFlow:
           when:
