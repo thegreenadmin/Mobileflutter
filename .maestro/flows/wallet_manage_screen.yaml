@@ -19,7 +19,7 @@ appId: com.thegreenmall
 
 # Verify key elements on Manage Wallet screen
 - assertVisible: "Total Balance"
-- assertVisible: "Auto Reload Into Wallet"
+# "Auto Reload Into Wallet" is customer-only; covered by wallet_auto_reload.
 
 # Verify Add Card Payment Methods option
 - retry:

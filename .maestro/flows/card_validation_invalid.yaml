@@ -41,9 +41,10 @@ appId: com.thegreenmall
     end: "50%,29%"
 - waitForAnimationToEnd:
     timeout: 2000
+# The submit button, not the "Add Card" screen title.
 - tapOn:
     text: "Add Card"
-    index: 1
+    below: "United States"
 - waitForAnimationToEnd:
     timeout: 6000
 - takeScreenshot: card_invalid_result

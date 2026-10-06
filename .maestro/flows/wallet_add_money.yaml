@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Navigate to Wallet and open the Add Money screen.
 - runFlow: helpers/login.yaml

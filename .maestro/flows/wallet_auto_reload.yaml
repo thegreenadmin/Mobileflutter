@@ -1,4 +1,6 @@
 appId: com.thegreenmall
+tags:
+  - customer-only
 ---
 # Navigate to Wallet > Manage and toggle auto-reload setting.
 - runFlow: helpers/login.yaml

@@ -106,7 +106,9 @@ jobs:
           target: google_apis
           profile: pixel_6
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back emulated
+          # Emulated camera: mobile_scanner crashes the app outright on a
+          # device with no camera (payment_scanner flow).
           script: bash .maestro/ci_run.sh build/app/outputs/flutter-apk/app-debug.apk '${{ inputs.flows || '.' }}'
 
       - name: Summarise results
