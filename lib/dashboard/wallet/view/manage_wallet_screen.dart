@@ -107,7 +107,10 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                           ),
                         ])),
               ),
-              Container(
+              // Expanded so the body scrolls instead of overflowing short
+              // screens (e.g. Pixel 2, where the bottom 156px were cut off).
+              Expanded(
+                child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: SingleChildScrollView(
                   child:
@@ -848,6 +851,7 @@ class _ManageWalletScreenState extends State<ManageWalletScreen> with GlobalVarM
                           ))
                   ]),
                 ),
+              ),
               ),
             ],
           ),

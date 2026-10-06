@@ -55,6 +55,15 @@ void main() {
     void reportingOnError(FlutterErrorDetails d) {
       debugPrint('[journey] flutter error during "$current": '
           '${d.exceptionAsString().split('\n').first}');
+      // Name the widget behind it (e.g. the overflowing Row's file:line).
+      final where = d
+          .toString()
+          .split('\n')
+          .skipWhile((l) => !l.contains('relevant error-causing widget'))
+          .take(3)
+          .map((l) => l.trim())
+          .join(' ');
+      if (where.isNotEmpty) debugPrint('[journey]   $where');
       originalOnError?.call(d);
     }
 
