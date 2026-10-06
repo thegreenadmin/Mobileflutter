@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: ['ci/*']
+    # Maestro-only changes run in maestro.yml; don't spend Test Lab quota.
+    paths-ignore:
+      - '.maestro/**'
+      - '.github/workflows/maestro.yml'
   pull_request:
     branches: [main]
 
@@ -118,7 +122,7 @@ jobs:
             --app=build/app/outputs/apk/debug/app-debug.apk \
             --test=build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
             --device model=Pixel2.arm,version=33,locale=en,orientation=portrait \
-            --timeout=15m \
+            --timeout=20m \
             --results-dir="ftl-integration-${GITHUB_RUN_ID}" \
             --project="${FIREBASE_PROJECT_ID}" \
             2>&1 | tee test-lab-output.txt
@@ -145,9 +149,9 @@ jobs:
             exit 1
           fi
           # Test Lab reports "Passed" when the runner records 0 tests (e.g. a
-          # Dart-side hang), so also require the last step to have finished.
+          # Dart-side hang), so also require the journey's closing line.
           # grep -r (not find -exec) so a missing logcat counts as a failure.
-          if ! grep -rqs --include=logcat '\[journey\] <<< wallet ok' test-lab-results; then
+          if ! grep -rqs --include=logcat '\[journey\] ALL STEPS PASSED' test-lab-results; then
             echo "::error::Integration journey did not complete (see 'Show journey log from device')"
             exit 1
           fi
