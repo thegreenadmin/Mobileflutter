@@ -131,6 +131,11 @@ void main() {
       await _tap(tester, find.text(BottomNavStringConstants.walletText));
       await _waitFor(tester, find.text(StringConstants.totalBalanceText));
     });
+
+    // Let in-flight API calls finish. Ending the test tears the widget tree
+    // down under them, and their error path (Utility.showAlertMessage ->
+    // Get.context!) then throws and fails an otherwise passing run.
+    await _pumpFor(tester, const Duration(seconds: 15));
   }, timeout: const Timeout(Duration(minutes: 8)));
 }
 
