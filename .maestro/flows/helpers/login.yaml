@@ -24,12 +24,17 @@ appId: com.thegreenmall
 - retry:
     maxRetries: 3
     commands:
-      # The PIN boxes are the first element under the "We have sent..." line.
-      # Element-relative so it works on any screen size (a fixed point missed
-      # the boxes on the CI emulator).
+      # The PIN field has no accessibility node on Android, so it can't be
+      # targeted by text; tap the middle of the box row (~66% down on the CI
+      # Pixel 6 emulator, between "We have sent..." and "Resend").
       - tapOn:
-          below: "We have sent the code verification.*"
+          point: "50%,66%"
       - inputText: "0000"
+      - runFlow:
+          when:
+            visible: "Submit"
+          commands:
+            - tapOn: "Submit"
       - extendedWaitUntil:
           visible: "Stores?"
-          timeout: 8000
+          timeout: 15000
