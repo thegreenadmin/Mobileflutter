@@ -5,7 +5,7 @@ appId: com.thegreenmall
 - stopApp
 - launchApp
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 20000
 - tapOn:
     point: "127,800"

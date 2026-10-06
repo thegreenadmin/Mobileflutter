@@ -7,13 +7,13 @@ appId: com.thegreenmall
 - stopApp
 - launchApp
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 20000
 
 # 1. Verify store search tabs
-- tapOn: "Stores"
+- tapOn: "Stores?"
 - extendedWaitUntil:
-    visible: "Search for stores"
+    visible: "Search for [Ss]tores?"
     timeout: 10000
 - assertVisible: "Nearby"
 - assertVisible: "Previous"

@@ -1,6 +1,7 @@
 appId: com.thegreenmall
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: "Login your account"
     timeout: 15000

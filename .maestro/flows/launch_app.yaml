@@ -1,6 +1,7 @@
 appId: com.thegreenmall
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: "Continue as Guest"
     timeout: 15000

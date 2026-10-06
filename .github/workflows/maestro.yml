@@ -1,0 +1,125 @@
+name: Maestro E2E
+
+# Runs every flow in .maestro/flows on an Android emulator inside the GitHub
+# runner. Firebase Test Lab cannot run Maestro YAML, and this costs no Test
+# Lab quota. Only triggers when the flows or this workflow change, since a
+# full run takes ~30-40 minutes.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['ci/*']
+    paths:
+      - '.maestro/**'
+      - '.github/workflows/maestro.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.41.6'
+
+jobs:
+  maestro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: ANDROID_BETA_CONFIG
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create environment file from GitHub Secrets
+        env:
+          BASE_URL_WO_API: ${{ vars.BASE_URL_WO_API_BETA }}
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY_BETA }}
+          STRIPE_API_URL: ${{ vars.STRIPE_API_URL_BETA }}
+          STRIPE_CARD_BASIC_AUTH: ${{ secrets.STRIPE_CARD_BASIC_AUTH_BETA }}
+          STRIPE_BANK_BASIC_AUTH: ${{ secrets.STRIPE_BANK_BASIC_AUTH_BETA }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY_BETA }}
+        run: |
+          cat > assets/env/api_key.env << EOF
+          BASE_URL_WO_API=${BASE_URL_WO_API}
+          VERSION=v1
+          GOOGLE_MAP_KEY=${GOOGLE_MAP_KEY}
+          STRIPE_API_URL=${STRIPE_API_URL}
+          STRIPE_CARD_BASIC_AUTH=${STRIPE_CARD_BASIC_AUTH}
+          STRIPE_BANK_BASIC_AUTH=${STRIPE_BANK_BASIC_AUTH}
+          STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+          EOF
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # Default also installs the removed 'tools' package, which fails sdkmanager.
+          packages: 'platform-tools'
+
+      - name: Install required Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Maestro flows on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash .maestro/ci_run.sh build/app/outputs/flutter-apk/app-debug.apk
+
+      - name: Summarise results
+        if: always()
+        run: |
+          [ -f maestro-results/results.tsv ] || exit 0
+          {
+            echo "| Flow | Result | Seconds |"
+            echo "|---|---|---|"
+            awk -F'\t' '{ printf "| %s | %s | %s |\n", $1, ($2=="PASS" ? "✅ pass" : "❌ fail"), $3 }' maestro-results/results.tsv
+            echo
+            echo "**$(grep -c PASS maestro-results/results.tsv)/$(wc -l < maestro-results/results.tsv) flows passed**"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-results
+          path: maestro-results/
+          retention-days: 30

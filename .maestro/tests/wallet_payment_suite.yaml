@@ -7,7 +7,7 @@ appId: com.thegreenmall
 - stopApp
 - launchApp
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 20000
 
 # 1. Navigate to Wallet tab
@@ -63,7 +63,7 @@ appId: com.thegreenmall
 # 7. Navigate to Home and open Payment scanner
 - tapOn: "Home"
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 10000
 - tapOn: "Payments"
 - waitForAnimationToEnd:

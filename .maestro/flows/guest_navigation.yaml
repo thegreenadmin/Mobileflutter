@@ -1,6 +1,7 @@
 appId: com.thegreenmall
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: "Continue as Guest"
     timeout: 15000
@@ -10,9 +11,9 @@ appId: com.thegreenmall
     timeout: 20000
 - tapOn: "Yes, I'm 18 or older"
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 10000
-- assertVisible: "Stores"
+- assertVisible: "Stores?"
 - assertVisible: "Munchies"
 - assertVisible: "Herbs"
 - assertVisible: "Payments"

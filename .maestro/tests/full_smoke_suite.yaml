@@ -6,16 +6,16 @@ appId: com.thegreenmall
 
 # --- Step 1: Launch and Login ---
 - runFlow: ../flows/helpers/login.yaml
-- assertVisible: "Stores"
+- assertVisible: "Stores?"
 - assertVisible: "Munchies"
 - assertVisible: "Herbs"
 - assertVisible: "Payments"
 - takeScreenshot: smoke_home
 
 # --- Step 2: Store Browsing ---
-- tapOn: "Stores"
+- tapOn: "Stores?"
 - extendedWaitUntil:
-    visible: "Search for stores"
+    visible: "Search for [Ss]tores?"
     timeout: 10000
 - assertVisible: "Nearby"
 - assertVisible: "Previous"
@@ -40,7 +40,7 @@ appId: com.thegreenmall
 # Go back to home
 - tapOn: "Home"
 - extendedWaitUntil:
-    visible: "Stores"
+    visible: "Stores?"
     timeout: 10000
 
 # --- Step 3: Wallet ---

@@ -2,7 +2,7 @@ appId: com.thegreenmall
 ---
 - runFlow: helpers/login.yaml
 - takeScreenshot: logged_in_home
-- assertVisible: "Stores"
+- assertVisible: "Stores?"
 - assertVisible: "Munchies"
 - assertVisible: "Herbs"
 - assertVisible: "Payments"
