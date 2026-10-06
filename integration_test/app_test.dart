@@ -93,8 +93,10 @@ void main() {
       } else {
         await _waitFor(tester, find.text(StringConstants.addANewStoreText));
       }
-      // Android back button -> home.
-      await tester.binding.handlePopRoute();
+      // Use the screen's own back arrow. The Android back button
+      // (handlePopRoute) is not forwarded to the tab's nested Navigator, so it
+      // backgrounds the app and the test stalls waiting for frames.
+      await _tap(tester, find.byIcon(Icons.arrow_back));
       await _waitFor(tester, _storesPill);
     });
 
