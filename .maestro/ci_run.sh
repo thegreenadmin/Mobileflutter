@@ -23,6 +23,7 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   start=$(date +%s)
   if maestro test "$flow" \
       --format junit --output "$OUT/$name.xml" \
+      --test-output-dir "$OUT/$name" \
       --debug-output "$OUT/$name" > "$OUT/$name.log" 2>&1; then
     status=PASS
   else
@@ -41,7 +42,8 @@ done
 
 # takeScreenshot output lands in the cwd; Maestro's own per-command log and
 # screenshots land in ~/.maestro/tests.
-mv ./*.png "$OUT"/ 2>/dev/null || true
+find . "$HOME/.maestro" -name '*.png' -newer "$APK" -not -path "./$OUT/*" 2>/dev/null | head -50
+find . "$HOME/.maestro" -name '*.png' -newer "$APK" -not -path "./$OUT/*" -exec mv {} "$OUT"/ \; 2>/dev/null || true
 cp -r "$HOME/.maestro/tests" "$OUT/maestro-tests" 2>/dev/null || true
 
 total=$(wc -l < "$OUT/results.tsv")
