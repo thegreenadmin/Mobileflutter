@@ -1,0 +1,40 @@
+appId: com.thegreenmall
+---
+# TEMPORARY diagnostic for CI OTP entry; delete once login works on Android.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Login your account"
+    timeout: 20000
+- tapOn: "Login your account"
+- extendedWaitUntil:
+    visible: "Send Confirmation Code"
+    timeout: 15000
+- tapOn: "Mobile"
+- inputText: "0000000000"
+- takeScreenshot: probe_0_phone_typed
+- tapOn: "Send Confirmation Code"
+- extendedWaitUntil:
+    visible: "Verification code"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: probe_1_otp_screen
+- tapOn:
+    point: "19%,66%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: probe_2_after_box_tap
+- inputText: "0000"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: probe_3_after_input
+- tapOn:
+    point: "19%,66%"
+- inputText: "0"
+- inputText: "0"
+- inputText: "0"
+- inputText: "0"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: probe_4_after_single_digits

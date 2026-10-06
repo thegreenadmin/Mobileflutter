@@ -39,6 +39,11 @@ for flow in "$MAESTRO_DIR"/flows/*.yaml; do
   printf '%s\t%s\t%s\n' "$name" "$status" "$secs" >> "$OUT/results.tsv"
 done
 
+# takeScreenshot output lands in the cwd; Maestro's own per-command log and
+# screenshots land in ~/.maestro/tests.
+mv ./*.png "$OUT"/ 2>/dev/null || true
+cp -r "$HOME/.maestro/tests" "$OUT/maestro-tests" 2>/dev/null || true
+
 total=$(wc -l < "$OUT/results.tsv")
 echo "Maestro: $((total - failed))/$total flows passed"
 [ "$failed" -eq 0 ]
