@@ -17,6 +17,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/main.dart' as app;
 import 'package:thegreenmall/utils/constants.dart';
+import 'package:thegreenmall/utils/global_share_data.dart';
 
 const _testPhone = '0000000000';
 const _testOtp = '0000';
@@ -75,30 +76,52 @@ void main() {
     await _step('store search tabs', () async {
       await _tap(tester, _storesPill);
       await _waitFor(tester, find.text(StringConstants.searchForStoreText));
-      for (final tab in [
-        StringConstants.nearbyText,
-        StringConstants.previousText,
-        StringConstants.favoriteText,
-        StringConstants.nearbyText,
-      ]) {
-        await _tap(tester, find.text(tab));
-        await _pumpFor(tester, const Duration(seconds: 2));
+      // The stores pill opens a different screen per role: customers get the
+      // Nearby / Previous / Favorite search, owners get their own store list.
+      // The staging review account is currently a store owner.
+      debugPrint('[journey] role: ${roleApp.value}');
+      if (roleApp.value == Role.customerRoleText) {
+        for (final tab in [
+          StringConstants.nearbyText,
+          StringConstants.previousText,
+          StringConstants.favoriteText,
+          StringConstants.nearbyText,
+        ]) {
+          await _tap(tester, find.text(tab));
+          await _pumpFor(tester, const Duration(seconds: 2));
+        }
+      } else {
+        await _waitFor(tester, find.text(StringConstants.addANewStoreText));
       }
       // Android back button -> home.
       await tester.binding.handlePopRoute();
       await _waitFor(tester, _storesPill);
     });
 
-    await _step('order history tabs', () async {
+    await _step('order history', () async {
       await _tap(tester, find.text(BottomNavStringConstants.ordersText));
-      await _waitFor(tester, find.text(StringConstants.cancelledText));
-      for (final tab in [
-        StringConstants.completeText,
-        StringConstants.cancelledText,
-        StringConstants.activeText,
-      ]) {
-        await _tap(tester, find.text(tab));
-        await _pumpFor(tester, const Duration(seconds: 2));
+      if (roleApp.value == Role.customerRoleText) {
+        await _waitFor(tester, find.text(StringConstants.cancelledText));
+        for (final tab in [
+          StringConstants.completeText,
+          StringConstants.cancelledText,
+          StringConstants.activeText,
+        ]) {
+          await _tap(tester, find.text(tab));
+          await _pumpFor(tester, const Duration(seconds: 2));
+        }
+      } else {
+        // Owners get a store picker (several stores or none) or, with one
+        // store, that store's Received / Pickup / Completed queue.
+        await _waitFor(
+            tester,
+            find.byWidgetPredicate(
+                (w) =>
+                    w is Text &&
+                    (w.data == StringConstants.scanOrderBarcodeText ||
+                        w.data == StringConstants.noOrdersFoundText ||
+                        w.data == StringConstants.receivedText),
+                description: 'owner orders screen'));
       }
     });
 
