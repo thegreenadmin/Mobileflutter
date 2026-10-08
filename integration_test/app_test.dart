@@ -35,6 +35,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
@@ -408,9 +409,25 @@ void main() {
       await _submit(tester, find.text(StringConstants.addToOrderText));
       await _tap(tester, find.text(StringConstants.goToCartText));
       await _waitFor(tester, find.text(StringConstants.orderSummaryText));
-      final inStore = find.text(StringConstants.inStoreText);
-      if (inStore.hitTestable().evaluate().isNotEmpty) {
-        await _tap(tester, inStore);
+      // The Order Type grid fills once store details load; pay needs one
+      // picked. In-store or curbside, never delivery (needs an address).
+      final home = Get.find<StoreHomeMainController>();
+      await _until(
+          tester,
+          'order types',
+          () => (home.storeDetailsResponse.value.data?.store
+                      ?.storeDeliveryServices ??
+                  [])
+              .isNotEmpty);
+      if (home.storeDeliveryServiceId.value == '0') {
+        final inStore = find.text(StringConstants.inStoreText);
+        await _submit(
+            tester,
+            inStore.evaluate().isNotEmpty
+                ? inStore
+                : find.text(StringConstants.curbSideText));
+        await _until(tester, 'order type picked',
+            () => home.storeDeliveryServiceId.value != '0');
       }
       await _submit(tester, find.text(StringConstants.payNowText));
       // Wallet payment asks to confirm the deduction first.
@@ -435,9 +452,16 @@ void main() {
       await _tap(tester, find.text('Continue'));
       await _waitFor(tester, find.text('Select Business'));
       // A number with a single business has it preselected.
-      final pickBusiness = find.text('Select a business');
-      if (pickBusiness.hitTestable().evaluate().isNotEmpty) {
-        await _pickFirst(tester, pickBusiness);
+      // The hint sits under an IgnorePointer, so open the dropdown itself.
+      final picker = find.byWidgetPredicate(
+          (w) =>
+              w is DropdownButton &&
+              w.value == null &&
+              w.hint is Text &&
+              (w.hint as Text).data == 'Select a business',
+          description: 'unselected business dropdown');
+      if (picker.evaluate().isNotEmpty) {
+        await _pickFirst(tester, picker);
       }
       await _tap(tester, find.text('Continue'));
       await _waitFor(tester, find.text('Enter payment details'));
