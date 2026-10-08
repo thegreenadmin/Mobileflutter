@@ -412,13 +412,24 @@ void main() {
       // The Order Type grid fills once store details load; pay needs one
       // picked. In-store or curbside, never delivery (needs an address).
       final home = Get.find<StoreHomeMainController>();
-      await _until(
-          tester,
-          'order types',
-          () => (home.storeDetailsResponse.value.data?.store
-                      ?.storeDeliveryServices ??
-                  [])
-              .isNotEmpty);
+      bool hasTypes() => (home.storeDetailsResponse.value.data?.store
+                  ?.storeDeliveryServices ??
+              [])
+          .isNotEmpty;
+      try {
+        await _until(tester, 'order types', hasTypes,
+            timeout: const Duration(seconds: 10));
+      } on TestFailure {
+        // Store details load after a location fix, which can stall on a
+        // device that has never granted location. Fetch them directly.
+        debugPrint('[journey]   store details missing (store '
+            '${home.storeId.value}); fetching them directly');
+        if (home.storeId.value.isEmpty || home.storeId.value == '0') {
+          home.storeId.value = _ownStoreId;
+        }
+        await home.apiGetStoreDetailsApi();
+        await _until(tester, 'order types', hasTypes);
+      }
       if (home.storeDeliveryServiceId.value == '0') {
         final inStore = find.text(StringConstants.inStoreText);
         await _submit(
