@@ -188,8 +188,8 @@ void main() {
 
     // wallet_explore, wallet_manage_screen
     await step('wallet and manage wallet', () async {
-      await _tap(tester, find.text(BottomNavStringConstants.walletText));
-      await _waitFor(tester, find.text(StringConstants.totalBalanceText));
+      await _tapUntil(tester, find.text(BottomNavStringConstants.walletText),
+          find.text(StringConstants.totalBalanceText));
       await _tap(tester, find.text(StringConstants.manageText));
       await _waitFor(tester, find.text(StringConstants.manageWalletText));
       await _scrollTo(
@@ -274,8 +274,8 @@ final _storesPill = find.byWidgetPredicate(
     description: 'stores shortcut pill');
 
 Future<void> _openPayments(WidgetTester tester) async {
-  await _tap(tester, find.text(BottomNavStringConstants.homeText));
-  await _waitFor(tester, _storesPill.hitTestable());
+  await _tapUntil(tester, find.text(BottomNavStringConstants.homeText),
+      _storesPill.hitTestable());
   await _tap(tester, find.text('Payments'));
   await _waitFor(tester, find.text('Pay to a Business'));
 }
@@ -333,6 +333,22 @@ Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
 /// Taps the first match that can receive the tap, mirroring Maestro's
 /// `tapOn: "<text>"`. Inactive tabs keep their widgets alive, so plain
 /// `finder.first` can land on text the user cannot see.
+/// Taps [finder] until [expected] shows up. A tab tap made while the
+/// previous screen is still loading can be dropped, so one tap isn't enough.
+Future<void> _tapUntil(WidgetTester tester, Finder finder, Finder expected,
+    {int attempts = 4}) async {
+  for (var i = 1; i <= attempts; i++) {
+    await _tap(tester, finder);
+    try {
+      await _waitFor(tester, expected, timeout: const Duration(seconds: 10));
+      return;
+    } on TestFailure {
+      if (i == attempts) rethrow;
+      debugPrint('[journey]   no $expected after tap $i; tapping again');
+    }
+  }
+}
+
 Future<void> _tap(WidgetTester tester, Finder finder,
     {Duration timeout = const Duration(seconds: 30)}) async {
   final target = finder.hitTestable();
