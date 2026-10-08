@@ -110,6 +110,21 @@ platform :ios do
     )
   end
 
+  # Send the dSYMs from the build_app archive to Firebase Crashlytics. iOS
+  # Crashlytics holds every report (fatal and non-fatal) from a build until it
+  # has that build's dSYM, so without this step nothing shows on the Issues
+  # page. (export_options uploadSymbols only sends symbols to Apple.) A failure
+  # here is logged rather than raised so it never blocks the store upload.
+  def upload_crashlytics_symbols
+    upload_symbols_to_crashlytics(
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      gsp_path: "./Runner/GoogleService-Info.plist",
+      binary_path: "./Pods/FirebaseCrashlytics/upload-symbols"
+    )
+  rescue => e
+    UI.important("Crashlytics dSYM upload failed (#{e.message}); iOS crashes from this build won't appear in Crashlytics until its dSYM is uploaded.")
+  end
+
   desc "Push a new beta build to TestFlight"
   lane :beta do
     setup_ci if ENV['CI']
@@ -133,6 +148,7 @@ platform :ios do
         uploadSymbols: true
       }
     )
+    upload_crashlytics_symbols
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
       distribute_external: false
@@ -160,6 +176,7 @@ platform :ios do
         teamID: ENV['APPLE_TEAM_ID']
       }
     )
+    upload_crashlytics_symbols
     upload_to_app_store(
       submit_for_review: false,
       automatic_release: false,
@@ -293,9 +310,11 @@ platform :ios do
     download_dsyms(
       version: "latest"
     )
+    # No dsym_path: the action then uploads every file download_dsyms fetched
+    # (lane_context DSYM_PATHS), whatever their version/build file names are.
     upload_symbols_to_crashlytics(
-      dsym_path: "./Runner.app.dSYM.zip",
-      gsp_path: "./Runner/GoogleService-Info.plist"
+      gsp_path: "./Runner/GoogleService-Info.plist",
+      binary_path: "./Pods/FirebaseCrashlytics/upload-symbols"
     )
   end
 
