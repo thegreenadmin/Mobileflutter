@@ -113,12 +113,23 @@ class _GooglePlaceAutocompleteFieldState
 
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      if (text.isEmpty) {
+      // Only search for what the user is typing: a screen prefilling the
+      // saved address shouldn't pop suggestions, and with no API key the
+      // Places SDK throws instead of returning nothing.
+      if (text.isEmpty || !_focusNode.hasFocus || widget.apiKey.isEmpty) {
         _removeOverlay();
         return;
       }
 
-      final result = await _places.findAutocompletePredictions(text);
+      final FindAutocompletePredictionsResponse result;
+      try {
+        result = await _places.findAutocompletePredictions(text);
+      } catch (e) {
+        debugPrint('Places autocomplete failed: $e');
+        _removeOverlay();
+        return;
+      }
+      if (!mounted) return;
       _predictions
         ..clear()
         ..addAll(result.predictions);
