@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1000,
+    "description": "Wait out the Flutter splash, then enter the app as a guest past the age gate",
+    "crawlStage": "crawl",
+    "contextDescriptor": {
+      "condition": "app_launched"
+    },
+    "actions": [
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 60000,
+        "elementDescriptors": [{ "contentDescription": "Continue as Guest" }]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [{ "contentDescription": "Continue as Guest" }]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 15000,
+        "elementDescriptors": [{ "contentDescription": "Yes, I'm 18 or older" }]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [{ "contentDescription": "Yes, I'm 18 or older" }]
+      }
+    ]
+  }
+]
