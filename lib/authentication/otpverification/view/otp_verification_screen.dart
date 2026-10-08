@@ -15,6 +15,13 @@ class OtpVerificationScreen extends StatefulWidget {
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final OtpVerificationController otpVerificationController =
       Get.put(OtpVerificationController());
+  final FocusNode otpFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    otpFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,63 +92,71 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                     ),
                                     // pin_code_fields hides its TextField under an AbsorbPointer, so
                                     // accessibility tools (TalkBack, Firebase Robo) can't type into
-                                    // it. Expose one text field that sets the code directly.
+                                    // it, and a tap between the boxes hits the page's unfocus
+                                    // handler. Expose one text field that focuses on tap anywhere
+                                    // in the row and accepts the code directly.
                                     child: Semantics(
                                       textField: true,
                                       label: 'OTP code',
                                       value: otpVerificationController.otpTextController.text,
+                                      onTap: otpFocusNode.requestFocus,
                                       onSetText: (value) => otpVerificationController
                                           .otpTextController.text = value.replaceAll(RegExp(r'\D'), ''),
-                                      child: ExcludeSemantics(
-                                        child: PinCodeTextField(
-                                          validator: (value) {
-                                            if (value == null || value.trim().isEmpty) {
-                                              return AlertStringConstants.pleaseEnterOtpText;
-                                            } else if (value.length < 4) {
-                                              return AlertStringConstants.invalidOtpText;
-                                            }
-                                            return null;
-                                          },
-                                          cursorWidth: 2,
-                                          autoDisposeControllers: false,
-                                          cursorHeight: 25,
-                                          cursorColor: AppColors.primary,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.digitsOnly
-                                          ],
-                                          errorTextSpace: 20,
-                                          textStyle: TextStyle(
-                                              fontSize: 18,
-                                              color: AppColors.blackLight,
-                                              fontWeight: FontWeight.w500),
-                                          obscureText: true,
-                                          appContext: context,
-                                          keyboardType: TextInputType.number,
-                                          length: 4,
-                                          controller:
-                                              otpVerificationController.otpTextController,
-                                          enableActiveFill: false,
-                                          blinkWhenObscuring: true,
-                                          pinTheme: PinTheme(
-                                              borderWidth: 1,
-                                              errorBorderColor: AppColors.red,
-                                              borderRadius: BorderRadius.circular(5.0),
-                                              shape: PinCodeFieldShape.box,
-                                              fieldHeight: 45,
-                                              fieldWidth: 50,
-                                              disabledColor: AppColors.grey,
-                                              inactiveFillColor: AppColors.grey,
-                                              activeColor: AppColors.primary,
-                                              activeFillColor: AppColors.grey,
-                                              inactiveColor: AppColors.grey),
-                                          onChanged: (v) {},
-                                          onCompleted: (value) {
-                                            if (otpVerificationController.isLoading.value ==
-                                                false) {
-                                              otpVerificationController
-                                                  .validateAndSubmitOtp();
-                                            }
-                                          },
+                                      child: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: otpFocusNode.requestFocus,
+                                        child: ExcludeSemantics(
+                                          child: PinCodeTextField(
+                                            focusNode: otpFocusNode,
+                                            validator: (value) {
+                                              if (value == null || value.trim().isEmpty) {
+                                                return AlertStringConstants.pleaseEnterOtpText;
+                                              } else if (value.length < 4) {
+                                                return AlertStringConstants.invalidOtpText;
+                                              }
+                                              return null;
+                                            },
+                                            cursorWidth: 2,
+                                            autoDisposeControllers: false,
+                                            cursorHeight: 25,
+                                            cursorColor: AppColors.primary,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.digitsOnly
+                                            ],
+                                            errorTextSpace: 20,
+                                            textStyle: TextStyle(
+                                                fontSize: 18,
+                                                color: AppColors.blackLight,
+                                                fontWeight: FontWeight.w500),
+                                            obscureText: true,
+                                            appContext: context,
+                                            keyboardType: TextInputType.number,
+                                            length: 4,
+                                            controller:
+                                                otpVerificationController.otpTextController,
+                                            enableActiveFill: false,
+                                            blinkWhenObscuring: true,
+                                            pinTheme: PinTheme(
+                                                borderWidth: 1,
+                                                errorBorderColor: AppColors.red,
+                                                borderRadius: BorderRadius.circular(5.0),
+                                                shape: PinCodeFieldShape.box,
+                                                fieldHeight: 45,
+                                                fieldWidth: 50,
+                                                disabledColor: AppColors.grey,
+                                                inactiveFillColor: AppColors.grey,
+                                                activeColor: AppColors.primary,
+                                                activeFillColor: AppColors.grey,
+                                                inactiveColor: AppColors.grey),
+                                            onChanged: (v) {},
+                                            onCompleted: (value) {
+                                              if (otpVerificationController.isLoading.value ==
+                                                  false) {
+                                                otpVerificationController
+                                                    .validateAndSubmitOtp();
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ),
                                     ),
