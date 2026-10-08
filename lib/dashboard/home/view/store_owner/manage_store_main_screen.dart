@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -145,7 +147,8 @@ class _ManageStoreMainScreenState extends State<ManageStoreMainScreen> with Glob
       alignment: Alignment.bottomCenter,
       children: [
         Obx(() => Container(
-          height: WidgetConstants.screenHeight * 0.28,
+          // 28% of a short screen (e.g. Pixel 2) can't fit the store info.
+          height: math.max(WidgetConstants.screenHeight * 0.28, 240.0),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,

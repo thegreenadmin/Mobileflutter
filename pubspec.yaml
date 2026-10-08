@@ -110,6 +110,9 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  # Pinned to the version image_picker resolves to; the journey test swaps in
+  # a fake picker.
+  image_picker_platform_interface: 2.10.1
   
 
   # The "flutter_lints" package below contains a set of recommended lints to

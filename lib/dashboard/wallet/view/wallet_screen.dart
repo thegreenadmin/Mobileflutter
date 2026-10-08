@@ -42,7 +42,9 @@ class _WalletScreenState extends State<WalletScreen> with GlobalVarMixin{
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
-
+      // No inputs here; the add-money screens pushed over this tab raise the
+      // keyboard, which would otherwise squeeze this Column into overflow.
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Column(
