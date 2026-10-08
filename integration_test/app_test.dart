@@ -418,17 +418,12 @@ void main() {
           .isNotEmpty;
       try {
         await _until(tester, 'order types', hasTypes,
-            timeout: const Duration(seconds: 10));
+            timeout: const Duration(seconds: 15));
       } on TestFailure {
-        // Store details load after a location fix, which can stall on a
-        // device that has never granted location. Fetch them directly.
-        debugPrint('[journey]   store details missing (store '
-            '${home.storeId.value}); fetching them directly');
-        if (home.storeId.value.isEmpty || home.storeId.value == '0') {
-          home.storeId.value = _ownStoreId;
-        }
-        await home.apiGetStoreDetailsApi();
-        await _until(tester, 'order types', hasTypes);
+        // The shop endpoint only returns order types the store has enabled;
+        // with none, the cart can never be paid.
+        fail('store ${home.storeId.value} has no enabled order types on '
+            'beta; enable In-store or Curbside in Edit Store');
       }
       if (home.storeDeliveryServiceId.value == '0') {
         final inStore = find.text(StringConstants.inStoreText);
@@ -499,6 +494,9 @@ void main() {
     await step('owner payout to test bank', () async {
       await _tapUntil(tester, find.text(BottomNavStringConstants.walletText),
           find.text(StringConstants.totalBalanceText));
+      // Manage needs the store list, which loads after the wallet opens.
+      await _until(tester, 'wallet stores',
+          () => Get.find<WalletController>().storeList.isNotEmpty);
       await _tap(tester, find.text(StringConstants.manageText));
       await _scrollTo(
           tester, find.text(StringConstants.debitMoneyFromWalletText));
