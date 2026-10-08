@@ -32,10 +32,14 @@ class AddCardDetailScreenState extends State<AddCardDetailScreen> with GlobalVar
         width: 1.0,
       ),
     );
-    addCardController.apiGetUserWalletBalance();
-    addCardController.apiGetCardList();
-    // addCardController.apiGetCountries();
-    addCardController.apiGetUserDetailApi();
+    // These set Rx loading flags synchronously; doing that mid-build trips
+    // "setState() called during build" in Obx widgets, so wait a frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      addCardController.apiGetUserWalletBalance();
+      addCardController.apiGetCardList();
+      // addCardController.apiGetCountries();
+      addCardController.apiGetUserDetailApi();
+    });
   }
 
   @override

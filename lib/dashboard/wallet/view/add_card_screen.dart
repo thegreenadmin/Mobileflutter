@@ -28,7 +28,9 @@ class AddCardScreenState extends State<AddCardScreen> with GlobalVarMixin{
           .selectedStore.value = widget.selectedStore!;
     }
     // addCardController.apiGetUserWalletBalance();
-    addCardController.apiGetCardList();
+    // Sets Rx loading flags; deferred so Obx isn't dirtied mid-build.
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => addCardController.apiGetCardList());
     super.initState();
   }
 
