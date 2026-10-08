@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1000,
+    "description": "Wait out the Flutter splash, then log in with the demo account (0000000000 / OTP 0000)",
+    "crawlStage": "crawl",
+    "contextDescriptor": {
+      "condition": "app_launched"
+    },
+    "actions": [
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 60000,
+        "elementDescriptors": [{ "contentDescription": "Login your account" }]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [{ "contentDescription": "Login your account" }]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 15000,
+        "elementDescriptors": [{ "contentDescription": "Send Confirmation Code" }]
+      },
+      {
+        "eventType": "VIEW_TEXT_CHANGED",
+        "replacementText": "0000000000",
+        "elementDescriptors": [{ "className": "android.widget.EditText" }]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "elementDescriptors": [{ "contentDescription": "Send Confirmation Code" }]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 30000,
+        "elementDescriptors": [{ "contentDescription": "Verification code" }]
+      },
+      {
+        "eventType": "VIEW_TEXT_CHANGED",
+        "replacementText": "0000",
+        "elementDescriptors": [{ "className": "android.widget.EditText" }]
+      },
+      {
+        "eventType": "WAIT_FOR_ELEMENT",
+        "delayTime": 30000,
+        "elementDescriptors": [{ "contentDescription": "Payments" }]
+      }
+    ]
+  }
+]

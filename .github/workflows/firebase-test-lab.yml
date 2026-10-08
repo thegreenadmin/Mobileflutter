@@ -261,7 +261,7 @@ jobs:
             --type=robo \
             --app=build/app/outputs/flutter-apk/app-debug.apk \
             --robo-directives="${ROBO_DIRECTIVES_TEMPLATE}" \
-            --robo-script=.github/robo/guest_start.json \
+            --robo-script=.github/robo/login_start.json \
             --device model=Pixel2.arm,version=33,locale=en,orientation=portrait \
             --timeout=300s \
             --results-dir="ftl-results-${GITHUB_RUN_ID}" \
@@ -281,11 +281,16 @@ jobs:
       - name: Check Robo actually crawled
         run: |
           # Robo reports "Passed" even when it gives up on the splash screen
-          # after a couple of blind taps, so require a real crawl.
+          # after a couple of blind taps, so require a real, logged-in crawl.
           ACTIONS=$(find test-lab-results -name actions.json -exec jq '.events | length' {} + | head -1)
           echo "Robo performed ${ACTIONS:-0} actions"
           if [ "${ACTIONS:-0}" -lt 20 ]; then
             echo "::error::Robo only performed ${ACTIONS:-0} actions; it never got into the app"
+            exit 1
+          fi
+          # The Robo script logs in with the demo account; make sure it did.
+          if ! grep -rqs --include=logcat 'Logged in successfully' test-lab-results; then
+            echo "::error::Robo script did not log in (no 'Logged in successfully' in logcat)"
             exit 1
           fi
 
