@@ -35,7 +35,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
-import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
@@ -411,32 +410,28 @@ void main() {
       await _waitFor(tester, find.text(StringConstants.orderSummaryText));
       // The Order Type grid fills once store details load; pay needs one
       // picked. In-store or curbside, never delivery (needs an address).
-      final home = Get.find<StoreHomeMainController>();
-      bool hasTypes() => (home.storeDetailsResponse.value.data?.store
-                  ?.storeDeliveryServices ??
-              [])
-          .isNotEmpty;
+      // The cart has its own controller instance, so pick the order type
+      // through the UI rather than checking controller state. Prefer pickup;
+      // fall back to whatever the store offers.
+      final types = [
+        StringConstants.inStoreText,
+        StringConstants.curbSideText,
+        StringConstants.deliveryText,
+      ].map((t) => find.text(t).hitTestable()).toList();
       try {
-        await _until(tester, 'order types', hasTypes,
+        await _until(tester, 'order types',
+            () => types.any((f) => f.evaluate().isNotEmpty),
             timeout: const Duration(seconds: 15));
       } on TestFailure {
         // The shop endpoint only returns order types the store has enabled;
         // with none, the cart can never be paid.
-        fail('store ${home.storeId.value} has no enabled order types on '
-            'beta; enable In-store or Curbside in Edit Store');
+        fail('store $_ownStoreId shows no order types in the cart; enable '
+            'one for it on beta');
       }
-      if (home.storeDeliveryServiceId.value == '0') {
-        // Prefer pickup; fall back to whatever the store offers.
-        final type = [
-          StringConstants.inStoreText,
-          StringConstants.curbSideText,
-          StringConstants.deliveryText,
-        ].map(find.text).firstWhere((f) => f.evaluate().isNotEmpty,
-            orElse: () => find.text(StringConstants.inStoreText));
-        await _submit(tester, type);
-        await _until(tester, 'order type picked',
-            () => home.storeDeliveryServiceId.value != '0');
-      }
+      await _tap(tester,
+          types.firstWhere((f) => f.evaluate().isNotEmpty).first);
+      // Picking a type refreshes the wallet balance Pay Now checks.
+      await _pumpFor(tester, const Duration(seconds: 3));
       await _submit(tester, find.text(StringConstants.payNowText));
       // Wallet payment asks to confirm the deduction first.
       await _tap(tester, find.text(StringConstants.proceedText));
