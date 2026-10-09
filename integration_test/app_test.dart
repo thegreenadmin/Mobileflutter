@@ -426,12 +426,14 @@ void main() {
             'beta; enable In-store or Curbside in Edit Store');
       }
       if (home.storeDeliveryServiceId.value == '0') {
-        final inStore = find.text(StringConstants.inStoreText);
-        await _submit(
-            tester,
-            inStore.evaluate().isNotEmpty
-                ? inStore
-                : find.text(StringConstants.curbSideText));
+        // Prefer pickup; fall back to whatever the store offers.
+        final type = [
+          StringConstants.inStoreText,
+          StringConstants.curbSideText,
+          StringConstants.deliveryText,
+        ].map(find.text).firstWhere((f) => f.evaluate().isNotEmpty,
+            orElse: () => find.text(StringConstants.inStoreText));
+        await _submit(tester, type);
         await _until(tester, 'order type picked',
             () => home.storeDeliveryServiceId.value != '0');
       }
