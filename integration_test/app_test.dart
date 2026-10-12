@@ -33,6 +33,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
@@ -559,9 +560,27 @@ void main() {
       await _pumpFor(tester, const Duration(seconds: 1));
       final signUp = find.text(StringConstants.signUpText).last;
       await tester.ensureVisible(signUp);
-      await _tapUntil(tester, signUp,
-          find.text(AlertStringConstants.pleaseEnterTermsAndConditions),
-          attempts: 3);
+      try {
+        await _tapUntil(tester, signUp,
+            find.text(AlertStringConstants.pleaseEnterTermsAndConditions),
+            attempts: 3);
+      } on TestFailure {
+        // The form failed validation; say which field, even off-screen.
+        final c = Get.find<SignupController>();
+        debugPrint(
+            '[journey]   form: first="${c.firstNameTextController.text}" '
+            'last="${c.lastNameTextController.text}" '
+            'email="${c.emailTextController.text}" '
+            'phone="${c.phoneNumberTextController.text}"');
+        final errors = find
+            .byType(Text)
+            .evaluate()
+            .map((e) => (e.widget as Text).data ?? '')
+            .where((t) => t.startsWith('Please') || t.contains('valid'))
+            .toSet();
+        debugPrint('[journey]   errors: ${errors.join(' | ')}');
+        rethrow;
+      }
       await _tap(tester, find.text(StringConstants.okayText));
     });
 

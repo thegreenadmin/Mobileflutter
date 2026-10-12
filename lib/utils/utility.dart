@@ -269,7 +269,9 @@ class Utility {
         ),
         actions: const <Widget>[],
       ),
-    );
+      // Clear the flag however the dialog closes (back, a route reset on
+      // 401), not only on Okay, or every later alert is silently dropped.
+    ).whenComplete(() => _isDialogShowing = false);
   }
 
   static showAlert(
