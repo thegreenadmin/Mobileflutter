@@ -88,7 +88,21 @@ void main() {
       current = name;
       debugPrint('[journey] >>> $name');
       try {
-        await body();
+        if (_loggedIn && _loggedOut()) await _logInAgain(tester);
+        try {
+          await body();
+        } catch (e) {
+          // The backend ends the session when a push to this emulator's FCM
+          // token fails (sns.controller deletes the session, not just the
+          // token), e.g. right after a payment notifies this account.
+          // Log back in and give the step one more go.
+          await _pumpFor(tester, const Duration(seconds: 2));
+          if (!_loggedIn || !_loggedOut()) rethrow;
+          debugPrint('[journey]   logged out mid-step ($e); '
+              'logging in again and retrying');
+          await _logInAgain(tester);
+          await body();
+        }
         debugPrint('[journey] <<< $name ok');
       } catch (e) {
         debugPrint('[journey] FAILED at "$name": $e');
@@ -129,30 +143,14 @@ void main() {
           tester, find.text(StringConstants.sendConfirmationCodeText));
       expect(find.byType(IntlPhoneField), findsOneWidget);
       // The subtitle has a hard line break, so match its first words.
-      expect(find.textContaining('Enter mobile number to login'),
-          findsOneWidget);
+      expect(
+          find.textContaining('Enter mobile number to login'), findsOneWidget);
     }, critical: true);
 
     // login_with_test_account
     await step('login with test account', () async {
-      await tester.enterText(
-          find.descendant(
-              of: find.byType(IntlPhoneField),
-              matching: find.byType(EditableText)),
-          _testPhone);
-      await _pumpFor(tester, const Duration(milliseconds: 500));
-      await _tap(tester, find.text(StringConstants.sendConfirmationCodeText));
-
-      await _waitFor(tester, find.byType(PinCodeTextField));
-      await _pumpFor(tester, const Duration(seconds: 1));
-      await tester.enterText(
-          find.descendant(
-              of: find.byType(PinCodeTextField),
-              matching: find.byType(EditableText)),
-          _testOtp);
-      await _waitFor(tester, find.text(BottomNavStringConstants.walletText));
-      await _waitFor(tester, _storesPill);
-      debugPrint('[journey] role: ${roleApp.value}');
+      await _logIn(tester);
+      _loggedIn = true;
     }, critical: true);
 
     // store_search_tabs (customer) / owner store list
@@ -288,12 +286,15 @@ void main() {
       await _until(tester, 'offer image upload',
           () => offers.offerImageOriginalLinkFromServer.value.isNotEmpty);
       await _enterField(tester, StringConstants.enterOfferNameText, offerName);
-      await _tap(tester, find.byWidgetPredicate(
-          (w) => w is Radio && w.value == OfferType.store,
-          description: 'store offer radio'));
+      await _tap(
+          tester,
+          find.byWidgetPredicate(
+              (w) => w is Radio && w.value == OfferType.store,
+              description: 'store offer radio'));
       // A single-store owner gets the store preselected (no hint shown).
       if (offers.storeIdValue.value.isEmpty) {
-        await _pickFirst(tester, find.text(StringConstants.selectStoreText).last);
+        await _pickFirst(
+            tester, find.text(StringConstants.selectStoreText).last);
       }
       final discountHint = find.descendant(
           of: find.byType(DropdownButtonFormField<DiscountType>),
@@ -401,8 +402,8 @@ void main() {
                   isFromOptions: false)),
           id: pageIdApp.value);
       await _tap(tester, find.text(StringConstants.menuText));
-      await _tapUntil(tester, find.text(_firstCategoryName),
-          find.text(productName));
+      await _tapUntil(
+          tester, find.text(_firstCategoryName), find.text(productName));
       await _tap(tester, find.text(productName));
       await _tap(tester, _asset(ImageConstants.add));
       await _submit(tester, find.text(StringConstants.addToOrderText));
@@ -428,8 +429,8 @@ void main() {
         fail('store $_ownStoreId shows no order types in the cart; enable '
             'one for it on beta');
       }
-      await _tap(tester,
-          types.firstWhere((f) => f.evaluate().isNotEmpty).first);
+      await _tap(
+          tester, types.firstWhere((f) => f.evaluate().isNotEmpty).first);
       // Picking a type refreshes the wallet balance Pay Now checks.
       await _pumpFor(tester, const Duration(seconds: 3));
       await _submit(tester, find.text(StringConstants.payNowText));
@@ -470,8 +471,9 @@ void main() {
       await _waitFor(tester, find.text('Enter payment details'));
       await tester.enterText(
           find.descendant(
-              of: find.ancestor(
-                  of: find.text('Amount'), matching: find.byType(Column))
+              of: find
+                  .ancestor(
+                      of: find.text('Amount'), matching: find.byType(Column))
                   .first,
               matching: find.byType(EditableText)),
           '1');
@@ -500,7 +502,8 @@ void main() {
       await _tap(tester, find.text(StringConstants.debitMoneyFromWalletText));
       await _waitFor(tester, find.text(StringConstants.payoutText));
       if (find.text(StringConstants.selectStoreText).evaluate().length > 1) {
-        await _pickFirst(tester, find.text(StringConstants.selectStoreText).last);
+        await _pickFirst(
+            tester, find.text(StringConstants.selectStoreText).last);
       }
       await _enterField(tester, 'eg ${currencySign}100.00', '1');
       await _tap(tester, find.text('STRIPE TEST BANK'));
@@ -527,6 +530,7 @@ void main() {
       await _waitFor(
           tester, find.text(AlertStringConstants.areYouSureLogoutAccountText));
       await _tap(tester, find.text(StringConstants.yesText));
+      _loggedIn = false; // from here on the landing screen is expected
       await _waitFor(tester, find.text(StringConstants.createAnAccountText),
           timeout: const Duration(seconds: 30));
     }, critical: true);
@@ -567,6 +571,46 @@ void main() {
       fail('Steps failed: ${failed.join(', ')}');
     }
   }, timeout: const Timeout(Duration(minutes: 25)));
+}
+
+/// Set once the first login succeeds; from then on a step that finds the app
+/// back on the landing screen logs in again.
+var _loggedIn = false;
+
+/// The logged-out landing screen (Continue as Guest / Login your account).
+bool _loggedOut() => find
+    .text(StringConstants.continueAsGuestText)
+    .hitTestable()
+    .evaluate()
+    .isNotEmpty;
+
+/// Phone + OTP login, starting from the login screen.
+Future<void> _logIn(WidgetTester tester) async {
+  await tester.enterText(
+      find.descendant(
+          of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
+      _testPhone);
+  await _pumpFor(tester, const Duration(milliseconds: 500));
+  await _tap(tester, find.text(StringConstants.sendConfirmationCodeText));
+
+  await _waitFor(tester, find.byType(PinCodeTextField));
+  await _pumpFor(tester, const Duration(seconds: 1));
+  await tester.enterText(
+      find.descendant(
+          of: find.byType(PinCodeTextField),
+          matching: find.byType(EditableText)),
+      _testOtp);
+  await _waitFor(tester, find.text(BottomNavStringConstants.walletText));
+  await _waitFor(tester, _storesPill);
+  debugPrint('[journey] role: ${roleApp.value}');
+}
+
+/// From the landing screen the backend dumped us on, back to a logged-in home.
+Future<void> _logInAgain(WidgetTester tester) async {
+  debugPrint('[journey]   session ended by the backend; logging in again');
+  await _tap(tester, find.text(StringConstants.loginYourAccountText));
+  await _waitFor(tester, find.text(StringConstants.sendConfirmationCodeText));
+  await _logIn(tester);
 }
 
 bool get _isCustomer => roleApp.value == Role.customerRoleText;
@@ -620,7 +664,8 @@ Future<void> _waitFor(WidgetTester tester, Finder finder,
     await tester.pump(const Duration(milliseconds: 200));
     if (finder.evaluate().isNotEmpty) return;
   }
-  throw TestFailure('Timed out after ${timeout.inSeconds}s waiting for $finder');
+  throw TestFailure(
+      'Timed out after ${timeout.inSeconds}s waiting for $finder');
 }
 
 Future<void> _pumpFor(WidgetTester tester, Duration duration) async {
@@ -686,8 +731,7 @@ Future<void> _openProductList(WidgetTester tester) async {
   await _tap(tester, find.text(StringConstants.manageStoreText));
   await _tap(tester, find.text(StringConstants.manageProductsText));
   final manage = Get.find<ManageStoreController>();
-  await _until(
-      tester, 'category list', () => manage.categoriesList.isNotEmpty);
+  await _until(tester, 'category list', () => manage.categoriesList.isNotEmpty);
   _firstCategoryName = manage.categoriesList.first.categoryName ?? '';
   await _tap(tester, find.text(_firstCategoryName));
   await _waitFor(tester, find.text(StringConstants.addNewProductText));
@@ -709,8 +753,8 @@ Finder _cardEnding(String last4) => find.text('**** **** **** **** $last4');
 Future<void> _deleteCardEnding(WidgetTester tester, String last4) async {
   await _pumpFor(tester, const Duration(seconds: 2));
   while (_cardEnding(last4).evaluate().isNotEmpty) {
-    final rows = find.ancestor(
-        of: _cardEnding(last4).first, matching: find.byType(Row));
+    final rows =
+        find.ancestor(of: _cardEnding(last4).first, matching: find.byType(Row));
     Finder? icon;
     for (var i = 0; i < rows.evaluate().length; i++) {
       final candidate = find.descendant(
@@ -737,7 +781,8 @@ Future<void> _topUp(WidgetTester tester, String amount) async {
   // The owner's add-money button refuses until the store list has loaded.
   if (!_isCustomer) {
     final wallet = Get.find<WalletController>();
-    await _until(tester, 'wallet store list', () => wallet.storeList.isNotEmpty);
+    await _until(
+        tester, 'wallet store list', () => wallet.storeList.isNotEmpty);
   }
   await _tap(tester, _asset(ImageConstants.addMoney));
   await _waitFor(tester, find.text(StringConstants.paymentText));
@@ -764,6 +809,10 @@ Future<void> _openAccount(WidgetTester tester) async {
 /// Account > Switch to Customer / Store. Local only: no API call.
 Future<void> _switchRole(WidgetTester tester,
     {required bool toCustomer}) async {
+  if (_isCustomer == toCustomer) {
+    debugPrint('[journey] role: ${roleApp.value} (already)');
+    return;
+  }
   await _openAccount(tester);
   final label = find.text(toCustomer
       ? StringConstants.switchToCustomerText
@@ -808,13 +857,14 @@ Future<void> _pickFirst(WidgetTester tester, Finder dropdown) async {
   final menu = find.byWidgetPredicate(
       (w) => w.runtimeType.toString().startsWith('_DropdownMenu<'),
       description: 'open dropdown menu');
-  await _tap(tester,
-      find.descendant(of: menu, matching: find.byType(InkWell)).first);
+  await _tap(
+      tester, find.descendant(of: menu, matching: find.byType(InkWell)).first);
   await _pumpFor(tester, const Duration(milliseconds: 800));
 }
 
 /// Opens the dropdown at [dropdown] and picks the item reading [text].
-Future<void> _pickText(WidgetTester tester, Finder dropdown, String text) async {
+Future<void> _pickText(
+    WidgetTester tester, Finder dropdown, String text) async {
   await _submit(tester, dropdown);
   await _pumpFor(tester, const Duration(milliseconds: 800));
   await _tap(tester, find.text(text));
@@ -863,8 +913,11 @@ Future<void> _until(WidgetTester tester, String what, bool Function() done,
 void _dumpScreen() {
   final seen = <String>{};
   for (final e in find.byType(Text).hitTestable().evaluate()) {
-    final t = (e.widget as Text).data ?? (e.widget as Text).textSpan?.toPlainText();
-    if (t != null && t.trim().isNotEmpty) seen.add(t.trim().replaceAll('\n', ' '));
+    final t =
+        (e.widget as Text).data ?? (e.widget as Text).textSpan?.toPlainText();
+    if (t != null && t.trim().isNotEmpty) {
+      seen.add(t.trim().replaceAll('\n', ' '));
+    }
   }
   debugPrint('[journey]   screen: ${seen.take(40).join(' | ')}');
 }
