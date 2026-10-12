@@ -552,9 +552,16 @@ void main() {
               of: find.byType(IntlPhoneField),
               matching: find.byType(EditableText)),
           '5125550100');
-      await _submit(tester, find.text(StringConstants.signUpText).last);
-      await _waitFor(tester,
-          find.text(AlertStringConstants.pleaseEnterTermsAndConditions));
+      // With the phone keyboard up the Sign up tap can miss, so close it
+      // and tap again if the alert doesn't show. Terms stay unticked, so a
+      // tap can only ever reach the terms alert, never create a user.
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _pumpFor(tester, const Duration(seconds: 1));
+      final signUp = find.text(StringConstants.signUpText).last;
+      await tester.ensureVisible(signUp);
+      await _tapUntil(tester, signUp,
+          find.text(AlertStringConstants.pleaseEnterTermsAndConditions),
+          attempts: 3);
       await _tap(tester, find.text(StringConstants.okayText));
     });
 
