@@ -239,11 +239,11 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
+      # The runner image already ships the Android SDK. android-actions/setup-android@v3
+      # runs `sdkmanager tools`, a package Google no longer publishes, so it fails.
       - name: Install required Android SDK components
         run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
