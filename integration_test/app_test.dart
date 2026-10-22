@@ -707,9 +707,8 @@ void main() {
       if (saved?.status == 'active') {
         throw TestFailure('auto reload was enabled without a valid form');
       }
-      // Closing the sheet leaves the switch showing on although nothing was
-      // saved; reset that local flag so the screen matches the server.
-      wallet.isAutoRechargeEnable.value = false;
+      expect(wallet.isAutoRechargeEnable.value, isFalse,
+          reason: 'switch still on after closing the sheet unsaved');
       await _backToHome(tester);
     });
 
@@ -780,6 +779,10 @@ void main() {
       }
       debugPrint('[journey]   splash restored the session as '
           '${roleApp.value}');
+      // The rebuilt home fires its loads again; let them land before the
+      // next step, or logout cuts them off mid-flight and they fail with an
+      // alert over the welcome screen.
+      await _pumpFor(tester, const Duration(seconds: 8));
     });
 
     // logout. The Delete Account button sits right under Logout; the test
@@ -794,6 +797,16 @@ void main() {
       _loggedIn = false; // from here on the landing screen is expected
       await _waitFor(tester, find.text(StringConstants.createAnAccountText),
           timeout: const Duration(seconds: 30));
+      // A call still in flight at logout fails without a token and alerts;
+      // log it and clear it so the welcome screen is usable.
+      await _pumpFor(tester, const Duration(seconds: 3));
+      final alert = find.text(StringConstants.okayText).hitTestable();
+      if (alert.evaluate().isNotEmpty) {
+        debugPrint('[journey]   alert after logout:');
+        _dumpScreen();
+        await tester.tap(alert.first);
+        await _pumpFor(tester, const Duration(seconds: 1));
+      }
     }, critical: true);
 
     // signup_validation: empty submit shows the field errors; filled fields
