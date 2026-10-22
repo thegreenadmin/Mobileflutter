@@ -12,11 +12,12 @@
 // Writes to beta, whose Stripe account is in test mode: the journey creates
 // and deletes an offer and a product, adds and removes the Stripe test card
 // 5555 5555 5555 4444, tops up the wallets from a saved card, orders its own
-// product as a customer, pays its own store by phone and pays out to the
-// Stripe test bank. Money only moves between the account's own wallet, its
-// own store and Stripe test instruments. The card step refuses to run unless
-// the build carries a pk_test_ publishable key. Sign-up is only validated:
-// the form is never submitted with the terms accepted.
+// product as a customer, favourites and unfavourites it, pays its own store
+// by phone and pays out to the Stripe test bank. Money only moves between the
+// account's own wallet, its own store and Stripe test instruments. The card
+// step refuses to run unless the build carries a pk_test_ publishable key.
+// Sign-up and auto reload are only validated: neither form is ever submitted
+// in a state that would save.
 //
 // The account is a store owner; the customer steps switch role in-app
 // (Account > Switch to Customer) and switch back afterwards.
@@ -26,6 +27,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
@@ -36,17 +38,23 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thegreenmall/authentication/signup/controller/signup_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/manage_store_controller.dart';
 import 'package:thegreenmall/dashboard/home/controller/search_store_owner_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/search_store_user_controller.dart';
+import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
+import 'package:thegreenmall/dashboard/wallet/view/component/auto_reload_screen.dart';
 import 'package:thegreenmall/main.dart' as app;
+import 'package:thegreenmall/splash_screen.dart';
 import 'package:thegreenmall/utils/app_config.dart';
 import 'package:thegreenmall/utils/constants.dart';
 import 'package:thegreenmall/utils/global_share_data.dart';
 import 'package:thegreenmall/utils/image_constants.dart';
 import 'package:thegreenmall/utils/server_communicator.dart';
+import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 const _testPhone = '0000000000';
 const _testOtp = '0000';
@@ -274,6 +282,9 @@ void main() {
     final offerName = 'FTL offer $stamp';
     final productName = 'FTL product $stamp';
     var productCreated = false;
+    // Set once the customer wallet has a transaction this month, which the
+    // transaction history step then expects to list.
+    var customerWalletMoved = false;
 
     // offer_create, offer_delete
     await step('owner offer create and delete', () async {
@@ -382,6 +393,7 @@ void main() {
     // wallet_add_money (customer)
     await step('customer wallet top-up', () async {
       await _topUp(tester, '5');
+      customerWalletMoved = true;
     });
 
     // store_browse_and_menu, order_add_to_cart, order_view_cart,
@@ -392,19 +404,7 @@ void main() {
       // Store search is location-based (nearby radius, Places autocomplete
       // that needs a Maps key), so open the store page the way a nearby-store
       // row does rather than depend on where the device is.
-      await _backToHome(tester);
-      Get.to(
-          () => StoreHomeMainScreen(
-              args: StoreHomeMainArgs(
-                  storeId: _ownStoreId,
-                  isFromMenu: false,
-                  isFromFav: false,
-                  isFromHome: true,
-                  isFromOptions: false)),
-          id: pageIdApp.value);
-      await _tap(tester, find.text(StringConstants.menuText));
-      await _tapUntil(
-          tester, find.text(_firstCategoryName), find.text(productName));
+      await _openOwnCategoryAsCustomer(tester, productName);
       await _tap(tester, find.text(productName));
       await _tap(tester, _asset(ImageConstants.add));
       await _submit(tester, find.text(StringConstants.addToOrderText));
@@ -439,6 +439,7 @@ void main() {
       await _tap(tester, find.text(StringConstants.proceedText));
       await _waitFor(tester, find.text(StringConstants.orderConfirmedText),
           timeout: const Duration(seconds: 45));
+      customerWalletMoved = true;
       await _backToHome(tester);
     });
 
@@ -486,6 +487,232 @@ void main() {
       await _backToHome(tester);
     });
 
+    // store_product_browse: the category's product grid, sorted both ways
+    // from the sort menu. The server sorts by selling price.
+    await step('customer product browse and sort', () async {
+      if (!productCreated) throw TestFailure('no product to browse');
+      await _switchRole(tester, toCustomer: true);
+      await _openOwnCategoryAsCustomer(tester, productName);
+      final store = Get.find<StoreHomeMainController>();
+      for (final ascending in [true, false]) {
+        final order = ascending
+            ? StringConstants.lowToHighText
+            : StringConstants.highToLowText;
+        final label =
+            find.text('${StringConstants.priceText} ${order.toLowerCase()}');
+        await _tap(tester, _asset(ImageConstants.productFilter));
+        await _tap(tester, label);
+        // The item reloads the list, then closes the menu itself.
+        await _waitGone(tester, label);
+        await _until(
+            tester,
+            'sorted product list',
+            () =>
+                !store.isLoading.value && store.featureProductList.isNotEmpty);
+        final prices = store.featureProductList
+            .map((p) => double.tryParse('${p.sellingPrice}'))
+            .whereType<double>()
+            .toList();
+        debugPrint('[journey]   ${ascending ? 'low-high' : 'high-low'}: '
+            '${prices.join(', ')}');
+        for (var i = 1; i < prices.length; i++) {
+          final inOrder = ascending
+              ? prices[i - 1] <= prices[i]
+              : prices[i - 1] >= prices[i];
+          if (!inOrder) {
+            throw TestFailure(
+                'prices out of order at $i: ${prices.join(', ')}');
+          }
+        }
+        // Still on the product grid, not popped off the store.
+        await _waitFor(tester, find.text(productName));
+      }
+      await _backToHome(tester);
+    });
+
+    // store_favourites: heart this run's product from the grid, find it on
+    // the store's Favorite tab, unheart it there and see the server drop it.
+    await step('customer product favourite', () async {
+      if (!productCreated) throw TestFailure('no product to favourite');
+      await _switchRole(tester, toCustomer: true);
+      await _openOwnCategoryAsCustomer(tester, productName);
+      final store = Get.find<StoreHomeMainController>();
+      await _tap(tester, _productHeart(productName, ImageConstants.fav));
+      await _waitFor(tester, _productHeart(productName, ImageConstants.liked));
+      await _until(tester, 'favourite saved', () => !store.isLoading.value);
+      await _tap(tester, find.text(StringConstants.favoriteText));
+      await _waitFor(tester, find.text(StringConstants.favoritesText));
+      await _waitFor(tester, find.text(productName));
+      await _tap(tester, _productHeart(productName, ImageConstants.liked));
+      // Unhearting on this tab reloads the favourites from the server.
+      await _waitGone(tester, find.text(productName));
+      await _backToHome(tester);
+    });
+
+    // order_transaction_history: Account > Transactions History, both tabs.
+    await step('customer transaction history', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _openAccount(tester);
+      final row = find.text(StringConstants.transactionsHistoryText);
+      await _scrollTo(tester, row);
+      await _tap(tester, row);
+      await _waitFor(tester, find.text(StringConstants.currentMonthText));
+      final tx = Get.find<TransactionController>();
+      await _until(
+          tester, 'current month transactions', () => !tx.isLoading.value);
+      final count = tx.userTransactionList?.length ?? 0;
+      debugPrint('[journey]   current month: $count transaction(s)');
+      if (customerWalletMoved && count == 0) {
+        throw TestFailure('wallet moved this run but the current month '
+            'lists no transactions');
+      }
+      await _tap(tester, find.text(StringConstants.pastOrdersText));
+      // The tab loads the current month, then switches to January.
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'past transactions', () => !tx.isLoading.value);
+      await _tap(tester, find.text(StringConstants.currentMonthText));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'current month again', () => !tx.isLoading.value);
+      await _backToHome(tester);
+    });
+
+    // store_filter_options, plus the favourite stores tab of the search
+    // screen. Filtering only reads; Clear Filters puts the search back.
+    await step('customer store filter', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _backToHome(tester);
+      await _tap(tester, _storesPill);
+      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+      final search = Get.find<SearchStoreUserController>();
+      await _tap(tester, find.text(StringConstants.favoriteText));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      await _until(tester, 'favourite stores', () => !search.isLoading.value);
+      expect(find.text(StringConstants.loginRequiredText), findsNothing);
+      await _tap(tester, find.text(StringConstants.nearbyText));
+      await _pumpFor(tester, const Duration(seconds: 1));
+
+      await _tap(tester, _asset(ImageConstants.filterbutton));
+      await _waitFor(tester, find.text(StringConstants.filterOptionsText));
+      final empty = search.zipCodeTextController.text.isEmpty &&
+          search.mileageTextController.text.isEmpty &&
+          search.openingTimeTextController.text.isEmpty &&
+          search.closingTimeTextController.text.isEmpty &&
+          search.isOpenNow.value.isEmpty &&
+          search.deliveryServicesList.isEmpty;
+      if (empty) {
+        await _submit(tester, find.text(StringConstants.saveText));
+        await _waitFor(
+            tester, find.text(AlertStringConstants.pleaseSelectOneFilterText));
+        await _tap(tester, find.text(StringConstants.okayText));
+      } else {
+        debugPrint('[journey]   filter form not empty; skipping empty save');
+      }
+      await _enterField(tester, StringConstants.zipCodeText, '90210');
+      await _enterField(tester, StringConstants.milesText, '25');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await _pumpFor(tester, const Duration(milliseconds: 800));
+      await _pickText(tester,
+          find.byType(DropdownButtonFormField<String>).first, 'Open Now');
+      expect(search.isOpenNow.value, 'Open Now');
+      await _submit(tester, find.text(StringConstants.saveText));
+      // Any 200 closes the filter screen, whatever it matched; an error
+      // shows an alert instead.
+      await _until(
+          tester,
+          'filtered search',
+          () =>
+              find.text(StringConstants.filterOptionsText).evaluate().isEmpty ||
+              find
+                  .text(StringConstants.okayText)
+                  .hitTestable()
+                  .evaluate()
+                  .isNotEmpty,
+          timeout: const Duration(seconds: 45));
+      if (find.text(StringConstants.filterOptionsText).evaluate().isNotEmpty) {
+        throw TestFailure('filtered store search failed');
+      }
+      await _until(tester, 'filter results', () => !search.isLoading.value);
+      debugPrint('[journey]   filter matched '
+          '${search.storeAddresses.length} store(s)');
+      expect(search.zipCodeTextController.text, '90210');
+
+      await _tap(tester, _asset(ImageConstants.filterbutton));
+      await _waitFor(tester, find.text(StringConstants.filterOptionsText));
+      await _submit(tester, find.text(StringConstants.clearFiltersText));
+      await _waitGone(tester, find.text(StringConstants.filterOptionsText));
+      await _waitFor(tester, find.text(StringConstants.searchForStoreText));
+      expect(search.zipCodeTextController.text, isEmpty);
+      expect(search.mileageTextController.text, isEmpty);
+      expect(search.isOpenNow.value, isEmpty);
+      await _backToHome(tester);
+    });
+
+    // wallet_auto_reload: turning the switch on opens the auto reload
+    // sheet; an empty form must not save, and closing the sheet must leave
+    // auto reload off on the server. Never touches an account that already
+    // has it on.
+    await step('customer wallet auto reload', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _backToHome(tester);
+      await _tapUntil(tester, find.text(BottomNavStringConstants.walletText),
+          find.text(StringConstants.totalBalanceText));
+      await _tap(tester, find.text(StringConstants.manageText));
+      await _waitFor(tester, find.text(StringConstants.manageWalletText));
+      final wallet = Get.find<WalletController>();
+      await _pumpFor(tester, const Duration(seconds: 2));
+      await _until(tester, 'manage wallet data', () => !wallet.isLoading.value);
+      if (wallet.isAutoRechargeEnable.value) {
+        debugPrint('[journey]   auto reload already on; leaving it alone');
+        await _waitFor(
+            tester, find.text(StringConstants.editAutoReloadIntoWalletText));
+        await _backToHome(tester);
+        return;
+      }
+      await _scrollTo(
+          tester, find.text(StringConstants.autoReloadIntoWalletText));
+      await _tap(tester, find.byType(FlutterSwitch));
+      final sheet = find.byType(AutoReloadScreen);
+      await _waitFor(tester, sheet);
+      await _until(tester, 'auto reload detail', () => !wallet.isLoading.value);
+      final untouched = wallet.thresholdAmountTextController.text.isEmpty &&
+          wallet.chargeAmountTextController.text.isEmpty &&
+          wallet.periodChargeAmountTextController.text.isEmpty;
+      if (untouched) {
+        await _submit(tester, find.text(StringConstants.okText));
+        await _pumpFor(tester, const Duration(seconds: 2));
+        final alert = find.text(StringConstants.okayText).hitTestable();
+        if (alert.evaluate().isNotEmpty) {
+          _dumpScreen();
+          await tester.tap(alert.first);
+          await _pumpFor(tester, const Duration(milliseconds: 800));
+        }
+        // Rejected: inline field errors or an alert, never a save.
+        expect(sheet, findsOneWidget);
+      } else {
+        debugPrint('[journey]   auto reload form prefilled; not submitting');
+      }
+      // Close the sheet by tapping the barrier above it.
+      await tester.tapAt(const Offset(20, 20));
+      await _pumpFor(tester, const Duration(seconds: 1));
+      if (sheet.evaluate().isNotEmpty) {
+        Navigator.of(tester.element(sheet)).pop();
+      }
+      await _waitGone(tester, sheet);
+      debugPrint('[journey]   switch after closing the sheet: '
+          '${wallet.isAutoRechargeEnable.value ? 'on' : 'off'}');
+      wallet.apiGetAutoRechargeDetail();
+      await _pumpFor(tester, const Duration(milliseconds: 500));
+      await _until(tester, 'auto reload state', () => !wallet.isLoading.value);
+      final saved = wallet.getAutoRechargeModel.data?.userWalletAutoCharge;
+      if (saved?.status == 'active') {
+        throw TestFailure('auto reload was enabled without a valid form');
+      }
+      // Closing the sheet leaves the switch showing on although nothing was
+      // saved; reset that local flag so the screen matches the server.
+      wallet.isAutoRechargeEnable.value = false;
+      await _backToHome(tester);
+    });
+
     await step('switch back to store', () async {
       await _switchRole(tester, toCustomer: false);
     });
@@ -520,6 +747,39 @@ void main() {
       await _swipeDelete(tester, find.text(productName));
       await _waitGone(tester, find.text(productName));
       await _backToHome(tester);
+    });
+
+    // session_persistence: with the login token saved, the splash screen
+    // goes straight to the logged-in home instead of the welcome screen.
+    // Replays the splash in-process: a real cold start can't run inside
+    // this test, and MyApp.initState clears the saved token on every
+    // launch anyway, so a real relaunch always lands logged out.
+    await step('session persistence', () async {
+      final token =
+          await SharedPreferenceStorage.getData(StringConstants.tokenText);
+      if (token == null || '$token'.isEmpty) {
+        throw TestFailure('no login token saved');
+      }
+      if (await SharedPreferenceStorage.getData(
+              StringConstants.authenticatedText) ==
+          true) {
+        debugPrint('[journey]   biometric unlock is on; skipping the splash');
+        return;
+      }
+      await _backToHome(tester);
+      Get.offAll(() => const SplashScreen());
+      await _until(tester, 'splash to route',
+          () => _storesPill.hitTestable().evaluate().isNotEmpty || _loggedOut(),
+          timeout: const Duration(seconds: 30));
+      if (_loggedOut()) {
+        // Log back in first, so the step wrapper reports this rather than
+        // logging in and retrying it.
+        await _logInAgain(tester);
+        throw TestFailure('splash showed the welcome screen with a saved '
+            'token');
+      }
+      debugPrint('[journey]   splash restored the session as '
+          '${roleApp.value}');
     });
 
     // logout. The Delete Account button sits right under Logout; the test
@@ -762,6 +1022,31 @@ Future<void> _openProductList(WidgetTester tester) async {
   await _tap(tester, find.text(_firstCategoryName));
   await _waitFor(tester, find.text(StringConstants.addNewProductText));
 }
+
+/// Customer: opens the account's own store page the way a nearby-store row
+/// does (store search is location-based, so it depends on where the device
+/// is), then Menu > the first category, which lists [productName].
+Future<void> _openOwnCategoryAsCustomer(
+    WidgetTester tester, String productName) async {
+  await _backToHome(tester);
+  Get.to(
+      () => StoreHomeMainScreen(
+          args: StoreHomeMainArgs(
+              storeId: _ownStoreId,
+              isFromMenu: false,
+              isFromFav: false,
+              isFromHome: true,
+              isFromOptions: false)),
+      id: pageIdApp.value);
+  await _tap(tester, find.text(StringConstants.menuText));
+  await _tapUntil(
+      tester, find.text(_firstCategoryName), find.text(productName));
+}
+
+/// The heart ([asset] fav or liked) on the product card showing [name].
+Finder _productHeart(String name, String asset) => find.descendant(
+    of: find.ancestor(of: find.text(name), matching: find.byType(Card)).first,
+    matching: _asset(asset));
 
 Future<void> _openCardList(WidgetTester tester) async {
   await _backToHome(tester);
