@@ -508,13 +508,15 @@ void main() {
       await _switchRole(tester, toCustomer: true);
       await _openOwnCategoryAsCustomer(tester, productName);
       final store = Get.find<StoreHomeMainController>();
-      await _tap(tester, _productHeart(productName, ImageConstants.fav));
+      // The heart sits at the card's top; make sure the header doesn't
+      // cover it.
+      await _submit(tester, _productHeart(productName, ImageConstants.fav));
       await _waitFor(tester, _productHeart(productName, ImageConstants.liked));
       await _until(tester, 'favourite saved', () => !store.isLoading.value);
       await _tap(tester, find.text(StringConstants.favoriteText));
       await _waitFor(tester, find.text(StringConstants.favoritesText));
       await _scrollUntilBuilt(tester, find.text(productName));
-      await _tap(tester, _productHeart(productName, ImageConstants.liked));
+      await _submit(tester, _productHeart(productName, ImageConstants.liked));
       // Unhearting on this tab reloads the favourites from the server.
       await _waitGone(tester, find.text(productName));
       await _backToHome(tester);
@@ -1323,11 +1325,22 @@ Future<double> _customerBalance(WidgetTester tester) async {
 /// open the queue directly; otherwise it lists the stores first.
 Future<void> _openOwnerOrderQueue(WidgetTester tester) async {
   await _backToHome(tester);
-  await _tap(tester, find.text(BottomNavStringConstants.ordersText));
   final queue = _orderSearchField.hitTestable();
   final store = find.text(_ownStoreName).hitTestable();
-  await _until(tester, 'owner orders',
-      () => queue.evaluate().isNotEmpty || store.evaluate().isNotEmpty);
+  // A tap made while the home screen is still loading (e.g. right after a
+  // re-login) can be dropped, so tap again until the orders screen opens.
+  for (var i = 1;; i++) {
+    await _tap(tester, find.text(BottomNavStringConstants.ordersText));
+    try {
+      await _until(tester, 'owner orders',
+          () => queue.evaluate().isNotEmpty || store.evaluate().isNotEmpty,
+          timeout: const Duration(seconds: 10));
+      break;
+    } on TestFailure {
+      if (i == 3) rethrow;
+      debugPrint('[journey]   orders tab did not open; tapping again');
+    }
+  }
   if (queue.evaluate().isEmpty) await _tap(tester, store);
   await _waitFor(tester, queue);
 }
