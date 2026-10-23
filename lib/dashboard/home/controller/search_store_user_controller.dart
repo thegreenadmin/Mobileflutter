@@ -314,7 +314,13 @@ class SearchStoreUserController extends GetxController with GlobalVarMixin {
     CameraPosition kLake =
         CameraPosition(bearing: 192.8334901395799, target: LatLng(latitude, longitude), tilt: 0.0, zoom: 14.15);
     final GoogleMapController controller = await googleMapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    // A location lookup can finish after the map has been disposed (the user
+    // left the store search), and the camera call then throws.
+    try {
+      await controller.animateCamera(CameraUpdate.newCameraPosition(kLake));
+    } on PlatformException catch (e) {
+      log('updateMap: map gone, camera not moved: ${e.message}');
+    }
     lat.value = latitude;
     lng.value = longitude;
     type.value = 0;

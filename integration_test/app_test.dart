@@ -713,8 +713,9 @@ void main() {
       await _backToHome(tester);
     });
 
-    // order_fulfil (owner): the first order goes Received > Ready for Pick
-    // Up > Picked Up, then shows under Completed.
+    // order_fulfil (owner): the first order moves through the store queue
+    // to Completed. Pickup and curbside orders go Ready for Pick Up > Picked
+    // Up; delivery orders go Prepare Order > Shipped > Delivered.
     await step('owner fulfils the order', () async {
       if (fulfilledOrderId.isEmpty) throw TestFailure('no order to fulfil');
       await _switchRole(tester, toCustomer: false);
@@ -724,17 +725,23 @@ void main() {
           tester, StringConstants.receivedText, fulfilledOrderId);
       await _tap(tester, row);
       // Received items start unticked.
-      await _tap(tester, find.text(StringConstants.selectAllText));
-      final ready = find.text(StringConstants.readyForPickUpText);
-      await _tap(tester, ready);
-      await _waitGone(tester, ready, timeout: const Duration(seconds: 45));
-      await _showOwnerOrders(
-          tester, StringConstants.pickupText, fulfilledOrderId);
-      await _tap(tester, row);
-      // Every item on this tab moves on together.
-      final pickedUp = find.text(StringConstants.pickedUpText);
-      await _tap(tester, pickedUp);
-      await _waitGone(tester, pickedUp, timeout: const Duration(seconds: 45));
+      await _selectAllItems(tester);
+      await _advanceOrder(tester, [
+        StringConstants.readyForPickUpText,
+        StringConstants.prepareOrderText,
+      ]);
+      // Every item on the Pickup tab moves on together.
+      for (var i = 0; i < 2; i++) {
+        await _showOwnerOrders(
+            tester, StringConstants.pickupText, fulfilledOrderId);
+        await _tap(tester, row);
+        final done = await _advanceOrder(tester, [
+          StringConstants.orderShippedText,
+          StringConstants.pickedUpText,
+          StringConstants.deliveredText,
+        ]);
+        if (done != StringConstants.orderShippedText) break;
+      }
       await _showOwnerOrders(
           tester, StringConstants.completedText, fulfilledOrderId);
       await _backToHome(tester);
@@ -749,7 +756,7 @@ void main() {
       await _showOwnerOrders(
           tester, StringConstants.receivedText, cancelledOrderId);
       await _tap(tester, find.text('#$cancelledOrderId'));
-      await _tap(tester, find.text(StringConstants.selectAllText));
+      await _selectAllItems(tester);
       final cancel = find.text(StringConstants.cancelOrderText);
       await _tap(tester, cancel);
       await _tap(tester, find.text(StringConstants.yesText));
@@ -1249,6 +1256,37 @@ Future<void> _openOwnerOrderQueue(WidgetTester tester) async {
       () => queue.evaluate().isNotEmpty || store.evaluate().isNotEmpty);
   if (queue.evaluate().isEmpty) await _tap(tester, store);
   await _waitFor(tester, queue);
+}
+
+/// Owner order screen: ticks every item. Select All only shows for orders
+/// with more than one item; otherwise tick the items' own boxes.
+Future<void> _selectAllItems(WidgetTester tester) async {
+  final boxes = find.byType(Checkbox).hitTestable();
+  await _until(tester, 'order items', () => boxes.evaluate().isNotEmpty);
+  final all = find.text(StringConstants.selectAllText).hitTestable();
+  if (all.evaluate().isNotEmpty) {
+    await tester.tap(all.first);
+  } else {
+    for (var i = 0; i < boxes.evaluate().length; i++) {
+      await tester.tap(boxes.at(i));
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+  }
+  await _pumpFor(tester, const Duration(milliseconds: 500));
+}
+
+/// Owner order screen: taps whichever of [labels] it offers as the next
+/// status and waits for the screen to close. Returns the label tapped.
+Future<String> _advanceOrder(WidgetTester tester, List<String> labels) async {
+  final actions = [for (final l in labels) find.text(l).hitTestable()];
+  await _until(tester, 'order action',
+      () => actions.any((f) => f.evaluate().isNotEmpty));
+  final i = actions.indexWhere((f) => f.evaluate().isNotEmpty);
+  debugPrint('[journey]   ${labels[i]}');
+  await tester.tap(actions[i].first);
+  await _waitGone(tester, find.text(labels[i]),
+      timeout: const Duration(seconds: 45));
+  return labels[i];
 }
 
 /// The owner order queue's search box.
