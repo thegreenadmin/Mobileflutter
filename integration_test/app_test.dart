@@ -44,6 +44,7 @@ import 'package:thegreenmall/dashboard/home/controller/search_store_user_control
 import 'package:thegreenmall/dashboard/home/controller/store_home_main_controller.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_main_args.dart';
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
+import 'package:thegreenmall/dashboard/home/view/customer/user_product_list_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
 import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
@@ -113,6 +114,9 @@ void main() {
           // token), e.g. right after a payment notifies this account.
           // Log back in and give the step one more go.
           await _pumpFor(tester, const Duration(seconds: 2));
+          // The dead session's failed calls can leave an alert over the
+          // landing screen.
+          if (_loggedIn) await _dismissAlert(tester);
           if (!_loggedIn || !_loggedOut()) rethrow;
           debugPrint('[journey]   logged out mid-step ($e); '
               'logging in again and retrying');
@@ -358,7 +362,7 @@ void main() {
       productCreated = true;
       await _backToHome(tester);
       await _openProductList(tester);
-      await _waitFor(tester, find.text(productName));
+      await _scrollUntilBuilt(tester, find.text(productName));
     });
 
     // card_add_valid, card_delete. 4242 is already on the account and the
@@ -486,8 +490,13 @@ void main() {
                 'prices out of order at $i: ${prices.join(', ')}');
           }
         }
-        // Still on the product grid, not popped off the store.
-        await _waitFor(tester, find.text(productName));
+        // Still on the product grid, not popped off the store, and still
+        // listing this run's product (it may be scrolled off-screen).
+        expect(find.byType(UserProductListScreen), findsOneWidget);
+        if (!store.featureProductList
+            .any((p) => p.productName == productName)) {
+          throw TestFailure('$productName missing after sorting');
+        }
       }
       await _backToHome(tester);
     });
@@ -504,7 +513,7 @@ void main() {
       await _until(tester, 'favourite saved', () => !store.isLoading.value);
       await _tap(tester, find.text(StringConstants.favoriteText));
       await _waitFor(tester, find.text(StringConstants.favoritesText));
-      await _waitFor(tester, find.text(productName));
+      await _scrollUntilBuilt(tester, find.text(productName));
       await _tap(tester, _productHeart(productName, ImageConstants.liked));
       // Unhearting on this tab reloads the favourites from the server.
       await _waitGone(tester, find.text(productName));
@@ -774,13 +783,16 @@ void main() {
       await _tapUntil(tester, find.text(BottomNavStringConstants.ordersText),
           find.text(StringConstants.cancelledText));
       final orders = Get.find<OrdersController>();
+      // Check everything before failing, so one missing order doesn't hide
+      // the refund check.
+      final problems = <String>[];
       Future<void> expectUnder(String tab, String orderId) async {
         await _tap(tester, find.text(tab));
         await _pumpFor(tester, const Duration(seconds: 1));
         await _until(tester, '$tab orders', () => !orders.isLoading.value);
         final ids = orders.orderList.map((o) => o.orderId).toList();
         if (!ids.contains(orderId)) {
-          throw TestFailure('order $orderId not under $tab: $ids');
+          problems.add('order $orderId not under $tab: $ids');
         }
       }
 
@@ -800,10 +812,11 @@ void main() {
         }
         debugPrint('[journey]   wallet after cancel: $now (was $before)');
         if ((now - before).abs() > 0.01) {
-          throw TestFailure('cancelled order $cancelledOrderId not refunded: '
+          problems.add('cancelled order $cancelledOrderId not refunded: '
               'wallet $now, was $before before ordering');
         }
       }
+      if (problems.isNotEmpty) throw TestFailure(problems.join('; '));
       await _backToHome(tester);
     });
 
@@ -823,8 +836,24 @@ void main() {
       if (!productCreated) return;
       await _switchRole(tester, toCustomer: false);
       await _openProductList(tester);
+      await _scrollUntilBuilt(tester, find.text(productName));
       await _swipeDelete(tester, find.text(productName));
       await _waitGone(tester, find.text(productName));
+      // Products earlier runs left behind when they failed before this step.
+      for (var i = 0; i < 5; i++) {
+        final stale = find.textContaining('FTL product ').hitTestable();
+        if (stale.evaluate().isEmpty) break;
+        final name = (stale.evaluate().first.widget as Text).data ?? '';
+        debugPrint('[journey]   removing leftover "$name"');
+        try {
+          await _swipeDelete(tester, find.text(name));
+          await _waitGone(tester, find.text(name));
+        } on TestFailure catch (e) {
+          debugPrint('[journey]   could not remove "$name": $e');
+          await _dismissAlert(tester);
+          break;
+        }
+      }
       await _backToHome(tester);
     });
 
@@ -1181,13 +1210,58 @@ Future<void> _openOwnCategoryAsCustomer(
               isFromOptions: false)),
       id: pageIdApp.value);
   await _tap(tester, find.text(StringConstants.menuText));
-  await _tapUntil(
-      tester, find.text(_firstCategoryName), find.text(productName));
+  await _tapUntil(tester, find.text(_firstCategoryName),
+      find.byType(UserProductListScreen));
+  final store = Get.find<StoreHomeMainController>();
+  await _until(
+      tester,
+      'category products',
+      () =>
+          !store.isLoading.value &&
+          store.featureProductList.any((p) => p.productName == productName));
+  await _scrollUntilBuilt(tester, find.text(productName));
+}
+
+/// Scrolls the vertical list on screen down until [finder] has been built.
+/// Long lists only build the rows in view, and earlier runs' leftovers can
+/// push this run's row off-screen.
+Future<void> _scrollUntilBuilt(WidgetTester tester, Finder finder,
+    {Duration timeout = const Duration(seconds: 30)}) async {
+  final lists = find.byWidgetPredicate(
+      (w) =>
+          w is Scrollable &&
+          axisDirectionToAxis(w.axisDirection) == Axis.vertical,
+      description: 'vertical list');
+  final end = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(end)) {
+    await tester.pump(const Duration(milliseconds: 300));
+    if (finder.evaluate().isNotEmpty) {
+      await tester.ensureVisible(finder.first);
+      await _pumpFor(tester, const Duration(milliseconds: 300));
+      return;
+    }
+    final visible = lists.hitTestable();
+    if (visible.evaluate().isNotEmpty) {
+      await tester.drag(visible.last, const Offset(0, -300),
+          warnIfMissed: false);
+    }
+  }
+  throw TestFailure('Not found after scrolling for ${timeout.inSeconds}s: '
+      '$finder');
+}
+
+/// Taps away an alert's Okay button, logging what it said.
+Future<void> _dismissAlert(WidgetTester tester) async {
+  final okay = find.text(StringConstants.okayText).hitTestable();
+  if (okay.evaluate().isEmpty) return;
+  _dumpScreen();
+  await tester.tap(okay.first);
+  await _pumpFor(tester, const Duration(seconds: 1));
 }
 
 /// The heart ([asset] fav or liked) on the product card showing [name].
 Finder _productHeart(String name, String asset) => find.descendant(
-    of: find.ancestor(of: find.text(name), matching: find.byType(Card)).first,
+    of: find.ancestor(of: find.text(name), matching: find.byType(Card)),
     matching: _asset(asset));
 
 /// Payments > Pay to a Person > Enter Mobile [phone], then pays [amount].
