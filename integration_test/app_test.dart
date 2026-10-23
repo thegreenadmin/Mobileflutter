@@ -125,8 +125,19 @@ void main() {
           // Log back in and give the step one more go.
           await _pumpFor(tester, const Duration(seconds: 2));
           // The dead session's failed calls can leave an alert over the
-          // landing screen.
-          if (_loggedIn) await _dismissAlert(tester);
+          // landing screen. And a dead session only sends the app back to
+          // the landing screen on its next request (an action can fail with
+          // "Something went wrong" and leave its page up), so go home, which
+          // makes one, before deciding whether the session survived.
+          if (_loggedIn) {
+            await _dismissAlert(tester);
+            if (!_loggedOut()) {
+              _dumpScreen();
+              await _backToHome(tester);
+              await _pumpFor(tester, const Duration(seconds: 3));
+              await _dismissAlert(tester);
+            }
+          }
           if (!_loggedIn || !_loggedOut()) rethrow;
           debugPrint('[journey]   logged out mid-step ($e); '
               'logging in again and retrying');
