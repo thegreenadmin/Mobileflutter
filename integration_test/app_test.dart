@@ -12,9 +12,11 @@
 // Writes to beta, whose Stripe account is in test mode: the journey creates
 // and deletes an offer and a product, adds and removes the Stripe test card
 // 5555 5555 5555 4444, tops up the wallets from a saved card, orders its own
-// product as a customer, favourites and unfavourites it, pays its own store
-// by phone and pays out to the Stripe test bank. Money only moves between the
-// account's own wallet, its own store and Stripe test instruments. The card
+// product twice as a customer (the owner fulfils one order and cancels the
+// other), favourites and unfavourites it, pays its own store by phone, sends
+// $1 to a second test account that sends it back, and pays out to the Stripe
+// test bank. Money only moves between the two test accounts' wallets, the
+// account's own store and Stripe test instruments. The card
 // step refuses to run unless the build carries a pk_test_ publishable key.
 // Sign-up and auto reload are only validated: neither form is ever submitted
 // in a state that would save.
@@ -44,6 +46,7 @@ import 'package:thegreenmall/dashboard/home/view/customer/components/store_home_
 import 'package:thegreenmall/dashboard/home/view/customer/store_home_main_screen.dart';
 import 'package:thegreenmall/dashboard/offers/controller/add_offer_controller.dart';
 import 'package:thegreenmall/dashboard/offers/view/add_offer_screen.dart';
+import 'package:thegreenmall/dashboard/orders/controller/orders_controller.dart';
 import 'package:thegreenmall/dashboard/orders/controller/transaction_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/controller/wallet_controller.dart';
 import 'package:thegreenmall/dashboard/wallet/view/component/auto_reload_screen.dart';
@@ -58,6 +61,10 @@ import 'package:thegreenmall/utils/shared_prefrences.dart';
 
 const _testPhone = '0000000000';
 const _testOtp = '0000';
+
+/// Second staging test account, the P2P counterparty. It must be flagged as
+/// a test account on beta so it accepts [_testOtp].
+const _secondPhone = '3246661111';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -285,6 +292,12 @@ void main() {
     // Set once the customer wallet has a transaction this month, which the
     // transaction history step then expects to list.
     var customerWalletMoved = false;
+    // The two orders the customer places: the owner fulfils the first and
+    // cancels the second.
+    var fulfilledOrderId = '';
+    var cancelledOrderId = '';
+    double? balanceBeforeCancelledOrder;
+    var sentToSecondAccount = false;
 
     // offer_create, offer_delete
     await step('owner offer create and delete', () async {
@@ -401,44 +414,7 @@ void main() {
     // account's own store, paid from the wallet.
     await step('customer order', () async {
       if (!productCreated) throw TestFailure('no product to order');
-      // Store search is location-based (nearby radius, Places autocomplete
-      // that needs a Maps key), so open the store page the way a nearby-store
-      // row does rather than depend on where the device is.
-      await _openOwnCategoryAsCustomer(tester, productName);
-      await _tap(tester, find.text(productName));
-      await _tap(tester, _asset(ImageConstants.add));
-      await _submit(tester, find.text(StringConstants.addToOrderText));
-      await _tap(tester, find.text(StringConstants.goToCartText));
-      await _waitFor(tester, find.text(StringConstants.orderSummaryText));
-      // The Order Type grid fills once store details load; pay needs one
-      // picked. In-store or curbside, never delivery (needs an address).
-      // The cart has its own controller instance, so pick the order type
-      // through the UI rather than checking controller state. Prefer pickup;
-      // fall back to whatever the store offers.
-      final types = [
-        StringConstants.inStoreText,
-        StringConstants.curbSideText,
-        StringConstants.deliveryText,
-      ].map((t) => find.text(t).hitTestable()).toList();
-      try {
-        await _until(tester, 'order types',
-            () => types.any((f) => f.evaluate().isNotEmpty),
-            timeout: const Duration(seconds: 15));
-      } on TestFailure {
-        // The shop endpoint only returns order types the store has enabled;
-        // with none, the cart can never be paid.
-        fail('store $_ownStoreId shows no order types in the cart; enable '
-            'one for it on beta');
-      }
-      await _tap(
-          tester, types.firstWhere((f) => f.evaluate().isNotEmpty).first);
-      // Picking a type refreshes the wallet balance Pay Now checks.
-      await _pumpFor(tester, const Duration(seconds: 3));
-      await _submit(tester, find.text(StringConstants.payNowText));
-      // Wallet payment asks to confirm the deduction first.
-      await _tap(tester, find.text(StringConstants.proceedText));
-      await _waitFor(tester, find.text(StringConstants.orderConfirmedText),
-          timeout: const Duration(seconds: 45));
+      fulfilledOrderId = await _placeOrder(tester, productName);
       customerWalletMoved = true;
       await _backToHome(tester);
     });
@@ -470,21 +446,7 @@ void main() {
         await _pickFirst(tester, picker);
       }
       await _tap(tester, find.text('Continue'));
-      await _waitFor(tester, find.text('Enter payment details'));
-      await tester.enterText(
-          find.descendant(
-              of: find
-                  .ancestor(
-                      of: find.text('Amount'), matching: find.byType(Column))
-                  .first,
-              matching: find.byType(EditableText)),
-          '1');
-      await _submit(tester, find.text('Review & Pay'));
-      await _submit(tester, find.textContaining(r'Pay $'));
-      await _waitFor(tester, find.text('Payment Successful!'),
-          timeout: const Duration(seconds: 45));
-      await _tap(tester, find.text('Done'));
-      await _backToHome(tester);
+      await _payAmount(tester, '1');
     });
 
     // store_product_browse: the category's product grid, sorted both ways
@@ -712,6 +674,17 @@ void main() {
       await _backToHome(tester);
     });
 
+    // order_place again, for the owner to cancel. Notes the wallet balance
+    // first so the refund can be checked once the order is cancelled.
+    await step('customer second order', () async {
+      if (!productCreated) throw TestFailure('no product to order');
+      await _switchRole(tester, toCustomer: true);
+      balanceBeforeCancelledOrder = await _customerBalance(tester);
+      cancelledOrderId = await _placeOrder(tester, productName);
+      final after = await _customerBalance(tester);
+      debugPrint('[journey]   wallet $balanceBeforeCancelledOrder -> $after');
+    });
+
     await step('switch back to store', () async {
       await _switchRole(tester, toCustomer: false);
     });
@@ -740,8 +713,108 @@ void main() {
       await _backToHome(tester);
     });
 
+    // order_fulfil (owner): the first order goes Received > Ready for Pick
+    // Up > Picked Up, then shows under Completed.
+    await step('owner fulfils the order', () async {
+      if (fulfilledOrderId.isEmpty) throw TestFailure('no order to fulfil');
+      await _switchRole(tester, toCustomer: false);
+      await _openOwnerOrderQueue(tester);
+      final row = find.text('#$fulfilledOrderId');
+      await _showOwnerOrders(
+          tester, StringConstants.receivedText, fulfilledOrderId);
+      await _tap(tester, row);
+      // Received items start unticked.
+      await _tap(tester, find.text(StringConstants.selectAllText));
+      final ready = find.text(StringConstants.readyForPickUpText);
+      await _tap(tester, ready);
+      await _waitGone(tester, ready, timeout: const Duration(seconds: 45));
+      await _showOwnerOrders(
+          tester, StringConstants.pickupText, fulfilledOrderId);
+      await _tap(tester, row);
+      // Every item on this tab moves on together.
+      final pickedUp = find.text(StringConstants.pickedUpText);
+      await _tap(tester, pickedUp);
+      await _waitGone(tester, pickedUp, timeout: const Duration(seconds: 45));
+      await _showOwnerOrders(
+          tester, StringConstants.completedText, fulfilledOrderId);
+      await _backToHome(tester);
+    });
+
+    // order_cancel (owner): customers can't cancel in the app, so the store
+    // cancels the second order; it then shows under Completed.
+    await step('owner cancels an order', () async {
+      if (cancelledOrderId.isEmpty) throw TestFailure('no order to cancel');
+      await _switchRole(tester, toCustomer: false);
+      await _openOwnerOrderQueue(tester);
+      await _showOwnerOrders(
+          tester, StringConstants.receivedText, cancelledOrderId);
+      await _tap(tester, find.text('#$cancelledOrderId'));
+      await _tap(tester, find.text(StringConstants.selectAllText));
+      final cancel = find.text(StringConstants.cancelOrderText);
+      await _tap(tester, cancel);
+      await _tap(tester, find.text(StringConstants.yesText));
+      await _waitGone(tester, cancel, timeout: const Duration(seconds: 45));
+      await _showOwnerOrders(
+          tester, StringConstants.completedText, cancelledOrderId);
+      await _backToHome(tester);
+    });
+
+    // order_history (customer): the fulfilled order is under Complete, the
+    // cancelled one under Cancelled, and its price is back in the wallet.
+    await step('customer sees fulfilled and cancelled orders', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _backToHome(tester);
+      await _tapUntil(tester, find.text(BottomNavStringConstants.ordersText),
+          find.text(StringConstants.cancelledText));
+      final orders = Get.find<OrdersController>();
+      Future<void> expectUnder(String tab, String orderId) async {
+        await _tap(tester, find.text(tab));
+        await _pumpFor(tester, const Duration(seconds: 1));
+        await _until(tester, '$tab orders', () => !orders.isLoading.value);
+        final ids = orders.orderList.map((o) => o.orderId).toList();
+        if (!ids.contains(orderId)) {
+          throw TestFailure('order $orderId not under $tab: $ids');
+        }
+      }
+
+      if (fulfilledOrderId.isNotEmpty) {
+        await expectUnder(StringConstants.completeText, fulfilledOrderId);
+      }
+      if (cancelledOrderId.isNotEmpty) {
+        await expectUnder(StringConstants.cancelledText, cancelledOrderId);
+      }
+      final before = balanceBeforeCancelledOrder;
+      if (cancelledOrderId.isNotEmpty && before != null) {
+        // The refund can land a moment after the cancel.
+        var now = await _customerBalance(tester);
+        for (var i = 0; i < 3 && (now - before).abs() > 0.01; i++) {
+          await _pumpFor(tester, const Duration(seconds: 5));
+          now = await _customerBalance(tester);
+        }
+        debugPrint('[journey]   wallet after cancel: $now (was $before)');
+        if ((now - before).abs() > 0.01) {
+          throw TestFailure('cancelled order $cancelledOrderId not refunded: '
+              'wallet $now, was $before before ordering');
+        }
+      }
+      await _backToHome(tester);
+    });
+
+    // payment_p2p_phone: send $1 to the second test account, which sends it
+    // back after logout. Under the biometric and KYC thresholds.
+    await step('pay a person', () async {
+      await _switchRole(tester, toCustomer: true);
+      await _payPerson(tester, _secondPhone, '1');
+      sentToSecondAccount = true;
+    });
+
+    await step('switch to store for cleanup', () async {
+      await _switchRole(tester, toCustomer: false);
+    });
+
     await step('owner product delete', () async {
       if (!productCreated) return;
+      await _switchRole(tester, toCustomer: false);
       await _openProductList(tester);
       await _swipeDelete(tester, find.text(productName));
       await _waitGone(tester, find.text(productName));
@@ -788,26 +861,47 @@ void main() {
     // logout. The Delete Account button sits right under Logout; the test
     // only ever taps the exact "Logout" text and the dialog's "Yes".
     await step('logout', () async {
-      await _openAccount(tester);
-      await _scrollTo(tester, find.text(StringConstants.logoutText));
-      await _tap(tester, find.text(StringConstants.logoutText));
-      await _waitFor(
-          tester, find.text(AlertStringConstants.areYouSureLogoutAccountText));
-      await _tap(tester, find.text(StringConstants.yesText));
-      _loggedIn = false; // from here on the landing screen is expected
-      await _waitFor(tester, find.text(StringConstants.createAnAccountText),
-          timeout: const Duration(seconds: 30));
-      // A call still in flight at logout fails without a token and alerts;
-      // log it and clear it so the welcome screen is usable.
-      await _pumpFor(tester, const Duration(seconds: 3));
-      final alert = find.text(StringConstants.okayText).hitTestable();
-      if (alert.evaluate().isNotEmpty) {
-        debugPrint('[journey]   alert after logout:');
-        _dumpScreen();
-        await tester.tap(alert.first);
-        await _pumpFor(tester, const Duration(seconds: 1));
-      }
+      await _logOut(tester);
     }, critical: true);
+
+    // payment_p2p_receive: the second test account got the $1 and sends it
+    // back to the main account, so neither balance drifts across runs.
+    await step('second account pays back', () async {
+      if (!sentToSecondAccount) {
+        throw TestFailure('nothing was sent to $_secondPhone');
+      }
+      await _tap(tester, find.text(StringConstants.loginYourAccountText));
+      await _waitFor(
+          tester, find.text(StringConstants.sendConfirmationCodeText));
+      try {
+        await _logIn(tester, phone: _secondPhone);
+      } on TestFailure {
+        _dumpScreen();
+        throw TestFailure('could not log in as $_secondPhone with OTP '
+            '$_testOtp; flag it as a test account on beta');
+      }
+      _currentPhone = _secondPhone;
+      _loggedIn = true;
+      try {
+        await _switchRole(tester, toCustomer: true);
+        final balance = await _customerBalance(tester);
+        debugPrint('[journey]   $_secondPhone wallet: $balance');
+        if (balance < 1) {
+          throw TestFailure('$_secondPhone wallet is $balance; the \$1 sent '
+              'to it never arrived');
+        }
+        await _payPerson(tester, _testPhone, '1');
+      } finally {
+        // End logged out whatever happened, so the step wrapper never logs
+        // back in as this account and sign-up starts from the landing page.
+        _currentPhone = _testPhone;
+        if (!_loggedOut()) {
+          await _backToHome(tester);
+          await _logOut(tester);
+        }
+        _loggedIn = false;
+      }
+    });
 
     // signup_validation: empty submit shows the field errors; filled fields
     // without the terms box stop at the terms alert, so no user is created.
@@ -883,12 +977,15 @@ bool _loggedOut() => find
     .evaluate()
     .isNotEmpty;
 
+/// The account a step that finds itself logged out logs back in as.
+var _currentPhone = _testPhone;
+
 /// Phone + OTP login, starting from the login screen.
-Future<void> _logIn(WidgetTester tester) async {
+Future<void> _logIn(WidgetTester tester, {String phone = _testPhone}) async {
   await tester.enterText(
       find.descendant(
           of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
-      _testPhone);
+      phone);
   await _pumpFor(tester, const Duration(milliseconds: 500));
   await _tap(tester, find.text(StringConstants.sendConfirmationCodeText));
 
@@ -909,7 +1006,32 @@ Future<void> _logInAgain(WidgetTester tester) async {
   debugPrint('[journey]   session ended by the backend; logging in again');
   await _tap(tester, find.text(StringConstants.loginYourAccountText));
   await _waitFor(tester, find.text(StringConstants.sendConfirmationCodeText));
-  await _logIn(tester);
+  await _logIn(tester, phone: _currentPhone);
+}
+
+/// Account > Logout > Yes, ending on the landing screen. The Delete Account
+/// button sits right under Logout; this only ever taps the exact "Logout"
+/// text and the dialog's "Yes".
+Future<void> _logOut(WidgetTester tester) async {
+  await _openAccount(tester);
+  await _scrollTo(tester, find.text(StringConstants.logoutText));
+  await _tap(tester, find.text(StringConstants.logoutText));
+  await _waitFor(
+      tester, find.text(AlertStringConstants.areYouSureLogoutAccountText));
+  await _tap(tester, find.text(StringConstants.yesText));
+  _loggedIn = false; // from here on the landing screen is expected
+  await _waitFor(tester, find.text(StringConstants.createAnAccountText),
+      timeout: const Duration(seconds: 30));
+  // A call still in flight at logout fails without a token and alerts;
+  // log it and clear it so the welcome screen is usable.
+  await _pumpFor(tester, const Duration(seconds: 3));
+  final alert = find.text(StringConstants.okayText).hitTestable();
+  if (alert.evaluate().isNotEmpty) {
+    debugPrint('[journey]   alert after logout:');
+    _dumpScreen();
+    await tester.tap(alert.first);
+    await _pumpFor(tester, const Duration(seconds: 1));
+  }
 }
 
 bool get _isCustomer => roleApp.value == Role.customerRoleText;
@@ -1060,6 +1182,150 @@ Future<void> _openOwnCategoryAsCustomer(
 Finder _productHeart(String name, String asset) => find.descendant(
     of: find.ancestor(of: find.text(name), matching: find.byType(Card)).first,
     matching: _asset(asset));
+
+/// Payments > Pay to a Person > Enter Mobile [phone], then pays [amount].
+Future<void> _payPerson(
+    WidgetTester tester, String phone, String amount) async {
+  await _openPayments(tester);
+  await _tap(tester, find.text('Pay to a Person'));
+  await _tap(tester, find.text('Enter Mobile'));
+  await tester.enterText(
+      find.descendant(
+          of: find.byType(IntlPhoneField), matching: find.byType(EditableText)),
+      phone);
+  await _tap(tester, find.text('Continue'));
+  await _payAmount(tester, amount);
+}
+
+/// On the payment details screen: enters [amount], reviews and pays, and
+/// waits for the success screen.
+Future<void> _payAmount(WidgetTester tester, String amount) async {
+  try {
+    await _waitFor(tester, find.text('Enter payment details'));
+  } on TestFailure {
+    // The recipient lookup failed; its snackbar says why.
+    _dumpScreen();
+    rethrow;
+  }
+  await tester.enterText(
+      find.descendant(
+          of: find
+              .ancestor(of: find.text('Amount'), matching: find.byType(Column))
+              .first,
+          matching: find.byType(EditableText)),
+      amount);
+  await _submit(tester, find.text('Review & Pay'));
+  await _submit(tester, find.textContaining(r'Pay $'));
+  await _waitFor(tester, find.text('Payment Successful!'),
+      timeout: const Duration(seconds: 45));
+  await _tap(tester, find.text('Done'));
+  await _backToHome(tester);
+}
+
+/// Customer wallet balance, fetched fresh from the server.
+Future<double> _customerBalance(WidgetTester tester) async {
+  await _backToHome(tester);
+  await _tapUntil(tester, find.text(BottomNavStringConstants.walletText),
+      find.text(StringConstants.totalBalanceText));
+  final wallet = Get.find<WalletController>();
+  wallet.apiGetUserWalletBalance();
+  await _pumpFor(tester, const Duration(milliseconds: 300));
+  await _until(tester, 'wallet balance',
+      () => wallet.userWalletBalance?.value.isNotEmpty ?? false);
+  final balance = double.parse(
+      wallet.userWalletBalance!.value.replaceAll(RegExp(r'[^0-9.\-]'), ''));
+  await _backToHome(tester);
+  return balance;
+}
+
+/// Owner: Orders tab > own store's order queue. With one store the tab may
+/// open the queue directly; otherwise it lists the stores first.
+Future<void> _openOwnerOrderQueue(WidgetTester tester) async {
+  await _backToHome(tester);
+  await _tap(tester, find.text(BottomNavStringConstants.ordersText));
+  final queue = _orderSearchField.hitTestable();
+  final store = find.text(_ownStoreName).hitTestable();
+  await _until(tester, 'owner orders',
+      () => queue.evaluate().isNotEmpty || store.evaluate().isNotEmpty);
+  if (queue.evaluate().isEmpty) await _tap(tester, store);
+  await _waitFor(tester, queue);
+}
+
+/// The owner order queue's search box.
+final _orderSearchField = find.byWidgetPredicate(
+    (w) =>
+        w is TextField &&
+        w.decoration?.hintText == StringConstants.searchOrdersHintText,
+    description: 'order search field');
+
+/// In the owner order queue: opens [tab] and searches for [orderId] until
+/// its row shows.
+Future<void> _showOwnerOrders(
+    WidgetTester tester, String tab, String orderId) async {
+  await _tap(tester, find.text(tab));
+  await _pumpFor(tester, const Duration(seconds: 1));
+  await _enterField(tester, StringConstants.searchOrdersHintText, orderId);
+  FocusManager.instance.primaryFocus?.unfocus();
+  await _waitFor(tester, find.text('#$orderId'));
+}
+
+/// Customer: orders one [productName] from the account's own store, paid
+/// from the wallet with an in-store or curbside order type, and returns the
+/// new order's id. Store search is location-based (nearby radius, Places
+/// autocomplete that needs a Maps key), so the store page is opened the way a
+/// nearby-store row does rather than depend on where the device is.
+Future<String> _placeOrder(WidgetTester tester, String productName) async {
+  final previous = Get.isRegistered<OrdersController>()
+      ? Get.find<OrdersController>().orderStatus.value
+      : '';
+  await _openOwnCategoryAsCustomer(tester, productName);
+  await _tap(tester, find.text(productName));
+  await _tap(tester, _asset(ImageConstants.add));
+  await _submit(tester, find.text(StringConstants.addToOrderText));
+  await _tap(tester, find.text(StringConstants.goToCartText));
+  await _waitFor(tester, find.text(StringConstants.orderSummaryText));
+  // The Order Type grid fills once store details load; pay needs one
+  // picked. In-store or curbside, never delivery (needs an address).
+  // The cart has its own controller instance, so pick the order type
+  // through the UI rather than checking controller state. Prefer pickup;
+  // fall back to whatever the store offers.
+  final types = [
+    StringConstants.inStoreText,
+    StringConstants.curbSideText,
+    StringConstants.deliveryText,
+  ].map((t) => find.text(t).hitTestable()).toList();
+  try {
+    await _until(
+        tester, 'order types', () => types.any((f) => f.evaluate().isNotEmpty),
+        timeout: const Duration(seconds: 15));
+  } on TestFailure {
+    // The shop endpoint only returns order types the store has enabled;
+    // with none, the cart can never be paid.
+    fail('store $_ownStoreId shows no order types in the cart; enable '
+        'one for it on beta');
+  }
+  await _tap(tester, types.firstWhere((f) => f.evaluate().isNotEmpty).first);
+  // Picking a type refreshes the wallet balance Pay Now checks.
+  await _pumpFor(tester, const Duration(seconds: 3));
+  await _submit(tester, find.text(StringConstants.payNowText));
+  // Wallet payment asks to confirm the deduction first.
+  await _tap(tester, find.text(StringConstants.proceedText));
+  await _waitFor(tester, find.text(StringConstants.orderConfirmedText),
+      timeout: const Duration(seconds: 45));
+  // The confirmation screen hands the new order's id to OrdersController
+  // after its first frame; the controller may still hold an older one.
+  final orders = Get.find<OrdersController>();
+  await _until(
+      tester,
+      'new order id',
+      () =>
+          orders.orderStatus.value.isNotEmpty &&
+          orders.orderStatus.value != previous);
+  final orderId = orders.orderStatus.value;
+  debugPrint('[journey]   placed order $orderId');
+  await _backToHome(tester);
+  return orderId;
+}
 
 Future<void> _openCardList(WidgetTester tester) async {
   await _backToHome(tester);
