@@ -134,8 +134,16 @@ void main() {
             if (!_loggedOut()) {
               _dumpScreen();
               await _backToHome(tester);
-              await _pumpFor(tester, const Duration(seconds: 3));
+              // The home screen may not call the server again; the wallet
+              // tab always loads the balance, so a dead session shows there.
+              final wallet =
+                  find.text(BottomNavStringConstants.walletText).hitTestable();
+              if (wallet.evaluate().isNotEmpty) {
+                await tester.tap(wallet.first);
+                await _pumpFor(tester, const Duration(seconds: 6));
+              }
               await _dismissAlert(tester);
+              if (!_loggedOut()) await _backToHome(tester);
             }
           }
           if (!_loggedIn || !_loggedOut()) rethrow;
